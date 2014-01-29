@@ -15,65 +15,75 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.service.NotificationChannelService;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
 
 /**
  * NotificationChannelService implementation - uses the businessObjectDao to get at data in the underlying database.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationChannelServiceImpl implements NotificationChannelService {
-    private GenericDao businessObjectDao;
+    private DataObjectService dataObjectService;
 
     /**
      * Constructs a NotificationChannelServiceImpl.java.
-     * @param businessObjectDao
+     * @param dataObjectService service persists data to datasource.
      */
-    public NotificationChannelServiceImpl(GenericDao businessObjectDao) {
-        this.businessObjectDao = businessObjectDao;
+    public NotificationChannelServiceImpl(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getNotificationChannel(java.lang.String)
      */
+    @Override
     public NotificationChannelBo getNotificationChannel(String id) {
-        Map<String,  String> primaryKeys = new HashMap<String, String>();
-        primaryKeys.put("id", id);
-        return (NotificationChannelBo) businessObjectDao.findByPrimaryKey(NotificationChannelBo.class, primaryKeys);
+
+        return dataObjectService.find(NotificationChannelBo.class, Long.valueOf(id));
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getNotificationChannelByName(java.lang.String)
      */
+    @Override
     public NotificationChannelBo getNotificationChannelByName(String name) {
-        Map<String,  String> fields = new HashMap<String, String>();
-        fields.put("name", name);
-        Collection<NotificationChannelBo> found = businessObjectDao.findMatching(NotificationChannelBo.class, fields);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+
+        criteria.setPredicates(equal("name", name));
+        List<NotificationChannelBo> found = dataObjectService.findMatching(NotificationChannelBo.class, criteria.build()).getResults();
         assert(found.size() <= 1);
-        if (found.size() == 0) return null;
-        return found.iterator().next();
+
+        return ((found.isEmpty() ? null : found.get(0)));
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getSubscribableChannels()
      */
+    @Override
     public Collection getSubscribableChannels() {
-        Map<String, Boolean> fieldValues = new HashMap<String, Boolean>();
-        String sortField = new String("name");
-        fieldValues.put("subscribable", true);
-        return businessObjectDao.findMatchingOrderBy(NotificationChannelBo.class, fieldValues, sortField, true);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("subscribable", Boolean.TRUE));
+        criteria.setOrderByAscending("name");
+
+        return dataObjectService.findMatching(NotificationChannelBo.class, criteria.build()).getResults();
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationChannelService#getAllNotificationChannels()
      */
+    @Override
     public Collection getAllNotificationChannels() {
-        String sortField = new String("name");
-        return businessObjectDao.findAllOrderBy(NotificationChannelBo.class, sortField, true);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setOrderByAscending("name");
+
+        return dataObjectService.findMatching(NotificationChannelBo.class, criteria.build()).getResults();
     }
 }

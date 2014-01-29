@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -35,9 +34,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,7 +52,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;

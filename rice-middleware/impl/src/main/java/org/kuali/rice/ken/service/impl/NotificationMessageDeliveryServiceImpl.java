@@ -15,20 +15,20 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-//import org.kuali.rice.core.jpa.criteria.Criteria;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service that uses the 
@@ -38,16 +38,17 @@ import java.util.Map;
 public class NotificationMessageDeliveryServiceImpl implements NotificationMessageDeliveryService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(NotificationMessageDeliveryServiceImpl.class);
-    
-    private GenericDao businessObjectDao;
+
+    private DataObjectService dataObjectService;
     private NotificationMessegeDeliveryDao ntdDao;
     
     /**
      * Constructs a NotificationServiceImpl class instance.
-     * @param businessObjectDao
+     * @param dataObjectService
+     * @param ntdDao
      */
-    public NotificationMessageDeliveryServiceImpl(GenericDao businessObjectDao, NotificationMessegeDeliveryDao ntdDao) {
-        this.businessObjectDao = businessObjectDao;
+    public NotificationMessageDeliveryServiceImpl(DataObjectService dataObjectService, NotificationMessegeDeliveryDao ntdDao) {
+        this.dataObjectService = dataObjectService;
         this.ntdDao = ntdDao;
     }
 
@@ -57,25 +58,27 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * @return NotificationMessageDelivery
      */
     public NotificationMessageDelivery getNotificationMessageDelivery(Long id) {
-        HashMap<String, Long> primaryKeys = new HashMap<String, Long>();
-        primaryKeys.put(NotificationConstants.BO_PROPERTY_NAMES.ID, id);
-	
-        return (NotificationMessageDelivery) businessObjectDao.findByPrimaryKey(NotificationMessageDelivery.class, primaryKeys);
+
+        return dataObjectService.find(NotificationMessageDelivery.class, id);
     }
 
     /**
      * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveryByDelivererId(java.lang.String)
      */
     //switch to JPA criteria
+    @Override
     public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(String id) {
-    	Map<String, Object> c = new HashMap<String, Object>();
-    	c.put(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);	
-        Collection<NotificationMessageDelivery> results = businessObjectDao.findMatching(NotificationMessageDelivery.class, c);
-        
-        if (results == null || results.size() == 0) return null;
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id));
+        Collection<NotificationMessageDelivery> results = dataObjectService.findMatching(NotificationMessageDelivery.class, criteria.build()).getResults();
+
+        if (results.isEmpty()) {
+            return null;
+        }
         if (results.size() > 1) {
             throw new RuntimeException("More than one message delivery found with the following delivery system id: " + id);
         }
+
         return results.iterator().next();
     }
 
@@ -83,20 +86,21 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveries()
      */
     public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries() {
-        return businessObjectDao.findAll(NotificationMessageDelivery.class);
+        return dataObjectService.findMatching(NotificationMessageDelivery.class, QueryByCriteria.Builder.create().build()).getResults();
     }
     
     /**
      * @see org.kuali.rice.ken.service.NotificationMessageDeliveryService#getNotificationMessageDeliveries(java.lang.Long, java.lang.String)
      */
     //switch to JPA criteria
+    @Override
     public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(NotificationBo notification, String userRecipientId) {
 
-    	Map<String, Object> c = new HashMap<String, Object>();
-    	c.put(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
-    	c.put(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId);
-    	
-        return businessObjectDao.findMatching(NotificationMessageDelivery.class, c);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION + ".id", notification.getId()),
+                equal(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId));
+
+        return dataObjectService.findMatching(NotificationMessageDelivery.class, criteria.build()).getResults();
     }
 
     /**
@@ -109,22 +113,23 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * @return a list of available message deliveries that have been marked as taken by the caller
      */
     //switch to JPA criteria
+    @Override
     public Collection<NotificationMessageDelivery> takeMessageDeliveriesForDispatch() {
         // DO WITHIN TRANSACTION: get all untaken messagedeliveries, and mark as "taken" so no other thread/job takes them
         // need to think about durability of work list
 
         // get all undelivered message deliveries
-        Collection<NotificationMessageDelivery> messageDeliveries = ntdDao.getUndeliveredMessageDelivers(businessObjectDao);
-
+        Collection<NotificationMessageDelivery> messageDeliveries =  ntdDao.getUndeliveredMessageDelivers(dataObjectService);
+        List<NotificationMessageDelivery> savedMsgDel = new ArrayList<NotificationMessageDelivery>();
         
         LOG.debug("Retrieved " + messageDeliveries.size() + " available message deliveries: " + System.currentTimeMillis());
 
         // mark messageDeliveries as taken
         for (NotificationMessageDelivery delivery: messageDeliveries) {
             delivery.setLockedDateValue(new Timestamp(System.currentTimeMillis()));
-            businessObjectDao.save(delivery);
+            savedMsgDel.add(dataObjectService.save(delivery));
         }
-        return messageDeliveries;
+        return savedMsgDel;
     }
     
     /**
@@ -135,16 +140,17 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * the caller should arrange to invoke this from within a newly created transaction).
      * @return a list of notifications to be autoremoved that have been marked as taken by the caller
      */
+    @Override
     public Collection<NotificationMessageDelivery> takeMessageDeliveriesForAutoRemoval() {
         // get all UNDELIVERED/DELIVERED notification notification message delivery records with associated notifications that have and autoRemovalDateTime <= current
-    	Collection<NotificationMessageDelivery> messageDeliveries = ntdDao.getMessageDeliveriesForAutoRemoval(new Timestamp(System.currentTimeMillis()), businessObjectDao);
-    	
+    	Collection<NotificationMessageDelivery> messageDeliveries = ntdDao.getMessageDeliveriesForAutoRemoval(new Timestamp(System.currentTimeMillis()), dataObjectService);
+    	List<NotificationMessageDelivery> savedMsgDel = new ArrayList<NotificationMessageDelivery>();
         for (NotificationMessageDelivery d: messageDeliveries) {
             d.setLockedDateValue(new Timestamp(System.currentTimeMillis()));
-            businessObjectDao.save(d);
+            savedMsgDel.add(dataObjectService.save(d));
         }
         
-        return messageDeliveries;
+        return savedMsgDel;
     
     }
 
@@ -152,18 +158,16 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      * Unlocks the specified messageDelivery object
      * @param messageDelivery the message delivery to unlock
      */
+    @Override
     public void unlockMessageDelivery(NotificationMessageDelivery messageDelivery) {
-    	Map<String, Long> c = new HashMap<String, Long>();
-    	c.put(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, messageDelivery.getId());	
 
-        Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, c, true, RiceConstants.NO_WAIT);
-        if (deliveries == null || deliveries.size() == 0) {
+        NotificationMessageDelivery d = dataObjectService.find(NotificationMessageDelivery.class, messageDelivery.getId());
+
+        if (d == null) {
             throw new RuntimeException("NotificationMessageDelivery #" + messageDelivery.getId() + " not found to unlock");
         }
 
-        NotificationMessageDelivery d = deliveries.iterator().next();
         d.setLockedDateValue(null);
-
-        businessObjectDao.save(d);
+        dataObjectService.save(d);
     }
 }

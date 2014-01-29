@@ -18,10 +18,14 @@ package org.kuali.rice.test.persistence
 import org.kuali.rice.kns.service.KNSServiceLocator
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krad.service.BusinessObjectService
+
 import javax.sql.DataSource
+
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.krad.bo.PersistableBusinessObject
+
 import java.sql.Timestamp
+
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
 import org.joda.time.DateTime
 import org.junit.Assert
@@ -29,6 +33,7 @@ import org.junit.Assert
 /**
  * Helps with BO persistence tests
  */
+@Deprecated
 class PersistenceTestHelper {
     def BusinessObjectService boService;
     def DataSource datasource;

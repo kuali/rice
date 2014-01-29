@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.test.document.bo.Account;
@@ -46,20 +47,19 @@ import static org.junit.Assert.assertTrue;
         value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        ,@UnitTestSql("delete from trv_acct_type")
                         ,@UnitTestSql("delete from krtst_test_table_t")
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testDataObjects.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
+                        ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                        ,@UnitTestFile(filename = "classpath:testDataObjects.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
                         ,@UnitTestSql("delete from krtst_test_table_t")
                 }
        )
@@ -85,15 +85,22 @@ public class LookupServiceTest extends KRADTestCase {
      *
      * @throws Exception
      */
-    @Test
-    public void testLookupReturnLimits_AccountManager() throws Exception {
+
+    /**
+     * This test is no longer needed since the account manager table no longer exists.
+     * testLookupReturnLimits_TestDataObject found below also tests lookup return limits
+     * so no replacement test is needed.
+     *
+     */
+     @Test @Ignore
+     public void testLookupReturnLimits_AccountManager() throws Exception {
         Map formProps = new HashMap();
         Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, false);
         assertEquals(90, accountManagers.size());
 
         accountManagers = findCollectionBySearch(AccountManager.class, formProps);
         assertEquals(90, accountManagers.size());
-    }
+     }
 
     @Test
     public void testLookupReturnLimits_TestDataObject() throws Exception {
@@ -125,8 +132,14 @@ public class LookupServiceTest extends KRADTestCase {
      *
      * @throws Exception
      */
-    @Test
-    public void testLookupReturnDefaultUnbounded_AccountManager() throws Exception {
+
+    /**
+     * This test is no longer needed since the account manager table no longer exists.
+     * testLookupReturnDefaultUnbounded_Account found below also tests an unbounded lookup
+     * so no replacement test is needed.
+     */
+     @Test @Ignore
+     public void testLookupReturnDefaultUnbounded_AccountManager() throws Exception {
         Map formProps = new HashMap();
         Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, true);
         int size = accountManagers.size();
@@ -135,7 +148,7 @@ public class LookupServiceTest extends KRADTestCase {
         accountManagers = findCollectionBySearchUnbounded(AccountManager.class, formProps);
         size = accountManagers.size();
         assertTrue("# of Fiscal Officers should be > 200", size > 200);
-    }
+     }
 
 
     /**

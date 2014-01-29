@@ -39,16 +39,6 @@ class EntityCitizenshipTest {
     static final DateTime START_DATE = new DateTime(START_DATE_STRING)
     static final String END_DATE_STRING = "2012-01-01"
     static final DateTime END_DATE = new DateTime(END_DATE_STRING)
-    static final String CHANGE_DATE_STRING = "2011-06-01"
-    static final DateTime CHANGE_DATE = new DateTime(CHANGE_DATE_STRING)
-
-    private static final String CHANGE_CODE = "NTRLZD"
-    private static final String CHANGE_NAME = "Naturalized"
-    private static final String CHANGE_SORT_CODE = "0"
-    private static final String CHANGE_ACTIVE = "true"
-    private static final Long CHANGE_VERSION_NUMBER = Integer.valueOf(1)
-    private static final String CHANGE_OBJECT_ID = UUID.randomUUID()
-
     private static final String ACTIVE = "true"
     private static final Long VERSION_NUMBER = Integer.valueOf(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
@@ -68,15 +58,6 @@ class EntityCitizenshipTest {
         <countryCode>${COUNTRY_CODE}</countryCode>
         <startDate>${START_DATE_STRING}</startDate>
         <endDate>${END_DATE_STRING}</endDate>
-        <changeDate>${CHANGE_DATE_STRING}</changeDate>
-        <changeType>
-            <code>${CHANGE_CODE}</code>
-            <name>${CHANGE_NAME}</name>
-            <active>${CHANGE_ACTIVE}</active>
-            <sortCode>${CHANGE_SORT_CODE}</sortCode>
-            <versionNumber>${CHANGE_VERSION_NUMBER}</versionNumber>
-            <objectId>${CHANGE_OBJECT_ID}</objectId>
-        </changeType>
         <active>${ACTIVE}</active>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
         <objectId>${OBJECT_ID}</objectId>
@@ -126,16 +107,6 @@ class EntityCitizenshipTest {
             def boolean active = EntityCitizenshipTest.ACTIVE.toBoolean()
             def Long versionNumber = EntityCitizenshipTest.VERSION_NUMBER;
 			def String objectId = EntityCitizenshipTest.OBJECT_ID
-            def DateTime changeDate = EntityCitizenshipTest.CHANGE_DATE
-            def CodedAttribute getChangeType() { CodedAttribute.Builder.create(new CodedAttributeContract() {
-                def String code = EntityCitizenshipTest.CHANGE_CODE
-                def String name = EntityCitizenshipTest.CHANGE_NAME
-                def boolean active = EntityCitizenshipTest.CHANGE_ACTIVE.toBoolean()
-                def String sortCode = EntityCitizenshipTest.CHANGE_SORT_CODE
-                def Long versionNumber = EntityCitizenshipTest.CHANGE_VERSION_NUMBER
-                def String objectId = EntityCitizenshipTest.CHANGE_OBJECT_ID
-            }).build()
-            }
         }).build()
 
 	}

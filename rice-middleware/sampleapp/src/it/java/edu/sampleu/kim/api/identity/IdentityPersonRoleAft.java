@@ -28,14 +28,14 @@ import org.openqa.selenium.By;
  */
 public class IdentityPersonRoleAft extends WebDriverLegacyITBase {
 
-    public static final String EDIT_URL = WebDriverUtils.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL_ENCODED + "&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
+    public static final String EDIT_URL = WebDriverUtils.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtils
             .getBaseUrlString() +
             "/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kim.api.identity.Person&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + "&hideReturnLink=true";
-    private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "176"));
-    private int userCntStart = Integer.valueOf(System.getProperty("test.role.user.cnt.start", "0"));
-    private String idBase = System.getProperty("test.role.user.base", "lt");
+    private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "2")); // set to 176 for load testing
+    private int userCntStart = Integer.valueOf(System.getProperty("test.role.user.cnt.start", "1"));  // set to 0 for load testing
+    private String idBase = System.getProperty("test.role.user.base", "testadmin"); // set to lt for load testing
     public static final String ADMIN_ROLE_ID = "63";
     public static final String KRMS_ADMIN_ROLE_ID = "98";
 

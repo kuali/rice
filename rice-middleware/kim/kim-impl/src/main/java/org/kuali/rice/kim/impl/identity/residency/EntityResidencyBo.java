@@ -15,32 +15,37 @@
  */
 package org.kuali.rice.kim.impl.identity.residency;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.identity.CodedAttributeContract;
-import org.kuali.rice.kim.api.identity.residency.EntityResidency;
-import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.joda.time.DateTime;
+import org.kuali.rice.kim.api.identity.CodedAttributeContract;
+import org.kuali.rice.kim.api.identity.residency.EntityResidency;
+import org.kuali.rice.kim.api.identity.residency.EntityResidencyContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+
 @Entity
 @Table(name = "KRIM_ENTITY_RESIDENCY_T")
-public class EntityResidencyBo extends PersistableBusinessObjectBase implements EntityResidencyContract {
+public class EntityResidencyBo extends DataObjectBase implements EntityResidencyContract {
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_RESIDENCY_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_RESIDENCY_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_RESIDENCY_ID_S")
+    @Id
     @Column(name = "ID")
     private String id;
+
     @Column(name = "ENTITY_ID")
     private String entityId;
+
     @Column(name = "DETERMINATION_METHOD")
     private String determinationMethod;
+
     @Column(name = "IN_STATE")
     private String inState;
 
@@ -48,7 +53,6 @@ public class EntityResidencyBo extends PersistableBusinessObjectBase implements 
         if (bo == null) {
             return null;
         }
-
         return EntityResidency.Builder.create(bo).build();
     }
 
@@ -62,7 +66,6 @@ public class EntityResidencyBo extends PersistableBusinessObjectBase implements 
         if (immutable == null) {
             return null;
         }
-
         EntityResidencyBo bo = new EntityResidencyBo();
         bo.entityId = immutable.getEntityId();
         bo.id = immutable.getId();
@@ -70,43 +73,7 @@ public class EntityResidencyBo extends PersistableBusinessObjectBase implements 
         bo.inState = immutable.getInState();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
-    }
-
-    @Override
-    public DateTime getEstablishedDate() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public DateTime getChangeDate() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getCountryCode() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getCountyCode() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getStateProvinceCode() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public CodedAttributeContract getResidencyStatus() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public CodedAttributeContract getResidencyType() {
-        return null;//To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -144,5 +111,4 @@ public class EntityResidencyBo extends PersistableBusinessObjectBase implements 
     public void setInState(String inState) {
         this.inState = inState;
     }
-
 }

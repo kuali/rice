@@ -184,7 +184,7 @@ public class MessageStructureUtils {
         if (currentMessageComponent == null) {
             currentMessageComponent = ComponentFactory.getMessage();
             currentMessageComponent.setMessageText(messagePiece);
-            currentMessageComponent.setGenerateSpan(false);
+            currentMessageComponent.setGenerateWrapperElement(false);
         } else {
             currentMessageComponent.setMessageText(currentMessageComponent.getMessageText() + messagePiece);
         }

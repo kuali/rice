@@ -19,11 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
@@ -46,7 +45,7 @@ import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.util.CollectionUtils;
 
 import javax.xml.namespace.QName;
@@ -65,11 +64,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private static final Integer DEFAULT_PRIORITY_NUMBER = Integer.valueOf(1);
     private static final Log LOG = LogFactory.getLog(ResponsibilityServiceImpl.class);
 
-    private BusinessObjectService businessObjectService;
-    private CriteriaLookupService criteriaLookupService;
     private ResponsibilityTypeService defaultResponsibilityTypeService;
     private KimTypeInfoService kimTypeInfoService;
     private RoleService roleService;
+
+    private DataObjectService dataObjectService;
 
     @Override
     public Responsibility createResponsibility(final Responsibility responsibility)
@@ -85,7 +84,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.setAttributeDetails(attrBos);
-        return ResponsibilityBo.to(businessObjectService.save(bo));
+        return ResponsibilityBo.to(getDataObjectService().save(bo));
     }
 
     @Override
@@ -108,14 +107,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             bo.setAttributeDetails(attrBos);
         }
 
-        return ResponsibilityBo.to(businessObjectService.save(bo));
+        return ResponsibilityBo.to(getDataObjectService().save(bo));
     }
 
     @Override
     public Responsibility getResponsibility(final String id) throws RiceIllegalArgumentException {
         incomingParamCheck(id, "id");
 
-        return ResponsibilityBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityBo.class, id));
+        return ResponsibilityBo.to(getDataObjectService().find(ResponsibilityBo.class, id));
     }
 
     @Override
@@ -124,19 +123,21 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(name, "name");
 
-        final Map<String, String> crit = new HashMap<String, String>();
-        crit.put("namespaceCode", namespaceCode);
-        crit.put("name", name);
-        crit.put("active", "Y");
+        final Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("namespaceCode", namespaceCode);
+        criteria.put("name", name);
+        criteria.put("active", Boolean.TRUE);
 
-        final Collection<ResponsibilityBo> bos = businessObjectService.findMatching(ResponsibilityBo.class, Collections.unmodifiableMap(crit));
+        QueryResults<ResponsibilityBo> bos =
+                getDataObjectService().findMatching(ResponsibilityBo.class,
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
 
-        if (bos != null) {
-            if (bos.size() > 1) {
+        if (bos != null && bos.getResults() != null) {
+            if (bos.getResults().size() > 1) {
                 throw new RiceIllegalStateException("more than one Responsibility found with namespace code: " + namespaceCode + " and name: " + name);
             }
 
-            final Iterator<ResponsibilityBo> i = bos.iterator();
+            final Iterator<ResponsibilityBo> i = bos.getResults().iterator();
             return i.hasNext() ? ResponsibilityBo.to(i.next()) : null;
         }
         return null;
@@ -146,7 +147,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public Template getResponsibilityTemplate(final String id) throws RiceIllegalArgumentException {
         incomingParamCheck(id, "id");
 
-        return ResponsibilityTemplateBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityTemplateBo.class, id));
+        return ResponsibilityTemplateBo.to(getDataObjectService().find(ResponsibilityTemplateBo.class, id));
     }
 
     @Override
@@ -154,18 +155,20 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(name, "name");
 
-        final Map<String, String> crit = new HashMap<String, String>();
-        crit.put("namespaceCode", namespaceCode);
-        crit.put("name", name);
-        crit.put("active", "Y");
+        final Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("namespaceCode", namespaceCode);
+        criteria.put("name", name);
+        criteria.put("active", Boolean.TRUE);
 
-        final Collection<ResponsibilityTemplateBo> bos = businessObjectService.findMatching(ResponsibilityTemplateBo.class, Collections.unmodifiableMap(crit));
-        if (bos != null) {
-            if (bos.size() > 1) {
+        QueryResults<ResponsibilityTemplateBo> bos =
+                getDataObjectService().findMatching(ResponsibilityTemplateBo.class,
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
+        if (bos != null && bos.getResults() != null) {
+            if (bos.getResults().size() > 1) {
                 throw new RiceIllegalStateException("more than one Responsibility Template found with namespace code: " + namespaceCode + " and name: " + name);
             }
 
-            final Iterator<ResponsibilityTemplateBo> i = bos.iterator();
+            final Iterator<ResponsibilityTemplateBo> i = bos.getResults().iterator();
             return i.hasNext() ? ResponsibilityTemplateBo.to(i.next()) : null;
         }
         return null;
@@ -320,14 +323,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 and(
                         equal("responsibilityId", responsibilityId),
                         equal("roleId", roleId),
-                        equal("active", "Y")
+                        equal("active", Boolean.TRUE)
                 );
 
         // First get RoleResponsibilityBos
         final QueryByCriteria.Builder roleResponsibilityQueryBuilder = QueryByCriteria.Builder.create();
         roleResponsibilityQueryBuilder.setPredicates(roleResponsibilityPredicate);
-        final GenericQueryResults<RoleResponsibilityBo> roleResponsibilityResults =
-                criteriaLookupService.lookup(RoleResponsibilityBo.class, roleResponsibilityQueryBuilder.build());
+
+        final QueryResults<RoleResponsibilityBo> roleResponsibilityResults = getDataObjectService().
+                findMatching(RoleResponsibilityBo.class, roleResponsibilityQueryBuilder.build());
         final List<RoleResponsibilityBo> roleResponsibilityBos = roleResponsibilityResults.getResults();
 
         if (!CollectionUtils.isEmpty(roleResponsibilityBos)) { // if there are any...
@@ -356,10 +360,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             final QueryByCriteria.Builder roleResponsibilityActionQueryBuilder = QueryByCriteria.Builder.create();
             roleResponsibilityActionQueryBuilder.setPredicates(roleResponsibilityActionPredicate);
 
-            final GenericQueryResults<RoleResponsibilityActionBo> roleResponsibilityActionResults =
-                    criteriaLookupService.lookup(
-                            RoleResponsibilityActionBo.class, roleResponsibilityActionQueryBuilder.build()
-                    );
+            final QueryResults<RoleResponsibilityActionBo> roleResponsibilityActionResults =
+                    getDataObjectService().findMatching(RoleResponsibilityActionBo.class,
+                            roleResponsibilityActionQueryBuilder.build());
 
             final List<RoleResponsibilityActionBo> roleResponsibilityActionBos = roleResponsibilityActionResults.getResults();
             for (RoleResponsibilityActionBo roleResponsibilityActionBo : roleResponsibilityActionBos) {
@@ -374,7 +377,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public List<String> getRoleIdsForResponsibility(String id) throws RiceIllegalArgumentException {
         incomingParamCheck(id, "id");
 
-        final List<String> roleIds = getRoleIdsForPredicate(and(equal("responsibilityId", id), equal("active", "Y")));
+        final List<String> roleIds = getRoleIdsForPredicate(and(equal("responsibilityId", id), equal("active", Boolean.TRUE)));
 
         return Collections.unmodifiableList(roleIds);
     }
@@ -386,7 +389,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         LookupCustomizer.Builder<ResponsibilityBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
 
-        GenericQueryResults<ResponsibilityBo> results = criteriaLookupService.lookup(ResponsibilityBo.class, queryByCriteria, lc.build());
+        QueryResults<ResponsibilityBo> results = getDataObjectService().
+                findMatching(ResponsibilityBo.class, queryByCriteria, lc.build());
 
         ResponsibilityQueryResults.Builder builder = ResponsibilityQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -405,7 +409,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public TemplateQueryResults findResponsibilityTemplates(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        GenericQueryResults<ResponsibilityTemplateBo> results = criteriaLookupService.lookup(ResponsibilityTemplateBo.class, queryByCriteria);
+        QueryResults<ResponsibilityTemplateBo> results = getDataObjectService().
+                findMatching(ResponsibilityTemplateBo.class, queryByCriteria);
 
         TemplateQueryResults.Builder builder = TemplateQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -482,16 +487,15 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     private List<String> getRoleIdsForResponsibilities(Collection<String> ids) {
-        final List<String> roleIds = getRoleIdsForPredicate(and(in("responsibilityId", ids.toArray()), equal("active", "Y")));
+        final List<String> roleIds = getRoleIdsForPredicate(and(in("responsibilityId", ids.toArray()), equal("active", Boolean.TRUE)));
 
         return Collections.unmodifiableList(roleIds);
     }
 
     private List<String> getRoleIdsForPredicate(Predicate p) {
-        final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        builder.setPredicates(p);
-        final GenericQueryResults<RoleResponsibilityBo> qr = criteriaLookupService.lookup(RoleResponsibilityBo.class, builder.build());
-
+        QueryResults<RoleResponsibilityBo> qr =
+                getDataObjectService().findMatching(RoleResponsibilityBo.class,
+                        QueryByCriteria.Builder.fromPredicates(p));
         final List<String> roleIds = new ArrayList<String>();
         for (RoleResponsibilityBo bo : qr.getResults()) {
             roleIds.add(bo.getRoleId());
@@ -503,15 +507,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     @Override
     public List<Responsibility> findResponsibilitiesByTemplate(String namespaceCode, String templateName) {
 
-        final Map<String, String> crit = new HashMap<String, String>();
-        crit.put("template.namespaceCode", namespaceCode); 
-        crit.put("template.name", templateName); 
-        crit.put("active", "Y"); 
+        final Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("template.namespaceCode", namespaceCode); 
+        criteria.put("template.name", templateName); 
+        criteria.put("active", Boolean.TRUE);
 
-        final Collection<ResponsibilityBo> bos = businessObjectService.findMatching(ResponsibilityBo.class, Collections.unmodifiableMap(crit));
+        QueryResults<ResponsibilityBo> bos =
+                getDataObjectService().findMatching(ResponsibilityBo.class,
+                        QueryByCriteria.Builder.andAttributes(criteria).build());
         final List<Responsibility> ims = new ArrayList<Responsibility>();
-        if (bos != null) {
-            for (ResponsibilityBo bo : bos) {
+        if (bos != null && bos.getResults() != null) {
+            for (ResponsibilityBo bo : bos.getResults()) {
                 if (bo != null) {
                     ims.add(ResponsibilityBo.to(bo));
                 }
@@ -519,14 +525,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
 
         return Collections.unmodifiableList(ims);
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
     }
 
     public void setDefaultResponsibilityTypeService(final ResponsibilityTypeService defaultResponsibilityTypeService) {
@@ -572,5 +570,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
+    }
+
+
+    public DataObjectService getDataObjectService() {
+        return dataObjectService;
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

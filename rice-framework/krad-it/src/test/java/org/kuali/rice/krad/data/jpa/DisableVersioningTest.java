@@ -28,10 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Tests the DisableVersion annotation.
@@ -83,9 +80,7 @@ public class DisableVersioningTest extends KRADTestCase {
         try {
             KRADServiceLocator.getDataObjectService().save(createDisableNoVersion(rndId, property));
             fail("Database exception should have been thrown when saving with no version number column");
-        } catch (DatabaseException e) {
-            // TODO - in the future once we resolve KULRICE-9798 this should be throwing DataAccessException instead
-        }
+        } catch (DatabaseException e) {}
 
         // DisableVersionRemoveMapping *should* work though because we are removing the VER_NBR column mapping which
         // should help because we have no such column in the database
@@ -100,7 +95,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_VER_T")
     @DisableVersioning
     public static class DisableVersion extends PersistableBusinessObjectBase {
 
@@ -137,7 +132,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_NO_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_NO_VER_T")
     @DisableVersioning
     public static class DisableNoVersion extends PersistableBusinessObjectBase {
 
@@ -173,7 +168,7 @@ public class DisableVersioningTest extends KRADTestCase {
     }
 
     @Entity
-    @Table(name="KRTST_TEST_DISABLE_NO_VER_TABLE_T")
+    @Table(name="KRTST_TEST_DISABLE_NO_VER_T")
     @DisableVersioning
     @RemoveMapping(name = "versionNumber")
     public static class DisableNoVersionRemoveMapping extends PersistableBusinessObjectBase {

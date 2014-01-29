@@ -48,6 +48,16 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>rice-kns</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -56,11 +66,6 @@
       <artifactId>rice-core-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
-<!--    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

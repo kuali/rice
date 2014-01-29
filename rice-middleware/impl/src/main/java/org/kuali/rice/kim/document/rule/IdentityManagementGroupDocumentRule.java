@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -33,20 +39,11 @@ import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -56,7 +53,6 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	protected AddGroupMemberRule addGroupMemberRule;
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
-	protected BusinessObjectService businessObjectService;
 	protected Class<? extends GroupDocumentMemberRule> addGroupMemberRuleClass = GroupDocumentMemberRule.class;
 
 	protected IdentityService identityService; 
@@ -108,7 +104,6 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		return rulePassed;
 	}
 
-    @SuppressWarnings("unchecked")
 	protected boolean validDuplicateGroupName(IdentityManagementGroupDocument groupDoc){
         Group group = null;
         if(null != groupDoc.getGroupNamespace() && null != groupDoc.getGroupName()){
@@ -150,7 +145,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
         if(!principalIds.isEmpty())       {
             // retrieve valid principals/principal-ids from identity service
             List<Principal> validPrincipals = getIdentityService().getPrincipals(principalIds);
-            List<String> validPrincipalIds = new ArrayList<String>();
+            List<String> validPrincipalIds = new ArrayList<String>(validPrincipals.size());
             for (Principal principal : validPrincipals) {
                 validPrincipalIds.add(principal.getPrincipalId());
             }
@@ -213,17 +208,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	}
 
     public boolean processAddGroupMember(AddGroupMemberEvent addGroupMemberEvent) {
-        return new GroupDocumentMemberRule().processAddGroupMember(addGroupMemberEvent);    
+        return getAddGroupMemberRule().processAddGroupMember(addGroupMemberEvent);    
     }
-
-    /**
-	 * @return the businessObjectService
-	 */
-	public BusinessObjectService getBusinessObjectService() {
-		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
 
 }

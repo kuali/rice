@@ -20,18 +20,11 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
-import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.core.api.criteria.QueryByCriteria
-import org.kuali.rice.core.api.exception.RiceIllegalStateException
+import org.kuali.rice.core.api.criteria.*
 import org.kuali.rice.kim.api.KimConstants
-import org.kuali.rice.kim.api.role.Role
-import org.kuali.rice.kim.api.role.RoleContract
-import org.kuali.rice.kim.api.role.RoleQueryResults
-import org.kuali.rice.kim.api.role.RoleResponsibilityAction
-import org.kuali.rice.kim.api.role.RoleService
-import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.kim.api.role.*
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krad.data.PersistenceOption
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
 
@@ -46,12 +39,9 @@ class RoleServiceImplTest {
     static Map<String, RoleBo> sampleRoles = new HashMap<String, RoleBo>()
     static Map<String, RoleBo> sampleRolesByName= new HashMap<String, RoleBo>()
 
-    MockFor businessObjectServiceMockFor
-    BusinessObjectService bos
+    MockFor dataObjectServiceMockFor
+    DataObjectService dos
     static GenericQueryResults queryResultsAll
-
-    MockFor criteriaLookupMockFor
-    CriteriaLookupService cls
 
     RoleServiceImpl roleServiceImpl
     RoleService roleService
@@ -93,8 +83,7 @@ class RoleServiceImplTest {
 
     @Before
     void setupMockContext() {
-        businessObjectServiceMockFor = new MockFor(BusinessObjectService.class)
-        criteriaLookupMockFor = new MockFor(CriteriaLookupService.class)
+        dataObjectServiceMockFor = new MockFor(DataObjectService.class)
     }
 
     @Before
@@ -104,74 +93,71 @@ class RoleServiceImplTest {
         roleService = roleServiceImpl //assign Interface type to implementation reference for unit test only
     }
 
-    void injectBusinessObjectServiceIntoRoleService() {
-        bos =  businessObjectServiceMockFor.proxyDelegateInstance()
-        roleServiceImpl.setBusinessObjectService(bos)
-    }
-
-    void injectCriteriaLookupServiceIntoRoleService() {
-        cls = criteriaLookupMockFor.proxyDelegateInstance()
-        roleServiceImpl.setCriteriaLookupService(cls)
+    void injectDataObjectServiceIntoRoleService() {
+        dos =  dataObjectServiceMockFor.proxyDelegateInstance()
+        roleServiceImpl.setDataObjectService(dos)
     }
 
     @Test
     public void test_getRole() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1..sampleRoles.size()) {
-            Class clazz, String primaryKey -> return toRoleBoLite(sampleRoles.get(primaryKey))
+        dataObjectServiceMockFor.demand.find(1..sampleRoles.size()) {
+            Class clazz, Object primaryKey -> return toRoleBoLite(sampleRoles.get(primaryKey))
         }
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
         for (String id : sampleRoles.keySet()) {
             Role role = roleService.getRole(id)
             Assert.assertEquals(RoleBoLite.to(sampleRoles.get(id)), role)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getRoleNonExistent() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, String primaryKey -> return null
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object primaryKey -> return null
         }
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
         Role role = roleService.getRole("badId")
         Assert.assertNull(role)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getRoleByName() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1..sampleRolesByName.size()) {
-            Class clazz, Map map -> return toRoleBoLite(sampleRolesByName.get(map.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE) + ";" + map.get(KimConstants.UniqueKeyConstants.NAME)))
+        dataObjectServiceMockFor.demand.findMatching(1..sampleRolesByName.size()) {
+            Class clazz, QueryByCriteria criteria ->
+                Map map = asMap(criteria);
+                return toQueryResults(toRoleBoLite(sampleRolesByName.get(map.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE) + ";" + map.get(KimConstants.UniqueKeyConstants.NAME))))
         }
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         for (String name : sampleRolesByName.keySet()) {
             RoleBoLite tempGroup = sampleRolesByName.get(name)
             Role role = roleService.getRoleByNamespaceCodeAndName(tempGroup.namespaceCode, tempGroup.name)
             Assert.assertEquals(RoleBoLite.to(sampleRolesByName.get(name)), role)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_getRoleByNameNonExistent() {
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return null
+        dataObjectServiceMockFor.demand.findMatching(1) {
+            Class clazz, QueryByCriteria criteria -> GenericQueryResults.Builder.create().build();
         }
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         Role role = roleService.getRoleByNamespaceCodeAndName("badNamespace", "noname")
         Assert.assertNull(role)
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
     public void test_lookupRoles() {
-        criteriaLookupMockFor.demand.lookup(1) {
+        dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return queryResultsAll
         }
 
-        injectCriteriaLookupServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         List<Role> expectedRoles = new ArrayList<Role>()
         for (RoleBoLite roleBo : sampleRoles.values()) {
@@ -184,7 +170,7 @@ class RoleServiceImplTest {
 
         Assert.assertEquals(qr.getTotalRowCount(), sampleRoles.size())
         Assert.assertEquals(expectedRoles, qr.getResults())
-        criteriaLookupMockFor.verify(cls)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -196,23 +182,23 @@ class RoleServiceImplTest {
 
     @Test
     void test_createRoleNullRole(){
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         shouldFail(IllegalArgumentException.class) {
             roleService.createRole(null)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
 
     }
 
     @Test
     void test_updateRoleNullRole(){
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         shouldFail(IllegalArgumentException.class) {
             roleService.updateRole(null)
         }
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -224,11 +210,11 @@ class RoleServiceImplTest {
         def bo = new RoleResponsibilityActionBo()
         bo.setId("1234")
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return bo
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return bo
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         // throws RiceIllegalStateException in unit tests
         // Exception/SOAPFaultException in remote tests
@@ -236,7 +222,7 @@ class RoleServiceImplTest {
             roleService.createRoleResponsibilityAction(RoleResponsibilityActionBo.to(bo))
         }
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -248,11 +234,11 @@ class RoleServiceImplTest {
         def bo = new RoleResponsibilityActionBo()
         bo.setId("1234")
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return null
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return null
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         // throws RiceIllegalStateException in unit tests
         // Exception/SOAPFaultException in remote tests
@@ -260,7 +246,7 @@ class RoleServiceImplTest {
             roleService.updateRoleResponsibilityAction(RoleResponsibilityActionBo.to(bo))
         }
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -269,11 +255,11 @@ class RoleServiceImplTest {
             roleService.deleteRoleResponsibilityAction(null)
         }
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return null
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return null
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         // throws RiceIllegalStateException in unit tests
         // Exception/SOAPFaultException in remote tests
@@ -281,7 +267,7 @@ class RoleServiceImplTest {
             roleService.deleteRoleResponsibilityAction("1234")
         }
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -289,21 +275,21 @@ class RoleServiceImplTest {
         def builder = RoleResponsibilityAction.Builder.create()
         builder.setId("1234")
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return null
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return null
         }
 
-        businessObjectServiceMockFor.demand.save(1) {
-            PersistableBusinessObject s -> return s
+        dataObjectServiceMockFor.demand.save(1) {
+            Object s, PersistenceOption... options -> return s
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         def saved = roleService.createRoleResponsibilityAction(builder.build())
 
         Assert.assertEquals(builder.build(), saved)
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -311,21 +297,21 @@ class RoleServiceImplTest {
         def bo = new RoleResponsibilityActionBo()
         bo.setId("1234")
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return bo
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return bo
         }
 
-        businessObjectServiceMockFor.demand.save(1) {
-            PersistableBusinessObject s -> return s
+        dataObjectServiceMockFor.demand.save(1) {
+            Object s, PersistenceOption... options -> return s
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         def saved = roleService.updateRoleResponsibilityAction(RoleResponsibilityActionBo.to(bo))
 
         Assert.assertEquals(RoleResponsibilityActionBo.to(bo), saved)
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
 
     @Test
@@ -333,18 +319,35 @@ class RoleServiceImplTest {
         def bo = new RoleResponsibilityActionBo()
         bo.setId("1234")
 
-        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
-            Class clazz, Map map -> return bo
+        dataObjectServiceMockFor.demand.find(1) {
+            Class clazz, Object id -> return bo
         }
 
-        businessObjectServiceMockFor.demand.delete(1) {
-            PersistableBusinessObject s -> Assert.assertEquals(bo, s)
+        dataObjectServiceMockFor.demand.delete(1) {
+            Object s -> Assert.assertEquals(bo, s)
         }
 
-        injectBusinessObjectServiceIntoRoleService()
+        injectDataObjectServiceIntoRoleService()
 
         roleService.deleteRoleResponsibilityAction("1234")
 
-        businessObjectServiceMockFor.verify(bos)
+        dataObjectServiceMockFor.verify(dos)
     }
+
+    private Map<String, Object> asMap(QueryByCriteria criteria) {
+        Map<String, Object> predicateMap = new HashMap<String, Object>();
+        AndPredicate and = criteria.getPredicate();
+        Set<Predicate> predicates = and.getPredicates();
+        for (Predicate predicate : predicates) {
+            predicateMap.put(predicate.getPropertyPath(), predicate.getValue().getValue());
+        }
+        return predicateMap;
+    }
+
+    private QueryResults toQueryResults(Object object) {
+        GenericQueryResults.Builder results = GenericQueryResults.Builder.create();
+        results.getResults().add(object);
+        return results.build();
+    }
+
 }

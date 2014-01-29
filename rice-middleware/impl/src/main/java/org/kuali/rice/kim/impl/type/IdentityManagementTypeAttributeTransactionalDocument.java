@@ -15,9 +15,16 @@
  */
 package org.kuali.rice.kim.impl.type;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Transient;
+import javax.xml.ws.WebServiceException;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -27,15 +34,6 @@ import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.persistence.Transient;
-import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -91,13 +89,14 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	public String getCommaDelimitedAttributesLabels(String commaDelimitedAttributesNamesList){
 		String[] names = StringUtils.splitByWholeSeparator(commaDelimitedAttributesNamesList, KimConstants.KimUIConstants.COMMA_SEPARATOR);
-		StringBuffer commaDelimitedAttributesLabels = new StringBuffer();
+		List<String> commaDelimitedAttributesLabels = new ArrayList<String>(names.length);
 		for(String name: names){
-			commaDelimitedAttributesLabels.append(getAttributeEntry().get(name.trim())+KimConstants.KimUIConstants.COMMA_SEPARATOR);
+		    Object attributeEntry = getAttributeEntry().get(name.trim());
+		    if ( attributeEntry != null ) {
+		        commaDelimitedAttributesLabels.add( attributeEntry.toString() );
+		    }
 		}
-        if(commaDelimitedAttributesLabels.toString().endsWith(KimConstants.KimUIConstants.COMMA_SEPARATOR))
-        	commaDelimitedAttributesLabels.delete(commaDelimitedAttributesLabels.length()- KimConstants.KimUIConstants.COMMA_SEPARATOR.length(), commaDelimitedAttributesLabels.length());
-        return commaDelimitedAttributesLabels.toString();
+        return StringUtils.join(commaDelimitedAttributesLabels, KimConstants.KimUIConstants.COMMA_SEPARATOR);
 	}
 
 	public List<KimAttributeField> getDefinitions() {

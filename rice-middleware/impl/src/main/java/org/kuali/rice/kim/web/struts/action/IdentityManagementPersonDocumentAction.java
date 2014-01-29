@@ -28,6 +28,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -64,12 +65,14 @@ import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementPersonDocumentForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -182,7 +185,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentAffiliation newAffln = personDocumentForm.getNewAffln();
         newAffln.setDocumentNumber(personDocumentForm.getPersonDocument().getDocumentNumber());
-        newAffln.refreshReferenceObject("affiliationType");
+        KradDataServiceLocator.getDataObjectService().wrap(newAffln).fetchRelationship("affiliationType");
         personDocumentForm.getPersonDocument().getAffiliations().add(newAffln);
         personDocumentForm.setNewAffln(new PersonDocumentAffiliation());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -213,7 +216,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         PersonDocumentAffiliation affiliation = personDOc.getAffiliations().get(getSelectedLine(request));        
         PersonDocumentEmploymentInfo newempInfo = affiliation.getNewEmpInfo();
         newempInfo.setDocumentNumber(personDOc.getDocumentNumber());
-        newempInfo.setVersionNumber(new Long(1));
+        newempInfo.setVersionNumber(1L);
         affiliation.getEmpInfos().add(newempInfo);
         affiliation.setNewEmpInfo(new PersonDocumentEmploymentInfo());        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -379,7 +382,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
           newRole.setDefinitions(kimTypeService.getAttributeDefinitions(newRole.getKimTypeId()));
          }
          KimDocumentRoleMember newRolePrncpl = newRole.getNewRolePrncpl();
-         newRole.refreshReferenceObject("assignedResponsibilities");
 
          for (KimAttributeField key : newRole.getDefinitions()) {
           KimDocumentRoleQualifier qualifier = new KimDocumentRoleQualifier();
@@ -413,12 +415,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	}
 
     protected void setupRoleRspActions(PersonDocumentRole role, KimDocumentRoleMember rolePrncpl) {
-        for (RoleResponsibilityBo roleResp : role.getAssignedResponsibilities()) {
+        for (RoleResponsibility roleResp : getResponsibilityInternalService().getRoleResponsibilities(role.getRoleId())) {
         	if (getResponsibilityInternalService().areActionsAtAssignmentLevelById(roleResp.getResponsibilityId())) {
         		KimDocumentRoleResponsibilityAction roleRspAction = new KimDocumentRoleResponsibilityAction();
-        		roleRspAction.setRoleResponsibilityId("*");        		
-        		roleRspAction.refreshReferenceObject("roleResponsibility");
-        		if(rolePrncpl.getRoleRspActions()==null || rolePrncpl.getRoleRspActions().size()<1){
+        		roleRspAction.setRoleResponsibilityId("*");
+        		// not linked to a role responsibility - so we set the referenced object to null
+        		roleRspAction.setRoleResponsibility(null);
+        		if(rolePrncpl.getRoleRspActions()==null || rolePrncpl.getRoleRspActions().isEmpty()){
         			if(rolePrncpl.getRoleRspActions()==null) {
 						rolePrncpl.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
 					}
@@ -441,7 +444,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
     protected void setAttrDefnIdForQualifier(KimDocumentRoleQualifier qualifier,KimAttributeField definition) {
    		qualifier.setKimAttrDefnId(definition.getId());
-   		qualifier.refreshReferenceObject("kimAttribute");
+   		KradDataServiceLocator.getDataObjectService().wrap(qualifier).fetchRelationship("kimAttribute");
     }
 
     public ActionForward deleteRole(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.documentlink;
 
 import org.kuali.rice.kew.api.document.DocumentLinkContract;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

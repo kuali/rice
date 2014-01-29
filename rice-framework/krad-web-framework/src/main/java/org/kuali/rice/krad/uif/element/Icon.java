@@ -65,7 +65,7 @@ public class Icon extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -77,7 +77,7 @@ public class Icon extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer){

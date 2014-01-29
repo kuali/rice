@@ -50,20 +50,21 @@ import static org.junit.Assert.*;
         value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        ,@UnitTestSql("delete from trv_acct_type")
+
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
+                        ,@UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
-                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                        @UnitTestSql("delete from trv_acct where acct_fo_id = '1'")
+                        ,@UnitTestSql("delete from trv_acct_type")
                 }
-       )
+        )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 @KRADTestCase.Legacy

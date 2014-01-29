@@ -34,7 +34,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;

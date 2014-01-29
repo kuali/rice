@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ProviderBasedDataObjectService implements DataObjectService {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+			.getLogger(ProviderBasedDataObjectService.class);
 
 	protected ProviderRegistry providerRegistry;
 	protected MetadataRepository metadataRepository;
@@ -100,6 +102,13 @@ public class ProviderBasedDataObjectService implements DataObjectService {
             throw new IllegalArgumentException("data object was null");
         }
 		DataObjectMetadata metadata = getMetadataRepository().getMetadata(dataObject.getClass());
+		// Checking for metadata and failing here. Otherwise a null gets stored in the wrapper
+		// and most later operations on the object will fail with an NPE.
+		if (metadata == null) {
+			LOG.warn("Non KRAD Data object passed - no metadata found for: " + dataObject.getClass());
+			// throw new IllegalArgumentException("Non KRAD Data object passed - no metadata found for: " +
+			// dataObject.getClass());
+		}
         return new DataObjectWrapperImpl<T>(dataObject, metadata, this);
     }
 

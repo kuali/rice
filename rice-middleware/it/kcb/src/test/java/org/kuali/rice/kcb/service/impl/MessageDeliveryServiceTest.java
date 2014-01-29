@@ -22,10 +22,11 @@ import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
-import org.kuali.rice.kcb.test.BusinessObjectTestCase;
+import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.KCBTestData;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Collection;
 
@@ -38,36 +39,35 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
+public class MessageDeliveryServiceTest extends KCBTestCase {
     private MessageService messageService;
     private MessageDeliveryService messageDeliveryService;
     private Message MESSAGE;
     private MessageDelivery MESSAGE_DELIV;
-    
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
-    
+
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
 
         MESSAGE = KCBTestData.getMessage1();
-        messageService.saveMessage(MESSAGE);
+        MESSAGE = messageService.saveMessage(MESSAGE);
         
         MESSAGE_DELIV = KCBTestData.getMessageDelivery1();
         MESSAGE_DELIV.setMessage(MESSAGE);
         
-        messageDeliveryService.saveMessageDelivery(MESSAGE_DELIV);
+        MESSAGE_DELIV = messageDeliveryService.saveMessageDelivery(MESSAGE_DELIV);
     }
 
     @Test
-    @Override
     public void testCreate() {
         MessageDelivery md = new MessageDelivery();
         md.setDelivererTypeName("pigeon");
         md.setMessage(MESSAGE);
         
-        messageDeliveryService.saveMessageDelivery(md);
+        md = messageDeliveryService.saveMessageDelivery(md);
 
         assertNotNull(md.getId());
         Collection<MessageDelivery> ms = messageDeliveryService.getAllMessageDeliveries();
@@ -81,7 +81,6 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     }
 
     @Test
-    @Override
     public void testDelete() {
         messageDeliveryService.deleteMessageDelivery(MESSAGE_DELIV);
 
@@ -92,8 +91,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         assertNull(messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId()));
     }
 
-    @Test(expected = DataIntegrityViolationException.class)
-    @Override
+    @Test(expected = DataAccessException.class)
     public void testDuplicateCreate() {
         // violates messageid-deliverer constraint
         final MessageDelivery md = new MessageDelivery();
@@ -103,43 +101,32 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         md.setDeliveryStatus(MESSAGE_DELIV.getDeliveryStatus());
         md.setLockVerNbr(MESSAGE_DELIV.getLockVerNbr());
         md.setMessage(MESSAGE);
-        messageDeliveryService.saveMessageDelivery(md);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    @Override
-    public void testInvalidCreate() {
-        final MessageDelivery m = new MessageDelivery();
-        messageDeliveryService.saveMessageDelivery(m);
+        KRADServiceLocator.getDataObjectService().save(md, PersistenceOption.FLUSH);
     }
 
     @Test(expected = DataAccessException.class)
-    @Override
-    public void testInvalidDelete() {
+    public void testInvalidCreate() {
         final MessageDelivery m = new MessageDelivery();
-        m.setId(new Long(-1));
-        // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
-        // may have been deleted by somebody else
-        messageDeliveryService.deleteMessageDelivery(m);
+        messageDeliveryService.saveMessageDelivery(m);
+        KRADServiceLocator.getDataObjectService().save(m, PersistenceOption.FLUSH);
     }
 
     @Test
-    @Override
     public void testInvalidRead() {
         MessageDelivery m = messageDeliveryService.getMessageDelivery(Long.valueOf(-1));
         assertNull(m);
     }
 
+
     @Test(expected = DataAccessException.class)
-    @Override
     public void testInvalidUpdate() {
         final MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDelivererTypeName(null);
-        messageDeliveryService.saveMessageDelivery(m);
+        m.setDelivererSystemId(null);
+        KRADServiceLocator.getDataObjectService().save(m, PersistenceOption.FLUSH);
     }
 
     @Test
-    @Override
     public void testReadById() {
         MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
 
@@ -147,7 +134,6 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     }
 
     @Test
-    @Override
     public void testUpdate() {
         MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDelivererTypeName("eagle");

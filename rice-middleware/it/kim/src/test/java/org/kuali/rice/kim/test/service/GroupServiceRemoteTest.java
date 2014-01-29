@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import org.junit.Ignore;
+import static org.junit.Assert.fail;
+
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -23,43 +28,30 @@ import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.test.BaselineTestCase;
 
-import javax.xml.namespace.QName;
-import java.util.List;
-
-import static org.junit.Assert.fail;
-
 /**
  * Test the GroupService via remote calls
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class GroupServiceRemoteTest extends GroupServiceTest {
 
-	public void setUp() throws Exception {
+	@Override
+    public void setUp() throws Exception {
 		super.setUp();
-	}
-
-	/*@Override
-	protected Lifecycle getLoadApplicationLifecycle() {
-		return getJettyServerLifecycle();
-	} */
-	
-	private int getConfigIntProp(String intPropKey) {
-		return Integer.parseInt(getConfigProp(intPropKey));
 	}
 
 	private String getConfigProp(String propKey) {
 		return ConfigContext.getCurrentContextConfig().getProperty(propKey);
 	}
-	
+
 	/**
 	 * This method tries to get a client proxy for the specified KIM service
-	 * 
+	 *
 	 * @param  svcName - name of the KIM service desired
 	 * @return the proxy object
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	protected Object getKimService(String svcName) throws Exception {
 		ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();

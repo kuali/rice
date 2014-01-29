@@ -60,7 +60,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
             Message message = ComponentFactory.getMessage();
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateSpan(false);
+            message.setGenerateWrapperElement(false);
             this.setRichLabelMessage(message);
         }
     }
@@ -169,7 +169,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -192,7 +192,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer){

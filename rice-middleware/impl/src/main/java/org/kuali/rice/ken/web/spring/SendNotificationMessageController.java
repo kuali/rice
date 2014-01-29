@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
 /**
  * This class is the controller for sending Simple notification messages via an end user interface.
  *
@@ -97,7 +99,7 @@ public class SendNotificationMessageController extends BaseSendNotificationContr
 
         NotificationContentTypeBo contentType = Util.retrieveFieldReference("contentType", "name",
                 NotificationConstants.CONTENT_TYPES.SIMPLE_CONTENT_TYPE, NotificationContentTypeBo.class,
-                businessObjectDao);
+                dataObjectService, Boolean.TRUE);
         notification.setContentType(contentType);
 
         notification.setContent(NotificationConstants.XML_MESSAGE_CONSTANTS.CONTENT_SIMPLE_OPEN

@@ -32,7 +32,7 @@ public interface MessageDeliveryService {
      * Saves a MessageDelivery
      * @param delivery the MessageDelivery to save
      */
-    public void saveMessageDelivery(MessageDelivery delivery);
+    public MessageDelivery saveMessageDelivery(MessageDelivery delivery);
 
     /**
      * Deletes a MessageDelivery

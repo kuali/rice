@@ -619,7 +619,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldSuggestQuery(
-                form.getPostedView(), queryFieldId, queryTerm, queryParameters);
+                queryFieldId, queryTerm, queryParameters);
 
         return queryResult;
     }
@@ -642,13 +642,6 @@ public abstract class UifControllerBase {
 
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
 
-        View view;
-        if (currentForm.getPostedView() != null) {
-            view = currentForm.getPostedView();
-        } else {
-            view = currentForm.getView();
-        }
-
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
@@ -669,7 +662,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
-                view, queryFieldId, queryParameters);
+                queryFieldId, queryParameters);
 
         return queryResult;
     }

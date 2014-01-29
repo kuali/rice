@@ -33,7 +33,7 @@
   <!-- Reference Tables -->
   <!-- ******************************************************************* -->
 
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo" table="KRIM_ADDR_TYP_T">
     <field-descriptor name="code" column="ADDR_TYP_CD" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="sortCode" column="DISPLAY_SORT_CD" jdbc-type="VARCHAR"  />
@@ -126,11 +126,12 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
 
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Type and Attribute Definition Tables -->
   <!-- ******************************************************************* -->
 
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.type.KimTypeBo" table="KRIM_TYP_T">
     <field-descriptor name="id" column="KIM_TYP_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_TYP_ID_S" autoincrement="true"/>
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
@@ -167,11 +168,11 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id" />
     </reference-descriptor>
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Principal Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.principal.PrincipalBo" table="KRIM_PRNCPL_T">
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="krim_prncpl_id_s" autoincrement="true" />
     <field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR"  />
@@ -181,12 +182,12 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
-
+ -->
 
   <!-- ******************************************************************* -->
   <!-- Entity Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.entity.EntityBo" table="KRIM_ENTITY_T">
     <field-descriptor name="id" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true"  sequence-name="krim_entity_id_s" autoincrement="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
@@ -373,11 +374,11 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Entity Type Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo" table="KRIM_ENTITY_ENT_TYP_T">
     <field-descriptor name="entityId" column="ENTITY_ID" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="entityTypeCode" column="ENT_TYP_CD" jdbc-type="VARCHAR" primarykey="true" />
@@ -460,13 +461,13 @@
       <foreignkey field-ref="phoneTypeCode" target-field-ref="code"/>
     </reference-descriptor>
   </class-descriptor>
-
+ -->
 
   <!-- ******************************************************************* -->
   <!-- Group Tables -->
   <!-- ******************************************************************* -->
 
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupBo" table="KRIM_GRP_T">
     <field-descriptor name="id" column="GRP_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
     <field-descriptor name="name" column="GRP_NM" jdbc-type="VARCHAR" />
@@ -482,29 +483,6 @@
     <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="assignedToId" target-field-ref="id" />
     </collection-descriptor>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kim.impl.group.GroupHistoryBo" table="KRIM_HIST_GRP_T">
-    <field-descriptor name="historyId" column="GRP_HIST_ID" jdbc-type="BIGINT" primarykey="true"  autoincrement="true" sequence-name="KRIM_HIST_GRP_ID_S" />
-    <field-descriptor name="id" column="GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="name" column="GRP_NM" jdbc-type="VARCHAR" />
-    <field-descriptor name="description" column="GRP_DESC" jdbc-type="VARCHAR" />
-    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
-    <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
-    <field-descriptor name="activeToDateValue" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
-    <!--<field-descriptor name="versionNumber" column="HIST_VER_NBR" jdbc-type="BIGINT" />-->
-    <!--<collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.impl.group.GroupMemberBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="groupId" target-field-ref="id" />
-    </collection-descriptor>-->
-    <!-- Commenting out until the desciptor below is functional - the object as mapped references properties not on the java class
-    <collection-descriptor name="attributeDetails" element-class-ref="org.kuali.rice.kim.impl.group.GroupAttributeHistoryBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-      <inverse-foreignkey field-ref="assignedToHistoryId" target-field-ref="historyId" />
-    </collection-descriptor>
-     -->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.group.GroupMemberBo" table="KRIM_GRP_MBR_T">
@@ -530,28 +508,13 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-<!-- 
-  <class-descriptor class="org.kuali.rice.kim.impl.group.GroupAttributeHistoryBo" table="KRIM_HIST_GRP_ATTR_DATA_T">
-    <field-descriptor name="historyId" column="HIST_ID" jdbc-type="BIGINT" primarykey="true"  autoincrement="true" sequence-name="KRIM_HIST_GRP_ATTR_ID_S" />
-    <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="assignedToId" column="GRP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="assignedToHistoryId" column="GRP_HIST_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="kimTypeId" column="KIM_TYP_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="kimAttributeId" column="KIM_ATTR_DEFN_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="attributeValue" column="ATTR_VAL" jdbc-type="VARCHAR" />
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
-    </reference-descriptor>
-  </class-descriptor>
  -->
 
   <!-- ******************************************************************* -->
   <!-- Role Tables -->
   <!-- ******************************************************************* -->
 
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleBo" table="KRIM_ROLE_T">
     <field-descriptor name="id" column="ROLE_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_role_id_s" />
     <field-descriptor name="name" column="ROLE_NM" jdbc-type="VARCHAR" />
@@ -605,10 +568,10 @@
   </class-descriptor>
 
 
-  <!-- ******************************************************************* -->
+ -->  <!-- ******************************************************************* -->
   <!-- Role Delegation Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo" table="KRIM_DLGN_T">
     <field-descriptor name="delegationId" column="DLGN_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_dlgn_id_s" />
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
@@ -649,11 +612,11 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Permission Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.PermissionBo" table="KRIM_PERM_T">
     <field-descriptor name="id" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_PERM_ID_S" autoincrement="true"/>
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
@@ -684,20 +647,22 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
   </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kim.impl.role.RolePermissionBo" table="KRIM_ROLE_PERM_T">
+ -->
+<!--   <class-descriptor class="org.kuali.rice.kim.impl.role.RolePermissionBo" table="KRIM_ROLE_PERM_T">
     <field-descriptor name="id" column="ROLE_PERM_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="krim_role_perm_id_s"/>
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="permissionId" column="PERM_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
+    
     <reference-descriptor name="permission" class-ref="org.kuali.rice.kim.impl.permission.PermissionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="permissionId" target-field-ref="id"/>
     </reference-descriptor>
+    
   </class-descriptor>
-
-
+ -->
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.PermissionAttributeBo" table="KRIM_PERM_ATTR_DATA_T">
     <field-descriptor name="id" column="ATTR_DATA_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="krim_attr_data_id_s" />
     <field-descriptor name="assignedToId" column="PERM_ID" jdbc-type="VARCHAR" />
@@ -710,12 +675,12 @@
       <foreignkey field-ref="kimAttributeId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Responsibility Tables -->
   <!-- ******************************************************************* -->
 
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo" table="KRIM_RSP_T">
     <field-descriptor name="id" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" sequence-name="KRIM_RSP_ID_S" autoincrement="true"/>
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
@@ -786,11 +751,11 @@
       <foreignkey field-ref="roleResponsibilityId" />
     </reference-descriptor>
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Other Support Tables -->
   <!-- ******************************************************************* -->
-
+<!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo" table="KRIM_ENTITY_CACHE_T">
   	<field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" primarykey="true" />
   	<field-descriptor name="principalName" column="PRNCPL_NM" jdbc-type="VARCHAR" />
@@ -805,10 +770,10 @@
   	<field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR" />
   	<field-descriptor name="lastUpdateTimestamp" column="LAST_UPDT_TS" jdbc-type="TIMESTAMP" />
   	<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
-    <!-- DO NOT ADD THE LOCKING COLUMN - NOT NEEDED FOR THIS TABLE -->
+    DO NOT ADD THE LOCKING COLUMN - NOT NEEDED FOR THIS TABLE
   </class-descriptor>
 
-  <!-- PersonDocument -->
+  PersonDocument
   <class-descriptor class="org.kuali.rice.kim.document.IdentityManagementPersonDocument" table="KRIM_PERSON_DOCUMENT_T">
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="entityId" column="entity_id" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_ENTITY_ID_S" />
@@ -819,12 +784,12 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-<!-- 
+ --><!-- 
     <reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object">
        	<foreignkey field-ref="documentNumber" />
     </reference-descriptor>
  -->    
-    <reference-descriptor name="privacy" class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy" auto-retrieve="true" auto-update="object" auto-delete="object">
+<!--     <reference-descriptor name="privacy" class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy" auto-retrieve="true" auto-update="object" auto-delete="object">
        	<foreignkey field-ref="documentNumber" />
     </reference-descriptor>
     <collection-descriptor name="affiliations" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -1027,11 +992,11 @@
     <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-    <!--
+    
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
-    -->
+   
     <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="roleMemberId" />
       <inverse-foreignkey field-ref="documentNumber" />
@@ -1053,12 +1018,12 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
-<!--
+ --><!--
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="documentNumber" />
     </reference-descriptor>
     -->
-    <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+<!--     <reference-descriptor name="kimAttribute" class-ref="org.kuali.rice.kim.impl.common.attribute.KimAttributeBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
       <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
@@ -1096,7 +1061,7 @@
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
   </class-descriptor>
 
-  <!-- RoleDocument -->
+  RoleDocument
   <class-descriptor class="org.kuali.rice.kim.document.IdentityManagementRoleDocument" table="KRIM_ROLE_DOCUMENT_T">
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="roleId" column="role_id" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_ROLE_ID_S" />
@@ -1107,12 +1072,12 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-<!-- 
+ --><!-- 
     <reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object">
        	<foreignkey field-ref="documentNumber" />
     </reference-descriptor>
  -->    
-    <collection-descriptor name="permissions" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRolePermission" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+<!--     <collection-descriptor name="permissions" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRolePermission" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
     <collection-descriptor name="responsibilities" element-class-ref="org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -1200,7 +1165,7 @@
     </class-descriptor>
 
 
-  <!-- GroupDocument -->
+  GroupDocument
   <class-descriptor class="org.kuali.rice.kim.document.IdentityManagementGroupDocument" table="KRIM_GRP_DOCUMENT_T">
 	<field-descriptor name="documentNumber" column="FDOC_NBR" jdbc-type="VARCHAR" primarykey="true"  />
     <field-descriptor name="groupId" column="GRP_ID" jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_GRP_ID_S" />
@@ -1211,12 +1176,12 @@
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"  />
-<!-- 
+ --><!-- 
     <reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object">
        	<foreignkey field-ref="documentNumber" />
     </reference-descriptor>
  -->    
-    <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentMember" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+<!--     <collection-descriptor name="members" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentMember" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
       <inverse-foreignkey field-ref="documentNumber" />
     </collection-descriptor>
 	<collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.GroupDocumentQualifier" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
@@ -1250,17 +1215,17 @@
       <foreignkey field-ref="kimAttrDefnId" target-field-ref="id"/>
     </reference-descriptor>
   </class-descriptor>
-
+ -->
   <!-- ******************************************************************* -->
   <!-- Fake Tables for KNS Support -->
   <!-- ******************************************************************* -->
 
-  <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo" table="KRIM_RSP_T">
+<!--   <class-descriptor class="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo" table="KRIM_RSP_T">
     <field-descriptor name="id" column="RSP_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
-
+ --><!-- 
   <class-descriptor class="org.kuali.rice.kim.impl.permission.GenericPermissionBo" table="KRIM_PERM_T">
     <field-descriptor name="id" column="PERM_ID" jdbc-type="VARCHAR" primarykey="true" />
   </class-descriptor>
-
+ -->
 </descriptor-repository>

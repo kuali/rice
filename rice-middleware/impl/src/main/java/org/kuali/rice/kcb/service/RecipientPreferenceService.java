@@ -53,7 +53,7 @@ public interface RecipientPreferenceService {
      * This method will save a specific user recipient preferences in the system.
      * @param pref the preferences
      */
-    public void saveRecipientPreference(RecipientPreference pref);
+    public RecipientPreference saveRecipientPreference(RecipientPreference pref);
     
     /**
      * This method will delete a specific user recipient preferences from the system.

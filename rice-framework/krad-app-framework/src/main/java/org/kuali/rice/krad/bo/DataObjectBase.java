@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.kuali.rice.core.api.mo.common.GloballyUnique;
-import org.kuali.rice.core.api.mo.common.Versioned;
+import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -26,8 +25,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.ojb.broker.PersistenceBroker;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
 /**
  * Declares an optional superclass for classes which can have their
@@ -157,4 +160,25 @@ public abstract class DataObjectBase implements Versioned, GloballyUnique, Seria
         this.extensionObject = extensionObject;
     }
 
+    @Override
+    public String toString() {
+        class DataObjectToStringBuilder extends ReflectionToStringBuilder {
+            private DataObjectToStringBuilder(Object object) {
+                super(object);
+            }
+
+            @Override
+            public boolean accept(Field field) {
+                if (field.getType().isPrimitive()
+                        || field.getType().isEnum()
+                        || java.lang.String.class.isAssignableFrom(field.getType())
+                        || java.lang.Number.class.isAssignableFrom(field.getType())
+                        || java.util.Collection.class.isAssignableFrom(field.getType())) {
+                    return super.accept(field);
+                }
+                return false;
+            }
+        };
+        return new DataObjectToStringBuilder(this).toString();
+    }
 }

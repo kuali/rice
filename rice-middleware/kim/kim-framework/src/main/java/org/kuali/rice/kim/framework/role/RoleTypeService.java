@@ -170,6 +170,7 @@ public interface RoleTypeService extends KimTypeService {
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      *
+     * @deprecated use convertQualificationForMemberRolesAndMemberAttributes
      * @param namespaceCode the namespace code the role is in. cannot be blank or null.
      * @param roleName the name of the role.  cannot be blank or null.
      * @param memberRoleNamespaceCode the namespace code the member role is in. cannot be blank or null.
@@ -179,6 +180,7 @@ public interface RoleTypeService extends KimTypeService {
      * @throws RiceIllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName is blank or null.
      * @throws RiceIllegalArgumentException if the qualification is null.
      */
+    @Deprecated
     @WebMethod(operationName="convertQualificationForMemberRoles")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     @WebResult(name = "qualification")
@@ -193,6 +195,38 @@ public interface RoleTypeService extends KimTypeService {
                                                             @WebParam(name = "qualification")
                                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                                             Map<String, String> qualification ) throws RiceIllegalArgumentException;
+
+    /**
+     * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
+     *
+     * @since 2.3.4
+     * @param namespaceCode the namespace code the role is in. cannot be blank or null.
+     * @param roleName the name of the role.  cannot be blank or null.
+     * @param memberRoleNamespaceCode the namespace code the member role is in. cannot be blank or null.
+     * @param memberRoleName the name of the member role.  cannot be blank or null.
+     * @param qualification the qualification.  cannot be null.
+     * @param memberQualification the attributes defined for the memberRole
+     * @return an immutable map of qualifiers. Will never return null.
+     * @throws RiceIllegalArgumentException if the namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName is blank or null.
+     * @throws RiceIllegalArgumentException if the qualification is null.
+     */
+    @WebMethod(operationName="convertQualificationForMemberRolesAndMemberAttributes")
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    @WebResult(name = "qualification")
+    Map<String, String> convertQualificationForMemberRolesAndMemberAttributes( @WebParam(name = "namespaceCode")
+    String namespaceCode,
+            @WebParam(name = "roleName")
+            String roleName,
+            @WebParam(name = "memberRoleNamespaceCode")
+            String memberRoleNamespaceCode,
+            @WebParam(name = "memberRoleName")
+            String memberRoleName,
+            @WebParam(name = "qualification")
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+            Map<String, String> qualification,
+            @WebParam(name = "memberQualification")
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+            Map<String, String> memberQualification) throws RiceIllegalArgumentException;
     
     /**
      * Determines if the role specified by the given namespace and role name has a dynamic role membership.

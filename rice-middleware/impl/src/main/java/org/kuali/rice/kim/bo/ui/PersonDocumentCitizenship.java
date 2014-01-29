@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
-import java.sql.Date;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -29,11 +29,12 @@ import java.sql.Date;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@IdClass(PersonDocumentCitizenshipId.class)
 @Entity
 @Table(name = "KRIM_PND_CTZNSHP_MT")
 public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableBase {
-	@Id
+	private static final long serialVersionUID = 1L;
+
+    @Id
 	@GeneratedValue(generator="KRIM_ENTITY_CTZNSHP_ID_S")
 	@Column(name = "ENTITY_CTZNSHP_ID")
 	protected String entityCitizenshipId;
@@ -47,10 +48,10 @@ public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableB
 	@Column(name = "CTZNSHP_STAT_CD")
 	protected String citizenshipStatusCode;
 
-	@Column(name = "strt_dt")
+	@Column(name = "STRT_DT")
 	protected Date startDate;
 
-	@Column(name = "end_dt")
+	@Column(name = "END_DT")
 	protected Date endDate;
 
 	

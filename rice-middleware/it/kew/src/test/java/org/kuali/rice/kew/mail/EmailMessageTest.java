@@ -56,22 +56,22 @@ public class EmailMessageTest extends KEWTestCase {
     }
 
     private int generateDocs(String[] docTypes, Person user) throws Exception {
-        String nid = getPrincipalNameForId(user.getPrincipalName());
+        String principalId = user.getPrincipalId();
 
         for (String docType: docTypes) {
-            WorkflowDocument document = WorkflowDocumentFactory.createDocument(nid, docType);
+            WorkflowDocument document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
-            document = WorkflowDocumentFactory.createDocument(nid, docType);
+            document = WorkflowDocumentFactory.createDocument(principalId, docType);
             document.setTitle("a title");
             document.route("");
         }
@@ -146,17 +146,4 @@ public class EmailMessageTest extends KEWTestCase {
         assertTrue("Unexpected body", content.getBody().startsWith("CUSTOM:"));
     }
 
-    /**
-     * tests loading a custom stylesheet that has entities that causes XPath to get confused down the ingestion pipeline...
-     * @throws Exception
-     */
-    @Test
-    public void testBadCustomStyleSheet() throws Exception {
-    	try {
-    		loadXmlFile("badCustomEmailStyleData.xml");
-    		fail("Loading of badCustomEmailStyleData.xml should have failed!");
-    	} catch (Exception e) {}
-        // this doesn't get loaded
-        assertNull(CoreServiceApiServiceLocator.getStyleService().getStyle("bad.kew.email.style"));
-    }
 }

@@ -52,7 +52,7 @@ import java.util.Collection;
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
     EntityEmployment.Elements.ACTIVE,
-    EntityEmployment.Elements.TENURED,
+
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityEmployment extends AbstractDataTransferObject
@@ -85,9 +85,7 @@ public final class EntityEmployment extends AbstractDataTransferObject
     private final String objectId;
     @XmlElement(name = Elements.ACTIVE, required = true)
     private final boolean active;
-    @XmlElement(name = Elements.TENURED, required = false, type = Boolean.class)
-    @XmlJavaTypeAdapter(PrimitiveBooleanDefaultToFalseAdapter.class)
-    private final boolean tenured;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -110,7 +108,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
         this.active = false;
         this.entityId = null;
         this.id = null;
-        this.tenured = false;
     }
 
     private EntityEmployment(Builder builder) {
@@ -127,7 +124,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
         this.active = builder.isActive();
         this.id = builder.getId();
         this.entityId = builder.getEntityId();
-        this.tenured = builder.isTenured();
     }
 
     @Override
@@ -194,11 +190,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
         return this.id;
     }
 
-    @Override
-    public boolean isTenured() {
-        return this.tenured;
-    }
-
     /**
      * A builder which can be used to construct {@link EntityEmployment} instances.  Enforces the constraints of the {@link EntityEmploymentContract}.
      * 
@@ -219,7 +210,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
         private String objectId;
         private boolean active;
         private String id;
-        private boolean tenured;
 
         private Builder() { }
 
@@ -251,7 +241,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
             builder.setObjectId(contract.getObjectId());
             builder.setActive(contract.isActive());
             builder.setId(contract.getId());
-            builder.setTenured(contract.isTenured());
             return builder;
         }
 
@@ -319,11 +308,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
         }
 
         @Override
-        public boolean isTenured() {
-            return this.tenured;
-        }
-
-        @Override
         public String getId() {
             return this.id;
         }
@@ -376,10 +360,6 @@ public final class EntityEmployment extends AbstractDataTransferObject
             this.active = active;
         }
 
-        public void setTenured(boolean tenured) {
-            this.tenured = tenured;
-        }
-
         public void setId(String id) {
             if (StringUtils.isWhitespace(id)) {
                 throw new IllegalArgumentException("id is blank");
@@ -418,7 +398,7 @@ public final class EntityEmployment extends AbstractDataTransferObject
         final static String ACTIVE = "active";
         final static String ENTITY_ID = "entityId";
         final static String ID = "id";
-        final static String TENURED = "tenured";
+
     }
 
 }

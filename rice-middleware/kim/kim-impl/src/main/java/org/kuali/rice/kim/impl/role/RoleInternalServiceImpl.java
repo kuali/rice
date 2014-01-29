@@ -15,19 +15,21 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.group.GroupMember;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
+import org.kuali.rice.kim.impl.group.GroupMemberBo;
 
 public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInternalService{
     @Override
@@ -65,8 +67,8 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             roleMemberBo.setActiveToDateValue(yesterday);
+            getDataObjectService().save(roleMemberBo);
         }
-        getBusinessObjectService().save(roleMemberBoList);
     }
 
     private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday) {
@@ -75,17 +77,17 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
             delegation.setActive(false);
             for (DelegateMemberBo delegationMember : delegation.getMembers()) {
                 delegationMember.setActiveToDateValue(yesterday);
+                getDataObjectService().save(delegationMember);
             }
         }
-        getBusinessObjectService().save(delegations);
     }
 
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday) {
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             roleMemberBo.setActiveToDateValue(yesterday);
+            getDataObjectService().save(roleMemberBo);
         }
-        getBusinessObjectService().save(roleMemberBoList);
     }
 
     @Override
@@ -114,38 +116,68 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         for (RoleMemberBo roleMemberBo : roleMembers) {
             roleMemberBo.setActiveToDateValue(yesterday);
             roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
+            getDataObjectService().save(roleMemberBo);
         }
-        getBusinessObjectService().save(roleMembers);
     }
 
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday) {
         List<RoleMemberBo> roleMemberBosOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
-        for (RoleMemberBo roleMemberbo : roleMemberBosOfGroupType) {
-            roleMemberbo.setActiveToDateValue(yesterday);
+        for (RoleMemberBo roleMemberBo : roleMemberBosOfGroupType) {
+            roleMemberBo.setActiveToDateValue(yesterday);
+            getDataObjectService().save(roleMemberBo);
         }
-        getBusinessObjectService().save(roleMemberBosOfGroupType);
     }
 
     protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday) {
-        List<GroupMember> groupMembers = getRoleDao().getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
-        List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
-        for (GroupMember gm : groupMembers) {
+        if ( StringUtils.isBlank(principalId) ) {
+            return;
+        }
+        // get all the groups the person is in
+        List<String> groupIds = getGroupService().getGroupIdsByPrincipalId(principalId);
+        if (groupIds.isEmpty() ) {
+            return;
+        }
+        // get all the member records for those groups
+        Collection<GroupMember> groupMembers = getGroupService().getMembers(groupIds);
+        List<GroupMember> groupPrincipals = new ArrayList<GroupMember>(groupMembers.size());
+        for (GroupMember groupMembershipInfo : groupMembers) {
+            if (MemberType.PRINCIPAL.equals(groupMembershipInfo.getType())
+                    && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
+                    && groupMembershipInfo.isActive(new DateTime())) {
+                groupPrincipals.add(groupMembershipInfo);
+                // FIXME: Is there a reason we are not calling the responsible group service? 
+                //getGroupService().removePrincipalFromGroup(groupMembershipInfo.getMemberId(), groupMembershipInfo.getGroupId());
+            }
+        }
+        // FIXME: Is there a reason we are doing this directly and *not* calling the group service??? 
+        for (GroupMember gm : groupPrincipals) {
             GroupMember.Builder builder = GroupMember.Builder.create(gm);
             builder.setActiveToDate(new DateTime(yesterday.getTime()));
-            groupMemberBoList.add(GroupMemberBo.from(builder.build()));
+            getDataObjectService().save(GroupMemberBo.from(builder.build()));
         }
-        getBusinessObjectService().save(groupMemberBoList);
     }
 
     protected void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday) {
-        List<GroupMember> groupMembers = getRoleDao().getGroupMembers(groupIds);
-        List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
+        if (groupIds == null || groupIds.isEmpty() ) {
+            return;
+        }
+        Collection<GroupMember> groupMemberships = getGroupService().getMembers(groupIds);
+        if ( groupMemberships.isEmpty() ) {
+            return;
+        }
+        List<GroupMember> groupMembers = new ArrayList<GroupMember>();
+        for (GroupMember groupMembershipInfo : groupMemberships) {
+            if (MemberType.GROUP.equals(groupMembershipInfo.getType())
+                    && groupMembershipInfo.isActive(new DateTime())) {
+                groupMembers.add(groupMembershipInfo);
+            }
+        }
+        // FIXME: Is there a reason we are doing this directly and *not* calling the group service??? 
         for (GroupMember groupMember : groupMembers) {
             GroupMember.Builder builder = GroupMember.Builder.create(groupMember);
             builder.setActiveToDate(new DateTime(yesterday.getTime()));
-            groupMemberBoList.add(GroupMemberBo.from(builder.build()));
+            getDataObjectService().save(GroupMemberBo.from(builder.build()));
         }
-        getBusinessObjectService().save(groupMemberBoList);
     }
 
     protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday) {
@@ -153,7 +185,7 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
                 principalId);
         for (DelegateMemberBo delegateMemberBo : delegationMembers) {
             delegateMemberBo.setActiveToDateValue(yesterday);
+            getDataObjectService().save(delegateMemberBo);
         }
-        getBusinessObjectService().save(delegationMembers);
     }
 }

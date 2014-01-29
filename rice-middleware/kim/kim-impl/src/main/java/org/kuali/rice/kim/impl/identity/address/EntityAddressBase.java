@@ -15,21 +15,22 @@
  */
 package org.kuali.rice.kim.impl.identity.address;
 
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-import java.sql.Timestamp;
-
 @MappedSuperclass
-public abstract class EntityAddressBase extends PersistableBusinessObjectBase implements EntityAddressContract {
+public abstract class EntityAddressBase extends DataObjectBase implements EntityAddressContract {
     private static final long serialVersionUID = -7550286656495828391L;
 
     @Column(name = "ENTITY_ID")

@@ -17,6 +17,7 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
@@ -24,14 +25,10 @@ import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationChannelBo;
 import org.kuali.rice.ken.bo.NotificationChannelReviewerBo;
-import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.bo.NotificationPriorityBo;
 import org.kuali.rice.ken.bo.NotificationProducerBo;
 import org.kuali.rice.ken.bo.NotificationRecipientBo;
 import org.kuali.rice.ken.bo.NotificationSenderBo;
-import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
-import org.kuali.rice.ken.core.NotificationServiceLocator;
-import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.ken.document.kew.NotificationWorkflowDocument;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.ken.service.NotificationChannelService;
@@ -50,12 +47,12 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -91,7 +88,7 @@ public class BaseSendNotificationController extends MultiActionController {
     protected NotificationChannelService notificationChannelService;
     protected NotificationRecipientService notificationRecipientService;
     protected NotificationMessageContentService notificationMessageContentService;
-    protected GenericDao businessObjectDao;
+    protected DataObjectService dataObjectService;
 
     protected static IdentityService getIdentityService() {
         if ( identityService == null ) {
@@ -161,10 +158,10 @@ public class BaseSendNotificationController extends MultiActionController {
 
     /**
      * Sets the businessObjectDao attribute value.
-     * @param businessObjectDao the service to set
+     * @param dataObjectService the service to set
      */
-    public void setBusinessObjectDao(GenericDao businessObjectDao) {
-        this.businessObjectDao = businessObjectDao;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 
@@ -462,16 +459,16 @@ public class BaseSendNotificationController extends MultiActionController {
         notification.setAutoRemoveDateTimeValue(new Timestamp(removeDate.getTime()));
 
         NotificationChannelBo channel = Util.retrieveFieldReference("channel", "name", channelName,
-                NotificationChannelBo.class, businessObjectDao);
+                NotificationChannelBo.class, dataObjectService);
         notification.setChannel(channel);
 
         NotificationPriorityBo priority = Util.retrieveFieldReference("priority", "name", priorityName,
-                NotificationPriorityBo.class, businessObjectDao);
+                NotificationPriorityBo.class, dataObjectService);
         notification.setPriority(priority);
 
         NotificationProducerBo producer = Util.retrieveFieldReference("producer", "name",
                 NotificationConstants.KEW_CONSTANTS.NOTIFICATION_SYSTEM_USER_NAME, NotificationProducerBo.class,
-                businessObjectDao);
+                dataObjectService);
         notification.setProducer(producer);
 
         for (String senderName : senders) {
@@ -571,7 +568,8 @@ public class BaseSendNotificationController extends MultiActionController {
 
         model.put("defaultSender", request.getRemoteUser());
         model.put("channels", notificationChannelService.getAllNotificationChannels());
-        model.put("priorities", businessObjectDao.findAll(NotificationPriorityBo.class));
+        model.put("priorities", dataObjectService.findMatching(NotificationPriorityBo.class,
+                QueryByCriteria.Builder.create().build()).getResults());
 
         // set sendDateTime to current datetime if not provided
         String sendDateTime = request.getParameter("sendDateTime");

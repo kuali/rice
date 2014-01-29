@@ -208,12 +208,15 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     protected List<DataObjectRelationship> findNonUpdateableRelationships(Object persistableObject) {
-        List<DataObjectRelationship> relationships =
-                dataObjectService.getMetadataRepository().getMetadata(persistableObject.getClass()).getRelationships();
         List<DataObjectRelationship> nonUpdateableRelationships = new ArrayList<DataObjectRelationship>();
-        for (DataObjectRelationship relationship : relationships) {
-            if (!relationship.isSavedWithParent()) {
-                nonUpdateableRelationships.add(relationship);
+        DataObjectMetadata dataObjectMetadata =  dataObjectService.getMetadataRepository().
+                getMetadata(persistableObject.getClass());
+        if(dataObjectMetadata != null){
+            List<DataObjectRelationship> relationships = dataObjectMetadata.getRelationships();
+            for (DataObjectRelationship relationship : relationships) {
+                if (!relationship.isSavedWithParent()) {
+                    nonUpdateableRelationships.add(relationship);
+                }
             }
         }
         return nonUpdateableRelationships;
@@ -551,8 +554,11 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         if (metadata.isSupportsOptimisticLocking()) {
             if (dataObject instanceof Versioned) {
                 Map<String, ?> keyPropertyValues = dataObjectService.wrap(dataObject).getPrimaryKeyValues();
-                Object persistableDataObject = dataObjectService.find(dataObject.getClass(), new CompoundKey(
-                        keyPropertyValues));
+                CompoundKey key = new CompoundKey(keyPropertyValues);
+                Object persistableDataObject = null;
+                if ( !key.hasNullKeyValues() ) {
+                	persistableDataObject = dataObjectService.find(dataObject.getClass(), key);
+                }
                 // if it's null that means that this is an insert, not an update
                 if (persistableDataObject != null) {
                         Long databaseVersionNumber = ((Versioned) persistableDataObject).getVersionNumber();

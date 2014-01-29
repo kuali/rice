@@ -17,6 +17,14 @@ package org.kuali.rice.krad.bo;
 
 import java.sql.Timestamp;
 import java.util.Properties;
+import org.eclipse.persistence.annotations.Index;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.UrlFactory;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,7 +43,6 @@ import org.eclipse.persistence.annotations.Index;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;

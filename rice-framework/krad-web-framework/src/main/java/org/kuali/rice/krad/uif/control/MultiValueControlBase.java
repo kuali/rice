@@ -82,7 +82,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                 message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
-                message.setGenerateSpan(false);
+                message.setGenerateWrapperElement(false);
                 richOptions.add(new KeyMessage(key, value, message));
             }
         }
@@ -208,7 +208,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

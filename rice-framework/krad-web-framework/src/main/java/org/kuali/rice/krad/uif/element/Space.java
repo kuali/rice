@@ -39,7 +39,7 @@ public class Space extends ContentElementBase {
      * </p>
      *
      * @return true - this object renders itself
-     * @see org.kuali.rice.krad.uif.component.Component#isSelfRendered()
+     * {@inheritDoc}
      */
     @Override
     public boolean isSelfRendered() {
@@ -52,7 +52,7 @@ public class Space extends ContentElementBase {
      * <p>The HTML for a Space element is <code>&amp;nbsp;</code></p>
      *
      * @return the HTML string for a non-breaking space
-     * @see org.kuali.rice.krad.uif.component.Component#getRenderedHtmlOutput()
+     * {@inheritDoc}
      */
     @Override
     public String getRenderedHtmlOutput() {

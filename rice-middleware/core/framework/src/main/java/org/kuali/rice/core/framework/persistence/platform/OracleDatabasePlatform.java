@@ -17,17 +17,13 @@ package org.kuali.rice.core.framework.persistence.platform;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
-import org.apache.ojb.broker.query.Criteria;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
 
-import javax.persistence.EntityManager;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -96,13 +92,6 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
                 }
             }
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    protected Long getNextValSqlJpa(String sequenceName,  EntityManager entityManager) {
-        List resultList = entityManager.createNativeQuery("select " + sequenceName + ".nextval from dual").getResultList();
-        return new Long(((BigDecimal)resultList.get(0)).longValue());
     }
     
     @Deprecated

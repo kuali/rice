@@ -25,10 +25,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.KualiCodeBase;
 import org.kuali.rice.krad.data.provider.annotation.Label;
-import org.kuali.rice.krad.data.provider.annotation.NonPersistentProperty;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
@@ -58,26 +56,22 @@ public class TravelAccountType extends KualiCodeBase implements Serializable {
     @ShortLabel("Name")
     @NotNull
 	@UifValidCharactersConstraintBeanName("AnyCharacterPatternConstraint")
-	private String name;
-
+	private String accountTypeName;
 
     public String getAccountTypeCode() {
 		return accountTypeCode;
 	}
 
-
 	public void setAccountTypeCode(String accountTypeCode) {
 		this.accountTypeCode = accountTypeCode;
 	}
 
+    public String getAccountTypeName() {
+        return accountTypeName;
+    }
 
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setAccountTypeName(String accountTypeName) {
+        this.accountTypeName = accountTypeName;
+    }
 
 }

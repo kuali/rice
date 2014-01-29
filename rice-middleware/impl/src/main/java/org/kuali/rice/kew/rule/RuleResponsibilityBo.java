@@ -31,7 +31,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

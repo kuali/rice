@@ -19,10 +19,13 @@ import groovy.mock.interceptor.MockFor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.criteria.QueryResults
 import org.kuali.rice.kim.api.type.KimType
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract
 import org.kuali.rice.kim.api.type.KimTypeContract
 import org.kuali.rice.kim.api.type.KimTypeInfoService
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krad.service.BusinessObjectService
 
 class KimTypeInfoServiceImplTest {
@@ -41,8 +44,8 @@ class KimTypeInfoServiceImplTest {
     KimTypeInfoService kimTypeInfoService;
 
     @Before
-    void setupBoServiceMockContext() {
-        mock = new MockFor(BusinessObjectService)
+    void setupDoServiceMockContext() {
+        mock = new MockFor(DataObjectService)
 
     }
 
@@ -54,71 +57,75 @@ class KimTypeInfoServiceImplTest {
 
     @Test
     void test_get_kim_type_null_id() {
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
 
         shouldFail(IllegalArgumentException.class) {
             kimTypeInfoServiceImpl.getKimType(null)
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_get_kim_type_exists() {
-        mock.demand.findBySinglePrimaryKey (1) { clazz, obj -> bo }
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        mock.demand.find (1) { clazz, obj -> bo }
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
         Assert.assertEquals (kimType, kimTypeInfoServiceImpl.getKimType(key))
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_kim_type_by_name_namespace_null_first() {
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
 
         shouldFail(IllegalArgumentException.class) {
             kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace(null, "the_name")
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_kim_type_by_name_namespace_null_second() {
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
 
         shouldFail(IllegalArgumentException.class) {
             kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", null)
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_kim_type_by_name_namespace_exists() {
-        mock.demand.findMatching (1) { clazz, map -> [bo] }
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+        builder.setResults([bo]);
+        mock.demand.findMatching (1) { clazz, queryByCriteria -> builder.build() }
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
         Assert.assertEquals (kimType, kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", "the_name"))
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_kim_type_by_name_namespace_multiple() {
-        mock.demand.findMatching (1) { clazz, map -> [bo, bo] }
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+        builder.setResults([bo, bo]);
+        mock.demand.findMatching (1) { clazz, queryByCriteria -> builder.build() }
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
         shouldFail(IllegalStateException.class) {
             kimTypeInfoServiceImpl.findKimTypeByNameAndNamespace("ns", "the_name")
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_all_kim_types_none() {
-        mock.demand.findMatching (1) { clazz, map -> null }
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        mock.demand.findMatching (1) { clazz, queryByCriteria -> GenericQueryResults.Builder.create().build() }
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
         def values = kimTypeInfoServiceImpl.findAllKimTypes();
         Assert.assertTrue(values.isEmpty())
 
@@ -126,14 +133,16 @@ class KimTypeInfoServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     @Test
     void test_find_all_kim_types_exists() {
-        mock.demand.findMatching (1) { clazz, map -> [bo, bo] }
-        def boService = mock.proxyDelegateInstance()
-        kimTypeInfoServiceImpl.setBusinessObjectService(boService);
+        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+        builder.setResults([bo, bo]);
+        mock.demand.findMatching (1) { clazz, queryByCriteria -> builder.build() }
+        def doService = mock.proxyDelegateInstance()
+        kimTypeInfoServiceImpl.setDataObjectService(doService);
         def values = kimTypeInfoServiceImpl.findAllKimTypes();
         Assert.assertTrue(values.size() == 2)
         Assert.assertEquals(KimTypeBo.to(bo), new ArrayList(values)[0]);
@@ -143,7 +152,7 @@ class KimTypeInfoServiceImplTest {
         shouldFail(UnsupportedOperationException.class) {
             values.add("")
         }
-        mock.verify(boService)
+        mock.verify(doService)
     }
 
     private static create() {

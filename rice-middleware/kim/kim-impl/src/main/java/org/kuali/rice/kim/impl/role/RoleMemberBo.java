@@ -15,42 +15,40 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleMember;
-import org.kuali.rice.kim.api.role.RoleMemberContract;
-import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.impl.group.GroupBo;
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
-import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-import org.springframework.util.AutoPopulatingList;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupContract;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleContract;
+import org.kuali.rice.kim.api.role.RoleMember;
+import org.kuali.rice.kim.api.role.RoleMemberContract;
+import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * The column names have been used in a native query in RoleDaoOjb and will need to be modified if any changes to the
@@ -61,31 +59,36 @@ import java.util.Map;
 public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ROLE_MBR_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ROLE_MBR_ID_S")
+    @GeneratedValue(generator = "KRIM_ROLE_MBR_ID_S")
+    @Id
     @Column(name = "ROLE_MBR_ID")
     private String id;
+
     @Column(name = "ROLE_ID")
     private String roleId;
-    @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ROLE_MBR_ID", insertable = false, updatable = false)
+
+    @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ROLE_MBR_ID", referencedColumnName = "ROLE_MBR_ID", insertable = false, updatable = false)
     private List<RoleMemberAttributeDataBo> attributeDetails;
+
     @Transient
     private List<RoleResponsibilityActionBo> roleRspActions;
+
     @Transient
     private Map<String, String> attributes;
+
     @Transient
     protected String memberName;
+
     @Transient
     protected String memberNamespaceCode;
-
 
     public List<RoleMemberAttributeDataBo> getAttributeDetails() {
         if (this.attributeDetails == null) {
             return new AutoPopulatingList<RoleMemberAttributeDataBo>(RoleMemberAttributeDataBo.class);
         }
-
         return this.attributeDetails;
     }
 
@@ -102,7 +105,6 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (bo == null) {
             return null;
         }
-
         return RoleMember.Builder.create(bo).build();
     }
 
@@ -110,9 +112,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (immutable == null) {
             return null;
         }
-
         RoleMemberBo bo = new RoleMemberBo();
-
         bo.memberName = immutable.getMemberName();
         bo.memberNamespaceCode = immutable.getMemberNamespaceCode();
         bo.setId(immutable.getId());
@@ -126,22 +126,20 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         bo.setRoleRspActions(actions);
         bo.setMemberId(immutable.getMemberId());
         bo.setTypeCode(immutable.getType().getCode());
-        bo.setActiveFromDateValue(immutable.getActiveFromDate() == null ?
-                null : new Timestamp(immutable.getActiveFromDate().getMillis()));
-        bo.setActiveToDateValue(immutable.getActiveToDate() == null ?
-                null : new Timestamp(immutable.getActiveToDate().getMillis()));
+        bo.setActiveFromDateValue(immutable.getActiveFromDate() == null ? null : new Timestamp(immutable.getActiveFromDate().getMillis()));
+        bo.setActiveToDateValue(immutable.getActiveToDate() == null ? null : new Timestamp(immutable.getActiveToDate().getMillis()));
         bo.setObjectId(immutable.getObjectId());
         bo.setVersionNumber(immutable.getVersionNumber());
         return bo;
     }
 
-    protected BusinessObject getMember(MemberType memberType, String memberId) {
+    protected Object getMember(MemberType memberType, String memberId) {
         if (MemberType.PRINCIPAL.equals(memberType)) {
-            return PrincipalBo.from(KimApiServiceLocator.getIdentityService().getPrincipal(memberId));
+            return KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
         } else if (MemberType.GROUP.equals(memberType)) {
-            return GroupBo.from(KimApiServiceLocator.getGroupService().getGroup(memberId));
+            return KimApiServiceLocator.getGroupService().getGroup(memberId);
         } else if (MemberType.ROLE.equals(memberType)) {
-            return RoleBo.from(KimApiServiceLocator.getRoleService().getRole(memberId));
+            return KimApiServiceLocator.getRoleService().getRole(memberId);
         }
         return null;
     }
@@ -151,31 +149,27 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (getType() == null || StringUtils.isEmpty(getMemberId())) {
             return "";
         }
-
-        BusinessObject member = getMember(getType(), getMemberId());
+        Object member = getMember(getType(), getMemberId());
         if (member == null) {
             this.memberName = "";
             Principal kp = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
             if (kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())) {
                 this.memberName = kp.getPrincipalName();
             }
-
             return this.memberName;
         }
-
         return getRoleMemberName(getType(), member);
     }
 
-    public String getRoleMemberName(MemberType memberType, BusinessObject member) {
+    public String getRoleMemberName(MemberType memberType, Object member) {
         String roleMemberName = "";
         if (MemberType.PRINCIPAL.equals(memberType)) {
-            roleMemberName = ((PrincipalBo) member).getPrincipalName();
+            roleMemberName = ((PrincipalContract) member).getPrincipalName();
         } else if (MemberType.GROUP.equals(memberType)) {
-            roleMemberName = ((GroupBo) member).getName();
+            roleMemberName = ((GroupContract) member).getName();
         } else if (MemberType.ROLE.equals(memberType)) {
-            roleMemberName = ((RoleBo) member).getName();
+            roleMemberName = ((RoleContract) member).getName();
         }
-
         return roleMemberName;
     }
 
@@ -184,7 +178,6 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (getType() == null || StringUtils.isEmpty(getMemberId())) {
             return "";
         }
-
         this.memberNamespaceCode = "";
         if (MemberType.PRINCIPAL.equals(getType())) {
             this.memberNamespaceCode = "";
@@ -193,25 +186,13 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
             if (groupInfo != null) {
                 this.memberNamespaceCode = groupInfo.getNamespaceCode();
             }
-
         } else if (MemberType.ROLE.equals(getType())) {
             Role role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
             if (role != null) {
                 this.memberNamespaceCode = role.getNamespaceCode();
             }
-
         }
-
         return this.memberNamespaceCode;
-
-    }
-
-    @Override
-    public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
-        List<Collection<PersistableBusinessObject>> managedLists = super.buildListOfDeletionAwareLists();
-
-        managedLists.add(new ArrayList<PersistableBusinessObject>(getAttributeDetails()));
-        return managedLists;
     }
 
     /**
@@ -225,32 +206,25 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (!StringUtils.equals(getId(), targetMbrBo.getId())) {
             return false;
         }
-
         if (!StringUtils.equals(getType().getCode(), targetMbrBo.getType().getCode())) {
             return false;
         }
-
         if (!StringUtils.equals(getMemberId(), targetMbrBo.getMemberId())) {
             return false;
         }
-
         if (!ObjectUtils.equals(getActiveFromDate(), targetMbrBo.getActiveFromDate())) {
             return false;
         }
-
         if (!ObjectUtils.equals(getActiveToDate(), targetMbrBo.getActiveToDate())) {
             return false;
         }
-
         // Prepare list of attributes from this role member eliminating blank attributes
         Map<String, String> sourceMbrAttrDataList = new HashMap<String, String>();
-
         for (Map.Entry<String, String> mbrAttr : getAttributes().entrySet()) {
             if (StringUtils.isNotBlank(mbrAttr.getValue())) {
                 ((HashMap<String, String>) sourceMbrAttrDataList).put(mbrAttr.getKey(), mbrAttr.getValue());
             }
         }
-
         // Prepare list of attributes from target role member eliminating blank attributes
         Map<String, String> targetMbrAttrDataList = new HashMap<String, String>();
         for (Map.Entry<String, String> mbrAttr : targetMbrBo.getAttributes().entrySet()) {
@@ -258,14 +232,12 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                 ((HashMap<String, String>) targetMbrAttrDataList).put(mbrAttr.getKey(), mbrAttr.getValue());
             }
         }
-
         if (targetMbrAttrDataList.size() != sourceMbrAttrDataList.size()) {
             return false;
         }
-
         // Check if any attributes changed, then return false
         Map<String, String> matchedAttrs = new HashMap<String, String>();
-        for (Map.Entry<String, String> newAttr : sourceMbrAttrDataList.entrySet() ) {
+        for (Map.Entry<String, String> newAttr : sourceMbrAttrDataList.entrySet()) {
             for (Map.Entry<String, String> origAttr : targetMbrAttrDataList.entrySet()) {
                 if (StringUtils.equals(origAttr.getKey(), newAttr.getKey())) {
                     if (StringUtils.equals(origAttr.getValue(), newAttr.getValue())) {
@@ -274,44 +246,31 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                 }
             }
         }
-
         if (matchedAttrs.size() != sourceMbrAttrDataList.size()) {
             return false;
         }
-
         // Check responsibility actions
-        int targetMbrActionsSize =
-                (targetMbrBo.getRoleRspActions() == null) ? 0 : targetMbrBo.getRoleRspActions().size();
+        int targetMbrActionsSize = (targetMbrBo.getRoleRspActions() == null) ? 0 : targetMbrBo.getRoleRspActions().size();
         int sourceMbrActionsSize = (getRoleRspActions() == null) ? 0 : getRoleRspActions().size();
-
         if (targetMbrActionsSize != sourceMbrActionsSize) {
             return false;
         }
-
         if (sourceMbrActionsSize != 0) {
             List<RoleResponsibilityActionBo> matchedRspActions = new ArrayList<RoleResponsibilityActionBo>();
-
             // Check if any responsibility actions changed
             for (RoleResponsibilityActionBo newAction : getRoleRspActions()) {
                 for (RoleResponsibilityActionBo origAction : targetMbrBo.getRoleRspActions()) {
-
                     if (StringUtils.equals(origAction.getId(), newAction.getId())) {
                         if (origAction.equals(newAction)) {
                             matchedRspActions.add(newAction);
                         }
-
                     }
-
                 }
-
             }
-
             if (matchedRspActions.size() != getRoleRspActions().size()) {
                 return false;
             }
-
         }
-
         return true;
     }
 
@@ -345,5 +304,4 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
-
 }

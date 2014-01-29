@@ -18,7 +18,7 @@ package edu.sampleu.travel.dataobject;
 import edu.sampleu.travel.options.MileageRateKeyValues;
 import edu.sampleu.travel.options.TravelDestinationKeyValues;
 import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;

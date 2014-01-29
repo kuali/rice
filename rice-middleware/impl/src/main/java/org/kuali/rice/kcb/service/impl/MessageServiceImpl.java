@@ -16,11 +16,15 @@
 package org.kuali.rice.kcb.service.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.MessageService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * MessageService implementation 
@@ -28,48 +32,57 @@ import org.kuali.rice.kcb.service.MessageService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MessageServiceImpl extends BusinessObjectServiceImpl implements MessageService {
+public class MessageServiceImpl implements MessageService {
+
+    private DataObjectService dataObjectService;
     /**
      * @see org.kuali.rice.kcb.service.MessageService#deleteMessage(org.kuali.rice.kcb.bo.Message)
      */
     public void deleteMessage(Message message) {
-        dao.delete(message);
+        dataObjectService.delete(message);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageService#getMessage(java.lang.Long)
      */
     public Message getMessage(Long id) {
-        Map<String, Object> fields = new HashMap<String, Object>(1);
-        fields.put(Message.ID_FIELD, id);
-        Message m = (Message) dao.findByPrimaryKey(Message.class, fields);
-        return m;
+        return dataObjectService.find(Message.class, id);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageService#getAllMessages()
      */
     public Collection<Message> getAllMessages() {
-        return dao.findAll(Message.class);
+        return dataObjectService.findMatching(Message.class, QueryByCriteria.Builder.create().build()).getResults();
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageService#saveMessage(org.kuali.rice.kcb.bo.Message)
      */
-    public void saveMessage(Message message) {
-        dao.save(message);
+    public Message saveMessage(Message message) {
+        return dataObjectService.save(message);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageService#getMessageByOriginId(java.lang.String)
      */
     public Message getMessageByOriginId(String originId) {
-        Map<String, Object> fields = new HashMap<String, Object>(1);
-        fields.put(Message.ORIGINID_FIELD, originId);
-        Collection<Message> messages = dao.findMatching(Message.class, fields);
-        if (messages.size() == 0) {
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(Message.ORIGINID_FIELD, originId));
+        List<Message> messages = dataObjectService.findMatching(Message.class, criteria.build()).getResults();
+
+        if (messages.isEmpty()) {
             return null;
         }
-        return messages.iterator().next();
+
+        return messages.get(0);
+    }
+
+    /**
+     * Sets the data object service.
+     * @param dataObjectService persits data to the datasource.
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

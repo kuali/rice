@@ -15,17 +15,20 @@
  */
 package org.kuali.rice.kim.impl.identity.citizenship;
 
-import org.joda.time.DateTime;
-import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
+import org.joda.time.DateTime;
+import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenshipContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+
 @MappedSuperclass
-public abstract class EntityCitizenshipBase extends PersistableBusinessObjectBase implements EntityCitizenshipContract {
+public abstract class EntityCitizenshipBase extends DataObjectBase implements EntityCitizenshipContract {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "ENTITY_ID")
@@ -37,21 +40,16 @@ public abstract class EntityCitizenshipBase extends PersistableBusinessObjectBas
     @Column(name = "CTZNSHP_STAT_CD")
     private String statusCode;
 
-    @Column(name = "strt_dt")
+    @Column(name = "STRT_DT")
     private Timestamp startDateValue;
 
-    @Column(name = "end_dt")
+
+    @Column(name = "END_DT")
     private Timestamp endDateValue;
 
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
-
-    @Column(name = "chng_dt")
-    private Timestamp changeDateValue;
-
-    @Column(name = "CTZNSHP_CHNG_CD")
-    private String changeCode;
 
 
     @Override
@@ -70,28 +68,6 @@ public abstract class EntityCitizenshipBase extends PersistableBusinessObjectBas
         }
 
         return null;
-    }
-
-
-    public String getChangeCode() {
-        return changeCode;
-    }
-
-    public void setChangeCode(String changeCode) {
-        this.changeCode = changeCode;
-    }
-
-    @Override
-    public DateTime getChangeDate() {
-        return this.changeDateValue == null ? null : new DateTime(changeDateValue.getTime());
-    }
-
-    public Timestamp getChangeDateValue() {
-        return changeDateValue;
-    }
-
-    public void setChangeDateValue(Timestamp changeDateValue) {
-        this.changeDateValue = changeDateValue;
     }
 
     @Override

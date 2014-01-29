@@ -15,12 +15,25 @@
  */
 package org.kuali.rice.kim.impl.group;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebParam;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -31,8 +44,6 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.history.HistoryQueryUtils;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupHistory;
-import org.kuali.rice.kim.api.group.GroupHistoryQueryResults;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberQueryResults;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
@@ -41,23 +52,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataHistoryBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
-
-import javax.jws.WebParam;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     private static final Logger LOG = Logger.getLogger(GroupServiceImpl.class);
@@ -659,11 +655,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         bo = saveGroup(bo);
 
-        //save history
-        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
-        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(bo), new DateTime(currentTime.getTime()), null);
-        createGroupHistory(GroupHistoryBo.to(historyBo));
-
         return GroupBo.to(bo);
     }
 
@@ -684,11 +675,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 && !bo.isActive()) {
             KimImplServiceLocator.getRoleInternalService().groupInactivated(bo.getId());
         }
-
-        //save history
-        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
-        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(bo), new DateTime(currentTime.getTime()), null);
-        createGroupHistory(GroupHistoryBo.to(historyBo));
 
         return GroupBo.to(bo);
     }
@@ -719,11 +705,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         //inactivate and save old group
         groupBo.setActive(false);
         saveGroup(groupBo);
-
-        //save history
-        Timestamp currentTime = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
-        GroupHistoryBo historyBo = GroupHistoryBo.from(GroupBo.to(groupBo), new DateTime(currentTime.getTime()), null);
-        createGroupHistory(GroupHistoryBo.to(historyBo));
 
         return GroupBo.to(newGroup);
     }
@@ -962,107 +943,5 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
                 && StringUtils.isBlank((String) object)) {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
-    }
-
-    @Override
-    public GroupHistoryQueryResults findGroupHistories(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        incomingParamCheck(queryByCriteria, "queryByCriteria");
-
-        LookupCustomizer.Builder<GroupHistoryBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<GroupHistoryBo> results = dataObjectService.findMatching(GroupHistoryBo.class, queryByCriteria, lc.build());
-
-        GroupHistoryQueryResults.Builder builder = GroupHistoryQueryResults.Builder.create();
-        builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
-        builder.setTotalRowCount(results.getTotalRowCount());
-
-        final List<GroupHistory.Builder> ims = new ArrayList<GroupHistory.Builder>();
-        for (GroupHistoryBo bo : results.getResults()) {
-            ims.add(GroupHistory.Builder.create(bo));
-        }
-
-        builder.setResults(ims);
-        return builder.build();
-    }
-
-    protected GroupHistoryBo getGroupHistoryBo(String historyId) {
-        incomingParamCheck(historyId, "groupId");
-        return dataObjectService.find(GroupHistoryBo.class, historyId);
-    }
-
-    @Override
-    public GroupHistory getGroupHistory(String id, DateTime asOfDate) {
-        incomingParamCheck(id, "id");
-        incomingParamCheck(asOfDate, "asOfDate");
-
-        GroupHistoryQueryResults results = findGroupHistories(HistoryQueryUtils.historyQuery(id, asOfDate));
-
-        //should be either 0 or 1 results
-        if (CollectionUtils.isEmpty(results.getResults())) {
-            return null;
-        }
-        return results.getResults().get(0);
-    }
-
-    protected GroupHistoryBo saveGroupHistory(GroupHistoryBo groupHistory, boolean allowIfFuture) throws RiceIllegalArgumentException {
-        if ( groupHistory == null ) {
-            return null;
-        } else if (!allowIfFuture) {
-            // check to see if there is a later record
-            List<GroupHistory> futureRecords = findGroupHistories(HistoryQueryUtils.futureRecordQuery(
-                    groupHistory.getId(), groupHistory.getActiveFromDate())).getResults();
-            if (!futureRecords.isEmpty()) {
-                throw new RiceIllegalArgumentException("There is a future effective date of the groupHistory that is attempting to save");
-            }
-        }
-
-        return dataObjectService.save( groupHistory );
-    }
-
-    @Override
-    public GroupHistory createGroupHistory(GroupHistory groupHistory) throws RiceIllegalArgumentException {
-        incomingParamCheck(groupHistory, "groupHistory");
-        if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.KIM_ENABLE_HISTORY_KEY))) {
-            return null;
-        }
-
-        GroupHistoryBo bo = GroupHistoryBo.from(groupHistory);
-
-        bo.setHistoryId(null);
-        Timestamp activeFrom = groupHistory.getActiveFromDate() == null ? null : new Timestamp(groupHistory.getActiveFromDate().getMillis());
-        Timestamp activeTo = groupHistory.getActiveToDate() == null ? null : new Timestamp(groupHistory.getActiveToDate().getMillis());
-        List<GroupAttributeHistoryBo> attrHistBos = KimAttributeDataHistoryBo
-                .createFrom(GroupAttributeHistoryBo.class, groupHistory.getAttributes(), groupHistory.getKimTypeId());
-        if (StringUtils.isNotEmpty(groupHistory.getId())) {
-            for (GroupAttributeHistoryBo attr : attrHistBos) {
-                attr.setAssignedToId(groupHistory.getId());
-                if (groupHistory.getHistoryId() != null) {
-                    attr.setAssignedToId(String.valueOf(groupHistory.getHistoryId()));
-                }
-            }
-            bo.setAttributeHistoryDetails(attrHistBos);
-        }
-        return GroupHistoryBo.to(saveGroupHistory(bo, false));
-    }
-
-    @Override
-    public GroupHistory inactivateGroupHistory(String id, DateTime inactiveDate) throws RiceIllegalArgumentException {
-        incomingParamCheck(id, "id");
-        incomingParamCheck(inactiveDate, "inactiveDate");
-        if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KimConstants.KIM_ENABLE_HISTORY_KEY))) {
-            return null;
-        }
-
-        //Todo: check inactive date.  Should we update actual group object?
-        //Todo:  worry about looping...
-
-
-        // get groupHistory for inactive date
-        GroupHistory history = getGroupHistory(id, inactiveDate);
-        GroupHistoryBo bo = GroupHistoryBo.from(history);
-        Timestamp activeTo = new Timestamp(inactiveDate.getMillis());
-        bo.setActiveToDateValue(activeTo);
-        return GroupHistoryBo.to(saveGroupHistory(bo, false));
     }
 }

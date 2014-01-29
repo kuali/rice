@@ -33,6 +33,42 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.commons</groupId>
+      <artifactId>commons-beanutils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
     </dependency>
@@ -46,11 +82,19 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
+      <artifactId>spring-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springmodules</groupId>
@@ -63,30 +107,25 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>aopalliance</groupId>
-      <artifactId>aopalliance</artifactId>
-    </dependency>
-    <dependency>
       <groupId>xapool</groupId>
       <artifactId>xapool</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.ow2.jotm</groupId>
+      <groupId>org.kuali.jotm</groupId>
       <artifactId>jotm-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.resource</groupId>
-      <artifactId>connector-api</artifactId>
-      <scope>runtime</scope>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
     </dependency>
-    <!-- bitronix -->
     <dependency>
-      <groupId>org.codehaus.btm</groupId>
-      <artifactId>btm</artifactId>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -99,21 +138,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
     </dependency>
   </dependencies>
 </project>

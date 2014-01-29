@@ -27,7 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import org.kuali.rice.edl.framework.extract.FieldDTO;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import java.io.Serializable;
 

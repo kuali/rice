@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

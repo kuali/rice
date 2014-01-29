@@ -83,7 +83,7 @@ public class LookupInputField extends InputFieldBase {
             if (multiValueControl.getRichOptions() != null) {
                 Message message = ComponentFactory.getMessage();
                 message.setMessageText(allOptionText);
-                message.setGenerateSpan(false);
+                message.setGenerateWrapperElement(false);
 
                 multiValueControl.getRichOptions().add(0, new KeyMessage("", allOptionText, message));
             }
@@ -247,7 +247,7 @@ public class LookupInputField extends InputFieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

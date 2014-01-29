@@ -235,7 +235,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         performWorkflowAction(documentForm, WorkflowAction.CANCEL, false);
 
-        return returnToPrevious(form);
+        return returnToHub(form);
     }
 
     /**
@@ -291,7 +291,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         performWorkflowAction(form, WorkflowAction.BLANKETAPPROVE, true);
 
-        return getUIFModelAndView(form);
+        return returnToHub(form);
     }
 
     /**

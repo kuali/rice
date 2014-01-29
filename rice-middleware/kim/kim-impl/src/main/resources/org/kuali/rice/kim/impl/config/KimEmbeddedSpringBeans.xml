@@ -52,11 +52,10 @@
   -->
 
   <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.impl.identity.IdentityServiceImpl"
-        p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"/>
+        p:dataObjectService-ref="dataObjectService"/>
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
-        p:businessObjectService-ref="rice.kim.import.businessObjectService"
+        p:dataObjectService-ref="dataObjectService"
         p:kualiConfigurationService-ref="configurationService"
         p:transactionManager-ref="transactionManager"/>
 
@@ -70,7 +69,7 @@
   -->
 
   <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
-        p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
+        p:roleDao-ref="kimRoleDao"
         p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
@@ -88,8 +87,7 @@
   -->
 
   <bean id="kimPermissionService" class="org.kuali.rice.kim.impl.permission.PermissionServiceImpl"
-        p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
+        p:dataObjectService-ref="dataObjectService"
         p:kimTypeInfoService-ref="kimTypeInfoService"
         p:roleService-ref="kimRoleService"
         p:cacheManager-ref="kimLocalCacheManager"/>
@@ -99,21 +97,23 @@
   -->
 
   <bean id="kimResponsibilityService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityServiceImpl"
-        p:businessObjectService-ref="rice.kim.import.businessObjectService"
-        p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"
+        p:dataObjectService-ref="dataObjectService"
         p:defaultResponsibilityTypeService-ref="defaultResponsibilityTypeService"
         p:kimTypeInfoService-ref="kimTypeInfoService"
         p:roleService-ref="kimRoleService"/>
 
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.impl.type.KimTypeInfoServiceImpl">
-    <property name="businessObjectService" ref="rice.kim.import.businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="activePrincipalRoleTypeService" class="org.kuali.rice.kns.kim.role.PrincipalDerivedRoleTypeServiceImpl"/>
 
   <bean id="groupInternalService" class="org.kuali.rice.kim.impl.group.GroupInternalServiceImpl"/>
   <bean id="responsibilityInternalService"
-        class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl"/>
+        class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl"
+        p:responsibilityService-ref="kimResponsibilityService"
+        p:dateTimeService-ref="dateTimeService"
+        p:dataObjectService-ref="dataObjectService" />
 
   <bean id="documentInitiatorRoleTypeService"
         class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl"

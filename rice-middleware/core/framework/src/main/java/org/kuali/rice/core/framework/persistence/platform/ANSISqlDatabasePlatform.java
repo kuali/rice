@@ -17,7 +17,6 @@ package org.kuali.rice.core.framework.persistence.platform;
 
 import org.apache.ojb.broker.PersistenceBroker;
 
-import javax.persistence.EntityManager;
 import java.sql.Connection;
 
 public abstract class ANSISqlDatabasePlatform implements DatabasePlatform
@@ -96,17 +95,12 @@ public abstract class ANSISqlDatabasePlatform implements DatabasePlatform
             return getNextValSqlJdbc(sequenceName, (Connection)nextValSource);
         } else if (nextValSource instanceof PersistenceBroker) {
             return getNextValSqlOjb(sequenceName, (PersistenceBroker)nextValSource);
-        } else if (nextValSource instanceof EntityManager) {
-            return getNextValSqlJpa(sequenceName, (EntityManager)nextValSource);
         }
         throw new IllegalArgumentException("No next value strategy found for given nextValSource: " + nextValSource);
     }
 
     @Deprecated
     protected abstract Long getNextValSqlOjb(String sequenceName, PersistenceBroker persistenceBroker);
-
-    @Deprecated
-    protected abstract Long getNextValSqlJpa(String sequenceName, EntityManager entityManager);
 
     @Deprecated
     protected abstract Long getNextValSqlJdbc(String sequenceName, Connection connection);

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.kuali.jotm:jotm-core:2.1.10-kuali-1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/jotm/jotm-core/2.1.10-kuali-1/jotm-core-2.1.10-kuali-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/jotm/jotm-core/2.1.10-kuali-1/jotm-core-2.1.10-kuali-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/jotm/jotm-core/2.1.10-kuali-1/jotm-core-2.1.10-kuali-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

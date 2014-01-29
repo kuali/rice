@@ -23,8 +23,8 @@ import org.junit.Test;
 
 public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=f158ddb9-f5d4-4af6-8d2b-7a23b8ede984&cacheKey=gk3l8kqyb1jpa64mdoswce&pageId=UifCompView-Page10#UifCompView-Page10";
-
+    public static final String BOOKMARK_URL = "http://env14.rice.kuali.org/kr-krad/uicomponents?viewId=UifCompView";
+    
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -37,6 +37,7 @@ public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
 	
 	@Test
     public void testOtherExamplesBookmark() throws Exception {
+		waitAndClickByLinkText("Other Examples");
         testOtherExamples();
         passed();
     }
@@ -61,17 +62,17 @@ public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//input[@name='uiTestObject.field3' and @value='Foo-Bear']");
     	
     	//Tooltip examples
-    	fireMouseOverEventByXpath("//input[@name='field1']");
-    	assertTextPresent("This tooltip is triggered by focus or and mouse over.");
-    	fireMouseOverEventByXpath("//input[@name='field2']");
-    	assertTextPresent("This is a tool-tip with different position and tail options");
-    	fireMouseOverEventByXpath("//select[@name='field119']");
-    	assertTextPresent("This is a Select Control tooltip");
-    	fireMouseOverEventByXpath("//select[@name='field120']");
-    	assertTextPresent("This is a Multi Select Control tooltip");
+    	fireEvent("field1","focus");
+    	waitForTextPresent("This tooltip is triggered by focus or and mouse over.");
+    	fireMouseOverEventByName("field2");
+    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	fireMouseOverEventByName("field119");
+    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	fireMouseOverEventByName("field120");
+    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
     	
     	//Collection with tooltips
-    	fireMouseOverEventByXpath("//span[@data-parent='TableCollection1-Hover1_add']");
-    	assertTextPresent(" and ");
+    	fireMouseOverEventByXpath("//div[@id='TableCollection1-Hover1_line1']");
+    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
     }
 }

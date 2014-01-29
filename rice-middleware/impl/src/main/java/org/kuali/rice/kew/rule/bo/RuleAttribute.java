@@ -20,7 +20,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;

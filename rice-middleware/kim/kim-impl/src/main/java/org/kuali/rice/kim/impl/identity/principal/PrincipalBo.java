@@ -15,46 +15,50 @@
  */
 package org.kuali.rice.kim.impl.identity.principal;
 
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
 @Table(name = "KRIM_PRNCPL_T")
-public class PrincipalBo extends PersistableBusinessObjectBase implements PrincipalContract {
+public class PrincipalBo extends DataObjectBase implements PrincipalContract {
     private static final long serialVersionUID = 1L;
-    @Id
 
-    @GeneratedValue(generator = "KRIM_PRNCPL_ID_S")
     @PortableSequenceGenerator(name = "KRIM_PRNCPL_ID_S")
-    @Column(name = "PRNCPL_ID", columnDefinition = "VARCHAR(40)")
+    @GeneratedValue(generator = "KRIM_PRNCPL_ID_S")
+    @Id
+    @Column(name = "PRNCPL_ID")
     private String principalId;
+
     @Column(name = "PRNCPL_NM")
     private String principalName;
+
     @Column(name = "ENTITY_ID")
     private String entityId;
+
     @Column(name = "PRNCPL_PSWD")
     private String password;
+
     @Column(name = "ACTV_IND")
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     public static Principal to(PrincipalBo bo) {
         if (bo == null) {
             return null;
         }
-
         return Principal.Builder.create(bo).build();
     }
 
@@ -68,7 +72,6 @@ public class PrincipalBo extends PersistableBusinessObjectBase implements Princi
         if (immutable == null) {
             return null;
         }
-
         PrincipalBo bo = new PrincipalBo();
         bo.active = immutable.isActive();
         bo.principalId = immutable.getPrincipalId();
@@ -77,7 +80,6 @@ public class PrincipalBo extends PersistableBusinessObjectBase implements Princi
         bo.active = immutable.isActive();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
@@ -128,5 +130,4 @@ public class PrincipalBo extends PersistableBusinessObjectBase implements Princi
     public void setActive(boolean active) {
         this.active = active;
     }
-
 }

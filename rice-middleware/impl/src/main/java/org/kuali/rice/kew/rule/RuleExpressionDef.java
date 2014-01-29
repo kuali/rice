@@ -19,13 +19,12 @@ import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.kew.api.rule.RuleExpression;
 import org.kuali.rice.kew.api.rule.RuleExpressionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Parameter;
 import javax.persistence.Table;
 
 /**

@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.kim.api.KimConstants;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.kuali.rice.kim.api.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -31,115 +29,117 @@ import javax.persistence.Transient;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@IdClass(GroupDocumentMemberId.class)
 @Entity
-@Table(name="KRIM_PND_GRP_MBR_T")
+@Table(name = "KRIM_PND_GRP_MBR_T")
 public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(generator="KRIM_PND_GRP_MBR_T")
-	@Column(name="GRP_MBR_ID")
-	protected String groupMemberId;
+    @Id
+    @Column(name = "GRP_MBR_ID")
+    protected String groupMemberId;
 
-	@Column(name="GRP_ID")
-	protected String groupId;
-	
-	@Column(name="MBR_ID")
-	protected String memberId;
-	@Column(name="MBR_NM")
-	protected String memberName;
-	@Transient
-	protected String memberNamespaceCode;
-	
-	protected String memberFullName;
+    @Column(name = "GRP_ID")
+    protected String groupId;
 
-	//TODO: remove the default
-	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode();
+    @Column(name = "MBR_ID")
+    protected String memberId;
 
-	public String getGroupMemberId() {
-		return this.groupMemberId;
-	}
+    @Column(name = "MBR_NM")
+    protected String memberName;
 
-	public void setGroupMemberId(String groupMemberId) {
-		this.groupMemberId = groupMemberId;
-	}
+    @Transient
+    protected String memberNamespaceCode;
 
-	public String getGroupId() {
-		return this.groupId;
-	}
+    @Transient
+    protected String memberFullName;
 
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
+    //TODO: remove the default                       
+    @Column(name = "MBR_TYP_CD")
+    protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode();
 
-	/**
+    public String getGroupMemberId() {
+        return this.groupMemberId;
+    }
+
+    public void setGroupMemberId(String groupMemberId) {
+        this.groupMemberId = groupMemberId;
+    }
+
+    public String getGroupId() {
+        return this.groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    /**
 	 * @return the memberId
 	 */
-	public String getMemberId() {
-		return this.memberId;
-	}
+    public String getMemberId() {
+        return this.memberId;
+    }
 
-	/**
+    /**
 	 * @param memberId the memberId to set
 	 */
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
 
-	/**
+    /**
 	 * @return the memberTypeCode
 	 */
-	public String getMemberTypeCode() {
-		return this.memberTypeCode;
-	}
+    public String getMemberTypeCode() {
+        return this.memberTypeCode;
+    }
 
-	/**
+    /**
 	 * @param memberTypeCode the memberTypeCode to set
 	 */
-	public void setMemberTypeCode(String memberTypeCode) {
-		this.memberTypeCode = memberTypeCode;
-	}
+    public void setMemberTypeCode(String memberTypeCode) {
+        this.memberTypeCode = memberTypeCode;
+    }
 
-	/**
+    /**
 	 * @return the memberName
 	 */
-	public String getMemberName() {
-		return this.memberName;
-	}
+    public String getMemberName() {
+        return this.memberName;
+    }
 
-	/**
+    /**
 	 * @param memberName the memberName to set
 	 */
-	public void setMemberName(String memberName) {
-		this.memberName = memberName;
-	}
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
 
-	/**
+    /**
 	 * @return the memberNamespaceCode
 	 */
-	public String getMemberNamespaceCode() {
-		return this.memberNamespaceCode;
-	}
+    public String getMemberNamespaceCode() {
+        return this.memberNamespaceCode;
+    }
 
-	/**
+    /**
 	 * @param memberNamespaceCode the memberNamespaceCode to set
 	 */
-	public void setMemberNamespaceCode(String memberNamespaceCode) {
-		this.memberNamespaceCode = memberNamespaceCode;
-	}
-	
-	/**
+    public void setMemberNamespaceCode(String memberNamespaceCode) {
+        this.memberNamespaceCode = memberNamespaceCode;
+    }
+
+    /**
 	 * @return the memberFullName
 	 */
-	public String getMemberFullName() {
-		return this.memberFullName;
-	}
+    public String getMemberFullName() {
+        return this.memberFullName;
+    }
 
-	/**
+    /**
 	 * @param memberFullName the memberFullName to set
 	 */
-	public void setMemberFullName(String memberFullName) {
-		this.memberFullName = memberFullName;
-	}
+    public void setMemberFullName(String memberFullName) {
+        this.memberFullName = memberFullName;
+    }
 }

@@ -80,7 +80,7 @@ public class UifKeyValueLocation extends UifKeyValue {
      */
     public void setHref(String href) {
         if (this.location == null) {
-            ComponentFactory.getUrlInfo();
+            this.location = ComponentFactory.getUrlInfo();
         }
 
         this.location.setHref(href);

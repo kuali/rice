@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -22,10 +23,9 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +70,7 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
 		}
 		return rulesPassed;
 	}
+
 
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();

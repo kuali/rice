@@ -16,8 +16,11 @@
 package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,94 +31,95 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "KRIM_PND_PRIV_PREF_MT")
 public class PersonDocumentPrivacy extends KimDocumentBoEditableBase {
-	
-	//@Type(type="yes_no")
-	@Column(name="SUPPRESS_NM_IND")
-	protected boolean suppressName;
-	
-	//@Type(type="yes_no")
-	@Column(name="SUPPRESS_EMAIL_IND")
-	protected boolean suppressEmail;
-	
-	//@Type(type="yes_no")
-	@Column(name="SUPPRESS_ADDR_IND")
-	protected boolean suppressAddress;
-	
-	//@Type(type="yes_no")
-	@Column(name="SUPPRESS_PHONE_IND")
-	protected boolean suppressPhone;
-	
-	//@Type(type="yes_no")
-	@Column(name="SUPPRESS_PRSNL_IND")
-	protected boolean suppressPersonal;
-	
-	/**
+    private static final long serialVersionUID = 1L;
+
+    @Column(name = "SUPPRESS_NM_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean suppressName;
+
+    @Column(name = "SUPPRESS_EMAIL_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean suppressEmail;
+
+    @Column(name = "SUPPRESS_ADDR_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean suppressAddress;
+
+    @Column(name = "SUPPRESS_PHONE_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean suppressPhone;
+
+    @Column(name = "SUPPRESS_PRSNL_IND")
+    @Convert(converter = BooleanYNConverter.class)
+    protected boolean suppressPersonal;
+
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#isSuppressAddress()
 	 */
-	public boolean isSuppressAddress() {
-		return suppressAddress;
-	}
+    public boolean isSuppressAddress() {
+        return suppressAddress;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#isSuppressEmail()
 	 */
-	public boolean isSuppressEmail() {
-		return suppressEmail;
-	}
+    public boolean isSuppressEmail() {
+        return suppressEmail;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#isSuppressName()
 	 */
-	public boolean isSuppressName() {
-		return suppressName;
-	}
+    public boolean isSuppressName() {
+        return suppressName;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#isSuppressPersonal()
 	 */
-	public boolean isSuppressPersonal() {
-		return suppressPersonal;
-	}
+    public boolean isSuppressPersonal() {
+        return suppressPersonal;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#isSuppressPhone()
 	 */
-	public boolean isSuppressPhone() {
-		return suppressPhone;
-	}
+    public boolean isSuppressPhone() {
+        return suppressPhone;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#setSuppressAddress(boolean)
 	 */
-	public void setSuppressAddress(boolean suppressAddress) {
-		this.suppressAddress = suppressAddress;
-	}
+    public void setSuppressAddress(boolean suppressAddress) {
+        this.suppressAddress = suppressAddress;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#setSuppressEmail(boolean)
 	 */
-	public void setSuppressEmail(boolean suppressEmail) {
-		this.suppressEmail = suppressEmail;
-	}
+    public void setSuppressEmail(boolean suppressEmail) {
+        this.suppressEmail = suppressEmail;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#setSuppressName(boolean)
 	 */
-	public void setSuppressName(boolean suppressName) {
-		this.suppressName = suppressName;
-	}
+    public void setSuppressName(boolean suppressName) {
+        this.suppressName = suppressName;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#setSuppressPersonal(boolean)
 	 */
-	public void setSuppressPersonal(boolean suppressPersonal) {
-		this.suppressPersonal = suppressPersonal;
-	}
+    public void setSuppressPersonal(boolean suppressPersonal) {
+        this.suppressPersonal = suppressPersonal;
+    }
 
-	/**
+    /**
 	 * @see org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferencesContract#setSuppressPhone(boolean)
 	 */
-	public void setSuppressPhone(boolean suppressPhone) {
-		this.suppressPhone = suppressPhone;
-	}
+    public void setSuppressPhone(boolean suppressPhone) {
+        this.suppressPhone = suppressPhone;
+    }
 }

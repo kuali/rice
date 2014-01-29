@@ -16,6 +16,7 @@
 package org.kuali.rice.kcb.service.impl;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.deliverer.impl.EmailMessageDeliverer;
@@ -24,13 +25,16 @@ import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Tests {@link RecipientPreferenceService}
@@ -39,6 +43,7 @@ import static org.junit.Assert.assertEquals;
  */
 @BaselineMode(Mode.ROLLBACK_CLEAR_DB)
 public class RecipientPreferenceServiceTest extends KCBTestCase {
+
     public static final String VALID_DELIVERER_NAME = EmailMessageDeliverer.NAME;
     public static final String VALID_PROPERTY = EmailMessageDeliverer.NAME + "." + EmailMessageDeliverer.EMAIL_ADDR_PREF_KEY;
     public static final String VALID_VALUE = TestConstants.EMAIL_DELIVERER_PROPERTY_VALUE;
@@ -58,10 +63,11 @@ public class RecipientPreferenceServiceTest extends KCBTestCase {
         userprefs.put("Email.email_delivery_format", "text");
 
         impl.saveRecipientPreferences(VALID_USER_ID, userprefs, deliverer);
-        
-        RecipientPreference recipientPreference = new RecipientPreference();
-        recipientPreference.setRecipientId(VALID_USER_ID);
-        Collection<RecipientPreference> prefs = services.getKcbGenericDao().findMatchingByExample(recipientPreference);
+
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal("recipientId", VALID_USER_ID));
+        List<RecipientPreference> prefs =
+                KRADServiceLocator.getDataObjectService().findMatching(RecipientPreference.class, criteria.build()).getResults();
         assertEquals(2, prefs.size());
     }
 }

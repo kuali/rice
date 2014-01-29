@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -30,22 +30,11 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9042706897191231670L;
-	@Id
+
+    @Id
     @Column(name="FDOC_NBR")
     protected String documentNumber;
-	//@Type(type="yes_no")
-	//@Column(name="ACTV_IND")
-    //protected boolean active = true;
-	////@Type(type="yes_no")
-	//@Column(name="EDIT_FLAG")
-	//protected boolean edit;
-
 	
-	//@Column(name="ACTV_FRM_DT")
-	//protected Timestamp activeFromDate;
-	//@Column(name="ACTV_TO_DT")
-	//protected Timestamp activeToDate;
-
 	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
@@ -53,52 +42,4 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	public void setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
 	}
-
-	//public boolean isActive() {
-	//	long now = System.currentTimeMillis();		
-	//	return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
-	//}
-
-	//public void setActive(boolean active) {
-	//	this.active = active;
-	//}
-
-	//public boolean isEdit() {
-	//	return this.edit;
-	//}
-
-	//public void setEdit(boolean edit) {
-	//	this.edit = edit;
-	//}
-
-	/**
-	 * @return the activeFromDate
-	 */
-	//public Timestamp getActiveFromDate() {
-	//	return this.activeFromDate;
-	//}
-
-	/**
-	 * @param activeFromDate
-	 *            the activeFromDate to set
-	 */
-	//public void setActiveFromDate(Timestamp activeFromDate) {
-	//	this.activeFromDate = activeFromDate;
-	//}
-
-	/**
-	 * @return the activeToDate
-	 */
-	//public Timestamp getActiveToDate() {
-	//	return this.activeToDate;
-	//}
-
-	/**
-	 * @param activeToDate
-	 *            the activeToDate to set
-	 */
-	//public void setActiveToDate(Timestamp activeToDate) {
-	//	this.activeToDate = activeToDate;
-	//}
-
 }

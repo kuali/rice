@@ -16,17 +16,10 @@
 package org.kuali.rice.kim.service.impl
 
 import groovy.mock.interceptor.MockFor
-import java.text.SimpleDateFormat
 import org.junit.Assert
 import org.junit.Before
-
 import org.junit.Test
-import org.kuali.rice.core.api.criteria.CountFlag
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
-import org.kuali.rice.core.api.criteria.CriteriaStringValue
-import org.kuali.rice.core.api.criteria.EqualPredicate
-import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.core.api.criteria.*
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
 import org.kuali.rice.kim.api.identity.IdentityService
 import org.kuali.rice.kim.api.identity.address.EntityAddress
@@ -49,6 +42,7 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.identity.residency.EntityResidency
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo
 import org.kuali.rice.kim.api.identity.visa.EntityVisa
+import org.kuali.rice.kim.impl.identity.IdentityServiceImpl
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo
@@ -74,16 +68,18 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krad.data.PersistenceOption
 import org.kuali.rice.krad.service.PersistenceService
-import org.kuali.rice.kim.impl.identity.IdentityServiceImpl
+
+import java.text.SimpleDateFormat
 
 class IdentityServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    private MockFor mockBoService;
     private MockFor mockCriteriaLookupService;
-    private BusinessObjectService boService;
+    private MockFor mockDataObjectService;
+    private DataObjectService dos;
     private PersistenceService persistenceService;
     private CriteriaLookupService criteriaLookupService;
     IdentityService identityService;
@@ -237,11 +233,12 @@ class IdentityServiceImplTest {
             sampleEntityBioDemographics.put(bo.entityId, bo);
         }
     }
-    
+
     @Before
     void setupMockContext() {
-        mockBoService = new MockFor(BusinessObjectService.class);
         mockCriteriaLookupService = new MockFor(CriteriaLookupService.class);
+        mockDataObjectService = new MockFor(DataObjectService.class);
+
     }
 
     @Before
@@ -250,9 +247,9 @@ class IdentityServiceImplTest {
         identityService = identityServiceImpl    //assign Interface type to implementation reference for unit test only
     }
 
-    void injectBusinessObjectServiceIntoIdentityService() {
-        boService = mockBoService.proxyDelegateInstance()
-        identityServiceImpl.setBusinessObjectService(boService)
+    void injectDataObjectServiceIntoIdentityService() {
+        dos = mockDataObjectService.proxyDelegateInstance()
+        identityServiceImpl.setDataObjectService(dos)
     }
 
     void injectCriteriaLookupServiceIntoIdentityService() {
@@ -262,22 +259,22 @@ class IdentityServiceImplTest {
 
     @Test
     void test_createIdentityNullIdentity(){
-        injectBusinessObjectServiceIntoIdentityService()
+        injectDataObjectServiceIntoIdentityService()
 
         shouldFail(IllegalArgumentException.class) {
             identityService.createEntity(null)
         }
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dos)
     }
 
     @Test
     void test_updateIdentityNullIdentity(){
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         shouldFail(IllegalArgumentException.class) {
             identityService.updateEntity(null)
         }
-        mockBoService.verify(boService);
+        mockDataObjectService.verify(dos);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -292,17 +289,17 @@ class IdentityServiceImplTest {
 
     @Test
     public void testGetEntity() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
-            Class clazz, Map map -> return sampleEntities.get(map.get("id"))
+        mockDataObjectService.demand.find(1..sampleEntities.size()) {
+            Class clazz, String id -> return sampleEntities.get(id);
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         for (EntityBo entityBo in sampleEntities.values()) {
             Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntity(entityBo.id))
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dos)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -317,26 +314,30 @@ class IdentityServiceImplTest {
 
     @Test
     public void testGetEntityByPrincipalIdSucceeds() {
-        mockBoService.demand.findMatching(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+        mockDataObjectService.demand.findMatching(1..sampleEntities.size()) {
+            Class clazz, QueryByCriteria id -> for (EntityBo entityBo in sampleEntities.values()) {
+                EqualPredicate p = (EqualPredicate)id.getPredicate();
+
                 for (PrincipalBo principalBo in entityBo.principals) {
-                    if (principalBo.principalId.equals(map.get("principals.principalId")))
+                    if (principalBo.principalId.equals(p.value.value))
                     {
                         Collection<EntityBo> entities = new ArrayList<EntityBo>();
                         entities.add(entityBo);
-                        return entities;
+                        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                        builder.setResults(entities);
+                        return builder.build();
                     }
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         for (EntityBo entityBo in sampleEntities.values()) {
             Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntityByPrincipalId(entityBo.principals[0].principalId));
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dos)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -351,26 +352,27 @@ class IdentityServiceImplTest {
 
     @Test
     public void testGetEntityByPrincipalNameSucceeds() {
-        mockBoService.demand.findMatching(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+        mockDataObjectService.demand.findMatching(1..sampleEntities.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityBo entityBo in sampleEntities.values()) {
+                EqualPredicate p = (EqualPredicate)map.predicate;
                 for (PrincipalBo principalBo in entityBo.principals) {
-                    if (principalBo.principalName.equals(map.get("principals.principalName")))
+                    if (principalBo.principalName.equals(p.value.value))
                     {
-                        Collection<EntityBo> entities = new ArrayList<EntityBo>();
-                        entities.add(entityBo);
-                        return entities;
+                        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                        builder.setResults(Collections.singletonList(entityBo));
+                        return builder.build();
                     }
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         for (EntityBo entityBo in sampleEntities.values()) {
             Assert.assertEquals(EntityBo.to(entityBo), identityService.getEntityByPrincipalName(entityBo.principals[0].principalName));
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dos)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -395,27 +397,27 @@ class IdentityServiceImplTest {
 
     @Test
     public void testGetPrincipalByPrincipalNameAndPasswordSucceeds() {
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.principalName.equals(map.get("principalName"))
-                    && principalBo.password.equals(map.get("password"))
-                    && principalBo.active)
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals("second")
+                        && principalBo.password.equals("second_password")
+                        && principalBo.active)
                 {
-                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                    principals.add(principalBo);
-                    return principals;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(principalBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         String id = "P2";
         String name = "second";
         String password = "second_password";
         Assert.assertEquals(PrincipalBo.to(samplePrincipals.get(id)), identityService.getPrincipalByPrincipalNameAndPassword(name, password));
 
-        mockBoService.verify(boService);
+        mockDataObjectService.verify(dos);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -441,30 +443,31 @@ class IdentityServiceImplTest {
     @Test
     public void testGetPrincipalsByEmployeeIdSucceeds() {
 
-        mockBoService.demand.findMatching(1..2) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
+        mockDataObjectService.demand.findMatching(1..2) {
+            Class clazz, QueryByCriteria map -> for (EntityBo entityBo in sampleEntities.values()) {
+                EqualPredicate p = (EqualPredicate)map.getPredicate();
                 for (EntityEmploymentBo entityEmploymentBo in entityBo.employmentInformation) {
-                    if (entityEmploymentBo.employeeId.equals(map.get("employeeId")))
+                    if (p.value.value.equals(entityEmploymentBo.employeeId))
                     {
-                        Collection<EntityEmploymentBo> entityEmploymentBos = new ArrayList<EntityEmploymentBo>();
-                        entityEmploymentBos.add(entityEmploymentBo);
-                        return entityEmploymentBos;
+                        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                        builder.setResults(Collections.singletonList(entityEmploymentBo));
+                        return builder.build();
                     }
                 }
 
                 for (PrincipalBo principalBo in samplePrincipals.values()) {
-                    if (principalBo.entityId.equals(map.get("entityId"))
-                        && principalBo.active)
+                    if (p.value.value.toString().equals(principalBo.entityId)
+                            && principalBo.active)
                     {
-                        Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                        principals.add(principalBo);
-                        return principals;
+                        GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                        builder.setResults(Collections.singletonList(principalBo));
+                        return builder.build();
                     }
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         String employeeId = "emplIdOne";
         String id = "P1";
@@ -477,24 +480,24 @@ class IdentityServiceImplTest {
         for (Principal p : principals) {
             Assert.assertEquals(samplePrincipal.getPrincipalId(), p.getPrincipalId());
         }
-        mockBoService.verify(boService);
+        mockDataObjectService.verify(dos);
     }
 
     @Test
     public void testGetPrincipalsByEntityIdSucceeds() {
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.entityId.equals(map.get("entityId"))
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.entityId.equals("AAA")
                         && principalBo.active)
                 {
-                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                    principals.add(principalBo);
-                    return principals;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(principalBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         String entityId = "AAA";
         String id = "P1";
@@ -503,7 +506,7 @@ class IdentityServiceImplTest {
         for (Principal p : principals) {
             Assert.assertEquals(samplePrincipal.getEntityId(), p.getEntityId());
         }
-        mockBoService.verify(boService);
+        mockDataObjectService.verify(dos);
     }
 
 
@@ -523,18 +526,20 @@ class IdentityServiceImplTest {
     @Test(expected = RiceIllegalStateException.class)
     public void testAddPrincipalToEntityWithExistingPrincipalFails()
     {
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.principalName.equals(map.get("principalName")))
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
+                if (principalBo.principalName.equals("first"))
                 {
                     Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
                     principals.add(principalBo);
-                    return principals;
+                    GenericQueryResults.Builder b = GenericQueryResults.Builder.create();
+                    b.setResults(principals);
+                    return b.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         PrincipalBo principalBo = new PrincipalBo(entityId: "ABC", principalName: "first", principalId: "P1");
         principalBo = identityService.addPrincipalToEntity(PrincipalBo.to(principalBo));
@@ -545,24 +550,15 @@ class IdentityServiceImplTest {
     {
         PrincipalBo newPrincipalBo = new PrincipalBo(entityId: "ABC", principalName: "new", principalId: "New");
 
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.principalName.equals(map.get("principalName")))
-                {
-                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                    principals.add(principalBo);
-                    return principals;
-                }
-            }
-
-            return new ArrayList<PrincipalBo>();
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            PrincipalBo bo -> return newPrincipalBo;
+        mockDataObjectService.demand.save(1..1) {
+            PrincipalBo bo, PersistenceOption... options -> return newPrincipalBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal newPrincipal = identityService.addPrincipalToEntity(PrincipalBo.to(newPrincipalBo));
 
@@ -586,11 +582,11 @@ class IdentityServiceImplTest {
     public void testUpdatePrincipalWithNonExistingPrincipalFails()
     {
         // create a matching scenario where no results are returned
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> return new ArrayList<PrincipalBo>();
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         PrincipalBo principalBo = new PrincipalBo(entityId: "CCC", principalName: "fifth", principalId: "P5");
         principalBo = identityService.updatePrincipal(PrincipalBo.to(principalBo));
@@ -600,25 +596,18 @@ class IdentityServiceImplTest {
     public void testUpdatePrincipalSucceeds()
     {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
+        GenericQueryResults.Builder b = GenericQueryResults.Builder.create();
+        b.setResults(Collections.singletonList(existingPrincipalBo));
 
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.principalName.equals(map.get("principalName")))
-                {
-                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                    principals.add(principalBo);
-                    return principals;
-                }
-            }
-
-            return new ArrayList<PrincipalBo>();
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> return b.build();
         }
 
-        mockBoService.demand.save(1..1) {
-            PrincipalBo bo -> return existingPrincipalBo;
+        mockDataObjectService.demand.save(1..1) {
+            PrincipalBo bo, PersistenceOption... options -> return existingPrincipalBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal existingPrincipal = identityService.updatePrincipal(PrincipalBo.to(existingPrincipalBo));
 
@@ -632,11 +621,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivatePrincipalWithNonExistentPrincipalFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal principal = identityService.inactivatePrincipal("New");
     }
@@ -647,15 +636,15 @@ class IdentityServiceImplTest {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
         PrincipalBo inactivePrincipalBo = new PrincipalBo(entityId: "AAA", principalId: "P1", active: false, principalName: "first", versionNumber: 1, password: "first_password");
 
-        mockBoService.demand.findByPrimaryKey(1..samplePrincipals.size()) {
-            Class clazz, Map map -> return samplePrincipals.get(map.get("principalId"))
+        mockDataObjectService.demand.find(1..samplePrincipals.size()) {
+            Class clazz, String id -> return samplePrincipals.get(id)
         }
 
-        mockBoService.demand.save(1..1) {
-            PrincipalBo bo -> return inactivePrincipalBo;
+        mockDataObjectService.demand.save(1..1) {
+            PrincipalBo bo, PersistenceOption... options -> return inactivePrincipalBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal inactivePrincipal = identityService.inactivatePrincipal(existingPrincipalBo.principalId);
 
@@ -664,11 +653,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivatePrincipalByNameWithNonExistentPrincipalFails() {
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> return new ArrayList<PrincipalBo>();
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal principal = identityService.inactivatePrincipalByName("new");
     }
@@ -677,24 +666,19 @@ class IdentityServiceImplTest {
     public void testInactivatePrincipalByNameSucceeds()
     {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
+        GenericQueryResults.Builder b = GenericQueryResults.Builder.create();
+        b.setResults(Collections.singletonList(existingPrincipalBo));
         PrincipalBo inactivePrincipalBo = new PrincipalBo(entityId: "AAA", principalId: "P1", active: false, principalName: "first", versionNumber: 1, password: "first_password");
 
-        mockBoService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, Map map -> for (PrincipalBo principalBo in samplePrincipals.values()) {
-                if (principalBo.principalName.equals(map.get("principalName")))
-                {
-                    Collection<PrincipalBo> principals = new ArrayList<PrincipalBo>();
-                    principals.add(principalBo);
-                    return principals;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
+            Class clazz, QueryByCriteria map -> return b.build();
         }
 
-        mockBoService.demand.save(1..1) {
-            PrincipalBo bo -> return inactivePrincipalBo;
+        mockDataObjectService.demand.save(1) {
+            PrincipalBo bo, PersistenceOption... options -> return inactivePrincipalBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Principal inactivePrincipal = identityService.inactivatePrincipalByName(existingPrincipalBo.principalName);
 
@@ -708,18 +692,20 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddEntityTypeContactInfoToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
-            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
-                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
-                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityTypeContactInfoBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
+                if (entityTypeContactInfoBo.entityId.equals("AAA")
+                        && entityTypeContactInfoBo.entityTypeCode.equals("typecodeone")
+                        && entityTypeContactInfoBo.active)
                 {
-                    return entityTypeContactInfoBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityTypeContactInfoBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
         EntityTypeContactInfo entityTypeContactInfo = identityService.addEntityTypeContactInfoToEntity(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
@@ -729,22 +715,15 @@ class IdentityServiceImplTest {
     public void testAddEntityTypeContactInfoToEntitySucceeds() {
         EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "CCC", entityTypeCode: "typecodethree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
-            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
-                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
-                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityTypeContactInfoBo.active)
-                {
-                    return entityTypeContactInfoBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityTypeContactInfoBo bo -> return newEntityTypeContactInfoBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityTypeContactInfoBo bo, PersistenceOption... options -> return newEntityTypeContactInfoBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfo entityTypeContactInfo = identityService.addEntityTypeContactInfoToEntity(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
 
@@ -758,11 +737,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateEntityTypeContactInfoWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria id -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfoBo newEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
         EntityTypeContactInfo entityTypeContactInfo = identityService.updateEntityTypeContactInfo(EntityTypeContactInfoBo.to(newEntityTypeContactInfoBo));
@@ -772,22 +751,24 @@ class IdentityServiceImplTest {
     public void testUpdateEntityTypeContactInfoSucceeds() {
         EntityTypeContactInfoBo existingEntityTypeContactInfoBo = new EntityTypeContactInfoBo(active: true, entityId: "AAA", entityTypeCode: "typecodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
-            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
-                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
-                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityTypeContactInfoBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
+                if (entityTypeContactInfoBo.entityId.equals("AAA")
+                        && entityTypeContactInfoBo.entityTypeCode.equals("typecodeone")
+                        && entityTypeContactInfoBo.active)
                 {
-                    return entityTypeContactInfoBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityTypeContactInfoBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityTypeContactInfoBo bo -> return existingEntityTypeContactInfoBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityTypeContactInfoBo bo, PersistenceOption... options -> return existingEntityTypeContactInfoBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfo entityTypeContactInfo = identityService.updateEntityTypeContactInfo(EntityTypeContactInfoBo.to(existingEntityTypeContactInfoBo));
 
@@ -796,11 +777,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateEntityTypeContactInfoWithNonExistentObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria map -> GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfo entityTypeContactInfo = identityService.inactivateEntityTypeContactInfo("new", "new");
     }
@@ -811,22 +792,24 @@ class IdentityServiceImplTest {
         EntityTypeContactInfoBo existingEntityTypeContactInfoBo = sampleEntityTypeContactInfos.get("typecodeone");
         EntityTypeContactInfoBo inactiveEntityTypeContactInfoBo = new EntityTypeContactInfoBo(entityId: "AAA", entityTypeCode: "typecodeone", active: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityTypeContactInfos.size()) {
-            Class clazz, Map map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
-                if (entityTypeContactInfoBo.entityId.equals(map.get("entityId"))
-                    && entityTypeContactInfoBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityTypeContactInfoBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityTypeContactInfos.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityTypeContactInfoBo entityTypeContactInfoBo in sampleEntityTypeContactInfos.values()) {
+                if (entityTypeContactInfoBo.entityId.equals("AAA")
+                        && entityTypeContactInfoBo.entityTypeCode.equals("typecodeone")
+                        && entityTypeContactInfoBo.active)
                 {
-                    return entityTypeContactInfoBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityTypeContactInfoBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityTypeContactInfoBo bo -> return inactiveEntityTypeContactInfoBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityTypeContactInfoBo bo, PersistenceOption... options -> return inactiveEntityTypeContactInfoBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityTypeContactInfo inactiveEntityTypeContactInfo = identityService.inactivateEntityTypeContactInfo(existingEntityTypeContactInfoBo.entityId, existingEntityTypeContactInfoBo.entityTypeCode);
 
@@ -840,19 +823,21 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddAddressToEntityWithExistingAddressFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
-            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
-                if (entityAddressBo.entityId.equals(map.get("entityId"))
-                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
-                    && entityAddressBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityAddresses.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
+                if (entityAddressBo.entityId.equals("AAA")
+                        && entityAddressBo.entityTypeCode.equals("typecodeone")
+                        && entityAddressBo.addressTypeCode.equals("addresscodeone")
+                        && entityAddressBo.active)
                 {
-                    return entityAddressBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityAddressBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
         EntityAddressBo newEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, addressTypeCode: "addresscodeone");
@@ -864,23 +849,15 @@ class IdentityServiceImplTest {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodethree");
         EntityAddressBo newEntityAddressBo = new EntityAddressBo(entityId: "CCC", entityTypeCode: "typecodethree", addressType: firstAddressTypeBo, addressTypeCode: "addresscodethree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
-            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
-                if (entityAddressBo.entityId.equals(map.get("entityId"))
-                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
-                    && entityAddressBo.active)
-                {
-                    return entityAddressBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityAddresses.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAddressBo bo -> return newEntityAddressBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAddressBo bo, PersistenceOption... options -> return newEntityAddressBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddress entityAddress = identityService.addAddressToEntity(EntityAddressBo.to(newEntityAddressBo));
 
@@ -894,21 +871,21 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateAddressWithNonExistingAddressFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
+        mockDataObjectService.demand.findMatching(1..sampleEntityAddresses.size()) {
             Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
                 if (entityAddressBo.entityId.equals(map.get("entityId"))
-                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
-                    && entityAddressBo.active)
+                        && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                        && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
+                        && entityAddressBo.active)
                 {
                     return entityAddressBo;
                 }
             }
 
-            return null;
+                return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodethree");
         EntityAddressBo newEntityAddressBo = new EntityAddressBo(entityId: "CCC", entityTypeCode: "typecodethree", addressType: firstAddressTypeBo, addressTypeCode: "addresscodethree");
@@ -920,23 +897,25 @@ class IdentityServiceImplTest {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
         EntityAddressBo existingEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", id: "addressidone", addressType: firstAddressTypeBo, addressTypeCode: "addresscodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
-            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
-                if (entityAddressBo.entityId.equals(map.get("entityId"))
-                    && entityAddressBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityAddressBo.addressTypeCode.equals(map.get("addressTypeCode"))
-                    && entityAddressBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityAddresses.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
+                if (entityAddressBo.entityId.equals("AAA")
+                        && entityAddressBo.entityTypeCode.equals("typecodeone")
+                        && entityAddressBo.addressTypeCode.equals("addresscodeone")
+                        && entityAddressBo.active)
                 {
-                    return entityAddressBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityAddressBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAddressBo bo -> return existingEntityAddressBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAddressBo bo, PersistenceOption... options -> return existingEntityAddressBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddress entityAddress = identityService.updateAddress(EntityAddressBo.to(existingEntityAddressBo));
 
@@ -945,11 +924,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateAddressWithNonExistentAddressFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddress entityAddress = identityService.inactivateAddress("new");
     }
@@ -961,19 +940,19 @@ class IdentityServiceImplTest {
         EntityAddressTypeBo firstAddressTypeBo = new EntityAddressTypeBo(code: "addresscodeone");
         EntityAddressBo inactiveEntityAddressBo = new EntityAddressBo(entityId: "AAA", entityTypeCode: "typecodeone", addressType: firstAddressTypeBo, id: "addressidone", addressTypeCode: "addresscodeone", active: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAddresses.size()) {
-            Class clazz, Map map -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
-                if (entityAddressBo.id.equals(map.get("id"))) {
+        mockDataObjectService.demand.find(1..sampleEntityAddresses.size()) {
+            Class clazz, String id -> for (EntityAddressBo entityAddressBo in sampleEntityAddresses.values()) {
+                if (entityAddressBo.id.equals(id)) {
                     return entityAddressBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAddressBo bo -> return inactiveEntityAddressBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAddressBo bo, PersistenceOption... options -> return inactiveEntityAddressBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAddress inactiveEntityAddress = identityService.inactivateAddress(existingEntityAddressBo.id);
 
@@ -987,19 +966,21 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddEmailToEntityWithExistingEmailFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
-            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
-                if (entityEmailBo.entityId.equals(map.get("entityId"))
-                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
-                    && entityEmailBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmails.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals("AAA")
+                        && entityEmailBo.entityTypeCode.equals("typecodeone")
+                        && entityEmailBo.emailTypeCode.equals("emailcodeone")
+                        && entityEmailBo.active)
                 {
-                    return entityEmailBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityEmailBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
         EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, emailTypeCode: "emailcodeone", active: true);
@@ -1011,23 +992,15 @@ class IdentityServiceImplTest {
         EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodethree");
         EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "CCC", entityTypeCode: "typecodethree", emailType: firstEmailTypeBo, emailTypeCode: "emailcodethree", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
-            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
-                if (entityEmailBo.entityId.equals(map.get("entityId"))
-                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
-                    && entityEmailBo.active)
-                {
-                    return entityEmailBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmails.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmailBo bo -> return newEntityEmailBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmailBo bo, PersistenceOption... options -> return newEntityEmailBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmail entityEmail = identityService.addEmailToEntity(EntityEmailBo.to(newEntityEmailBo));
 
@@ -1041,19 +1014,19 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateEmailWithNonExistingEmailFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmails.size()) {
             Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
                 if (entityEmailBo.entityId.equals(map.get("entityId"))
-                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
-                    && entityEmailBo.active)
+                        && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
+                        && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
+                        && entityEmailBo.active)
                 {
                     return entityEmailBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodethree");
         EntityEmailBo newEntityEmailBo = new EntityEmailBo(entityId: "CCC", entityTypeCode: "typecodethree", emailType: firstEmailTypeBo, emailTypeCode: "emailcodethree", active: true);
@@ -1065,23 +1038,25 @@ class IdentityServiceImplTest {
         EntityEmailTypeBo firstEmailTypeBo = new EntityEmailTypeBo(code: "emailcodeone");
         EntityEmailBo existingEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
-            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
-                if (entityEmailBo.entityId.equals(map.get("entityId"))
-                    && entityEmailBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityEmailBo.emailTypeCode.equals(map.get("emailTypeCode"))
-                    && entityEmailBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmails.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.entityId.equals("AAA")
+                        && entityEmailBo.entityTypeCode.equals("typecodeone")
+                        && entityEmailBo.emailTypeCode.equals("emailcodeone")
+                        && entityEmailBo.active)
                 {
-                    return entityEmailBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityEmailBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmailBo bo -> return existingEntityEmailBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmailBo bo, PersistenceOption... options -> return existingEntityEmailBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmail entityEmail = identityService.updateEmail(EntityEmailBo.to(existingEntityEmailBo));
 
@@ -1090,11 +1065,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateEmailWithNonExistentEmailFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmail entityEmail = identityService.inactivateEmail("new");
     }
@@ -1107,19 +1082,19 @@ class IdentityServiceImplTest {
         EntityEmailBo inactiveEntityEmailBo = new EntityEmailBo(entityId: "AAA", entityTypeCode: "typecodeone", emailType: firstEmailTypeBo, id:"emailidone", emailTypeCode: "emailcodeone", active: false);
 
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmails.size()) {
-            Class clazz, Map map -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
-                if (entityEmailBo.id.equals(map.get("id"))) {
+        mockDataObjectService.demand.find(1..sampleEntityEmails.size()) {
+            Class clazz, String id -> for (EntityEmailBo entityEmailBo in sampleEntityEmails.values()) {
+                if (entityEmailBo.id.equals(id)) {
                     return entityEmailBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmailBo bo -> return inactiveEntityEmailBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmailBo bo, PersistenceOption... options -> return inactiveEntityEmailBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmail inactiveEntityEmail = identityService.inactivateEmail(existingEntityEmailBo.id);
 
@@ -1133,19 +1108,21 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddPhoneToEntityWithExistingPhoneFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
-            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
-                if (entityPhoneBo.entityId.equals(map.get("entityId"))
-                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
-                    && entityPhoneBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityPhones.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals("AAA")
+                        && entityPhoneBo.entityTypeCode.equals("typecodeone")
+                        && entityPhoneBo.phoneTypeCode.equals("phonetypecodeone")
+                        && entityPhoneBo.active)
                 {
-                    return entityPhoneBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityPhoneBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
         EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
@@ -1157,23 +1134,15 @@ class IdentityServiceImplTest {
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodethree");
         EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "CCC", entityTypeCode: "typecodethree", phoneType: firstPhoneType, id: "phoneidthree", phoneTypeCode: "phonetypecodethree", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
-            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
-                if (entityPhoneBo.entityId.equals(map.get("entityId"))
-                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
-                    && entityPhoneBo.active)
-                {
-                    return entityPhoneBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityPhones.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityPhoneBo bo -> return newEntityPhoneBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityPhoneBo bo, PersistenceOption... options -> return newEntityPhoneBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhone entityPhone = identityService.addPhoneToEntity(EntityPhoneBo.to(newEntityPhoneBo));
 
@@ -1187,19 +1156,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdatePhoneWithNonExistingPhoneFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
-            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
-                if (entityPhoneBo.entityId.equals(map.get("entityId"))
-                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
-                    && entityPhoneBo.active)
-                {
-                    return entityPhoneBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityPhones.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodethree");
         EntityPhoneBo newEntityPhoneBo = new EntityPhoneBo(entityId: "CCC", entityTypeCode: "typecodethree", phoneType: firstPhoneType, id: "phoneidthree", phoneTypeCode: "phonetypecodethree", active: true);
@@ -1211,23 +1172,25 @@ class IdentityServiceImplTest {
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
         EntityPhoneBo existingEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
-            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
-                if (entityPhoneBo.entityId.equals(map.get("entityId"))
-                    && entityPhoneBo.entityTypeCode.equals(map.get("entityTypeCode"))
-                    && entityPhoneBo.phoneTypeCode.equals(map.get("phoneTypeCode"))
-                    && entityPhoneBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityPhones.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.entityId.equals("AAA")
+                        && entityPhoneBo.entityTypeCode.equals("typecodeone")
+                        && entityPhoneBo.phoneTypeCode.equals("phonetypecodeone")
+                        && entityPhoneBo.active)
                 {
-                    return entityPhoneBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityPhoneBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityPhoneBo bo -> return existingEntityPhoneBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityPhoneBo bo, PersistenceOption... options -> return existingEntityPhoneBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhone entityPhone = identityService.updatePhone(EntityPhoneBo.to(existingEntityPhoneBo));
 
@@ -1236,11 +1199,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivatePhoneWithNonExistentPhoneFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhone entityPhone = identityService.inactivatePhone("new");
     }
@@ -1252,19 +1215,19 @@ class IdentityServiceImplTest {
         EntityPhoneTypeBo firstPhoneType = new EntityPhoneTypeBo(code: "phonetypecodeone");
         EntityPhoneBo inactiveEntityPhoneBo = new EntityPhoneBo(entityId: "AAA", entityTypeCode: "typecodeone", phoneType: firstPhoneType, id: "phoneidone", phoneTypeCode: "phonetypecodeone", active: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPhones.size()) {
-            Class clazz, Map map -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
-                if (entityPhoneBo.id.equals(map.get("id"))) {
+        mockDataObjectService.demand.find(1..sampleEntityPhones.size()) {
+            Class clazz, String id -> for (EntityPhoneBo entityPhoneBo in sampleEntityPhones.values()) {
+                if (entityPhoneBo.id.equals(id)) {
                     return entityPhoneBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityPhoneBo bo -> return inactiveEntityPhoneBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityPhoneBo bo, PersistenceOption... options -> return inactiveEntityPhoneBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPhone inactiveEntityPhone = identityService.inactivatePhone(existingEntityPhoneBo.id);
 
@@ -1278,17 +1241,20 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddExternalIdentifierToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
-            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
-                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
-                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals("AAA")
+                        && entityExternalIdentifierBo.externalIdentifierTypeCode.equals("exidtypecodeone"))
                 {
-                    return entityExternalIdentifierBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityExternalIdentifierBo));
+                    return builder.build();
                 }
             }
+            return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
         EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
@@ -1300,21 +1266,24 @@ class IdentityServiceImplTest {
         EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodethree");
         EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "CCC", externalIdentifierType: firstExternalIdentifierType, id: "exidthree", externalIdentifierTypeCode: "exidtypecodethree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
-            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
-                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
-                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals("CCC")
+                        && entityExternalIdentifierBo.externalIdentifierTypeCode.equals("exidtypecodethree"))
                 {
-                    return entityExternalIdentifierBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityExternalIdentifierBo));
+                    return builder.build();
                 }
             }
+            return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityExternalIdentifierBo bo -> return newEntityExternalIdentifierBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityExternalIdentifierBo bo, PersistenceOption... options -> return newEntityExternalIdentifierBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityExternalIdentifier entityExternalIdentifier = identityService.addExternalIdentifierToEntity(EntityExternalIdentifierBo.to(newEntityExternalIdentifierBo));
 
@@ -1328,17 +1297,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateExternalIdentifierWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
-            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
-                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
-                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
-                {
-                    return entityExternalIdentifierBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodethree");
         EntityExternalIdentifierBo newEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "CCC", externalIdentifierType: firstExternalIdentifierType, id: "exidthree", externalIdentifierTypeCode: "exidtypecodethree");
@@ -1350,21 +1313,23 @@ class IdentityServiceImplTest {
         EntityExternalIdentifierTypeBo firstExternalIdentifierType = new EntityExternalIdentifierTypeBo(code: "exidtypecodeone");
         EntityExternalIdentifierBo existingEntityExternalIdentifierBo = new EntityExternalIdentifierBo(entityId: "AAA", externalIdentifierType: firstExternalIdentifierType, id: "exidone", externalIdentifierTypeCode: "exidtypecodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityExternalIdentifiers.size()) {
-            Class clazz, Map map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
-                if (entityExternalIdentifierBo.entityId.equals(map.get("entityId"))
-                    && entityExternalIdentifierBo.externalIdentifierTypeCode.equals(map.get("externalIdentifierTypeCode")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityExternalIdentifiers.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityExternalIdentifierBo entityExternalIdentifierBo in sampleEntityExternalIdentifiers.values()) {
+                if (entityExternalIdentifierBo.entityId.equals("AAA")
+                        && entityExternalIdentifierBo.externalIdentifierTypeCode.equals("exidtypecodeone"))
                 {
-                    return entityExternalIdentifierBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityExternalIdentifierBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityExternalIdentifierBo bo -> return existingEntityExternalIdentifierBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityExternalIdentifierBo bo, PersistenceOption... options -> return existingEntityExternalIdentifierBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityExternalIdentifier entityExternalIdentifier = identityService.updateExternalIdentifier(EntityExternalIdentifierBo.to(existingEntityExternalIdentifierBo));
 
@@ -1378,16 +1343,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testaddAffiliationToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
-            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
-                if (entityAffiliationBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityAffiliations.size()) {
+            Class clazz, String id -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(id))
                 {
                     return entityAffiliationBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
@@ -1399,20 +1364,20 @@ class IdentityServiceImplTest {
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodethree");
         EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidthree", affiliationTypeCode: "affiliationcodethree", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
-            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
-                if (entityAffiliationBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityAffiliations.size()) {
+            Class clazz, String id -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(id))
                 {
                     return entityAffiliationBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAffiliationBo bo -> return newEntityAffiliationBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAffiliationBo bo, PersistenceOption... options -> return newEntityAffiliationBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliation entityAffiliation = identityService.addAffiliationToEntity(EntityAffiliationBo.to(newEntityAffiliationBo));
 
@@ -1426,16 +1391,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateAffiliationWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
-            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
-                if (entityAffiliationBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityAffiliations.size()) {
+            Class clazz, String id -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(id))
                 {
                     return entityAffiliationBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodethree");
         EntityAffiliationBo newEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidthree", affiliationTypeCode: "affiliationcodethree", active: true);
@@ -1447,20 +1412,20 @@ class IdentityServiceImplTest {
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo existingEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
-            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
-                if (entityAffiliationBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityAffiliations.size()) {
+            Class clazz, String id -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(id))
                 {
                     return entityAffiliationBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAffiliationBo bo -> return existingEntityAffiliationBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAffiliationBo bo, PersistenceOption... options -> return existingEntityAffiliationBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliation entityAffiliation = identityService.updateAffiliation(EntityAffiliationBo.to(existingEntityAffiliationBo));
 
@@ -1469,11 +1434,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateAffiliationWithNonExistentIdFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliation entityAffiliation = identityService.inactivateAffiliation("new");
     }
@@ -1486,20 +1451,20 @@ class IdentityServiceImplTest {
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo inactiveEntityAffiliationBo = new EntityAffiliationBo(entityId: "AAA", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityAffiliations.size()) {
-            Class clazz, Map map -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
-                if (entityAffiliationBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityAffiliations.size()) {
+            Class clazz, String id -> for (EntityAffiliationBo entityAffiliationBo in sampleEntityAffiliations.values()) {
+                if (entityAffiliationBo.id.equals(id))
                 {
                     return entityAffiliationBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityAffiliationBo bo -> return inactiveEntityAffiliationBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityAffiliationBo bo, PersistenceOption... options -> return inactiveEntityAffiliationBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliation inactiveEntityAffiliation = identityService.inactivateAffiliation(existingEntityAffiliationBo.id);
 
@@ -1521,11 +1486,11 @@ class IdentityServiceImplTest {
         genericQueryResults.results = entities;
         GenericQueryResults<EntityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<EntityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
-        injectCriteriaLookupServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
         queryByCriteriaBuilder.setStartAtIndex(0);
@@ -1553,11 +1518,11 @@ class IdentityServiceImplTest {
         genericQueryResults.results = entities;
         GenericQueryResults<EntityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<EntityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
-        injectCriteriaLookupServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
         queryByCriteriaBuilder.setStartAtIndex(0);
@@ -1588,11 +1553,11 @@ class IdentityServiceImplTest {
         genericQueryResults.results = entityNames;
         GenericQueryResults<EntityNameBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<EntityNameBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
-        injectCriteriaLookupServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         QueryByCriteria.Builder queryByCriteriaBuilder = new QueryByCriteria.Builder();
         queryByCriteriaBuilder.setStartAtIndex(0);
@@ -1611,16 +1576,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testCreateEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
-                if (entityBo.id.equals(map.get("id")))
-                {
-                    return entityBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntities.size()) {
+            Class clazz, String id -> return sampleEntities.get(id);
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPrivacyPreferencesBo firstEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         String birthDateString = "01/01/2007";
@@ -1643,16 +1603,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateEntityWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
-                if (entityBo.id.equals(map.get("id")))
-                {
-                    return entityBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntities.size()) {
+            Class clazz, String id -> return sampleEntities.get(id);
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityBo newEntityBo = new EntityBo(active: true, id: "CCC");
         Entity entity = identityService.updateEntity(EntityBo.to(newEntityBo));
@@ -1672,20 +1627,15 @@ class IdentityServiceImplTest {
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo existingEntityBo = new EntityBo(active: true, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
-                if (entityBo.id.equals(map.get("id")))
-                {
-                    return entityBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntities.size()) {
+            Class clazz, String id -> return sampleEntities.get(id);
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityBo bo -> return existingEntityBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityBo bo, PersistenceOption... options -> return existingEntityBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Entity entity = identityService.updateEntity(EntityBo.to(existingEntityBo));
 
@@ -1694,11 +1644,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateEntityWithNonExistentEntityFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.find(1..1) {
+            Class clazz, String id -> return null;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Entity entity = identityService.inactivateEntity("new");
     }
@@ -1718,21 +1668,15 @@ class IdentityServiceImplTest {
         List<PrincipalBo> firstPrincipals = new ArrayList<PrincipalBo>();
         firstPrincipals.add(firstEntityPrincipal);
         EntityBo inactiveEntityBo = new EntityBo(active: false, id: "AAA", privacyPreferences: firstEntityPrivacyPreferencesBo, bioDemographics: firstEntityBioDemographicsBo, principals: firstPrincipals);
-
-        mockBoService.demand.findByPrimaryKey(1..sampleEntities.size()) {
-            Class clazz, Map map -> for (EntityBo entityBo in sampleEntities.values()) {
-                if (entityBo.id.equals(map.get("id")))
-                {
-                    return entityBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntities.size()) {
+            Class clazz, String id -> return sampleEntities.get(id);
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityBo bo -> return inactiveEntityBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityBo bo, PersistenceOption... options -> return inactiveEntityBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         Entity inactiveEntity = identityService.inactivateEntity(existingEntityBo.id);
 
@@ -1746,16 +1690,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddPrivacyPreferencesToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPrivacyPreferences.size()) {
-            Class clazz, Map map -> for (EntityPrivacyPreferencesBo entityPrivacyPreferencesBo in sampleEntityPrivacyPreferences.values()) {
-                if (entityPrivacyPreferencesBo.entityId.equals(map.get("entityId")))
-                {
-                    return entityPrivacyPreferencesBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntityPrivacyPreferences.size()) {
+            Class clazz, String id -> return sampleEntityPrivacyPreferences.get(id);
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPrivacyPreferencesBo newEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityPrivacyPreferences entityPrivacyPreferences = identityService.addPrivacyPreferencesToEntity(EntityPrivacyPreferencesBo.to(newEntityPrivacyPreferencesBo));
@@ -1765,20 +1704,15 @@ class IdentityServiceImplTest {
     public void testAddPrivacyPreferencesToEntitySucceeds() {
         EntityPrivacyPreferencesBo newEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "CCC", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPrivacyPreferences.size()) {
-            Class clazz, Map map -> for (EntityPrivacyPreferencesBo entityPrivacyPreferencesBo in sampleEntityPrivacyPreferences.values()) {
-                if (entityPrivacyPreferencesBo.entityId.equals(map.get("entityId")))
-                {
-                    return entityPrivacyPreferencesBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntityPrivacyPreferences.size()) {
+            Class clazz, String id -> return sampleEntityPrivacyPreferences.get(id);
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityPrivacyPreferencesBo bo -> return newEntityPrivacyPreferencesBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityPrivacyPreferencesBo bo, PersistenceOption... options -> return newEntityPrivacyPreferencesBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPrivacyPreferences entityPrivacyPreferences = identityService.addPrivacyPreferencesToEntity(EntityPrivacyPreferencesBo.to(newEntityPrivacyPreferencesBo));
 
@@ -1792,16 +1726,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdatePrivacyPreferencesWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPrivacyPreferences.size()) {
-            Class clazz, Map map -> for (EntityPrivacyPreferencesBo entityPrivacyPreferencesBo in sampleEntityPrivacyPreferences.values()) {
-                if (entityPrivacyPreferencesBo.entityId.equals(map.get("entityId")))
-                {
-                    return entityPrivacyPreferencesBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntityPrivacyPreferences.size()) {
+            Class clazz, String id -> return sampleEntityPrivacyPreferences.get(id);
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPrivacyPreferencesBo newEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "CCC", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
         EntityPrivacyPreferences entityPrivacyPreferences = identityService.updatePrivacyPreferences(EntityPrivacyPreferencesBo.to(newEntityPrivacyPreferencesBo));
@@ -1811,20 +1740,15 @@ class IdentityServiceImplTest {
     public void testUpdatePrivacyPreferencesSucceeds() {
         EntityPrivacyPreferencesBo existingEntityPrivacyPreferencesBo = new EntityPrivacyPreferencesBo(entityId: "AAA", suppressName: true, suppressEmail: true, suppressAddress: true, suppressPhone: true, suppressPersonal: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityPrivacyPreferences.size()) {
-            Class clazz, Map map -> for (EntityPrivacyPreferencesBo entityPrivacyPreferencesBo in sampleEntityPrivacyPreferences.values()) {
-                if (entityPrivacyPreferencesBo.entityId.equals(map.get("entityId")))
-                {
-                    return entityPrivacyPreferencesBo;
-                }
-            }
+        mockDataObjectService.demand.find(1..sampleEntityPrivacyPreferences.size()) {
+            Class clazz, String id -> return sampleEntityPrivacyPreferences.get(id);
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityPrivacyPreferencesBo bo -> return existingEntityPrivacyPreferencesBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityPrivacyPreferencesBo bo, PersistenceOption... options -> return existingEntityPrivacyPreferencesBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityPrivacyPreferences entityPrivacyPreferences = identityService.updatePrivacyPreferences(EntityPrivacyPreferencesBo.to(existingEntityPrivacyPreferencesBo));
 
@@ -1838,18 +1762,20 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddCitizenshipToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityCitizenships.size()) {
-            Class clazz, Map map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
-                if (entityCitizenshipBo.entityId.equals(map.get("entityId"))
-                && entityCitizenshipBo.statusCode.equals(map.get("statusCode"))
-                && entityCitizenshipBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityCitizenships.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
+                if (entityCitizenshipBo.entityId.equals("AAA")
+                        && entityCitizenshipBo.statusCode.equals("statuscodeone")
+                        && entityCitizenshipBo.active)
                 {
-                    return entityCitizenshipBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityCitizenshipBo));
+                    return builder.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo newEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "AAA", id: "citizenshipidone", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
@@ -1861,22 +1787,15 @@ class IdentityServiceImplTest {
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo newEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "CCC", id: "citizenshipidthree", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityCitizenships.size()) {
-            Class clazz, Map map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
-                if (entityCitizenshipBo.entityId.equals(map.get("entityId"))
-                && entityCitizenshipBo.statusCode.equals(map.get("statusCode"))
-                && entityCitizenshipBo.active)
-                {
-                    return entityCitizenshipBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityCitizenships.size()) {
+            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityCitizenshipBo bo -> return newEntityCitizenshipBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityCitizenshipBo bo, PersistenceOption... options -> return newEntityCitizenshipBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenship entityCitizenship = identityService.addCitizenshipToEntity(EntityCitizenshipBo.to(newEntityCitizenshipBo));
 
@@ -1890,18 +1809,21 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateCitizenshipWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityCitizenships.size()) {
-            Class clazz, Map map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
-                if (entityCitizenshipBo.entityId.equals(map.get("entityId"))
-                && entityCitizenshipBo.statusCode.equals(map.get("statusCode"))
-                && entityCitizenshipBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityCitizenships.size()) {
+            Class clazz, QueryByCriteria id -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
+                if (entityCitizenshipBo.entityId.equals("CCC")
+                        && entityCitizenshipBo.statusCode.equals("statuscodeone")
+                        && entityCitizenshipBo.active)
                 {
-                    return entityCitizenshipBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityCitizenshipBo));
+                    return builder.build();
                 }
             }
+            return GenericQueryResults.Builder.create().build()
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo newEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "CCC", id: "citizenshipidthree", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
@@ -1913,22 +1835,24 @@ class IdentityServiceImplTest {
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo existingEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "AAA", id: "citizenshipidone", active: true, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityCitizenships.size()) {
-            Class clazz, Map map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
-                if (entityCitizenshipBo.entityId.equals(map.get("entityId"))
-                && entityCitizenshipBo.statusCode.equals(map.get("statusCode"))
-                && entityCitizenshipBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityCitizenships.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
+                if (entityCitizenshipBo.entityId.equals("AAA")
+                        && entityCitizenshipBo.statusCode.equals("statuscodeone")
+                        && entityCitizenshipBo.active)
                 {
-                    return entityCitizenshipBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityCitizenshipBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityCitizenshipBo bo -> return existingEntityCitizenshipBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityCitizenshipBo bo, PersistenceOption... options -> return existingEntityCitizenshipBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenship entityCitizenship = identityService.updateCitizenship(EntityCitizenshipBo.to(existingEntityCitizenshipBo));
 
@@ -1937,11 +1861,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateCitizenshipWithNonExistentEntityFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria id -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenship entityCitizenship = identityService.inactivateCitizenship("new");
     }
@@ -1953,21 +1877,24 @@ class IdentityServiceImplTest {
         EntityCitizenshipStatusBo firstEntityCitizenshipStatus = new EntityCitizenshipStatusBo(code: "statuscodeone", name: "statusnameone");
         EntityCitizenshipBo inactiveEntityCitizenshipBo = new EntityCitizenshipBo(entityId: "AAA", id: "citizenshipidone", active: false, status: firstEntityCitizenshipStatus, statusCode: "statuscodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityCitizenships.size()) {
-            Class clazz, Map map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
-                if (entityCitizenshipBo.id.equals(map.get("id"))
-                && entityCitizenshipBo.active)
+        mockDataObjectService.demand.findMatching(1..sampleEntityCitizenships.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityCitizenshipBo entityCitizenshipBo in sampleEntityCitizenships.values()) {
+                //EqualPredicate p = (EqualPredicate)map.getPredicate();
+                if (entityCitizenshipBo.id.equals("citizenshipidone")
+                        && entityCitizenshipBo.active)
                 {
-                    return entityCitizenshipBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityCitizenshipBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityCitizenshipBo bo -> return inactiveEntityCitizenshipBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityCitizenshipBo bo, PersistenceOption... options -> return inactiveEntityCitizenshipBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityCitizenship inactiveEntityCitizenship = identityService.inactivateCitizenship(existingEntityCitizenshipBo.id);
 
@@ -1981,16 +1908,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddEthnicityToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
-            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
-                if (entityEthnicityBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityEthnicities.size()) {
+            Class clazz, String id -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(id))
                 {
                     return entityEthnicityBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
         EntityEthnicity entityEthnicity = identityService.addEthnicityToEntity(EntityEthnicityBo.to(newEntityEthnicityBo));
@@ -2000,20 +1927,20 @@ class IdentityServiceImplTest {
     public void testAddEthnicityToEntitySucceeds() {
         EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "CCC", id: "ethnicityidthree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
-            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
-                if (entityEthnicityBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityEthnicities.size()) {
+            Class clazz, String id -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(id))
                 {
                     return entityEthnicityBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEthnicityBo bo -> return newEntityEthnicityBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEthnicityBo bo, PersistenceOption... options -> return newEntityEthnicityBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEthnicity entityEthnicity = identityService.addEthnicityToEntity(EntityEthnicityBo.to(newEntityEthnicityBo));
 
@@ -2027,16 +1954,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateEthnicityWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
-            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
-                if (entityEthnicityBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityEthnicities.size()) {
+            Class clazz, String id -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(id))
                 {
                     return entityEthnicityBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEthnicityBo newEntityEthnicityBo = new EntityEthnicityBo(entityId: "CCC", id: "ethnicityidthree");
         EntityEthnicity entityEthnicity = identityService.updateEthnicity(EntityEthnicityBo.to(newEntityEthnicityBo));
@@ -2046,20 +1973,20 @@ class IdentityServiceImplTest {
     public void testUpdateEthnicitySucceeds() {
         EntityEthnicityBo existingEntityEthnicityBo = new EntityEthnicityBo(entityId: "AAA", id: "ethnicityidone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEthnicities.size()) {
-            Class clazz, Map map -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
-                if (entityEthnicityBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityEthnicities.size()) {
+            Class clazz, String id -> for (EntityEthnicityBo entityEthnicityBo in sampleEntityEthnicities.values()) {
+                if (entityEthnicityBo.id.equals(id))
                 {
                     return entityEthnicityBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEthnicityBo bo -> return existingEntityEthnicityBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEthnicityBo bo, PersistenceOption... options -> return existingEntityEthnicityBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEthnicity entityEthnicity = identityService.updateEthnicity(EntityEthnicityBo.to(existingEntityEthnicityBo));
 
@@ -2073,16 +2000,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddResidencyToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
-            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
-                if (entityResidencyBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityResidencies.size()) {
+            Class clazz, String id -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(id))
                 {
                     return entityResidencyBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
         EntityResidency entityResidency = identityService.addResidencyToEntity(EntityResidencyBo.to(newEntityResidencyBo));
@@ -2092,20 +2019,20 @@ class IdentityServiceImplTest {
     public void testAddResidencyToEntitySucceeds() {
         EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "CCC", id: "residencyidthree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
-            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
-                if (entityResidencyBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityResidencies.size()) {
+            Class clazz, String id -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(id))
                 {
                     return entityResidencyBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityResidencyBo bo -> return newEntityResidencyBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityResidencyBo bo, PersistenceOption... options -> return newEntityResidencyBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityResidency entityResidency = identityService.addResidencyToEntity(EntityResidencyBo.to(newEntityResidencyBo));
 
@@ -2119,16 +2046,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateResidencyWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
-            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
-                if (entityResidencyBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityResidencies.size()) {
+            Class clazz, String id -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(id))
                 {
                     return entityResidencyBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityResidencyBo newEntityResidencyBo = new EntityResidencyBo(entityId: "CCC", id: "residencyidthree");
         EntityResidency entityResidency = identityService.updateResidency(EntityResidencyBo.to(newEntityResidencyBo));
@@ -2138,20 +2065,20 @@ class IdentityServiceImplTest {
     public void testUpdateResidencySucceeds() {
         EntityResidencyBo existingEntityResidencyBo = new EntityResidencyBo(entityId: "AAA", id: "residencyidone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityResidencies.size()) {
-            Class clazz, Map map -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
-                if (entityResidencyBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityResidencies.size()) {
+            Class clazz, String id -> for (EntityResidencyBo entityResidencyBo in sampleEntityResidencies.values()) {
+                if (entityResidencyBo.id.equals(id))
                 {
                     return entityResidencyBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityResidencyBo bo -> return existingEntityResidencyBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityResidencyBo bo, PersistenceOption... options -> return existingEntityResidencyBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityResidency entityResidency = identityService.updateResidency(EntityResidencyBo.to(existingEntityResidencyBo));
 
@@ -2165,16 +2092,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddVisaToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
-            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
-                if (entityVisaBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityVisas.size()) {
+            Class clazz, String id -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(id))
                 {
                     return entityVisaBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
         EntityVisa entityVisa = identityService.addVisaToEntity(EntityVisaBo.to(newEntityVisaBo));
@@ -2184,20 +2111,20 @@ class IdentityServiceImplTest {
     public void testAddVisaToEntitySucceeds() {
         EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "CCC", id: "visaidthree");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
-            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
-                if (entityVisaBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityVisas.size()) {
+            Class clazz, String id -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(id))
                 {
                     return entityVisaBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityVisaBo bo -> return newEntityVisaBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityVisaBo bo, PersistenceOption... options -> return newEntityVisaBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityVisa entityVisa = identityService.addVisaToEntity(EntityVisaBo.to(newEntityVisaBo));
 
@@ -2211,16 +2138,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateVisaWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
-            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
-                if (entityVisaBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityVisas.size()) {
+            Class clazz, String id -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(id))
                 {
                     return entityVisaBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityVisaBo newEntityVisaBo = new EntityVisaBo(entityId: "CCC", id: "visaidthree");
         EntityVisa entityVisa = identityService.updateVisa(EntityVisaBo.to(newEntityVisaBo));
@@ -2230,20 +2157,20 @@ class IdentityServiceImplTest {
     public void testUpdateVisaSucceeds() {
         EntityVisaBo existingEntityVisaBo = new EntityVisaBo(entityId: "AAA", id: "visaidone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityVisas.size()) {
-            Class clazz, Map map -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
-                if (entityVisaBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityVisas.size()) {
+            Class clazz, String id -> for (EntityVisaBo entityVisaBo in sampleEntityVisas.values()) {
+                if (entityVisaBo.id.equals(id))
                 {
                     return entityVisaBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityVisaBo bo -> return existingEntityVisaBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityVisaBo bo, PersistenceOption... options -> return existingEntityVisaBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityVisa entityVisa = identityService.updateVisa(EntityVisaBo.to(existingEntityVisaBo));
 
@@ -2257,16 +2184,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddNameToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
-            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
-                if (entityNameBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityNames.size()) {
+            Class clazz, String id -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals(id))
                 {
                     return entityNameBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith");
         EntityName entityName = identityService.addNameToEntity(EntityNameBo.to(newEntityNameBo));
@@ -2277,20 +2204,23 @@ class IdentityServiceImplTest {
         EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
         EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "CCC", id: "nameidthree", active: true, firstName: "Willard", lastName: "Jackson", nameType: firstEntityNameType, nameCode: "namecodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
-            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
-                if (entityNameBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityNames.size()) {
+            Class clazz, QueryByCriteria query -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals("nameidthree"))
                 {
-                    return entityNameBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityNameBo));
+                    return builder.build()
                 }
             }
+            return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityNameBo bo -> return newEntityNameBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityNameBo bo, PersistenceOption... options -> return newEntityNameBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityName entityName = identityService.addNameToEntity(EntityNameBo.to(newEntityNameBo));
 
@@ -2304,16 +2234,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateNameWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
-            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
-                if (entityNameBo.id.equals(map.get("id")))
-                {
-                    return entityNameBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityNames.size()) {
+            Class clazz, QueryByCriteria id -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
         EntityNameBo newEntityNameBo = new EntityNameBo(entityId: "CCC", id: "nameidthree", active: true, firstName: "Willard", lastName: "Jackson", nameType: firstEntityNameType, nameCode: "namecodeone");
@@ -2325,20 +2250,22 @@ class IdentityServiceImplTest {
         EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
         EntityNameBo existingEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: true, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameCode: "namecodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
-            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
-                if (entityNameBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityNames.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals("nameidone"))
                 {
-                    return entityNameBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityNameBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityNameBo bo -> return existingEntityNameBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityNameBo bo, PersistenceOption... options -> return existingEntityNameBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityName entityName = identityService.updateName(EntityNameBo.to(existingEntityNameBo));
 
@@ -2347,11 +2274,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateNameWithNonExistentNameFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria id -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityName entityName = identityService.inactivateName("new");
     }
@@ -2363,20 +2290,22 @@ class IdentityServiceImplTest {
         EntityNameTypeBo firstEntityNameType = new EntityNameTypeBo(code: "namecodeone");
         EntityNameBo inactiveEntityNameBo = new EntityNameBo(entityId: "AAA", id: "nameidone", active: false, firstName: "John", lastName: "Smith", nameType: firstEntityNameType, nameCode: "namecodeone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityNames.size()) {
-            Class clazz, Map map -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
-                if (entityNameBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityNames.size()) {
+            Class clazz, QueryByCriteria query -> for (EntityNameBo entityNameBo in sampleEntityNames.values()) {
+                if (entityNameBo.id.equals("nameidone"))
                 {
-                    return entityNameBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityNameBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityNameBo bo -> return inactiveEntityNameBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityNameBo bo, PersistenceOption... options -> return inactiveEntityNameBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityName inactiveEntityName = identityService.inactivateName(existingEntityNameBo.id);
 
@@ -2390,16 +2319,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddEmploymentToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
-            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
-                if (entityEmploymentBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.find(1..sampleEntityEmployments.size()) {
+            Class clazz, String id -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(id))
                 {
                     return entityEmploymentBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmploymentBo newEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone");
         EntityEmployment entityEmployment = identityService.addEmploymentToEntity(EntityEmploymentBo.to(newEntityEmploymentBo));
@@ -2413,20 +2342,15 @@ class IdentityServiceImplTest {
         EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
         EntityEmploymentBo newEntityEmploymentBo = new EntityEmploymentBo(entityId: "CCC", id: "employmentidthree", entityAffiliation: firstEntityAffiliationBo, employeeType: firstEmploymentType, employeeStatus: firstEmploymentStatus);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
-            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
-                if (entityEmploymentBo.id.equals(map.get("id")))
-                {
-                    return entityEmploymentBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmployments.size()) {
+            Class clazz, QueryByCriteria id -> return GenericQueryResults.Builder.create().build();
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmploymentBo bo -> return newEntityEmploymentBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmploymentBo bo, PersistenceOption... options -> return newEntityEmploymentBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmployment entityEmployment = identityService.addEmploymentToEntity(EntityEmploymentBo.to(newEntityEmploymentBo));
 
@@ -2440,16 +2364,13 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateEmploymentWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
-            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
-                if (entityEmploymentBo.id.equals(map.get("id")))
-                {
-                    return entityEmploymentBo;
-                }
-            }
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmployments.size()) {
+            Class clazz, QueryByCriteria query ->
+                GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                return builder.build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityAffiliationTypeBo firstAffiliationType = new EntityAffiliationTypeBo(code: "affiliationcodeone");
         EntityAffiliationBo firstEntityAffiliationBo = new EntityAffiliationBo(entityId: "CCC", affiliationType: firstAffiliationType, id: "affiliationidone", affiliationTypeCode: "affiliationcodeone", active: true);
@@ -2467,23 +2388,25 @@ class IdentityServiceImplTest {
         EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
         EntityEmploymentBo existingEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone");
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
-            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
-                if (entityEmploymentBo.entityId.equals(map.get("entityId"))
-                && entityEmploymentBo.employeeTypeCode.equals(map.get("employeeTypeCode"))
-                && entityEmploymentBo.employeeStatusCode.equals(map.get("employeeStatusCode"))
-                && entityEmploymentBo.entityAffiliationId.equals(map.get("entityAffiliationId")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmployments.size()) {
+            Class clazz, QueryByCriteria map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.entityId.equals("AAA")
+                        && entityEmploymentBo.employeeTypeCode.equals("employmenttypecodeone")
+                        && entityEmploymentBo.employeeStatusCode.equals("employmentstatusone")
+                        && entityEmploymentBo.entityAffiliationId.equals("affiliationidone"))
                 {
-                    return entityEmploymentBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityEmploymentBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmploymentBo bo -> return existingEntityEmploymentBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmploymentBo bo, PersistenceOption... options -> return existingEntityEmploymentBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmployment entityEmployment = identityService.updateEmployment(EntityEmploymentBo.to(existingEntityEmploymentBo));
 
@@ -2492,11 +2415,11 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testInactivateEmploymentWithNonExistentObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..1) {
-            Class clazz, Map map -> return null;
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria query -> return GenericQueryResults.Builder.create().build();
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmployment entityEmployment = identityService.inactivateEmployment("new");
     }
@@ -2511,20 +2434,22 @@ class IdentityServiceImplTest {
         EntityEmploymentStatusBo firstEmploymentStatus = new EntityEmploymentStatusBo(code: "employmentstatusone");
         EntityEmploymentBo inactiveEntityEmploymentBo = new EntityEmploymentBo(entityId: "AAA", id: "employmentidone", entityAffiliation: firstEntityAffiliationBo, entityAffiliationId: "affiliationidone", employeeType: firstEmploymentType, employeeTypeCode: "employmenttypecodeone", employeeStatus: firstEmploymentStatus, employeeStatusCode: "employmentstatusone", active: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityEmployments.size()) {
-            Class clazz, Map map -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
-                if (entityEmploymentBo.id.equals(map.get("id")))
+        mockDataObjectService.demand.findMatching(1..sampleEntityEmployments.size()) {
+            Class clazz, QueryByCriteria id -> for (EntityEmploymentBo entityEmploymentBo in sampleEntityEmployments.values()) {
+                if (entityEmploymentBo.id.equals(inactiveEntityEmploymentBo.id))
                 {
-                    return entityEmploymentBo;
+                    GenericQueryResults.Builder builder = GenericQueryResults.Builder.create();
+                    builder.setResults(Collections.singletonList(entityEmploymentBo));
+                    return builder.build();
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityEmploymentBo bo -> return inactiveEntityEmploymentBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityEmploymentBo bo, PersistenceOption... options -> return inactiveEntityEmploymentBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityEmployment inactiveEntityEmployment = identityService.inactivateEmployment(existingEntityEmploymentBo.id);
 
@@ -2538,16 +2463,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testAddBioDemographicsToEntityWithExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
-            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
-                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+        mockDataObjectService.demand.find(1..sampleEntityBioDemographics.size()) {
+            Class clazz, String entityId -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(entityId))
                 {
                     return entityBioDemographicsBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         String birthDateString = "01/01/2007";
         String deceasedDateString = "01/01/2087";
@@ -2567,20 +2492,20 @@ class IdentityServiceImplTest {
         Date deceasedDate = formatter.parse(deceasedDateString);
         EntityBioDemographicsBo newEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "CCC", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
-            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
-                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+        mockDataObjectService.demand.find(1..sampleEntityBioDemographics.size()) {
+            Class clazz, String entityId -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(entityId))
                 {
                     return entityBioDemographicsBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityBioDemographicsBo bo -> return newEntityBioDemographicsBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityBioDemographicsBo bo, PersistenceOption... options -> return newEntityBioDemographicsBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityBioDemographics entityBioDemographics = identityService.addBioDemographicsToEntity(EntityBioDemographicsBo.to(newEntityBioDemographicsBo));
 
@@ -2594,16 +2519,16 @@ class IdentityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateBioDemographicsWithNonExistingObjectFails() {
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
-            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
-                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+        mockDataObjectService.demand.find(1..sampleEntityBioDemographics.size()) {
+            Class clazz, String entityId -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(entityId))
                 {
                     return entityBioDemographicsBo;
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         String birthDateString = "01/01/2007";
         String deceasedDateString = "01/01/2087";
@@ -2623,20 +2548,20 @@ class IdentityServiceImplTest {
         Date deceasedDate = formatter.parse(deceasedDateString);
         EntityBioDemographicsBo existingEntityBioDemographicsBo = new EntityBioDemographicsBo(entityId: "AAA", birthDateValue: birthDate, genderCode: "M", deceasedDateValue: deceasedDate, maritalStatusCode: "S", primaryLanguageCode: "EN", secondaryLanguageCode: "FR", birthCountry: "US", birthStateProvinceCode: "IN", birthCity: "Bloomington", geographicOrigin: "None", suppressPersonal: false);
 
-        mockBoService.demand.findByPrimaryKey(1..sampleEntityBioDemographics.size()) {
-            Class clazz, Map map -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
-                if (entityBioDemographicsBo.entityId.equals(map.get("entityId")))
+        mockDataObjectService.demand.find(1..sampleEntityBioDemographics.size()) {
+            Class clazz, String entityId -> for (EntityBioDemographicsBo entityBioDemographicsBo in sampleEntityBioDemographics.values()) {
+                if (entityBioDemographicsBo.entityId.equals(entityId))
                 {
                     return entityBioDemographicsBo;
                 }
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            EntityBioDemographicsBo bo -> return existingEntityBioDemographicsBo;
+        mockDataObjectService.demand.save(1..1) {
+            EntityBioDemographicsBo bo, PersistenceOption... options -> return existingEntityBioDemographicsBo;
         }
 
-        injectBusinessObjectServiceIntoIdentityService();
+        injectDataObjectServiceIntoIdentityService();
 
         EntityBioDemographics entityBioDemographics = identityService.updateBioDemographics(EntityBioDemographicsBo.to(existingEntityBioDemographicsBo));
 

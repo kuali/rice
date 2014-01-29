@@ -25,7 +25,6 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KCBServiceLocator {
-    public GenericDao getKcbGenericDao();
     public JobDetail getMessageProcessingJobDetail();
     public PlatformTransactionManager getTransactionManager();
     public MessageDeliveryService getMessageDeliveryService();

@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
@@ -43,46 +42,35 @@ import static org.junit.Assert.assertEquals;
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
                         @UnitTestSql("delete from trv_acct_type")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
                 },
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
-                        , @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
                 }
         ),
         tearDown = @UnitTestData(
                 sqlStatements = {
                         @UnitTestSql("delete from trv_acct_type")
-                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
                 }
-       )
+        )
 )
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
 
     private List<KeyValue> testKeyValues = new ArrayList<KeyValue>();
     private List<KeyValue> testKeyValuesKeyInLabel = new ArrayList<KeyValue>();
-    private List<KeyValue> testKeyValuesLongKey = new ArrayList<KeyValue>();
-    private List<KeyValue> testKeyValuesKeyInLabelLongKey = new ArrayList<KeyValue>();
 
     /**
      * Default Constructor builds KeyValue Lists used for tests.
      *
      */
     public PersistableBusinessObjectValuesFinderTest() {
-    	testKeyValues.add(new ConcreteKeyValue("CAT", "Clearing Account Type"));
-    	testKeyValues.add(new ConcreteKeyValue("EAT", "Expense Account Type"));
-    	testKeyValues.add(new ConcreteKeyValue("IAT", "Income Account Type"));
-    
-    	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("CAT", "CAT - Clearing Account Type"));
-    	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("EAT", "EAT - Expense Account Type"));
-    	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("IAT", "IAT - Income Account Type"));
-     
-    	
-    	for (int x=101;x<302;x++) {
-    	    testKeyValuesLongKey.add(new ConcreteKeyValue(new Long(x).toString(), "fo-" + x));
-    	    testKeyValuesKeyInLabelLongKey.add(new ConcreteKeyValue(new Long(x).toString(), x + " - fo-" + x));
-    	}
+        testKeyValues.add(new ConcreteKeyValue("CAT", "Clearing Account Type"));
+        testKeyValues.add(new ConcreteKeyValue("EAT", "Expense Account Type"));
+        testKeyValues.add(new ConcreteKeyValue("IAT", "Income Account Type"));
+
+        testKeyValuesKeyInLabel.add(new ConcreteKeyValue("CAT", "CAT - Clearing Account Type"));
+        testKeyValuesKeyInLabel.add(new ConcreteKeyValue("EAT", "EAT - Expense Account Type"));
+        testKeyValuesKeyInLabel.add(new ConcreteKeyValue("IAT", "IAT - Income Account Type"));
     }
 
     /**
@@ -92,16 +80,16 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
      * @throws Exception
      */
     @Test public void testGetKeyValues() throws Exception {
-    	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-    	valuesFinder.setBusinessObjectClass(AccountType.class);
-    	valuesFinder.setKeyAttributeName("accountTypeCode");
-    	valuesFinder.setLabelAttributeName("name");
-    	valuesFinder.setIncludeKeyInDescription(false);
-    	List<KeyValue> keyValues = valuesFinder.getKeyValues();
-    	assertEquals(testKeyValues.size(), keyValues.size());
-    	for (KeyValue testKeyValue: testKeyValues) {
-                assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
-    	}
+        PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
+        valuesFinder.setBusinessObjectClass(AccountType.class);
+        valuesFinder.setKeyAttributeName("accountTypeCode");
+        valuesFinder.setLabelAttributeName("name");
+        valuesFinder.setIncludeKeyInDescription(false);
+        List<KeyValue> keyValues = valuesFinder.getKeyValues();
+        assertEquals(testKeyValues.size(), keyValues.size());
+        for (KeyValue testKeyValue: testKeyValues) {
+            assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
+        }
     }
 
     /**
@@ -111,54 +99,22 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
      * @throws Exception
      */
     @Test public void testGetKeyValuesKeyInLabel() throws Exception {
-    	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-    	valuesFinder.setBusinessObjectClass(AccountType.class);
-    	valuesFinder.setKeyAttributeName("accountTypeCode");
-    	valuesFinder.setLabelAttributeName("name");
-    	valuesFinder.setIncludeKeyInDescription(true);
-    	List<KeyValue> keyValues = valuesFinder.getKeyValues();
-    	assertEquals(testKeyValuesKeyInLabel.size(), keyValues.size());
-    	for (KeyValue testKeyValue: testKeyValuesKeyInLabel) {
-                assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
-    	}
+        PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
+        valuesFinder.setBusinessObjectClass(AccountType.class);
+        valuesFinder.setKeyAttributeName("accountTypeCode");
+        valuesFinder.setLabelAttributeName("name");
+        valuesFinder.setIncludeKeyInDescription(true);
+        List<KeyValue> keyValues = valuesFinder.getKeyValues();
+        assertEquals(testKeyValuesKeyInLabel.size(), keyValues.size());
+        for (KeyValue testKeyValue: testKeyValuesKeyInLabel) {
+            assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
+        }
     }
 
     /**
-     * tests to make sure the <code>PersistableBusinessObjectValuesFinder</code> works
-     * as expected for the FiscalOfficer BO.
-     *
-     * @throws Exception
+     * KULRICE-11708 - removing the two tests for FiscalOfficer since the TRV_ACCT_FO table no longer exists.
+     * No replacement tests are needed since testGetKeyValues and testGetKeyValuesKeyInLabel are testing similar
+     * functionality for the accountTypeCode.  Choosing to delete these tests rather than ingore them so that
+     * the AccountManager class can be deleted if so desired.
      */
-    @Test public void testGetKeyValuesLongKey() throws Exception {
-    	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-    	valuesFinder.setBusinessObjectClass(AccountManager.class);
-    	valuesFinder.setKeyAttributeName("amId");
-    	valuesFinder.setLabelAttributeName("userName");
-    	valuesFinder.setIncludeKeyInDescription(false);
-    	List<KeyValue> keyValues = valuesFinder.getKeyValues();
-    	assertEquals(testKeyValuesLongKey.size(), keyValues.size());
-    	for (KeyValue testKeyValue: testKeyValuesLongKey) {
-                assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
-    	}
-    }
-
-    /**
-     * tests that <code>PersistableBusinessObjectValuesFinder</code> works
-     * as expected for the FiscalOfficer BO with the key included in the label
-     *
-     * @throws Exception
-     */
-    @Test public void testGetKeyValuesKeyInLabelLongKey() throws Exception {
-    	PersistableBusinessObjectValuesFinder valuesFinder = new PersistableBusinessObjectValuesFinder();
-    	valuesFinder.setBusinessObjectClass(AccountManager.class);
-    	valuesFinder.setKeyAttributeName("amId");
-    	valuesFinder.setLabelAttributeName("userName");
-    	valuesFinder.setIncludeKeyInDescription(true);
-    	List<KeyValue> keyValues = valuesFinder.getKeyValues();
-    	assertEquals(testKeyValuesKeyInLabelLongKey.size(), keyValues.size());
-    	for (KeyValue testKeyValue: testKeyValuesKeyInLabelLongKey) {
-                assertEquals(testKeyValue.getValue(), valuesFinder.getKeyLabel(testKeyValue.getKey()));
-    	}
-    }
-
 }

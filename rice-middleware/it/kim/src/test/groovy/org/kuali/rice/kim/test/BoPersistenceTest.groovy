@@ -17,19 +17,19 @@ package org.kuali.rice.kim.test
 
 import org.junit.Before
 import org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableEditableBase
-import org.kuali.rice.test.persistence.PersistenceTestHelper
+import org.kuali.rice.test.persistence.JpaPersistenceTestHelper
 
 /**
  * Tests persisting Entity objects in order to verify ORM mappings
  */
-abstract class BoPersistenceTest extends KIMTestCase {
+public abstract class BoPersistenceTest extends KIMTestCase {
 
-    @Delegate PersistenceTestHelper helper
+    @Delegate JpaPersistenceTestHelper helper
     protected factory = new EntityFactory()
 
     @Before
     void init() {
-        helper = new PersistenceTestHelper("kimDataSource")
+        helper = new JpaPersistenceTestHelper("kimDataSource")
     }
 
     protected def docno_field(KimDocumentBoActivatableEditableBase bo) {

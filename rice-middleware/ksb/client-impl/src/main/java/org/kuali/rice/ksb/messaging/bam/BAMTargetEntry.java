@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging.bam;
 
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.messaging.AsynchronousCallback;
 
 import javax.persistence.Basic;

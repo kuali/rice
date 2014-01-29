@@ -16,13 +16,9 @@
 package org.kuali.rice.kim.api.identity.residency;
 
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
-import org.kuali.rice.kim.api.identity.CodedAttribute;
-import org.kuali.rice.kim.api.identity.CodedAttributeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,7 +27,6 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -44,13 +39,6 @@ import java.util.Collection;
     EntityResidency.Elements.IN_STATE,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
-    EntityResidency.Elements.ESTABLISHED_DATE,
-    EntityResidency.Elements.CHANGE_DATE,
-    EntityResidency.Elements.COUNTRY_CODE,
-    EntityResidency.Elements.COUNTY_CODE,
-    EntityResidency.Elements.STATE_PROVINCE_CODE,
-    EntityResidency.Elements.RESIDENCY_STATUS,
-    EntityResidency.Elements.RESIDENCY_TYPE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class EntityResidency extends AbstractDataTransferObject
@@ -69,22 +57,6 @@ public final class EntityResidency extends AbstractDataTransferObject
     private final String objectId;
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
-    @XmlJavaTypeAdapter(DateTimeAdapter.class)
-    @XmlElement(name = Elements.ESTABLISHED_DATE, required = false)
-    private final DateTime establishedDate;
-    @XmlJavaTypeAdapter(DateTimeAdapter.class)
-    @XmlElement(name = Elements.CHANGE_DATE, required = false)
-    private final DateTime changeDate;
-    @XmlElement(name = Elements.COUNTRY_CODE, required = false)
-    private final String countryCode;
-    @XmlElement(name = Elements.COUNTY_CODE, required = false)
-    private final String countyCode;
-    @XmlElement(name = Elements.STATE_PROVINCE_CODE, required = false)
-    private final String stateProvinceCode;
-    @XmlElement(name = Elements.RESIDENCY_STATUS, required = false)
-    private final CodedAttribute residencyStatus;
-    @XmlElement(name = Elements.RESIDENCY_TYPE, required = false)
-    private final CodedAttribute residencyType;
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -100,13 +72,6 @@ public final class EntityResidency extends AbstractDataTransferObject
         this.versionNumber = null;
         this.objectId = null;
         this.id = null;
-        this.establishedDate = null;
-        this.changeDate = null;
-        this.countryCode = null;
-        this.countyCode = null;
-        this.stateProvinceCode = null;
-        this.residencyStatus = null;
-        this.residencyType = null;
     }
 
     private EntityResidency(Builder builder) {
@@ -116,13 +81,6 @@ public final class EntityResidency extends AbstractDataTransferObject
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
         this.id = builder.getId();
-        this.establishedDate = builder.getEstablishedDate();
-        this.changeDate = builder.getChangeDate();
-        this.countryCode = builder.getCountryCode();
-        this.countyCode = builder.getCountyCode();
-        this.stateProvinceCode = builder.getStateProvinceCode();
-        this.residencyStatus = builder.getResidencyStatus() == null ? null : builder.getResidencyStatus().build();
-        this.residencyType = builder.getResidencyType() == null ? null : builder.getResidencyType().build();
     }
 
     @Override
@@ -155,42 +113,6 @@ public final class EntityResidency extends AbstractDataTransferObject
         return this.id;
     }
 
-    @Override
-    public DateTime getEstablishedDate() {
-        return this.establishedDate;
-    }
-
-    @Override
-    public DateTime getChangeDate() {
-        return this.changeDate;
-    }
-
-    @Override
-    public String getCountryCode() {
-        return this.countryCode;
-    }
-
-    @Override
-    public String getCountyCode() {
-        return this.countyCode;
-    }
-
-    @Override
-    public String getStateProvinceCode() {
-        return this.stateProvinceCode;
-    }
-
-    @Override
-    public CodedAttribute getResidencyStatus() {
-        return this.residencyStatus;
-    }
-
-    @Override
-    public CodedAttribute getResidencyType() {
-        return this.residencyType;
-    }
-
-
 
     /**
      * A builder which can be used to construct {@link EntityResidency} instances.  Enforces the constraints of the {@link EntityResidencyContract}.
@@ -199,13 +121,7 @@ public final class EntityResidency extends AbstractDataTransferObject
     public final static class Builder
         implements Serializable, ModelBuilder, EntityResidencyContract
     {
-        private DateTime establishedDate;
-        private DateTime changeDate;
-        private String countryCode;
-        private String countyCode;
-        private String stateProvinceCode;
-        private CodedAttribute.Builder residencyStatus;
-        private CodedAttribute.Builder residencyType;
+
         private String entityId;
         private String determinationMethod;
         private String inState;
@@ -230,13 +146,6 @@ public final class EntityResidency extends AbstractDataTransferObject
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
             builder.setId(contract.getId());
-            builder.setEstablishedDate(contract.getEstablishedDate());
-            builder.setChangeDate(contract.getChangeDate());
-            builder.setCountryCode(contract.getCountryCode());
-            builder.setCountyCode(contract.getCountyCode());
-            builder.setStateProvinceCode(contract.getStateProvinceCode());
-            builder.setResidencyStatus(contract.getResidencyStatus() == null ? null : CodedAttribute.Builder.create(contract.getResidencyStatus()));
-            builder.setResidencyType(contract.getResidencyType() == null ? null : CodedAttribute.Builder.create(contract.getResidencyType()));
             return builder;
         }
 
@@ -257,41 +166,6 @@ public final class EntityResidency extends AbstractDataTransferObject
         @Override
         public String getInState() {
             return this.inState;
-        }
-
-        @Override
-        public DateTime getEstablishedDate() {
-            return this.establishedDate;
-        }
-
-        @Override
-        public DateTime getChangeDate() {
-            return this.changeDate;
-        }
-
-        @Override
-        public String getCountryCode() {
-            return this.countryCode;
-        }
-
-        @Override
-        public String getCountyCode() {
-            return this.countyCode;
-        }
-
-        @Override
-        public String getStateProvinceCode() {
-            return this.stateProvinceCode;
-        }
-
-        @Override
-        public CodedAttribute.Builder getResidencyStatus() {
-            return this.residencyStatus;
-        }
-
-        @Override
-        public CodedAttribute.Builder getResidencyType() {
-            return this.residencyType;
         }
 
         @Override
@@ -336,35 +210,7 @@ public final class EntityResidency extends AbstractDataTransferObject
             this.id = id;
         }
 
-        public void setEstablishedDate(DateTime establishedDate) {
-            this.establishedDate = establishedDate;
         }
-
-        public void setChangeDate(DateTime changeDate) {
-            this.changeDate = changeDate;
-        }
-
-        public void setCountryCode(String countryCode) {
-            this.countryCode = countryCode;
-        }
-
-        public void setCountyCode(String countyCode) {
-            this.countyCode = countyCode;
-        }
-
-        public void setStateProvinceCode(String stateProvinceCode) {
-            this.stateProvinceCode = stateProvinceCode;
-        }
-
-        public void setResidencyStatus(CodedAttribute.Builder residencyStatus) {
-            this.residencyStatus = residencyStatus;
-        }
-
-        public void setResidencyType(CodedAttribute.Builder residencyType) {
-            this.residencyType = residencyType;
-        }
-
-    }
 
 
     /**
@@ -388,13 +234,6 @@ public final class EntityResidency extends AbstractDataTransferObject
         final static String DETERMINATION_METHOD = "determinationMethod";
         final static String IN_STATE = "inState";
         final static String ID = "id";
-        final static String ESTABLISHED_DATE = "establishedDate";
-        final static String CHANGE_DATE = "changeDate";
-        final static String COUNTRY_CODE = "countryCode";
-        final static String COUNTY_CODE = "countyCode";
-        final static String STATE_PROVINCE_CODE = "stateProvinceCode";
-        final static String RESIDENCY_STATUS = "residencyStatus";
-        final static String RESIDENCY_TYPE = "residencyType";
 
     }
 

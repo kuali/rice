@@ -203,7 +203,7 @@ public class DialogGroup extends GroupBase {
     /**
      * Override to add the handler script for the dialog response and show dialog events
      *
-     * @see org.kuali.rice.krad.uif.component.Component#getEventHandlerScript()
+     * {@inheritDoc}
      */
     @Override
     public String getEventHandlerScript() {
@@ -432,7 +432,7 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

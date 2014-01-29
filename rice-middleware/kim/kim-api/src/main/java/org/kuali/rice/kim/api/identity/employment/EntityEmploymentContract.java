@@ -86,11 +86,4 @@ public interface EntityEmploymentContract extends Versioned, GloballyUnique, Ina
 	 */
 	boolean isPrimary();
 
-    /**
-     * The tenure indicator value for this object.
-     *
-     * @return returns true if the record of Employment is tenured
-     */
-    boolean isTenured();
-
 }

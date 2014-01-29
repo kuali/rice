@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -22,21 +28,15 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
+import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 /**
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
@@ -44,7 +44,8 @@ public class IdentityServiceImplTest extends KIMTestCase {
 
 	private IdentityService identityService;
 
-	public void setUp() throws Exception {
+	@Override
+    public void setUp() throws Exception {
 		super.setUp();
 		identityService = (IdentityService) KIMServiceLocatorInternal.getBean("kimIdentityDelegateService");
 	}
@@ -100,11 +101,11 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		assertNotNull("principal must not be null", principal);
 		assertEquals("Principal ID did not match expected result","KULUSER", principal.getPrincipalId());
 	}
-	
+
 	@Test
 	public void testGetContainedAttributes() {
 		Principal principal = identityService.getPrincipal("p1");
-		
+
 		Entity entity = identityService.getEntity(principal.getEntityId());
 		assertNotNull( "Entity Must not be null", entity );
 		EntityTypeContactInfoContract eet = entity.getEntityTypeContactInfoByTypeCode( "PERSON" );
@@ -127,6 +128,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
         names.add(getNewEntityName(entity.getId()));
 
         entity = identityService.updateEntity(builder.build());
+        entity = EntityBo.to( KradDataServiceLocator.getDataObjectService().find(EntityBo.class, entity.getId()) );
         assertNotNull("Entity Must not be null", entity);
         assertEquals("Entity should have 2 names", 2, entity.getNames().size());
 

@@ -22,7 +22,7 @@ import edu.sampleu.travel.options.PostalStateCodeKeyValuesFinder;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;

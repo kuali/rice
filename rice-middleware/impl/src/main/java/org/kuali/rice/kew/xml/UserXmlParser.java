@@ -15,6 +15,16 @@
  */
 package org.kuali.rice.kew.xml;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.sql.DataSource;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -32,22 +42,13 @@ import org.kuali.rice.kim.impl.identity.name.EntityNameBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.xml.sax.SAXException;
 
-import javax.sql.DataSource;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Parses users from XML.
- * 
+ *
  * This is really meant for use only in the unit tests and was written to help ease
  * transition over to KIM.  There are numerous unit tests which took advantage of
  * the ability to import "users" from XML in KEW.  KIM does not provide XML
@@ -57,7 +58,7 @@ import java.util.List;
  *
  */
 public class UserXmlParser {
-    
+
     private static final Namespace NAMESPACE = Namespace.getNamespace("", "ns:workflow/User");
 
     private static final String USERS_ELEMENT = "users";
@@ -69,7 +70,7 @@ public class UserXmlParser {
     private static final String EMPL_ID_ELEMENT = "emplId";
     private static final String EMAIL_ELEMENT = "emailAddress";
     private static final String GIVEN_NAME_ELEMENT = "givenName";
-    private static final String LAST_NAME_ELEMENT = "lastName";    
+    private static final String LAST_NAME_ELEMENT = "lastName";
     private static final String TYPE_ELEMENT = "type";
 
     private DataSource kimDataSource;
@@ -98,7 +99,7 @@ public class UserXmlParser {
     		}
     	}
     }
-    
+
     protected EntityBo constructEntity(Element userElement) {
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);
@@ -122,8 +123,8 @@ public class UserXmlParser {
         	emplInfo.setId(emplId);
         	emplInfo.setEntityAffiliationId(null);
         }
-        
-    	
+
+
 		EntityBo entity = new EntityBo();
 		entity.setActive(true);
 		entity.setId("" + entityId);
@@ -132,13 +133,11 @@ public class UserXmlParser {
 			emplInfos.add(emplInfo);
 		}
 		entity.setEmploymentInformation(emplInfos);
-		
+
 		EntityTypeContactInfoBo entityType = new EntityTypeContactInfoBo();
-		//identity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getId());
 		entityType.setActive(true);
-		entityType.setVersionNumber(new Long(1));
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
             Long emailId = new Long(MaxValueIncrementerFactory.getIncrementer(getKimDataSource(),
@@ -150,19 +149,18 @@ public class UserXmlParser {
 			email.setEntityTypeCode(entityTypeCode);
 			// must be in krim_email_typ_t.email_typ_cd:
 			email.setEmailType(CodedAttribute.Builder.create("WRK"));
-			email.setVersionNumber(new Long(1));
+			//email.setVersionNumber(new Long(1));
 			email.setEmailAddress(emailAddress);
 			email.setDefaultValue(true);
 			email.setEntityId(entity.getId());
 			List<EntityEmailBo> emailAddresses = new ArrayList<EntityEmailBo>(1);
 			emailAddresses.add(EntityEmailBo.from(email.build()));
 			entityType.setEmailAddresses(emailAddresses);
-			//email = (KimEntityEmailImpl)KRADServiceLocatorInternal.getBusinessObjectService().save(email);
 		}
 		List<EntityTypeContactInfoBo> entityTypes = new ArrayList<EntityTypeContactInfoBo>(1);
 		entityTypes.add(entityType);
 		entity.setEntityTypeContactInfos(entityTypes);
-		
+
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
             Long entityNameId = MaxValueIncrementerFactory.getIncrementer(getKimDataSource(), "KRIM_ENTITY_NM_ID_S")
                     .nextLongValue();
@@ -176,15 +174,15 @@ public class UserXmlParser {
 			name.setMiddleName("");
 			name.setLastName(lastName);
 			name.setDefaultValue(true);
-			
+
 			entity.setNames(Collections.singletonList(name));
 		}
 
-		entity =  KNSServiceLocator.getBusinessObjectService().save(entity);
-		
+		entity =  KradDataServiceLocator.getDataObjectService().save(entity);
+
 		return entity;
     }
-    
+
     protected PrincipalBo constructPrincipal(Element userElement, String entityId) {
     	String principalId = userElement.getChildTextTrim(WORKFLOW_ID_ELEMENT, NAMESPACE);
     	if (principalId == null) {
@@ -194,14 +192,14 @@ public class UserXmlParser {
     	if (principalName == null) {
     		principalName = userElement.getChildTextTrim(PRINCIPAL_NAME_ELEMENT, NAMESPACE);
     	}
-    	
+
 		PrincipalBo principal = new PrincipalBo();
 		principal.setActive(true);
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		principal = (PrincipalBo) KNSServiceLocator.getBusinessObjectService().save(principal);
-		
+		principal = KradDataServiceLocator.getDataObjectService().save(principal);
+
 		return principal;
     }
 

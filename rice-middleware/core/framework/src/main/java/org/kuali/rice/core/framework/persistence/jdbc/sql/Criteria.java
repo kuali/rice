@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 
-import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -389,11 +388,6 @@ public class Criteria {
 		return queryString;
 	}
 
-	// Keep this package access so the QueryByCriteria can call it from this package.
-	void prepareParameters(Query query) {
-		prepareParameters(query, tokens, params);
-	}
-
 	public List<Object> getParameteres() {
 		return getParameteres(tokens, params);
 	}
@@ -419,25 +413,6 @@ public class Criteria {
 			}
 		}
 		return mRet;
-	}
-
-	void prepareParameters(Query query, List tokens, Map<String, Object> params) {
-		for (Map.Entry<String, Object> param : params.entrySet()) {
-			Object value = param.getValue();
-			if (value instanceof BigDecimal) {
-				value = new Long(((BigDecimal)value).longValue());
-			}
-			if (value instanceof String) {
-				value = ((String)value).replaceAll("\\*", "%");
-			}
-			query.setParameter(param.getKey(), value);
-		}
-		for (Iterator iterator = tokens.iterator(); iterator.hasNext();) {
-			Object token = (Object) iterator.next();
-			if (token instanceof Criteria) {
-				prepareParameters(query, ((Criteria)token).tokens, ((Criteria)token).params);
-			}
-		}
 	}
 
 	private class AndCriteria extends Criteria {

@@ -15,40 +15,39 @@
  */
 package org.kuali.rice.kim.impl.identity.affiliation;
 
-import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+
 @Entity
 @Table(name = "KRIM_ENTITY_AFLTN_T")
 public class EntityAffiliationBo extends EntityAffiliationBase {
+
     private static final long serialVersionUID = 0L;
-    @Id
-    @GeneratedValue(generator = "KRIM_ENTITY_AFLTN_ID_S")
+
     @PortableSequenceGenerator(name = "KRIM_ENTITY_AFLTN_ID_S")
+    @GeneratedValue(generator = "KRIM_ENTITY_AFLTN_ID_S")
+    @Id
     @Column(name = "ENTITY_AFLTN_ID")
     private String id;
 
-    @ManyToOne(targetEntity = EntityAffiliationTypeBo.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(
-            name = "AFLTN_TYP_CD", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = EntityAffiliationTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "AFLTN_TYP_CD", referencedColumnName = "AFLTN_TYP_CD", insertable = false, updatable = false)
     private EntityAffiliationTypeBo affiliationType;
 
     public static EntityAffiliation to(EntityAffiliationBo bo) {
         if (bo == null) {
             return null;
         }
-
-        return EntityAffiliation.Builder.create(bo)
-                .build();
+        return EntityAffiliation.Builder.create(bo).build();
     }
 
     /**
@@ -61,21 +60,18 @@ public class EntityAffiliationBo extends EntityAffiliationBase {
         if (immutable == null) {
             return null;
         }
-
         EntityAffiliationBo bo = new EntityAffiliationBo();
         bo.setActive(immutable.isActive());
         if (immutable.getAffiliationType() != null) {
             bo.setAffiliationTypeCode(immutable.getAffiliationType().getCode());
             bo.setAffiliationType(EntityAffiliationTypeBo.from(immutable.getAffiliationType()));
         }
-
         bo.setId(immutable.getId());
         bo.setCampusCode(immutable.getCampusCode());
         bo.setEntityId(immutable.getEntityId());
         bo.setActive(immutable.isActive());
         bo.setDefaultValue(immutable.isDefaultValue());
         bo.setVersionNumber(immutable.getVersionNumber());
-
         return bo;
     }
 

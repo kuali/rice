@@ -20,7 +20,7 @@ import org.kuali.rice.kew.api.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.api.doctype.DocumentTypeAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

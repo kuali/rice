@@ -23,7 +23,7 @@
 
   <bean id="LookupSampleView" parent="Uif-LookupView">
     <property name="parentLocation">
-      <bean parent="Uif-RicePortalParentLocation"/>
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
     </property>
     <property name="viewName" value="LookupSampleView"/>
     <property name="headerText" value="Lookup Sample"/>
@@ -32,6 +32,7 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:label="Fiscal Officer User ID"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
       </list>
     </property>
@@ -39,9 +40,11 @@
       <list>
         <bean parent="Uif-DataField" p:propertyName="number"/>
         <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
       </list>
     </property>
+
   </bean>
 
   <bean id="LookupSampleViewURLSearch" parent="LookupSampleView">
@@ -61,22 +64,6 @@
               value="Lookup Sample - Multiple Value Specified in View with result set limit of 5 rows"/>
     <property name="multipleValuesSelectResultSetLimit" value="5"/>
     <property name="multipleValuesSelect" value="true"/>
-  </bean>
-
-  <bean id="FancyLookupSampleView" parent="LookupSampleView">
-    <property name="viewName" value="FancyLookupSampleView"/>
-    <property name="headerText" value="Lookup Sample - Fancy Lookup Sample"/>
-    <property name="renderCriteriaActions" value="false"/>
-    <property name="criteriaFields">
-      <list merge="true">
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list merge="true">
-        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
   </bean>
   
   <bean id="OperatorsLookupSampleView" parent="LookupSampleView">
@@ -213,4 +200,47 @@
       </value>
     </property>
   </bean>
+
+  <bean id="LookupSampleViewVerticalActions" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewVerticalActions"/>
+    <property name="headerText" value="Lookup Sample - basic  lookup with actions stacked vertically"/>
+    <property name="resultsGroup.layoutManager.actionFieldPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+    </property>
+    <property name="resultsGroup.lineActions">
+      <list>
+        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
+        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="20"/>
+
+      </list>
+    </property>
+
+  </bean>
+
+  <bean id="LookupSampleViewActionsHierarchy" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewActionsHierarchy"/>
+    <property name="headerText" value="Lookup Sample - with actions grouped in a hierarchy"/>
+    <property name="resultsGroup.lineActions">
+      <list>
+        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
+        <bean parent="Uif-LinkGroup" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"
+              p:linkSeparator="|"  p:style="clear: none;">
+          <property name="items">
+            <list>
+              <bean id="action-loan" parent="Uif-Link" p:linkText="loan" p:order="20"/>
+              <bean id="action-renew" parent="Uif-Link" p:linkText="renew" p:order="30"/>
+              <bean id="action-return" parent="Uif-Link" p:linkText="return" p:order="40"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="50"/>
+        <bean id="action-merge" parent="Uif-Link" p:linkText="merge" p:order="60"/>
+        <bean id="action-separate" parent="Uif-Link" p:linkText="separate" p:order="70"/>
+        <bean id="action-transfer" parent="Uif-Link" p:linkText="transfer" p:order="80"/>
+
+      </list>
+    </property>
+
+  </bean>
+
 </beans>

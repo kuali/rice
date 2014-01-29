@@ -28,7 +28,7 @@
     <property name="templateName" value="uif_dropdownMenu"/>
     <property name="toggleCaretClass" value="caret"/>
     <property name="toggleMessage">
-      <bean parent="Uif-Message" p:generateSpan="false"/>
+      <bean parent="Uif-Message" p:generateWrapperElement="false"/>
     </property>
     <property name="libraryCssClasses">
       <list>
@@ -76,7 +76,7 @@
   <bean id="Uif-MenuHeader" parent="Uif-MenuHeader-parentBean"/>
   <bean id="Uif-MenuHeader-parentBean" abstract="true" parent="Uif-Message"
         scope="prototype">
-    <property name="generateSpan" value="false"/>
+    <property name="generateWrapperElement" value="false"/>
     <property name="wrapperCssClasses" value="dropdown-header"/>
   </bean>
 

@@ -28,6 +28,8 @@ import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.StatefulJob;
@@ -58,7 +60,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     private static final Logger LOG = Logger.getLogger(MessageProcessingJob.class);
     
-    private GenericDao dao;
+    private DataObjectService dataObjectService;
     private MessageDelivererRegistryService registry;
     private MessageDeliveryService messageDeliveryService;
     private Long messageId;
@@ -76,19 +78,18 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
 
     public MessageProcessingJob() {
-        dao = GlobalKCBServiceLocator.getInstance().getKcbGenericDao();
         registry = GlobalKCBServiceLocator.getInstance().getMessageDelivererRegistryService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
         txManager = GlobalKCBServiceLocator.getInstance().getTransactionManager();
+        dataObjectService = KRADServiceLocator.getDataObjectService();
     }
 
     /**
-     * Sets the {@link GenericDao}
-     * @param dao the {@link GenericDao}
+     * Sets the {@link DataObjectService}
+     * @param dataObjectService the {@link DataObjectService}
      */
-    @Required
-    public void setGenericDao(GenericDao dao) {
-        this.dao = dao;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**
@@ -142,7 +143,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
     @Override
     protected void unlockWorkItem(MessageDelivery item) {
         item.setLockedDate(null);
-        dao.save(item);
+        dataObjectService.save(item);
     }
 
     /**
@@ -207,7 +208,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     /**
      * Implements delivery of a single MessageDelivery
-     * @param deliverer the deliverer
+     * @param messageDeliverer the deliverer
      * @param messageDelivery the delivery
      * @return collection of strings indicating successful deliveries
      */
@@ -242,7 +243,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
 
     /**
      * Implements bulk delivery of a collection of {@link MessageDelivery}s
-     * @param deliverer the deliverer
+     * @param messageDeliverer the deliverer
      * @param messageDeliveries the deliveries
      * @return collection of strings indicating successful deliveries
      */
@@ -314,7 +315,7 @@ public class MessageProcessingJob extends ConcurrentJob<MessageDelivery> impleme
         messageDelivery.setDeliveryStatus(status);
         // mark as unlocked
         messageDelivery.setLockedDate(null);
-        dao.save(messageDelivery);
+        dataObjectService.save(messageDelivery);
     }
 
     @Override

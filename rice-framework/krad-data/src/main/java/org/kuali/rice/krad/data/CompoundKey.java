@@ -59,4 +59,19 @@ public final class CompoundKey implements Serializable {
         return Collections.unmodifiableMap(keys);
     }
 
+	/**
+	 * Returns true if any of the fields in this compound key have null values, since that usually indicates an
+	 * incomplete and unsaved object.
+	 * 
+	 * @return
+	 */
+	public boolean hasNullKeyValues() {
+		for (Object value : keys.values()) {
+			if (value == null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

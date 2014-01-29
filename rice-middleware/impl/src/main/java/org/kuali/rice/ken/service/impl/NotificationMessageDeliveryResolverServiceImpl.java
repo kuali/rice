@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipientBo;
@@ -27,11 +26,11 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.sql.Timestamp;
@@ -41,6 +40,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+
 
 /**
  * This is the default out-of-the-box implementation that leverages the status flag on a notification (RESOLVED versus UNRESOLVED) to determine whether
@@ -53,26 +53,22 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
 	.getLogger(NotificationMessageDeliveryResolverServiceImpl.class);
 
     private NotificationRecipientService notificationRecipientService;
-    private GenericDao businessObjectDao;
-    private UserPreferenceService userPreferenceService;
+    private DataObjectService dataObjectService;
     private NotificationService notificationService;
 
     /**
      * Constructs a NotificationMessageDeliveryDispatchServiceImpl instance.
      * @param notificationRecipientService
-     * @param businessObjectDao
+     * @param dataObjectService
      * @param txManager
      * @param executor
-     * @param userPreferenceService
      */
     public NotificationMessageDeliveryResolverServiceImpl(NotificationService notificationService, NotificationRecipientService notificationRecipientService,
-            GenericDao businessObjectDao, PlatformTransactionManager txManager, ExecutorService executor,
-	    UserPreferenceService userPreferenceService) {
+            DataObjectService dataObjectService, PlatformTransactionManager txManager, ExecutorService executor) {
         super(txManager, executor);
         this.notificationService = notificationService;
         this.notificationRecipientService = notificationRecipientService;
-        this.businessObjectDao = businessObjectDao;
-        this.userPreferenceService = userPreferenceService;
+        this.dataObjectService = dataObjectService;
     }
 
     /**
@@ -147,7 +143,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
      * Generates all message deliveries for a given notification and save thems to the database.
      * Updates each Notification record to indicate it has been resolved.
      * Should be performed within a separate transaction
-     * @param notification the Notification for which to generate message deliveries
+     * @param notifications the Notification for which to generate message deliveries
      * @return a count of the number of message deliveries generated
      */
     /* Perform within transaction */
@@ -172,7 +168,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                 defaultMessageDelivery.setUserRecipientId(userRecipientId);
 
                 //now save that delivery end point; this record will be later processed by the dispatch service which will actually deliver it
-                businessObjectDao.save(defaultMessageDelivery);
+               defaultMessageDelivery =  dataObjectService.save(defaultMessageDelivery);
 
                 try {
                     new KEWActionListMessageDeliverer().deliverMessage(defaultMessageDelivery);
@@ -183,7 +179,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                 // we have no delivery stage any more, anything we send to KCB needs to be considered "delivered" from
                 // the perspective of KEN
                 defaultMessageDelivery.setMessageDeliveryStatus(NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
-                businessObjectDao.save(defaultMessageDelivery);
+                defaultMessageDelivery = dataObjectService.save(defaultMessageDelivery);
 
                 successes.add(defaultMessageDelivery);
 
@@ -191,7 +187,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
                 notification.setProcessingFlag(NotificationConstants.PROCESSING_FLAGS.RESOLVED);
                 // unlock the record now
                 notification.setLockedDateValue(null);
-                businessObjectDao.save(notification);
+                dataObjectService.save(notification);
             }
 
         }

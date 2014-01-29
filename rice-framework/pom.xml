@@ -28,6 +28,7 @@
   <artifactId>rice-framework</artifactId>
   <packaging>pom</packaging>
 
+<!-- 
   <modules>
     <module>krad-data</module>
     <module>krad-app-framework</module>
@@ -35,10 +36,43 @@
     <module>krad-it</module>
     <module>krad-sampleapp</module>
     <module>krad-service-impl</module>
-    <module>krad-theme-builder</module>
     <module>krad-web</module>
     <module>krad-web-framework</module>
+    <module>krad-theme-builder</module>
     <module>krad-theme-builder/src/test/builder</module>
   </modules>
+ -->
 
+  <profiles>
+    <profile>
+        <id>full-build</id>
+        <activation>
+            <file>
+                <exists>pom.xml</exists>
+            </file>
+        </activation>
+        <modules>
+			<module>krad-theme-builder</module>
+			<module>krad-theme-builder/src/test/builder</module>
+        </modules>
+    </profile>
+    <profile>
+        <id>short-build</id>
+        <activation>
+            <file>
+                <exists>pom.xml</exists>
+            </file>
+        </activation>
+        <modules>
+			<module>krad-data</module>
+			<module>krad-app-framework</module>
+			<module>krad-development-tools</module>
+			<module>krad-it</module>
+			<module>krad-sampleapp</module>
+			<module>krad-service-impl</module>
+			<module>krad-web</module>
+			<module>krad-web-framework</module>
+        </modules>
+    </profile>
+  </profiles>
 </project>

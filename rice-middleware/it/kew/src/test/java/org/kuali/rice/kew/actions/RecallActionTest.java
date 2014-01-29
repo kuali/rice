@@ -15,7 +15,19 @@
  */
 package org.kuali.rice.kew.actions;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.Assert;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
@@ -43,15 +55,8 @@ import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class RecallActionTest extends KEWTestCase {
     /**
@@ -109,6 +114,7 @@ public class RecallActionTest extends KEWTestCase {
     private String NATJOHNS = null;
     private String BMCGOUGH = null;
 
+    @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
     }
@@ -328,9 +334,15 @@ public class RecallActionTest extends KEWTestCase {
         Permission perm = KimApiServiceLocator.getPermissionService().createPermission(permission.build());
         assertEquals(perm.getTemplate().getId(), permTmpl.getId());
         int num = 1;
-        if (appDocStatus != null) num++;
-        if (routeNode != null) num++;
-        if (routeStatus != null) num++;
+        if (appDocStatus != null) {
+            num++;
+        }
+        if (routeNode != null) {
+            num++;
+        }
+        if (routeStatus != null) {
+            num++;
+        }
         assertEquals(num, perm.getAttributes().size());
         assertEquals(docType, perm.getAttributes().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
         assertEquals(appDocStatus, perm.getAttributes().get(KimConstants.AttributeConstants.APP_DOC_STATUS));
@@ -542,7 +554,7 @@ public class RecallActionTest extends KEWTestCase {
         chartAttribute.setNamespaceCode("KR-SYS");
         chartAttribute.setAttributeLabel(roleQualifierName);
         chartAttribute.setActive(true);
-        KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
+        chartAttribute = KradDataServiceLocator.getDataObjectService().save(chartAttribute);
 
         KimApiServiceLocator.getRoleService().assignPermissionToRole(recallPerm.getId(), customRole.getId());
 
@@ -659,7 +671,7 @@ public class RecallActionTest extends KEWTestCase {
         boolean notifyPreviousRecipients = !RECALL_TEST_DOC.equals(doctype);
         boolean notifyPendingRecipients = !RECALL_NO_PENDING_NOTIFY_TEST_DOC.equals(doctype);
         String[] thirdPartiesNotified = RECALL_NOTIFY_THIRDPARTY_TEST_DOC.equals(doctype) ? new String[] { "quickstart", "admin" } : new String[] {};
-        
+
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(initiator, doctype);
         document.route("");
 
@@ -682,7 +694,7 @@ public class RecallActionTest extends KEWTestCase {
 
         // the recaller has a completion request
         assertTrue(document.isCompletionRequested());
-        
+
         // pending approver has FYI
         assertEquals(notifyPendingRecipients, WorkflowDocumentFactory.loadDocument(NATJOHNS, document.getDocumentId()).isFYIRequested());
         // third approver has FYI
@@ -697,7 +709,7 @@ public class RecallActionTest extends KEWTestCase {
                 assertTrue("Expected FYI to be sent to: " + recipient, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(recipient), document.getDocumentId()).isFYIRequested());
             }
         }
-        
+
         // omit JHOPF, and see if FYI is subsumed by approval request
         for (String user: new String[] { RKIRKEND, NATJOHNS }) {
             WorkflowDocumentFactory.loadDocument(user, document.getDocumentId()).fyi();

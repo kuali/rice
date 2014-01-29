@@ -16,7 +16,10 @@
 package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.MappedSuperclass;
+
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,12 +31,12 @@ import javax.persistence.MappedSuperclass;
 public class KimDocumentBoActivatableEditableBase  extends KimDocumentBoBase {
     private static final long serialVersionUID = 9042706897191231672L;
 
-	//@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
+	@Convert(converter=BooleanYNConverter.class)
     protected boolean edit;
 
-	//@Type(type="yes_no")
 	@Column(name="ACTV_IND")
+    @Convert(converter=BooleanYNConverter.class)
     protected boolean active = true;
 
 	public boolean isActive() {

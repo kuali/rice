@@ -15,28 +15,31 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
-import org.kuali.rice.kim.api.identity.CodedAttribute;
-import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.kuali.rice.kim.api.identity.CodedAttribute;
+import org.kuali.rice.kim.framework.identity.EntityTypeEbo;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+
 @Entity
-@Table(name = "KRIM_ADDR_TYP_T")
-public class EntityTypeBo extends PersistableBusinessObjectBase implements EntityTypeEbo {
+@Table(name = "KRIM_ENT_TYP_T")
+public class EntityTypeBo extends DataObjectBase implements EntityTypeEbo {
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @Column(name = "ADDR_TYP_CD")
+    @Column(name = "ENT_TYP_CD")
     private String code;
 
     @Column(name = "NM")
     private String name;
 
-    @javax.persistence.Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     @Column(name = "DISPLAY_SORT_CD")
@@ -52,7 +55,6 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         if (bo == null) {
             return null;
         }
-
         return CodedAttribute.Builder.create(bo).build();
     }
 
@@ -66,7 +68,6 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         if (immutable == null) {
             return null;
         }
-
         EntityTypeBo bo = new EntityTypeBo();
         bo.code = immutable.getCode();
         bo.name = immutable.getName();
@@ -74,10 +75,10 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         bo.active = immutable.isActive();
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
-
         return bo;
     }
 
+    @Override
     public String getCode() {
         return code;
     }
@@ -86,6 +87,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         this.code = code;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -98,6 +100,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -106,6 +109,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         this.active = active;
     }
 
+    @Override
     public String getSortCode() {
         return sortCode;
     }
@@ -114,5 +118,7 @@ public class EntityTypeBo extends PersistableBusinessObjectBase implements Entit
         this.sortCode = sortCode;
     }
 
-
+    @Override
+    public void refresh() {
+    }
 }

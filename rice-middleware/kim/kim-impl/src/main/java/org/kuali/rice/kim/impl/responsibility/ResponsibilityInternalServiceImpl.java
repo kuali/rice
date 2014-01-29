@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
-import org.kuali.rice.kim.api.role.RoleResponsibility;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
-import org.kuali.rice.kim.impl.role.RoleMemberBo;
-import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,10 +22,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.PredicateFactory;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.util.Truth;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
+import org.kuali.rice.kim.api.role.RoleResponsibility;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.util.KRADPropertyConstants;
+
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
 
-	private BusinessObjectService businessObjectService;
-    private ResponsibilityService responsibilityService;
+    protected DataObjectService dataObjectService;
+    protected ResponsibilityService responsibilityService;
+    protected DateTimeService dateTimeService;
 
     @Override
 	public RoleMemberBo saveRoleMember(RoleMemberBo roleMember){
@@ -47,7 +51,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// add row to member table
-    	RoleMemberBo member = getBusinessObjectService().save( roleMember );
+    	RoleMemberBo member = dataObjectService.save( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
@@ -62,7 +66,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     public DelegateMemberBo saveDelegateMember(DelegateMemberBo delegateMember) {
 
         // add row to member table
-        DelegateMemberBo member = getBusinessObjectService().save(delegateMember);
+        DelegateMemberBo member = dataObjectService.save(delegateMember);
 
         return member;
     }
@@ -73,8 +77,8 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// need to set end date to inactivate, not delete
-        roleMember.setActiveToDateValue(new java.sql.Timestamp(System.currentTimeMillis()));
-    	getBusinessObjectService().save( roleMember );
+        roleMember.setActiveToDateValue(dateTimeService.getCurrentTimestamp());
+    	roleMember = dataObjectService.save( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
@@ -92,21 +96,15 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	}
 	
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see ResponsibilityInternalService#updateActionRequestsForResponsibilityChange(java.util.Set)
-	 */
     @Override
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
         KewApiServiceLocator.getResponsibilityChangeQueue().responsibilitiesChanged(responsibilityIds);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<RoleResponsibility> getRoleResponsibilities(String roleId){
-		List<RoleResponsibilityBo> rrBoList =
-				(List<RoleResponsibilityBo>)getBusinessObjectService()
-				.findMatching(RoleResponsibilityBo.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId));
+		List<RoleResponsibilityBo> rrBoList = dataObjectService.findMatching( RoleResponsibilityBo.class, QueryByCriteria.Builder.fromPredicates(
+		            PredicateFactory.equal(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId),
+		            PredicateFactory.equal(KRADPropertyConstants.ACTIVE,Boolean.TRUE) ) ).getResults();
 		List<RoleResponsibility> result = new ArrayList<RoleResponsibility>( rrBoList.size() );
 		for ( RoleResponsibilityBo bo : rrBoList ) {
 			result.add( RoleResponsibilityBo.to(bo) );
@@ -114,15 +112,16 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 		return result;
     }
 
-	 /**
-    *
-    * This method compares the two lists of responsibilitiy IDs and does a union.  returns a unique list of responsibility ids.
-    *
-    * @param oldRespList
-    * @param newRespList
-    * @return
-    */
-   protected Set<String> getChangedRoleResponsibilityIds(
+    /**
+     * 
+     * This method compares the two lists of responsibility IDs and does a union. returns a unique
+     * list of responsibility ids.
+     * 
+     * @param oldRespList
+     * @param newRespList
+     * @return
+     */
+    protected Set<String> getChangedRoleResponsibilityIds(
 			List<RoleResponsibility> oldRespList,
 			List<RoleResponsibility> newRespList) {
 		Set<String> lRet = new HashSet<String>();
@@ -137,37 +136,35 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 		return lRet;
 	}
 
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
-
-    protected ResponsibilityService getResponsibilityService() {
-		if ( responsibilityService == null ) {
-			responsibilityService = KimApiServiceLocator.getResponsibilityService();
-		}
-		return responsibilityService;
-	}
-
     @Override
     public boolean areActionsAtAssignmentLevel(Responsibility responsibility ) {
     	Map<String, String> details = responsibility.getAttributes();
     	if ( details == null ) {
     		return false;
     	}
-    	String actionDetailsAtRoleMemberLevel = details.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
-    	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
+    	String actionDetailsAtRoleMemberLevel = StringUtils.trimToEmpty( details.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) );
+    	return Truth.strToBooleanIgnoreCase(actionDetailsAtRoleMemberLevel, Boolean.FALSE);
     }
 
     @Override
     public boolean areActionsAtAssignmentLevelById( String responsibilityId ) {
-    	Responsibility responsibility = getResponsibilityService().getResponsibility(responsibilityId);
+    	Responsibility responsibility = responsibilityService.getResponsibility(responsibilityId);
     	if ( responsibility == null ) {
     		return false;
     	}
     	return areActionsAtAssignmentLevel(responsibility);
+    }
+
+    public void setResponsibilityService(ResponsibilityService responsibilityService) {
+        this.responsibilityService = responsibilityService;
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    public void setDateTimeService(DateTimeService dateTimeService) {
+        this.dateTimeService = dateTimeService;
     }
 
 }

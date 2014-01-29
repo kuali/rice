@@ -347,7 +347,7 @@
   <bean id="Role-LookupView" parent="Uif-LookupView">
     <property name="title" value="Role Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
-    <property name="viewHelperServiceClass" value="org.kuali.rice.kim.impl.role.RoleLookupableImpl" />
+    <!--<property name="viewHelperServiceClass" value="org.kuali.rice.kim.impl.role.RoleLookupableImpl" />-->
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>

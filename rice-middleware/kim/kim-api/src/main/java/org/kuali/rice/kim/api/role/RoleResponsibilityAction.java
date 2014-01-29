@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.api.role;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -25,14 +36,6 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
 import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -52,6 +55,7 @@ import java.util.Collection;
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class RoleResponsibilityAction extends AbstractDataTransferObject implements RoleResponsibilityActionContract {
+    private static final long serialVersionUID = 1L;
 
     @XmlElement(name = RoleResponsibilityAction.Elements.ID, required = false)
     private final String id;
@@ -297,6 +301,15 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return equalsExcludeFields(obj, Constants.excludeFields);
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCodeExcludeFields(Constants.excludeFields);
+    }
 
     /**
      * A private class which exposes constants which define the XML element names to use
@@ -313,12 +326,25 @@ public class RoleResponsibilityAction extends AbstractDataTransferObject impleme
         final static String ROLE_RESPONSIBILITY = "roleResponsibility";
     }
 
+
     /**
      * Defines some internal constants used on this class.
      */
+    @SuppressWarnings("unchecked")
     static class Constants {
         final static String ROOT_ELEMENT_NAME = "roleResponsibilityAction";
         final static String TYPE_NAME = "RoleResponsibilityActionType";
+
+        final static Collection<String> excludeFields;
+
+        static {
+            excludeFields = Collections.unmodifiableCollection( (Collection<String>)
+                    CollectionUtils.union(
+                            Collections.singletonList("versionNumber"),
+                            getDefaultHashCodeEqualsExcludeFields()
+                    )
+            );
+        }
     }
 
     public static class Cache {

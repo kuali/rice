@@ -219,6 +219,9 @@ public class UifConstants {
     public static class PostMetadata {
         public static final String FIELD_LABEL = "FIELD_LABEL";
         public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "INPUT_FIELD_ATTRIBUTE_QUERY";
+        public static final String INPUT_FIELD_SUGGEST = "INPUT_FIELD_SUGGEST";
+        public static final String INPUT_FIELD_SUGGEST_QUERY = "INPUT_FIELD_SUGGEST_QUERY";
+        public static final String INPUT_FIELD_IS_UPPERCASE = "INPUT_FIELD_IS_UPPERCASE";
     }
 
     public static class ContextVariableNames {
@@ -425,7 +428,9 @@ public class UifConstants {
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
     }
-    
+
+    public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");
+
     public static final class ActionDataAttributes {
         public static final String AJAX_SUBMIT = "ajaxSubmit";
         public static final String SUCCESS_CALLBACK = "successCallback";

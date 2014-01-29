@@ -60,6 +60,10 @@
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="kualiModuleService"/>
 
+	<bean id="dateTimeService" p:serviceName="dateTimeService"
+		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+		p:singleton="true" p:mustExist="true" />
+
   <bean id="kimServiceExporter"
         class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
         abstract="true"

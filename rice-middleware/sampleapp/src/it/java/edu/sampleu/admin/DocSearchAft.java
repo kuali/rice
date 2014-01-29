@@ -81,7 +81,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='detailed search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
-        waitAndTypeByName("documentTypeName", parentName);
+        waitAndTypeByName("documentTypeName", "DocumentTypeDocument");
         waitAndTypeByName("initiatorPrincipalName", "admin");
         waitAndTypeByName("documentId", docId);
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
@@ -113,7 +113,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
 
     @Test
     public void testDetailedDocSearchBookmark() throws Exception{
-        //createAndSaveDoc();
+        createAndSaveDoc();
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");
@@ -124,7 +124,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']", "DocSearchAft.testDetailedDocSearch");
         //waitAndTypeByName("documentTypeName", parentName);
         waitAndTypeByName("initiatorPrincipalName", "admin");
-        //waitAndTypeByName("documentId", docId);
+        waitAndTypeByName("documentId", docId);
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
         //waitAndTypeByName("dateCreated", "10/13/2010");
         assertElementPresentByName("approverPrincipalName", "Approver input field is not there in the detailed search");
@@ -150,7 +150,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
     
     @Test
     public void testSuperUserSearchBookmark() throws Exception{
-        //createAndSaveDoc();
+        createAndSaveDoc();
         waitAndClickByXpath("//a/img[@alt='doc search']");
         waitForPageToLoad();
         selectFrame("iframeportlet");

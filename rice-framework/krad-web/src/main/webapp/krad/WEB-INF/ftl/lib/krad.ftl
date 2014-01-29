@@ -26,6 +26,7 @@
 <#include "grid.ftl" parse=true/>
 <#include "groupWrap.ftl" parse=true/>
 <#include "html.ftl" parse=true/>
+<#include "p.ftl" parse=true/>
 <#include "script.ftl" parse=true/>
 <#include "span.ftl" parse=true/>
 <#include "template.ftl" parse=true/>

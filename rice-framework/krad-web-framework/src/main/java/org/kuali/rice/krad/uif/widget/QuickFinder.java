@@ -811,7 +811,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

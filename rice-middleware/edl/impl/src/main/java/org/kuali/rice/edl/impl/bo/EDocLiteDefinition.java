@@ -16,7 +16,7 @@
 package org.kuali.rice.edl.impl.bo;
 
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 

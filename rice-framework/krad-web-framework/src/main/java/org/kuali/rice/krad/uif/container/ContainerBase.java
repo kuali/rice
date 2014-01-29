@@ -195,7 +195,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setValidationMessages(org.kuali.rice.krad.uif.element.ValidationMessages)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setValidationMessages(ValidationMessages validationMessages) {
@@ -242,7 +242,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-	 * @see org.kuali.rice.krad.uif.container.Container#getItems()
+	 * {@inheritDoc}
 	 */
 	@Override
     @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
@@ -279,7 +279,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getLayoutManager()
+	 * {@inheritDoc}
 	 */
 	@Override
     @BeanTagAttribute(name="layoutManager",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -288,7 +288,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setLayoutManager(org.kuali.rice.krad.uif.layout.LayoutManager)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setLayoutManager(LayoutManager layoutManager) {
@@ -296,7 +296,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getHeader()
+	 * {@inheritDoc}
 	 */
 	@Override
     @BeanTagAttribute(name="header",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -305,7 +305,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setHeader(org.kuali.rice.krad.uif.element.Header)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setHeader(Header header) {
@@ -313,7 +313,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getFooter()
+	 * {@inheritDoc}
 	 */
 	@Override
     @BeanTagAttribute(name="footer",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -322,7 +322,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setFooter(org.kuali.rice.krad.uif.container.Group)
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void setFooter(Group footer) {
@@ -440,7 +440,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -483,7 +483,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer){

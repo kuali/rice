@@ -147,6 +147,35 @@
     <property name="breadcrumbs.render" value="false"/>
   </bean>
 
+  <bean id="Uif-IframeView" parent="Uif-IframeView-parentBean"/>
+  <bean id="Uif-IframeView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.IframeView" parent="Uif-FormView">
+    <property name="page">
+      <bean parent="Uif-Page"/>
+    </property>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>uif-iframeView</value>
+      </list>
+    </property>
+    <property name="iframe">
+      <bean parent="Uif-Iframe"/>
+    </property>
+    <property name="location">
+      <bean parent="Uif-Url">
+        <property name="requestParameters">
+          <map>
+            <entry key="renderedInIframe" value="true"/>
+          </map>
+        </property>
+      </bean>
+    </property>
+    <property name="header.render" value="false"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="singlePageView" value="true"/>
+    <property name="persistFormToSession" value="false"/>
+  </bean>
+
   <bean id="Uif-SessionTimeoutView" parent="Uif-SessionTimeoutView-parentBean"/>
   <bean id="Uif-SessionTimeoutView-parentBean" parent="Uif-MessageView">
     <property name="messageText" value="[b]Your Session has timed out and the request could not be completed.[/b]"/>

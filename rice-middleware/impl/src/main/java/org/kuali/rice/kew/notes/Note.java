@@ -19,7 +19,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.note.NoteContract;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

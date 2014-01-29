@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.element;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -53,19 +55,25 @@ import org.kuali.rice.krad.util.KRADConstants;
 public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
+    // This regex is a check to see if the message is a rich message and it contains potential non-inline elements
+    private static Pattern blockElementCheck
+            = Pattern.compile("[\\[|\\<](?!color|action|link|css|button|input|label|select|textarea|abbr"
+            + "|strong|img|a[\\s\\]]|span[\\s\\]]|b[\\s\\]]|i[\\s\\]]|br[\\s\\]/])[^/]*?/?[\\]|\\>]");
+
     private String messageText;
-    private boolean generateSpan;
+    private boolean generateWrapperElement;
 
     private List<Component> inlineComponents;
     private List<Component> messageComponentStructure;
 
     private boolean parseComponents;
     private boolean richMessage;
+    private boolean containsBlockElements;
 
     public Message() {
         super();
 
-        generateSpan = true;
+        generateWrapperElement = true;
         parseComponents = true;
     }
 
@@ -86,8 +94,18 @@ public class Message extends ContentElementBase {
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
             richMessage = true;
 
+            // Check to see if message contains pontential block elements (non-inline)
+            Matcher matcher = blockElementCheck.matcher(messageText);
+            containsBlockElements = matcher.find();
+
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
+        }
+        else if(messageText != null && messageText.contains("<") && messageText.contains(">")) {
+            // Straight inline html case
+            // Check to see if message contains pontential block elements (non-inline)
+            Matcher matcher = blockElementCheck.matcher(messageText);
+            containsBlockElements = matcher.find();
         }
     }
 
@@ -108,7 +126,7 @@ public class Message extends ContentElementBase {
      * Override to render only if the message text has been given or there is a conditional expression on the
      * message text
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
+     * {@inheritDoc}
      */
     @Override
     public boolean isRender() {
@@ -159,23 +177,27 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * If true, generate the span around this message (default).  When false, skip span generation for this
-     * message - this has the additional effect the css classes/style classes will be lost for this message.
+     * If true, generate the wrapper element (p or div) around this message (default true).
+     *
+     * <p>The wrapper will be either a p tag, for when the element only contains inline elements, or a div tag, for
+     * when the message might contain block level elements or undetermined html tags resulting from rich message
+     * functionality.  When false, skips the wrapper generation for this
+     * message - this has the additional effect the css classes/style classes will be lost for this message. </p>
      *
      * @return true if generating a wrapping span, false otherwise
      */
-    @BeanTagAttribute(name = "generateSpan")
-    public boolean isGenerateSpan() {
-        return generateSpan;
+    @BeanTagAttribute(name = "generateWrapperElement")
+    public boolean isGenerateWrapperElement() {
+        return generateWrapperElement;
     }
 
     /**
-     * Sets the generate span flag
+     * Sets the generate wrapper element flag
      *
-     * @param generateSpan
+     * @param generateWrapperElement
      */
-    public void setGenerateSpan(boolean generateSpan) {
-        this.generateSpan = generateSpan;
+    public void setGenerateWrapperElement(boolean generateWrapperElement) {
+        this.generateWrapperElement = generateWrapperElement;
     }
 
     /**
@@ -255,7 +277,16 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * True if the message contains block elements, or when it contains an unknown tag that may be a block element.
+     *
+     * @return true when the message contains block elements (non-inline elements), false otherwise
+     */
+    public boolean isContainsBlockElements() {
+        return containsBlockElements;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -263,7 +294,7 @@ public class Message extends ContentElementBase {
 
         Message messageCopy = (Message) component;
 
-        messageCopy.setGenerateSpan(this.generateSpan);
+        messageCopy.setGenerateWrapperElement(this.generateWrapperElement);
 
         if (this.inlineComponents != null) {
             List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
@@ -280,7 +311,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

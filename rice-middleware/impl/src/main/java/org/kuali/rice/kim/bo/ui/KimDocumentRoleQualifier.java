@@ -17,10 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
-
-
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -29,17 +26,18 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@IdClass(KimDocumentAttributeDataBusinessObjectBaseId.class)
-@Table(name="KRIM_PND_ROLE_MBR_ATTR_DATA_MT")
-public class KimDocumentRoleQualifier extends KimDocumentAttributeDataBusinessObjectBase{
-	@Column(name="ROLE_MBR_ID")
-	private String roleMemberId;
-	
-	public String getRoleMemberId() {
-		return roleMemberId;
-	}
+@Table(name = "KRIM_PND_ROLE_MBR_ATTR_DATA_MT")
+public class KimDocumentRoleQualifier extends KimDocumentAttributeDataBusinessObjectBase {
+    private static final long serialVersionUID = 1L;
 
-	public void setRoleMemberId(String roleMemberId) {
-		this.roleMemberId = roleMemberId;
-	}
+    @Column(name = "ROLE_MBR_ID")
+    private String roleMemberId;
+
+    public String getRoleMemberId() {
+        return roleMemberId;
+    }
+
+    public void setRoleMemberId(String roleMemberId) {
+        this.roleMemberId = roleMemberId;
+    }
 }

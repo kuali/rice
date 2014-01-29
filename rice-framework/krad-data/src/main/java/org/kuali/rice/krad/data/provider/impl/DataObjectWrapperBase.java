@@ -15,14 +15,26 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.metadata.MetadataChild;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -35,16 +47,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataObjectWrapperBase.class);
 
     private final T dataObject;
     private final DataObjectMetadata metadata;
@@ -80,7 +84,8 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         }
     }
 
-    @Override
+	@SuppressWarnings("unchecked")
+	@Override
     public Class<T> getWrappedClass() {
         return wrapper.getWrappedClass();
     }
@@ -207,29 +212,33 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     @Override
-    public <T> T convertIfNecessary(Object value, Class<T> requiredType) throws TypeMismatchException {
+	public <Y> Y convertIfNecessary(Object value, Class<Y> requiredType) throws TypeMismatchException {
         return wrapper.convertIfNecessary(value, requiredType);
     }
 
     @Override
-    public <T> T convertIfNecessary(Object value, Class<T> requiredType,
+	public <Y> Y convertIfNecessary(Object value, Class<Y> requiredType,
             MethodParameter methodParam) throws TypeMismatchException {
         return wrapper.convertIfNecessary(value, requiredType, methodParam);
     }
 
     @Override
-    public <T> T convertIfNecessary(Object value, Class<T> requiredType, Field field) throws TypeMismatchException {
+	public <Y> Y convertIfNecessary(Object value, Class<Y> requiredType, Field field) throws TypeMismatchException {
         return wrapper.convertIfNecessary(value, requiredType, field);
     }
 
     @Override
     public Map<String, Object> getPrimaryKeyValues() {
         Map<String, Object> primaryKeyValues = new HashMap<String, Object>();
-        List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
-        if (primaryKeyAttributeNames != null) {
-            for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
-                primaryKeyValues.put(primaryKeyAttributeName, getPropertyValue(primaryKeyAttributeName));
-            }
+		if (metadata != null) {
+			List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
+			if (primaryKeyAttributeNames != null) {
+				for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
+					primaryKeyValues.put(primaryKeyAttributeName, getPropertyValue(primaryKeyAttributeName));
+				}
+			}
+		} else {
+			LOG.warn("Attempt to retrieve PK fields on object with no metadata: " + dataObject.getClass().getName());
         }
         return primaryKeyValues;
     }
@@ -249,45 +258,62 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 
 	@Override
 	public boolean areAllPrimaryKeyAttributesPopulated() {
-		List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
-		if (primaryKeyAttributeNames != null) {
-			for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
-				Object propValue = getPropertyValue(primaryKeyAttributeName);
-				if (propValue == null || (propValue instanceof String && StringUtils.isBlank((String) propValue))) {
-					return false;
+		if (metadata != null) {
+			List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
+			if (primaryKeyAttributeNames != null) {
+				for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
+					Object propValue = getPropertyValue(primaryKeyAttributeName);
+					if (propValue == null || (propValue instanceof String && StringUtils.isBlank((String) propValue))) {
+						return false;
+					}
 				}
 			}
+			return true;
+		} else {
+			LOG.warn("Attempt to check areAllPrimaryKeyAttributesPopulated on object with no metadata: "
+					+ dataObject.getClass().getName());
+			return true;
 		}
-		return true;
 	}
 
 	@Override
 	public boolean areAnyPrimaryKeyAttributesPopulated() {
-		List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
-		if (primaryKeyAttributeNames != null) {
-			for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
-				Object propValue = getPropertyValue(primaryKeyAttributeName);
-				if (propValue instanceof String && StringUtils.isNotBlank((String) propValue)) {
-					return true;
-				} else if (propValue != null) {
-					return true;
+		if (metadata != null) {
+			List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
+			if (primaryKeyAttributeNames != null) {
+				for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
+					Object propValue = getPropertyValue(primaryKeyAttributeName);
+					if (propValue instanceof String && StringUtils.isNotBlank((String) propValue)) {
+						return true;
+					} else if (propValue != null) {
+						return true;
+					}
 				}
 			}
+			return false;
+		} else {
+			LOG.warn("Attempt to check areAnyPrimaryKeyAttributesPopulated on object with no metadata: "
+					+ dataObject.getClass().getName());
+			return true;
 		}
-		return false;
 	}
 
 	@Override
 	public List<String> getUnpopulatedPrimaryKeyAttributeNames() {
 		List<String> emptyKeys = new ArrayList<String>();
-		List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
-		if (primaryKeyAttributeNames != null) {
-			for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
-				Object propValue = getPropertyValue(primaryKeyAttributeName);
-				if (propValue == null || (propValue instanceof String && StringUtils.isBlank((String) propValue))) {
-					emptyKeys.add(primaryKeyAttributeName);
+		if (metadata != null) {
+			List<String> primaryKeyAttributeNames = metadata.getPrimaryKeyAttributeNames();
+			if (primaryKeyAttributeNames != null) {
+				for (String primaryKeyAttributeName : primaryKeyAttributeNames) {
+					Object propValue = getPropertyValue(primaryKeyAttributeName);
+					if (propValue == null || (propValue instanceof String && StringUtils.isBlank((String) propValue))) {
+						emptyKeys.add(primaryKeyAttributeName);
+					}
 				}
 			}
+		} else {
+			LOG.warn("Attempt to check getUnpopulatedPrimaryKeyAttributeNames on object with no metadata: "
+					+ dataObject.getClass().getName());
 		}
 		return emptyKeys;
 	}
@@ -331,7 +357,15 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 
     @Override
     public Object getForeignKeyAttributeValue(String relationshipName) {
-        DataObjectRelationship relationship = findAndValidateRelationship(relationshipName);
+		Map<String, Object> attributeMap = getForeignKeyAttributeMap(relationshipName);
+		if (attributeMap == null) {
+			return null;
+		}
+		return asSingleKey(attributeMap);
+	}
+
+	public Map<String, Object> getForeignKeyAttributeMap(String relationshipName) {
+		MetadataChild relationship = findAndValidateRelationship(relationshipName);
         List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
         if (!attributeRelationships.isEmpty()) {
             // ok, it has some of these relationships, are they all populated?
@@ -348,7 +382,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
             }
             if (allPopulated) {
                 // if they are all populated, then we have our foreign key!
-                return asSingleKey(attributeMap);
+				return attributeMap;
             }
         }
         return null;
@@ -411,26 +445,36 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         fetchRelationship(findAndValidateRelationship(relationshipName));
     }
 
-    protected void fetchRelationship(DataObjectRelationship relationship) {
+	protected void fetchRelationship(MetadataChild relationship) {
         // if we have at least one attribute relationships here, then we are set to proceed
         if (!relationship.getAttributeRelationships().isEmpty()) {
-            Object fetchedValue = null;
-            Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
-            if (foreignKey != null) {
-                fetchedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
-            }
-            setPropertyValue(relationship.getName(), fetchedValue);
+			Object fetchedValue = null;
+			if (relationship instanceof DataObjectRelationship) {
+				Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
+				if (foreignKey != null) {
+					fetchedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
+				}
+			} else if (relationship instanceof DataObjectCollection) {
+				Map<String, Object> foreignKeyAttributeMap = getForeignKeyAttributeMap(relationship.getName());
+				fetchedValue = dataObjectService.findMatching(relationship.getRelatedType(),
+						QueryByCriteria.Builder.andAttributes(foreignKeyAttributeMap).build()).getResults();
+			}
+			setPropertyValue(relationship.getName(), fetchedValue);
         }
     }
 
-    private DataObjectRelationship findAndValidateRelationship(String relationshipName) {
+	private MetadataChild findAndValidateRelationship(String relationshipName) {
         if (StringUtils.isBlank(relationshipName)) {
             throw new IllegalArgumentException("The relationshipName must not be null or blank");
         }
         // validate the relationship exists
-        DataObjectRelationship relationship = getMetadata().getRelationship(relationshipName);
+		MetadataChild relationship = getMetadata().getRelationship(relationshipName);
         if (relationship == null) {
-            throw new IllegalArgumentException("Failed to locate a valid relationship from " + getWrappedClass() + " with the given relationship name '" + relationshipName + "'");
+			relationship = getMetadata().getCollection(relationshipName);
+			if (relationship == null) {
+				throw new IllegalArgumentException("Failed to locate a valid relationship from " + getWrappedClass()
+						+ " with the given relationship name '" + relationshipName + "'");
+			}
         }
         return relationship;
     }

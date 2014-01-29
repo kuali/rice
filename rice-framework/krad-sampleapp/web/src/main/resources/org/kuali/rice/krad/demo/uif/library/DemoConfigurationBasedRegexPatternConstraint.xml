@@ -178,7 +178,7 @@
         <!-- ex:Demo-ConfigurationBasedRegexPatternConstraint-Example8 start-->
 
         <bean parent="Uif-InputField-LabelTop" p:label="Year" p:propertyName="inputField8"
-              p:constraintText="Valid years 1600s to 2000s only">
+              p:constraintText="Valid years 1600 to 2199 inclusive">
           <property name="validCharactersConstraint">
             <bean parent="YearPatternConstraint"/>
           </property>

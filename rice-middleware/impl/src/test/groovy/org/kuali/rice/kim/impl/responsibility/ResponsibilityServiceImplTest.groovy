@@ -15,46 +15,44 @@
  */
 package org.kuali.rice.kim.impl.responsibility
 
-import org.junit.Test
-import org.kuali.rice.kim.api.responsibility.ResponsibilityService
-import org.kuali.rice.kim.api.responsibility.Responsibility
-import org.junit.Before
 import groovy.mock.interceptor.MockFor
-import org.kuali.rice.kim.impl.role.RoleMemberBo
-import org.kuali.rice.krad.service.BusinessObjectService
-import org.junit.BeforeClass
-import org.kuali.rice.core.api.exception.RiceIllegalStateException
 import org.junit.Assert
-import org.kuali.rice.kim.api.common.template.Template
-import org.kuali.rice.kim.api.type.KimTypeInfoService
-import org.kuali.rice.kim.impl.type.KimTypeBo
-import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
-import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
+import org.kuali.rice.core.api.criteria.AndPredicate
 import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
-import org.kuali.rice.kim.api.role.RoleService
-import org.kuali.rice.kim.api.responsibility.ResponsibilityAction
-import org.kuali.rice.kim.api.role.RoleMembership
-import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo
-import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults
-import org.kuali.rice.core.api.criteria.Predicate
-import org.kuali.rice.core.api.membership.MemberType
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 import org.kuali.rice.core.api.criteria.LookupCustomizer
+import org.kuali.rice.core.api.criteria.Predicate
+import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.core.api.exception.RiceIllegalStateException
+import org.kuali.rice.core.api.membership.MemberType
+import org.kuali.rice.kim.api.common.template.Template
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults
+import org.kuali.rice.kim.api.responsibility.Responsibility
+import org.kuali.rice.kim.api.responsibility.ResponsibilityAction
+import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults
+import org.kuali.rice.kim.api.responsibility.ResponsibilityService
+import org.kuali.rice.kim.api.role.RoleMembership
+import org.kuali.rice.kim.api.role.RoleService
+import org.kuali.rice.kim.api.type.KimTypeInfoService
+import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService
+import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo
+import org.kuali.rice.kim.impl.role.RoleResponsibilityBo
+import org.kuali.rice.kim.impl.type.KimTypeBo
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krad.data.PersistenceOption
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
 
 class ResponsibilityServiceImplTest {
-    private MockFor mockBoService;
+    private MockFor mockDataObjectService;
     private MockFor mockKimTypeInfoService;
     private MockFor mockResponsibilityTypeService;
-    private MockFor mockCriteriaLookupService;
     private MockFor mockRoleService;
-    private BusinessObjectService boService;
+    private DataObjectService dataObjectService;
     private KimTypeInfoService kimTypeInfoService;
     private ResponsibilityTypeService responsibilityTypeService;
-    private CriteriaLookupService criteriaLookupService;
     private RoleService roleService;
     ResponsibilityService responsibilityService;
     ResponsibilityServiceImpl responsibilityServiceImpl;
@@ -115,10 +113,9 @@ class ResponsibilityServiceImplTest {
 
     @Before
     void setupMockContext() {
-        mockBoService = new MockFor(BusinessObjectService.class);
+        mockDataObjectService = new MockFor(DataObjectService.class);
         mockKimTypeInfoService = new MockFor(KimTypeInfoService.class);
         mockResponsibilityTypeService = new MockFor(ResponsibilityTypeService.class);
-        mockCriteriaLookupService = new MockFor(CriteriaLookupService.class);
         mockRoleService = new MockFor(RoleService.class);
     }
 
@@ -128,9 +125,9 @@ class ResponsibilityServiceImplTest {
         responsibilityService = responsibilityServiceImpl    //assign Interface type to implementation reference for unit test only
     }
 
-    void injectBusinessObjectServiceIntoResponsibilityService() {
-        boService = mockBoService.proxyDelegateInstance();
-        responsibilityServiceImpl.setBusinessObjectService(boService);
+    void injectDataObjectServiceIntoResponsibilityService() {
+        dataObjectService = mockDataObjectService.proxyDelegateInstance();
+        responsibilityServiceImpl.setDataObjectService(dataObjectService);
     }
 
     void injectKimTypeInfoServiceIntoResponsibilityService() {
@@ -141,11 +138,6 @@ class ResponsibilityServiceImplTest {
     void injectResponsibilityTypeServiceIntoResponsibilityService() {
         responsibilityTypeService = mockResponsibilityTypeService.proxyDelegateInstance();
         responsibilityServiceImpl.setDefaultResponsibilityTypeService(responsibilityTypeService);
-    }
-
-    void injectCriteriaLookupServiceIntoResponsibilityService() {
-        criteriaLookupService = mockCriteriaLookupService.proxyDelegateInstance();
-        responsibilityServiceImpl.setCriteriaLookupService(criteriaLookupService);
     }
 
     void injectRoleServiceIntoResponsibilityService() {
@@ -160,7 +152,7 @@ class ResponsibilityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testCreateResponsibilityWithExistingResponsibilityFails() {
-        mockBoService.demand.findBySinglePrimaryKey(1..1) {
+        mockDataObjectService.demand.find(1..1) {
             Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
                 if (responsibilityBo.id.equals(primaryKey))
                 {
@@ -169,7 +161,7 @@ class ResponsibilityServiceImplTest {
             }
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo responsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1);
@@ -181,7 +173,7 @@ class ResponsibilityServiceImplTest {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo newResponsibilityBo = new ResponsibilityBo(id: "respidthree", namespaceCode: "namespacecodethree", name: "respnamethree", template: firstResponsibilityTemplate, versionNumber: 1);
 
-        mockBoService.demand.findBySinglePrimaryKey(1..1) {
+        mockDataObjectService.demand.find(1..1) {
             Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
                 if (responsibilityBo.id.equals(primaryKey))
                 {
@@ -190,11 +182,11 @@ class ResponsibilityServiceImplTest {
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            ResponsibilityBo bo -> return newResponsibilityBo;
+        mockDataObjectService.demand.save(1..1) {
+            ResponsibilityBo bo, PersistenceOption... options -> return newResponsibilityBo;
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         Responsibility responsibility = responsibilityService.createResponsibility(ResponsibilityBo.to(newResponsibilityBo));
 
@@ -208,11 +200,11 @@ class ResponsibilityServiceImplTest {
 
     @Test(expected = RiceIllegalStateException.class)
     public void testUpdateResponsibilityWithNonExistingObjectFails() {
-        mockBoService.demand.findBySinglePrimaryKey(1..1) {
+        mockDataObjectService.demand.find(1..1) {
             Class clazz, Object primaryKey -> return null;
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo newResponsibilityBo = new ResponsibilityBo(id: "respidthree", namespaceCode: "namespacecodethree", name: "respnamethree", template: firstResponsibilityTemplate, versionNumber: 1);
@@ -224,7 +216,7 @@ class ResponsibilityServiceImplTest {
         ResponsibilityTemplateBo firstResponsibilityTemplate = new ResponsibilityTemplateBo(id: "resptemplateidone", name: "resptemplateone", namespaceCode: "templnamespacecodeone", versionNumber: 1, kimTypeId: "a");
         ResponsibilityBo existingResponsibilityBo = new ResponsibilityBo(id: "respidone", namespaceCode: "namespacecodeone", name: "respnameone", template: firstResponsibilityTemplate, versionNumber: 1, active: true);
 
-        mockBoService.demand.findBySinglePrimaryKey(1..1) {
+        mockDataObjectService.demand.find(1..1) {
             Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
                 if (responsibilityBo.id.equals(primaryKey))
                 {
@@ -233,11 +225,11 @@ class ResponsibilityServiceImplTest {
             }
         }
 
-        mockBoService.demand.save(1..1) {
-            ResponsibilityBo bo -> return existingResponsibilityBo;
+        mockDataObjectService.demand.save(1..1) {
+            ResponsibilityBo bo, PersistenceOption... options -> return existingResponsibilityBo;
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         Responsibility responsibility = responsibilityService.updateResponsibility(ResponsibilityBo.to(existingResponsibilityBo));
 
@@ -256,7 +248,7 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testGetResponsibilitySucceeds() {
-        mockBoService.demand.findBySinglePrimaryKey(1..sampleResponsibilities.size()) {
+        mockDataObjectService.demand.find(1..sampleResponsibilities.size()) {
             Class clazz, Object primaryKey -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
                 if (responsibilityBo.id.equals(primaryKey))
                 {
@@ -265,13 +257,13 @@ class ResponsibilityServiceImplTest {
             }
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
             Assert.assertEquals(ResponsibilityBo.to(responsibilityBo), responsibilityService.getResponsibility(responsibilityBo.id))
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -296,25 +288,29 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testFindRespByNamespaceCodeAndNameSucceeds() {
-        mockBoService.demand.findMatching(1..sampleResponsibilities.size()) {
-            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+        mockDataObjectService.demand.findMatching(1..sampleResponsibilities.size()) {
+            Class clazz, QueryByCriteria criteria -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                Map map = asMap(criteria);
                 if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
                     && responsibilityBo.name.equals(map.get("name")))
                 {
+                    GenericQueryResults.Builder<ResponsibilityTemplateBo> results =
+                            GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
                     responsibilities.add(responsibilityBo);
-                    return responsibilities;
+                    results.setResults(responsibilities);
+                    return results.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
             Assert.assertEquals(ResponsibilityBo.to(responsibilityBo), responsibilityService.findRespByNamespaceCodeAndName(responsibilityBo.namespaceCode, responsibilityBo.name))
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -329,7 +325,7 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testGetResponsibilityTemplateSucceeds() {
-        mockBoService.demand.findBySinglePrimaryKey(1..sampleTemplates.size()) {
+        mockDataObjectService.demand.find(1..sampleTemplates.size()) {
             Class clazz, Object primaryKey -> for (ResponsibilityTemplateBo responsibilityTemplateBo in sampleTemplates.values()) {
                 if (responsibilityTemplateBo.id.equals(primaryKey))
                 {
@@ -338,13 +334,13 @@ class ResponsibilityServiceImplTest {
             }
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         for (ResponsibilityTemplateBo responsibilityTemplateBo in sampleTemplates.values()) {
             Assert.assertEquals(ResponsibilityTemplateBo.to(responsibilityTemplateBo), responsibilityService.getResponsibilityTemplate(responsibilityTemplateBo.id))
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -369,25 +365,28 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testFindRespTemplateByNamespaceCodeAndNameSucceeds() {
-        mockBoService.demand.findMatching(1..sampleTemplates.size()) {
-            Class clazz, Map map -> for (ResponsibilityTemplateBo responsibilityTemplateBo in sampleTemplates.values()) {
+        mockDataObjectService.demand.findMatching(1..sampleTemplates.size()) {
+            Class clazz, QueryByCriteria criteria -> for (ResponsibilityTemplateBo responsibilityTemplateBo in sampleTemplates.values()) {
+                Map<String, Object> map = asMap(criteria);
                 if (responsibilityTemplateBo.namespaceCode.equals(map.get("namespaceCode"))
-                    && responsibilityTemplateBo.name.equals(map.get("name")))
-                {
-                    Collection<ResponsibilityTemplateBo> templates = new ArrayList<ResponsibilityTemplateBo>();
+                    && responsibilityTemplateBo.name.equals(map.get("name"))) {
+                    GenericQueryResults.Builder<ResponsibilityTemplateBo> results =
+                            GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
+                    List<ResponsibilityTemplateBo> templates = new ArrayList<ResponsibilityTemplateBo>();
                     templates.add(responsibilityTemplateBo);
-                    return templates;
+                    results.setResults(templates);
+                    return results.build();
                 }
             }
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         for (ResponsibilityTemplateBo responsibilityTemplateBo in sampleTemplates.values()) {
             Assert.assertEquals(ResponsibilityTemplateBo.to(responsibilityTemplateBo), responsibilityService.findRespTemplateByNamespaceCodeAndName(responsibilityTemplateBo.namespaceCode, responsibilityTemplateBo.name))
         }
 
-        mockBoService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -427,14 +426,18 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testHasResponsibilitySucceeds() {
-        mockBoService.demand.findMatching(1..1) {
-            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria criteria -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                Map map = asMap(criteria);
                 if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
                     && responsibilityBo.name.equals(map.get("name")))
                 {
+                    GenericQueryResults.Builder<ResponsibilityTemplateBo> results =
+                            GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
                     responsibilities.add(responsibilityBo);
-                    return responsibilities;
+                    results.setResults(responsibilities);
+                    return results.build();
                 }
             }
         }
@@ -458,7 +461,7 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
@@ -466,10 +469,9 @@ class ResponsibilityServiceImplTest {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
         injectKimTypeInfoServiceIntoResponsibilityService();
         injectResponsibilityTypeServiceIntoResponsibilityService();
-        injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
@@ -521,17 +523,6 @@ class ResponsibilityServiceImplTest {
 
     @Test
     public void testHasResponsibilityByTemplateNameSucceeds() {
-        mockBoService.demand.findMatching(1..1) {
-            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
-                    && responsibilityBo.template.name.equals(map.get("template.name")))
-                {
-                    Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
-                    responsibilities.add(responsibilityBo);
-                    return responsibilities;
-                }
-            }
-        }
 
         mockKimTypeInfoService.demand.getKimType(1..1) {
             String id -> return KimTypeBo.to(sampleKimTypes.get("kimtypeidone"));
@@ -552,18 +543,35 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
-            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
+        mockDataObjectService.demand.findMatching(2..2) {
+            Class clazz, QueryByCriteria criteria ->
+                if (clazz == ResponsibilityBo.class) {
+                    for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                        Map map = asMap(criteria);
+                        if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
+                                && responsibilityBo.template.name.equals(map.get("template.name"))) {
+                            GenericQueryResults.Builder<ResponsibilityTemplateBo> result =
+                                    GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
+                            Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
+                            responsibilities.add(responsibilityBo);
+                            result.setResults(responsibilities);
+                            return result.build();
+                        }
+                    }
+                }
+                if (clazz == RoleResponsibilityBo.class) {
+                    return results;
+                }
+                Assert.fail("Encountered unexpected arguments to findMatching: " + clazz + ", " + criteria);
         }
 
         mockRoleService.demand.principalHasRole(1..1) {
             String principalId, List<String> roleIds, Map<String, String> qualification -> return true;
         }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
         injectKimTypeInfoServiceIntoResponsibilityService();
         injectResponsibilityTypeServiceIntoResponsibilityService();
-        injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
@@ -780,14 +788,18 @@ class ResponsibilityServiceImplTest {
             String responsibilityName, List<RoleMembership> roleMemberships,
             List<RoleResponsibilityBo> roleResponsibilities,
             List<RoleResponsibilityActionBo> roleResponsibilityActions) {
-        mockBoService.demand.findMatching(1..1) {
-            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria criteria -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                    Map map = asMap(criteria);
                     if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
                         && responsibilityBo.name.equals(map.get("name")))
                     {
+                        GenericQueryResults.Builder<ResponsibilityTemplateBo> results =
+                                GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
                         Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
                         responsibilities.add(responsibilityBo);
-                        return responsibilities;
+                        results.setResults(responsibilities);
+                        return results.build();
                     }
                 }
         }
@@ -801,7 +813,7 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..2) {
+        mockDataObjectService.demand.findMatching(1..2) {
             Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results; }
 
         GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
@@ -810,11 +822,10 @@ class ResponsibilityServiceImplTest {
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..2) {
+        mockDataObjectService.demand.findMatching(1..2) {
             Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults; }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
-        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
         return responsibilityService.getResponsibilityActions(
@@ -1032,14 +1043,18 @@ class ResponsibilityServiceImplTest {
             String responsibilityTemplateName, List<RoleMembership> roleMemberships,
             List<RoleResponsibilityBo> roleResponsibilities,
             List<RoleResponsibilityActionBo> roleResponsibilityActions) {
-        mockBoService.demand.findMatching(1..1) {
-            Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria criteria -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
+                Map map = asMap(criteria);
                 if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
                         && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
+                    GenericQueryResults.Builder<ResponsibilityTemplateBo> results =
+                            GenericQueryResults.Builder.<ResponsibilityTemplateBo>create();
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
                     responsibilities.add(responsibilityBo);
-                    return responsibilities;
+                    results.setResults(responsibilities);
+                    return results.build();
                 }
             }
         }
@@ -1053,8 +1068,9 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results; }
+        mockDataObjectService.demand.findMatching(1..2) {
+            Class clazz, QueryByCriteria criteria -> return results;
+        }
 
         GenericQueryResults.Builder<RoleResponsibilityActionBo> actionGenericQueryResults = new GenericQueryResults.Builder<RoleResponsibilityBo>();
         actionGenericQueryResults.totalRowCount = 1;
@@ -1062,11 +1078,11 @@ class ResponsibilityServiceImplTest {
         actionGenericQueryResults.results = roleResponsibilityActions;
         GenericQueryResults<RoleResponsibilityActionBo> actionResults = actionGenericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..2) {
-            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults; }
+        mockDataObjectService.demand.findMatching(1..2) {
+            Class<RoleResponsibilityActionBo> queryClass, QueryByCriteria criteria -> return actionResults;
+        }
 
-        injectBusinessObjectServiceIntoResponsibilityService();
-        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
         return responsibilityService.getResponsibilityActionsByTemplate(
@@ -1094,11 +1110,11 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = roleResponsibilities;
         GenericQueryResults<RoleResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<RoleResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
-        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("respidone");
 
@@ -1125,11 +1141,11 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = responsibilities;
         GenericQueryResults<ResponsibilityBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<ResponsibilityBo> queryClass, QueryByCriteria criteria, LookupCustomizer<ResponsibilityBo> customizer -> return results;
         }
 
-        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         ResponsibilityQueryResults responsibilityQueryResults = responsibilityService.findResponsibilities(builder.build());
         List<Responsibility> actualResponsibilities = responsibilityQueryResults.getResults();
@@ -1157,14 +1173,25 @@ class ResponsibilityServiceImplTest {
         genericQueryResults.results = responsibilityTemplates;
         GenericQueryResults<ResponsibilityTemplateBo> results = genericQueryResults.build();
 
-        mockCriteriaLookupService.demand.lookup(1..1) {
+        mockDataObjectService.demand.findMatching(1..1) {
             Class<ResponsibilityTemplateBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
-        injectCriteriaLookupServiceIntoResponsibilityService();
+        injectDataObjectServiceIntoResponsibilityService();
 
         TemplateQueryResults templateQueryResults = responsibilityService.findResponsibilityTemplates(builder.build());
         List<Template> actualTemplates = templateQueryResults.getResults();
         Assert.assertEquals("resptemplateidone", actualTemplates[0].id);
     }
+
+    private Map<String, Object> asMap(QueryByCriteria criteria) {
+        Map<String, Object> predicateMap = new HashMap<String, Object>();
+        AndPredicate and = criteria.getPredicate();
+        Set<Predicate> predicates = and.getPredicates();
+        for (Predicate predicate : predicates) {
+            predicateMap.put(predicate.getPropertyPath(), predicate.getValue().getValue());
+        }
+        return predicateMap;
+    }
+
 }

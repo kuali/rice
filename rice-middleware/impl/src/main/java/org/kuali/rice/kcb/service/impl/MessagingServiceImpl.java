@@ -132,7 +132,7 @@ public class MessagingServiceImpl implements MessagingService {
             return null;
         }
 
-        final Message m = new Message();
+        Message m = new Message();
         m.setTitle(message.getTitle());
         m.setDeliveryType(message.getDeliveryType());
         m.setChannel(message.getChannel());
@@ -143,7 +143,7 @@ public class MessagingServiceImpl implements MessagingService {
         m.setOriginId(message.getOriginId());
 
         LOG.debug("saving message: " +m);
-        messageService.saveMessage(m);
+        m = messageService.saveMessage(m);
 
         for (String type: delivererTypes) {
             

@@ -30,9 +30,12 @@ import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
+import org.kuali.rice.krad.uif.view.View;
+
 
 /**
  * Base class for <code>Field</code> implementations
@@ -90,7 +93,12 @@ public class FieldBase extends ComponentBase implements Field {
             fieldLabel.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                fieldLabel.setRenderRequiredIndicator(!isReadOnly());
+                View view = ViewLifecycle.getView();
+                if (view.getViewTypeName() != null && view.getViewTypeName().equals(UifConstants.ViewType.MAINTENANCE)) {
+                    fieldLabel.setRenderRequiredIndicator(!view.isReadOnly());
+                } else {
+                    fieldLabel.setRenderRequiredIndicator(!isReadOnly());
+                }
             } else {
                 setRequired(false);
                 fieldLabel.setRenderRequiredIndicator(false);
@@ -128,7 +136,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     * {@inheritDoc}
      */
     @Override
     public final String getComponentTypeName() {
@@ -322,7 +330,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#initializeComponentSecurity()
+     * {@inheritDoc}
      */
     @Override
     protected void initializeComponentSecurity() {
@@ -368,7 +376,7 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

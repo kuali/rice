@@ -47,12 +47,12 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
     protected void testUifTooltipNav(JiraAwareFailable failable) throws Exception {
         navigation();
         waitAndClickByLinkText("Other Examples");
-        testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
+        testUifTooltipByName(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }
 
     protected void testUifTooltipBookmark(JiraAwareFailable failable) throws Exception {
-        testUifTooltip(NAME_FIELD_1, NAME_FIELD_2);
+        testUifTooltipByName(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }
 }

@@ -15,6 +15,17 @@
  */
 package org.kuali.rice.kim.document.rule;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.membership.MemberType;
@@ -27,7 +38,6 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
-import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -65,27 +75,15 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
-
-import javax.xml.namespace.QName;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -101,15 +99,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	protected AddMemberRule  addMemberRule;
 	protected AddDelegationRule addDelegationRule;
 	protected AddDelegationMemberRule addDelegationMemberRule;
-	protected BusinessObjectService businessObjectService;
-	protected ResponsibilityService responsibilityService;
 	protected Class<? extends AddResponsibilityRule> addResponsibilityRuleClass = KimDocumentResponsibilityRule.class;
 	protected Class<? extends AddPermissionRule> addPermissionRuleClass = KimDocumentPermissionRule.class;
 	protected Class<? extends AddMemberRule> addMemberRuleClass = KimDocumentMemberRule.class;
 	protected Class<? extends AddDelegationRule> addDelegationRuleClass = RoleDocumentDelegationRule.class;
 	protected Class<? extends AddDelegationMemberRule> addDelegationMemberRuleClass = RoleDocumentDelegationMemberRule.class;
 
-	protected IdentityService identityService;
+	private static IdentityService identityService;
 	private static ResponsibilityInternalService responsibilityInternalService;
 
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
@@ -117,7 +113,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	// KULRICE-4153
 	protected ActiveRoleMemberHelper activeRoleMemberHelper = new ActiveRoleMemberHelper();
 
-    public IdentityService getIdentityService() {
+    protected IdentityService getIdentityService() {
         if ( identityService == null) {
             identityService = KimApiServiceLocator.getIdentityService();
         }
@@ -133,8 +129,6 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         IdentityManagementRoleDocument roleDoc = (IdentityManagementRoleDocument)document;
 
         boolean valid = true;
-        boolean validateRoleAssigneesAndDelegations = !KimTypeLookupableHelperServiceImpl
-                .hasDerivedRoleTypeService(roleDoc.getKimType());
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         valid &= validDuplicateRoleName(roleDoc);
         valid &= validPermissions(roleDoc);
@@ -142,8 +136,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         //KULRICE-6858 Validate group members are in identity system
         valid &= validRoleMemberPrincipalIDs(roleDoc.getModifiedMembers());
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
-        validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
-        if(validateRoleAssigneesAndDelegations){
+        if ( !KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleDoc.getKimType())
+                && canUserAssignRoleMembers(roleDoc) ) {
 	        //valid &= validAssignRole(roleDoc);
         	// KULRICE-4153 & KULRICE-4818
         	// Use the Active Role Member Helper to retrieve only those Role Members & Delegation member that are active
@@ -165,7 +159,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return valid;
     }
 
-	protected boolean validAssignRole(IdentityManagementRoleDocument document){
+	protected boolean canUserAssignRoleMembers(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
@@ -444,7 +438,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
                                 KimAttributeBo attr = qualifier.getKimAttribute();
                                 String attrName = "<unknown>";
                                 if (attr == null && qualifier.getKimAttrDefnId() != null) {
-                                    attr = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(KimAttributeBo.class, qualifier.getKimAttrDefnId());
+                                    attr = KradDataServiceLocator.getDataObjectService().find(KimAttributeBo.class, qualifier.getKimAttrDefnId());
                                 }
                                 if (attr != null) {
                                     attrName = attr.getAttributeName();
@@ -812,31 +806,12 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         return success;
     }
 
-	public ResponsibilityService getResponsibilityService() {
-		if(responsibilityService == null){
-			responsibilityService = KimApiServiceLocator.getResponsibilityService();
-		}
-		return responsibilityService;
-	}
-
     public ResponsibilityInternalService getResponsibilityInternalService() {
     	if ( responsibilityInternalService == null ) {
     		responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
     	}
 		return responsibilityInternalService;
 	}
-
-
-	/**
-	 * @return the businessObjectService
-	 */
-	public BusinessObjectService getBusinessObjectService() {
-		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
-
 
     protected RoleTypeService getRoleTypeService(KimType typeInfo) {
         String serviceName = typeInfo.getServiceName();

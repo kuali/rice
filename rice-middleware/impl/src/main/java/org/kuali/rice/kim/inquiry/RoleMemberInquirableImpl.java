@@ -34,27 +34,15 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 public class RoleMemberInquirableImpl extends KualiInquirableImpl {
 
 	protected final String ROLE_ID = "id";
-	protected final String NAME = "name";
-	protected final String NAME_TO_DISPLAY = "nameToDisplay";
-	protected final String TEMPLATE_NAME = "template.name";
-	protected final String NAMESPACE_CODE = "namespaceCode";
-	protected final String TEMPLATE_NAMESPACE_CODE = "template.namespaceCode";
-	protected final String DETAIL_OBJECTS = "detailObjects";
-	protected final String ASSIGNED_TO_ROLES = "assignedToRolesToDisplay";
-	protected final String ATTRIBUTE_DATA_ID = "attributeDataId";
 
     private BusinessObjectService businessObjectService;
 
-    protected String getKimAttributeLabelFromDD(String attributeName){
-    	return KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
-    }
-
-    protected RoleBo getRoleImpl(String roleId){
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put("id", roleId);
-		return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
-    }
-
+//    protected RoleBo getRoleImpl(String roleId){
+//		Map<String, String> criteria = new HashMap<String, String>();
+//		criteria.put("id", roleId);
+//		return getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria);
+//    }
+//
 
     public BusinessObjectService getBusinessObjectService() {
         if(businessObjectService == null){

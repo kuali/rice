@@ -16,10 +16,12 @@
 package org.kuali.rice.krad.bo;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @MappedSuperclass
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
@@ -33,6 +35,7 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     protected String name;
 
     @Column(name="ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     protected Boolean active;
 
     public KualiCodeBase() {

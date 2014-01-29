@@ -15,24 +15,24 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.SequenceAccessorService;
-
-import java.util.Map;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -41,8 +41,6 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
-    protected transient SequenceAccessorService sequenceAccessorService;
-    private BusinessObjectService businessObjectService;
 
     /**
      * Saves the responsibility via the responsibility update service
@@ -51,7 +49,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
      */
     @Override
     public void saveDataObject() {
-        if (getDataObject() instanceof PersistableBusinessObject) {
+        if (getDataObject() instanceof GenericPermissionBo) {
             GenericPermissionBo genericPermissionBo = (GenericPermissionBo)getDataObject();
             boolean permissionExists = false;
             if (genericPermissionBo.getId() != null) {
@@ -84,35 +82,22 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
         super.processAfterCopy(document,parameters);
         // get id for new permission
-        String newId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, PermissionBo.class).toString();
+        DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_PERM_ID_S);
+        String newId = incrementer.nextStringValue();
         ((GenericPermissionBo)document.getNewMaintainableObject().getDataObject()).setId(newId);
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
-	 */
-	@Override
-	public Class<? extends PersistableBusinessObject> getBoClass() {
+	@SuppressWarnings("rawtypes")
+    @Override
+	public Class getBoClass() {
 		return GenericPermissionBo.class;
 	}
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
-	 */
 	@Override
 	public boolean isExternalBusinessObject() {
 		return true;
 	}
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
-	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {
 		try {
@@ -120,42 +105,21 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable.prepareBusinessObject passed a null object." );
 			}
 			if ( businessObject instanceof PermissionBo ) {
-				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((PermissionBo)businessObject).getId() );
+			    PermissionBo perm = KradDataServiceLocator.getDataObjectService().find(PermissionBo.class, ((PermissionBo)businessObject).getId());
 				businessObject = new GenericPermissionBo(perm);
 			} else if ( businessObject instanceof GenericPermissionBo ) {
 				// lookup the PermissionBo and convert to a GenericPermissionBo
-				PermissionBo perm = getBusinessObjectService().findBySinglePrimaryKey(PermissionBo.class, ((GenericPermissionBo)businessObject).getId() );
+                PermissionBo perm = KradDataServiceLocator.getDataObjectService().find(PermissionBo.class, ((GenericPermissionBo)businessObject).getId());
 				((GenericPermissionBo)businessObject).loadFromPermission(perm);
 			} else {
 				throw new RuntimeException( "Configuration ERROR: GenericPermissionMaintainable passed an unsupported object type: " + businessObject.getClass() );
 			}
-			if ( businessObject instanceof PersistableBusinessObject ) {
-				setBusinessObject( (PersistableBusinessObject)businessObject );
-			}
+			setDataObject( businessObject );
 			super.prepareBusinessObject(businessObject);
 		} catch ( RuntimeException ex ) {
 			LOG.error( "Exception in prepareBusinessObject()", ex );
 			throw ex;
 		}
 	}
-
-    protected SequenceAccessorService getSequenceAccessorService(){
-        if(this.sequenceAccessorService==null){
-            this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        return this.sequenceAccessorService;
-    }
-
-    public BusinessObjectService getBusinessObjectService() {
-        if(businessObjectService == null){
-            return KNSServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
-    }
-
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
 
 }

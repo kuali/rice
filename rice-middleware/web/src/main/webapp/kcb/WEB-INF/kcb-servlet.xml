@@ -23,6 +23,9 @@
 <!-- todo: investigate autowire by type for service beans...: default-autowire-candidates="*Service"
  -->
 <beans>
+
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
+
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>

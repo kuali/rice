@@ -45,6 +45,9 @@ public class TabGroup extends GroupBase {
         super();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
@@ -83,7 +86,7 @@ public class TabGroup extends GroupBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -56,7 +56,7 @@ import org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpa;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

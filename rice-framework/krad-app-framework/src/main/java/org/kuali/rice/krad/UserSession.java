@@ -235,6 +235,9 @@ public class UserSession implements Serializable {
      * @return the stored object
      */
     public Object retrieveObject(String objectKey) {
+        if (objectKey == null) {
+            return null;
+        }
         Object object = objectMap.get(objectKey);
 
         if (!NULL_VALUE.equals(object)) {
@@ -252,7 +255,9 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public void removeObject(String objectKey) {
-        this.objectMap.remove(objectKey);
+        if (objectKey != null) {
+            this.objectMap.remove(objectKey);
+        }
     }
 
     /**

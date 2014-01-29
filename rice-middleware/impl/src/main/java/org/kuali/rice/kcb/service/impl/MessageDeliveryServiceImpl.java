@@ -16,26 +16,30 @@
 package org.kuali.rice.kcb.service.impl;
 
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
+import org.kuali.rice.krad.data.DataObjectService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * MessageDeliveryService implementation 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implements MessageDeliveryService {
+public class MessageDeliveryServiceImpl implements MessageDeliveryService {
     private static final Logger LOG = Logger.getLogger(MessageDeliveryServiceImpl.class);
+
+    private DataObjectService dataObjectService;
 
     /**
      * Number of processing attempts to make.  {@link MessageDelivery}s with this number or more of attempts
@@ -54,54 +58,57 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#saveMessageDelivery(org.kuali.rice.kcb.bo.MessageDelivery)
      */
-    public void saveMessageDelivery(MessageDelivery delivery) {
-        dao.save(delivery);
+    public MessageDelivery saveMessageDelivery(MessageDelivery delivery) {
+        return dataObjectService.save(delivery);
     }
 
     /**
-     * @see org.kuali.rice.kcb.service.MessageDeliveryService#deleteMessageDelivery(java.lang.Long)
+     * @see org.kuali.rice.kcb.service.MessageDeliveryService#deleteMessageDelivery(MessageDelivery)
      */
     public void deleteMessageDelivery(MessageDelivery messageDelivery) {
-        dao.delete(messageDelivery);
+        dataObjectService.delete(messageDelivery);
     }
 
     /**
-     * @see org.kuali.rice.kcb.service.MessageDeliveryService#getMessageDeliveries()
+     * @see org.kuali.rice.kcb.service.MessageDeliveryService#getAllMessageDeliveries()
      */
     public Collection<MessageDelivery> getAllMessageDeliveries() {
-        return dao.findAll(MessageDelivery.class);
+        return dataObjectService.findMatching(MessageDelivery.class, QueryByCriteria.Builder.create().build()).getResults();
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#getMessageDelivery(java.lang.Long)
      */
     public MessageDelivery getMessageDelivery(Long id) {
-        Map<String, Object> fields = new HashMap<String, Object>(1);
-        fields.put(MessageDelivery.ID_FIELD, id);
-        return (MessageDelivery) dao.findByPrimaryKey(MessageDelivery.class, fields);
+        return dataObjectService.find(MessageDelivery.class, id);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#getMessageDeliveryByDelivererSystemId(java.lang.Long)
      */
     public MessageDelivery getMessageDeliveryByDelivererSystemId(Long id) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(MessageDelivery.SYSTEMID_FIELD, id);
-        Collection<MessageDelivery> results = dao.findMatching(MessageDelivery.class, criteria);
-        if (results == null || results.size() == 0) return null;
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+
+        criteria.setPredicates(equal(MessageDelivery.SYSTEMID_FIELD, id));
+        List<MessageDelivery> results = dataObjectService.findMatching(MessageDelivery.class, criteria.build()).getResults();
+
+        if (results.isEmpty()) {
+            return null;
+        }
         if (results.size() > 1) {
             throw new RuntimeException("More than one message delivery found with the following delivery system id: " + id);
         }
-        return results.iterator().next();
+        return results.get(0);
     }
 
     /**
      * @see org.kuali.rice.kcb.service.MessageDeliveryService#getMessageDeliveries(org.kuali.rice.kcb.bo.Message)
      */
     public Collection<MessageDelivery> getMessageDeliveries(Message message) {
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(MessageDelivery.MESSAGEID_FIELD, message.getId());
-        return dao.findMatching(MessageDelivery.class, criteria);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        criteria.setPredicates(equal(MessageDelivery.MESSAGEID_FIELD, message.getId()));
+
+        return dataObjectService.findMatching(MessageDelivery.class, criteria.build()).getResults();
     }
 
     /* This method is responsible for atomically finding messagedeliveries, marking them as taken
@@ -118,31 +125,41 @@ public class MessageDeliveryServiceImpl extends BusinessObjectServiceImpl implem
         // DO WITHIN TRANSACTION: get all untaken messagedeliveries, and mark as "taken" so no other thread/job takes them
         // need to think about durability of work list
 
-        // get all undelivered message deliveries
-        Criteria criteria = new Criteria();
-        criteria.addIsNull(MessageDelivery.LOCKED_DATE);
+        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
+        List<Predicate> predicates = new ArrayList<Predicate>();
+
+        predicates.add(isNull(MessageDelivery.LOCKED_DATE));
         if (messageId != null) {
-            criteria.addEqualTo(MessageDelivery.MESSAGEID_FIELD, messageId);
+            predicates.add(equal(MessageDelivery.MESSAGEID_FIELD + ".id", messageId));
         }
-        criteria.addLessThan(MessageDelivery.PROCESS_COUNT, maxProcessAttempts);
+        predicates.add(lessThan(MessageDelivery.PROCESS_COUNT, maxProcessAttempts));
+
         Collection<String> statusCollection = new ArrayList<String>(statuses.length);
         for (MessageDeliveryStatus status: statuses) {
             statusCollection.add(status.name());
         }
-        criteria.addIn(MessageDelivery.DELIVERY_STATUS, statusCollection);
-        // implement our select for update hack
-        Collection<MessageDelivery> messageDeliveries = dao.findMatching(MessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
-
-        //LOG.debug("Retrieved " + messageDeliveries.size() + " available message deliveries: " + System.currentTimeMillis());
+        predicates.add(in(MessageDelivery.DELIVERY_STATUS, statusCollection));
+        criteria.setPredicates(predicates.toArray(new Predicate[predicates.size()]));
+        List<MessageDelivery> messageDeliveries = dataObjectService.findMatching(MessageDelivery.class, criteria.build()).getResults();
+        List<MessageDelivery> lockedMsgDels = new ArrayList<MessageDelivery>();
 
         // mark messageDeliveries as taken
         for (MessageDelivery delivery: messageDeliveries) {
             LOG.debug("Took: " + delivery);
             delivery.setLockedDate(new Timestamp(System.currentTimeMillis()));
-            dao.save(delivery);
+            delivery = dataObjectService.save(delivery);
+            lockedMsgDels.add(delivery);
         }
 
         LOG.debug("<<=======  LEAVING LockAndTakeMessageDeliveries: " + Thread.currentThread());
-        return messageDeliveries;
+        return lockedMsgDels;
+    }
+
+    /**
+     * Sets the data object service.
+     * @param dataObjectService service to persist data to the datasource
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 }

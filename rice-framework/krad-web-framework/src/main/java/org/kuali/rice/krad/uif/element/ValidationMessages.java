@@ -103,7 +103,7 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
 
         // special message component case
         if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
-                .isGenerateSpan()) {
+                .isGenerateWrapperElement()) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 

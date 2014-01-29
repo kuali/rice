@@ -123,7 +123,7 @@ public class Header extends ContentElementBase {
             Message message = ComponentFactory.getMessage();
             message.setMessageText(headerText);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateSpan(false);
+            message.setGenerateWrapperElement(false);
             
             this.setRichHeaderMessage(message);
         }
@@ -461,7 +461,7 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -502,7 +502,7 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

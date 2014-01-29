@@ -122,29 +122,25 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
     @Test
     public void testWidgetsTooltipAutoQueryBookmark() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipCustomSelectionBookmark() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipRichTextBookmark() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggestRichText();
         passed();
     }
 
     @Test
     public void testWidgetsTooltipServiceSortingBookmark() throws Exception {
-        // pulled out due to failure
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "Tr", "Travel Account 1");
         passed();
     }
 
@@ -156,29 +152,25 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
     @Test
     public void testWidgetsTooltipAutoQueryNav() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggest("Auto-Query Configuration", "inputField1", "ca", "CAT");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipCustomSelectionNav() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggest("Custom selection", "inputField10", "jm", "jmcross");
         passed();
     }
 
     @Test
     public void testWidgetsTooltipRichTextNav() throws Exception {
-        // pulled out due to failure
         testWidgetsSuggestRichText();
         passed();
     }
 
     @Test
     public void testWidgetsTooltipServiceSortingNav() throws Exception {
-        // pulled out due to failure
-        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "sub", "sub-a3");
+        testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "Tr", "Travel Account 1");
         passed();
     }
 }

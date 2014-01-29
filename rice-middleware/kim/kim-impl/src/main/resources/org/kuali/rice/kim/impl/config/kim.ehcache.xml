@@ -53,5 +53,6 @@
   <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" maxEntriesLocalHeap="200000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" maxEntriesLocalHeap="200000" timeToLiveSeconds="1800"/>
   <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" maxEntriesLocalHeap="50000" timeToLiveSeconds="1800"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/KimAttributeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" copyOnRead="false" copyOnWrite="false"/>
 
 </ehcache>

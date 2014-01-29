@@ -15,19 +15,50 @@
  */
 package org.kuali.rice.kim.impl.type;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
-public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements KimTypeAttributeContract {
+@Entity
+@Table(name = "KRIM_TYP_ATTR_T")
+public class KimTypeAttributeBo extends DataObjectBase implements KimTypeAttributeContract {
+    private static final long serialVersionUID = 1L;
 
+    @PortableSequenceGenerator(name = "KRIM_TYP_ATTR_ID_S")
+    @GeneratedValue(generator = "KRIM_TYP_ATTR_ID_S")
+    @Id
+    @Column(name = "KIM_TYP_ATTR_ID")
     private String id;
+
+    @Column(name = "SORT_CD")
     private String sortCode;
+
+    @Column(name = "KIM_ATTR_DEFN_ID")
     private String kimAttributeId;
+
+    @ManyToOne(targetEntity = KimAttributeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "KIM_ATTR_DEFN_ID", referencedColumnName = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
     private KimAttributeBo kimAttribute;
+
+    @Column(name = "KIM_TYP_ID")
     private String kimTypeId;
+
+    @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     /**
@@ -40,7 +71,6 @@ public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements
         if (bo == null) {
             return null;
         }
-
         return KimTypeAttribute.Builder.create(bo).build();
     }
 
@@ -54,7 +84,6 @@ public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements
         if (im == null) {
             return null;
         }
-
         KimTypeAttributeBo bo = new KimTypeAttributeBo();
         bo.setId(im.getId());
         bo.sortCode = im.getSortCode();
@@ -65,7 +94,6 @@ public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements
         bo.active = im.isActive();
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
-
         return bo;
     }
 
@@ -125,5 +153,4 @@ public class KimTypeAttributeBo extends PersistableBusinessObjectBase implements
     public void setActive(boolean active) {
         this.active = active;
     }
-
 }

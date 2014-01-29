@@ -21,8 +21,10 @@ import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,12 +39,12 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> fieldPropertyEditors;
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
-    private List<String> inputFieldIds;
+    private Set<String> inputFieldIds;
 
     public ViewPostMetadata() {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
-        inputFieldIds = new ArrayList<String>();
+        inputFieldIds = new HashSet<String>();
     }
 
     public ViewPostMetadata(String id) {
@@ -191,11 +193,11 @@ public class ViewPostMetadata implements Serializable {
         secureFieldPropertyEditors.put(propertyPath, propertyEditor);
     }
 
-    public List<String> getInputFieldIds() {
+    public Set<String> getInputFieldIds() {
         return inputFieldIds;
     }
 
-    public void setInputFieldIds(List<String> inputFieldIds) {
+    public void setInputFieldIds(Set<String> inputFieldIds) {
         this.inputFieldIds = inputFieldIds;
     }
 }

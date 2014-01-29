@@ -48,6 +48,7 @@ public class ViewPostMetadata implements Serializable {
     }
 
     public ViewPostMetadata(String id) {
+        this();
         this.id = id;
     }
 

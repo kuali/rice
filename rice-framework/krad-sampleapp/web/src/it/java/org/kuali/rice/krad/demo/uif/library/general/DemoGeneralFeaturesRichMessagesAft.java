@@ -79,7 +79,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
         waitAndClickByLinkText("Action");
-        waitAndClick(By.xpath("//div[@data-parent='Demo-RichMessages-Example14'][1]/a"));
+        waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][1]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
@@ -134,7 +134,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesEscapeChar() throws Exception {
         waitAndClickByLinkText("Escape char");
-        assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example11']/span[@style='color: green;']/b");
+        assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example11']/span[@style='color: green;']/b");
     }
     
     protected void testGeneralFeaturesRichMessagesEscapeCheckboxRadio() throws Exception {

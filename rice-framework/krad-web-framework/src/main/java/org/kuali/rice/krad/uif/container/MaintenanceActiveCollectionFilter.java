@@ -50,7 +50,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
      * is not allowed to hide
      * </p>
      *
-     * @see CollectionFilter#filter(org.kuali.rice.krad.uif.view.View, Object, org.kuali.rice.krad.uif.container.CollectionGroup)
+     * {@inheritDoc}
      */
     @Override
     public List<Integer> filter(View view, Object model, CollectionGroup collectionGroup) {

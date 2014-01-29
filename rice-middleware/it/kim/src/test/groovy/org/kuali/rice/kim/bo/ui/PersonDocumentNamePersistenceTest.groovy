@@ -20,6 +20,7 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.name.EntityNameBo
 import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory
+import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
  * Tests persisting PersonDocumentName object in order to verify ORM mappings
@@ -27,9 +28,9 @@ import org.kuali.rice.kim.test.Factory
 class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_persondocumentname() {
-        EntityBo entity = Factory.make(type:EntityBo.class)
-        entity = boService.save(entity)
-        EntityNameBo name = Factory.make(EntityNameBo, entity: entity)
+        EntityBo entity = Factory.make(EntityBo.class)
+        entity = boService.save(entity, PersistenceOption.FLUSH)
+        EntityNameBo name = Factory.make(EntityNameBo.class, entity: entity)
 
         PersonDocumentName pdn = new PersonDocumentName([
             entityId: entity.id,
@@ -40,11 +41,11 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             lastName: name.lastNameUnmasked,
             nameSuffix: name.nameSuffixUnmasked,
             entityNameType: name.nameType,
-            nameChangedDate: genDbTimestamp(),
+            nameChangedDate: name.nameChangedTimestamp,
             nameCode: name.nameType.code
         ])
 
-        pdn = boService.save(pdn)
+        pdn = boService.save(pdn, PersistenceOption.FLUSH)
 
         assertRow(kimdoc_fields(pdn) + [
             ENTITY_NM_ID: pdn.entityNameId,

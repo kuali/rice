@@ -21,6 +21,7 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory
+import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
  * Tests persisting PersonDocumentAddress object in order to verify ORM mappings
@@ -28,13 +29,13 @@ import org.kuali.rice.kim.test.Factory
 class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_persondocumentaddress() {
-        EntityBo entity = Factory.make(EntityBo.class)
-        entity = boService.save(entity)
+        EntityBo entity = Factory.make(EntityBo.class) 
+        entity = boService.save(entity, PersistenceOption.FLUSH)
         EntityTypeContactInfoBo ent_type = Factory.make(EntityTypeContactInfoBo.class, entity: entity)
-        ent_type = boService.save(ent_type)
+        ent_type = boService.save(ent_type, PersistenceOption.FLUSH)
         EntityAddressBo addr = Factory.make(EntityAddressBo.class, entity: entity)
-        addr = boService.save(addr)
-
+        addr = boService.save(addr, PersistenceOption.FLUSH)
+        println "Saved Object: $addr"
         PersonDocumentAddress pda = new PersonDocumentAddress([
             addressType: addr.addressType,
             addressTypeCode: addr.addressTypeCode,
@@ -55,8 +56,9 @@ class PersonDocumentAddressPersistenceTest extends BoPersistenceTest {
             noteMessage: addr.noteMessage
         ])
 
-        pda = boService.save(pda)
-
+        pda = boService.save(pda, PersistenceOption.FLUSH)
+        println "Saved Object: $pda"
+        
         assertRow(kimdoc_fields(pda) + [
             ENTITY_ADDR_ID: pda.entityAddressId,
             ATTN_LINE: pda.attentionLine,

@@ -160,7 +160,7 @@ class EntityFactory extends Factory {
             lastName: "Smith",
             nameSuffix: "Jr.",
             noteMessage: "note message",
-            nameChangedDate: genDbTimestamp(),
+            nameChangedTimestamp: genDbTimestamp(),
             nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY),
             nameCode: KimConstants.NameTypes.PRIMARY
         ]

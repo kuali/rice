@@ -82,12 +82,14 @@ class JpaPersistenceTestHelper {
         timestamp
     }
 
-    def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT"]) {
+    def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT","OBJ_ID","VER_NBR"]) {
         def pk_val = fields[pk]
         if (!pk_val) {
             throw new RuntimeException("No primary key value found for field: " + pk)
         }
-        Map row = new SimpleJdbcTemplate(datasource).queryForMap("select * from " + table + " where " + pk + "=?", pk_val)
+        def sql = "select * from " + table + " where " + pk + " = ${pk_val}"
+        println "Running Query: $sql"
+        Map row = new SimpleJdbcTemplate(datasource).queryForMap( sql )
         row.keySet().removeAll(ignore)
         /*for (Map.Entry e: fields.entrySet()) {
             println(e.getKey().getClass());
@@ -102,6 +104,6 @@ class JpaPersistenceTestHelper {
             println(e.getValue());
         }*/
 
-        Assert.assertEquals(fields, row);
+        Assert.assertTrue("Error Saved data does not match: \n" + new TreeMap( row ) + "\n != \n" + new TreeMap( fields ), new TreeMap( fields ) == new TreeMap( row ));
     }
 }

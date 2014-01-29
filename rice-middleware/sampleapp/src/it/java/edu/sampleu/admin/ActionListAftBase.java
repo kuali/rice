@@ -120,7 +120,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      */
     protected String testCreateActionRequest(String user, String actionType) throws InterruptedException{
         selectFrameIframePortlet();
-        waitAndClickByXpath(CREATE_NEW_XPATH);
+        waitAndClickCreateNew();
         String docId = waitForDocId();
         fourLetters = RandomStringUtils.randomAlphabetic(4);
         createNewEnterDetails();

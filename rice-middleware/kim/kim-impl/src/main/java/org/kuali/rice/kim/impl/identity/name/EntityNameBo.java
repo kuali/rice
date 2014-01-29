@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.name;
 
-import java.sql.Timestamp;
-
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -79,9 +77,7 @@ public class EntityNameBo extends EntityNameBase {
         bo.setNameTitle(immutable.getNameTitleUnmasked());
         bo.setNameSuffix(immutable.getNameSuffixUnmasked());
         bo.setNoteMessage(immutable.getNoteMessage());
-        if (immutable.getNameChangedDate() != null) {
-            bo.setNameChangedDate(new Timestamp(immutable.getNameChangedDate().getMillis()));
-        }
+        bo.setNameChangedDate(immutable.getNameChangedDate());
         bo.setDefaultValue(immutable.isDefaultValue());
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());

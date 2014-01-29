@@ -60,8 +60,8 @@ import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @javax.persistence.Entity
 @Cacheable(false)
@@ -76,51 +76,51 @@ public class EntityBo extends DataObjectBase implements EntityContract {
     @Column(name = "ENTITY_ID")
     private String id;
 
-    @OneToMany(targetEntity = EntityNameBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityNameBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityNameBo> names = new ArrayList<EntityNameBo>();
 
-    @OneToMany(targetEntity = PrincipalBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = PrincipalBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
 
-    @OneToMany(targetEntity = EntityExternalIdentifierBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityExternalIdentifierBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityExternalIdentifierBo> externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
 
-    @OneToMany(targetEntity = EntityAffiliationBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityAffiliationBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityAffiliationBo> affiliations = new ArrayList<EntityAffiliationBo>();
 
-    @OneToMany(targetEntity = EntityEmploymentBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityEmploymentBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEmploymentBo> employmentInformation = new ArrayList<EntityEmploymentBo>();
 
-    @OneToMany(targetEntity = EntityTypeContactInfoBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityTypeContactInfoBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityTypeContactInfoBo> entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
 
-    @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityPrivacyPreferencesBo privacyPreferences;
 
-    @OneToOne(targetEntity = EntityBioDemographicsBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToOne(targetEntity = EntityBioDemographicsBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityBioDemographicsBo bioDemographics;
 
-    @OneToMany(targetEntity = EntityCitizenshipBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityCitizenshipBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityCitizenshipBo> citizenships = new ArrayList<EntityCitizenshipBo>();
 
-    @OneToMany(targetEntity = EntityEthnicityBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityEthnicityBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEthnicityBo> ethnicities = new ArrayList<EntityEthnicityBo>();
 
-    @OneToMany(targetEntity = EntityResidencyBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityResidencyBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityResidencyBo> residencies = new ArrayList<EntityResidencyBo>();
 
-    @OneToMany(targetEntity = EntityVisaBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityVisaBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityVisaBo> visas = new ArrayList<EntityVisaBo>();
 

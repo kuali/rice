@@ -131,15 +131,9 @@ public interface ViewModel extends Serializable {
      * this is necessary the previous view instance can be retrieved
      *
      * @return View instance
+     * @deprecated TODO: REMOVE
      */
     public View getPostedView();
-
-    /**
-     * Setter for the previous view instance
-     *
-     * @param previousView
-     */
-    public void setPostedView(View previousView);
 
     /**
      * Gets the {@link org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata} that has been built up from processing

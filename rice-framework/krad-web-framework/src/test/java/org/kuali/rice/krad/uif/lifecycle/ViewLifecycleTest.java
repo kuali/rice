@@ -205,7 +205,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         UifFormBase form = testFormView("Lab-PerformanceMedium", "u1c5ay4e");
 
         View view = form.getView();
-        form.setPostedView(view);
         form.setView(null);
 
         String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();

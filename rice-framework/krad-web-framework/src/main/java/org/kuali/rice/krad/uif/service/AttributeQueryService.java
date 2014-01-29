@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.field.AttributeQueryResult;
-
 import java.util.Map;
+
+import org.kuali.rice.krad.uif.field.AttributeQueryResult;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 
 /**
  * Provides methods for executing <code>AttributeQuery</code> instances
@@ -40,8 +40,8 @@ public interface AttributeQueryService {
      * @param queryParameters - map of key/value pairs that are parameters to the query
      * @return AttributeQueryResult instance populated with the List<String> data field of result data
      */
-    public AttributeQueryResult performFieldSuggestQuery(String fieldId, String fieldTerm,
-            Map<String, String> queryParameters);
+    public AttributeQueryResult performFieldSuggestQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, String fieldTerm, Map<String, String> queryParameters);
 
     /**
      * Executes the <code>AttributeQuery</code> associated with the field given by the id. The given Map of key/value
@@ -54,5 +54,6 @@ public interface AttributeQueryService {
      * @param queryParameters - map of key/value pairs that are parameters to the query
      * @return AttributeQueryResult instance populated with the Map<String, String> of result field data
      */
-    public AttributeQueryResult performFieldQuery(String fieldId, Map<String, String> queryParameters);
+    public AttributeQueryResult performFieldQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, Map<String, String> queryParameters);
 }

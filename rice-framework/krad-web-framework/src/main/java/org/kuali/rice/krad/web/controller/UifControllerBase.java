@@ -619,7 +619,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldSuggestQuery(
-                queryFieldId, queryTerm, queryParameters);
+                form.getViewPostMetadata(), queryFieldId, queryTerm, queryParameters);
 
         return queryResult;
     }
@@ -662,7 +662,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
-                queryFieldId, queryParameters);
+                form.getViewPostMetadata(), queryFieldId, queryParameters);
 
         return queryResult;
     }

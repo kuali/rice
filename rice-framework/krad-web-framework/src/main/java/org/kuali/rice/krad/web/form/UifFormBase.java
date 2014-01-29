@@ -109,7 +109,6 @@ public class UifFormBase implements ViewModel {
 
     @SessionTransient
     protected View view;
-    protected View postedView;
     protected ViewPostMetadata viewPostMetadata;
 
     protected Map<String, String> viewRequestParameters;
@@ -861,15 +860,7 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public View getPostedView() {
-        return this.postedView;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setPostedView(org.kuali.rice.krad.uif.view.View)
-     */
-    @Override
-    public void setPostedView(View postedView) {
-        this.postedView = postedView;
+        throw new UnsupportedOperationException("TODO: REMOVE");
     }
 
     /**
@@ -895,9 +886,9 @@ public class UifFormBase implements ViewModel {
      * @return view instance to use for post operations
      */
     public View getActiveView() {
-        if (ajaxRequest || isUpdateNoneRequest()) {
-            return this.postedView;
-        }
+//        if (ajaxRequest || isUpdateNoneRequest()) {
+//            return this.postedView;
+//        }
 
         return this.view;
     }

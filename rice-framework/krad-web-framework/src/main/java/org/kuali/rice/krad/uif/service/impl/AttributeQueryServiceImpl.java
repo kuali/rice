@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -25,23 +33,14 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LocationSuggest;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of <code>AttributeQueryService</code> that prepares the attribute queries and
@@ -60,11 +59,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * {@inheritDoc}
      */
     @Override
-    public AttributeQueryResult performFieldSuggestQuery(String fieldId, String fieldTerm,
-            Map<String, String> queryParameters) {
+    public AttributeQueryResult performFieldSuggestQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, String fieldTerm, Map<String, String> queryParameters) {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
-        ComponentPostMetadata inputFieldMetaData = ViewLifecycle.getViewPostMetadata().getComponentPostMetadata(fieldId);
+        ComponentPostMetadata inputFieldMetaData = viewPostMetadata.getComponentPostMetadata(fieldId);
         if (inputFieldMetaData == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
@@ -257,10 +256,11 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * {@inheritDoc}
      */
     @Override
-    public AttributeQueryResult performFieldQuery(String fieldId, Map<String, String> queryParameters) {
+    public AttributeQueryResult performFieldQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, Map<String, String> queryParameters) {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
-        ComponentPostMetadata inputFieldMetaData = ViewLifecycle.getViewPostMetadata().getComponentPostMetadata(fieldId);
+        ComponentPostMetadata inputFieldMetaData = viewPostMetadata.getComponentPostMetadata(fieldId);
         if (inputFieldMetaData == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }

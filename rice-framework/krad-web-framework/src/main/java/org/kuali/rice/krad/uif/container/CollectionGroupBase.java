@@ -45,6 +45,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -337,6 +338,18 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performFinalize(Object model, LifecycleElement parent) {
+        boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
+        if (hasBindingPath) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(
+                    this, UifConstants.PostMetadata.BINDING_PATH, getBindingInfo().getBindingPath());
+        }
+    }
+    
     /**
      * Sets a reference in the context map for all nested components to the collection group
      * instance, and sets name as parameter for an action fields in the group

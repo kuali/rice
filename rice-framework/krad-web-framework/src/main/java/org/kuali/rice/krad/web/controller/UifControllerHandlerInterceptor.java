@@ -124,7 +124,6 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
                 ViewCleaner.cleanView(view);
             }
 
-            uifForm.setPostedView(view);
             uifForm.setView(null);
         }
 

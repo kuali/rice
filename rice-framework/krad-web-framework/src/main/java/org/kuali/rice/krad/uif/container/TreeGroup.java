@@ -197,9 +197,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * Gets all node components within the tree.
-     * 
-     * @return list of node components
+     * {@inheritDoc}
      */
     public List<Component> getNodeComponents() {
         List<Component> components = new ArrayList<Component>();
@@ -208,9 +206,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * Gets all node components prototypes within the tree.
-     * 
-     * @return list of node component prototypes
+     * {@inheritDoc}
      */
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     public List<Component> getComponentPrototypes() {
@@ -319,7 +315,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

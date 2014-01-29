@@ -23,7 +23,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.kuali.rice.core.api.mo.ModelObjectBasic;
-import org.kuali.rice.krad.data.jpa.eclipselink.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptor;
 import org.kuali.rice.ksb.api.registry.ServiceDescriptorContract;
 

@@ -584,13 +584,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     @After
     public void tearDown() {
         try {
-//            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-//            FileUtils.copyFile(scrFile, new File(this.getClass().toString() + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png"));
-
             if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 waitAndClickLogoutIfPresent();
             } else {
                 System.out.println("Last AFT URL: " + driver.getCurrentUrl());
+                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true"))) {
+                    File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+                    FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
+                            System.getProperty("remote.driver.screenshot.filename",
+                            this.getClass().toString() + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+                }
             }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
         } catch (Throwable t) {
@@ -739,6 +742,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         // Disapprove requires another step before checking outbox
         if ("D".equals(actionListOptionValue)) {
             waitAndTypeByName("reason","blah");
+            jGrowl("Click yes button");
             waitAndClickByName("methodToCall.processAnswer.button0");
         } else if ("C".equals(actionListOptionValue)) {
             waitAndClickByName("methodToCall.close");
@@ -984,6 +988,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void blanketApproveTest() throws InterruptedException {
+        jGrowl("Click Blanket Approve");
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
@@ -4271,6 +4276,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickByName(String name) throws InterruptedException {
+        jGrowl("Click By Name " + name);
         jiraAwareWaitAndClick(By.name(name), this.getClass().toString());
     }
 
@@ -4462,6 +4468,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitAndClickCreateNew(String message) throws InterruptedException {
+        jGrowl("Click Create New");
         if (WebDriverUtils.waitFors(driver, By.xpath(CREATE_NEW_XPATH)).size() > 0) {
             waitAndClickByXpath(CREATE_NEW_XPATH, message);
         } else {

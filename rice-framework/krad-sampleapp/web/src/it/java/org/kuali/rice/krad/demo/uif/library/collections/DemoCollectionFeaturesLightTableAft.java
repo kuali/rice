@@ -51,11 +51,10 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesLightTableInquiryLinkActions() throws Exception {
         waitAndClickByLinkText("Inquiry, Links, and Actions");
-        waitAndClickByXpath("//div[@id='Demo-LightTable-Example2']/div[@class='uif-verticalBoxLayout clearfix']/a");
-        switchToWindow("Kuali :: Light Table test");
+        waitAndClickByXpath("//div[@id='Demo-LightTable-Example2']/a");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td/div/a");
-        assertElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td[5]/div/fieldset/div/button");
+        waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td[5]/div/fieldset/div/button");
         switchToWindow("Kuali");
      }
     

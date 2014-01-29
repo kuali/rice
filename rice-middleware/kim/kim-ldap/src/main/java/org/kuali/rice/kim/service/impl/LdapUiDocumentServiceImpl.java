@@ -356,7 +356,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	}
 
     @Override
-	protected List<RoleMemberBo> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> origRoleMembers){
+	protected List<RoleMemberBo> updateRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberBo> origRoleMembers){
         List<RoleMemberBo> roleMembers = new ArrayList<RoleMemberBo>();
         RoleMemberBo newRoleMember;
         RoleMemberBo origRoleMemberImplTemp;

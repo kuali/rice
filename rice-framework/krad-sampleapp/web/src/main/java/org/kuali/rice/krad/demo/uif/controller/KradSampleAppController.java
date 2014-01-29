@@ -30,7 +30,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.List;
+import java.util.Set;
 
 /**
  * Basic controller for the KRAD sample application
@@ -116,7 +118,7 @@ public class KradSampleAppController extends UifControllerBase {
         GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section1", "errorSectionTest");
         GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section2", "errorSectionTest");
 
-        List<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
             if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
                 String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");

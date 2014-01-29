@@ -29,8 +29,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Controller for the Test UI Page
@@ -172,7 +174,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("field5", "richValidationMessageTest2");
         }
 
-        List<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
             if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
                 String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
@@ -197,7 +199,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putWarning("badKey", "unmatchedTest");
         }
 
-        List<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
             if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
                 String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
@@ -222,7 +224,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("badKey", "unmatchedTest");
         }
 
-        List<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
             if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
                 String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");

@@ -105,11 +105,15 @@ public class DataDictionaryTypeServiceBase implements KimTypeService {
 
     @Override
 	public List<KimAttributeField> getAttributeDefinitions(String kimTypeId) {
+        final KimType kimType = getTypeInfoService().getKimType(kimTypeId);
+        if ( kimType == null ) {
+        	LOG.warn("Unable to retrieve a KimTypeInfo for kimTypeId=" + kimTypeId + " in getAttributeDefinitions()");
+        	return Collections.emptyList();
+        }
         final List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
 
         //using map.entry as a 2-item tuple
         final List<Map.Entry<String,KimAttributeField>> definitions = new ArrayList<Map.Entry<String,KimAttributeField>>();
-        final KimType kimType = getTypeInfoService().getKimType(kimTypeId);
         if ( kimType == null ) {
         	LOG.warn( "Unable to find KimType for ID: " + kimTypeId);
         	return Collections.emptyList();

@@ -178,6 +178,16 @@
     <property name="target" value="_self"/>
   </bean>
 
+  <bean id="Uif-HeadLink" parent="Uif-HeadLink-parentBean"/>
+  <bean id="Uif-HeadLink-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.HeadLink"
+        parent="Uif-ContentElementBase" scope="prototype">
+  </bean>
+
+  <bean id="Uif-MetaTag" parent="Uif-MetaTag-parentBean"/>
+  <bean id="Uif-MetaTag-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MetaTag"
+        parent="Uif-ContentElementBase" scope="prototype">
+  </bean>
+
   <bean id="Uif-Space" parent="Uif-Space-parentBean"/>
   <bean id="Uif-Space-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Space"
         parent="Uif-ContentElementBase" scope="prototype">

@@ -23,12 +23,22 @@
 
     <meta charset="UTF-8">
 
+    <#list view.additionalMetaTags as tag>
+        <#if tag.http_equiv?has_content>
+            <meta http-equiv="${tag.http_equiv}" content="${tag.content}"/>
+        <#else>
+            <meta name="${tag.name}" content="${tag.content}"/>
+        </#if>
+
+    </#list>
+
     <title>
         <@spring.message "app.title"/>
         <#if view.headerText?has_content>
         :: ${view.headerText}
         </#if>
     </title>
+
 
     <#list view.theme.cssFiles as cssFile>
         <#local relation="stylesheet"/>
@@ -41,6 +51,46 @@
         <#else>
             <link href="${request.contextPath}/${cssFile}" rel="${relation}" type="text/css"/>
         </#if>
+    </#list>
+
+
+
+    <#list view.additionalHeadLinks as headLink>
+        <#local relation="stylesheet"/>
+        <#local media="all"/>
+        <#local type="text/css"/>
+
+        <#if headLink.href?ends_with('.less')>
+            <#local relation="stylesheet/less"/>
+        </#if>
+
+        <#if headLink.relation?has_content>
+            <#local relation="${headLink.relation}"/>
+        </#if>
+
+        <#if headLink.type?has_content>
+            <#local type="${headLink.type}"/>
+        </#if>
+
+        <#if headLink.href?starts_with('http')>
+            <#local href="${headLink.href}"/>
+        <#else>
+            <#local href="${request.contextPath}/${headLink.href}"/>
+        </#if>
+
+        <#if headLink.media?has_content>
+            <#local media="${headLink.media}"/>
+        </#if>
+
+        <#if headLink.includeCondition?has_content>
+                <!--[${headLink.includeCondition}]>
+            <link rel="${relation}" href="${href}" type="${type}" media="${media}"/>
+                <![endif]-->
+        <#else>
+            <link rel="${relation}" href="${href}" type="${type}" media="${media}"/>
+        </#if>
+
+
     </#list>
 
     <#list view.additionalCssFiles as cssFile>

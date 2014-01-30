@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.lookup;
 
+import java.util.Properties;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
@@ -23,11 +25,9 @@ import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 
-import java.util.Properties;
-
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -39,6 +39,16 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
     public String getCreateNewUrl() {
         String url = "";
         if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME)){
+            // we can use this if we want to go directly to the main document in the future
+//            Properties parameters = new Properties();
+//            parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
+//            parameters.put(KRADConstants.PARAMETER_COMMAND, KewApiConstants.INITIATE_COMMAND);
+//            parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_TYPE_NAME);
+//            if (StringUtils.isNotBlank(getReturnLocation())) {
+//                parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());
+//            }
+//            url = getCreateNewUrl(UrlFactory.parameterizeUrl(
+//                    KimCommonUtilsInternal.getKimBasePath()+ KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters));
             Properties parameters = new Properties();
             parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeBo.class.getName());
             //parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, KRADConstants.PORTAL_ACTION);

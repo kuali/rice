@@ -2500,10 +2500,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(5000);
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
-        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
+        waitAndTypeByName("documentId", docId);
+        waitAndClickByName("methodToCall.search");
         Thread.sleep(5000);
         jGrowl("Is doc status enroute?");
-        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td")).getText());
         driver.switchTo().defaultContent();
         findElement(By.name("imageField")).click();
         Thread.sleep(5000);

@@ -48,13 +48,8 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         waitAndTypeByName("documentId","3010");
         waitAndClickByName("methodToCall.getDocument");
         waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
-        assertTextPresent("Document Actions");
-        assertTextPresent("Queue Document");
-        assertTextPresent("Queue Action Invocation");
-        assertTextPresent("Document ID:");
-        assertTextPresent("3010");
-        assertTextPresent("Route Node Instance ID:");
-        assertTextPresent("2923");
+        assertTextPresent(new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:",
+                "3010", "Route Node Instance ID:", "2923"});
     }
 
     @Test

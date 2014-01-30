@@ -592,7 +592,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                     File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
                     FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
                             System.getProperty("remote.driver.screenshot.filename",
-                            this.getClass().toString() + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+                            this.getClass().toString().replace("class ", "") + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
                 }
             }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
@@ -734,6 +734,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectTopFrame();
         waitAndClickActionList();
         selectFrameIframePortlet();
+        while (!waitForIsTextPresent(docId)) {
+            waitAndClickByLinkText("Next");
+        }
         assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
         waitAndClickLinkContainingText(docId);
         selectChildWindow();
@@ -1780,7 +1783,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected String getDateTimeStampFormatted() {
         Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         return sdf.format(now);
     }
 

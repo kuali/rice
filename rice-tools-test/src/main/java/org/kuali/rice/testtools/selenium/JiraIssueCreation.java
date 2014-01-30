@@ -31,9 +31,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
@@ -46,9 +48,18 @@ public class JiraIssueCreation {
     String jiraBase;
     List<File> jiraDataDirs = new LinkedList();
     boolean passed = false;
+    Map<String, String> jiraMap = new HashMap<String, String>();
+    Map<String, Map<String, String>> jiraMaps = new HashMap<String, Map<String, String>>();
 
     @Before
-    public void setUp() throws MalformedURLException, InterruptedException {
+    public void setUp() throws IOException, InterruptedException {
+        jiraMap.put("project-field", System.getProperty("jira.project", "Kuali Rice Development"));
+        jiraMap.put("jira.versions", System.getProperty("jira.versions", "2.4.0-m4").replaceAll(",", " "));
+        jiraMap.put("jira.fixVersions", System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+        jiraMap.put("issuetype-field", System.getProperty("jira.issuetype", "Bug Fix"));
+        jiraMap.put("jira.component", System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " "));
+        jiraMap.put("jira.priority", System.getProperty("jira.priority", "Critical"));
+
         jiraBase = System.getProperty("jira.base.url", "https://jira.kuali.org");
         File inputDir = new File(System.getProperty("jira.input.dir", "."));
         File listDir[] = inputDir.listFiles();
@@ -58,7 +69,23 @@ public class JiraIssueCreation {
             }
         }
 
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+        createJiraMaps();
+        dumpJiraMaps();
+        login();
+
+        passed = true;
+    }
+
+    private void dumpJiraMaps() {
+        for (Map<String, String> jiraMapped : jiraMaps.values()) {
+            for (String key : jiraMapped.keySet()) {
+                System.out.println(key + " = " + jiraMapped.get(key));
+            }
+            System.out.println("\n\n\n\n\n\n\n\n");
+        }
+    }
+
+    private void login() throws InterruptedException {DesiredCapabilities capabilities = new DesiredCapabilities();
         FirefoxProfile profile = new FirefoxProfile();
         profile.setEnableNativeEvents(false);
         capabilities.setCapability(FirefoxDriver.PROFILE, profile);
@@ -76,8 +103,6 @@ public class JiraIssueCreation {
         driver.findElement(By.id("username")).sendKeys(System.getProperty("cas.username"));
         driver.findElement(By.id("password")).sendKeys(System.getProperty("cas.password"));
         driver.findElement(By.name("submit")).click();
-
-        passed = true;
     }
 
     @After
@@ -85,8 +110,7 @@ public class JiraIssueCreation {
 //        closeAndQuitWebDriver(); // don't close yet, doing the submit manually
     }
 
-    @Test
-    public void testCreateJira() throws InterruptedException, IOException {
+    public void createJiraMaps() throws InterruptedException, IOException {
         List<JiraData> jiraDatas = new LinkedList();
         String summary;
 
@@ -103,28 +127,6 @@ public class JiraIssueCreation {
                 jiraDatas.add(parseJiraData(inputFiles[i]));
             }
 
-            // Jira
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("create_link"), this.getClass().toString());
-            driver.get(jiraBase + "/secure/CreateIssue!default.jspa");
-
-            // Project
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("project-field"),
-                    this.getClass().toString()).sendKeys(System.getProperty("jira.project", "Kuali Rice Development"));
-
-            // Issue type
-            WebElement issue = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id(
-                    "issuetype-field"), this.getClass().toString());
-            issue.click();
-            issue.sendKeys(Keys.BACK_SPACE);
-            issue.sendKeys(System.getProperty("jira.issuetype", "Bug Fix"));
-//            issue.sendKeys(Keys.ARROW_DOWN);
-            issue.sendKeys(Keys.TAB);
-
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issue-create-submit"),
-                    this.getClass().toString()).click();
-
-            // Summary // TODO remove things that look like java object references
-            // TODO if the error messages are the same for all jiras then include it in the summary
             String testClass = jiraDatas.get(0).fullTestName.substring(0, jiraDatas.get(0).fullTestName.lastIndexOf("."));
             testClass = testClass.replace("org.kuali.rice.", "");
             testClass = testClass.replace("edu.sampleu.", "");
@@ -142,14 +144,56 @@ public class JiraIssueCreation {
             if (summary.length() > 180) {
                 summary = summary.substring(0, 179);
             }
-            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("summary"),
-                    this.getClass().toString()).sendKeys(summary);
+            jiraMap.put("jira.summary", summary);
+
             StringBuilder description = new StringBuilder(summary).append(" ").append(System.getProperty("jira.description.start", "").replaceAll("_", " ")).append("\n");
+            for (JiraData jiraData : jiraDatas) {
+                if (!"".equals(jiraData.aftSteps)) {
+                    description.append("\n").append(jiraData.aftSteps);
+                }
+                description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
+                description.append(jiraData.testUrl).append("\n");
+                description.append("\n{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}\n");
+            }
+            jiraMap.put("jira.description", description.toString());
+
+            jiraMaps.put(dir.getName(), jiraMap);
+        }
+    }
+
+    @Test
+    public void testCreateJira() throws InterruptedException, IOException {
+        for (Map<String, String> jiraMap : jiraMaps.values()) {
+
+            // Jira
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("create_link"), this.getClass().toString());
+            driver.get(jiraBase + "/secure/CreateIssue!default.jspa");
+
+            // Project
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("project-field"),
+                    this.getClass().toString()).sendKeys(jiraMap.get("jira.project"));
+
+            // Issue type
+            WebElement issue = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id(
+                    "issuetype-field"), this.getClass().toString());
+            issue.click();
+            issue.sendKeys(Keys.BACK_SPACE);
+            issue.sendKeys(jiraMap.get("jira.issuetype"));
+//            issue.sendKeys(Keys.ARROW_DOWN);
+            issue.sendKeys(Keys.TAB);
+
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("issue-create-submit"),
+                    this.getClass().toString()).click();
+
+            // Summary // TODO remove things that look like java object references
+            // TODO if the error messages are the same for all jiras then include it in the summary
+            WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("summary"),
+                    this.getClass().toString()).sendKeys(jiraMap.get("jira.summary"));
 
             // Components
             WebElement component = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id(
                     "components-textarea"), this.getClass().toString());
-            String components = System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " ");
+            String components = jiraMap.get("jira.component");
             StringTokenizer tokens = new StringTokenizer(components);
             while (tokens.hasMoreElements()) {
                 component.click();
@@ -159,26 +203,17 @@ public class JiraIssueCreation {
             }
 
             // Description
-            for (JiraData jiraData : jiraDatas) {
-                if (!"".equals(jiraData.aftSteps)) {
-                    description.append("\n").append(jiraData.aftSteps);
-                }
-                description.append("\n").append(jiraData.fullTestName).append(" ( ").append(jiraData.shortTestName).append(" ) - ");
-                description.append(jiraData.testUrl).append("\n");
-                description.append("\n{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}\n");
-            }
-
             WebElement descriptionElement = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("description"),
                     this.getClass().toString());
             descriptionElement.click();
-            descriptionElement.sendKeys(description);
+            descriptionElement.sendKeys(jiraMap.get("jira.description"));
 
             // Priority
             WebElement priority = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("priority-field"),
                     this.getClass().toString());
             priority.click();
             priority.sendKeys(Keys.BACK_SPACE);
-            priority.sendKeys(System.getProperty("jira.priority", "Critical"));
+            priority.sendKeys(jiraMap.get("jira.priority"));
 //            priority.sendKeys(Keys.ARROW_DOWN);
             priority.sendKeys(Keys.TAB);
 
@@ -186,7 +221,7 @@ public class JiraIssueCreation {
             WebElement version = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("versions-textarea"),
                     this.getClass().toString());
             version.click();
-            version.sendKeys(System.getProperty("jira.versions", "2.4.0-m3").replaceAll(",", " "));
+            version.sendKeys(jiraMap.get("jira.versions"));
 //            version.sendKeys(Keys.ARROW_DOWN);
             version.sendKeys(Keys.TAB);
 
@@ -194,7 +229,7 @@ public class JiraIssueCreation {
             WebElement fixVersion = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("fixVersions-textarea"),
                     this.getClass().toString());
             fixVersion.click();
-            fixVersion.sendKeys(System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+            fixVersion.sendKeys(jiraMap.get("jira.fixVersions"));
 //            fixVersion.sendKeys(Keys.ARROW_DOWN);
             fixVersion.sendKeys(Keys.TAB);
 

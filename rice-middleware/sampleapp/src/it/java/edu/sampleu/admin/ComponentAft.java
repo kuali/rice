@@ -76,7 +76,7 @@ public class ComponentAft extends WebDriverLegacyITBase {
         //Create New
         componentName = "TestName" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         componentCode = "TestCode" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        docId = createNewTemplateMethod();
+        docId = createNewTemplateMethodNoAction();
 
         //Lookup
         navigate();

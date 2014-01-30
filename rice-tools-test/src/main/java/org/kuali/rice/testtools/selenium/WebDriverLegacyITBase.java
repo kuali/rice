@@ -757,9 +757,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickLinkContainingText("Outbox");
         waitForTextPresent(docId);
 
-        // clear all items in the outbox
-        waitAndClickAllByName("outboxItems");
-        waitAndClickByName("methodToCall.removeOutboxItems");
+//        // clear all items in the outbox
+//        waitAndClickAllByName("outboxItems");
+//        waitAndClickByName("methodToCall.removeOutboxItems");
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
@@ -3188,6 +3188,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         // Action List
         assertActionList(docId, "F"); // FYI
+
+        assertDocSearch(docId, DOC_STATUS_FINAL);
+        selectTopFrame();
+        return docId;
+    }
+
+    protected String createNewTemplateMethodNoAction() throws InterruptedException {
+        waitAndCreateNew();
+        String docId = waitForDocId();
+
+        createNewEnterDetails();
+
+        waitAndClickSave();
+        waitAndClickSubmit();
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT);
 
         assertDocSearch(docId, DOC_STATUS_FINAL);
         selectTopFrame();

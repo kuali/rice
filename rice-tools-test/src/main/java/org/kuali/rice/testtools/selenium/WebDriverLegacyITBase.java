@@ -1607,10 +1607,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     public void screenshot() throws IOException {
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
-                System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
-                        + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+        if (driver instanceof TakesScreenshot) {
+            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
+                    System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
+                            + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+        }
     }
 
     public boolean screenshotSteps() {

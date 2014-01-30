@@ -46,7 +46,7 @@
         </bean>
 
         <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField2"
-              p:constraintText="Only A, B, pound, and 0-9 characters allowed">
+              p:constraintText="Only A, B pound characters, and numbers between 0 and 9 allowed">
           <property name="validCharactersConstraint">
             <bean parent="CharsetPatternConstraint" p:validChars="AB#0-9"/>
           </property>

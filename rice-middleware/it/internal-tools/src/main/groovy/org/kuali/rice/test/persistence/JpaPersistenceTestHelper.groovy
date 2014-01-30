@@ -87,10 +87,11 @@ class JpaPersistenceTestHelper {
         if (!pk_val) {
             throw new RuntimeException("No primary key value found for field: " + pk)
         }
-        def sql = "select * from " + table + " where " + pk + " = ${pk_val}"
+        def sql = "select * from " + table + " where " + pk + " = '${pk_val}' "
         println "Running Query: $sql"
         Map row = new SimpleJdbcTemplate(datasource).queryForMap( sql )
         row.keySet().removeAll(ignore)
+        fields.keySet().removeAll(ignore)
         /*for (Map.Entry e: fields.entrySet()) {
             println(e.getKey().getClass());
             println(e.getValue().getClass());

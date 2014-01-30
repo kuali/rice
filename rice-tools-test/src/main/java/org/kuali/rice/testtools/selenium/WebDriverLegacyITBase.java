@@ -588,11 +588,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 waitAndClickLogoutIfPresent();
             } else {
                 System.out.println("Last AFT URL: " + driver.getCurrentUrl());
-                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true"))) {
-                    File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-                    FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
-                            System.getProperty("remote.driver.screenshot.filename",
-                            this.getClass().toString().replace("class ", "") + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true")) || screenshotSteps()) {
+                    screenshot();
                 }
             }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
@@ -650,6 +647,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void impersonateUser(String user) throws InterruptedException {
         waitAndTypeByName(BACKDOOR_ID_TEXT,user);
+        jGrowl("Click Backdoor Login");
         waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
     }
 
@@ -1606,6 +1604,17 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void open(String url) {
         driver.get(url);
+    }
+
+    public void screenshot() throws IOException {
+        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
+                System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
+                        + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+    }
+
+    public boolean screenshotSteps() {
+        return "true".equals(System.getProperty("remote.driver.step.screenshot", "true"));
     }
 
     protected void selectFrameIframePortlet() {
@@ -4505,18 +4514,22 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickSearch() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH);
     }
 
     protected void waitAndClickSearch2() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH_2);
     }
 
     protected void waitAndClickSearch3() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH_3);
     }
 
     protected void waitAndClickSearchSecond() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_SECOND);
     }
 

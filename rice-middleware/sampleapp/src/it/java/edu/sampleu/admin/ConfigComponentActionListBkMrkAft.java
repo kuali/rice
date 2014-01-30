@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionListBkMrkAft extends ActionListAftBase {
+public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionListAftBase {
 
     @Override
     public String getBookmarkUrl() {
@@ -29,26 +29,26 @@ public class ActionListBkMrkAft extends ActionListAftBase {
 
     @Test
     public void testActionListApproveBookmark() throws Exception {
-        testActionListApproveBookmark(this);
+        testActionListApprove();
     }
 
     @Test
     public void testActionListDisapproveBookmark() throws Exception {
-        testActionListDisapproveBookmark(this);
+        testActionListDisapprove();
     }
 
     @Test
     public void testActionListCompleteBookmark() throws Exception {
-        testActionListCompleteBookmark(this);
+        testActionListComplete();
     }
 
     @Test
     public void testActionListAcknowledgeBookmark() throws Exception {
-        testActionListAcknowledgeBookmark(this);
+        testActionListAcknowledge();
     }
 
     @Test
-    public void testActionListFYIBookmark() throws Exception {
-        testActionListFYIBookmark(this);
+    public void testActionListFyiBookmark() throws Exception {
+        testActionListFyi();
     }
 }

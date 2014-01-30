@@ -23,7 +23,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
+public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftNavBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Component&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -51,59 +51,17 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
         return "Component";
     }
 
-    public void testActionListApproveBookmark(JiraAwareFailable failable) throws Exception {
-        testActionListApprove();
-        passed();
-    }
-
-    public void testActionListApproveNav(JiraAwareFailable failable) throws Exception {
-        testActionListApprove();
-        passed();
-    }
-
-    public void testActionListDisapproveBookmark(JiraAwareFailable failable) throws Exception {
-        testActionListDisapprove();
-        passed();
-    }
-
-    public void testActionListDisapproveNav(JiraAwareFailable failable) throws Exception {
-        testActionListDisapprove();
-        passed();
-    }
-
-    public void testActionListCompleteBookmark(JiraAwareFailable failable) throws Exception {
-        testActionListComplete();
-        passed();
-    }
-
-    public void testActionListCompleteNav(JiraAwareFailable failable) throws Exception {
-        testActionListComplete();
-        passed();
-    }
-
-    public void testActionListAcknowledgeBookmark(JiraAwareFailable failable) throws Exception {
-        testActionListAcknowledge();
-        passed();
-    }
-
-    public void testActionListAcknowledgeNav(JiraAwareFailable failable) throws Exception {
-        testActionListAcknowledge();
-        passed();
-    }
-
-    public void testActionListFYIBookmark(JiraAwareFailable failable) throws Exception {
-        testActionListFYI();
-        passed();
-    }
-
-    public void testActionListFYINav(JiraAwareFailable failable) throws Exception {
-        testActionListFYI();
-        passed();
+    private void assertActionListRequest(String backdoorUser, String actionCode) throws InterruptedException {
+        String docId = testCreateActionRequest(backdoorUser, actionCode);
+        impersonateUser(backdoorUser);
+        assertActionList(docId, actionCode);
+        selectTopFrame();
     }
 
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component create new");
-        selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
+        waitAndTypeByName("document.documentHeader.documentDescription",
+                "Test description of " + getLinkLocator() + " create new");
+        selectByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW - Workflow");
         waitAndTypeByName("document.newMaintainableObject.code","Test1" + fourLetters);
         waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode" + fourLetters);
     }
@@ -138,10 +96,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * @throws Exception
      */
     public void testActionListApprove() throws Exception {
-        String docId = testCreateActionRequest("fred", "A");
-        impersonateUser("fred");
-        assertActionList(docId, "A");
-        selectTopFrame();
+        assertActionListRequest("fred", "A");
     }
 
     /**
@@ -150,10 +105,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * @throws Exception
      */
     public void testActionListDisapprove() throws Exception {
-        String docId = testCreateActionRequest("fred", "D");
-        impersonateUser("fred");
-        assertActionList(docId, "D");
-        selectTopFrame();
+        assertActionListRequest("fred", "D");
     }
 
     /**
@@ -162,10 +114,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * @throws Exception
      */
     public void testActionListComplete() throws Exception {
-        String docId = testCreateActionRequest("fran", "C");
-        impersonateUser("fran");
-        assertActionList(docId, "C");
-        selectTopFrame();
+        assertActionListRequest("fran", "C");
     }
 
     /**
@@ -174,10 +123,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * @throws Exception
      */
     public void testActionListAcknowledge() throws Exception {
-        String docId = testCreateActionRequest("erin", "K");
-        impersonateUser("erin");
-        assertActionList(docId, "K");
-        selectTopFrame();
+        assertActionListRequest("erin", "K");
     }
 
     /**
@@ -185,10 +131,7 @@ public abstract class ActionListAftBase extends AdminTmplMthdAftNavBase {
      * Creates an FYI request for a user. Then performs the FYI action.
      * @throws Exception
      */
-    public void testActionListFYI() throws Exception {
-        String docId = testCreateActionRequest("eric", "F");
-        impersonateUser("eric");
-        assertActionList(docId, "F");
-        selectTopFrame();
+    public void testActionListFyi() throws Exception {
+        assertActionListRequest("eric", "F");
     }
 }

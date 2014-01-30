@@ -20,30 +20,30 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionListNavAft extends ActionListAftBase {
+public class ConfigComponentActionListNavAft extends ConfigComponentActionListAftBase {
 
     @Test
     public void testActionListApproveNav() throws Exception {
-        testActionListApproveNav(this);
+        testActionListApprove();
     }
 
     @Test
     public void testActionListDisapproveNav() throws Exception {
-        testActionListDisapproveNav(this);
+        testActionListDisapprove();
     }
 
     @Test
     public void testActionListCompleteNav() throws Exception {
-        testActionListCompleteNav(this);
+        testActionListComplete();
     }
 
     @Test
     public void testActionListAcknowledgeNav() throws Exception {
-        testActionListAcknowledgeNav(this);
+        testActionListAcknowledge();
     }
 
     @Test
-    public void testActionListFYINav() throws Exception {
-        testActionListFYINav(this);
+    public void testActionListFyiNav() throws Exception {
+        testActionListFyi();
     }
 }

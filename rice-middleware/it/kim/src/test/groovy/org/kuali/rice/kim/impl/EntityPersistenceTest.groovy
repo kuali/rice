@@ -26,7 +26,7 @@ import org.kuali.rice.kim.test.Factory
 /**
  * Tests persisting Entity objects in order to verify ORM mappings
  */
-class EntityPersistenceTests extends BoPersistenceTest {
+class EntityPersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_entity() {
         EntityBo entity = Factory.make(EntityBo)

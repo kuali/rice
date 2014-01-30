@@ -82,11 +82,11 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Country:", "US"},
                 {"Email Address:", ""},
                 {"Gender:", "M"},
-                {"Phone Number:", "******1212"},
+                {"Phone Number:", "(xxx)xxx-xxxx"},
                 {"Traveler Type Code:", "123"},
                 {"Customer Number:", "CUST"},
                 {"Drivers License:", "CA12345678"},
-                {"Drivers License Exp Date:", "06/30/2015"},
+                {"Drivers License Exp Date:", "11/08/2018"},
                 {"Active:", "true"},
                 {"Non Resident Alien:", "false"},
                 {"Liability Insurance:", "false"},};

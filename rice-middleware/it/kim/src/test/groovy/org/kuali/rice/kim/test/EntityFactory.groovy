@@ -93,8 +93,8 @@ class EntityFactory extends Factory {
            id: Factory.makeId(),
            addressTypeCode: KimConstants.AddressTypes.HOME,
            attentionLine: "attn line",
-           modifiedDate: genDbTimestamp(),
-           validatedDate: genDbTimestamp(),
+           modifiedTimestamp: genDbTimestamp(),
+           validatedTimestamp: genDbTimestamp(),
            validated: true,
            noteMessage: "note message",
            addressFormat: "address format",
@@ -160,7 +160,7 @@ class EntityFactory extends Factory {
             lastName: "Smith",
             nameSuffix: "Jr.",
             noteMessage: "note message",
-            nameChangedDate: genDbTimestamp(),
+            nameChangedTimestamp: genDbTimestamp(),
             nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY),
             nameCode: KimConstants.NameTypes.PRIMARY
         ]

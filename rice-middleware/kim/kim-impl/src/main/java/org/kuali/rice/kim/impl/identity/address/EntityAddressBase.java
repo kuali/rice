@@ -212,9 +212,17 @@ public abstract class EntityAddressBase extends DataObjectBase implements Entity
         return modifiedDate != null ? new DateTime(modifiedDate.getTime()) : null;
     }
 
+    public Timestamp getModifiedTimestamp() {
+        return modifiedDate;
+    }
+
     @Override
     public DateTime getValidatedDate() {
         return validatedDate != null ? new DateTime(validatedDate.getTime()) : null;
+    }
+
+    public Timestamp getValidatedTimestamp() {
+        return validatedDate;
     }
 
     @Override
@@ -310,11 +318,27 @@ public abstract class EntityAddressBase extends DataObjectBase implements Entity
         this.addressFormat = addressFormat;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
+    public void setModifiedDate(DateTime modifiedDate) {
+        if ( modifiedDate != null ) {
+            this.modifiedDate = new Timestamp(modifiedDate.getMillis());
+        } else {
+            this.modifiedDate = null;
+        }
+    }
+
+    public void setModifiedTimestamp( Timestamp modifiedDate ) {
         this.modifiedDate = modifiedDate;
     }
 
-    public void setValidatedDate(Timestamp validatedDate) {
+    public void setValidatedDate(DateTime validatedDate) {
+        if ( validatedDate != null ) {
+            this.validatedDate = new Timestamp(validatedDate.getMillis());
+        } else {
+            this.validatedDate = null;
+        }
+    }
+
+    public void setValidatedTimestamp( Timestamp validatedDate ) {
         this.validatedDate = validatedDate;
     }
 

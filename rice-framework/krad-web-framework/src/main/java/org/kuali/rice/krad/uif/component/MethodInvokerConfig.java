@@ -149,7 +149,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
     /**
      * Modification is not controlled at this level.
      * 
-     * @see Copyable#preventModification()
+     * {@inheritDoc}
      */
     @Override
     public void preventModification() {}

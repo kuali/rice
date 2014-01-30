@@ -33,21 +33,21 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
+public class Value1AndValue2PersistedOnMessageCallTest extends KSBTestCase {
     
     @Test public void testCallingQueueAsnyc() throws Exception {
-	KSBTestUtils.setMessagingToAsync();
-	ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.MESSAGING_OFF, "true");
-	
-	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
-	String value1 = "value1";
-	String value2 = "value2";
-	KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
-	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
-	
-	PersistedMessageBO message = KSBServiceLocator.getMessageQueueService().getNextDocuments(null).get(0);
-	assertEquals("value1 incorrectly saved", value1, message.getValue1());
-	assertEquals("value2 incorrectly saved", value2, message.getValue2());
+        KSBTestUtils.setMessagingToAsync();
+        ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.MESSAGING_OFF, "true");
+
+        QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
+        String value1 = "value1";
+        String value2 = "value2";
+        KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
+        testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+
+        PersistedMessageBO message = KSBServiceLocator.getMessageQueueService().getNextDocuments(null).get(0);
+        assertEquals("value1 incorrectly saved", value1, message.getValue1());
+        assertEquals("value2 incorrectly saved", value2, message.getValue2());
 	
     }
 

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity.address;
 
-import java.sql.Timestamp;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,12 +80,8 @@ public class EntityAddressBo extends EntityAddressBase {
         bo.setCountryCode(immutable.getCountryCodeUnmasked());
         bo.setPostalCode(immutable.getPostalCodeUnmasked());
         bo.setAddressFormat(immutable.getAddressFormat());
-        if (immutable.getModifiedDate() != null) {
-            bo.setModifiedDate(new Timestamp(immutable.getModifiedDate().getMillis()));
-        }
-        if (immutable.getValidatedDate() != null) {
-            bo.setValidatedDate(new Timestamp(immutable.getValidatedDate().getMillis()));
-        }
+        bo.setModifiedDate(immutable.getModifiedDate());
+        bo.setValidatedDate(immutable.getValidatedDate());
         bo.setValidated(immutable.isValidated());
         bo.setNoteMessage(immutable.getNoteMessage());
         bo.setId(immutable.getId());

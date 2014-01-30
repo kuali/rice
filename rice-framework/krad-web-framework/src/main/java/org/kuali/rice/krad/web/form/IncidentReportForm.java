@@ -296,4 +296,13 @@ public class IncidentReportForm extends UifFormBase {
         return controller;
     }
 
+    /**
+     * @param copiedSessionId
+     *            the session id to associate with the form
+     */
+
+    public void setSessionId(String copiedSessionId) {
+        sessionId = copiedSessionId;
+    }
+
 }

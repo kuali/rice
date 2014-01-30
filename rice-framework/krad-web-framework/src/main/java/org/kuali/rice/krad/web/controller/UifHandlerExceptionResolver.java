@@ -109,11 +109,14 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         if (form != null) {
             incidentReportForm.setAjaxRequest(form.isAjaxRequest());
+            incidentReportForm.setSessionId(form.getSessionId());
         } else {
             String ajaxRequestParm = request.getParameter(UifParameters.AJAX_REQUEST);
             if (StringUtils.isNotBlank(ajaxRequestParm)) {
                 incidentReportForm.setAjaxRequest(Boolean.parseBoolean(ajaxRequestParm));
             }
+            String sessionId = request.getSession().getId();
+            incidentReportForm.setSessionId(sessionId);
         }
 
         // Set the view object

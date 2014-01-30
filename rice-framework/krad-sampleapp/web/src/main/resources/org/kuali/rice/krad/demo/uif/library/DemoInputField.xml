@@ -131,7 +131,7 @@
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:inputField7"/>
+                  p:fieldConversions="number:inputField7" p:additionalLookupParameters="myParam1:test1,myParam2:test2"/>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example7 end-->

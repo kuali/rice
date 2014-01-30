@@ -457,7 +457,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#notifyCompleted(org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase)
+     * {@inheritDoc}
      */
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
@@ -507,7 +507,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -518,7 +518,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
+     * {@inheritDoc}
      */
     @Override
     public String getComponentTypeName() {
@@ -1611,7 +1611,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
@@ -2155,9 +2155,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     * {@inheritDoc}
      */
     @Override
     public View clone() throws CloneNotSupportedException {
@@ -2169,7 +2167,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {
@@ -2343,7 +2341,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#completeValidation
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

@@ -88,11 +88,13 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
-        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
-            failOnDocErrors();
-        }
 
-        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
+// Blanket submit has been updated to go to the hub page so error messages and doc state are no longer testable
+//        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
+//            failOnDocErrors();
+//        }
+//
+//        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
     }
 
     protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(String account)throws Exception {
@@ -117,11 +119,12 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickButtonByText("blanket approve");
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
-        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
-            failOnDocErrors();
-        }
-
-        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
+// Blanket approve now redirects to the hub so error messagea and doc status are no longer testable https://jira.kuali.org/browse/KULRICE-11463
+//        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
+//            failOnDocErrors();
+//        }
+//
+//        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
     }
 
     private void failOnDocErrors() {

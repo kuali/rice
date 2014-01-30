@@ -84,7 +84,7 @@ public class CollectionGroupSecurity extends ComponentSecurity {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#copy()
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T componentSecurity) {

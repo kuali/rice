@@ -222,7 +222,7 @@
     <!-- ex:Demo-Breadcrumbs-Example7 end-->
   </bean>
 
-  <bean id="Demo-Breadcrumbs-View8" parent="Demo-Breadcrumbs-BaseView" p:style="height: 600px;">
+  <bean id="Demo-Breadcrumbs-View8" parent="Demo-Breadcrumbs-BaseView" p:style="height: 600px;" p:navigation.render="false">
     <!-- ex:Demo-Breadcrumbs-Example8 start-->
     <property name="breadcrumbs.usePathBasedBreadcrumbs" value="true"/>
 
@@ -249,7 +249,6 @@
             </list>
           </property>
         </bean>
-        <ref bean="Demo-Breadcrumbs-Page2"/>
       </list>
     </property>
   </bean>

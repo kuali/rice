@@ -122,7 +122,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     }
 
     /**
-     * @see FilterableLookupCriteriaControl#filterSearchCriteria(String, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
@@ -245,7 +245,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

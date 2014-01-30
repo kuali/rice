@@ -38,7 +38,7 @@ public class InitializeContainerFromHelperTask extends ViewLifecycleTaskBase<Con
     /**
      * Invoke custom initialization based on the view helper.
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

@@ -22,7 +22,6 @@ import javax.sql.DataSource
 import org.eclipse.persistence.jpa.jpql.parser.DateTime
 import org.junit.Assert
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.krad.bo.DataObjectBase
 import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krad.data.KradDataServiceLocator
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
@@ -57,12 +56,12 @@ class JpaPersistenceTestHelper {
         bool(bo.edit, 'EDIT_FLAG')
     }
 
-    def basic_fields(DataObjectBase bo) {
+    def basic_fields(bo) {
         [ OBJ_ID: bo.objectId,
-          VER_NBR: new BigDecimal(bo.versionNumber) ]
+          VER_NBR: bo.versionNumber ]
     }
 
-    def standard_fields(DataObjectBase bo) {
+    def standard_fields(bo) {
         active_field(bo) + basic_fields(bo)
     }
 
@@ -83,12 +82,14 @@ class JpaPersistenceTestHelper {
         timestamp
     }
 
-    def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT"]) {
+    def assertRow(Map fields, table, pk="id", ignore=["LAST_UPDT_DT","OBJ_ID","VER_NBR"]) {
         def pk_val = fields[pk]
         if (!pk_val) {
             throw new RuntimeException("No primary key value found for field: " + pk)
         }
-        Map row = new SimpleJdbcTemplate(datasource).queryForMap("select * from " + table + " where " + pk + "=?", pk_val)
+        def sql = "select * from " + table + " where " + pk + " = ${pk_val}"
+        println "Running Query: $sql"
+        Map row = new SimpleJdbcTemplate(datasource).queryForMap( sql )
         row.keySet().removeAll(ignore)
         /*for (Map.Entry e: fields.entrySet()) {
             println(e.getKey().getClass());
@@ -103,6 +104,6 @@ class JpaPersistenceTestHelper {
             println(e.getValue());
         }*/
 
-        Assert.assertEquals(fields, row);
+        Assert.assertTrue("Error Saved data does not match: \n" + new TreeMap( row ) + "\n != \n" + new TreeMap( fields ), new TreeMap( fields ) == new TreeMap( row ));
     }
 }

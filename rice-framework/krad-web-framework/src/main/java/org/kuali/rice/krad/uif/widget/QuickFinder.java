@@ -64,6 +64,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
     private Map<String, String> fieldConversions;
     private Map<String, String> lookupParameters;
+    private Map<String, String> additionalLookupParameters;
 
     private Action quickfinderAction;
     private LightBox lightBox;
@@ -377,6 +378,14 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
         addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
         addActionParameterIfNotNull(UifParameters.QUICKFINDER_ID, getId());
+
+        //insert additional lookup parameters.
+        if (additionalLookupParameters != null) {
+            //copy additional parameters to actionParameters
+            Map<String, String> actionParameters = quickfinderAction.getActionParameters();
+            actionParameters.putAll(additionalLookupParameters);
+            quickfinderAction.setActionParameters(actionParameters);
+        }
     }
 
     /**
@@ -811,6 +820,20 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     }
 
     /**
+     * @see QuickFinder#getAdditionalLookupParameters()
+     */
+    public Map<String, String> getAdditionalLookupParameters() {
+        return additionalLookupParameters;
+    }
+
+    /**
+     * @see QuickFinder#getAdditionalLookupParameters()
+     */
+    public void setAdditionalLookupParameters(Map<String, String> additionalLookupParameters) {
+        this.additionalLookupParameters = additionalLookupParameters;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -830,6 +853,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
         if (lookupParameters != null) {
             quickFinderCopy.setLookupParameters(new HashMap<String, String>(this.lookupParameters));
+        }
+
+        if (additionalLookupParameters != null) {
+            quickFinderCopy.setAdditionalLookupParameters(new HashMap<String, String>(this.additionalLookupParameters));
         }
 
         quickFinderCopy.setReturnByScript(this.returnByScript);

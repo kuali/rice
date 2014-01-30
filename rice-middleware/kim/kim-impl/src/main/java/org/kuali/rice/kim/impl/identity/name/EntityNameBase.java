@@ -36,28 +36,28 @@ public abstract class EntityNameBase extends DataObjectBase implements EntityNam
 
     @Column(name = "ENTITY_ID")
     private String entityId;
-    
+
     @Column(name = "NM_TYP_CD")
     private String nameCode;
-    
+
     @Column(name = "FIRST_NM")
     private String firstName;
-    
+
     @Column(name = "MIDDLE_NM")
     private String middleName;
-    
+
     @Column(name = "LAST_NM")
     private String lastName;
-    
+
     @Column(name = "PREFIX_NM")
     private String namePrefix;
-    
+
     @Column(name = "TITLE_NM")
     private String nameTitle;
-    
+
     @Column(name = "SUFFIX_NM")
     private String nameSuffix;
-    
+
     @Convert(converter=BooleanYNConverter.class)
     @Column(name = "ACTV_IND")
     private boolean active;
@@ -170,6 +170,10 @@ public abstract class EntityNameBase extends DataObjectBase implements EntityNam
         return nameChangedDate != null ? new DateTime(nameChangedDate.getTime()) : null;
     }
 
+    public Timestamp getNameChangedTimestamp() {
+        return nameChangedDate;
+    }
+
     @Override
     public boolean isSuppressName() {
         try {
@@ -270,7 +274,15 @@ public abstract class EntityNameBase extends DataObjectBase implements EntityNam
         this.noteMessage = noteMessage;
     }
 
-    public void setNameChangedDate(Timestamp nameChangedDate) {
+    public void setNameChangedDate(DateTime nameChangedDate) {
+        if ( nameChangedDate != null ) {
+            this.nameChangedDate = new Timestamp( nameChangedDate.getMillis() );
+        } else {
+            this.nameChangedDate = null;
+        }
+    }
+
+    public void setNameChangedTimestamp(Timestamp nameChangedDate) {
         this.nameChangedDate = nameChangedDate;
     }
 

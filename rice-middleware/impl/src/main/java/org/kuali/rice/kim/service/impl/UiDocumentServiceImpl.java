@@ -2400,38 +2400,36 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             return;
         }
         for(KimDocumentRoleMember documentRoleMember : modifiedRoleMembers){
-            RoleMemberBo roleMember = null;
-
-            if ( CollectionUtils.isEmpty(roleMembers) ) {
+            boolean isNewRoleMember = true;
+            for( RoleMemberBo roleMember : roleMembers ) {
+                // are we editing an existing record?
+                if ( StringUtils.equals( roleMember.getId(), documentRoleMember.getRoleMemberId()) ) {
+                    // yes we are
+                    roleMember.setActiveFromDateValue(documentRoleMember.getActiveFromDate());
+                    roleMember.setActiveToDateValue(documentRoleMember.getActiveToDate());
+                    isNewRoleMember = false;
+                    updateRoleMemberResponsibilityActions( documentRoleMember.getRoleRspActions(), roleMember.getRoleRspActions() );
+                    break;
+                }
+            }
+            if ( isNewRoleMember ) {
+                RoleMemberBo roleMember = null;
                 roleMember = new RoleMemberBo();
-                KimCommonUtilsInternal.copyProperties(roleMember, documentRoleMember);
                 roleMember.setId(documentRoleMember.getRoleMemberId());
                 roleMember.setRoleId(roleId);
+                roleMember.setTypeCode(documentRoleMember.getMemberTypeCode());
+                roleMember.setMemberId(documentRoleMember.getMemberId());
                 roleMember.setType(MemberType.fromCode(documentRoleMember.getMemberTypeCode()));
                 roleMember.setActiveFromDateValue(documentRoleMember.getActiveFromDate());
                 roleMember.setActiveToDateValue(documentRoleMember.getActiveToDate());
 
                 roleMember.setAttributeDetails(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), null));
+                roleMember.setRoleRspActions( new ArrayList<RoleResponsibilityActionBo>() );
+                updateRoleMemberResponsibilityActions( documentRoleMember.getRoleRspActions(), roleMember.getRoleRspActions() );
 
                 roleMembers.add(roleMember);
-
-                // TODO: what about new RRA records?
-            } else {
-                for( RoleMemberBo rm : roleMembers ) {
-                    // are we editing an existing record?
-                    if ( StringUtils.equals( rm.getId(), documentRoleMember.getRoleMemberId()) ) {
-                        // yes we are
-                        rm.setActiveFromDateValue(documentRoleMember.getActiveFromDate());
-                        rm.setActiveToDateValue(documentRoleMember.getActiveToDate());
-                        roleMember = rm;
-                        break;
-                    } else {
-                        // no - create a new one and add it to the list
-                        // (but we handle this below)
-                    }
-                }
             }
-            updateRoleMemberResponsibilityActions( documentRoleMember.getRoleRspActions(), roleMember.getRoleRspActions() );
+
 // TODO
 //                        !kimTypeService.validateUniqueAttributes(
 //                                identityManagementRoleDocument.getKimType().getId(),
@@ -2442,39 +2440,47 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     // FIXME : this is not working yet
 	protected void updateRoleMemberResponsibilityActions(List<KimDocumentRoleResponsibilityAction> documentRoleMemberActions, List<RoleResponsibilityActionBo> roleMemberActions){
+	    // Make a copy of the list which we can modify - so that we can use it to
+	    // remove leftovers from the original list when done with updates and inserts
 	    List<RoleResponsibilityActionBo> existingRoleMemberActions = new ArrayList<RoleResponsibilityActionBo>( roleMemberActions );
-		if(CollectionUtils.isNotEmpty(documentRoleMemberActions)){
-			for(KimDocumentRoleResponsibilityAction newRoleRspAction : documentRoleMemberActions){
-//				RoleResponsibilityActionBo newRoleRspAction = new RoleResponsibilityActionBo();
-//				newRoleRspAction.setId(roleRspAction.getRoleResponsibilityActionId());
-//				newRoleRspAction.setActionPolicyCode(roleRspAction.getActionPolicyCode());
-//				newRoleRspAction.setActionTypeCode(roleRspAction.getActionTypeCode());
-//				newRoleRspAction.setPriorityNumber(roleRspAction.getPriorityNumber());
-//				newRoleRspAction.setRoleMemberId(roleRspAction.getRoleMemberId());
-//				newRoleRspAction.setForceAction(roleRspAction.isForceAction());
-//				newRoleRspAction.setRoleResponsibilityId("*");
-				if(CollectionUtils.isNotEmpty(roleMemberActions)){
-				    Iterator<RoleResponsibilityActionBo> rraInterator = existingRoleMemberActions.iterator();
-				    while ( rraInterator.hasNext() ) {
-				        RoleResponsibilityActionBo roleRspAction = rraInterator.next();
-//						if(activatingInactive && StringUtils.equals(origRspAction.getRoleResponsibilityId(), newRoleRspAction.getRoleResponsibilityId()) &&
-//								StringUtils.equals(newRoleRspAction.getRoleMemberId(), newRoleMemberIdAssigned)){
-//							newRoleRspAction.setRoleMemberId(origRspAction.getRoleMemberId());
-//							newRoleRspAction.setId(origRspAction.getId());
-//						}
-					    // we have a match, update the existing record
-						if (StringUtils.equals(roleRspAction.getId(), newRoleRspAction.getRoleResponsibilityActionId())) {
-						    roleRspAction.setActionPolicyCode(newRoleRspAction.getActionPolicyCode());
-						    roleRspAction.setActionTypeCode(newRoleRspAction.getActionTypeCode());
-						    roleRspAction.setPriorityNumber(newRoleRspAction.getPriorityNumber());
-						    roleRspAction.setRoleMemberId(newRoleRspAction.getRoleMemberId());
-						    roleRspAction.setForceAction(newRoleRspAction.isForceAction());
-						    rraInterator.remove();
-                        }
-					}
+	    // loop over document items
+		for(KimDocumentRoleResponsibilityAction docRoleRspAction : documentRoleMemberActions){
+		    boolean isNewAction = true;
+            // loop over role member items
+		    Iterator<RoleResponsibilityActionBo> rraInterator = existingRoleMemberActions.iterator();
+		    while ( rraInterator.hasNext() ) {
+		        RoleResponsibilityActionBo roleRspAction = rraInterator.next();
+			    // we have a match, update the existing record
+                // If the ID's match
+				if (StringUtils.equals(roleRspAction.getId(), docRoleRspAction.getRoleResponsibilityActionId())) {
+                    // update the existing record
+				    roleRspAction.setActionPolicyCode(docRoleRspAction.getActionPolicyCode());
+				    roleRspAction.setActionTypeCode(docRoleRspAction.getActionTypeCode());
+				    roleRspAction.setPriorityNumber(docRoleRspAction.getPriorityNumber());
+				    roleRspAction.setRoleMemberId(docRoleRspAction.getRoleMemberId());
+				    roleRspAction.setForceAction(docRoleRspAction.isForceAction());
+                    // mark it as a "found" record
+				    rraInterator.remove();
+				    isNewAction = false;
+                }
+	            // if no match on the loop, then we have a new record
+				if ( isNewAction ) {
+				    // create the new item and add it to the list
+                    RoleResponsibilityActionBo newRoleRspAction = new RoleResponsibilityActionBo();
+                    newRoleRspAction.setId(docRoleRspAction.getRoleResponsibilityActionId());
+                    newRoleRspAction.setActionPolicyCode(docRoleRspAction.getActionPolicyCode());
+                    newRoleRspAction.setActionTypeCode(docRoleRspAction.getActionTypeCode());
+                    newRoleRspAction.setPriorityNumber(docRoleRspAction.getPriorityNumber());
+                    newRoleRspAction.setRoleMemberId(docRoleRspAction.getRoleMemberId());
+                    newRoleRspAction.setForceAction(docRoleRspAction.isForceAction());
+                    newRoleRspAction.setRoleResponsibilityId("*");
+                    roleMemberActions.add(newRoleRspAction);
 				}
-				//roleRspActions.add(newRoleRspAction);
 			}
+            // for all items not "found", they are no longer present, delete them
+            for ( RoleResponsibilityActionBo missingRra : existingRoleMemberActions ) {
+                roleMemberActions.remove(missingRra);
+            }
 		}
 		//return roleRspActions;
 	}

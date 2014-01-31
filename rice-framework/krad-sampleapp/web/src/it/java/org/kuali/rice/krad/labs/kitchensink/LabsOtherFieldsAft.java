@@ -114,9 +114,10 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4' and @style='width: 30%;height: 100px;overflow: auto;']");
     }
 
-    private void testAttributeSecurity() {//Attribute Security
+    private void testAttributeSecurity() throws InterruptedException { //Attribute Security
         boolean fullMaskPassed = false;
         String fullMaskedError = "";
+        waitForTextPresent("*********"); // The Input Fields page use SecretInfo555 as a data key, so wait to make sure the Other Fields page has loaded
         if (isTextPresent("SecretInfo555")) {
             fullMaskedError = "SecretInfo555 not masked!";
         } else {

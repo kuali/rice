@@ -131,9 +131,11 @@ public class JiraIssueCreation {
             testClass = testClass.replace("org.kuali.rice.", "");
             testClass = testClass.replace("edu.sampleu.", "");
             summary = System.getProperty("jira.summary.start", "").replaceAll("_", " ") + " "  + testClass;
+
             if (jiraDatas.size() == 1) {
                 summary += " " + jiraDatas.get(0).testDetails;
             }
+
             summary = summary.replace("java.lang.AssertionError: ", "");
             summary = summary.replace("org.eclipse.persistence.exceptions.DatabaseException: \nInternal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: ", "");
             if (summary.indexOf("\n") > -1) {
@@ -141,12 +143,15 @@ public class JiraIssueCreation {
             } else if (summary.indexOf("\t") > -1) {
                 summary = summary.substring(0, summary.indexOf("\t")).trim();
             }
+
             if (summary.length() > 180) {
                 summary = summary.substring(0, 179);
             }
+
             jiraMap.put("jira.summary", summary);
 
             StringBuilder description = new StringBuilder(summary).append(" ").append(System.getProperty("jira.description.start", "").replaceAll("_", " ")).append("\n");
+
             for (JiraData jiraData : jiraDatas) {
                 if (!"".equals(jiraData.aftSteps)) {
                     description.append("\n").append(jiraData.aftSteps);
@@ -155,8 +160,8 @@ public class JiraIssueCreation {
                 description.append(jiraData.testUrl).append("\n");
                 description.append("\n{code}\n\n").append(jiraDatas.get(0).testDetails).append("\n\n{code}\n");
             }
-            jiraMap.put("jira.description", description.toString());
 
+            jiraMap.put("jira.description", description.toString());
             jiraMaps.put(dir.getName(), jiraMap);
         }
     }

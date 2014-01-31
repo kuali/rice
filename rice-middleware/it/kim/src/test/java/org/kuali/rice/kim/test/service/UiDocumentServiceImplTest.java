@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -63,6 +64,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
@@ -77,6 +79,7 @@ import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**
@@ -102,7 +105,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 	}
 
-    protected void createTestingEntity() {
+    protected EntityDefault createTestingEntity() {
         IdentityManagementPersonDocument personDoc = initPersonDoc();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
@@ -115,6 +118,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         assertNotNull( "Principal list was null on retrieved record", entity.getPrincipals() );
         assertEquals( "Principal list was incorrect length", 1, entity.getPrincipals().size() );
         assertTrue( "Principal is not active on saved record", entity.getPrincipals().get(0).isActive() );
+        return entity;
     }
 
     @Test
@@ -134,6 +138,37 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         assertNotNull( "Principal list was null on retrieved record", entity.getPrincipals() );
         assertEquals( "Principal list was incorrect length", 1, entity.getPrincipals().size() );
         assertFalse( "Principal is active on saved record (after inactivation)", entity.getPrincipals().get(0).isActive() );
+    }
+
+    @Test
+    public void testInactivatePrincipalDelegations() {
+        EntityDefault entity = createTestingEntity();
+
+        // create a delegation for the system to inactivate
+        String delegateMemberId = UUID.randomUUID().toString();
+        DelegateMemberBo delegateMemberBo = new DelegateMemberBo();
+        delegateMemberBo.setMemberId(entity.getPrincipals().get(0).getPrincipalId());
+        delegateMemberBo.setType(MemberType.PRINCIPAL);
+        delegateMemberBo.setDelegationMemberId(delegateMemberId);
+        KradDataServiceLocator.getDataObjectService().save(delegateMemberBo,PersistenceOption.FLUSH);
+
+        // attempt to reload - to make sure it's all working
+        delegateMemberBo = KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, delegateMemberId);
+        assertNotNull( "Unable to find delegate member bo", delegateMemberBo);
+        assertTrue( "delegate member should be active", delegateMemberBo.isActive() );
+
+        // create a new person document and inactivate the record we just created
+        IdentityManagementPersonDocument personDoc = initPersonDoc();
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
+        personDoc.getDocumentHeader().setWorkflowDocument(document);
+
+        personDoc.setActive(false);
+        uiDocumentService.saveEntityPerson(personDoc);
+
+        delegateMemberBo = KradDataServiceLocator.getDataObjectService().find(DelegateMemberBo.class, delegateMemberId);
+        assertNotNull( "Unable to find delegate member bo", delegateMemberBo);
+        assertFalse( "delegate member should be inactive: " + delegateMemberBo, delegateMemberBo.isActive() );
     }
 
 	@Test

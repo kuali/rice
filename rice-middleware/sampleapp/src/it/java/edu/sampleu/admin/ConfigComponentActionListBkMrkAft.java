@@ -29,26 +29,26 @@ public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionList
 
     @Test
     public void testActionListApproveBookmark() throws Exception {
-        testActionListApprove();
+        testActionListPersonApprove();
     }
 
     @Test
     public void testActionListDisapproveBookmark() throws Exception {
-        testActionListDisapprove();
+        testActionListPersonDisapprove();
     }
 
     @Test
     public void testActionListCompleteBookmark() throws Exception {
-        testActionListComplete();
+        testActionListPersonComplete();
     }
 
     @Test
     public void testActionListAcknowledgeBookmark() throws Exception {
-        testActionListAcknowledge();
+        testActionListPersonAcknowledge();
     }
 
     @Test
     public void testActionListFyiBookmark() throws Exception {
-        testActionListFyi();
+        testActionListPersonFyi();
     }
 }

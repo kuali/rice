@@ -71,7 +71,7 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
         waitAndTypeByName("document.newMaintainableObject.name","Enterprise Infrastructure 3");
         waitAndTypeByName("document.newMaintainableObject.applicationId","RICE");
 
-        addAdHocRecipients(new String[] {getUserName(), "A"});
+        addAdHocPersonRecipients(new String[]{getUserName(), "A"});
 
         waitAndClickByName("methodToCall.route");
 

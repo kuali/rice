@@ -16,7 +16,6 @@
 package edu.sampleu.admin;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
@@ -51,8 +50,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
         return "Component";
     }
 
-    private void assertActionListRequest(String backdoorUser, String actionCode) throws InterruptedException {
-        String docId = testCreateActionRequest(backdoorUser, actionCode);
+    private void assertActionListPersonRequest(String backdoorUser, String actionCode) throws InterruptedException {
+        String docId = testCreateActionPersonRequest(backdoorUser, actionCode);
         impersonateUser(backdoorUser);
         assertActionList(docId, actionCode);
         selectTopFrame();
@@ -76,13 +75,13 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      *
      * @return documentID of the newly initiated document to which the created action request applies.
      */
-    protected String testCreateActionRequest(String user, String actionType) throws InterruptedException{
+    protected String testCreateActionPersonRequest(String user, String actionType) throws InterruptedException{
         selectFrameIframePortlet();
         waitAndClickCreateNew();
         String docId = waitForDocId();
         fourLetters = RandomStringUtils.randomAlphabetic(4);
         createNewEnterDetails();
-        addAdHocRecipients(new String[]{user, actionType});
+        addAdHocPersonRecipients(new String[]{user, actionType});
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");
@@ -95,8 +94,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an approve request for a user. Then performs the Approve action.
      * @throws Exception
      */
-    public void testActionListApprove() throws Exception {
-        assertActionListRequest("fred", "A");
+    public void testActionListPersonApprove() throws Exception {
+        assertActionListPersonRequest("fred", "A");
     }
 
     /**
@@ -104,8 +103,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an approve request for a user. Then performs the Disapprove action.
      * @throws Exception
      */
-    public void testActionListDisapprove() throws Exception {
-        assertActionListRequest("fred", "D");
+    public void testActionListPersonDisapprove() throws Exception {
+        assertActionListPersonRequest("fred", "D");
     }
 
     /**
@@ -113,8 +112,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an complete request for a user. Then performs the Complete action.
      * @throws Exception
      */
-    public void testActionListComplete() throws Exception {
-        assertActionListRequest("fran", "C");
+    public void testActionListPersonComplete() throws Exception {
+        assertActionListPersonRequest("fran", "C");
     }
 
     /**
@@ -122,8 +121,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an Acknowledge request for a user. Then performs the Acknowledge action.
      * @throws Exception
      */
-    public void testActionListAcknowledge() throws Exception {
-        assertActionListRequest("erin", "K");
+    public void testActionListPersonAcknowledge() throws Exception {
+        assertActionListPersonRequest("erin", "K");
     }
 
     /**
@@ -131,7 +130,7 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an FYI request for a user. Then performs the FYI action.
      * @throws Exception
      */
-    public void testActionListFyi() throws Exception {
-        assertActionListRequest("eric", "F");
+    public void testActionListPersonFyi() throws Exception {
+        assertActionListPersonRequest("eric", "F");
     }
 }

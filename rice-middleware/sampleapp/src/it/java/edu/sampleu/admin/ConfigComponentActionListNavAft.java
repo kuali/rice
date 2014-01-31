@@ -24,26 +24,26 @@ public class ConfigComponentActionListNavAft extends ConfigComponentActionListAf
 
     @Test
     public void testActionListApproveNav() throws Exception {
-        testActionListApprove();
+        testActionListPersonApprove();
     }
 
     @Test
     public void testActionListDisapproveNav() throws Exception {
-        testActionListDisapprove();
+        testActionListPersonDisapprove();
     }
 
     @Test
     public void testActionListCompleteNav() throws Exception {
-        testActionListComplete();
+        testActionListPersonComplete();
     }
 
     @Test
     public void testActionListAcknowledgeNav() throws Exception {
-        testActionListAcknowledge();
+        testActionListPersonAcknowledge();
     }
 
     @Test
     public void testActionListFyiNav() throws Exception {
-        testActionListFyi();
+        testActionListPersonFyi();
     }
 }

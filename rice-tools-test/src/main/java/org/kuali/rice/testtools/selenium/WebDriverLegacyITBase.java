@@ -655,15 +655,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
      */
-    protected void addAdHocRecipients(String[] adHocRecipients) throws InterruptedException {
-        addAdHocRecipients(new String[][] {adHocRecipients});
+    protected void addAdHocPersonRecipients(String[] adHocRecipients) throws InterruptedException {
+        addAdHocPersonRecipients(new String[][]{adHocRecipients});
     }
 
     /**
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
      */
-    protected void addAdHocRecipients(String[][] adHocRecipients) throws InterruptedException {
+    protected void addAdHocPersonRecipients(String[][] adHocRecipients) throws InterruptedException {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
@@ -1741,7 +1741,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.groupDescription", groupDescription);
 
         // Add Ad hoc Recipient
-        addAdHocRecipients(new String[]{"dev1", "F"});
+        addAdHocPersonRecipients(new String[]{"dev1", "F"});
 
         // Add Ad hoc Workgroup
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -3180,7 +3180,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         createNewEnterDetails();
 
         // Ad Hoc Recipients with current user to test Action List
-        addAdHocRecipients(new String[]{getUserName(), "F"}); // FYI
+        addAdHocPersonRecipients(new String[]{getUserName(), "F"}); // FYI
 
         waitAndClickSave();
         waitAndClickSubmit();

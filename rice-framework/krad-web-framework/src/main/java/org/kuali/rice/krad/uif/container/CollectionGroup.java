@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.container;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -40,6 +39,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -960,7 +960,7 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     protected void initializeComponentSecurity() {
         if (getComponentSecurity() == null) {
-            setComponentSecurity(DataObjectUtils.newInstance(CollectionGroupSecurity.class));
+            setComponentSecurity(KRADUtils.createNewObjectFromClass(CollectionGroupSecurity.class));
         }
     }
 

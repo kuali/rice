@@ -31,7 +31,7 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -42,7 +42,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Link;
-import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
@@ -56,6 +55,7 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 
@@ -64,7 +64,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -1261,7 +1260,7 @@ public final class KRADUtils {
         if (LegacyUtils.useLegacyForObject(object)) {
             return PropertyUtils.getPropertyType(object, propertyName);
         }
-        return DataObjectUtils.getPropertyType(object, propertyName);
+        return KradDataServiceLocator.getDataObjectService().wrap(object).getPropertyType(propertyName);
     }
 
     /**
@@ -1354,6 +1353,31 @@ public final class KRADUtils {
     }
 
     /**
+     * Returns the prefix of a nested attribute name, or the empty string if the attribute name is not nested.
+     *
+     * @param attributeName
+     * @return everything BEFORE the last "." character in attributeName
+     */
+    public static String getNestedAttributePrefix(String attributeName) {
+        int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(attributeName);
+
+        return lastIndex != -1 ? StringUtils.substring(attributeName, 0, lastIndex) : StringUtils.EMPTY;
+    }
+
+
+    /**
+     * Returns the primitive part of an attribute name string.
+     *
+     * @param attributeName
+     * @return everything AFTER the last "." character in attributeName
+     */
+    public static String getNestedAttributePrimitive(String attributeName) {
+        int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(attributeName);
+
+        return lastIndex != -1 ? StringUtils.substring(attributeName, lastIndex + 1) : StringUtils.EMPTY;
+    }
+
+    /**
      * This method safely extracts either simple values OR nested values. For example, if the bo is SubAccount, and the
      * fieldName is
      * a21SubAccount.subAccountTypeCode, this thing makes sure it gets the value off the very end attribute, no matter
@@ -1381,11 +1405,11 @@ public final class KRADUtils {
      * @param clazz
      * @return a newInstance() of clazz
      */
-    public static Object createNewObjectFromClass(Class clazz) {
+    public static <T> T createNewObjectFromClass(Class<T> clazz) {
         if (clazz == null) {
             throw new RuntimeException("BO class was passed in as null");
         }
-        return KRADServiceLocatorWeb.getLegacyDataAdapter().createNewObjectFromClass(clazz);
+        return (T) KRADServiceLocatorWeb.getLegacyDataAdapter().createNewObjectFromClass(clazz);
     }
 
     private static KualiModuleService getKualiModuleService() {

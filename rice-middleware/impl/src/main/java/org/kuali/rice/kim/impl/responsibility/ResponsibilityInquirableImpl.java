@@ -34,7 +34,8 @@ import org.kuali.rice.kim.inquiry.KimInquirableImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
 @SuppressWarnings({"unchecked", "deprecation"})
@@ -71,8 +72,9 @@ public class ResponsibilityInquirableImpl extends KimInquirableImpl {
     	if(NAME.equals(attributeName) || NAME_TO_DISPLAY.equals(attributeName)){
 			return getInquiryUrlForPrimaryKeys(UberResponsibilityBo.class, businessObject, Collections.singletonList(ID), null);
     	} else if(NAMESPACE_CODE.equals(attributeName) || TEMPLATE_NAMESPACE_CODE.equals(attributeName)){
-			NamespaceBo parameterNamespace = new NamespaceBo();
-			parameterNamespace.setCode((String)DataObjectUtils.getPropertyValue(businessObject, attributeName));
+            String code = (String) KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(attributeName);
+            NamespaceBo parameterNamespace = new NamespaceBo();
+			parameterNamespace.setCode(code);
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, Collections.singletonList("code"), null);
         } else if(DETAIL_OBJECTS.equals(attributeName)){
         	//return getAttributesInquiryUrl(businessObject, DETAIL_OBJECTS);
@@ -84,8 +86,9 @@ public class ResponsibilityInquirableImpl extends KimInquirableImpl {
     }
 
 	protected HtmlData getAttributesInquiryUrl(BusinessObject businessObject, String attributeName){
+        DataObjectWrapper<BusinessObject> wrapper = KradDataServiceLocator.getDataObjectService().wrap(businessObject);
     	List<ResponsibilityAttributeBo> responsibilityAttributeData =
-    		(List<ResponsibilityAttributeBo>) DataObjectUtils.getPropertyValue(businessObject, attributeName);
+    		(List<ResponsibilityAttributeBo>) wrapper.getPropertyValueNullSafe(attributeName);
     	List<HtmlData.AnchorHtmlData> htmlData = new ArrayList<HtmlData.AnchorHtmlData>();
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ATTRIBUTE_DATA_ID);

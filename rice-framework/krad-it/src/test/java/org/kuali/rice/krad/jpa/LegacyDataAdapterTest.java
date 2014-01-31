@@ -19,12 +19,12 @@ package org.kuali.rice.krad.jpa;
 import org.junit.Test;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -42,7 +42,7 @@ public class LegacyDataAdapterTest extends KRADTestCase {
     @Test
     public void testGetPropertyType() throws Exception {
         //Confirm simple nested property type works
-        ParameterBo param = DataObjectUtils.newInstance(ParameterBo.class);
+        ParameterBo param = KRADUtils.createNewObjectFromClass(ParameterBo.class);
         Class propertyType = legacyDataAdapter.getPropertyType(param, "namespaceCode");
         assertTrue("PropertyType is String",propertyType.isAssignableFrom(String.class));
         //Confirm simple nested property type works

@@ -27,7 +27,6 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -55,6 +54,7 @@ import org.kuali.rice.krad.uif.widget.Helpable;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 /**
@@ -544,7 +544,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
      * @param propertyEditorClass
      */
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
-        this.propertyEditor = DataObjectUtils.newInstance(propertyEditorClass);
+        this.propertyEditor = KRADUtils.createNewObjectFromClass(propertyEditorClass);
     }
 
     /**
@@ -780,7 +780,7 @@ public class DataField extends FieldBase implements DataBinding, Helpable {
     @Override
     protected void initializeComponentSecurity() {
         if (getComponentSecurity() == null) {
-            setComponentSecurity(DataObjectUtils.newInstance(DataFieldSecurity.class));
+            setComponentSecurity(KRADUtils.createNewObjectFromClass(DataFieldSecurity.class));
         }
     }
 

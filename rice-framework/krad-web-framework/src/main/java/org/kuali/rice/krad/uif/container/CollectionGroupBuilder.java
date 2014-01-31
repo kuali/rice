@@ -28,7 +28,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -1006,7 +1005,7 @@ public class CollectionGroupBuilder implements Serializable {
             if (!newCollectionLines.containsKey(newCollectionLineKey) || (newCollectionLines.get(newCollectionLineKey)
                     == null) || clearExistingLine) {
                 // create new instance of the collection type for the add line
-                newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+                newLine = KRADUtils.createNewObjectFromClass(collectionGroup.getCollectionObjectClass());
                 newCollectionLines.put(newCollectionLineKey, newLine);
             }
         } else {
@@ -1014,7 +1013,7 @@ public class CollectionGroupBuilder implements Serializable {
             Object addLine = ObjectPropertyUtils.getPropertyValue(model,
                     collectionGroup.getAddLineBindingInfo().getBindingPath());
             if ((addLine == null) || clearExistingLine) {
-                newLine = DataObjectUtils.newInstance(collectionGroup.getCollectionObjectClass());
+                newLine = KRADUtils.createNewObjectFromClass(collectionGroup.getCollectionObjectClass());
                 ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getAddLineBindingInfo().getBindingPath(),
                         newLine);
             }

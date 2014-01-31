@@ -24,7 +24,6 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
@@ -143,7 +142,7 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 			Map<String, String> queryMap = new HashMap<String, String>();
 			for (Map.Entry<String, String> parentToChildReference : parentToChildReferences.entrySet()) {
 				String fieldName = parentToChildReference.getKey();
-				Object fieldValue = DataObjectUtils.getPropertyValue(blockedBo, parentToChildReference.getValue());
+				Object fieldValue = KradDataServiceLocator.getDataObjectService().wrap(blockedBo).getPropertyValueNullSafe(parentToChildReference.getValue());
 				if (fieldValue != null && StringUtils.isNotBlank(fieldValue.toString())) {
 					queryMap.put(fieldName, fieldValue.toString());
 				} else {

@@ -22,7 +22,6 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.data.CompoundKey;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -36,6 +35,7 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.springframework.beans.PropertyAccessorUtils;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -231,12 +231,12 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         Class<?> objectClass = KRADUtils.materializeClassForProxiedObject(dataObject);
         if (propertyName.equals(KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(objectClass))) {
             inquiryObjectClass = objectClass;
-        } else if (DataObjectUtils.isNestedAttribute(propertyName)) {
-            String nestedPropertyName = DataObjectUtils.getNestedAttributePrefix(propertyName);
+        } else if (PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)) {
+            String nestedPropertyName = KRADUtils.getNestedAttributePrefix(propertyName);
             Object nestedPropertyObject = KRADUtils.getNestedValue(dataObject, nestedPropertyName);
 
             if (KRADUtils.isNotNull(nestedPropertyObject)) {
-                String nestedPropertyPrimitive = DataObjectUtils.getNestedAttributePrimitive(propertyName);
+                String nestedPropertyPrimitive = KRADUtils.getNestedAttributePrimitive(propertyName);
                 Class<?> nestedPropertyObjectClass = KRADUtils.materializeClassForProxiedObject(nestedPropertyObject);
 
                 if (nestedPropertyPrimitive.equals(KRADServiceLocatorWeb.getLegacyDataAdapter().getTitleAttribute(
@@ -259,7 +259,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         if (DocumentHeader.class.isAssignableFrom(inquiryObjectClass)) {
-            String documentNumber = (String) DataObjectUtils.getPropertyValue(dataObject, propertyName);
+            String documentNumber = (String) KradDataServiceLocator.getDataObjectService().wrap(dataObject).getPropertyValueNullSafe(propertyName);
             if (StringUtils.isNotBlank(documentNumber)) {
                 inquiry.getInquiryLink().setHref(getConfigurationService().getPropertyValueAsString(
                         KRADConstants.WORKFLOW_URL_KEY)

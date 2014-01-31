@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.InactivateableFromToService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -188,7 +188,7 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
         String groupByValueString = "";
 
         for (String groupByField : groupByList) {
-            Object fieldValue = DataObjectUtils.getPropertyValue(businessObject, groupByField);
+            Object fieldValue = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(groupByField);
             groupByValueString += "|";
             if (fieldValue != null) {
                 groupByValueString += fieldValue;

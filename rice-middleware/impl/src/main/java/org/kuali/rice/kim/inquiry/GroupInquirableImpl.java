@@ -24,7 +24,7 @@ import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
@@ -79,8 +79,9 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 		} else if(NAMESPACE_CODE.equals(attributeName)){
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
+            String code = (String) KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(attributeName);
 			NamespaceBo parameterNamespace = new NamespaceBo();
-			parameterNamespace.setCode((String) DataObjectUtils.getPropertyValue(businessObject, attributeName));
+			parameterNamespace.setCode(code);
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimTypeInfo.name".equals(attributeName)){
 			KimTypeBo kimType = new KimTypeBo();

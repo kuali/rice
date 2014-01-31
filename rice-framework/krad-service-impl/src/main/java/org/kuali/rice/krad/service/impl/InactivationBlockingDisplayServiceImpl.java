@@ -23,7 +23,7 @@ import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -76,7 +76,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
         	BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
         	for (int i = 0; i < pkFieldNames.size(); i++) {
         		String pkFieldName = pkFieldNames.get(i);
-        		Object value = DataObjectUtils.getPropertyValue(element, pkFieldName);
+        		Object value = KradDataServiceLocator.getDataObjectService().wrap(element).getPropertyValueNullSafe(pkFieldName);
 
         		String displayValue = null;
         		if (!businessObjectRestrictions.hasRestriction(pkFieldName)) {
@@ -135,7 +135,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
             BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
             for (int i = 0; i < pkFieldNames.size(); i++) {
                 String pkFieldName = pkFieldNames.get(i);
-                Object value = DataObjectUtils.getPropertyValue(element, pkFieldName);
+                Object value = KradDataServiceLocator.getDataObjectService().wrap(element).getPropertyValueNullSafe(pkFieldName);
 
                 String displayValue = null;
                 if (!businessObjectRestrictions.hasRestriction(pkFieldName)) {

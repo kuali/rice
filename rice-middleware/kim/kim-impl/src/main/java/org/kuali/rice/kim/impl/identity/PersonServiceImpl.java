@@ -50,11 +50,13 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.springframework.beans.PropertyAccessorUtils;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -666,9 +668,11 @@ public class PersonServiceImpl implements PersonService {
 
     private boolean isPersonProperty(Object bo, String propertyName) {
         try {
-        	if ( DataObjectUtils.isNestedAttribute( propertyName ) // is a nested property
+        	if (PropertyAccessorUtils.isNestedOrIndexedProperty( propertyName ) // is a nested property
             		&& !StringUtils.contains(propertyName, "add.") ) {// exclude add line properties (due to path parsing problems in PropertyUtils.getPropertyType)
-        		Class<?> type = PropertyUtils.getPropertyType(bo, DataObjectUtils.getNestedAttributePrefix( propertyName ));
+                int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(propertyName);
+                String propertyTypeName = lastIndex != -1 ? StringUtils.substring(propertyName, 0, lastIndex) : StringUtils.EMPTY;
+        		Class<?> type = PropertyUtils.getPropertyType(bo, propertyTypeName);
         		// property type indicates a Person object
         		if ( type != null ) {
         			return Person.class.isAssignableFrom(type);
@@ -704,7 +708,8 @@ public class PersonServiceImpl implements PersonService {
             		&& isPersonProperty(businessObject, propertyName) // is a property on a Person object
             		) {
             	// strip off the prefix on the property
-                String personPropertyName = DataObjectUtils.getNestedAttributePrimitive( propertyName );
+                int lastPropertyIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(propertyName);
+                String personPropertyName = lastPropertyIndex != -1 ? StringUtils.substring(propertyName, lastPropertyIndex + 1) : StringUtils.EMPTY;
                 // special case - the user ID
                 if ( StringUtils.equals( KIMPropertyConstants.Person.PRINCIPAL_NAME, personPropertyName) ) {
                     Class targetBusinessObjectClass = null;
@@ -712,13 +717,14 @@ public class PersonServiceImpl implements PersonService {
                     resolvedPrincipalIdPropertyName.setLength( 0 ); // clear the buffer without requiring a new object allocation on each iteration
                 	// get the property name up until the ".principalName"
                 	// this should be a reference to the Person object attached to the BusinessObject
-                	String personReferenceObjectPropertyName = DataObjectUtils.getNestedAttributePrefix( propertyName );
+                    String personReferenceObjectPropertyName =  lastPropertyIndex != -1 ? StringUtils.substring(propertyName, 0, lastPropertyIndex) : StringUtils.EMPTY;
                 	// check if the person was nested within another BO under the master BO.  If so, go up one more level
                 	// otherwise, use the passed in BO class as the target class
-                    if ( DataObjectUtils.isNestedAttribute( personReferenceObjectPropertyName ) ) {
-                        String targetBusinessObjectPropertyName = DataObjectUtils.getNestedAttributePrefix( personReferenceObjectPropertyName );
-                        targetBusinessObject = (BusinessObject) DataObjectUtils.getPropertyValue(businessObject,
-                                targetBusinessObjectPropertyName);
+                    if ( PropertyAccessorUtils.isNestedOrIndexedProperty(personReferenceObjectPropertyName) ) {
+                        int lastTargetIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(personReferenceObjectPropertyName);
+                        String targetBusinessObjectPropertyName = lastTargetIndex != -1 ? StringUtils.substring(personReferenceObjectPropertyName, 0, lastTargetIndex) : StringUtils.EMPTY;
+                        DataObjectWrapper<BusinessObject> wrapper = KradDataServiceLocator.getDataObjectService().wrap(businessObject);
+                        targetBusinessObject = (BusinessObject) wrapper.getPropertyValueNullSafe(targetBusinessObjectPropertyName);
                         if (targetBusinessObject != null) {
                             targetBusinessObjectClass = targetBusinessObject.getClass();
                             resolvedPrincipalIdPropertyName.append(targetBusinessObjectPropertyName).append(".");
@@ -734,7 +740,9 @@ public class PersonServiceImpl implements PersonService {
                     	// use the relationship metadata in the KNS to determine the property on the
                     	// host business object to put back into the map now that the principal ID
                     	// (the value stored in application tables) has been resolved
-                        String propName = DataObjectUtils.getNestedAttributePrimitive( personReferenceObjectPropertyName );
+                        int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(personReferenceObjectPropertyName);
+
+                        String propName = lastIndex != -1 ? StringUtils.substring(personReferenceObjectPropertyName, lastIndex + 1) : StringUtils.EMPTY;
                         DataObjectRelationship rel = getBusinessObjectMetaDataService().getBusinessObjectRelationship( targetBusinessObject, propName );
                         if ( rel != null ) {
                             String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);
@@ -780,7 +788,7 @@ public class PersonServiceImpl implements PersonService {
                     // get the class of the object that is referenced by the property name
                     // if this is not true then there's a principalName collection or primitive attribute
                     // directly on the BO on the add line, so we just ignore that since something is wrong here
-                    if ( DataObjectUtils.isNestedAttribute( containerPropertyName ) ) {
+                    if ( PropertyAccessorUtils.isNestedOrIndexedProperty(containerPropertyName) ) {
                     	// the first part of the property is the collection name
                         String collectionName = StringUtils.substringBefore( containerPropertyName, "." );
                         // what is the class held by that collection?

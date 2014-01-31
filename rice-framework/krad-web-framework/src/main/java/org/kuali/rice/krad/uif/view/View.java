@@ -27,7 +27,6 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.element.HeadLink;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -71,6 +70,7 @@ import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1336,7 +1336,7 @@ public class View extends ContainerBase {
         checkMutable(true);
         this.viewHelperServiceClass = viewHelperServiceClass;
         if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = DataObjectUtils.newInstance(viewHelperServiceClass);
+            viewHelperService = KRADUtils.createNewObjectFromClass(viewHelperServiceClass);
         }
     }
 
@@ -1502,7 +1502,7 @@ public class View extends ContainerBase {
     public void setPresentationControllerClass(
             Class<? extends ViewPresentationController> presentationControllerClass) {
         checkMutable(true);
-        this.presentationController = DataObjectUtils.newInstance(presentationControllerClass);
+        this.presentationController = KRADUtils.createNewObjectFromClass(presentationControllerClass);
     }
 
     /**
@@ -1543,7 +1543,7 @@ public class View extends ContainerBase {
      */
     public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
         checkMutable(true);
-        this.authorizer = DataObjectUtils.newInstance(authorizerClass);
+        this.authorizer = KRADUtils.createNewObjectFromClass(authorizerClass);
     }
 
     /**

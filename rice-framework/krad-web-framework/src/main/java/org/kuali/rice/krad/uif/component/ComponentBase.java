@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -1217,7 +1216,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     protected void initializeComponentSecurity() {
         if (this.componentSecurity == null) {
-            this.componentSecurity = DataObjectUtils.newInstance(ComponentSecurity.class);
+            this.componentSecurity = KRADUtils.createNewObjectFromClass(ComponentSecurity.class);
         }
     }
 

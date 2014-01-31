@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -35,6 +35,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.beans.PropertyAccessorUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
@@ -526,10 +527,10 @@ public class LookupUtils {
             // get the parent property type
             Class<?> eboParentClass;
             String eboParentPropertyName;
-            if (DataObjectUtils.isNestedAttribute(eboPropertyName)) {
+            if (PropertyAccessorUtils.isNestedOrIndexedProperty(eboPropertyName)) {
                 eboParentPropertyName = StringUtils.substringBeforeLast(eboPropertyName, ".");
                 try {
-                    eboParentClass = DataObjectUtils.getPropertyType(dataObjectClass.newInstance(),
+                    eboParentClass = KradDataServiceLocator.getDataObjectService().wrap(dataObjectClass.newInstance()).getPropertyType(
                             eboParentPropertyName);
                 } catch (Exception ex) {
                     throw new RuntimeException(

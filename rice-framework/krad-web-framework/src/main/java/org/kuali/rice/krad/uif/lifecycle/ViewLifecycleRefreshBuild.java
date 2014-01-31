@@ -59,6 +59,11 @@ public class ViewLifecycleRefreshBuild implements Runnable {
                 lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
             }
 
+            String lookupCollectionId = "";
+            if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_ID)) {
+                lookupCollectionId = request.getParameter(UifParameters.LOOKUP_COLLECTION_ID);
+            }
+
             if (StringUtils.isBlank(lookupCollectionName)) {
                 throw new RuntimeException(
                         "Lookup collection name is required for processing multi-value lookup results");
@@ -73,7 +78,7 @@ public class ViewLifecycleRefreshBuild implements Runnable {
             }
 
             // invoked view helper to populate the collection from lookup results
-            ViewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
+            ViewLifecycle.getHelper().processMultipleValueLookupResults(form, lookupCollectionId,
                     lookupCollectionName, selectedLineValues);
         }
 

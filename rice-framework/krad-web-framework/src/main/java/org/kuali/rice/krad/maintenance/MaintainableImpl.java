@@ -450,24 +450,27 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      *
      */
     @Override
-    public void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
-            boolean isValidLine) {
-        super.processAfterAddLine(view, collectionGroup, model, addLine, isValidLine);
+    public void processAfterAddLine(ViewModel viewModel, Object addLine, String collectionId, String collectionPath,
+                boolean isValidLine) {
+        super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
-        if (model instanceof MaintenanceDocumentForm
+        if (viewModel instanceof MaintenanceDocumentForm
                 && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(
-                ((MaintenanceDocumentForm) model).getMaintenanceAction())
+                ((MaintenanceDocumentForm) viewModel).getMaintenanceAction())
                 && !(addLine instanceof Note)
                 && !(addLine instanceof AdHocRoutePerson)
                 && !(addLine instanceof AdHocRouteWorkgroup)) {
-            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
+            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) viewModel;
             MaintenanceDocument document = maintenanceForm.getDocument();
+
+            BindingInfo bindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                    "bindingInfo");
 
             // get the old object's collection
             //KULRICE-7970 support multiple level objects
-            String bindingPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix();
-            String propertyPath = collectionGroup.getPropertyName();
+            String bindingPrefix = bindingInfo.getBindByNamePrefix();
+            String propertyPath = bindingInfo.getBindingName();
             if (bindingPrefix != "" && bindingPrefix != null) {
                 propertyPath = bindingPrefix + "." + propertyPath;
             }
@@ -475,8 +478,11 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(
                     document.getOldMaintainableObject().getDataObject(), propertyPath);
 
+            Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                    "collectionObjectClass");
+
             try {
-                Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
+                Object blankLine = collectionObjectClass.newInstance();
                 //Add a blank line to the top of the collection
                 if (oldCollection instanceof List) {
                     ((List<Object>) oldCollection).add(0, blankLine);
@@ -497,22 +503,35 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
      */
     @Override
-    public void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
-        super.processAfterDeleteLine(view, collectionGroup, model, lineIndex);
+    public void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
+        super.processAfterDeleteLine(model, collectionId, collectionPath, lineIndex);
+
+        Class<?> collectionObjectClass = (Class<?>) model.getViewPostMetadata().getComponentPostData(collectionId,
+                "collectionObjectClass");
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
         if (model instanceof MaintenanceDocumentForm
                 && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction())
-                && !collectionGroup.getCollectionObjectClass().getName().equals(Note.class.getName())
-                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRoutePerson.class.getName())
-                && !collectionGroup.getCollectionObjectClass().getName().equals(AdHocRouteWorkgroup.class.getName())) {
+                && !collectionObjectClass.getName().equals(Note.class.getName())
+                && !collectionObjectClass.getName().equals(AdHocRoutePerson.class.getName())
+                && !collectionObjectClass.getName().equals(AdHocRouteWorkgroup.class.getName())) {
             MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
             MaintenanceDocument document = maintenanceForm.getDocument();
 
+            BindingInfo bindingInfo = (BindingInfo) model.getViewPostMetadata().getComponentPostData(collectionId,
+                    "bindingInfo");
+
             // get the old object's collection
-            Collection<Object> oldCollection = ObjectPropertyUtils
-                    .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
-                            collectionGroup.getPropertyName());
+            //KULRICE-7970 support multiple level objects
+            String bindingPrefix = bindingInfo.getBindByNamePrefix();
+            String propertyPath = bindingInfo.getBindingName();
+            if (bindingPrefix != "" && bindingPrefix != null) {
+                propertyPath = bindingPrefix + "." + propertyPath;
+            }
+
+            Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(
+                                document.getOldMaintainableObject().getDataObject(), propertyPath);
+
             try {
                 // Remove the object at lineIndex from the collection
                 oldCollection.remove(oldCollection.toArray()[lineIndex]);
@@ -523,13 +542,17 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     @Override
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        boolean isValidLine = super.performAddLineValidation(view, collectionGroup, model, addLine);
+    protected boolean performAddLineValidation(ViewModel viewModel, Object newLine, String collectionId,
+                String collectionPath) {
+        boolean isValidLine = super.performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
 
-        if (model instanceof MaintenanceDocumentForm) {
-            MaintenanceDocumentForm form = ((MaintenanceDocumentForm) model);
+        BindingInfo bindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                            "bindingInfo");
+
+        if (viewModel instanceof MaintenanceDocumentForm) {
+            MaintenanceDocumentForm form = ((MaintenanceDocumentForm) viewModel);
             isValidLine &= getKualiRuleService()
-                    .applyRules(new AddCollectionLineEvent(form.getDocument(), collectionGroup.getPropertyName(), addLine));
+                    .applyRules(new AddCollectionLineEvent(form.getDocument(), bindingInfo.getBindingName(), newLine));
         }
 
         return isValidLine;

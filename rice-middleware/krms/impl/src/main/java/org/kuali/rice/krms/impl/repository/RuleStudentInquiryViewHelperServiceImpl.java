@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.layout.GridLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 
@@ -65,7 +66,7 @@ public class RuleStudentInquiryViewHelperServiceImpl extends InquirableImpl {
 
 
     @Override
-    public void addCustomContainerComponents(Object model, Container container) {
+    public void addCustomContainerComponents(ViewModel model, Container container) {
         if (PROPOSITION_GROUP_ID.equals(container.getId())) {
             RuleBo ruleDataObj = (RuleBo)((InquiryForm)model).getDataObject();
             PropositionBo proposition = ruleDataObj.getProposition();

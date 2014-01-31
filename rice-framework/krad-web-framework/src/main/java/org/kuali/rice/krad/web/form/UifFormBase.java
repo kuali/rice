@@ -123,7 +123,6 @@ public class UifFormBase implements ViewModel {
 
     protected Set<String> selectedLookupResultsCache;
 
-
     protected List<Object> addedCollectionItems;
 
     @SessionTransient

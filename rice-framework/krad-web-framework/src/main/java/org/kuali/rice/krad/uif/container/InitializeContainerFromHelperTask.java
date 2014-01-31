@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Invoke custom initialization on the container from the view helper.
@@ -43,7 +44,7 @@ public class InitializeContainerFromHelperTask extends ViewLifecycleTaskBase<Con
     @Override
     protected void performLifecycleTask() {
         // invoke hook point for adding components through code
-        ViewLifecycle.getHelper().addCustomContainerComponents(ViewLifecycle.getModel(),
+        ViewLifecycle.getHelper().addCustomContainerComponents((ViewModel)ViewLifecycle.getModel(),
                 (Container) getElementState().getElement());
     }
 

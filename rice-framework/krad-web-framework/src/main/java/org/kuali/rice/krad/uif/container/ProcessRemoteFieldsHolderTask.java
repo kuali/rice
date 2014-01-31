@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Process any remote fields holder that might be in the containers items.
@@ -73,7 +74,7 @@ public class ProcessRemoteFieldsHolderTask extends ViewLifecycleTaskBase<Contain
 
         
         // invoke hook point for adding components through code
-        ViewLifecycle.getHelper().addCustomContainerComponents(ViewLifecycle.getModel(),
+        ViewLifecycle.getHelper().addCustomContainerComponents((ViewModel)ViewLifecycle.getModel(),
                 (Container) getElementState().getElement());
     }
 

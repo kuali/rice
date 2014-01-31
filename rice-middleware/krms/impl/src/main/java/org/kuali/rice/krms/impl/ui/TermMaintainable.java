@@ -34,6 +34,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.impl.repository.TermBo;
@@ -179,8 +180,8 @@ public class TermMaintainable extends MaintainableImpl {
     }
 
     @Override
-    public void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        super.processBeforeAddLine(view, collectionGroup, model, addLine);
+    public void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath) {
+        super.processBeforeAddLine(model, addLine, collectionId, collectionPath);
     }
 
 

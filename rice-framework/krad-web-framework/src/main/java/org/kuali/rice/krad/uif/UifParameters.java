@@ -49,6 +49,7 @@ public class UifParameters {
     public static final String LABEL = "label";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
     public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";
+    public static final String LOOKUP_COLLECTION_ID = "lookupCollectionId";
     public static final String MULTIPLE_VALUES_SELECT = "multipleValuesSelect";
 	public static final String READ_ONLY_FIELDS = "readOnlyFields";
     public static final String REDIRECTED_INQUIRY = "redirectedInquiry";
@@ -61,7 +62,8 @@ public class UifParameters {
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
     public static final String REQUEST = "request";
     public static final String SHOW_INACTIVE_RECORDS = "showInactiveRecords";
-	public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionPath";
+	public static final String SELECTED_COLLECTION_PATH = "selectedCollectionPath";
+    public static final String SELECTED_COLLECTION_ID = "selectedCollectionId";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";
     public static final String SESSION_ID = "sessionId";

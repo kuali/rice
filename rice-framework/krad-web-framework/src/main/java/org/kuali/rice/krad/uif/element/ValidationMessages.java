@@ -130,8 +130,8 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
         }
 
         if (parent instanceof PageGroup) {
-            ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-            viewLifecycle.registerLifecycleCompleteListener(view, this);
+            //ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            //viewLifecycle.registerLifecycleCompleteListener(view, this);
         }
 
         for (String key : masterKeyList) {

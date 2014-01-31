@@ -59,7 +59,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 
@@ -252,17 +251,19 @@ public abstract class UifControllerBase {
     public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
         ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
-            @Override
-            public void run() {
-                ViewLifecycle.getHelper().processCollectionAddLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath);
+                        uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
+                    @Override
+                    public void run() {
+                ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId, selectedCollectionPath
+                        );
             }});
 
         return getUIFModelAndView(uifForm);
@@ -283,17 +284,18 @@ public abstract class UifControllerBase {
     public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
         ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionAddBlankLine(ViewLifecycle.getView(), uifForm,
-                        selectedCollectionPath);
+                ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId, selectedCollectionPath);
             }});
 
         return getUIFModelAndView(uifForm);
@@ -307,7 +309,9 @@ public abstract class UifControllerBase {
     public ModelAndView saveLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
@@ -325,11 +329,11 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionSaveLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
+                        uifForm, selectedCollectionId, selectedCollectionPath, selectedLineIndex);
             }});
 
         return getUIFModelAndView(uifForm);
@@ -345,7 +349,9 @@ public abstract class UifControllerBase {
     public ModelAndView deleteLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
         }
@@ -363,11 +369,11 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionDeleteLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
+                        uifForm, selectedCollectionId, selectedCollectionPath, selectedLineIndex);
             }});
 
         return getUIFModelAndView(uifForm);

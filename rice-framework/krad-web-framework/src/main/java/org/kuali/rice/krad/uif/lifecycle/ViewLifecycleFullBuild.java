@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -134,6 +136,9 @@ public class ViewLifecycleFullBuild implements Runnable {
         ((ViewModel) model).setGrowlScript(growlScript);
 
         LifecycleRefreshPathBuilder.processLifecycleElements();
+
+        // Clear old added collection objects data
+        ViewLifecycle.getViewPostMetadata().setAddedCollectionObjects(new HashMap<String, List<Object>>());
 
         ProcessLogger.trace("finalize:" + view.getId());
     }

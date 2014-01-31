@@ -45,6 +45,7 @@ public class LookupForm extends UifFormBase {
     private String returnTarget;
 
     private String lookupCollectionName;
+    private String lookupCollectionId;
     private String referencesToRefresh;
     private String quickfinderId;
 
@@ -224,6 +225,14 @@ public class LookupForm extends UifFormBase {
      */
     public void setLookupCollectionName(String lookupCollectionName) {
         this.lookupCollectionName = lookupCollectionName;
+    }
+
+    public String getLookupCollectionId() {
+        return lookupCollectionId;
+    }
+
+    public void setLookupCollectionId(String lookupCollectionId) {
+        this.lookupCollectionId = lookupCollectionId;
     }
 
     /**

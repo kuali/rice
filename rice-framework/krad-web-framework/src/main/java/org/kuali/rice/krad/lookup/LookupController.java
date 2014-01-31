@@ -415,6 +415,10 @@ public class LookupController extends UifControllerBase {
             redirectAttributes.addAttribute(UifParameters.LOOKUP_COLLECTION_NAME, lookupForm.getLookupCollectionName());
         }
 
+        if (StringUtils.isNotBlank(lookupForm.getLookupCollectionId())) {
+            redirectAttributes.addAttribute(UifParameters.LOOKUP_COLLECTION_ID, lookupForm.getLookupCollectionId());
+        }
+
         if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
             redirectAttributes.addAttribute(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
         }

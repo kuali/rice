@@ -42,11 +42,13 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
     private Set<String> inputFieldIds;
+    private Map<String, List<Object>> addedCollectionObjects;
 
     public ViewPostMetadata() {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         inputFieldIds = new HashSet<String>();
+        addedCollectionObjects = new HashMap<String, List<Object>>();
     }
 
     public ViewPostMetadata(String id) {
@@ -139,6 +141,14 @@ public class ViewPostMetadata implements Serializable {
 
         return componentPostMetadata;
     }
+    
+    public boolean isPersistFormToSession() {
+        return persistFormToSession;
+    }
+
+    public void setPersistFormToSession(boolean persistFormToSession) {
+        this.persistFormToSession = persistFormToSession;
+    }
 
     /**
      * Maintains configuration of properties that have been configured for the view (if render was
@@ -204,11 +214,11 @@ public class ViewPostMetadata implements Serializable {
         this.inputFieldIds = inputFieldIds;
     }
 
-    public boolean isPersistFormToSession() {
-        return persistFormToSession;
+    public Map<String, List<Object>> getAddedCollectionObjects() {
+        return addedCollectionObjects;
     }
 
-    public void setPersistFormToSession(boolean persistFormToSession) {
-        this.persistFormToSession = persistFormToSession;
+    public void setAddedCollectionObjects(Map<String, List<Object>> addedCollectionObjects) {
+        this.addedCollectionObjects = addedCollectionObjects;
     }
 }

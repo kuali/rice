@@ -191,8 +191,7 @@ public class Action extends ContentElementBase {
      * changed property names</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component parent) {

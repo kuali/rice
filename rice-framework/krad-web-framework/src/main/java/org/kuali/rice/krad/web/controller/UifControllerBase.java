@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -61,6 +52,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -258,13 +256,14 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                        uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
-                    @Override
-                    public void run() {
-                ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId, selectedCollectionPath
-                        );
-            }});
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
+            @Override
+            public void run() {
+                ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -281,8 +280,8 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
-    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, HttpServletRequest request,
+            HttpServletResponse response) {
 
         final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
         final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
@@ -291,12 +290,14 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId, selectedCollectionPath);
-            }});
+                ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -328,13 +329,14 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionSaveLine(
-                        uifForm, selectedCollectionId, selectedCollectionPath, selectedLineIndex);
-            }});
+                ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath, selectedLineIndex);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -363,18 +365,19 @@ public abstract class UifControllerBase {
         } else {
             selectedLineIndex = -1;
         }
-        
+
         if (selectedLineIndex == -1) {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionDeleteLine(
-                        uifForm, selectedCollectionId, selectedCollectionPath, selectedLineIndex);
-            }});
+                ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath, selectedLineIndex);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -504,8 +507,8 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ViewLifecycle.encapsulateLifecycle(
-                form.getPostedView(), form, request, response, new ViewLifecycleRefreshBuild());
+        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request, response,
+                new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
     }
@@ -533,8 +536,8 @@ public abstract class UifControllerBase {
         if (lookupParameterString != null) {
             Map<String, String> lookupParameterFields = KRADUtils.getMapFromParameterString(lookupParameterString);
             for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
-                String lookupParameterValue = LookupUtils.retrieveLookupParameterValue(form, request,
-                        lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+                String lookupParameterValue = LookupUtils.retrieveLookupParameterValue(form, request, lookupObjectClass,
+                        lookupParameter.getValue(), lookupParameter.getKey());
 
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
                     lookupParameters.put(UifPropertyPaths.LOOKUP_CRITERIA + "['" + lookupParameter.getValue() + "']",
@@ -699,7 +702,7 @@ public abstract class UifControllerBase {
      * Sets the status of the dialog tracking record to indicate that this dialog
      * has not yet been asked or answered
      *
-     * @param dialogId  - the id of the dialog
+     * @param dialogId - the id of the dialog
      * @param form - form instance containing the request data
      */
     protected void resetDialogStatus(String dialogId, UifFormBase form) {
@@ -1078,16 +1081,10 @@ public abstract class UifControllerBase {
 
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
 
-        View view;
-        if (currentForm.getPostedView() != null) {
-            view = currentForm.getPostedView();
-        } else {
-            view = currentForm.getView();
-        }
+        View view = currentForm.getView();
 
         LOG.debug("identifying table from model and form");
-        tableData = view.getViewHelperService()
-                .buildExportTableData(view, currentForm, tableId, formatType);
+        tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
 
         // if table data to be returned, format response appropriately
         setAttachmentResponseHeader(response, "export." + formatType, contentType);

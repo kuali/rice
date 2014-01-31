@@ -30,6 +30,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -43,6 +44,7 @@ import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract;
 import org.kuali.rice.kim.api.identity.employment.EntityEmploymentContract;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -87,12 +89,52 @@ import org.kuali.rice.test.BaselineTestCase;
 public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private UiDocumentService uiDocumentService;
+	static Person adminPerson = null;
+
+	@BeforeClass
+	public static void beforeClassSetup() {
+        adminPerson = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("admin");
+	}
 
     @Override
 	public void setUp() throws Exception {
 		super.setUp();
 		uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 	}
+
+    protected void createTestingEntity() {
+        IdentityManagementPersonDocument personDoc = initPersonDoc();
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
+        personDoc.getDocumentHeader().setWorkflowDocument(document);
+        // first - save them so we can inactivate them
+        uiDocumentService.saveEntityPerson(personDoc);
+        // verify that the record was saved
+        EntityDefault entity = KimApiServiceLocator.getIdentityService().getEntityDefault(personDoc.getEntityId());
+        assertNotNull( "Entity was not saved: " + personDoc, entity);
+        assertNotNull( "Principal list was null on retrieved record", entity.getPrincipals() );
+        assertEquals( "Principal list was incorrect length", 1, entity.getPrincipals().size() );
+        assertTrue( "Principal is not active on saved record", entity.getPrincipals().get(0).isActive() );
+    }
+
+    @Test
+    public void testInactivatePrincipal() {
+        createTestingEntity();
+        // create a new person document and inactivate the record we just created
+        IdentityManagementPersonDocument personDoc = initPersonDoc();
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
+        personDoc.getDocumentHeader().setWorkflowDocument(document);
+
+        personDoc.setActive(false);
+        uiDocumentService.saveEntityPerson(personDoc);
+        EntityDefault entity = KimApiServiceLocator.getIdentityService().getEntityDefault(personDoc.getEntityId());
+
+        assertNotNull( "Entity missing after inactivation: " + personDoc, entity);
+        assertNotNull( "Principal list was null on retrieved record", entity.getPrincipals() );
+        assertEquals( "Principal list was incorrect length", 1, entity.getPrincipals().size() );
+        assertFalse( "Principal is active on saved record (after inactivation)", entity.getPrincipals().get(0).isActive() );
+    }
 
 	@Test
 	public void testSaveToEntity() {
@@ -107,9 +149,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
             e.printStackTrace();
         }*/
 		uiDocumentService.saveEntityPerson(personDoc);
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put("id", "entity124eId");
-        criteria.put("entityTypeCode", "PERSON");
 
 		Entity entity = KimApiServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());
         EntityTypeContactInfo entityType = entity.getEntityTypeContactInfos().get(0);

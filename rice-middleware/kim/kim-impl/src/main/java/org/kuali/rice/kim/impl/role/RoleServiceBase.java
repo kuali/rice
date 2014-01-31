@@ -81,7 +81,6 @@ abstract class RoleServiceBase {
         ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS,
         ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS,
         DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS,
-        DELEGATION_GROUPS_FOR_GROUP_IDS_AND_DELEGATION_IDS,
         DELEGATION_MEMBERS_FOR_DELEGATION_IDS
     }
 
@@ -142,7 +141,7 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
-        List<RoleMemberBo> coll = dataObjectService.findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
+        List<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
         for (RoleMemberBo rm : coll) {
             if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
@@ -156,7 +155,7 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isEmpty(groupIds)) {
             return new ArrayList<RoleMemberBo>();
         }
-        List<RoleMemberBo> coll = dataObjectService.findMatching( RoleMemberBo.class,
+        List<RoleMemberBo> coll = getDataObjectService().findMatching( RoleMemberBo.class,
                 QueryByCriteria.Builder.fromPredicates(
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.ROLE_ID, roleId),
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()),
@@ -225,7 +224,7 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
-        Collection<RoleMemberBo> coll = dataObjectService.findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
+        Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
         for (RoleMemberBo rm : coll) {
             if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
@@ -289,7 +288,7 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
-        Collection<RoleMemberBo> coll = dataObjectService.findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
+        Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
         for (RoleMemberBo rm : coll) {
             if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
@@ -364,7 +363,7 @@ abstract class RoleServiceBase {
     protected Map<String, DelegateTypeBo> getStoredDelegationImplMapFromRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
             Map<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
-            Collection<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class,
+            Collection<DelegateTypeBo> coll = getDataObjectService().findMatching(DelegateTypeBo.class,
                     QueryByCriteria.Builder.fromPredicates(
                             PredicateFactory.in(KIMPropertyConstants.Delegation.ROLE_ID, roleIds),
                             PredicateFactory.equal(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE) ) ).getResults();
@@ -382,7 +381,7 @@ abstract class RoleServiceBase {
      */
     protected List<DelegateTypeBo> getStoredDelegationImplsForRoleIds(Collection<String> roleIds) {
         if (roleIds != null && !roleIds.isEmpty()) {
-            List<DelegateTypeBo> coll = dataObjectService.findMatching(DelegateTypeBo.class,
+            List<DelegateTypeBo> coll = getDataObjectService().findMatching(DelegateTypeBo.class,
                     QueryByCriteria.Builder.fromPredicates(
                             PredicateFactory.in(KIMPropertyConstants.Delegation.ROLE_ID, roleIds),
                             PredicateFactory.equal(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE) ) ).getResults();
@@ -415,8 +414,6 @@ abstract class RoleServiceBase {
         switch (daoActionToTake) {
             case DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS: // Search for principal delegation members.
                 return roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(delegationIds, principalId);
-            case DELEGATION_GROUPS_FOR_GROUP_IDS_AND_DELEGATION_IDS: // Search for group delegation members.
-                return roleDao.getDelegationGroupsForGroupIdsAndDelegationIds(delegationIds, groupIds);
             default: // This should never happen since the previous switch block should handle this case appropriately.
                 throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-delegation-member-list-related value!");
         }

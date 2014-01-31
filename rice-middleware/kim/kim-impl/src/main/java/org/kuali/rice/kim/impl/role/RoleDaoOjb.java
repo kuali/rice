@@ -33,7 +33,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.Truth;
@@ -114,29 +113,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
 
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, Map<String, String> qualification) {
-        Criteria c = new Criteria();
-        if (roleIds != null && !roleIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
-        }
-        if (groupIds != null && !groupIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
-        }
-        c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode());
-//        addSubCriteriaBasedOnRoleQualification(c, qualification);
-
-        Query query = QueryFactory.newQuery(RoleMemberBo.class, c);
-        Collection<RoleMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
-    }
-
-    @SuppressWarnings("unchecked")
     public Map<String, DelegateTypeBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
         Map<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
         if (CollectionUtils.isNotEmpty(roleIds)) {
@@ -152,6 +128,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return results;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<DelegateMemberBo> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
             Collection<String> delegationIds, String principalId) {
@@ -197,6 +174,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return results;
     }
 
+    @Override
     public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode,
             Map<String, String> qualification) {
         JdbcTemplate template = new JdbcTemplate(dataSource);
@@ -225,6 +203,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                     AND D0.ROLE_ID IN ('100000')
                     */
 
+                    @Override
                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                         /*
                          The query returns multiple lines for each role by joining a role with each of its members. This allows us to get all the role member
@@ -333,6 +312,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                         return statement;
                     }
                 }, new PreparedStatementCallback<List<RoleMemberBo>>() {
+            @Override
             public List<RoleMemberBo> doInPreparedStatement(
                     PreparedStatement statement) throws SQLException, DataAccessException {
                 ResultSet rs = statement.executeQuery();
@@ -415,6 +395,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return roleMemberBos;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
@@ -436,6 +417,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return results;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification) {
         Criteria c = new Criteria();

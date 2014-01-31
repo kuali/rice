@@ -73,7 +73,8 @@
         p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
-        p:roleDao-ref="kimRoleDao"/>
+        p:roleDao-ref="kimRoleDao"
+        p:dataObjectService-ref="dataObjectService" />
 
   <!--
         Group Services

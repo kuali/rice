@@ -56,7 +56,7 @@ public class RoleDaoJpa implements RoleDao {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.impl.role.RoleDao#getDelegationPrincipalsForPrincipalIdAndDelegationIds(java.util.Collection, java.lang.String)
      */
     @Override
@@ -67,19 +67,7 @@ public class RoleDaoJpa implements RoleDao {
 
     /**
      * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.impl.role.RoleDao#getDelegationGroupsForGroupIdsAndDelegationIds(java.util.Collection, java.util.List)
-     */
-    @Override
-    public List<DelegateMemberBo> getDelegationGroupsForGroupIdsAndDelegationIds(Collection<String> delegationIds,
-            List<String> groupIds) {
-        throw new UnsupportedOperationException( "Method has not been converted to JPA." );
-    }
-
-
-    /**
-     * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.impl.role.RoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, java.util.Map)
      */
     @Override
@@ -90,7 +78,7 @@ public class RoleDaoJpa implements RoleDao {
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.kim.impl.role.RoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.Collection, java.util.Map)
      */
     @Override
@@ -98,7 +86,7 @@ public class RoleDaoJpa implements RoleDao {
             Collection<String> groupIds, Map<String, String> qualification) {
         throw new UnsupportedOperationException( "Method has not been converted to JPA." );
     }
-    
+
     @Override
     public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode,
             Map<String, String> qualification) {
@@ -128,6 +116,7 @@ public class RoleDaoJpa implements RoleDao {
                     AND D0.ROLE_ID IN ('100000')
                     */
 
+                    @Override
                     public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                         /*
                          The query returns multiple lines for each role by joining a role with each of its members. This allows us to get all the role member
@@ -236,6 +225,7 @@ public class RoleDaoJpa implements RoleDao {
                         return statement;
                     }
                 }, new PreparedStatementCallback<List<RoleMemberBo>>() {
+            @Override
             public List<RoleMemberBo> doInPreparedStatement(
                     PreparedStatement statement) throws SQLException, DataAccessException {
                 ResultSet rs = statement.executeQuery();

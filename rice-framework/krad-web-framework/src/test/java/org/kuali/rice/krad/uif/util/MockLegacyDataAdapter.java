@@ -516,7 +516,17 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
      */
     @Override
     public Object createNewObjectFromClass(Class clazz) {
-        return null;
+        Object object = null;
+
+        try {
+            object = clazz.newInstance();
+        } catch (InstantiationException e) {
+            // do nothing
+        } catch (IllegalAccessException e) {
+            // do nothing
+        }
+
+        return object;
     }
 
     /**

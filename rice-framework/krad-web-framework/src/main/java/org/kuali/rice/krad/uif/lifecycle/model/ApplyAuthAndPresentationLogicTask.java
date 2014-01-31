@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.Group;
@@ -158,20 +159,26 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
             if (field instanceof DataField) {
                 DataField dataField = (DataField) field;
 
-                // check mask authorization
+                // check for masking and mask authorization
                 boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
                         user);
                 boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
                         dataField.getPropertyName(), user);
-                if (!canUnmaskValue && !canPartiallyUnmaskValue) {
+                boolean isMasked = isMaskField(dataField);
+                boolean isPartialMask = isPartialMaskField(dataField);
+
+                if (isMasked && !canUnmaskValue)  {
                     dataField.setApplyMask(true);
                     dataField.setMaskFormatter(dataField.getDataFieldSecurity().getAttributeSecurity().
                             getMaskFormatter());
                 }
-                else if (!canUnmaskValue && canPartiallyUnmaskValue) {
-                        dataField.setApplyMask(true);
-                        dataField.setMaskFormatter(
-                                dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
+                else if(isMasked && canUnmaskValue)  {
+                    // do not mask
+                }
+                else if (isPartialMask && !canPartiallyUnmaskValue ) {
+                    dataField.setApplyMask(true);
+                    dataField.setMaskFormatter(
+                            dataField.getDataFieldSecurity().getAttributeSecurity().getPartialMaskFormatter());
                 }
             }
         }
@@ -217,6 +224,40 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
                 widget.setReadOnly(!canEditWidget);
             }
         }
+    }
+
+    /**
+     *
+     */
+    private boolean isMaskField(DataField field) {
+        if (field.getDataFieldSecurity() == null) {
+            return false;
+        }
+
+        // check mask authz flag is set
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
+        if (attributeSecurity == null || !attributeSecurity.isMask()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     */
+    private boolean isPartialMaskField(DataField field) {
+        if (field.getDataFieldSecurity() == null) {
+            return false;
+        }
+
+        // check partial mask authz flag is set
+        AttributeSecurity attributeSecurity = field.getDataFieldSecurity().getAttributeSecurity();
+        if (attributeSecurity == null || !attributeSecurity.isPartialMask()) {
+            return false;
+        }
+
+        return true;
     }
 
 }

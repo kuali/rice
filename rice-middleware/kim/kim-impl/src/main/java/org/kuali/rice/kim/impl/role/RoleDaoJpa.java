@@ -40,7 +40,6 @@ import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,17 +52,6 @@ public class RoleDaoJpa implements RoleDao {
     protected EntityManager entityManager;
 
     protected DataSource dataSource;
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kim.impl.role.RoleDao#getDelegationPrincipalsForPrincipalIdAndDelegationIds(java.util.Collection, java.lang.String)
-     */
-    @Override
-    public List<DelegateMemberBo> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
-            Collection<String> delegationIds, String principalId) {
-        throw new UnsupportedOperationException( "Method has not been converted to JPA." );
-    }
 
     /**
      * This overridden method ...

@@ -379,7 +379,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List<String> delegationIds = new ArrayList<String>();
 		if(ObjectUtils.isNotNull(delegationMembers)){
 			for(DelegateMemberBo delegationMember: delegationMembers){
-				if(!delegationIds.contains(delegationMember.getDelegationId())){
+				if( delegationMember.getDelegationId() != null && !delegationIds.contains(delegationMember.getDelegationId())){
 					delegationIds.add(delegationMember.getDelegationId());
 					delegations.add(getDataObjectService().find(DelegateTypeBo.class, delegationMember.getDelegationId()));
 				}

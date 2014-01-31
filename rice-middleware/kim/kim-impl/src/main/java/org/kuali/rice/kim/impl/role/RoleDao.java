@@ -19,13 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
-
 public interface RoleDao {
 
     /* Evaluate JPA Conversion */
-
-    List<DelegateMemberBo> getDelegationPrincipalsForPrincipalIdAndDelegationIds(Collection<String> delegationIds, String principalId);
 
     List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification);
 

@@ -128,30 +128,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return results;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<DelegateMemberBo> getDelegationPrincipalsForPrincipalIdAndDelegationIds(
-            Collection<String> delegationIds, String principalId) {
-        Criteria c = new Criteria();
-
-        if (principalId != null) {
-            c.addEqualTo(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId);
-        }
-        c.addEqualTo(KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode());
-        if (delegationIds != null && !delegationIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
-        }
-        Query query = QueryFactory.newQuery(DelegateMemberBo.class, c);
-        Collection<DelegateMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<DelegateMemberBo> results = new ArrayList<DelegateMemberBo>(coll.size());
-        for (DelegateMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
-    }
-
     @SuppressWarnings("unchecked")
     public List<DelegateMemberBo> getDelegationGroupsForGroupIdsAndDelegationIds(Collection<String> delegationIds,
             List<String> groupIds) {

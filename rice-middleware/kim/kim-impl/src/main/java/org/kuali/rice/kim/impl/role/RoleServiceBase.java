@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.impl.role;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -30,10 +29,13 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -68,6 +70,7 @@ abstract class RoleServiceBase {
     protected GroupService groupService;
     protected ResponsibilityInternalService responsibilityInternalService;
     protected RoleDao roleDao;
+    protected DateTimeService dateTimeService;
 
     /**
      * A helper enumeration for indicating which KimRoleDao method to use when attempting to get role/delegation-related lists that are not in the cache.
@@ -79,9 +82,7 @@ abstract class RoleServiceBase {
         ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS,
         ROLE_MEMBERS_FOR_ROLE_IDS,
         ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS,
-        ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS,
-        DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS,
-        DELEGATION_MEMBERS_FOR_DELEGATION_IDS
+        ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS
     }
 
     /**
@@ -143,8 +144,9 @@ abstract class RoleServiceBase {
 
         List<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
+        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
         for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
+            if (rm.isActive(now)) {
                 results.add(rm);
             }
         }
@@ -161,8 +163,9 @@ abstract class RoleServiceBase {
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()),
                         PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds) ) ).getResults();
         List<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
+        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
         for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
+            if (rm.isActive(now)) {
                 results.add(rm);
             }
         }
@@ -226,11 +229,14 @@ abstract class RoleServiceBase {
 
         Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
+        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
+
         for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
+            if (rm.isActive(now)) {
                 results.add(rm);
             }
         }
+
         return results;
     }
 
@@ -290,11 +296,14 @@ abstract class RoleServiceBase {
 
         Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
+        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
+
         for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
+            if (rm.isActive(now)) {
                 results.add(rm);
             }
         }
+
         return results;
     }
 
@@ -393,38 +402,32 @@ abstract class RoleServiceBase {
     }
 
     /**
-     * Retrieves a List of delegation members from the KimRoleDao as appropriate.
-     *
-     * @param daoActionToTake An indicator for which KimRoleDao method to use for retrieving results.
-     * @param delegationIds   The IDs of the delegations that the members belong to.
-     * @param principalId     The principal ID of the principal delegation members; may get ignored depending on the RoleDaoAction value.
-     * @param groupIds        The group IDs of the group delegation members; may get ignored depending on the RoleDaoAction value.
-     * @return A List of DelegateMemberBo objects based on the provided parameters.
-     * @throws IllegalArgumentException if daoActionToTake does not represent a delegation-member-list-related enumeration value.
-     */
-    protected List<DelegateMemberBo> getDelegationMemberBoList(RoleDaoAction daoActionToTake, Collection<String> delegationIds,
-                                                               String principalId, List<String> groupIds) {
-        if (delegationIds == null || delegationIds.isEmpty()) {
-            delegationIds = Collections.emptyList();
-        }
-        if (groupIds == null || groupIds.isEmpty()) {
-            groupIds = Collections.emptyList();
-        }
-
-        switch (daoActionToTake) {
-            case DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS: // Search for principal delegation members.
-                return roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(delegationIds, principalId);
-            default: // This should never happen since the previous switch block should handle this case appropriately.
-                throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-delegation-member-list-related value!");
-        }
-    }
-
-    /**
      * Calls the KimRoleDao's "getDelegationPrincipalsForPrincipalIdAndDelegationIds" method and/or retrieves any corresponding members from the cache.
      */
     protected List<DelegateMemberBo> getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(Collection<String> delegationIds, String principalId) {
-        return getDelegationMemberBoList(RoleDaoAction.DELEGATION_PRINCIPALS_FOR_PRINCIPAL_ID_AND_DELEGATION_IDS,
-                delegationIds, principalId, null);
+        List<Predicate> criteria = new ArrayList<Predicate>();
+
+        if ( StringUtils.isNotBlank(principalId) ) {
+            criteria.add( PredicateFactory.equal(KIMPropertyConstants.DelegationMember.MEMBER_ID, principalId) );
+        } else {
+            return Collections.emptyList(); // no principal ID - abort
+        }
+        criteria.add( PredicateFactory.equal(KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
+
+        if (delegationIds != null && !delegationIds.isEmpty()) {
+            criteria.add( PredicateFactory.in(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds) );
+        }
+
+        List<DelegateMemberBo> coll = getDataObjectService().findMatching(DelegateMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
+        ArrayList<DelegateMemberBo> results = new ArrayList<DelegateMemberBo>(coll.size());
+        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
+        for (DelegateMemberBo rm : coll) {
+            if (rm.isActive(now)) {
+                results.add(rm);
+            }
+        }
+
+        return results;
     }
 
     /**
@@ -791,6 +794,17 @@ abstract class RoleServiceBase {
 
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
+    }
+
+    public DateTimeService getDateTimeService() {
+        if ( dateTimeService == null ) {
+            dateTimeService = CoreApiServiceLocator.getDateTimeService();
+        }
+        return dateTimeService;
+    }
+
+    public void setDateTimeService(DateTimeService dateTimeService) {
+        this.dateTimeService = dateTimeService;
     }
 
 }

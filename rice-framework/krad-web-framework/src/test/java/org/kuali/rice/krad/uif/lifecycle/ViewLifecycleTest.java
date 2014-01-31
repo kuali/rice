@@ -109,7 +109,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ObjectPropertyUtils.getPropertyValue(dummyLogin,
                         "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
 
-        ViewCleaner.cleanView(dummyLogin);
+//        ViewCleaner.cleanView(dummyLogin);
     }
 
     private UifFormBase testFormView(String viewName, String initialStateId) throws Throwable {
@@ -128,7 +128,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         UifControllerHelper.prepareViewForRendering(request, response, form);
         view = form.getView();
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
-        ViewCleaner.cleanView(view);
+//        ViewCleaner.cleanView(view);
         return form;
     }
 

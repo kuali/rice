@@ -437,14 +437,14 @@ public class ViewLifecycle implements Serializable {
      * @throws IllegalStateException If strict mode is enabled.
      */
     public static void reportIllegalState(String message, Throwable cause) {
-        //        IllegalStateException illegalState = new IllegalStateException(
-        //                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
-        //
-        //        if (ViewLifecycle.isStrict()) {
-        //            throw illegalState;
-        //        } else {
-        //            LOG.warn(illegalState.getMessage(), illegalState);
-        //        }
+        IllegalStateException illegalState = new IllegalStateException(
+                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
+
+        if (ViewLifecycle.isStrict()) {
+            throw illegalState;
+        } else {
+            LOG.warn(illegalState.getMessage(), illegalState);
+        }
     }
 
     /**

@@ -254,7 +254,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
             LifecycleElement nestedElement = nestedElementEntry.getValue();
 
-            if (nestedElement != null) {
+            if (nestedElement != null && !getEndViewStatus().equals(nestedElement.getViewStatus())) {
                 ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, nestedParent);
                 successors.offer(nestedPhase);
             }

@@ -25,16 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentAft extends WebDriverLegacyITBase {
+public class ComponentAft extends ConfigComponentAftBase {
 
     String docId;
-    String componentCode;
-    String componentName;
-
-    /**
-     *  for Component Parameter
-     */
-    public static final String FOR_TEST_MESSAGE = " for Component Parameter";
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Component&channelUrl=" + WebDriverUtils.getBaseUrlString() +
@@ -50,33 +43,14 @@ public class ComponentAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
-    protected void navigate() throws InterruptedException {
-        waitAndClickAdministration();
-        waitForTitleToEqualKualiPortalIndex();
-        selectFrameIframePortlet();
-        waitAndClickByLinkText("Component");
-    }
-
-    @Override
-    protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Component");
-        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-IDM");
-        waitAndTypeByName("document.newMaintainableObject.code", componentCode);
-        waitAndTypeByName("document.newMaintainableObject.name", componentName);
-        checkByName("document.newMaintainableObject.active");
-    }
-
-    protected void testComponentCreateNewCancel() throws Exception {
-        waitAndCreateNew();
-        testCancelConfirmation();
-        passed();
-    }
-
     protected void testComponentParameter() throws Exception {
         //Create New
-        componentName = "TestName" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        componentCode = "TestCode" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        docId = createNewTemplateMethodNoAction();
+        namespaceCode = "KR-IDM";
+        uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String componentName = "name" + uniqueString; // same pattern as used in testCreateNewEnterDetails
+        String componentCode = "code" + uniqueString; // same pattern as used in testCreateNewEnterDetails
+        docId = testCreateNew();
+        submitAndClose();
 
         //Lookup
         navigate();
@@ -100,21 +74,25 @@ public class ComponentAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewCancelComponentBookmark() throws Exception {
-        testComponentCreateNewCancel();
+        testCreateNewCancel();
+        passed();
     }
 
     @Test
     public void testComponentCreateNewCancelComponentNav() throws Exception {
-        testComponentCreateNewCancel();
+        testCreateNewCancel();
+        passed();
     }
 
     @Test
     public void testComponentParameterBookmark() throws Exception {
         testComponentParameter();
+        passed();
     }
 
     @Test
     public void testComponentParameterNav() throws Exception {
         testComponentParameter();
+        passed();
     }
 }

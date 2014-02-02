@@ -15,15 +15,13 @@
  */
 package edu.sampleu.admin;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigComponentCreateNewAftBase extends AdminTmplMthdAftNavBase {
+public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAftBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Component&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -34,53 +32,40 @@ public abstract class ConfigComponentCreateNewAftBase extends AdminTmplMthdAftNa
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation="+
             AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
-    String fourLetters;
-
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
-    /**
-     * {@inheritDoc}
-     * Component
-     * @return
-     */
-    @Override
-    protected String getLinkLocator() {
-        return "Component";
-    }
-
-    public void testConfigComponentCreateNewBookmark(JiraAwareFailable failable) throws Exception {
+    public void testConfigComponentCreateNewBookmark() throws Exception {
         testConfigComponentCreateNew();
         passed();
     }
 
-    public void testConfigComponentCreateNewNav(JiraAwareFailable failable) throws Exception {
+    public void testConfigComponentCreateNewNav() throws Exception {
         testConfigComponentCreateNew();
         passed();
     }
 
-    protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription","Test description of Component create new");
-        selectByName("document.newMaintainableObject.namespaceCode","KR-WKFLW - Workflow");
-        waitAndTypeByName("document.newMaintainableObject.code","Test1" + fourLetters);
-        waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode" + fourLetters);
+    public void testConfigComponentCreateNewSaveBookmark() throws Exception {
+        testConfigComponentCreateNewSave();
+        passed();
+    }
+
+    public void testConfigComponentCreateNewSaveNav() throws Exception {
+        testConfigComponentCreateNewSave();
+        passed();
     }
 
     public void testConfigComponentCreateNew() throws Exception {
-        selectFrameIframePortlet();
-        waitAndClickByXpath(CREATE_NEW_XPATH);
-        fourLetters = RandomStringUtils.randomAlphabetic(4);
-        createNewEnterDetails();
-        waitAndClickByName("methodToCall.route");
-        checkForDocError();
-        waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+        String docId = testCreateNew();
+        submitAndClose();
+        assertDocSearch(docId, "FINAL");
     }
 
-    public void testConfigComponentCreateNewFull() throws Exception {
-        fourLetters = RandomStringUtils.randomAlphabetic(4);
-        createNewTemplateMethod();
+    public void testConfigComponentCreateNewSave() throws Exception {
+        String docId = testCreateNew();
+        saveAndClose();
+        assertDocSearch(docId, DOC_STATUS_SAVED);
     }
 }

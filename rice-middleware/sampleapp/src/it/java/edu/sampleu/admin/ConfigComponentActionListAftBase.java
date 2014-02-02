@@ -15,14 +15,13 @@
  */
 package edu.sampleu.admin;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftNavBase {
+public abstract class ConfigComponentActionListAftBase extends ConfigComponentAftBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Component&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -33,23 +32,9 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.component.ComponentBo&docFormKey=88888888&returnLocation="+
             AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
-    String fourLetters;
-
-    String namespaceCode = "KR-WKFLW";
-
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
-    }
-
-    /**
-     * {@inheritDoc}
-     * Component
-     * @return
-     */
-    @Override
-    protected String getLinkLocator() {
-        return "Component";
     }
 
     private void assertActionListRequestGroup(String userInGroup, String group, String namespace, String actionCode, String state) throws InterruptedException {
@@ -67,19 +52,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
         selectTopFrame();
     }
 
-    protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getLinkLocator() + " description" + fourLetters );
-        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
-        waitAndTypeByName("document.newMaintainableObject.code", "code" + fourLetters);
-        waitAndTypeByName("document.newMaintainableObject.name", "name" + fourLetters);
-    }
-
     protected String testCreateActionRequestGroup(String user, String namespace, String actionType) throws InterruptedException{
-        selectFrameIframePortlet();
-        waitAndClickCreateNew();
-        String docId = waitForDocId();
-        fourLetters = RandomStringUtils.randomAlphabetic(4);
-        createNewEnterDetails();
+        String docId = testCreateNew();
         addAdHocRecipientsGroup(new String[]{user, actionType, namespace});
         submitAndClose();
         return docId;
@@ -95,23 +69,11 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      *
      * @return documentID of the newly initiated document to which the created action request applies.
      */
-    protected String testCreateActionRequestPerson(String user, String actionType) throws InterruptedException{
-        selectFrameIframePortlet();
-        waitAndClickCreateNew();
-        String docId = waitForDocId();
-        fourLetters = RandomStringUtils.randomAlphabetic(4);
-        createNewEnterDetails();
+    protected String testCreateActionRequestPerson(String user, String actionType) throws InterruptedException {
+        String docId = testCreateNew();
         addAdHocRecipientsPerson(new String[]{user, actionType});
         submitAndClose();
         return docId;
-    }
-
-    private void submitAndClose() throws InterruptedException {
-        checkForDocError();
-        waitAndClickByName("methodToCall.route");
-        waitForTextPresent("Document was successfully submitted");
-        waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");
     }
 
     public void testActionListAcknowledgeGroup() throws Exception {

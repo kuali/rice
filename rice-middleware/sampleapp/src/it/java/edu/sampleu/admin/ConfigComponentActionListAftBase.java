@@ -35,6 +35,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
 
     String fourLetters;
 
+    String namespaceCode = "KR-WKFLW";
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -50,19 +52,37 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
         return "Component";
     }
 
-    private void assertActionListPersonRequest(String backdoorUser, String actionCode) throws InterruptedException {
-        String docId = testCreateActionPersonRequest(backdoorUser, actionCode);
+    private void assertActionListRequestGroup(String userInGroup, String group, String namespace, String actionCode, String state) throws InterruptedException {
+        namespaceCode = namespace;
+        String docId = testCreateActionRequestGroup(group, namespace, actionCode);
+        impersonateUser(userInGroup);
+        assertActionList(docId, actionCode, state);
+        selectTopFrame();
+    }
+
+    private void assertActionListRequestPerson(String backdoorUser, String actionCode, String state) throws InterruptedException {
+        String docId = testCreateActionRequestPerson(backdoorUser, actionCode);
         impersonateUser(backdoorUser);
-        assertActionList(docId, actionCode);
+        assertActionList(docId, actionCode, state);
         selectTopFrame();
     }
 
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription",
-                "Test description of " + getLinkLocator() + " create new");
-        selectByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW - Workflow");
-        waitAndTypeByName("document.newMaintainableObject.code","Test1" + fourLetters);
-        waitAndTypeByName("document.newMaintainableObject.name","Test1ComponentCode" + fourLetters);
+        waitAndTypeByName("document.documentHeader.documentDescription", getLinkLocator() + " description" + fourLetters );
+        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+        waitAndTypeByName("document.newMaintainableObject.code", "code" + fourLetters);
+        waitAndTypeByName("document.newMaintainableObject.name", "name" + fourLetters);
+    }
+
+    protected String testCreateActionRequestGroup(String user, String namespace, String actionType) throws InterruptedException{
+        selectFrameIframePortlet();
+        waitAndClickCreateNew();
+        String docId = waitForDocId();
+        fourLetters = RandomStringUtils.randomAlphabetic(4);
+        createNewEnterDetails();
+        addAdHocRecipientsGroup(new String[]{user, actionType, namespace});
+        submitAndClose();
+        return docId;
     }
 
     /**
@@ -75,45 +95,28 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      *
      * @return documentID of the newly initiated document to which the created action request applies.
      */
-    protected String testCreateActionPersonRequest(String user, String actionType) throws InterruptedException{
+    protected String testCreateActionRequestPerson(String user, String actionType) throws InterruptedException{
         selectFrameIframePortlet();
         waitAndClickCreateNew();
         String docId = waitForDocId();
         fourLetters = RandomStringUtils.randomAlphabetic(4);
         createNewEnterDetails();
-        addAdHocPersonRecipients(new String[]{user, actionType});
-        waitAndClickByName("methodToCall.route");
-        checkForDocError();
-        waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");
+        addAdHocRecipientsPerson(new String[]{user, actionType});
+        submitAndClose();
         return docId;
     }
 
-    /**
-     * tests the Approve ActionRequest.
-     * Creates an approve request for a user. Then performs the Approve action.
-     * @throws Exception
-     */
-    public void testActionListPersonApprove() throws Exception {
-        assertActionListPersonRequest("fred", "A");
+    private void submitAndClose() throws InterruptedException {
+        checkForDocError();
+        waitAndClickByName("methodToCall.route");
+        waitForTextPresent("Document was successfully submitted");
+        waitAndClickByName("methodToCall.close");
+        waitAndClickByName("methodToCall.processAnswer.button1");
     }
 
-    /**
-     * tests the  ActionRequest.
-     * Creates an approve request for a user. Then performs the Disapprove action.
-     * @throws Exception
-     */
-    public void testActionListPersonDisapprove() throws Exception {
-        assertActionListPersonRequest("fred", "D");
-    }
-
-    /**
-     * tests the complete ActionRequest.
-     * Creates an complete request for a user. Then performs the Complete action.
-     * @throws Exception
-     */
-    public void testActionListPersonComplete() throws Exception {
-        assertActionListPersonRequest("fran", "C");
+    public void testActionListAcknowledgeGroup() throws Exception {
+        assertActionListRequestGroup("fran", "RecipeMasters", "KR-WKFLW", "K", "PROCESSED");
+        passed();
     }
 
     /**
@@ -121,8 +124,59 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an Acknowledge request for a user. Then performs the Acknowledge action.
      * @throws Exception
      */
-    public void testActionListPersonAcknowledge() throws Exception {
-        assertActionListPersonRequest("erin", "K");
+    public void testActionListAcknowledgePerson() throws Exception {
+        assertActionListRequestPerson("erin", "K", "PROCESSED");
+        passed();
+    }
+
+    public void testActionListApproveGroup() throws Exception {
+        assertActionListRequestGroup("fred", "RecipeMasters", "KR-WKFLW", "A", "ENROUTE");
+        passed();
+    }
+
+    /**
+     * tests the Approve ActionRequest.
+     * Creates an approve request for a user. Then performs the Approve action.
+     * @throws Exception
+     */
+    public void testActionListApprovePerson() throws Exception {
+        assertActionListRequestPerson("fred", "A", "ENROUTE");
+        passed();
+    }
+
+    public void testActionListCompleteGroup() throws Exception {
+        assertActionListRequestGroup("dev1", "Kuali Developers", "KUALI", "C", "ENROUTE");
+        passed();
+    }
+
+    /**
+     * tests the complete ActionRequest.
+     * Creates an complete request for a user. Then performs the Complete action.
+     * @throws Exception
+     */
+    public void testActionListCompletePerson() throws Exception {
+        assertActionListRequestPerson("fran", "C", "ENROUTE");
+        passed();
+    }
+
+    public void testActionListDisapproveGroup() throws Exception {
+        assertActionListRequestGroup("director", "ChickenRecipeMasters", "KR-WKFLW", "D", "ENROUTE");
+        passed();
+    }
+
+    /**
+     * tests the  ActionRequest.
+     * Creates an approve request for a user. Then performs the Disapprove action.
+     * @throws Exception
+     */
+    public void testActionListDisapprovePerson() throws Exception {
+        assertActionListRequestPerson("fred", "D", "ENROUTE");
+        passed();
+    }
+
+    public void testActionListFyiGroup() throws Exception {
+        assertActionListRequestGroup("dev2", "Kuali Developers", "KUALI", "F", "FINAL");
+        passed();
     }
 
     /**
@@ -130,7 +184,8 @@ public abstract class ConfigComponentActionListAftBase extends AdminTmplMthdAftN
      * Creates an FYI request for a user. Then performs the FYI action.
      * @throws Exception
      */
-    public void testActionListPersonFyi() throws Exception {
-        assertActionListPersonRequest("eric", "F");
+    public void testActionListFyiPerson() throws Exception {
+        assertActionListRequestPerson("eric", "F", "FINAL");
+        passed();
     }
 }

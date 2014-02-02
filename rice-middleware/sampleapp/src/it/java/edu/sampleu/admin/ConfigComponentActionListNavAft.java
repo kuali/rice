@@ -23,27 +23,52 @@ import org.junit.Test;
 public class ConfigComponentActionListNavAft extends ConfigComponentActionListAftBase {
 
     @Test
-    public void testActionListApproveNav() throws Exception {
-        testActionListPersonApprove();
+    public void testActionListAcknowledgeGroupNav() throws Exception {
+        testActionListAcknowledgeGroup();
     }
 
     @Test
-    public void testActionListDisapproveNav() throws Exception {
-        testActionListPersonDisapprove();
+    public void testActionListAcknowledgePersonNav() throws Exception {
+        testActionListAcknowledgePerson();
     }
 
     @Test
-    public void testActionListCompleteNav() throws Exception {
-        testActionListPersonComplete();
+    public void testActionListApproveGroupNav() throws Exception {
+        testActionListApproveGroup();
     }
 
     @Test
-    public void testActionListAcknowledgeNav() throws Exception {
-        testActionListPersonAcknowledge();
+    public void testActionListApprovePersonNav() throws Exception {
+        testActionListApprovePerson();
     }
 
     @Test
-    public void testActionListFyiNav() throws Exception {
-        testActionListPersonFyi();
+    public void testActionListCompleteGroupNav() throws Exception {
+        testActionListCompleteGroup();
+    }
+
+    @Test
+    public void testActionListCompletePersonNav() throws Exception {
+        testActionListCompletePerson();
+    }
+
+    @Test
+    public void testActionListDisapproveGroupNav() throws Exception {
+        testActionListDisapproveGroup();
+    }
+
+    @Test
+    public void testActionListDisapprovePersonNav() throws Exception {
+        testActionListDisapprovePerson();
+    }
+
+    @Test
+    public void testActionListFyiGroupNav() throws Exception {
+        testActionListFyiGroup();
+    }
+
+    @Test
+    public void testActionListFyiPersonNav() throws Exception {
+        testActionListFyiPerson();
     }
 }

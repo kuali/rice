@@ -28,27 +28,52 @@ public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionList
     }
 
     @Test
-    public void testActionListApproveBookmark() throws Exception {
-        testActionListPersonApprove();
+    public void testActionListAcknowledgeGroupBookmark() throws Exception {
+        testActionListAcknowledgeGroup();
     }
 
     @Test
-    public void testActionListDisapproveBookmark() throws Exception {
-        testActionListPersonDisapprove();
+    public void testActionListAcknowledgePersonBookmark() throws Exception {
+        testActionListAcknowledgePerson();
     }
 
     @Test
-    public void testActionListCompleteBookmark() throws Exception {
-        testActionListPersonComplete();
+    public void testActionListApproveGroupBookmark() throws Exception {
+        testActionListApproveGroup();
     }
 
     @Test
-    public void testActionListAcknowledgeBookmark() throws Exception {
-        testActionListPersonAcknowledge();
+    public void testActionListApprovePersonBookmark() throws Exception {
+        testActionListApprovePerson();
     }
 
     @Test
-    public void testActionListFyiBookmark() throws Exception {
-        testActionListPersonFyi();
+    public void testActionListCompleteGroupBookmark() throws Exception {
+        testActionListCompleteGroup();
+    }
+
+    @Test
+    public void testActionListCompletePersonBookmark() throws Exception {
+        testActionListCompletePerson();
+    }
+
+    @Test
+    public void testActionListDisapproveGroupBookmark() throws Exception {
+        testActionListDisapproveGroup();
+    }
+
+    @Test
+    public void testActionListDisapprovePersonBookmark() throws Exception {
+        testActionListDisapprovePerson();
+    }
+
+    @Test
+    public void testActionListFyiGroupBookmark() throws Exception {
+        testActionListFyiGroup();
+    }
+
+    @Test
+    public void testActionListFyiPersonBookmark() throws Exception {
+        testActionListFyiPerson();
     }
 }

@@ -651,19 +651,40 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
     }
 
-    /**
-     * @param adHocRecipients user, action option value
-     * @throws InterruptedException
-     */
-    protected void addAdHocPersonRecipients(String[] adHocRecipients) throws InterruptedException {
-        addAdHocPersonRecipients(new String[][]{adHocRecipients});
+    protected void addAdHocRecipientsGroup(String[] adHocRecipients) throws InterruptedException {
+        addAdHocRecipientsGroup(new String[][]{adHocRecipients});
+    }
+
+    protected void addAdHocRecipientsGroup(String[][] adHocRecipients) throws InterruptedException {
+        String today = getDateToday();
+        Calendar nextYearCal = Calendar.getInstance();
+        nextYearCal.add(Calendar.YEAR, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String nextYear = sdf.format(nextYearCal.getTime());
+
+        waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        for (int i = 0, s = adHocRecipients.length; i < s; i++) {
+            selectOptionByName("newAdHocRouteWorkgroup.actionRequested", adHocRecipients[i][1]);
+            waitAndTypeByName("newAdHocRouteWorkgroup.recipientName", adHocRecipients[i][0]);
+            waitAndTypeByName("newAdHocRouteWorkgroup.recipientNamespaceCode", adHocRecipients[i][2]);
+            WebDriverUtils.jGrowl(getDriver(), "Click Add Group", false, "Click Add Group");
+            waitAndClickByName("methodToCall.insertAdHocRouteWorkgroup");
+        }
     }
 
     /**
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
      */
-    protected void addAdHocPersonRecipients(String[][] adHocRecipients) throws InterruptedException {
+    protected void addAdHocRecipientsPerson(String[] adHocRecipients) throws InterruptedException {
+        addAdHocRecipientsPerson(new String[][]{adHocRecipients});
+    }
+
+    /**
+     * @param adHocRecipients user, action option value
+     * @throws InterruptedException
+     */
+    protected void addAdHocRecipientsPerson(String[][] adHocRecipients) throws InterruptedException {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
@@ -728,21 +749,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return true;
     }
 
-    protected void assertActionList(String docId, String actionListOptionValue) throws InterruptedException {
+    protected void assertActionList(String docId, String actionListOptionValue, String state) throws InterruptedException {
         selectTopFrame();
         waitAndClickActionList();
         selectFrameIframePortlet();
         while (!waitForIsTextPresent(docId)) {
             waitAndClickByLinkText("Next");
         }
-        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
+        WebElement docIdTr = findElement(By.xpath("//table/tbody/tr/td/a[contains(text(), '" + docId + "')]/../.."));
+        assertTrue(docIdTr.getText() + " does not contain " + docId, docIdTr.getText().contains(docId));
+        assertTrue(docIdTr.getText() + " does not contain " + state, docIdTr.getText().contains(state));
+        assertTrue(docIdTr.getText() + " does not contain " + actionRequestLabelMap.get(actionListOptionValue), docIdTr.getText().contains(actionRequestLabelMap.get(actionListOptionValue)));
+//        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
         waitAndClickLinkContainingText(docId);
         selectChildWindow();
         waitAndClickByName(actionRequestButtonMap.get(actionListOptionValue));
 
         // Disapprove requires another step before checking outbox
         if ("D".equals(actionListOptionValue)) {
-            waitAndTypeByName("reason","blah");
+            waitAndTypeByName("reason","disapproved for AFT");
             jGrowl("Click yes button");
             waitAndClickByName("methodToCall.processAnswer.button0");
         } else if ("C".equals(actionListOptionValue)) {
@@ -755,6 +780,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void assertOutbox(String docId) throws InterruptedException {
         // find it in outbox
         waitAndClickLinkContainingText("Outbox");
+        while (!waitForIsTextPresent(docId)) {
+            waitAndClickByLinkText("Next");
+        }
         waitForTextPresent(docId);
 
 //        // clear all items in the outbox
@@ -1741,7 +1769,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.groupDescription", groupDescription);
 
         // Add Ad hoc Recipient
-        addAdHocPersonRecipients(new String[]{"dev1", "F"});
+        addAdHocRecipientsPerson(new String[]{"dev1", "F"});
 
         // Add Ad hoc Workgroup
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -3180,14 +3208,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         createNewEnterDetails();
 
         // Ad Hoc Recipients with current user to test Action List
-        addAdHocPersonRecipients(new String[]{getUserName(), "F"}); // FYI
+        addAdHocRecipientsPerson(new String[]{getUserName(), "F"}); // FYI
 
         waitAndClickSave();
         waitAndClickSubmit();
         waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT);
 
         // Action List
-        assertActionList(docId, "F"); // FYI
+        assertActionList(docId, "F", "ENROUTE"); // FYI
 
         assertDocSearch(docId, DOC_STATUS_FINAL);
         selectTopFrame();

@@ -75,7 +75,7 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
 
         waitAndClickByName("methodToCall.route");
 
-        assertActionList(docId, "A", "FINAL");
+        assertActionList(docId, "A", "ENROUTE");
 
         checkForDocError();
 

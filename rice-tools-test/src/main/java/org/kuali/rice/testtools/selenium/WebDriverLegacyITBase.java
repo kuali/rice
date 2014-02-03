@@ -2571,6 +2571,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         waitAndClickButtonByText("submit");
         Thread.sleep(3000);
+        checkForDocError();
         checkForIncidentReport();
 
         //Close the Doc
@@ -2585,7 +2586,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName("methodToCall.search");
         Thread.sleep(5000);
         jGrowl("Is doc status enroute?");
-        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td")).getText());
+        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         findElement(By.name("imageField")).click();
         Thread.sleep(5000);

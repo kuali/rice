@@ -55,7 +55,6 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         waitAndTypeByName("newCollectionLines['collection1'].field1", "");
         Integer postValue = Integer.parseInt(getTextByXpath(
                 "//div[@id='Demo-TableLayoutTotaling-Section1']/div/table/tfoot/tr/th[2]/div/fieldset/div/div[@data-role='pageTotal']/span[@data-role='totalValue']"));
-
         if (postValue >= preValue) {
             jiraAwareFail("Calculation Error !");
         }
@@ -138,7 +137,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
     protected void testCollectionFeaturesColumnCalculationsNonClientSide() throws Exception {
         selectByName("exampleShown", "Non Client-side");
         assertElementPresentByXpath(
-                "//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div/span[@data-role='totalValue']");
+                "//div[@id='Demo-TableLayoutTotaling-Section8']/div/table/tfoot/tr/th[3]/div/fieldset/div/div/p[@data-role='totalValue']");
     }
 
     protected void testCollectionFeaturesColumnCalculationsCustomCalculation() throws Exception {

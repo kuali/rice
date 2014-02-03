@@ -142,15 +142,7 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
-        List<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(now)) {
-                results.add(rm);
-            }
-        }
-        return results;
+        return getRoleMembershipsForPredicates(criteria);
     }
 
     protected List<RoleMemberBo> getRoleMembersForGroupIds(String roleId, List<String> groupIds) {
@@ -203,7 +195,7 @@ abstract class RoleServiceBase {
             case ROLE_MEMBERS_FOR_ROLE_IDS: // Search for role members with the given member type code.
                 return roleDao.getRoleMembersForRoleIds(roleIds, memberTypeCode, convertedQualification);
             case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS: // Search for role members who are also roles.
-                return roleDao.getRoleMembershipsForRoleIdsAsMembers(roleIds, convertedQualification);
+                return getRoleMembershipsForRoleIdsAsMembers(roleIds, convertedQualification);
             case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS: // Search for role members that might be roles, principals, or groups.
                 return roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds, convertedQualification);
             default: // This should never happen, since the previous switch block should handle this case appropriately.
@@ -227,6 +219,27 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
+        return getRoleMembershipsForPredicates(criteria);
+    }
+
+    protected List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds,
+            Map<String, String> qualification) {
+        List<Predicate> criteria = new ArrayList<Predicate>();
+
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds) );
+        }
+        criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()));
+
+        Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
+        if ( roleQualificationPredicate != null ) {
+            criteria.add( roleQualificationPredicate );
+        }
+
+        return getRoleMembershipsForPredicates(criteria);
+    }
+
+    protected List<RoleMemberBo> getRoleMembershipsForPredicates( Collection<Predicate> criteria ) {
         Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
         DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
@@ -245,6 +258,9 @@ abstract class RoleServiceBase {
      * data table.
      *
      * FIXME: This has not been re-implemented in JPA.  We need subquery support in the Predicate APIs.
+     * ALERT!: This can only be re-implemented if we use it against role qualifiers which the role
+     * type service say can be matched exactly.  Otherwise we could filter out matches where the
+     * qualifier contains wildcards or is part of a hierarchy.
      *
      *  This should not be too difficult.  See the first answer here:
      *  http://stackoverflow.com/questions/4483576/jpa-2-0-criteria-api-subqueries-in-expressions
@@ -294,17 +310,7 @@ abstract class RoleServiceBase {
             criteria.add( roleQualificationPredicate );
         }
 
-        Collection<RoleMemberBo> coll = getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
-
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(now)) {
-                results.add(rm);
-            }
-        }
-
-        return results;
+        return getRoleMembershipsForPredicates(criteria);
     }
 
     /**

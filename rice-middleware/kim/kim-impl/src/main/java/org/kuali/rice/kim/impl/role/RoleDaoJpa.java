@@ -56,17 +56,6 @@ public class RoleDaoJpa implements RoleDao {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kim.impl.role.RoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, java.util.Map)
-     */
-    @Override
-    public List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds,
-            Map<String, String> qualification) {
-        throw new UnsupportedOperationException( "Method has not been converted to JPA." );
-    }
-
-    /**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.kim.impl.role.RoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.Collection, java.util.Map)
      */
     @Override

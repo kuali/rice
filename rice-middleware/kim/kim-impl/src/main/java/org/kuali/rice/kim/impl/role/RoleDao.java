@@ -23,8 +23,6 @@ public interface RoleDao {
 
     /* Evaluate JPA Conversion */
 
-    List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification);
-
     List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification);
 
     /* KEEP */

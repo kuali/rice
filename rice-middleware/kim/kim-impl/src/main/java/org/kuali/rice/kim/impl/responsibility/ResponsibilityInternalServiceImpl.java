@@ -36,6 +36,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 public class ResponsibilityInternalServiceImpl implements ResponsibilityInternalService {
@@ -51,7 +52,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// add row to member table
-    	RoleMemberBo member = dataObjectService.save( roleMember );
+    	RoleMemberBo member = dataObjectService.save( roleMember, PersistenceOption.FLUSH );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
@@ -66,7 +67,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     public DelegateMemberBo saveDelegateMember(DelegateMemberBo delegateMember) {
 
         // add row to member table
-        DelegateMemberBo member = dataObjectService.save(delegateMember);
+        DelegateMemberBo member = dataObjectService.save(delegateMember, PersistenceOption.FLUSH);
 
         return member;
     }
@@ -78,7 +79,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 
     	// need to set end date to inactivate, not delete
         roleMember.setActiveToDateValue(dateTimeService.getCurrentTimestamp());
-    	roleMember = dataObjectService.save( roleMember );
+    	roleMember = dataObjectService.save( roleMember, PersistenceOption.FLUSH );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
@@ -91,17 +92,18 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	@SuppressWarnings("unchecked")
 	public void updateActionRequestsForRoleChange(String roleId) {
     	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleId);
-		
+
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(Collections.EMPTY_LIST, newRoleResp));
 	}
-	
+
 
     @Override
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
         KewApiServiceLocator.getResponsibilityChangeQueue().responsibilitiesChanged(responsibilityIds);
 	}
 
-	public List<RoleResponsibility> getRoleResponsibilities(String roleId){
+	@Override
+    public List<RoleResponsibility> getRoleResponsibilities(String roleId){
 		List<RoleResponsibilityBo> rrBoList = dataObjectService.findMatching( RoleResponsibilityBo.class, QueryByCriteria.Builder.fromPredicates(
 		            PredicateFactory.equal(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId),
 		            PredicateFactory.equal(KRADPropertyConstants.ACTIVE,Boolean.TRUE) ) ).getResults();
@@ -113,10 +115,10 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     }
 
     /**
-     * 
+     *
      * This method compares the two lists of responsibility IDs and does a union. returns a unique
      * list of responsibility ids.
-     * 
+     *
      * @param oldRespList
      * @param newRespList
      * @return

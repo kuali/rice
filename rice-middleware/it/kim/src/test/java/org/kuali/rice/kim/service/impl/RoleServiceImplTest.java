@@ -54,6 +54,7 @@ import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
 
 import com.google.common.collect.Maps;
 
@@ -121,7 +122,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegate.setRoleId(r2.getId());
         delegate.setActive(true);
         delegate.setKimTypeId("" + kimTypeId);
-        delegate = KradDataServiceLocator.getDataObjectService().save(delegate);
+        delegate = KradDataServiceLocator.getDataObjectService().save(delegate, PersistenceOption.FLUSH);
 
         //Create delegate member
         DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();
@@ -331,7 +332,7 @@ public class RoleServiceImplTest extends KIMTestCase {
         delegate.setRoleId(r2.getId());
         delegate.setActive(true);
         delegate.setKimTypeId(kimTypeId);
-        delegate = KradDataServiceLocator.getDataObjectService().save(delegate);
+        delegate = KradDataServiceLocator.getDataObjectService().save(delegate, PersistenceOption.FLUSH);
 
         //Create delegate member
         DelegateMember.Builder delegateMemberInfo = DelegateMember.Builder.create();

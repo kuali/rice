@@ -303,28 +303,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, Map<String, String> qualification) {
-        Criteria c = new Criteria();
-
-        if (roleIds != null && !roleIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
-        }
-        c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode());
-//        addSubCriteriaBasedOnRoleQualification(c, qualification);
-
-        Query query = QueryFactory.newQuery(RoleMemberBo.class, c);
-        Collection<RoleMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
     public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification) {
         Criteria c = new Criteria();
 

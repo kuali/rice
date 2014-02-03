@@ -1374,7 +1374,7 @@ public final class KRADUtils {
     public static String getNestedAttributePrimitive(String attributeName) {
         int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(attributeName);
 
-        return lastIndex != -1 ? StringUtils.substring(attributeName, lastIndex + 1) : StringUtils.EMPTY;
+        return lastIndex != -1 ? StringUtils.substring(attributeName, lastIndex + 1) : attributeName;
     }
 
     /**

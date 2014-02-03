@@ -709,7 +709,7 @@ public class PersonServiceImpl implements PersonService {
             		) {
             	// strip off the prefix on the property
                 int lastPropertyIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(propertyName);
-                String personPropertyName = lastPropertyIndex != -1 ? StringUtils.substring(propertyName, lastPropertyIndex + 1) : StringUtils.EMPTY;
+                String personPropertyName = lastPropertyIndex != -1 ? StringUtils.substring(propertyName, lastPropertyIndex + 1) : propertyName;
                 // special case - the user ID
                 if ( StringUtils.equals( KIMPropertyConstants.Person.PRINCIPAL_NAME, personPropertyName) ) {
                     Class targetBusinessObjectClass = null;
@@ -741,8 +741,7 @@ public class PersonServiceImpl implements PersonService {
                     	// host business object to put back into the map now that the principal ID
                     	// (the value stored in application tables) has been resolved
                         int lastIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(personReferenceObjectPropertyName);
-
-                        String propName = lastIndex != -1 ? StringUtils.substring(personReferenceObjectPropertyName, lastIndex + 1) : StringUtils.EMPTY;
+                        String propName = lastIndex != -1 ? StringUtils.substring(personReferenceObjectPropertyName, lastIndex + 1) : personReferenceObjectPropertyName;
                         DataObjectRelationship rel = getBusinessObjectMetaDataService().getBusinessObjectRelationship( targetBusinessObject, propName );
                         if ( rel != null ) {
                             String sourcePrimitivePropertyName = rel.getParentAttributeForChildAttribute(KIMPropertyConstants.Person.PRINCIPAL_ID);

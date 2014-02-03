@@ -278,7 +278,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 //                else if (!FIELD_PROPERTY_NAME_DOCUMENT_TYPE_ID.equals(propertyName)) {
                 else {
                     LOG.info("*** COPYING PROPERTY NAME FROM OLD BO TO NEW BO: " + propertyName);
-                    KRADUtils.setObjectProperty(this, propertyName, (String) wrapper.getPropertyValueNullSafe(propertyName));
+                    KRADUtils.setObjectProperty(this, propertyName, wrapper.getPropertyValueNullSafe(propertyName));
                 }
             }
         } catch (FormatException e) {

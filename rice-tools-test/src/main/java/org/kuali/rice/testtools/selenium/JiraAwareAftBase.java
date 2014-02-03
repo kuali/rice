@@ -532,6 +532,38 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         jiraAwareWaitAndClick(by, message, this);
     }
 
+    protected WebElement jiraAwareType(By by, String text) {
+        return jiraAwareType(by, text, this.getClass().toString().replace("class ", ""));
+    }
+
+    protected WebElement jiraAwareType(By by, String text, String failureMessage) {
+        try {
+            return type(by, text);
+        } catch (Exception e) {
+            JiraAwareFailureUtils.failOnMatchedJira(by.toString(), failureMessage, this);
+            jiraAwareFail(e.getMessage()
+                    + " "
+                    + by.toString()
+                    + "  unable to type text '"
+                    + text
+                    + "'  "
+                    + failureMessage
+                    + " current url "
+                    + getDriver().getCurrentUrl()
+                    + "\n"
+                    + AutomatedFunctionalTestUtils.deLinespace(getDriver().getPageSource()));
+        }
+        return null;
+    }
+
+    protected WebElement jiraAwareTypeByName(String name, String text) {
+        return jiraAwareType(By.name(name), text, this.getClass().toString().replace("class ", ""));
+    }
+
+    protected WebElement jiraAwareTypeByName(String name, String text, String failureMessage) {
+        return jiraAwareType(By.name(name), text, failureMessage);
+    }
+
     /**
      * {@see #jiraAwareWaitFor}
      *
@@ -681,6 +713,19 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    private WebElement type(By by, String text) {
+        WebElement element = findElement(by);
+        String name = element.getAttribute("name");
+        WebDriverUtils.jGrowl(getDriver(), "Type", false, "Type into " + name + " the text: " + text);
+        WebDriverUtils.highlightElement(getDriver(), element);
+        element.sendKeys(text);
+        return element;
+    }
+
+    private WebElement typeByName(String name, String text) {
+        return type(By.name(name), text);
+    }
+
     /**
      * <p>
      * Set the test state to passed, call jGrowl sticky with success, required to be called at the conclusion of a test
@@ -695,12 +740,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected WebElement waitAndType(By by, String text, String message) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message);
-            WebElement element = findElement(by);
-            String name = element.getAttribute("name");
-            WebDriverUtils.jGrowl(getDriver(), "Type", false, "Type into " + name + " the text: " + text);
-            WebDriverUtils.highlightElement(getDriver(), element);
-            element.sendKeys(text);
-            return element;
+            return type(by, text);
         } catch (Exception e) {
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
             jiraAwareFail(e.getMessage()

@@ -61,11 +61,13 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         String docId = testCreateNew();
         submitAndClose();
         assertDocSearch(docId, "FINAL");
+        passed();
     }
 
     public void testConfigComponentCreateNewSave() throws Exception {
         String docId = testCreateNew();
         saveAndClose();
         assertDocSearch(docId, DOC_STATUS_SAVED);
+        passed();
     }
 }

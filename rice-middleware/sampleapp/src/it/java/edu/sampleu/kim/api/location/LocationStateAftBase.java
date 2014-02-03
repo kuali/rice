@@ -49,7 +49,13 @@ public abstract class LocationStateAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "State";
     }
-   
+
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+    }
+
     public void testLocationStateBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

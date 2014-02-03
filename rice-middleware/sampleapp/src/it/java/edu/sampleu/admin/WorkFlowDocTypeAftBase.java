@@ -48,7 +48,14 @@ public abstract class WorkFlowDocTypeAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "Document Type";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.label", "label" + uniqueString);
+    }
+
     public void testWorkFlowDocTypeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

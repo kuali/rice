@@ -49,7 +49,15 @@ public abstract class LocationCampusAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "Campus";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.shortName", uniqueString);
+        selectOptionByName("document.newMaintainableObject.campusTypeCode", "F");
+    }
+
     public void testLocationCampusBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

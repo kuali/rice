@@ -16,6 +16,7 @@
 package edu.sampleu.kim.api.location;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -49,7 +50,14 @@ public abstract class LocationCountryAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "Country";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+    }
+
     public void testLocationCountryBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

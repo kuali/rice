@@ -15,27 +15,16 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavBase {
 
-    protected String uniqueString;
-
-    protected String namespaceCode = "KR-WKFLW";
-
     protected void createNewEnterDetails() throws InterruptedException {
-        if (uniqueString == null) {
-            uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        }
-        waitAndTypeByName("document.documentHeader.documentDescription",
-                this.getClass().toString().substring(this.getClass().toString().lastIndexOf(".") + 1, this.getClass().toString().length()) +
-                "." + testMethodName + " description " + uniqueString );
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
         selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
-        waitAndTypeByName("document.newMaintainableObject.code", "code" + uniqueString);
-        waitAndTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.code", "code" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
 
     /**

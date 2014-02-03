@@ -112,19 +112,9 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         // perform form session handling
         boolean persistFormToSession = uifForm.getViewPostMetadata().isPersistFormToSession();
 
-        // cleaning of view structure
-        if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
-            // view wasn't rendered, just set to null and leave previous posted view
-            uifForm.setView(null);
-        } else {
-            // full view render, clean view and back up
-            View view = uifForm.getView();
-            if (view != null) {
-                ViewCleaner.cleanView(view);
-            }
-
-            uifForm.setView(null);
-        }
+        // Discard transient view instance
+        // TODO: Can @SessionTransient be trusted to handle this?
+        uifForm.setView(null);
 
         // remove the session transient variables from the request form before adding it to the list of
         // Uif session forms

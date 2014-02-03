@@ -396,13 +396,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "duplicateLineLabelString",
                     ViewLifecycle.getHelper().getDuplicateLineLabelString(this, this.getDuplicateLinePropertyNames()));
         }
-    }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performFinalize(Object model, LifecycleElement parent) {
         boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
         if (hasBindingPath) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(

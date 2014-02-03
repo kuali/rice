@@ -43,8 +43,6 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
-import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -81,74 +79,6 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 //            }
 //        }
 //    }
-
-    @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, Map<String, String> qualification) {
-
-        Criteria c = new Criteria();
-
-        if (CollectionUtils.isNotEmpty(roleIds)) {
-            if (roleIds.size() == 1) {
-                c.addEqualTo(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds.iterator().next());
-            } else {
-            	c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
-            }
-        }
-        if (principalId != null) {
-            c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
-        }
-        c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode());
-//        addSubCriteriaBasedOnRoleQualification(c, qualification);
-
-        Query query = QueryFactory.newQuery(RoleMemberBo.class, c);
-        Collection<RoleMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public Map<String, DelegateTypeBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
-        Map<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
-        if (CollectionUtils.isNotEmpty(roleIds)) {
-            Criteria c = new Criteria();
-            c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
-            c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);
-            Query query = QueryFactory.newQuery(DelegateTypeBo.class, c);
-            Collection<DelegateTypeBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-            for (DelegateTypeBo delegateBo : coll) {
-                results.put(delegateBo.getDelegationId(), delegateBo);
-            }
-        }
-        return results;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<DelegateMemberBo> getDelegationGroupsForGroupIdsAndDelegationIds(Collection<String> delegationIds,
-            List<String> groupIds) {
-        Criteria c = new Criteria();
-        if (delegationIds != null && !delegationIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.DelegationMember.DELEGATION_ID, delegationIds);
-        }
-        if (groupIds != null && !groupIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.DelegationMember.MEMBER_ID, groupIds);
-        }
-        c.addEqualTo(KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode());
-        Query query = QueryFactory.newQuery(DelegateMemberBo.class, c);
-        Collection<DelegateMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<DelegateMemberBo> results = new ArrayList<DelegateMemberBo>(coll.size());
-        for (DelegateMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
-    }
 
     @Override
     public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode,

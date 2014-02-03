@@ -40,6 +40,7 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
@@ -457,7 +458,6 @@ public class RoleServiceImplTest extends KIMTestCase {
 	}
 
     protected RoleResponsibilityAction createRoleResponsibilityAction() {
-        Role r = roleService.getRole("r1");
         List<RoleMembership> members = roleService.getRoleMembers(Collections.singletonList("r1"), null);
         RoleMembership rm = members.get(0);
 
@@ -471,6 +471,50 @@ public class RoleServiceImplTest extends KIMTestCase {
         assertEquals("saved RoleResponsibilityAction does not match expected", saved, rra.get(0));
 
         return rra.get(0);
+    }
+
+    @Test
+    public void testGetRoleMembers() {
+        List<RoleMembership> members = roleService.getRoleMembers(Collections.singletonList("r1"), null);
+        assertNotNull( "returned member list should not be null", members);
+        assertEquals("Wrong numbers of members in the role", 2, members.size());
+    }
+
+    @Test
+    public void testGetRoleMembersWithExactMatchRoleTypeEmptyQualifier() {
+        Role rCampus = roleService.getRole("r-campus");
+        assertNotNull( "Campus-based role missing from test data", rCampus );
+        assertEquals( "Campus role type incorrect", "kt-campus", rCampus.getKimTypeId());
+        List<RoleMembership> members = roleService.getRoleMembers(Collections.singletonList("r-campus"), Collections.<String,String>emptyMap());
+        assertNotNull( "returned member list should not be null", members);
+        assertEquals("Wrong numbers of members in the role: " + members, 2, members.size());
+    }
+
+    @Test
+    public void testGetRoleMembersWithExactMatchRoleType() {
+        Role rCampus = roleService.getRole("r-campus");
+        assertNotNull( "Campus-based role missing from test data", rCampus );
+        assertEquals( "Campus role type incorrect", "kt-campus", rCampus.getKimTypeId());
+        List<RoleMembership> members = roleService.getRoleMembers(Collections.singletonList("r-campus"), Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL"));
+        assertNotNull( "returned member list should not be null", members);
+        assertEquals("Wrong numbers of members returned from role: " + members, 1, members.size());
+    }
+
+    @Test
+    public void testRemoveRoleFromRoleWithExactQualification() {
+        Role rCampus = roleService.getRole("r-campus-2");
+        assertNotNull( "Campus-based role missing from test data", rCampus );
+        assertEquals( "Campus role type incorrect", "kt-campus", rCampus.getKimTypeId());
+
+        List<RoleMembership> firstLevelRoleMembers = roleService.getFirstLevelRoleMembers(Collections.singletonList("r-campus-2"));
+        assertEquals("wrong number of role members: " + firstLevelRoleMembers, 2, firstLevelRoleMembers.size());
+
+        roleService.removeRoleFromRole("r4", "AUTH_SVC_TEST2", "Campus Reviewer 2", Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL"));
+
+        firstLevelRoleMembers = roleService.getFirstLevelRoleMembers(Collections.singletonList("r-campus-2"));
+        assertEquals("wrong number of role members after removal: " + firstLevelRoleMembers, 1, firstLevelRoleMembers.size());
+
+        assertEquals("Wrong role member remains", "r1", firstLevelRoleMembers.get(0).getMemberId() );
     }
 
     @Test

@@ -2583,7 +2583,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
-        waitAndClickByName("methodToCall.search");
+        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
         jGrowl("Is doc status enroute?");
         assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
@@ -2608,7 +2608,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
         waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
         findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" + AutomatedFunctionalTestUtils.DTS);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" +
+                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars());
 
         jGrowl("Add Member kr");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();

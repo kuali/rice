@@ -30,18 +30,13 @@ import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.Query;
-import org.apache.ojb.broker.query.QueryFactory;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.Truth;
-import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
-import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.springframework.dao.DataAccessException;
@@ -50,35 +45,9 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
-public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
+public class RoleDaoJdbc implements RoleDao {
 
-    private DataSource dataSource;
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = new TransactionAwareDataSourceProxy(dataSource);
-    }
-
-//    /**
-//     * Adds SubCriteria to the Query Criteria using the role qualification passed in
-//     *
-//     * @param c             The Query Criteria object to be used
-//     * @param qualification The role qualification
-//     */
-//    private void addSubCriteriaBasedOnRoleQualification(Criteria c, Map<String, String> qualification) {
-//        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
-//            for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
-//                Criteria subCrit = new Criteria();
-//                if (StringUtils.isNotEmpty(qualifier.getValue())) {
-//                    String value = (qualifier.getValue()).replace('*', '%');
-//                    subCrit.addLike("attributeValue", value);
-//                    subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
-//                    subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "id");
-//                    ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataBo.class, subCrit);
-//                    c.addExists(subQuery);
-//                }
-//            }
-//        }
-//    }
+    protected DataSource dataSource;
 
     @Override
     public List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode,
@@ -88,7 +57,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         final String memberTypeCd = memberTypeCode;
         final Map<String, String> qual = qualification;
         final List<RoleMemberBo> roleMemberBos = new ArrayList<RoleMemberBo>();
-        List<RoleMemberBo> results = template.execute(new PreparedStatementCreator() {
+        template.execute(new PreparedStatementCreator() {
 
                     /*
                      SAMPLE QUERY
@@ -116,21 +85,21 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                          and role data in a single query (even though we are duplicating the role information across the role members). The cost of this
                          comes out to be cheaper than firing indiviudual queries for each role in cases where there are over 500 roles
                         */
-                        StringBuffer sql1 = new StringBuffer("SELECT "
+                        StringBuilder sql1 = new StringBuilder("SELECT "
                                 + " A0.ROLE_MBR_ID AS ROLE_MBR_ID,A0.ROLE_ID AS ROLE_ID,A0.MBR_ID AS MBR_ID,A0.MBR_TYP_CD AS MBR_TYP_CD,A0.VER_NBR AS ROLE_MBR_VER_NBR,A0.OBJ_ID AS ROLE_MBR_OBJ_ID,A0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,A0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT, "
                                 + " BO.KIM_TYP_ID AS KIM_TYP_ID, BO.KIM_ATTR_DEFN_ID AS KIM_ATTR_DEFN_ID, BO.ATTR_VAL AS ATTR_VAL, BO.ATTR_DATA_ID AS ATTR_DATA_ID, BO.OBJ_ID AS ATTR_DATA_OBJ_ID, BO.VER_NBR AS ATTR_DATA_VER_NBR,  "
                                 + " C0.KIM_ATTR_DEFN_ID AS KIM_ATTR_DEFN_ID, C0.OBJ_ID AS ATTR_DEFN_OBJ_ID, C0.VER_NBR as ATTR_DEFN_VER_NBR, C0.NM AS ATTR_NAME, C0.LBL as ATTR_DEFN_LBL, C0.ACTV_IND as ATTR_DEFN_ACTV_IND, C0.NMSPC_CD AS ATTR_DEFN_NMSPC_CD, C0.CMPNT_NM AS ATTR_DEFN_CMPNT_NM "
                                 + " FROM KRIM_ROLE_MBR_T A0 JOIN KRIM_ROLE_MBR_ATTR_DATA_T BO ON A0.ROLE_MBR_ID = BO.ROLE_MBR_ID "
                                 + " JOIN KRIM_ATTR_DEFN_T C0 ON BO.KIM_ATTR_DEFN_ID = C0.KIM_ATTR_DEFN_ID  ");
 
-                        StringBuffer sql2 = new StringBuffer("SELECT"
+                        StringBuilder sql2 = new StringBuilder("SELECT"
                                 + " D0.ROLE_MBR_ID AS ROLE_MBR_ID,D0.ROLE_ID AS ROLE_ID,D0.MBR_ID AS MBR_ID,D0.MBR_TYP_CD AS MBR_TYP_CD,D0.VER_NBR AS ROLE_MBR_VER_NBR,D0.OBJ_ID AS ROLE_MBR_OBJ_ID,D0.ACTV_FRM_DT AS ROLE_MBR_ACTV_FRM_DT ,D0.ACTV_TO_DT AS ROLE_MBR_ACTV_TO_DT, "
                                 + " '' AS KIM_TYP_ID, '' AS KIM_ATTR_DEFN_ID, '' AS ATTR_VAL, '' AS ATTR_DATA_ID, '' AS ATTR_DATA_OBJ_ID, NULL AS ATTR_DATA_VER_NBR,"
                                 + " '' AS KIM_ATTR_DEFN_ID,'' AS ATTR_DEFN_OBJ_ID, NULL as ATTR_DEFN_VER_NBR, '' AS ATTR_NAME, '' as ATTR_DEFN_LBL, '' as ATTR_DEFN_ACTV_IND, '' AS ATTR_DEFN_NMSPC_CD, '' AS ATTR_DEFN_CMPNT_NM "
                                 + " FROM KRIM_ROLE_MBR_T D0 "
                                 + " WHERE D0.ROLE_MBR_ID NOT IN (SELECT DISTINCT (E0.ROLE_MBR_ID) FROM KRIM_ROLE_MBR_ATTR_DATA_T E0)");
 
-                        StringBuffer criteria = new StringBuffer();
+                        StringBuilder criteria = new StringBuilder();
 
                         List<String> params1 = new ArrayList<String>();
                         List<String> params2 = new ArrayList<String>();
@@ -169,7 +138,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                             // If Qualifiers present then sql2 should not be returning any result as it finds
                             // rolemembers with now attributes
-                            sql2 = new StringBuffer();
+                            sql2 = new StringBuilder();
 
                             if (criteria.length() > 0) {
                                 sql1.append(" AND ");
@@ -192,7 +161,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                         }
 
-                        StringBuffer sql = new StringBuffer(sql1.toString());
+                        StringBuilder sql = new StringBuilder(sql1.toString());
 
                         if (sql2.length() > 0) {
                             sql.append(" UNION ALL ");
@@ -259,16 +228,15 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                         }
 
                         String kimTypeId = rs.getString("KIM_TYP_ID");
-                        String attrKey = rs.getString("KIM_ATTR_DEFN_ID");
-                        String attrVal = rs.getString("ATTR_VAL");
                         if (processRolemember && StringUtils.isNotEmpty(kimTypeId)) {
                             KimType theType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
                             // Create RoleMemberAttributeDataBo for this row
                             RoleMemberAttributeDataBo roleMemAttrDataBo = new RoleMemberAttributeDataBo();
 
-                            KimAttribute.Builder attrBuilder = KimAttribute.Builder.create(rs.getString(
-                                    "ATTR_DEFN_CMPNT_NM"), rs.getString("ATTR_NAME"), rs.getString(
-                                    "ATTR_DEFN_NMSPC_CD"));
+                            KimAttribute.Builder attrBuilder = KimAttribute.Builder.create(
+                                    rs.getString("ATTR_DEFN_CMPNT_NM")
+                                    , rs.getString("ATTR_NAME")
+                                    , rs.getString("ATTR_DEFN_NMSPC_CD"));
                             attrBuilder.setActive(Truth.strToBooleanIgnoreCase(rs.getString("ATTR_DEFN_ACTV_IND")));
                             attrBuilder.setAttributeLabel(rs.getString("ATTR_DEFN_LBL"));
                             attrBuilder.setId(rs.getString("KIM_ATTR_DEFN_ID"));
@@ -280,9 +248,9 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                             roleMemAttrDataBo.setKimTypeId(kimTypeId);
                             roleMemAttrDataBo.setKimType(KimTypeBo.from(theType));
                             roleMemAttrDataBo.setKimAttributeId(attrBuilder.getId());
-                            roleMemAttrDataBo.setAttributeValue(attrVal);
-                            roleMemAttrDataBo.setVersionNumber(rs.getLong("ATTR_DATA_VER_NBR"));
-                            roleMemAttrDataBo.setObjectId(rs.getString("ATTR_DATA_OBJ_ID"));
+                            roleMemAttrDataBo.setAttributeValue(rs.getString("ATTR_VAL"));
+                            roleMemAttrDataBo.setVersionNumber(attrBuilder.getVersionNumber());
+                            roleMemAttrDataBo.setObjectId(attrBuilder.getObjectId());
 
                             roleMemAttrDataBo.setKimAttribute(KimAttributeBo.from(attrBuilder.build()));
                             lastRoleMember.getAttributeDetails().add(roleMemAttrDataBo);
@@ -301,40 +269,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         return roleMemberBos;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification) {
-        Criteria c = new Criteria();
-
-        if (roleIds != null && !roleIds.isEmpty()) {
-            c.addIn(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
-        }
-        Criteria orSet = new Criteria();
-        orSet.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode());
-        Criteria principalCheck = new Criteria();
-        if (principalId != null) {
-            principalCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
-        }
-        principalCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode());
-        orSet.addOrCriteria(principalCheck);
-        Criteria groupCheck = new Criteria();
-        if (groupIds != null && !groupIds.isEmpty()) {
-            groupCheck.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
-        }
-        groupCheck.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode());
-        orSet.addOrCriteria(groupCheck);
-        c.addAndCriteria(orSet);
-//        addSubCriteriaBasedOnRoleQualification(c, qualification);
-
-        Query query = QueryFactory.newQuery(RoleMemberBo.class, c);
-        Collection<RoleMemberBo> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
-        ArrayList<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
-        for (RoleMemberBo rm : coll) {
-            if (rm.isActive(new Timestamp(System.currentTimeMillis()))) {
-                results.add(rm);
-            }
-        }
-        return results;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = new TransactionAwareDataSourceProxy(dataSource);
     }
 
 }

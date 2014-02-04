@@ -27,6 +27,23 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
+
+  <bean id="kimDataSource"
+        class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean"
+        lazy-init="true"
+        p:serverDataSource="true">
+    <property name="preferredDataSourceParams">
+      <list>
+        <value>kim.datasource</value>
+      </list>
+    </property>
+    <property name="preferredDataSourceJndiParams">
+      <list>
+        <value>kim.datasource.jndi.location</value>
+      </list>
+    </property>
+  </bean>
+
 	<alias
 		alias="kradApplicationDataSource"
 		name="kimDataSource" />
@@ -48,7 +65,7 @@
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
-	<bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoJpa" lazy-init="true">
+	<bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoJdbc" lazy-init="true">
 	    <property name="dataSource" ref="kimDataSource"/>
 	</bean>
 </beans>

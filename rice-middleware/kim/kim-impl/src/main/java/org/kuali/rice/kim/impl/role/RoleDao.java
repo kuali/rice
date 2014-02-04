@@ -21,10 +21,6 @@ import java.util.Map;
 
 public interface RoleDao {
 
-    /* Evaluate JPA Conversion */
-
-    List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, Collection<String> groupIds, Map<String, String> qualification);
-
     /* KEEP */
     List<RoleMemberBo> getRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, Map<String, String> qualification);
 }

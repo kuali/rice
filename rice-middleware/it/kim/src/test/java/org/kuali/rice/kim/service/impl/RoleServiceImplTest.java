@@ -519,6 +519,32 @@ public class RoleServiceImplTest extends KIMTestCase {
     }
 
     @Test
+    public void testGetRoleQualifersForPrincipalByNamespaceAndRolenameWithoutQualifier() {
+        Role rCampus = roleService.getRoleByNamespaceCodeAndName("AUTH_SVC_TEST2", "Campus Reviewer");
+        assertNotNull( "Campus-based role missing from test data", rCampus );
+        assertEquals( "Campus role type incorrect", "kt-campus", rCampus.getKimTypeId());
+
+        List<Map<String, String>> qualifiers = roleService.getRoleQualifersForPrincipalByNamespaceAndRolename("p9", "AUTH_SVC_TEST2", "Campus Reviewer", Collections.<String,String>emptyMap() );
+        assertNotNull( "Returned qualifier list should not be null", qualifiers );
+        assertEquals( "Qualifier list should have one entry", 1, qualifiers.size() );
+        assertTrue( "campus code qualifier missing", qualifiers.get(0).containsKey(KimConstants.AttributeConstants.CAMPUS_CODE) );
+        assertEquals( "campus code qualifier incorrect", "BL", qualifiers.get(0).get(KimConstants.AttributeConstants.CAMPUS_CODE) );
+    }
+
+    @Test
+    public void testGetRoleQualifersForPrincipalByNamespaceAndRolenameWithQualifier() {
+        Role rCampus = roleService.getRoleByNamespaceCodeAndName("AUTH_SVC_TEST2", "Campus Reviewer");
+        assertNotNull( "Campus-based role missing from test data", rCampus );
+        assertEquals( "Campus role type incorrect", "kt-campus", rCampus.getKimTypeId());
+
+        List<Map<String, String>> qualifiers = roleService.getRoleQualifersForPrincipalByNamespaceAndRolename("p9", "AUTH_SVC_TEST2", "Campus Reviewer", Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL") );
+        assertNotNull( "Returned qualifier list should not be null", qualifiers );
+        assertEquals( "Qualifier list should have one entry", 1, qualifiers.size() );
+        assertTrue( "campus code qualifier missing", qualifiers.get(0).containsKey(KimConstants.AttributeConstants.CAMPUS_CODE) );
+        assertEquals( "campus code qualifier incorrect", "BL", qualifiers.get(0).get(KimConstants.AttributeConstants.CAMPUS_CODE) );
+    }
+
+    @Test
     public void testCreateRoleResponsibilityAction() {
         createRoleResponsibilityAction();
     }

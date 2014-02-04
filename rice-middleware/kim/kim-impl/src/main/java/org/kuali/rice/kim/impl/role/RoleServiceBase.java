@@ -197,7 +197,7 @@ abstract class RoleServiceBase {
             case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS: // Search for role members who are also roles.
                 return getRoleMembershipsForRoleIdsAsMembers(roleIds, convertedQualification);
             case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS: // Search for role members that might be roles, principals, or groups.
-                return roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds, convertedQualification);
+                return getRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds, convertedQualification);
             default: // This should never happen, since the previous switch block should handle this case appropriately.
                 throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
         }
@@ -230,6 +230,38 @@ abstract class RoleServiceBase {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds) );
         }
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()));
+
+        Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
+        if ( roleQualificationPredicate != null ) {
+            criteria.add( roleQualificationPredicate );
+        }
+
+        return getRoleMembershipsForPredicates(criteria);
+    }
+
+    protected List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds,
+            String principalId, Collection<String> groupIds, Map<String, String> qualification) {
+        List<Predicate> criteria = new ArrayList<Predicate>();
+
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
+        }
+        List<Predicate> principalPredicates = new ArrayList<Predicate>(2);
+        principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
+        if ( StringUtils.isNotBlank(principalId) ) {
+            principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId));
+        }
+        List<Predicate> groupPredicates = new ArrayList<Predicate>(2);
+        groupPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()));
+        if (CollectionUtils.isNotEmpty(groupIds)) {
+            groupPredicates.add(PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds));
+        }
+
+        criteria.add( PredicateFactory.or(
+                PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()),
+                PredicateFactory.and(principalPredicates.toArray(new Predicate[0])),
+                PredicateFactory.and(groupPredicates.toArray(new Predicate[0]))
+                ) );
 
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {

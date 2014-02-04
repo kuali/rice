@@ -140,12 +140,5 @@
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-      <optional>true</optional>
-    </dependency>
-
   </dependencies>
 </project>

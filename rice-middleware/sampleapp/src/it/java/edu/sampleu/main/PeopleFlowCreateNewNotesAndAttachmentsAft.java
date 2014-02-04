@@ -87,7 +87,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         Thread.sleep(2000);
 
         assertTextPresent("Attachment_Note");
-        assertTextNotPresent("Note Text is a required field.");
+        assertTextNotPresent("Note Text is a required field");
     }
 
     /**
@@ -102,9 +102,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         waitAndAddAttachment("attachment.txt", "Testing123");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
-        Thread.sleep(2000);
-
-        assertTextPresent("Note Text is a required field.");
+        waitForTextPresent("Note Text is a required field");
         assertTextNotPresent("attachment.txt");
     }
 

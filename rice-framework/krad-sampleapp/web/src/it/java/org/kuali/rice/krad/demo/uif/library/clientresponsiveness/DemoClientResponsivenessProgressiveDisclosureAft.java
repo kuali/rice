@@ -72,8 +72,8 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     
     protected void testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching() throws Exception {
     	waitAndClickByLinkText("Show Field Through Matching");
-    	assertElementPresentByXpath("//input[@name='inputField7' and @disabled]");
-    	assertElementPresentByXpath("//input[@name='inputField8' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='inputField7' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='inputField8' and @disabled]");
     	waitAndTypeByName("inputField6","A");
     	waitAndClickByLinkText("Documentation");
     	waitForElementPresentByXpath("//input[@name='inputField7']");

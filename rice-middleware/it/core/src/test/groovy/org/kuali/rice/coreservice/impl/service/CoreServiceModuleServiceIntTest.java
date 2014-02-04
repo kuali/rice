@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.criteria.org.kuali.rice.coreservice.impl.service;
+package org.kuali.rice.coreservice.impl.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,11 +22,13 @@ import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterId;
 import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -75,14 +77,22 @@ public class CoreServiceModuleServiceIntTest extends CORETestCase {
 
         assertFalse("namespaces weren't successfully retrieved", CollectionUtils.isEmpty(namespaces));
         assertTrue(namespaces.size() > 1);
-        assertTrue(namespaces.contains(kualiNamespace));
+        List<String> codeList = new ArrayList<String>();
+        for (NamespaceBo nsBo : namespaces) {
+            codeList.add(nsBo.getCode());
+        }
+        assertTrue(codeList.contains(kualiNamespace.getCode()));
 
         namespaces = coreServiceModuleService.getExternalizableBusinessObjectsList(NamespaceBo.class,
                 Collections.<String,Object>singletonMap("code", KUALI_NAMESPACE_CODE));
 
         assertFalse("namespaces weren't successfully retrieved", CollectionUtils.isEmpty(namespaces));
         assertTrue(namespaces.size() == 1);
-        assertTrue(namespaces.contains(kualiNamespace));
+        codeList = new ArrayList<String>();
+        for (NamespaceBo nsBo : namespaces) {
+            codeList.add(nsBo.getCode());
+        }
+        assertTrue(codeList.contains(kualiNamespace.getCode()));
 
         namespaces = coreServiceModuleService.getExternalizableBusinessObjectsList(NamespaceBo.class,
                 Collections.<String,Object>singletonMap("code", "Kwisatz Haderach"));
@@ -109,14 +119,23 @@ public class CoreServiceModuleServiceIntTest extends CORETestCase {
 
         assertFalse("parameters weren't successfully retrieved", CollectionUtils.isEmpty(parameters));
         assertTrue(parameters.size() > 1);
-        assertTrue(parameters.contains(parameter));
+
+        List<ParameterId> paramIds = new ArrayList<ParameterId>();
+        for (ParameterBo param : parameters) {
+            paramIds.add(param.getParameterId());
+        }
+        assertTrue(paramIds.contains(parameter.getParameterId()));
 
         parameters = coreServiceModuleService.getExternalizableBusinessObjectsList(ParameterBo.class,
                 Collections.<String,Object>singletonMap("name", NAME));
 
         assertFalse("parameters weren't successfully retrieved", CollectionUtils.isEmpty(parameters));
-        assertTrue(parameters.size() == 1);
-        assertTrue(parameters.contains(parameter));
+
+        paramIds = new ArrayList<ParameterId>();
+        for (ParameterBo param : parameters) {
+            paramIds.add(param.getParameterId());
+        }
+        assertTrue(paramIds.contains(parameter.getParameterId()));
 
         parameters = coreServiceModuleService.getExternalizableBusinessObjectsList(ParameterBo.class,
                 Collections.<String,Object>singletonMap("name", "Kwisatz Haderach"));

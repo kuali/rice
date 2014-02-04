@@ -235,5 +235,9 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
         this.derivedComponent = derivedComponent;
     }
 
+    public ParameterId getParameterId() {
+        return new ParameterId(this.namespaceCode, this.componentCode, this.name, this.applicationId);
+    }
+
 }
 

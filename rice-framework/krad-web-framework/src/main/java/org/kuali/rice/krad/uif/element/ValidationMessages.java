@@ -99,7 +99,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
 
         // special message component case
         if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
-                .isGenerateWrapperElement()) {
+                .isRenderWrapperTag()) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 

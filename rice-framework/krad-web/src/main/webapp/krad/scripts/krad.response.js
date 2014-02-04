@@ -58,26 +58,29 @@ KradResponse.prototype = {
     // finds the page content in the returned content and updates the page, then processes breadcrumbs and hidden
     // scripts. While processing, the page contents are hidden
     updatePageHandler: function (content, dataAttr) {
-        var page = jQuery("#page_update", content);
+        var pageUpdate = jQuery("#page_update", content);
+        var page = jQuery("[data-role='Page']", pageUpdate);
+        var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
-        // TODO: should this be hiding page or pageInLayout?
         page.hide();
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
-        var pageInLayout = "#" + kradVariables.VIEW_CONTENT_HEADER_CLASS + " #" +
-                kradVariables.PAGE_CONTENT_WRAPPER + ":first";
+        var pageInLayout = "#" + kradVariables.VIEW_CONTENT_WRAPPER + " [data-role='Page']:first";
         hideBubblePopups(pageInLayout);
 
         var $pageInLayout = jQuery(pageInLayout);
 
         // update page contents from response
-        $pageInLayout.empty().append(page.find(">*"));
+        viewContent.find("[data-for='" + $pageInLayout.attr("id") + "']").remove();
+        $pageInLayout.replaceWith(pageUpdate.find(">*"));
+        $pageInLayout = jQuery(pageInLayout);
 
         pageValidatorReady = false;
-        runHiddenScripts($pageInLayout.attr("id"), false, true);
+        runHiddenScripts(kradVariables.VIEW_CONTENT_WRAPPER, false, true);
 
         markActiveMenuLink();
 
+        viewContent.trigger(kradVariables.EVENTS.ADJUST_PAGE_MARGIN);
         $pageInLayout.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         $pageInLayout.show();
@@ -198,13 +201,36 @@ KradResponse.prototype = {
 
     // replaces the view with the given content and run the hidden scripts
     updateViewHandler: function (content, dataAttr) {
-        var view = jQuery("#" + kradVariables.APP_ID);
+        var app = jQuery("#" + kradVariables.APP_ID);
+        app.hide();
 
-        var newView = jQuery("#" + kradVariables.APP_ID, content);
+        var update = jQuery("div[data-returntype='update-view']", content);
 
-        view.replaceWith(newView);
+        var appHeaderUpdate = update.find("#" + kradVariables.APPLICATION_HEADER_WRAPPER);
+        app.find("#" + kradVariables.APPLICATION_HEADER_WRAPPER).replaceWith(appHeaderUpdate);
 
-        jQuery("#" + kradVariables.APP_ID).show();
+        var kualiForm = app.find("#kualiForm");
+        var kualiFormReplacement = update.find("#kualiForm");
+        var view = app.find("[data-role='View']");
+        var viewUpdate = update.find("[data-role='View']");
+
+        if(kualiForm.length && kualiFormReplacement) {
+            kualiForm.replaceWith(kualiFormReplacement);
+        }
+        else if (kualiForm.length && !kualiFormReplacement.length){
+            kualiForm.replaceWith(viewUpdate);
+        }
+        else if (!kualiForm.length && kualiFormReplacement.length) {
+            view.replaceWith(kualiFormReplacement);
+        }
+        else {
+            view.replaceWith(viewUpdate);
+        }
+
+        var appFooterUpdate = update.find("#" + kradVariables.APPLICATION_FOOTER_WRAPPER);
+        app.find("#" + kradVariables.APPLICATION_FOOTER_WRAPPER).replaceWith(appFooterUpdate);
+
+        app.show();
         setupStickyHeaderAndFooter();
         runHiddenScripts(kradVariables.APP_ID);
 

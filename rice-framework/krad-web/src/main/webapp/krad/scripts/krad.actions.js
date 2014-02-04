@@ -422,12 +422,12 @@ function retrieveCollectionPage(linkElement, collectionId) {
  */
 function cascadeOpen(componentObject) {
     if (componentObject.not(":visible")) {
-        var detailsDivs = componentObject.parents("div[data-role='details']");
+        var detailsDivs = componentObject.parents("[data-role='details']");
         detailsDivs.each(function () {
             jQuery(this).parent().find("> a").click();
         });
 
-        var disclosureDivs = componentObject.parents("div[data-role='disclosureContent']");
+        var disclosureDivs = componentObject.parents("[data-role='disclosureContent']");
         disclosureDivs.each(function () {
             if (!jQuery(this).data("open")) {
                 jQuery(this).parent().find("a[data-linkfor='" + jQuery(this).attr("id") + "']").click();

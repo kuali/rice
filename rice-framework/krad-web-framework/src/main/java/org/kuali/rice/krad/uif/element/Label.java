@@ -73,7 +73,7 @@ public class Label extends ContentElementBase {
             Message message = ComponentFactory.getMessage();
             message.setMessageText(labelText);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateWrapperElement(false);
+            message.setRenderWrapperTag(false);
 
             ViewLifecycle.spawnSubLifecyle(model, message, this);
 

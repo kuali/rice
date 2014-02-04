@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -95,6 +96,10 @@ public class PageGroup extends Group {
      */
     @Override
     public void performFinalize(Object model, Component parent) {
+        if (StringUtils.isBlank(this.getWrapperTag())) {
+            this.setWrapperTag(UifConstants.WrapperTags.MAIN);
+        }
+
         super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);

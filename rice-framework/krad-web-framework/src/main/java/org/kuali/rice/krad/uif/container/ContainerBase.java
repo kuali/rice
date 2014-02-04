@@ -158,6 +158,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         if (validationMessages != null) {
             validationMessages.generateMessages(true, ViewLifecycle.getView(), model, this);
         }
+
+        if (footer != null && footer.isRender() && StringUtils.isBlank(footer.getWrapperTag())) {
+            footer.setWrapperTag(UifConstants.WrapperTags.FOOTER);
+        }
 	}
 
 	/**

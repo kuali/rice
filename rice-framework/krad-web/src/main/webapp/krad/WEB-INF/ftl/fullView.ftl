@@ -19,8 +19,6 @@
 
     <@krad.script value="${KualiForm.growlScript!}"/>
 
-    <div id="Uif-Application" style="display:none;" class="uif-application">
-
     <!-- APPLICATION HEADER -->
     <#if view.applicationHeader?has_content>
         <#assign stickyDataAttribute=""/>
@@ -29,12 +27,12 @@
         </#if>
 
         <#if view.applicationHeader?? && view.applicationHeader.render>
-            <div id="Uif-ApplicationHeader-Wrapper" ${stickyDataAttribute}>
+            <header id="Uif-ApplicationHeader-Wrapper" ${stickyDataAttribute}>
                 <@krad.template component=view.applicationHeader/>
 
                 <!-- Backdoor info (here to inherit stickyness with the header, if set) -->
                 <@krad.backdoor/>
-            </div>
+            </header>
         </#if>
     <#else>
         <!-- Backdoor info -->
@@ -96,8 +94,6 @@
                 });" component=Component/>
     </#if>
 
-    </div>
-
     <!-- APPLICATION FOOTER -->
     <#if view.applicationFooter?? && view.applicationFooter.render>
         <#assign stickyFooterDataAttribute=""/>
@@ -105,7 +101,7 @@
             <#assign stickyFooterDataAttribute="data-sticky_footer='true'"/>
         </#if>
 
-        <div id="Uif-ApplicationFooter-Wrapper" ${stickyFooterDataAttribute}>
+        <footer id="Uif-ApplicationFooter-Wrapper" ${stickyFooterDataAttribute}>
             <#if view.stickyApplicationFooter>
                 <div class="${view.contentContainerClassesAsString}">
             </#if>
@@ -115,7 +111,7 @@
             <#if view.stickyApplicationFooter>
                 </div>
             </#if>
-        </div>
+        </footer>
     </#if>
 
 </@krad.html>

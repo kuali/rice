@@ -246,7 +246,7 @@ function initFieldHandlers() {
             });
 
     //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
-    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).on("focus", "a[href], area[href], input:not([disabled]), "
+    jQuery("[data-role='Page']").on("focus", "a[href], area[href], input:not([disabled]), "
             + "select:not([disabled]), textarea:not([disabled]), button:not([disabled]), "
             + "iframe, object, embed, *[tabindex], *[contenteditable]",
             function () {
@@ -708,9 +708,9 @@ function setupPage(validate) {
 
     // update the top group per page
     var topGroupUpdateDiv = jQuery("#" + kradVariables.TOP_GROUP_UPDATE);
-    var topGroupUpdate = topGroupUpdateDiv.find("> div").detach();
+    var topGroupUpdate = topGroupUpdateDiv.find(">").detach();
     if (topGroupUpdate.length && !initialViewLoad) {
-        jQuery("#Uif-TopGroupWrapper > div").replaceWith(topGroupUpdate);
+        jQuery("#Uif-TopGroupWrapper >").replaceWith(topGroupUpdate);
     }
     topGroupUpdateDiv.remove();
 
@@ -734,12 +734,12 @@ function setupPage(validate) {
 
     // Initialize global validation defaults
     if (groupValidationDefaults == undefined || fieldValidationDefaults == undefined) {
-        groupValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
-        fieldValidationDefaults = jQuery("div[data-role='View']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
+        groupValidationDefaults = jQuery("[data-role='View']").data(kradVariables.GROUP_VALIDATION_DEFAULTS);
+        fieldValidationDefaults = jQuery("[data-role='View']").data(kradVariables.FIELD_VALIDATION_DEFAULTS);
     }
 
     if (actionDefaults == undefined) {
-        actionDefaults = jQuery("div[data-role='View']").data(kradVariables.ACTION_DEFAULTS);
+        actionDefaults = jQuery("[data-role='View']").data(kradVariables.ACTION_DEFAULTS);
     }
 
     //Reset summary state before processing each field - summaries are shown if server messages
@@ -1270,7 +1270,7 @@ window.onerror = errorHandler;
 
 function errorHandler(msg, url, lno) {
     jQuery("#" + kradVariables.APP_ID).show();
-    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).show();
+    jQuery("[data-role='Page']").show();
     var context = getContext();
     context.unblockUI();
     var errorMessage = msg + '<br/>' + url + '<br/>' + lno;

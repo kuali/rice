@@ -483,4 +483,15 @@ public class UifConstants {
         public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
         public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
     }
+
+    public static final class WrapperTags {
+        public static final String DIV = "div";
+        public static final String SPAN = "span";
+        public static final String P = "p";
+        public static final String MAIN = "main";
+        public static final String SECTION = "section";
+        public static final String HEADER = "header";
+        public static final String FOOTER = "footer";
+        public static final String NAV = "nav";
+    }
 }

@@ -108,7 +108,7 @@
 
 </head>
 
-<body>
+<body id="Uif-Application" style="display:none;">
     <#nested/>
 
     <#list view.theme.scriptFiles as javascriptFile>

@@ -446,8 +446,11 @@ public class FreeMarkerInlineRenderUtils {
      */
     public static void renderOpenGroupWrap(Environment env, Group group) throws IOException, TemplateException {
         Writer out = env.getOut();
-        renderOpenDiv(group, out);
         renderTemplate(env, group.getHeader(), null, false, false, null);
+
+        if (!StringUtils.isEmpty(group.getHeaderText())) {
+
+        }
 
         if (group.isRenderLoading()) {
             out.write("<div id=\"");
@@ -503,8 +506,6 @@ public class FreeMarkerInlineRenderUtils {
             tmplParms.put("parent", env.getObjectWrapper().wrap(group));
             renderTemplate(env, disclosure, null, false, false, tmplParms);
         }
-
-        renderCloseDiv(out);
     }
 
     /**

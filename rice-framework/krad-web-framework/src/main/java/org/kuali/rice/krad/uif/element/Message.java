@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -31,6 +27,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Encapsulates a text message to be displayed
@@ -55,12 +55,13 @@ public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
     // This regex is a check to see if the message is a rich message and it contains potential non-inline elements
-    private static Pattern blockElementCheck
-            = Pattern.compile("[\\[|\\<](?!color|action|link|css|button|input|label|select|textarea|abbr"
-            + "|strong|img|a[\\s\\]]|span[\\s\\]]|b[\\s\\]]|i[\\s\\]]|br[\\s\\]/])[^/]*?/?[\\]|\\>]");
+    private static Pattern blockElementCheck = Pattern.compile(
+            "[\\[|\\<](?!color|action|link|css|button|input|label|select|textarea|abbr"
+                    + "|strong|img|a[\\s\\]]|span[\\s\\]]|b[\\s\\]]|i[\\s\\]]|br[\\s\\]/])[^/]*?/?[\\]|\\>]");
 
     private String messageText;
-    private boolean generateWrapperElement;
+    private String wrapperTag;
+    private boolean renderWrapperTag;
 
     private List<Component> inlineComponents;
     private List<Component> messageComponentStructure;
@@ -72,7 +73,7 @@ public class Message extends ContentElementBase {
     public Message() {
         super();
 
-        generateWrapperElement = true;
+        renderWrapperTag = true;
         parseComponents = true;
     }
 
@@ -97,6 +98,10 @@ public class Message extends ContentElementBase {
             Matcher matcher = blockElementCheck.matcher(messageText);
             containsBlockElements = matcher.find();
 
+            if (StringUtils.isBlank(wrapperTag) && containsBlockElements) {
+                wrapperTag = UifConstants.WrapperTags.DIV;
+            }
+
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
 
@@ -105,12 +110,22 @@ public class Message extends ContentElementBase {
                     ViewLifecycle.spawnSubLifecyle(model, component, this);
                 }
             }
-        }
-        else if(messageText != null && messageText.contains("<") && messageText.contains(">")) {
+        } else if (messageText != null && messageText.contains("<") && messageText.contains(">")) {
             // Straight inline html case
             // Check to see if message contains pontential block elements (non-inline)
             Matcher matcher = blockElementCheck.matcher(messageText);
             containsBlockElements = matcher.find();
+
+            // Must be in a div it contains potential block elements
+            if (StringUtils.isBlank(wrapperTag) && containsBlockElements) {
+                wrapperTag = UifConstants.WrapperTags.DIV;
+            }
+        }
+
+        // If the wrapper element is not set by the bean def or the above logic to check for block elements, default
+        // to the p tag
+        if (StringUtils.isBlank(wrapperTag)) {
+            wrapperTag = UifConstants.WrapperTags.P;
         }
     }
 
@@ -198,7 +213,25 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * If true, generate the wrapper element (p or div) around this message (default true).
+     * Defines the html tag that will wrap this group, if left blank, this will automatically be set by the framework
+     * to the appropriate tag (in most cases p or div)
+     *
+     * @return the html tag used to wrap this group
+     */
+    @BeanTagAttribute(name = "wrapperTag")
+    public String getWrapperTag() {
+        return wrapperTag;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.element.Message#getWrapperTag()
+     */
+    public void setWrapperTag(String wrapperTag) {
+        this.wrapperTag = wrapperTag;
+    }
+
+    /**
+     * If true, render the wrapper element (p or div) around this message (default true).
      *
      * <p>The wrapper will be either a p tag, for when the element only contains inline elements, or a div tag, for
      * when the message might contain block level elements or undetermined html tags resulting from rich message
@@ -207,18 +240,18 @@ public class Message extends ContentElementBase {
      *
      * @return true if generating a wrapping span, false otherwise
      */
-    @BeanTagAttribute(name = "generateWrapperElement")
-    public boolean isGenerateWrapperElement() {
-        return generateWrapperElement;
+    @BeanTagAttribute(name = "renderWrapperTag")
+    public boolean isRenderWrapperTag() {
+        return renderWrapperTag;
     }
 
     /**
      * Sets the generate wrapper element flag
      *
-     * @param generateWrapperElement
+     * @param renderWrapperTag
      */
-    public void setGenerateWrapperElement(boolean generateWrapperElement) {
-        this.generateWrapperElement = generateWrapperElement;
+    public void setRenderWrapperTag(boolean renderWrapperTag) {
+        this.renderWrapperTag = renderWrapperTag;
     }
 
     /**
@@ -315,7 +348,7 @@ public class Message extends ContentElementBase {
 
         Message messageCopy = (Message) component;
 
-        messageCopy.setGenerateWrapperElement(this.generateWrapperElement);
+        messageCopy.setRenderWrapperTag(this.renderWrapperTag);
 
         if (this.inlineComponents != null) {
             List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
@@ -329,6 +362,7 @@ public class Message extends ContentElementBase {
 
         messageCopy.setMessageText(this.messageText);
         messageCopy.setParseComponents(this.parseComponents);
+        messageCopy.setWrapperTag(this.wrapperTag);
     }
 
     /**

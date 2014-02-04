@@ -22,12 +22,12 @@
 
 <#macro uif_appHeader element>
 
-    <@krad.div component=element renderAs="header">
+    <@krad.wrap component=element renderAs="header">
 
        <@krad.template component=element.applicationNavigation/>
 
        <@krad.template component=element.applicationToolbar/>
 
-    </@krad.div>
+    </@krad.wrap>
 
 </#macro>

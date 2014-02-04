@@ -445,7 +445,7 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("div[data-open='false']").length) {
+    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("[data-open='false']").length) {
         return;
     }
 
@@ -521,7 +521,7 @@ function coerceValue(name) {
     var value = "";
     var nameSelect = "[name='" + escapeName(name) + "']";
 
-    var fancyBoxWrapper = jQuery("div.fancybox-wrap");
+    var fancyBoxWrapper = jQuery(".fancybox-wrap");
     var control;
     // Attempt to get from fancybox first, if it exists
     if (fancyBoxWrapper.length) {
@@ -1115,7 +1115,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         component.attr("class", component.attr("class").replace("clearfix", ""));
     }
 
-    component.find("div").each(function () {
+    component.find("div, section").each(function () {
         var classAttribute = jQuery(this).attr("class");
 
         if (classAttribute) {
@@ -2373,9 +2373,9 @@ function initStickyContent(currentScroll) {
 
     // Determine which div to apply the margin to by figuring out the first applicable div that exists after all
     // the sticky content, in order to push down that content and content below it correctly
-    var applyMarginToContent = jQuery(".uif-formView > div.uif-sticky:last").next();
+    var applyMarginToContent = jQuery("[data-role='View'] > .uif-sticky:last").next();
     if (applyMarginToContent.length == 0){
-        applyMarginToContent = jQuery(".uif-formView");
+        applyMarginToContent = jQuery("[data-role='View']");
     }
 
     //make the ViewContentWrapper margin-top reflect the visible header content pixel height
@@ -2425,7 +2425,9 @@ function handleStickyContent() {
         // TODO support both absolute and fixed
         /* jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; top: " +
                 (navAdjust) + "px;");*/
-        jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:absolute;");
+        var nav = jQuery("#" + kradVariables.NAVIGATION_ID);
+        nav.attr("style", "position:absolute;");
+
         currentHeaderHeight = navAdjust;
 
     }

@@ -35,12 +35,18 @@
         </div>
     </#if>
 
-    <#include "group.ftl" parse=true/>
-    <@uif_group group=group/>
+    <@krad.groupWrap group=group>
+        <#if group.items?has_content>
+            <#-- invoke layout manager -->
+            <#local templateName=".main.${group.layoutManager.templateName}"/>
+            <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
 
-    <!-- PAGE RELATED VARS -->
-    <#if KualiForm.view.renderForm>
-        <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
-    </#if>
+            <#dyncall templateName templateParms/>
+        </#if>
+        <!-- PAGE RELATED VARS -->
+        <#if KualiForm.view.renderForm>
+            <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
+        </#if>
+    </@krad.groupWrap>
 
 </#macro>

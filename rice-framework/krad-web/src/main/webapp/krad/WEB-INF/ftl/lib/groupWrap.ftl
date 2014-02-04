@@ -16,9 +16,12 @@
 
 -->
 <#macro groupWrap group>
-	<#inline 'groupWrap-open' />
-	<#if !group.renderLoading>
-		<#nested/>
-	</#if>
-	<#inline 'groupWrap-close' />
+
+    <@krad.wrap component=group renderAs="${group.wrapperTag}">
+        <#inline 'groupWrap-open' />
+        <#if !group.renderLoading>
+            <#nested/>
+        </#if>
+        <#inline 'groupWrap-close' />
+    </@krad.wrap>
 </#macro>

@@ -23,6 +23,7 @@ JavascriptKradVariables.prototype = {
     ACTION_DEFAULTS: "action_defaults",
     ACTION_ONCLICK_DATA: "onclick",
     ACTIVE_CLASS: "active",
+    APPLICATION_HEADER_WRAPPER: "Uif-ApplicationHeader-Wrapper",
     APPLICATION_FOOTER_WRAPPER: "Uif-ApplicationFooter-Wrapper",
     APP_ID: "Uif-Application",
     APPLICATION_URL: "applicationUrl",
@@ -189,6 +190,7 @@ JavascriptKradVariables.prototype = {
     },
     EVENT_NAMESPACE: "uif",
     EVENTS: {
+        ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
         SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE

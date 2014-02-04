@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;

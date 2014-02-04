@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupMemberContract;
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -26,10 +24,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+
 
 @Entity
 @Cacheable(false)

@@ -73,29 +73,35 @@ public class LabsLookUpConditionalCriteriaAft extends LabsLookupBase {
         navigateToLookup("Lookup Conditional Criteria");
     }
 
+    // copied from DemoLookUpConditionalCriteriaAft
     protected void testLookUpConditionalCriteria() throws InterruptedException {
+        //Case 1 - Date field required by number a1
+        //It requires "Search" to be clicked twice, for the date required message to show.
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
+        waitAndClickByName("lookupCriteria[name]");
+        waitForElementPresent(By.className("uif-requiredMessage"));
+        checkForIncidentReport();
+
         //Case 2 - Date field read only by number a2
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a2");
-        waitAndTypeByName(LOOKUP_CRITERIA_NAME_NAME,"");
-        waitForElementNotPresent(By.name(LOOKUP_CRITERIA_DATE_NAME));
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a2");
+        waitAndClickByName("lookupCriteria[name]");
+        Thread.sleep(3000);
+        checkForIncidentReport();
+        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME)) {
+            fail(FAILURE_MESSAGE);
+        }
 
         //Case 3 - Date field hide by number a3
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a3");
-        waitAndClickButtonByText(SEARCH);
-        waitForTextNotPresent(DATE_CREATED_LABEL);
-
-        //Case 1 - Date field required by number a1
-        //It requires "Search" to be clicked twice, for the date required message to show.
-        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
-        waitAndClickButtonByText(SEARCH);
-        Thread.sleep(10000); // If we don't wait long enough we'll get concurrency issues.
-        waitAndClickButtonByText(SEARCH);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
+        waitAndClickByName("lookupCriteria[name]");
         Thread.sleep(3000);
-        assertTextPresent(DATE_REQUIRED_MESSAGE);
+        checkForIncidentReport();
+        assertTrue(isNotVisible(By.name(LOOKUP_CRITERIA_DATE_NAME)));
+        assertTrue(isNotVisible(By.name("lookupCriteria[createDate]")));
     }
+
 
     @Test
     public void testLookUpConditionalCriteriaBookmark() throws Exception {

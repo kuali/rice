@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.krad.labs.inquiries.LabsInquiryBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
@@ -55,6 +56,6 @@ public class DemoTravelAccountTypeInquiryAft extends WebDriverLegacyITBase {
     
     protected void testTravelAccountTypeInquiry() throws Exception {
         waitForElementPresentByXpath("//a[contains(text(),'IAT')]");
-        assertTextPresent(new String[] {"Travel Account Type Code:", "Account Type Name:", "Account Type:", "IAT - Income"});
+        assertTextPresent(LabsInquiryBase.LABELED_IAT_TEXT);
      }
 }

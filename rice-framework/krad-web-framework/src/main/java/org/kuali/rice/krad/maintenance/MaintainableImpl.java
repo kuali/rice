@@ -465,7 +465,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             BindingInfo bindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                    "bindingInfo");
+                    UifConstants.PostMetadata.BINDING_INFO);
 
             // get the old object's collection
             //KULRICE-7970 support multiple level objects
@@ -479,7 +479,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                     document.getOldMaintainableObject().getDataObject(), propertyPath);
 
             Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                    "collectionObjectClass");
+                    UifConstants.PostMetadata.COLL_OBJECT_CLASS);
 
             try {
                 Object blankLine = collectionObjectClass.newInstance();
@@ -507,7 +507,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         super.processAfterDeleteLine(model, collectionId, collectionPath, lineIndex);
 
         Class<?> collectionObjectClass = (Class<?>) model.getViewPostMetadata().getComponentPostData(collectionId,
-                "collectionObjectClass");
+                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
 
         // Check for maintenance documents in edit but exclude notes and ad hoc recipients
         if (model instanceof MaintenanceDocumentForm
@@ -519,7 +519,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             MaintenanceDocument document = maintenanceForm.getDocument();
 
             BindingInfo bindingInfo = (BindingInfo) model.getViewPostMetadata().getComponentPostData(collectionId,
-                    "bindingInfo");
+                    UifConstants.PostMetadata.BINDING_INFO);
 
             // get the old object's collection
             //KULRICE-7970 support multiple level objects
@@ -547,7 +547,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         boolean isValidLine = super.performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
 
         BindingInfo bindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                            "bindingInfo");
+                            UifConstants.PostMetadata.BINDING_INFO);
 
         if (viewModel instanceof MaintenanceDocumentForm) {
             MaintenanceDocumentForm form = ((MaintenanceDocumentForm) viewModel);

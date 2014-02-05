@@ -361,38 +361,39 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         super.performFinalize(model, parent);
 
         if (this.getCollectionLookup() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "collectionLookup.fieldConversions",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
                     this.getCollectionLookup().getFieldConversions());
         }
 
         if (this.getCollectionObjectClass() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "collectionObjectClass",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS,
                     this.getCollectionObjectClass());
         }
 
         if (this.getBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "bindingInfo", this.getBindingInfo());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_INFO,
+                    this.getBindingInfo());
         }
 
         if (this.getAddLineBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "addLineBindingInfo",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO,
                     this.getAddLineBindingInfo());
         }
 
         if (StringUtils.isNotBlank(this.getAddLinePlacement())) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "addLinePlacement",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_PLACEMENT,
                     this.getAddLinePlacement());
         }
 
         if (this.getHeader() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "collectionLabel",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LABEL,
                     ViewLifecycle.getHelper().getCollectionLabel(this));
         }
 
         if (this.getDuplicateLinePropertyNames() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "duplicateLinePropertyNames",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES,
                     this.getDuplicateLinePropertyNames());
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "duplicateLineLabelString",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING,
                     ViewLifecycle.getHelper().getDuplicateLineLabelString(this, this.getDuplicateLinePropertyNames()));
         }
 
@@ -456,7 +457,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "collectionObjectClass")
+    @BeanTagAttribute(name = UifConstants.PostMetadata.COLL_OBJECT_CLASS)
     public Class<?> getCollectionObjectClass() {
         return this.collectionObjectClass;
     }
@@ -1348,7 +1349,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
         // Checking if collectionObjectClass is set
         if (getCollectionObjectClass() == null) {
-            if (Validator.checkExpressions(this, "collectionObjectClass")) {
+            if (Validator.checkExpressions(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS)) {
                 String currentValues[] = {"collectionObjectClass = " + getCollectionObjectClass()};
                 tracer.createWarning("CollectionObjectClass is not set (disregard if part of an abstract)",
                         currentValues);

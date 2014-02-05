@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ViewValidationService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -43,7 +44,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
      */
     @Override
     public DictionaryValidationResult validateView(ViewModel model) {
-        return validateView(model);
+        return validateView(model, null);
     }
 
     /**
@@ -61,7 +62,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
     public void validateViewSimulation(ViewModel model, String untilState) {
         // Get state mapping for view from post data
         Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
-                model.getViewPostMetadata().getId(), "stateMapping");
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
 
         StateMapping stateMapping = null;
         if (stateMappingObject != null) {
@@ -70,7 +71,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         // Get state object path from post data
         Object statePathObject = model.getViewPostMetadata().getComponentPostData(
-                model.getViewPostMetadata().getId(), "stateObjectBindingPath");
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
 
         String path = null;
         if (statePathObject != null) {
@@ -117,7 +118,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
     public DictionaryValidationResult validateView(ViewModel model, String forcedValidationState) {
         // Get state object path from post data
         Object statePathObject = model.getViewPostMetadata().getComponentPostData(model.getViewPostMetadata().getId(),
-                "stateObjectBindingPath");
+                UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
 
         String path = null;
         if (statePathObject != null) {
@@ -136,7 +137,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         // Get state mapping for view from post data
         Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
-                model.getViewPostMetadata().getId(), "stateMapping");
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
 
         StateMapping stateMapping = null;
         if (stateMappingObject != null) {
@@ -163,7 +164,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
     public DictionaryValidationResult validateViewAgainstNextState(ViewModel model) {
         // Get state object path from post data
         Object statePathObject = model.getViewPostMetadata().getComponentPostData(model.getViewPostMetadata().getId(),
-                "stateObjectBindingPath");
+                UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
 
         String path = null;
         if (statePathObject != null) {
@@ -182,7 +183,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         // Get state mapping for view from post data
         Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
-                model.getViewPostMetadata().getId(), "stateMapping");
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
 
         StateMapping stateMapping = null;
         if (stateMappingObject != null) {

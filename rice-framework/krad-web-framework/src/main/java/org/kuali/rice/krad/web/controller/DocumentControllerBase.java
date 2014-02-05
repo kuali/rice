@@ -45,6 +45,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.NoteService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.WorkflowAction;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -506,7 +507,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
 
         BindingInfo addLineBindingInfo = (BindingInfo) uifForm.getViewPostMetadata().getComponentPostData(
-                selectedCollectionId, "addLineBindingInfo");
+                selectedCollectionId, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO);
 
         String addLinePath = addLineBindingInfo.getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(uifForm, addLinePath);

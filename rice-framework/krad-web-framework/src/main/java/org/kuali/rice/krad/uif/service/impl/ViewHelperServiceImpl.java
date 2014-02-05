@@ -383,7 +383,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                "collectionObjectClass");
+                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
         Object newLine = KRADUtils.createNewObjectFromClass(collectionObjectClass);
 
         List<Object> lineDataObjects = new ArrayList<Object>();
@@ -412,7 +412,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // now get the new line we need to add
         BindingInfo addLineBindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(
-                collectionId, "addLineBindingInfo");
+                collectionId, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO);
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingInfo.getBindingPath());
         if (addLine == null) {
             logAndThrowRuntime("Add line instance not found for path: " + addLineBindingInfo.getBindingPath());
@@ -439,7 +439,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     protected void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
             String collectionPath) {
         String addLinePlacement = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                "addLinePlacement");
+                UifConstants.PostMetadata.ADD_LINE_PLACEMENT);
 
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
@@ -537,7 +537,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // retrieve the collection group so we can get the collection class and collection lookup
         Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                "collectionObjectClass");
+                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
             Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model, collectionPath);
@@ -547,7 +547,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Map<String, String> fieldConversions =
                 (Map<String, String>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                        "collectionLookup.fieldConversions");
+                        UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS);
         List<String> toFieldNamesColl = new ArrayList<String>(fieldConversions.values());
         Collections.sort(toFieldNamesColl);
         String[] toFieldNames = new String[toFieldNamesColl.size()];
@@ -712,23 +712,23 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
 
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, "duplicateLinePropertyNames") == null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES) == null) {
             return isValid;
         }
 
         List<String> duplicateLinePropertyNames = (List<String>) viewModel.getViewPostMetadata().getComponentPostData(
-                collectionId, "duplicateLinePropertyNames");
+                collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES);
 
         String collectionLabel = null;
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, "collectionLabel") != null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.COLL_LABEL) != null) {
             collectionLabel = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                    "collectionLabel");
+                    UifConstants.PostMetadata.COLL_LABEL);
         }
 
         String duplicateLineLabelString = null;
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, "duplicateLineLabelString") == null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) == null) {
             duplicateLineLabelString = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                    "duplicateLineLabelString");
+                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING);
         }
 
         if (containsDuplicateLine(newLine, collectionItems, duplicateLinePropertyNames)) {

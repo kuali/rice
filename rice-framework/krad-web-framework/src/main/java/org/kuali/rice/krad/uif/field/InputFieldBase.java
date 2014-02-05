@@ -1,4 +1,4 @@
-	/**
+/**
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.krad.uif.field;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
@@ -65,7 +62,10 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.KRADUtils;
 
-	/**
+import java.util.ArrayList;
+import java.util.List;
+
+/**
  * Field that encapsulates data input/output captured by an attribute within the
  * application
  *
@@ -112,7 +112,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
     // display props
     private Control control;
-    
+
     private KeyValuesFinder optionsFinder;
 
     private boolean uppercaseValue;
@@ -162,22 +162,21 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     public void performInitialization(Object model) {
         super.performInitialization(model);
 
-//        if (!isReadOnly()) {
-            if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
-                    constraintMessage
+        //        if (!isReadOnly()) {
+        if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
+                constraintMessage
                         == null)) {
-                constraintMessage = ComponentFactory.getConstraintMessage();
-            }
+            constraintMessage = ComponentFactory.getConstraintMessage();
+        }
 
-            if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null))
-                    && (
-                    instructionalMessage
+        if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
+                instructionalMessage
                         == null)) {
-                instructionalMessage = ComponentFactory.getInstructionalMessage();
-            }
-//        } else {
-//            setValidationMessages(null);
-//        }
+            instructionalMessage = ComponentFactory.getInstructionalMessage();
+        }
+        //        } else {
+        //            setValidationMessages(null);
+        //        }
 
     }
 
@@ -190,16 +189,14 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         // Done in apply model so we have the message text for additional rich message processing in Message
         // Sets message
-        if (StringUtils.isNotBlank(instructionalText)
-                && instructionalMessage != null
-                && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(instructionalText) && instructionalMessage != null && StringUtils.isBlank(
+                instructionalMessage.getMessageText())) {
             instructionalMessage.setMessageText(instructionalText);
         }
 
         // Sets constraints
-        if (StringUtils.isNotBlank(constraintText)
-                && constraintMessage != null
-                && StringUtils.isBlank(constraintMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(constraintText) && constraintMessage != null && StringUtils.isBlank(
+                constraintMessage.getMessageText())) {
             constraintMessage.setMessageText(constraintText);
         }
 
@@ -319,7 +316,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         setupFieldQuery();
-        
+
         View view = ViewLifecycle.getView();
 
         // special requiredness indicator handling, if this was previously not required reset its required
@@ -362,45 +359,50 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         ViewLifecycle.getViewPostMetadata().getInputFieldIds().add(this.getId());
 
         if (this.getLabel() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "label",
-                this.getLabel());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.LABEL,
+                    this.getLabel());
         }
 
         if (this.getName() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "path",
-                this.getName());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PATH,
+                    this.getName());
         }
 
         if (this.getSimpleConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "simpleConstraint",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
                     this.getSimpleConstraint());
         }
 
         if (this.getValidCharactersConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "validCharacterConstraint",
-                    this.getValidCharactersConstraint());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT, this.getValidCharactersConstraint());
         }
 
         if (this.getCaseConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "caseConstraint",
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
                     this.getCaseConstraint());
         }
 
         if (this.getMustOccurConstraints() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "mustOccurConstraints",
-                    this.getMustOccurConstraints());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS, this.getMustOccurConstraints());
         }
 
         if (this.getPrerequisiteConstraints() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "prerequisiteConstraints",
-                    this.getPrerequisiteConstraints());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS, this.getPrerequisiteConstraints());
+        }
+
+        if (this.getAttributeQuery() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY, attributeQuery);
         }
 
         Suggest suggest = getSuggest();
         if (suggest != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
                     UifConstants.PostMetadata.INPUT_FIELD_SUGGEST, suggest);
-            
+
             AttributeQuery suggestQuery = suggest.getSuggestQuery();
             if (suggestQuery != null) {
                 ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
@@ -562,7 +564,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -629,7 +631,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             if (constraintMessage == null) {
                 constraintMessage = ComponentFactory.getConstraintMessage();
             }
-            
+
             getConstraintMessage().setMessageText(attributeDefinition.getConstraintText());
         }
 
@@ -664,7 +666,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -672,7 +674,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return true;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -681,7 +683,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.control;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -689,7 +691,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.control = control;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @ViewLifecycleRestriction
@@ -699,7 +701,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.validationMessages;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -707,7 +709,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.validationMessages = validationMessages;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -716,7 +718,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.optionsFinder;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -724,7 +726,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.optionsFinder = optionsFinder;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -828,7 +830,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.widgetInputOnly = widgetInputOnly;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -836,7 +838,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return renderInputAddonGroup;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -844,7 +846,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.renderInputAddonGroup = renderInputAddonGroup;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -852,7 +854,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return postInputCssClasses;
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -864,7 +866,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return "";
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     @Override

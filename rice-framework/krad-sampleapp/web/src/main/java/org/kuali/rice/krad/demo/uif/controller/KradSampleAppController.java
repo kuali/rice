@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.controller;
 
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -120,8 +121,8 @@ public class KradSampleAppController extends UifControllerBase {
 
         Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
-            if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
-                String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH);
                 GlobalVariables.getMessageMap().putError(key, "error1Test");
             }
         }

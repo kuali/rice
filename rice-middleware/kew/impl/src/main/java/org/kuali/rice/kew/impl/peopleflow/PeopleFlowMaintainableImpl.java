@@ -25,6 +25,7 @@ import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -151,7 +152,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
                 && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
 
             Class<?> collectionObjectClass = (Class<?>) model.getViewPostMetadata().getComponentPostData(collectionId,
-                    "collectionObjectClass");
+                    UifConstants.PostMetadata.COLL_OBJECT_CLASS);
 
             // get the old object's collection
             String oldCollectionPath = collectionPath.replace("newMaintainableObject","oldMaintainableObject");

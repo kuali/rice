@@ -217,15 +217,31 @@ public class UifConstants {
     }
     
     public static class PostMetadata {
-        public static final String FIELD_LABEL = "FIELD_LABEL";
-        public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "INPUT_FIELD_ATTRIBUTE_QUERY";
-        public static final String INPUT_FIELD_SUGGEST = "INPUT_FIELD_SUGGEST";
-        public static final String INPUT_FIELD_SUGGEST_QUERY = "INPUT_FIELD_SUGGEST_QUERY";
-        public static final String INPUT_FIELD_IS_UPPERCASE = "INPUT_FIELD_IS_UPPERCASE";
-        public static final String BINDING_PATH = "BINDING_PATH";
+        public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "attributeQuery";
+        public static final String INPUT_FIELD_SUGGEST = "suggest";
+        public static final String INPUT_FIELD_SUGGEST_QUERY = "suggestQuery";
+        public static final String INPUT_FIELD_IS_UPPERCASE = "isUppercase";
+        public static final String LABEL = "label";
+        public static final String PATH = "path";
+        public static final String SIMPLE_CONSTRAINT = "simpleConstraint";
+        public static final String VALID_CHARACTER_CONSTRAINT = "validCharacterConstraint";
+        public static final String CASE_CONSTRAINT = "caseConstraint";
+        public static final String MUST_OCCUR_CONSTRAINTS = "mustOccurConstraints";
+        public static final String PREREQ_CONSTSTRAINTS = "prerequisiteConstraints";
+        public static final String BINDING_PATH = "bindingPath";
+        public static final String BINDING_INFO = "bindingInfo";
+        public static final String ADD_LINE_BINDING_INFO = "addLineBindingInfo";
+        public static final String ADD_LINE_PLACEMENT = "addLinePlacement";
         public static final String BASE_ID = "BASE_ID";
-        public static final String COLL_DISPLAY_START = "COLL_DISPLAY_START";
-        public static final String COLL_DISPLAY_LENGTH = "COLL_DISPLAY_LENGTH";
+        public static final String COLL_DISPLAY_START = "displayStart";
+        public static final String COLL_DISPLAY_LENGTH = "displayLength";
+        public static final String COLL_LABEL = "collectionLabel";
+        public static final String COLL_LOOKUP_FIELD_CONVERSIONS = "collectionLookup.fieldConversions";
+        public static final String COLL_OBJECT_CLASS = "collectionObjectClass";
+        public static final String DUPLICATE_LINE_PROPERTY_NAMES = "duplicateLinePropertyNames";
+        public static final String DUPLICATE_LINE_LABEL_STRING = "duplicateLineLabelString";
+        public static final String STATE_MAPPING = "stateMapping";
+        public static final String STATE_OBJECT_BINDING_PATH = "stateObjectBindingPath";
     }
 
     public static class ContextVariableNames {

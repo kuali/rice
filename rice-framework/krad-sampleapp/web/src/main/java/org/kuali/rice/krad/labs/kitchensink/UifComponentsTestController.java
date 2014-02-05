@@ -17,6 +17,7 @@ package org.kuali.rice.krad.labs.kitchensink;
 
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -30,8 +31,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -176,8 +175,9 @@ public class UifComponentsTestController extends UifControllerBase {
 
         Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
-            if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
-                String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id,
+                        UifConstants.PostMetadata.PATH);
                 GlobalVariables.getMessageMap().putError(key, "error1Test");
             }
         }
@@ -201,8 +201,9 @@ public class UifComponentsTestController extends UifControllerBase {
 
         Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
-            if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
-                String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id,
+                        UifConstants.PostMetadata.PATH);
                 GlobalVariables.getMessageMap().putWarning(key, "warning1Test");
             }
         }
@@ -226,8 +227,9 @@ public class UifComponentsTestController extends UifControllerBase {
 
         Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
         for (String id : inputFieldIds) {
-            if (form.getViewPostMetadata().getComponentPostData(id, "path") != null) {
-                String key = (String) form.getViewPostMetadata().getComponentPostData(id, "path");
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id,
+                        UifConstants.PostMetadata.PATH);
                 GlobalVariables.getMessageMap().putInfo(key, "info1Test");
             }
         }

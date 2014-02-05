@@ -28,13 +28,10 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstra
 import org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.ArrayList;
@@ -64,42 +61,47 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
         ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
 
-        for (String id: viewPostMetadata.getInputFieldIds()) {
+        for (String id : viewPostMetadata.getInputFieldIds()) {
             InputFieldConstrainableInfo info = new InputFieldConstrainableInfo();
 
-            Object label = viewPostMetadata.getComponentPostData(id, "label");
+            Object label = viewPostMetadata.getComponentPostData(id, UifConstants.PostMetadata.LABEL);
             if (label != null) {
-                info.setLabel((String)label);
+                info.setLabel((String) label);
             }
 
-            Object name = viewPostMetadata.getComponentPostData(id, "path");
+            Object name = viewPostMetadata.getComponentPostData(id, UifConstants.PostMetadata.PATH);
             if (name != null) {
                 info.setName((String) name);
             }
 
-            Object validCharactersConstraint = viewPostMetadata.getComponentPostData(id, "validCharactersConstraint");
+            Object validCharactersConstraint = viewPostMetadata.getComponentPostData(id,
+                    UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT);
             if (validCharactersConstraint != null) {
-                info.setValidCharactersConstraint((ValidCharactersConstraint)validCharactersConstraint);
+                info.setValidCharactersConstraint((ValidCharactersConstraint) validCharactersConstraint);
             }
 
-            Object caseConstraint = viewPostMetadata.getComponentPostData(id, "caseConstraint");
+            Object caseConstraint = viewPostMetadata.getComponentPostData(id,
+                    UifConstants.PostMetadata.CASE_CONSTRAINT);
             if (caseConstraint != null) {
-                info.setCaseConstraint((CaseConstraint)caseConstraint);
+                info.setCaseConstraint((CaseConstraint) caseConstraint);
             }
 
-            Object prerequisiteConstraints = viewPostMetadata.getComponentPostData(id, "prerequisiteConstraints");
+            Object prerequisiteConstraints = viewPostMetadata.getComponentPostData(id,
+                    UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS);
             if (prerequisiteConstraints != null) {
-                info.setPrerequisiteConstraints((List<PrerequisiteConstraint>)prerequisiteConstraints);
+                info.setPrerequisiteConstraints((List<PrerequisiteConstraint>) prerequisiteConstraints);
             }
 
-            Object mustOccurConstraints = viewPostMetadata.getComponentPostData(id, "mustOccurConstraints");
+            Object mustOccurConstraints = viewPostMetadata.getComponentPostData(id,
+                    UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS);
             if (mustOccurConstraints != null) {
-                info.setMustOccurConstraints((List<MustOccurConstraint>)mustOccurConstraints);
+                info.setMustOccurConstraints((List<MustOccurConstraint>) mustOccurConstraints);
             }
 
-            Object simpleConstraint = viewPostMetadata.getComponentPostData(id, "simpleConstraint");
+            Object simpleConstraint = viewPostMetadata.getComponentPostData(id,
+                    UifConstants.PostMetadata.SIMPLE_CONSTRAINT);
             if (simpleConstraint != null) {
-                info.setSimpleConstraint((SimpleConstraint)simpleConstraint);
+                info.setSimpleConstraint((SimpleConstraint) simpleConstraint);
             }
 
             inputFields.add(info);

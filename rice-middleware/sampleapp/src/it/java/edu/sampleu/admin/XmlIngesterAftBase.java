@@ -16,6 +16,9 @@
 package edu.sampleu.admin;
 
 import edu.sampleu.common.FreemarkerAftBase;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
@@ -26,9 +29,14 @@ import org.openqa.selenium.By;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
  * Tests uploads of new users and group.
@@ -98,6 +106,11 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
         checkForIncidentReport("XML Ingester", this, "");
     }
 
+    public void testXmlIngesterUserList() throws Exception {
+        List<File> fileUploadList = buildUserFileUploadList();
+        testIngestion(this, fileUploadList);
+    }
+
     /**
      * Navigate to the page under test and call {@link #testIngestion}
      *
@@ -105,12 +118,14 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      * @throws Exception
      */
     protected void testIngestionNav(JiraAwareFailable failable) throws Exception {
-        testIngestion(failable);
+        List<File> fileUploadList = buildFileUploadList();
+        testIngestion(failable, fileUploadList);
         passed();
     }
 
     protected void testIngestionBookmark(JiraAwareFailable failable) throws Exception {
-        testIngestion(failable);
+        List<File> fileUploadList = buildFileUploadList();
+        testIngestion(failable, fileUploadList);
         passed();
     }
 
@@ -121,9 +136,8 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
      *
      *
      */
-    protected void testIngestion(JiraAwareFailable failable) throws Exception {
+    protected void testIngestion(JiraAwareFailable failable, List<File> fileUploadList) throws Exception {
         selectFrameIframePortlet();
-        List<File> fileUploadList = buildFileUploadList();
         int cnt = 0;
 
         for(File file : fileUploadList) {
@@ -172,4 +186,33 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
 
         return fileUploadList;
     }
+
+    protected List<File> buildUserFileUploadList() throws Exception {
+        List<File> fileUploadList = new ArrayList<File>();
+        try {
+            Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
+
+            String usersArg = System.getProperty("xmlingester.user.list");
+            List<XmlIngesterUser> xmlIngesterUsers = new LinkedList<XmlIngesterUser>();
+            StringTokenizer token = new StringTokenizer(usersArg, ",");
+            while (token.hasMoreTokens()) {
+                xmlIngesterUsers.add(new XmlIngesterUser(token.nextToken()));
+            }
+
+            props.put("xmlIngesterUsers", xmlIngesterUsers);
+
+            cfg.setObjectWrapper(new DefaultObjectWrapper());
+
+            // build files and add to array
+            fileUploadList.add(
+                    writeTemplateToFile(newTempFile("loadtest-users.xml"), cfg.getTemplate("UserListIngestion.ftl"), props));
+            fileUploadList.add(
+                    writeTemplateToFile(newTempFile("loadtest-group.xml"), cfg.getTemplate("UserGroupListIngestion.ftl"), props));
+        } catch( Exception e) {
+            throw new Exception("Unable to generate files for upload " + e.getMessage(), e);
+        }
+
+        return fileUploadList;
+    }
 }
+

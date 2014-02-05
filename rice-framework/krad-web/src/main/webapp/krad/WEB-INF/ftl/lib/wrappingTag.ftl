@@ -15,7 +15,8 @@
     limitations under the License.
 
 -->
-<#macro p component renderAs='p'>
+<#macro wrap component renderAs='div'>
+
   <${renderAs} id="${component.id!}" ${krad.attrBuild(component)} ${component.simpleDataAttributes}>
     <#nested/>
   </${renderAs}>

@@ -23,7 +23,6 @@ import java.util.Set;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
@@ -64,7 +63,7 @@ public class ReferenceLinker {
     }
 
     protected void linkObjectsWithCircularReferenceCheck(Object persistableObject, Set<Object> referenceSet) {
-        if (referenceSet.contains(persistableObject) || DataObjectUtils.isNull(persistableObject)) {
+        if (persistableObject == null || referenceSet.contains(persistableObject)) {
             return;
         }
 		if (LOG.isDebugEnabled()) {

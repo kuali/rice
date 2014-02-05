@@ -17,8 +17,13 @@
 body { background: white}
 
 /** The following are required for labels and required messages to behave correctly **/
+.uif-message {
+  margin: 0;
+}
+
 .uif-requiredMessage {
   display: inline;
+  color: #DD3B16;
 }
 
 .uif-label{
@@ -130,12 +135,6 @@ fieldset {padding: 0px;
 
 
 /** View structure related **************************************************************************/
-.uif-viewContentWrapper .uif-pageContentWrapper {
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 0;
-  padding-top: 5px;
-}
 
 .uif-iframeView iframe{
   width: 100%;
@@ -148,13 +147,15 @@ fieldset {padding: 0px;
   padding: 0 !important;
 }
 
-.uif-iframeView .uif-pageContentWrapper {
+.uif-iframeView .uif-page {
   margin: 0 !important;
   padding: 0 !important;
 }
 
 .uif-page {
   min-height: 300px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 /** Field and group related *************************************************************************/
 
@@ -211,7 +212,6 @@ fieldset {padding: 0px;
   margin-left: 0px;
 }
 .uif-pageHeader, .uif-sectionHeader {
-  margin-top: 10px;
   position: relative;
 }
 .uif-header-rightGroup {

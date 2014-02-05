@@ -27,6 +27,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
@@ -34,6 +35,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 
@@ -134,6 +136,8 @@ public class GroupBase extends ContainerBase implements Group {
 
     private List<? extends Component> items;
 
+    private String wrapperTag;
+
     /**
      * Default Constructor
      */
@@ -219,6 +223,24 @@ public class GroupBase extends ContainerBase implements Group {
 //                }
 //            }
 //        }
+    }
+
+    /**
+     * Sets the section boolean to true if this group has a rendering header with text
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
+
+        if (StringUtils.isBlank(wrapperTag) && StringUtils.isNotBlank(this.getHeaderText())
+                && this.getHeader().isRender()) {
+            wrapperTag = UifConstants.WrapperTags.SECTION;
+        }
+        else if (StringUtils.isBlank(wrapperTag)) {
+            wrapperTag = UifConstants.WrapperTags.DIV;
+        }
     }
 
     /**
@@ -337,6 +359,24 @@ public class GroupBase extends ContainerBase implements Group {
     }
     
     /**
+     * Defines the html tag that will wrap this group, if left blank, this will automatically be set
+     * by the framework to the appropriate tag (in most cases section or div)
+     * 
+     * @return the html tag used to wrap this group
+     */
+    @BeanTagAttribute(name = "wrapperTag")
+    public String getWrapperTag() {
+        return wrapperTag;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.Group#getWrapperTag()
+     */
+    public void setWrapperTag(String wrapperTag) {
+        this.wrapperTag = wrapperTag;
+    }
+
+    /**
      * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
@@ -347,7 +387,8 @@ public class GroupBase extends ContainerBase implements Group {
 
         groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
         groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
-
+        groupCopy.setWrapperTag(this.wrapperTag);
+        
         if (this.disclosure != null) {
             groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
         }

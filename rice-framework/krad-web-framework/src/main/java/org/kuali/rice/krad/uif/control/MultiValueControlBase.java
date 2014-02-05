@@ -82,7 +82,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                 message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
-                message.setGenerateWrapperElement(false);
+                message.setRenderWrapperTag(false);
                 richOptions.add(new KeyMessage(key, value, message));
             }
         }

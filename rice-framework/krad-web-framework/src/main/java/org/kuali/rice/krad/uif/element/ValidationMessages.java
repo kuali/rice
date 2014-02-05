@@ -103,7 +103,7 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
 
         // special message component case
         if (parentContainer != null && parentContainer instanceof Message && ((Message) parentContainer)
-                .isGenerateWrapperElement()) {
+                .isRenderWrapperTag()) {
             parentContainerId = ((Component) parentContainer).getId();
         }
 
@@ -404,7 +404,7 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T component) {

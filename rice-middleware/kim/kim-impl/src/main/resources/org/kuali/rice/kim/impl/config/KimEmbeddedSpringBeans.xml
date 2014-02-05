@@ -27,7 +27,6 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimCommonSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/kim/impl/config/_KimOjbSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimJpaSpringBeans.xml"/>
 
     <!-- Forwards cache evictions to the kewCacheDistributionQueue on the standalone server, this allows the standalone
@@ -73,7 +72,8 @@
         p:cacheManager-ref="kimLocalCacheManager"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
-        p:roleDao-ref="kimRoleDao"/>
+        p:roleDao-ref="kimRoleDao"
+        p:dataObjectService-ref="dataObjectService" />
 
   <!--
         Group Services

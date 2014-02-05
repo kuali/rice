@@ -55,7 +55,8 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -257,14 +258,15 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public void populateDataDictionaryEditableFields(Set<String> propertyNamesEditableViaUI, DocumentType dataDictionaryEditedType) {
+        DataObjectWrapper<DocumentType> wrapper = KradDataServiceLocator.getDataObjectService().wrap(dataDictionaryEditedType);
+
         String currentPropertyName = "";
         try {
             for (String propertyName : propertyNamesEditableViaUI) {
                 currentPropertyName = propertyName;
                 if (KEWPropertyConstants.PARENT_DOC_TYPE_NAME.equals(propertyName)) {
                     // this is trying to set the parent document type name so lets set the entire parent document
-                    String parentDocumentTypeName = (String) DataObjectUtils.getPropertyValue(dataDictionaryEditedType,
-                            propertyName);
+                    String parentDocumentTypeName = (String) wrapper.getPropertyValueNullSafe(propertyName);
                     if (StringUtils.isNotBlank(parentDocumentTypeName)) {
                         DocumentType parentDocType = KEWServiceLocator.getDocumentTypeService().findByName(parentDocumentTypeName);
                         if (parentDocType == null) {
@@ -276,8 +278,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 //                else if (!FIELD_PROPERTY_NAME_DOCUMENT_TYPE_ID.equals(propertyName)) {
                 else {
                     LOG.info("*** COPYING PROPERTY NAME FROM OLD BO TO NEW BO: " + propertyName);
-                    KRADUtils.setObjectProperty(this, propertyName, DataObjectUtils.getPropertyValue(
-                            dataDictionaryEditedType, propertyName));
+                    KRADUtils.setObjectProperty(this, propertyName, wrapper.getPropertyValueNullSafe(propertyName));
                 }
             }
         } catch (FormatException e) {

@@ -19,7 +19,7 @@
     min-height: 600px;
 }
 
-.demo-sampleAppView .uif-pageContentWrapper {
+.demo-sampleAppView .uif-page {
     margin-left: 0;
 }
 
@@ -60,6 +60,7 @@
 .demo-sampleAppHome-splashWrapper {
     background-image: url("../images/back-splash.png");
     color: #FFFFFF;
+    margin-top: -25px;
 }
 
 .demo-sampleAppHome-splashContent, .demo-sampleAppHome-detailsSection, .demo-sampleAppHome-testimonialsContent {
@@ -284,7 +285,7 @@
     margin-bottom: 10px;
 }
 
-.demo-componentLibView .uif-viewContentWrapper .uif-pageContentWrapper {
+.demo-componentLibView .uif-viewContentWrapper .uif-page{
     float: left;
     margin-left: 256px;
     width: 700px;
@@ -393,12 +394,12 @@
 
 }
 
-.demo-xLargeLibraryView > .uif-viewContentWrapper .uif-pageContentWrapper{
+.demo-xLargeLibraryView > .uif-viewContentWrapper .uif-page{
     width: 940px;
     margin: 20px;
 }
 
-.demo-xLargeLibraryView div#Uif-Navigation{
+.demo-xLargeLibraryView #Uif-Navigation{
     display: none;
 }
 
@@ -655,7 +656,8 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 #ComponentLibrary-TabGroup div[data-type="TabWrapper"] {
     margin-top: 0px;
 }
-#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > div {
+#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > section,
+#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > div{
     width: 530px;
     min-height: 400px;
     border: 1px #ddd solid;
@@ -667,7 +669,7 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 
 }
 #ComponentLibrary-TabGroup_tabList li {
-    background:;
+    background: none;
     clear: both;
     width: 175px;
 }
@@ -1060,8 +1062,8 @@ div#Demo-BoxLayoutManager-View .demo-borderBottom{
     border: 1px dashed gray;
 }
 
-.demo-sampleAppView .uif-pageContentWrapper{
-    padding: 0;
+.demo-sampleAppView .uif-page{
+    padding: 25px 0 10px 0;
 }
 
 .demo-sampleAppView .uif-viewHeader{
@@ -1122,6 +1124,9 @@ table.dataTable tr.demo-rowCondition {
 
 .force-show {
     display: block !important;
+}
+.force-hide {
+    display: none !important;
 }
 #KradSampleAppHome-Testimonial1, #KradSampleAppHome-Testimonial2{
     line-height: 27px;

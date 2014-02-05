@@ -47,15 +47,19 @@
         ${headerCloseTag}
     <#else>
 
+    <#local renderContentAs="header"/>
+
     <#-- Only render wrapper when upper and lower group content exist -->
     <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-      <div class="clearfix uif-header-contentWrapper">
+      <header class="clearfix uif-header-contentWrapper">
+        <#local renderContentAs="div"/>
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
+
     </#if>
 
         <#-- Main header content -->
-        <@krad.div component=element>
+        <@krad.wrap renderAs="${renderContentAs}" component=element>
 
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
 
@@ -81,12 +85,12 @@
             <#-- right group -->
             <@krad.template component=element.rightGroup/>
 
-        </@krad.div>
+        </@krad.wrap>
 
       <#if element.upperGroup?has_content || element.lowerGroup?has_content>
            <#-- lower group -->
            <@krad.template component=element.lowerGroup/>
-        </div>
+        </header>
       </#if>
 
     </#if>

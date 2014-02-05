@@ -48,6 +48,17 @@ public abstract class ConfigParameterAftBase extends AdminTmplMthdAftNavBase {
         return "Parameter";
     }
 
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+        jiraAwareTypeByName("document.newMaintainableObject.componentCode", "ActionList");
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.description", "desc" + uniqueString);
+        selectOptionByName("document.newMaintainableObject.parameterTypeCode", "CONFG");
+        waitAndClickByName("document.newMaintainableObject.evaluationOperatorCode");
+    }
+
     public void testConfigParameterBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

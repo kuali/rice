@@ -33,10 +33,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
@@ -65,6 +64,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyUtils;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
@@ -516,7 +516,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
      */
     public Class<?> getPropertyType(Object object, String propertyName) {
         DataObjectWrapper wrappedObject = dataObjectService.wrap(object);
-        if(DataObjectUtils.isNestedAttribute(propertyName)){
+        if(PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)){
            return wrappedObject.getPropertyTypeNullSafe(wrappedObject.getWrappedClass(),propertyName);
         }
         return wrappedObject.getPropertyType(propertyName);
@@ -876,8 +876,8 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
             String keyConversion = keyName;
             if (dataObjectRelationship != null) {
                 keyConversion = dataObjectRelationship.getParentAttributeNameRelatedToChildAttributeName(keyName);
-            } else if (DataObjectUtils.isNestedAttribute(propertyName)) {
-                String nestedAttributePrefix = DataObjectUtils.getNestedAttributePrefix(propertyName);
+            } else if (PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)) {
+                String nestedAttributePrefix = KRADUtils.getNestedAttributePrefix(propertyName);
                 keyConversion = nestedAttributePrefix + "." + keyName;
             }
             inquiryParameters.put(keyConversion, keyName);
@@ -903,7 +903,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
         org.kuali.rice.krad.bo.DataObjectRelationship relationship = null;
         DataObjectAttributeRelationship rel = null;
-        if (DataObjectUtils.isNestedAttribute(attributeName)) {
+        if (PropertyAccessorUtils.isNestedOrIndexedProperty(attributeName)) {
             if (ddReference != null) {
                 if (classHasSupportedFeatures(ddReference.getTargetClass(), supportsLookup, supportsInquiry)) {
                     relationship = populateRelationshipFromDictionaryReference(dataObjectClass, ddReference,
@@ -1169,33 +1169,38 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
 	public Object getNestedValue(Object bo, String fieldName){
-        if (bo == null) {
-            throw new IllegalArgumentException("The bo passed in was null.");
-        }
-        if (StringUtils.isBlank(fieldName)) {
-            throw new IllegalArgumentException("The fieldName passed in was blank.");
-        }
-        return DataObjectUtils.getNestedValue(bo,fieldName);
+        return KradDataServiceLocator.getDataObjectService().wrap(bo).getPropertyValueNullSafe(fieldName);
     }
 
 
     @Override
 	public Object createNewObjectFromClass(Class clazz){
         if (clazz == null) {
-            throw new RuntimeException("BO class was passed in as null");
+            throw new IllegalArgumentException("Class was passed in as null");
         }
-        return DataObjectUtils.createNewObjectFromClass(clazz);
+
+        Object object = null;
+
+        try {
+            object = clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        return object;
     }
 
     @Override
     public boolean isNull(Object object){
-        return DataObjectUtils.isNull(object);
+        return object == null;
     }
 
     @Override
 	public void setObjectProperty(Object bo, String propertyName, Class propertyType,
             Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-        DataObjectUtils.setObjectValue(bo,propertyName,propertyValue);
+        PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
     }
 
     @Override

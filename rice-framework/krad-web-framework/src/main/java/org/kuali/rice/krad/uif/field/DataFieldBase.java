@@ -19,7 +19,6 @@ import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +26,6 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -39,10 +37,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -53,6 +48,7 @@ import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 /**
@@ -473,7 +469,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      */
     @Override
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
-        this.propertyEditor = DataObjectUtils.newInstance(propertyEditorClass);
+        this.propertyEditor = KRADUtils.createNewObjectFromClass(propertyEditorClass);
     }
 
     /**
@@ -645,7 +641,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     @Override
     protected void initializeComponentSecurity() {
         if (getComponentSecurity() == null) {
-            setComponentSecurity(DataObjectUtils.newInstance(DataFieldSecurity.class));
+            setComponentSecurity(KRADUtils.createNewObjectFromClass(DataFieldSecurity.class));
         }
     }
 

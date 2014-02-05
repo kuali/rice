@@ -41,9 +41,26 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+
 public class ComponentServiceTest extends CORETestCase {
 
     private ComponentService componentService;
+
+    private static boolean suiteLoaded;
+
+    @Before
+    public void setUp() throws Exception {
+
+        if (!suiteLoaded) {
+            try {
+                super.loadSuiteTestData();
+                suiteLoaded = true;
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+        super.setUp();
+    }
 
     @Before
     public void establishComponentService() {
@@ -101,7 +118,8 @@ public class ComponentServiceTest extends CORETestCase {
         // | KR-NS    | PurgeSessionDocumentsStep   |
         // | KR-NS    | ScheduleStep                |
         // +----------+-----------------------------+
-        
+
+
         components = componentService.getAllComponentsByNamespaceCode("KR-NS");
         assertEquals(7, components.size());
 

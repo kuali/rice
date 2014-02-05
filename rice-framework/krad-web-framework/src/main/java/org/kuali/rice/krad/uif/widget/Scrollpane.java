@@ -39,18 +39,17 @@ public class Scrollpane  extends WidgetBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        buildCSSforScrollPane(parent);
+        buildCSSforScrollPane((Component) parent);
     }
 
-    private void buildCSSforScrollPane(LifecycleElement parent) {
-        LayoutManager layoutManager = ((Group) parent).getLayoutManager();
+    private void buildCSSforScrollPane(Component parent) {
         if (StringUtils.isNotBlank(getHeight())) {
-            if (!StringUtils.contains(layoutManager.getStyle(), CssConstants.HEIGHT)) {
-                layoutManager.appendToStyle(CssConstants.HEIGHT + getHeight() +";");
+            if (!StringUtils.contains(parent.getStyle(), CssConstants.HEIGHT)) {
+                parent.appendToStyle(CssConstants.HEIGHT + getHeight() +";");
             }
 
-            if (!StringUtils.contains(layoutManager.getStyle(), CssConstants.OVERFLOW)) {
-                layoutManager.appendToStyle(CssConstants.OVERFLOW + "auto;");
+            if (!StringUtils.contains(parent.getStyle(), CssConstants.OVERFLOW)) {
+                parent.appendToStyle(CssConstants.OVERFLOW + "auto;");
             }
         }
     }

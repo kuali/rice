@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.lookup.LookupUtils;
@@ -77,7 +76,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                 UifPropertyPaths.VIEW_HELPER_SERVICE_CLASS);
         if (StringUtils.isNotBlank(viewHelperServiceClassName)) {
             try {
-                inquirable = (Inquirable) DataObjectUtils.newInstance(Class.forName(viewHelperServiceClassName));
+                inquirable = (Inquirable) KRADUtils.createNewObjectFromClass(Class.forName(viewHelperServiceClassName));
             } catch (ClassNotFoundException e) {
                 throw new RiceRuntimeException(
                         "Unable to find class for inquirable classname: " + viewHelperServiceClassName, e);

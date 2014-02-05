@@ -1,4 +1,4 @@
-/**
+	/**
  * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -23,7 +23,6 @@ import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -64,8 +63,9 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
+import org.kuali.rice.krad.util.KRADUtils;
 
-/**
+	/**
  * Field that encapsulates data input/output captured by an attribute within the
  * application
  *
@@ -562,10 +562,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#copyFromAttributeDefinition(org.kuali.rice.krad.datadictionary.AttributeDefinition)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
@@ -666,20 +664,16 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isInputAllowed()
+	/**
+     * {@inheritDoc}
      */
     @Override
     public boolean isInputAllowed() {
         return true;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getControl()
+	/**
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -687,20 +681,16 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.control;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setControl(org.kuali.rice.krad.uif.control.Control)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void setControl(Control control) {
         this.control = control;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getValidationMessages()
+	/**
+     * {@inheritDoc}
      */
     @ViewLifecycleRestriction
     @Override
@@ -709,20 +699,16 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.validationMessages;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setValidationMessages(org.kuali.rice.krad.uif.element.ValidationMessages)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void setValidationMessages(ValidationMessages validationMessages) {
         this.validationMessages = validationMessages;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getOptionsFinder()
+	/**
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "optionsFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -730,20 +716,16 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return this.optionsFinder;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setOptionsFinder(org.kuali.rice.krad.keyvalues.KeyValuesFinder)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void setOptionsFinder(KeyValuesFinder optionsFinder) {
         this.optionsFinder = optionsFinder;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getOptionsFinderClass()
+	/**
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "optionsFinderClass")
@@ -756,19 +738,15 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setOptionsFinderClass(java.lang.Class)
+     * {@inheritDoc}
      */
     @Override
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
-        this.optionsFinder = DataObjectUtils.newInstance(optionsFinderClass);
+        this.optionsFinder = KRADUtils.createNewObjectFromClass(optionsFinderClass);
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isEnableAutoDirectInquiry()
+     * {@inheritDoc}
      */
     @Override
     public boolean isEnableAutoDirectInquiry() {
@@ -776,9 +754,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setEnableAutoDirectInquiry(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setEnableAutoDirectInquiry(boolean enableAutoDirectInquiry) {
@@ -786,9 +762,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getQuickfinder()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "quickfinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -797,9 +771,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setQuickfinder(org.kuali.rice.krad.uif.widget.QuickFinder)
+     * {@inheritDoc}
      */
     @Override
     public void setQuickfinder(QuickFinder quickfinder) {
@@ -807,9 +779,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isEnableAutoQuickfinder()
+     * {@inheritDoc}
      */
     @Override
     public boolean isEnableAutoQuickfinder() {
@@ -817,9 +787,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setEnableAutoQuickfinder(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setEnableAutoQuickfinder(boolean enableAutoQuickfinder) {
@@ -827,9 +795,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getSuggest()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "suggest", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -838,9 +804,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setSuggest(org.kuali.rice.krad.uif.widget.Suggest)
+     * {@inheritDoc}
      */
     @Override
     public void setSuggest(Suggest suggest) {
@@ -848,9 +812,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isWidgetInputOnly()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "widgetInputOnly")
@@ -859,49 +821,39 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setWidgetInputOnly(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setWidgetInputOnly(boolean widgetInputOnly) {
         this.widgetInputOnly = widgetInputOnly;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isRenderInputAddonGroup()
+	/**
+     * {@inheritDoc}
      */
     @Override
     public boolean isRenderInputAddonGroup() {
         return renderInputAddonGroup;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setRenderInputAddonGroup(boolean)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void setRenderInputAddonGroup(boolean renderInputAddonGroup) {
         this.renderInputAddonGroup = renderInputAddonGroup;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getPostInputCssClasses()
+	/**
+     * {@inheritDoc}
      */
     @Override
     public List<String> getPostInputCssClasses() {
         return postInputCssClasses;
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getPostInputCssClassesAsString()
+	/**
+     * {@inheritDoc}
      */
     @Override
     public String getPostInputCssClassesAsString() {
@@ -912,10 +864,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         return "";
     }
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setPostInputCssClasses(java.util.List)
+	/**
+     * {@inheritDoc}
      */
     @Override
     public void setPostInputCssClasses(List<String> postInputCssClasses) {
@@ -923,9 +873,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getPostInputAddons()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getPostInputAddons() {
@@ -933,9 +881,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setPostInputAddons(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setPostInputAddons(List<Component> postInputAddons) {
@@ -943,9 +889,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#addPostInputAddon(org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void addPostInputAddon(Component addOn) {
@@ -957,9 +901,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getInstructionalText()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "instructionalText")
@@ -968,9 +910,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setInstructionalText(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setInstructionalText(String instructionalText) {
@@ -978,9 +918,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getInstructionalMessage()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -989,9 +927,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setInstructionalMessage(org.kuali.rice.krad.uif.element.Message)
+     * {@inheritDoc}
      */
     @Override
     public void setInstructionalMessage(Message instructionalMessage) {
@@ -999,9 +935,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getHelperText()
+     * {@inheritDoc}
      */
     @Override
     public String getHelperText() {
@@ -1009,9 +943,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setHelperText(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setHelperText(String helperText) {
@@ -1019,9 +951,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getConstraintText()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "constraintText")
@@ -1030,9 +960,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setConstraintText(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setConstraintText(String constraintText) {
@@ -1040,9 +968,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getConstraintMessage()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "constraintMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1051,9 +977,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setConstraintMessage(org.kuali.rice.krad.uif.element.Message)
+     * {@inheritDoc}
      */
     @Override
     public void setConstraintMessage(Message constraintMessage) {
@@ -1061,9 +985,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getValidCharactersConstraint()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "validCharactersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1072,9 +994,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setValidCharactersConstraint(org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint)
+     * {@inheritDoc}
      */
     @Override
     public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
@@ -1082,9 +1002,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getCaseConstraint()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1093,9 +1011,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setCaseConstraint(org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint)
+     * {@inheritDoc}
      */
     @Override
     public void setCaseConstraint(CaseConstraint caseConstraint) {
@@ -1103,9 +1019,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getDependencyConstraints()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "dependencyConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -1114,9 +1028,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setDependencyConstraints(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
@@ -1124,9 +1036,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getPrerequisiteConstraints()
+     * {@inheritDoc}
      */
     @Override
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
@@ -1134,9 +1044,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getMustOccurConstraints()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -1145,9 +1053,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setMustOccurConstraints(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
@@ -1155,9 +1061,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getSimpleConstraint()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "simpleConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1166,9 +1070,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setSimpleConstraint(org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint)
+     * {@inheritDoc}
      */
     @Override
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
@@ -1176,9 +1078,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setDataType(org.kuali.rice.core.api.data.DataType)
+     * {@inheritDoc}
      */
     @Override
     public void setDataType(DataType dataType) {
@@ -1186,9 +1086,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setDataType(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setDataType(String dataType) {
@@ -1196,9 +1094,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getDataType()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1207,9 +1103,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getMaxLength()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "maxLength")
@@ -1218,9 +1112,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setMaxLength(java.lang.Integer)
+     * {@inheritDoc}
      */
     @Override
     public void setMaxLength(Integer maxLength) {
@@ -1228,9 +1120,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getMinLength()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "minLength")
@@ -1239,9 +1129,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setMinLength(java.lang.Integer)
+     * {@inheritDoc}
      */
     @Override
     public void setMinLength(Integer minLength) {
@@ -1249,9 +1137,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getRequired()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "required")
@@ -1260,9 +1146,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setRequired(java.lang.Boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setRequired(Boolean required) {
@@ -1270,9 +1154,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getExclusiveMin()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "exclusiveMin")
@@ -1281,9 +1163,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setExclusiveMin(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setExclusiveMin(String exclusiveMin) {
@@ -1291,9 +1171,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getInclusiveMax()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "inclusiveMax")
@@ -1302,9 +1180,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setInclusiveMax(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setInclusiveMax(String inclusiveMax) {
@@ -1312,9 +1188,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#getAttributeQuery()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "attributeQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1323,9 +1197,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setAttributeQuery(org.kuali.rice.krad.uif.field.AttributeQuery)
+     * {@inheritDoc}
      */
     @Override
     public void setAttributeQuery(AttributeQuery attributeQuery) {
@@ -1333,9 +1205,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isUppercaseValue()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "uppercaseValue")
@@ -1344,9 +1214,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setUppercaseValue(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setUppercaseValue(boolean uppercaseValue) {
@@ -1354,9 +1222,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isDisableNativeAutocomplete()
+     * {@inheritDoc}
      */
     @Override
     public boolean isDisableNativeAutocomplete() {
@@ -1364,9 +1230,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setDisableNativeAutocomplete(boolean)
+     * {@inheritDoc}
      */
     @Override
     public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
@@ -1374,9 +1238,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#isRenderFieldset()
+     * {@inheritDoc}
      */
     @Override
     public boolean isRenderFieldset() {
@@ -1482,9 +1344,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#completeValidation(org.kuali.rice.krad.datadictionary.validator.ValidationTrace)
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {
@@ -1502,9 +1362,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.field.InputField#setCustomValidatorClass(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setCustomValidatorClass(String customValidatorClass) {

@@ -45,15 +45,18 @@
         <#local stickyDataAttribute="data-sticky='true'"/>
     </#if>
 
+    <#local renderContentAs="header"/>
+
     <#-- Only render wrapper when upper and lower group content exist -->
     <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-        <div class="${view.contentContainerClassesAsString} uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
+        <#local renderContentAs="div"/>
+        <header class="${view.contentContainerClassesAsString} uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
         <#-- upper group -->
         <@krad.template component=element.upperGroup/>
     </#if>
 
         <#-- Main header content -->
-        <@krad.div component=element>
+        <@krad.wrap renderAs="${renderContentAs}" component=element>
 
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
 
@@ -94,12 +97,12 @@
                 <@krad.template component=element.rightGroup/>
             </#if>
 
-        </@krad.div>
+        </@krad.wrap>
 
     <#if element.upperGroup?has_content || element.lowerGroup?has_content>
          <#-- lower group -->
          <@krad.template component=element.lowerGroup/>
-      </div>
+      </header>
     </#if>
 
 </#macro>

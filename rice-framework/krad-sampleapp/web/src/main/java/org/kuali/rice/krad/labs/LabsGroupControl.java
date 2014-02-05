@@ -15,12 +15,55 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.kim.impl.group.GroupMemberBo;
+import org.kuali.rice.kim.api.group.GroupMemberContract;
+import org.kuali.rice.kim.impl.membership.AbstractMemberBo;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
-public class LabsGroupControl extends GroupMemberBo {
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Cacheable(false)
+@Table(name = "KRIM_GRP_MBR_T")
+
+public class LabsGroupControl extends AbstractMemberBo implements GroupMemberContract{
 
     private transient String myGroupName;
     private transient String myGroupNameSpace;
+
+    private static final long serialVersionUID = 6773749266062306217L;
+
+    @PortableSequenceGenerator(name = "KRIM_GRP_MBR_ID_S")
+    @GeneratedValue(generator = "KRIM_GRP_MBR_ID_S")
+    @Id
+    @Column(name = "GRP_MBR_ID")
+    private String id;
+
+    @Column(name = "GRP_ID")
+    private String groupId;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public String getMyGroupName() {
         return myGroupName;

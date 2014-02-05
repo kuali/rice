@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.criteria.org.kuali.rice.coreservice.impl.service;
+package org.kuali.rice.coreservice.impl.service;
 
 import org.junit.Before;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.service.CoreServiceModuleServiceIntTest;
 import org.kuali.rice.coreservice.impl.service.CoreServiceRemoteModuleService;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.service.KualiModuleService;

@@ -35,12 +35,14 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
         dataObject.setStringProperty("aString");
 
         TestDataObjectExtension extension = new TestDataObjectExtension();
+        extension.setPrimaryKeyProperty(key);
         extension.setExtensionProperty("extraData");
         dataObject.setExtension(extension);
 
         YetAnotherReferencedDataObject yardo = new YetAnotherReferencedDataObject();
-        dataObject.setYetAnotherReferencedObject(yardo);
+        yardo.setId(key);
         yardo.setSomeOtherStringProperty("otherString");
+        dataObject.setYetAnotherReferencedObject(yardo);
 
         return dataObject;
     }

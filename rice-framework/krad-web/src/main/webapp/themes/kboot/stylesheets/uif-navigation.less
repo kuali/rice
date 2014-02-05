@@ -1,4 +1,6 @@
-
+.uif-hasLeftNav {
+  padding: 5px 0 15px 15px;
+}
 
 .uif-navigationMenu-wrapper {
 	display: block;
@@ -277,7 +279,7 @@ nav-list > li > a {
 .uif-menuNavigationGroup.sidebar-fixed {
     position: fixed;
 }
-.uif-menuNavigationGroup + #Uif-PageContentWrapper {
+.uif-menuNavigationGroup + main {
     margin-left: 250px;
 }
 .navbar-collapse {
@@ -475,7 +477,7 @@ nav-list > li > a {
 .uif-menuNavigationGroup.sidebar-collapsed:before {
     width: 42px;
 }
-.uif-menuNavigationGroup.sidebar-collapsed + #Uif-PageContentWrapper {
+.uif-menuNavigationGroup.sidebar-collapsed + main {
     margin-left: 43px;
 }
 .sidebar-collapsed .nav-list {
@@ -610,6 +612,6 @@ nav-list > li > a {
 #Uif-Navigation .nav.nav-list {
     transition: all 500ms ease-out 0s !important;
 }
-#Uif-Navigation .uif-menuNavigationGroup + #Uif-PageContentWrapper {
+#Uif-Navigation .uif-menuNavigationGroup + main {
     margin-left: 250px;
 }

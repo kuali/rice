@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
@@ -40,6 +39,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.TypeMismatchException;
@@ -403,7 +403,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     private Class<?> getPropertyTypeChild(DataObjectMetadata objectMetadata, String propertyName){
-        if(DataObjectUtils.isNestedAttribute(propertyName)){
+        if(PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)){
             String attributePrefix = StringUtils.substringBefore(propertyName,".");
             String attributeName = StringUtils.substringAfter(propertyName,".");
 
@@ -425,7 +425,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
             DataObjectMetadata relatedObjectMetadata =
                     dataObjectService.getMetadataRepository().getMetadata(rd.getRelatedType());
             if(relatedObjectMetadata != null){
-                if(DataObjectUtils.isNestedAttribute(attributeName)){
+                if(PropertyAccessorUtils.isNestedOrIndexedProperty(attributeName)){
                     return getPropertyTypeChild(relatedObjectMetadata,attributeName);
                 } else{
                     if(relatedObjectMetadata.getAttribute(attributeName) == null &&

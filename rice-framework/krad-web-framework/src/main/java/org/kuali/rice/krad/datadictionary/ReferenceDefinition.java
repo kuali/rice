@@ -43,8 +43,8 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     protected String attributeToHighlightOnFail;
     protected String displayFieldName;
     protected String collection;
-    protected Class<? extends BusinessObject> collectionBusinessObjectClass;
-    protected Class<? extends BusinessObject> businessObjectClass;
+    protected Class<?> collectionBusinessObjectClass;
+    protected Class<?> businessObjectClass;
 
     public ReferenceDefinition() {}
 
@@ -138,7 +138,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     @BeanTagAttribute(name = "collectionBusinessObjectClass")
-    public Class<? extends BusinessObject> getCollectionBusinessObjectClass() {
+    public Class<?> getCollectionBusinessObjectClass() {
         return collectionBusinessObjectClass;
     }
 
@@ -146,7 +146,7 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
      * Class that the specified collection represents.  Does not need to be set.  The DD
      * Will set this attribute through introspection.
      */
-    public void setCollectionBusinessObjectClass(Class<? extends BusinessObject> collectionBusinessObjectClass) {
+    public void setCollectionBusinessObjectClass(Class<?> collectionBusinessObjectClass) {
         this.collectionBusinessObjectClass = collectionBusinessObjectClass;
     }
 
@@ -195,11 +195,11 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
 
 
     @BeanTagAttribute(name = "businessObjectClass")
-    public Class<? extends BusinessObject> getBusinessObjectClass() {
+    public Class<?> getBusinessObjectClass() {
         return businessObjectClass;
     }
 
-    public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
+    public void setBusinessObjectClass(Class<?> businessObjectClass) {
         this.businessObjectClass = businessObjectClass;
     }
 }

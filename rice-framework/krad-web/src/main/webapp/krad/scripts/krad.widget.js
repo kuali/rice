@@ -21,7 +21,7 @@
  * @param displayBreadcrumbsWhenOne display the breadcrumbs when there is only one when true, otherwise do not
  */
 function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
-    var breadcrumbsWrapper = jQuery("div#Uif-BreadcrumbWrapper");
+    var breadcrumbsWrapper = jQuery("#Uif-BreadcrumbWrapper");
 
     if (!breadcrumbsWrapper.length) {
         return;
@@ -31,7 +31,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     breadcrumbsWrapper.empty();
     breadcrumbsWrapper.show();
 
-    var breadcrumbUpdate = jQuery("div#Uif-BreadcrumbUpdate");
+    var breadcrumbUpdate = jQuery("#Uif-BreadcrumbUpdate");
 
     //find the new ones
     var breadcrumbList = breadcrumbUpdate.find("> ol").detach();
@@ -46,7 +46,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
 
     //set up sibling breadcrumb handler
     jQuery(breadcrumbList).on("click", ".uif-breadcrumbSiblingLink", function () {
-        var content = jQuery(this).parent().find("div.uif-breadcrumbSiblingContent");
+        var content = jQuery(this).parent().find(".uif-breadcrumbSiblingContent");
         var breadcrumb = jQuery(this).parent().find("[data-role='breadcrumb']");
         var siblingLink = this;
 
@@ -60,7 +60,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
             content.show();
 
             jQuery(document).on("mouseup.bc-sibling", function (e) {
-                var container = jQuery("div.uif-breadcrumbSiblingContent:visible");
+                var container = jQuery(".uif-breadcrumbSiblingContent:visible");
 
                 //if not in the breadcrumb sibling content, close and remove this handler
                 if (container.has(e.target).length === 0) {
@@ -92,7 +92,7 @@ function setupBreadcrumbs(displayBreadcrumbsWhenOne) {
     }
 
     //append to the wrapper
-    jQuery("div#Uif-BreadcrumbWrapper").append(breadcrumbList);
+    jQuery("#Uif-BreadcrumbWrapper").append(breadcrumbList);
     breadcrumbUpdate.remove();
 }
 
@@ -194,9 +194,12 @@ function createVerticalMenu(listId, options) {
  */
 function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
     var navMenu = jQuery("#" + id);
-    var menuWidth = navMenu.outerWidth(true);
+    var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
-    jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).css("margin-left", menuWidth);
+    adjustPageLeftMargin();
+    viewContent.on(kradVariables.EVENTS.ADJUST_PAGE_MARGIN, function(){
+        adjustPageLeftMargin();
+    });
 
     // TODO Unsure if the following line is needed:
     jQuery(".show-popover").popover();
@@ -228,7 +231,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
     jQuery("." + kradVariables.MENU_COLLAPSE_ACTION).click(function () {
         jQuery("#" + id).toggleClass(kradVariables.MENU_COLLAPSED);
         var menuWidth = jQuery("#" + id).outerWidth(true);
-        jQuery("#" + kradVariables.PAGE_CONTENT_WRAPPER).css("margin-left", menuWidth);
+        jQuery("[data-role='Page']").css("margin-left", menuWidth);
         if (jQuery("#" + id).hasClass(kradVariables.MENU_COLLAPSED)) {
             jQuery("." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_RIGHT);
             jQuery.cookie(kradVariables.MENU_COLLAPSED, "true");
@@ -251,6 +254,13 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
     // Add open toggleClass if the item is active
     jQuery(".nav > li." + kradVariables.ACTIVE_CLASS + " > a > ." + kradVariables.TOGGLE_ARROW_CLASS,
             navMenu).removeClass(closedToggleIconClass).addClass(openedToggleIconClass);
+}
+
+function adjustPageLeftMargin(){
+    var page = jQuery("[data-role='Page']");
+    var menuWidth = jQuery("#Uif-Navigation >").outerWidth(true);
+    page.css("margin-left", menuWidth);
+    page.addClass("uif-hasLeftNav");
 }
 
 /**
@@ -894,7 +904,7 @@ function openAllDetails(tableId, animate, forceOpen) {
  * @param animate if true, the open will have an animation effect
  */
 function openDetails(oTable, row, actionComponent, animate) {
-    var detailsGroup = row.find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+    var detailsGroup = row.find("[data-role='details'], span[data-role='placeholder']").filter(":first");
     var ajaxRetrieval = jQuery(detailsGroup).is("span[data-role='placeholder']");
     var detailsId = jQuery(detailsGroup).attr("id");
 
@@ -903,7 +913,7 @@ function openDetails(oTable, row, actionComponent, animate) {
     }
 
     var newRow = oTable.fnOpenCustom(row[0], detailsGroup, "uif-rowDetails");
-    detailsGroup = jQuery(newRow).find("div[data-role='details'], span[data-role='placeholder']").filter(":first");
+    detailsGroup = jQuery(newRow).find("[data-role='details'], span[data-role='placeholder']").filter(":first");
 
     detailsGroup.attr("data-open", "true");
 
@@ -1035,8 +1045,8 @@ function closeAllDetails(tableId, animate, forceClose) {
  * @param animate if true, the close will have an animation effect
  */
 function closeDetails(oTable, row, actionComponent, animate) {
-    var fieldGroupWrapper = row.find("> td > div[data-role='detailsFieldGroup']");
-    var detailsContent = row.next().first().find("> td > div[data-role='details'], "
+    var fieldGroupWrapper = row.find("> td > [data-role='detailsFieldGroup']");
+    var detailsContent = row.next().first().find("> td > [data-role='details'], "
             + "> td > span[data-role='placeholder']").filter(":first");
 
     if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {

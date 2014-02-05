@@ -5,52 +5,44 @@
   margin-right: auto;
 }
 
-
 .uif-applicationHeader {
   width: 100%;
   background-color: @header_background;
   z-index: 9999;
-
   .navbar {
     background-color: @header_background;
     margin-bottom: 0px;
     border: none;
-
     .dropdown {
-      .dropdown-menu {
+      .dropdown-menu.uif-cssGridGroup {
         white-space: nowrap;
         min-width: 10px;
-        .uif-appMenu {
-          min-width: 600px;
-          white-space: normal;
-          padding-bottom: 20px;
-
-          h3 {
-            border-bottom-width: 1px;
-            border-bottom-style: solid;
-            border-bottom-color: #ccc;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            font-size: 1.1em;
-          }
-
-          h4 {
-            font-size: 12px;
-            font-weight: normal;
-          }
-
-          ul {
-            font-size: 12px;
-            list-style: disc;
-            padding-left: 20px;
-            li {
-              a {
-                color: @link_blue;
-              }
-              a:hover {
-                background: #FFF;
-                text-decoration: underline;
-              }
+        min-width: 600px;
+        white-space: normal;
+        padding-bottom: 20px;
+        h3 {
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
+          border-bottom-color: #ccc;
+          margin-bottom: 12px;
+          padding-bottom: 12px;
+          font-size: 1.1em;
+        }
+        h4 {
+          font-size: 12px;
+          font-weight: normal;
+        }
+        ul {
+          font-size: 12px;
+          list-style: disc;
+          padding-left: 20px;
+          li {
+            a {
+              color: @link_blue;
+            }
+            a:hover {
+              background: #FFF;
+              text-decoration: underline;
             }
           }
         }
@@ -59,25 +51,21 @@
     .dropdown:first-child {
       .dropdown-menu {
         right: -200px;
-
       }
     }
     a:focus {
       color: #FFF;
       background: darken(@header_background,3%);
     }
-
     .nav {
       li.active {
         a {
           background: darken(@header_background,3%);
         }
       }
-
       .dropdown-toggle {
         //text-transform: uppercase;
       }
-
       .dropdown-menu {
         li {
           ul {
@@ -97,22 +85,18 @@
           }
         }
       }
-
       li {
         position: relative;
         z-index: 10;
       }
     }
-
     a {
       color: #fff;
     }
-
     a:hover {
       color: #FFF;
       background: darken(@header_background,3%);
     }
-
     .navbar-toggle {
       color: white;
       font-size: 120%;
@@ -220,3 +204,11 @@ div.uif-cssGridLabelCol {
 .input-group-btn > a {
   margin-left: 4px;
 }
+
+
+
+
+
+
+
+

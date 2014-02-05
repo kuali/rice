@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -28,9 +32,6 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A PageGroup represents a page of a View.
@@ -90,6 +91,10 @@ public class PageGroupBase extends GroupBase implements PageGroup {
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
+        if (StringUtils.isBlank(this.getWrapperTag())) {
+            this.setWrapperTag(UifConstants.WrapperTags.MAIN);
+        }
+
         super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);

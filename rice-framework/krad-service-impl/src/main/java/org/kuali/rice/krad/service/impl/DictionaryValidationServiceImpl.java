@@ -22,7 +22,8 @@ import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.CollectionDefinition;
 import org.kuali.rice.krad.datadictionary.ComplexAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
@@ -56,6 +57,7 @@ import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
+import org.springframework.beans.PropertyAccessorUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
@@ -255,7 +257,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 businessObject.getClass());
         for (String referenceName : references.keySet()) {
             if (getLegacyDataAdapter().isReferenceUpdatable(businessObject.getClass(), referenceName)) {
-                Object referenceObj = DataObjectUtils.getPropertyValue(businessObject, referenceName);
+                Object referenceObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(referenceName);
 
                 if (KRADUtils.isNull(referenceObj) || !(referenceObj instanceof PersistableBusinessObject)) {
                     continue;
@@ -275,7 +277,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 businessObject.getClass());
         for (String collectionName : collections.keySet()) {
             if (getLegacyDataAdapter().isCollectionUpdatable(businessObject.getClass(), collectionName)) {
-                Object listObj = DataObjectUtils.getPropertyValue(businessObject, collectionName);
+                Object listObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(collectionName);
 
                 if (KRADUtils.isNull(listObj)) {
                     continue;
@@ -392,14 +394,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param object
      * @param propertyDescriptors
      */
-    protected void validateBusinessObjectsFromDescriptors(Object object, PropertyDescriptor[] propertyDescriptors,
-            int depth) {
+    protected void validateBusinessObjectsFromDescriptors(Object object, PropertyDescriptor[] propertyDescriptors, int depth) {
+        DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(object);
+
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             // validate the properties that are descended from BusinessObject
             if (propertyDescriptor.getPropertyType() != null &&
                     PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) &&
-                    DataObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
-                BusinessObject bo = (BusinessObject) DataObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+                    wrapper.getPropertyValueNullSafe(propertyDescriptor.getName()) != null) {
+                BusinessObject bo = (BusinessObject) wrapper.getPropertyValueNullSafe(propertyDescriptor.getName());
                 if (depth == 0) {
                     GlobalVariables.getMessageMap().addToErrorPath(propertyDescriptor.getName());
                     validateBusinessObject(bo);
@@ -415,8 +418,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
              */
             else if (propertyDescriptor.getPropertyType() != null &&
                     (List.class).isAssignableFrom(propertyDescriptor.getPropertyType()) &&
-                    DataObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
-                List propertyList = (List) DataObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+                    wrapper.getPropertyValueNullSafe(propertyDescriptor.getName()) != null) {
+                List propertyList = (List) wrapper.getPropertyValueNullSafe(propertyDescriptor.getName());
                 for (int j = 0; j < propertyList.size(); j++) {
                     if (propertyList.get(j) != null && propertyList.get(j) instanceof PersistableBusinessObject) {
                         if (depth == 0) {
@@ -597,10 +600,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         // if we're dealing with a nested attribute, we need to resolve down to the BO where the primitive attribute is located
         // this is primarily to deal with the case of a defaultExistenceCheck that uses an "extension", i.e referenceName
         // would be extension.attributeName
-        if (DataObjectUtils.isNestedAttribute(referenceName)) {
-            String nestedAttributePrefix = DataObjectUtils.getNestedAttributePrefix(referenceName);
-            String nestedAttributePrimitive = DataObjectUtils.getNestedAttributePrimitive(referenceName);
-            Object nestedObject = DataObjectUtils.getPropertyValue(bo, nestedAttributePrefix);
+        if (PropertyAccessorUtils.isNestedOrIndexedProperty(referenceName)) {
+            String nestedAttributePrefix = KRADUtils.getNestedAttributePrefix(referenceName);
+            String nestedAttributePrimitive = KRADUtils.getNestedAttributePrimitive(referenceName);
+            Object nestedObject = KradDataServiceLocator.getDataObjectService().wrap(bo).getPropertyValueNullSafe(nestedAttributePrefix);
             if (!(nestedObject instanceof BusinessObject)) {
                 throw new ObjectNotABusinessObjectRuntimeException(
                         "Attribute requested (" + nestedAttributePrefix + ") is of class: " + "'" +

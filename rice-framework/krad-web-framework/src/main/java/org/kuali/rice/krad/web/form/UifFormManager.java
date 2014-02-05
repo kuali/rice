@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.form;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 
@@ -186,7 +185,7 @@ public class UifFormManager implements Serializable {
         }
 
         List<Field> fields = new ArrayList<Field>();
-        fields = DataObjectUtils.getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
+        fields = getAllFields(fields, sessionForm.getClass(), UifFormBase.class);
         for (Field field : fields) {
             boolean copyValue = true;
             for (Annotation an : field.getAnnotations()) {
@@ -210,7 +209,7 @@ public class UifFormManager implements Serializable {
      */
     public void purgeForm(UifFormBase form) {
         List<Field> fields = new ArrayList<Field>();
-        fields = DataObjectUtils.getAllFields(fields, form.getClass(), UifFormBase.class);
+        fields = getAllFields(fields, form.getClass(), UifFormBase.class);
         for (Field field : fields) {
             boolean purgeValue = false;
 
@@ -226,6 +225,18 @@ public class UifFormManager implements Serializable {
                 ObjectPropertyUtils.setPropertyValue(form, field.getName(), null);
             }
         }
+    }
+
+    private List<Field> getAllFields(List<Field> fields, Class<?> type, Class<?> stopAt) {
+        for (Field field : type.getDeclaredFields()) {
+            fields.add(field);
+        }
+
+        if (type.getSuperclass() != null && !type.getName().equals(stopAt.getName())) {
+            fields = getAllFields(fields, type.getSuperclass(), stopAt);
+        }
+
+        return fields;
     }
 
     /**

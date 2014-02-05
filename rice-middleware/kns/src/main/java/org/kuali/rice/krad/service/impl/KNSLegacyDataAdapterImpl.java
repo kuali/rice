@@ -36,7 +36,6 @@ import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.dao.LookupDao;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
@@ -65,6 +64,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.lang.reflect.Field;
@@ -816,8 +816,8 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
             String keyConversion = keyName;
             if (relationship != null) {
                 keyConversion = relationship.getParentAttributeForChildAttribute(keyName);
-            } else if (DataObjectUtils.isNestedAttribute(propertyName)) {
-                String nestedAttributePrefix = DataObjectUtils.getNestedAttributePrefix(propertyName);
+            } else if (PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)) {
+                String nestedAttributePrefix = KRADUtils.getNestedAttributePrefix(propertyName);
                 keyConversion = nestedAttributePrefix + "." + keyName;
             }
             inquiryParameters.put(keyConversion, keyName);

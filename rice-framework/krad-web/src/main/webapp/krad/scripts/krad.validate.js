@@ -542,7 +542,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
 
         //write messages for this group
         if (!pageSetupPhase) {
-            var forceWrite = jQuery("div[data-messages_for='" + id + "']").find("li[data-messageitemfor='" + fieldId + "']").length;
+            var forceWrite = jQuery("[data-messages_for='" + id + "']").find("li[data-messageitemfor='" + fieldId + "']").length;
             writeMessagesForGroup(id, data, forceWrite);
             displayHeaderMessageCount(id, data);
         }
@@ -846,7 +846,7 @@ function writeMessagesForChildGroups(parentId) {
  * @param info - true if info exist
  */
 function handleTabStyle(id, error, warning, info) {
-    var tabWrapper = jQuery("#" + id).closest("div[data-type='TabWrapper']");
+    var tabWrapper = jQuery("#" + id).closest("[data-type='TabWrapper']");
     if (tabWrapper.length) {
         var tabId = jQuery(tabWrapper).data("tabwrapperfor");
         var tab = jQuery("[data-tabfor='" + tabId + "']");
@@ -991,7 +991,7 @@ function displayHeaderMessageCount(sectionId, sectionData) {
                 image = infoImage;
             }
 
-            var messageCountElement = jQuery(sectionHeader).find("div." + kradVariables.MESSAGE_COUNT_CLASS);
+            var messageCountElement = jQuery(sectionHeader).find("." + kradVariables.MESSAGE_COUNT_CLASS);
             if (messageCountElement.length) {
                 messageCountElement.remove();
             }
@@ -1001,7 +1001,7 @@ function displayHeaderMessageCount(sectionId, sectionData) {
             }
         }
         else if (sectionHeader.length && sectionData.messageTotal == 0) {
-            jQuery(sectionHeader).find("div." + kradVariables.MESSAGE_COUNT_CLASS).remove();
+            jQuery(sectionHeader).find("." + kradVariables.MESSAGE_COUNT_CLASS).remove();
         }
     }
 }
@@ -1661,7 +1661,7 @@ function generateSummaryLink(sectionId) {
     var linkType = "";
     var highlight = "";
 
-    var sectionHasCorrectedErrors = jQuery("div[data-messages_for='" + sectionId + "']").find("span.uif-correctedError").length;
+    var sectionHasCorrectedErrors = jQuery("[data-messages_for='" + sectionId + "']").find("span.uif-correctedError").length;
 
     if (sectionData && (sectionData.messageTotal || sectionHasCorrectedErrors)) {
         var countMessage = generateCountString(sectionData.errorTotal, sectionData.warningTotal, sectionData.infoTotal);
@@ -1870,7 +1870,7 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
         if (id) {
             indicator = label.data("req_indicator");
             if (indicator === undefined) {
-                indicator = jQuery("div[data-role='View']").data("req_indicator");
+                indicator = jQuery("[data-role='View']").data("req_indicator");
             }
         }
 

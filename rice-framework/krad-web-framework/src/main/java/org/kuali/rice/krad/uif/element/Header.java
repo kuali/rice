@@ -123,7 +123,7 @@ public class Header extends ContentElementBase {
             Message message = ComponentFactory.getMessage();
             message.setMessageText(headerText);
             message.setInlineComponents(inlineComponents);
-            message.setGenerateWrapperElement(false);
+            message.setRenderWrapperTag(false);
             
             this.setRichHeaderMessage(message);
         }

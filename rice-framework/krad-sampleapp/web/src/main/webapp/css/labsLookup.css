@@ -143,7 +143,7 @@ input[type="text"], .uif-textAreaControl {
     margin-right: auto;
 }
 
-.uif-lightbox .uif-viewContentWrapper .uif-pageContentWrapper  {
+.uif-lightbox .uif-viewContentWrapper .uif-page  {
     padding: 0px;
     background: white;
     padding-left: 7.5px;

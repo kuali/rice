@@ -102,6 +102,10 @@
                     p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-ServerSidePaging"/>
               <bean parent="Uif-Link" p:linkText="Demo Performance Rich Table Without Server Side Paging" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-NoServerSidePaging"/>
+              <bean parent="Uif-Link" p:linkText="Html head link tags" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-HeadLink-Tags"/>
+              <bean parent="Uif-Link" p:linkText="Meta tags" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Meta-Tags"/>
             </list>
           </property>
         </bean>

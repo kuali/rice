@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.scripts
+package org.kuali.rice.scripts;
 
-import groovy.util.logging.Log
-import groovy.xml.XmlUtil
-import org.apache.commons.lang.StringUtils
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import groovy.util.logging.Log;
+import groovy.xml.XmlUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for the {@link DictionaryConverter} class.
@@ -29,30 +28,31 @@ import org.junit.Test
  */
 @Log
 class DictionaryConverterTest {
-    static def testResourceDir = "./src/test/resources/"
-    static def dictTestDir = testResourceDir + "DictionaryConverterTest/"
 
-    DictionaryConverter dictionaryConverter
-    def config
+    static def dictTestDir = "DictionaryConverterTest/";
+
+    DictionaryConverter dictionaryConverter;
+    def config;
 
     @Before
     void setUp() {
-        def configFilePath = testResourceDir + "test.config.properties"
-        config = new ConfigSlurper().parse(new File(configFilePath).toURL())
-        dictionaryConverter = new DictionaryConverter(config)
+        def configFilePath = "test.config.properties";
+        def configFile = ConversionUtils.getResourceFile(configFilePath);
+        config = new ConfigSlurper().parse(configFile.text);
+        dictionaryConverter = new DictionaryConverter(config);
     }
 
     // Utilities
 
     @Test
-    void testCopyProperties() {
+    void testCopyBeanProperties() {
         def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "<property name='title3'><list><value>1</value><value>2</value></list></property>" + "</bean></beans>");
         def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
         def beanNode = rootBean.bean[0];
 
         copyNode.bean[0].replaceNode {
             bean() {
-                dictionaryConverter.copyProperties(delegate, beanNode, ["title"]);
+                dictionaryConverter.copyBeanProperties(delegate, beanNode, ["title"]);
             }
         }
 
@@ -88,22 +88,23 @@ class DictionaryConverterTest {
 
     @Test
     void testFixNamespaceProperties() {
-        def maintDefFilePath = dictTestDir + "AttributePropertySample.xml"
-        def ddRootNode = getFileRootNode(maintDefFilePath)
-        ddRootNode.bean.each { bean -> dictionaryConverter.fixNamespaceProperties(bean) }
-        Assert.assertEquals("bean properties size does not match", 5, ddRootNode.bean.property.size())
+        def relFilePath = dictTestDir + "AttributePropertySample.xml";
+        def maintDefFilePath = ConversionUtils.getResourceFile(relFilePath).absolutePath;
+        def ddRootNode = getFileRootNode(maintDefFilePath);
+        ddRootNode.bean.each { bean -> dictionaryConverter.fixNamespaceProperties(bean) };
+        Assert.assertEquals("bean properties size does not match", 5, ddRootNode.bean.property.size());
     }
 
     @Test
     void testTransformBusinessObjectEntryBean() {
-        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
-        def rootNode = getFileRootNode(xmlFilePath)
-        def beanNode = rootNode.bean.find { "BusinessObjectEntry" == it.@parent }
+        String xmlFilePath = ConversionUtils.getResourceFile(dictTestDir + "InquiryDefinitionSample.xml").absolutePath;
+        def rootNode = getFileRootNode(xmlFilePath);
+        def beanNode = rootNode.bean.find { "BusinessObjectEntry" == it.@parent };
         Node resultNode = null;
         try {
-            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
+            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode);
         } catch (Exception e) {
-            e.printStackTrace()
+            e.printStackTrace();
             Assert.fail("exception occurred in testing");
         }
 
@@ -114,7 +115,7 @@ class DictionaryConverterTest {
 
     @Test
     void testFindSpringBeanFiles() {
-        List files = [new File(dictTestDir + "AttributePropertySample.xml")];
+        List files = [ConversionUtils.getResourceFile(dictTestDir + "AttributePropertySample.xml")];
         try {
             def simpleBeanFileList = dictionaryConverter.findSpringBeanFiles(files, [], []);
             def beanBasedFileList = dictionaryConverter.findSpringBeanFiles(files, ["MaintenanceDocumentEntry"], []);
@@ -133,7 +134,7 @@ class DictionaryConverterTest {
 
     @Test
     void testFindTransformableSpringBeanFiles() {
-        List files = [new File(dictTestDir + "AttributePropertySample.xml")];
+        List files = [ConversionUtils.getResourceFile(dictTestDir + "AttributePropertySample.xml")];
         List transformableFiles = [];
         try {
             // should find file containing MaintenanceDocumentEntry transformable
@@ -147,7 +148,7 @@ class DictionaryConverterTest {
 
     @Test
     void testTransformAttributeDefinitionBeanUsingTransformBusinessObjectEntryBean() {
-        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
+        String xmlFilePath = ConversionUtils.getResourceFile(dictTestDir + "InquiryDefinitionSample.xml").absolutePath;
         def rootNode = getFileRootNode(xmlFilePath)
         def beanNode = rootNode.bean.find { "TravelerDetail-id-parentBean" == it.@id }
         Node resultNode = null;
@@ -171,8 +172,8 @@ class DictionaryConverterTest {
         try {
             dictionaryConverter.transformSpringBeans(rootBean);
         } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
         }
         checkBeanParentExists(rootBean, "DataObjectEntry");
     }
@@ -183,7 +184,7 @@ class DictionaryConverterTest {
      */
     @Test
     public void testRemoveChildrenBeans() {
-        String lookupDefFilePath = dictTestDir + "LookupDefinitionSample.xml"
+        String lookupDefFilePath = ConversionUtils.getResourceFile(dictTestDir + "LookupDefinitionSample.xml").absolutePath;
         def lookupDefFile = new File(lookupDefFilePath)
         def ddRootNode = new XmlParser().parse(lookupDefFile);
         def beanNode = ddRootNode.bean.find { "BusinessObjectEntry".equals(it.@parent) };
@@ -213,14 +214,14 @@ class DictionaryConverterTest {
 
     @Test
     void testPreloadDefinitionDataObjects() {
-        String xmlFilePath = dictTestDir + "InquiryDefinitionSample.xml"
-        def rootNode = getFileRootNode(xmlFilePath)
+        String xmlFilePath = ConversionUtils.getResourceFile(dictTestDir + "InquiryDefinitionSample.xml").absolutePath;
+        def rootNode = getFileRootNode(xmlFilePath);
 
         try {
             dictionaryConverter.preloadDefinitionDataObjects(rootNode);
         } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
+            e.printStackTrace();
+            Assert.fail("exception occurred in testing");
         }
         Assert.assertTrue("lookup definition entry added", dictionaryConverter.definitionDataObjects.containsKey("TravelerDetail-lookupDefinition"));
 
@@ -242,9 +243,9 @@ class DictionaryConverterTest {
     }
 
     public static String getNodeString(Node rootNode) {
-        def writer = new StringWriter()
-        XmlUtil.serialize(rootNode, writer)
-        return writer.toString()
+        def writer = new StringWriter();
+        XmlUtil.serialize(rootNode, writer);
+        return writer.toString();
     }
 
     public static getSimpleBean(Map attributes, String value) {

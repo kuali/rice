@@ -145,11 +145,11 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
                     && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
                     && groupMembershipInfo.isActive(new DateTime())) {
                 groupPrincipals.add(groupMembershipInfo);
-                // FIXME: Is there a reason we are not calling the responsible group service? 
+                // FIXME: Is there a reason we are not calling the responsible group service?
                 //getGroupService().removePrincipalFromGroup(groupMembershipInfo.getMemberId(), groupMembershipInfo.getGroupId());
             }
         }
-        // FIXME: Is there a reason we are doing this directly and *not* calling the group service??? 
+        // FIXME: Is there a reason we are doing this directly and *not* calling the group service???
         for (GroupMember gm : groupPrincipals) {
             GroupMember.Builder builder = GroupMember.Builder.create(gm);
             builder.setActiveToDate(new DateTime(yesterday.getTime()));
@@ -172,7 +172,7 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
                 groupMembers.add(groupMembershipInfo);
             }
         }
-        // FIXME: Is there a reason we are doing this directly and *not* calling the group service??? 
+        // FIXME: Is there a reason we are doing this directly and *not* calling the group service???
         for (GroupMember groupMember : groupMembers) {
             GroupMember.Builder builder = GroupMember.Builder.create(groupMember);
             builder.setActiveToDate(new DateTime(yesterday.getTime()));

@@ -41,7 +41,7 @@ function updateHtmlViewer(){
     var anchor = content.find("a");
     if (content.children().length === 1 && anchor.length === 1
             && anchor.attr("href") != null && anchor.attr("href").indexOf(kradVariables.VIEW_ID) !== -1 ) {
-        jQuery("div#ComponentLibrary-HtmlCodeViewer").hide();
+        jQuery("#ComponentLibrary-HtmlCodeViewer").hide();
         return;
     }
 
@@ -59,11 +59,11 @@ function updateHtmlViewer(){
         var htmlSourcePreElement = jQuery("<pre class='prettyprint linenums prettyprinted'></pre>");
         htmlSourcePreElement.text(exampleHtml);
 
-        jQuery("div#ComponentLibrary-HtmlCodeViewer > div > pre").replaceWith(htmlSourcePreElement);
+        jQuery("#ComponentLibrary-HtmlCodeViewer > div > pre").replaceWith(htmlSourcePreElement);
         prettyPrint();
     }
 
-    jQuery("div#ComponentLibrary-HtmlCodeViewer").show();
+    jQuery("#ComponentLibrary-HtmlCodeViewer").show();
 }
 
 /**
@@ -79,7 +79,7 @@ function setupExhibitHandlers() {
         //main source code viewer
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         if (source != null && source.length) {
-            jQuery("div#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+            jQuery("#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
         }
 
         showAdditionalSource(tabIndex);
@@ -91,20 +91,20 @@ function showAdditionalSource(tabIndex) {
     //additional source code viewers
     var additionalSource1 = jQuery("#demo-additionalExhibitSource1 > pre[data-index='" + tabIndex + "']");
     if (additionalSource1 != null && additionalSource1.length) {
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer1 > div > pre").replaceWith(jQuery(additionalSource1)[0].outerHTML);
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer1").show();
+        jQuery("#ComponentLibrary-AdditionalCodeViewer1 > div > pre").replaceWith(jQuery(additionalSource1)[0].outerHTML);
+        jQuery("#ComponentLibrary-AdditionalCodeViewer1").show();
     }
     else {
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer1").hide();
+        jQuery("#ComponentLibrary-AdditionalCodeViewer1").hide();
     }
 
     var additionalSource2 = jQuery("#demo-additionalExhibitSource2 > pre[data-index='" + tabIndex + "']");
     if (additionalSource2 != null && additionalSource2.length) {
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer2 > div > pre").replaceWith(jQuery(additionalSource2)[0].outerHTML);
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer2").show();
+        jQuery("#ComponentLibrary-AdditionalCodeViewer2 > div > pre").replaceWith(jQuery(additionalSource2)[0].outerHTML);
+        jQuery("#ComponentLibrary-AdditionalCodeViewer2").show();
     }
     else {
-        jQuery("div#ComponentLibrary-AdditionalCodeViewer2").hide();
+        jQuery("#ComponentLibrary-AdditionalCodeViewer2").hide();
     }
 }
 
@@ -113,7 +113,7 @@ function showAdditionalSource(tabIndex) {
  * so they appear active
  */
 function linkSelection() {
-    var viewDiv = jQuery("div.uif-formView");
+    var viewDiv = jQuery("[data-role='View']");
     if (jQuery(viewDiv).is(".demo-componentLibView") || jQuery(viewDiv).is(".demo-componentLibHome")) {
         var viewId = viewDiv.attr("id");
         var link = jQuery("#" + kradVariables.NAVIGATION_ID).find("a[href*='" + viewId + "']");
@@ -156,16 +156,17 @@ function handleTabSwap(control) {
 function showLibraryNav() {
 
     if (jQuery("#Uif-Navigation").is(":hidden")) {
-        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width:'675px'}, 25, function () {
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "scroll");
+        jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").animate({width:'675px'}, 25, function () {
+            jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").css("overflow-y", "hidden");
+            jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").css("overflow-x", "scroll");
         });
-        jQuery(".uif-pageContentWrapper").animate({width:'700px', marginLeft: '256px'}, 25);
+        jQuery("[data-role='Page']").animate({width:'700px', marginLeft: '256px'}, 25);
 
-        jQuery("#Uif-Navigation").css("width", "0");
-        jQuery("#Uif-Navigation").show();
-        jQuery("#Uif-Navigation").addClass("force-show");
-        jQuery("#Uif-Navigation").animate({width:'220px'}, 300, function () {
+        var nav = jQuery("#Uif-Navigation");
+        nav.css("width", "0");
+        nav.removeClass("force-hide");
+        nav.addClass("force-show");
+        nav.animate({width:'220px'}, 300, function () {
             jQuery("#ComponentLibrary-ShowNavLink").text("<< Close Library Navigation");
         });
     }
@@ -173,14 +174,15 @@ function showLibraryNav() {
 
         jQuery("#Uif-Navigation").animate({width:'1px'}, {duration:300, queue:false, complete:function () {
             jQuery("#ComponentLibrary-ShowNavLink").text(">> Show Library Navigation");
-            jQuery("#Uif-Navigation").removeClass("force-show");
-            jQuery("#Uif-Navigation").hide();
+            var nav = jQuery("#Uif-Navigation");
+            nav.removeClass("force-show");
+            nav.addClass("force-hide");
         }});
 
-        jQuery(".uif-pageContentWrapper").animate({width:'940px', marginLeft: '20px'}, 425);
-        jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").animate({width:'916px'}, 450, function () {
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-y", "hidden");
-            jQuery(".demo-noTabs > div.ui-tabs > div.ui-tabs-panel").css("overflow-x", "hidden");
+        jQuery("[data-role='Page']").animate({width:'940px', marginLeft: '20px'}, 425);
+        jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").animate({width:'916px'}, 450, function () {
+            jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").css("overflow-y", "hidden");
+            jQuery(".demo-noTabs > div.ui-tabs > [data-type='TabWrapper']").css("overflow-x", "hidden");
         });
 
     }

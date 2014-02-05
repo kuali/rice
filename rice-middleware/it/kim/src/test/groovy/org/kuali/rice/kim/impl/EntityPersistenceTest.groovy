@@ -22,6 +22,7 @@ import org.kuali.rice.kim.impl.identity.name.EntityNameBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory
+import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
  * Tests persisting Entity objects in order to verify ORM mappings
@@ -30,7 +31,7 @@ class EntityPersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_entity() {
         EntityBo entity = Factory.make(EntityBo)
-        boService.save(entity)
+        boService.save(entity, PersistenceOption.FLUSH)
 
         // assert entity row
         assertRow(standard_fields(entity) + [ ENTITY_ID: entity.id ], "KRIM_ENTITY_T", "ENTITY_ID")
@@ -63,9 +64,9 @@ class EntityPersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_entityname() {
         EntityBo entity = Factory.make(EntityBo)
-        boService.save(entity)
+        entity = boService.save(entity, PersistenceOption.FLUSH)
         EntityNameBo name = Factory.make(EntityNameBo, entity: entity)
-        boService.save(name)
+        name = boService.save(name, PersistenceOption.FLUSH)
 
         assertRow(standard_fields(name) + [
             ENTITY_NM_ID: name.id,
@@ -78,7 +79,7 @@ class EntityPersistenceTest extends BoPersistenceTest {
             SUFFIX_NM: name.nameSuffixUnmasked,
             NOTE_MSG: name.noteMessage,
             NM_TYP_CD: name.nameType.code,
-            NM_CHNG_DT: toDbTimestamp(name.nameChangedDate),
+            NM_CHNG_DT: toDbTimestamp(name.nameChangedDate.millis),
             DFLT_IND: name.defaultValue ? "Y" : "N",
         ],
         "KRIM_ENTITY_NM_T", "ENTITY_NM_ID")
@@ -87,10 +88,10 @@ class EntityPersistenceTest extends BoPersistenceTest {
     @Test
     void test_save_entityaddress() {
         EntityBo entity = Factory.make(EntityBo)
-        boService.save(entity)
-        boService.save(Factory.make(EntityTypeContactInfoBo, entity: entity))
+        entity = boService.save(entity, PersistenceOption.FLUSH)
+        boService.save(Factory.make(EntityTypeContactInfoBo, entity: entity), PersistenceOption.FLUSH)
         EntityAddressBo addr = Factory.make(EntityAddressBo, entity: entity)
-        boService.save(addr)
+        addr = boService.save(addr, PersistenceOption.FLUSH)
         assertRow(standard_fields(addr) + [
             ENTITY_ADDR_ID: addr.id,
             ENTITY_ID: entity.id,
@@ -104,8 +105,8 @@ class EntityPersistenceTest extends BoPersistenceTest {
             POSTAL_CNTRY_CD: addr.countryCodeUnmasked,
             ADDR_TYP_CD: addr.addressTypeCode,
             ADDR_FMT: addr.addressFormat,
-            MOD_DT: toDbTimestamp(addr.modifiedDate),
-            VALID_DT: toDbTimestamp(addr.validatedDate),
+            MOD_DT: addr.modifiedTimestamp,
+            VALID_DT: addr.validatedTimestamp,
             VALID_IND: addr.validated ? "Y" : "N",
             NOTE_MSG: addr.noteMessage,
             CITY: addr.cityUnmasked,

@@ -33,7 +33,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -378,11 +378,11 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         Object targetPropertyValue = null;
         boolean sourceTargetPropertyValuesSame = true;
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributeDefinitions) {
-            sourcePropertyValue = DataObjectUtils.getPropertyValue(businessObject,
+            sourcePropertyValue = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(
                     primitiveAttributeDefinition.getSourceName());
             if (currentInstanceExternalizableBO != null) {
-                targetPropertyValue = DataObjectUtils.getPropertyValue(currentInstanceExternalizableBO,
-                        primitiveAttributeDefinition.getTargetName());
+                targetPropertyValue = KradDataServiceLocator.getDataObjectService().wrap(currentInstanceExternalizableBO).getPropertyValueNullSafe(
+                    primitiveAttributeDefinition.getTargetName());
             }
             if (sourcePropertyValue == null) {
                 return null;
@@ -425,7 +425,7 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         Map<String, Object> fieldValuesInEBO = new HashMap<String, Object>();
         Object sourcePropertyValue;
         for (PrimitiveAttributeDefinition primitiveAttributeDefinition : primitiveAttributeDefinitions) {
-            sourcePropertyValue = DataObjectUtils.getPropertyValue(businessObject,
+            sourcePropertyValue = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(
                     primitiveAttributeDefinition.getSourceName());
             if (sourcePropertyValue == null) {
                 return null;

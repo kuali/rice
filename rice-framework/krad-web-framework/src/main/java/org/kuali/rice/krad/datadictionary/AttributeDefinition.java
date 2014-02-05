@@ -24,7 +24,6 @@ import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.control.ControlDefinition;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatterLiteral;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -44,6 +43,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
@@ -412,7 +412,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param propertyEditorClass
      */
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
-        this.propertyEditor = DataObjectUtils.newInstance(propertyEditorClass);
+        this.propertyEditor = KRADUtils.createNewObjectFromClass(propertyEditorClass);
     }
 
     /**
@@ -760,7 +760,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @param optionsFinderClass
      */
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
-        this.optionsFinder = DataObjectUtils.newInstance(optionsFinderClass);
+        this.optionsFinder = KRADUtils.createNewObjectFromClass(optionsFinderClass);
     }
 
     public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {

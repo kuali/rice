@@ -51,6 +51,11 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
         waitAndClickByName("booleanField1");
         assertIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
+        waitAndClickByName("booleanField1");
+        assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
+        jiraAwareTypeByName("inputField2", "show");
+        waitAndClickByLinkText("Documentation");
+        assertIsVisibleByXpath("//input[@name='inputField3']","Not Visible");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureAjaxRetrieval() throws Exception {
@@ -72,8 +77,8 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     
     protected void testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching() throws Exception {
     	waitAndClickByLinkText("Show Field Through Matching");
-    	assertElementPresentByXpath("//input[@name='inputField7' and @disabled]");
-    	assertElementPresentByXpath("//input[@name='inputField8' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='inputField7' and @disabled]");
+//    	assertElementPresentByXpath("//input[@name='inputField8' and @disabled]");
     	waitAndTypeByName("inputField6","A");
     	waitAndClickByLinkText("Documentation");
     	waitForElementPresentByXpath("//input[@name='inputField7']");
@@ -176,14 +181,26 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
+    @Test
+    public void testClientResonsivenessProgressiveDisclosureConditionalRefreshBookmark() throws Exception {
+        testClientResonsivenessProgressiveDisclosureConditionalRefresh();
+        passed();
+    }
+
+    @Test
+    public void testClientResonsivenessProgressiveDisclosureConditionalRefreshNav() throws Exception {
+        testClientResonsivenessProgressiveDisclosureConditionalRefresh();
+        passed();
+    }
+
     private void testClientResponsivenessProgressiveDisclosureAll() throws Exception {
+        testClientResponsivenessProgressiveDisclosure();
     	testClientResponsivenessProgressiveDisclosureAjaxRetrieval();
         testClientResponsivenessProgressiveDisclosureRefreshWhenShown();
-        testClientResponsivenessProgressiveDisclosure();
-        testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching();
         testClientResonsivenessProgressiveDisclosureofGroup();
-        testClientResonsivenessProgressiveDisclosureConditionalRefresh();
         testClientResonsivenessProgressiveDisclosureRefreshBasedOnTimer();
+        testClientResonsivenessProgressiveDisclosureShowFieldThroughMatching();
+//        testClientResonsivenessProgressiveDisclosureConditionalRefresh();
 //        testClientResonsivenessProgressiveDisclosureCollectionWithGroupRefresh();
 //        testClientResonsivenessProgressiveDisclosureConditionalOptions();
     }

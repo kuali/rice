@@ -23,7 +23,7 @@ import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
 import java.util.ArrayList;
@@ -77,7 +77,8 @@ public class RoleInquirableImpl extends KualiInquirableImpl {
 			List<String> primaryKeys = new ArrayList<String>();
 			primaryKeys.add("code");
 			NamespaceBo parameterNamespace = new NamespaceBo();
-			parameterNamespace.setCode((String) DataObjectUtils.getPropertyValue(businessObject, attributeName));
+            String code = (String) KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(attributeName);
+			parameterNamespace.setCode(code);
 			return getInquiryUrlForPrimaryKeys(NamespaceBo.class, parameterNamespace, primaryKeys, null);
 		} else if("kimRoleType.name".equals(attributeName)){
 			KimTypeBo kimType = new KimTypeBo();

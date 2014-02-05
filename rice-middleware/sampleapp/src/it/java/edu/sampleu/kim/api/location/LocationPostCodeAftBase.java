@@ -16,6 +16,7 @@
 package edu.sampleu.kim.api.location;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -49,7 +50,16 @@ public abstract class LocationPostCodeAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "Postal Code";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.stateCode", "IN");
+        jiraAwareTypeByName("document.newMaintainableObject.cityName", "name" + uniqueString);
+    }
+
     public void testLocationPostCodeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         passed();

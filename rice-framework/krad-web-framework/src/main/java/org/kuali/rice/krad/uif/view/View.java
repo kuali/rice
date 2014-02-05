@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
+import org.kuali.rice.krad.uif.element.MetaTag;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -71,6 +72,7 @@ import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,6 +163,8 @@ public class View extends ContainerBase {
 
     private List<String> additionalScriptFiles;
     private List<String> additionalCssFiles;
+    private List<HeadLink> additionalHeadLinks;
+    private List<MetaTag> additionalMetaTags;
     private boolean useLibraryCssClasses;
 
     private ViewType viewTypeName;
@@ -223,6 +227,8 @@ public class View extends ContainerBase {
 
         additionalScriptFiles = Collections.emptyList();
         additionalCssFiles = Collections.emptyList();
+        additionalHeadLinks = Collections.emptyList();
+        additionalMetaTags = Collections.emptyList();
         objectPathToConcreteClassMapping = Collections.emptyMap();
         viewRequestParameters = Collections.emptyMap();
         expressionVariables = Collections.emptyMap();
@@ -232,6 +238,8 @@ public class View extends ContainerBase {
         items = Collections.emptyList();
         viewTemplates = new LifecycleAwareList<String>(this);
     }
+
+
 
     /**
      * The following initialization is performed:
@@ -1112,6 +1120,54 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Declares additional link tags that should be included with the
+     * <code>View</code> in the <head></head>. These files are brought into the HTML page along with
+     * common CSS files configured for the Rice application. Each entry should
+     * contain the path to the CSS file, either a relative path, path from web
+     * root, or full URI
+     * <p>
+     * e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
+     * 'http://my.edu/web/stacked-view.css'
+     * </p>
+     *
+     * @return headlink objects
+     */
+    @BeanTagAttribute(name = "additionalHeadLinks", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<HeadLink> getAdditionalHeadLinks() {
+        return additionalHeadLinks;
+    }
+
+    /**
+     * Setter for the List of additional <link> tags to included in the
+     * <head></head>
+     *
+     * @param additionalHeadLinks
+     */
+    public void setAdditionalHeadLinks(List<HeadLink> additionalHeadLinks) {
+
+        this.additionalHeadLinks = additionalHeadLinks;
+    }
+
+    /**
+     *
+     * @return   additionalMetaTags
+     */
+    @BeanTagAttribute(name = "additionalMetaTags", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<MetaTag> getAdditionalMetaTags() {
+        return additionalMetaTags;
+    }
+
+    /**
+     *
+     * @param additionalMetaTags
+     */
+    public void setAdditionalMetaTags(List<MetaTag> additionalMetaTags) {
+        this.additionalMetaTags = additionalMetaTags;
+    }
+
+
+
+    /**
      * True if the libraryCssClasses set on components will be output to their class attribute, false otherwise.
      *
      * @return true if using libraryCssClasses on components
@@ -1234,7 +1290,7 @@ public class View extends ContainerBase {
         checkMutable(true);
         this.viewHelperServiceClass = viewHelperServiceClass;
         if ((this.viewHelperService == null) && (this.viewHelperServiceClass != null)) {
-            viewHelperService = DataObjectUtils.newInstance(viewHelperServiceClass);
+            viewHelperService = KRADUtils.createNewObjectFromClass(viewHelperServiceClass);
         }
     }
 
@@ -1400,7 +1456,7 @@ public class View extends ContainerBase {
     public void setPresentationControllerClass(
             Class<? extends ViewPresentationController> presentationControllerClass) {
         checkMutable(true);
-        this.presentationController = DataObjectUtils.newInstance(presentationControllerClass);
+        this.presentationController = KRADUtils.createNewObjectFromClass(presentationControllerClass);
     }
 
     /**
@@ -1441,7 +1497,7 @@ public class View extends ContainerBase {
      */
     public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
         checkMutable(true);
-        this.authorizer = DataObjectUtils.newInstance(authorizerClass);
+        this.authorizer = KRADUtils.createNewObjectFromClass(authorizerClass);
     }
 
     /**
@@ -2268,6 +2324,14 @@ public class View extends ContainerBase {
 
         if (this.additionalScriptFiles != null) {
             viewCopy.setAdditionalScriptFiles(new ArrayList<String>(this.additionalScriptFiles));
+        }
+
+        if (this.additionalHeadLinks != null) {
+            viewCopy.setAdditionalHeadLinks(new ArrayList<HeadLink>(this.additionalHeadLinks));
+        }
+
+        if (this.additionalMetaTags != null) {
+            viewCopy.setAdditionalMetaTags(new ArrayList<MetaTag>(this.additionalMetaTags));
         }
 
         viewCopy.setUseLibraryCssClasses(this.useLibraryCssClasses);

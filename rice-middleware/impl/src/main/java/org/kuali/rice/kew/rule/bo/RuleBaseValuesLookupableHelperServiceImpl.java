@@ -31,11 +31,9 @@ import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.WorkflowRuleAttributeRows;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
-import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -51,7 +49,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -366,7 +364,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends AbstractRuleLooku
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
-                    prop = DataObjectUtils.getPropertyValue(element, col.getPropertyName());
+                    prop = KradDataServiceLocator.getDataObjectService().wrap(element).getPropertyValueNullSafe(col.getPropertyName());
                 }
 
                 // set comparator and formatter based on property type

@@ -42,53 +42,75 @@ public class DemoLayoutManagersGridLayoutAft extends WebDriverLegacyITBase {
     }
 
     protected void testLayoutManagersGridLayout() throws Exception {
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr/th/span");
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr/td/div/input");
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr[2]/th/span");
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr[2]/td/div/input");
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr[3]/th/span");
-       assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout']/tbody/tr[3]/td/div/input");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr/th/label");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr/td/div/input");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr[2]/th/label");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr[2]/td/div/input");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr[3]/th/label");
+       assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example1']/table/tbody/tr[3]/td/div/input");
     }
     
     protected void testLayoutManagersGridLayouMultipleColumns() throws Exception {
         selectByName("exampleShown","# of Columns");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/th/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/th/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/td/div/input[@name='inputField4']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/th[2]/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/th[2]/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example2']/table/tbody/tr/td[2]/div/input[@name='inputField5']");
     }
     
     protected void testLayoutManagersGridLayoutColumnSpan() throws Exception {
         selectByName("exampleShown","Column Span");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='2']/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='2']/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/td[@colspan='2']/div/input[@name='inputField8']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='1']/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='1']/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/td[@colspan='1']/div/input[@name='inputField9']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='1'][2]/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/th[@colspan='1'][2]/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example3']/table/tbody/tr/td[@colspan='1'][2]/div/input[@name='inputField10']");
     }
     
     protected void testLayoutManagersGridLayoutRenderTHColumn() throws Exception {
         selectByName("exampleShown","Render TH Column");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example4']/table/tbody/tr/td/span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example4']/table/tbody/tr/td/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example4']/table/tbody/tr/td/div/input[@name='inputField12']");
+    }
+    
+    protected void testLayoutManagersGridLayoutRowSpan() throws Exception {
+        selectByName("exampleShown","Row Span");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example5']/table/tbody/tr/td[@rowspan='2']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example5']/table/tbody/tr/td[@rowspan='1']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example5']/table/tbody/tr/td[@rowspan='3']");
+    }
+    
+    protected void testLayoutManagersGridLayoutFieldGroup() throws Exception {
+        selectByName("exampleShown","Field Group");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example6']/table/tbody/tr/td/label");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example6']/table/tbody/tr/td/div[@class='uif-horizontalFieldGroup']");
+    }
+    
+    protected void testLayoutManagersGridLayoutNestedLayout() throws Exception {
+        selectByName("exampleShown","Nested Layout");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example7']/table/tbody/tr/th[@class='uif-gridLayoutCell']/div/table");
+        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example7']/table/tbody/tr/td[@class='uif-gridLayoutCell']");
     }
     
     @Test
     public void testLayoutManagersGridLayoutBookmark() throws Exception {
-        testLayoutManagersGridLayout();
-        testLayoutManagersGridLayouMultipleColumns();
-        testLayoutManagersGridLayoutColumnSpan();
-        testLayoutManagersGridLayoutRenderTHColumn();
-        passed();
+    	testLayoutManagersGridLayoutAll();
     }
 
     @Test
     public void testLayoutManagersGridLayoutNav() throws Exception {
-        testLayoutManagersGridLayout();
+    	testLayoutManagersGridLayoutAll();
+    }  
+    
+    private void testLayoutManagersGridLayoutAll() throws Exception {
+    	testLayoutManagersGridLayout();
         testLayoutManagersGridLayouMultipleColumns();
         testLayoutManagersGridLayoutColumnSpan();
         testLayoutManagersGridLayoutRenderTHColumn();
+        testLayoutManagersGridLayoutRowSpan();
+        testLayoutManagersGridLayoutFieldGroup();
+        testLayoutManagersGridLayoutNestedLayout();
         passed();
-    }  
+    }
 }

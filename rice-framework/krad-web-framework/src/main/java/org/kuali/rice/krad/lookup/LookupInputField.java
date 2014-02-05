@@ -83,7 +83,7 @@ public class LookupInputField extends InputFieldBase {
             if (multiValueControl.getRichOptions() != null) {
                 Message message = ComponentFactory.getMessage();
                 message.setMessageText(allOptionText);
-                message.setGenerateWrapperElement(false);
+                message.setRenderWrapperTag(false);
 
                 multiValueControl.getRichOptions().add(0, new KeyMessage("", allOptionText, message));
             }

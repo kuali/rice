@@ -40,35 +40,37 @@ public class CurrencyPatternConstraint extends FloatingPointPatternConstraint {
         StringBuilder regexString = new StringBuilder(super.getRegexString());
 
         NumberFormat formatter = getCurrencyInstanceUsingParseBigDecimal();
-        if (formatter instanceof DecimalFormat) {
-            String prefix = ((DecimalFormat) formatter).getPositivePrefix();
-            String suffix = ((DecimalFormat) formatter).getPositiveSuffix();
 
-            // Regex special characters need to be escaped if they are part of the prefix/suffix
-            if (prefix != null) {
-                StringBuilder escapedPrefix = new StringBuilder();
-                for (char c : prefix.toCharArray()) {
-                    if (UifConstants.JS_REGEX_SPECIAL_CHARS.indexOf(c) != -1) {
-                        escapedPrefix.append("\\");
-                    }
-                    escapedPrefix.append(c);
+        if (!(formatter instanceof DecimalFormat)) {
+            return regexString.toString();
+        }
+
+        String prefix = ((DecimalFormat) formatter).getPositivePrefix();
+        String suffix = ((DecimalFormat) formatter).getPositiveSuffix();
+
+        // Regex special characters need to be escaped if they are part of the prefix/suffix
+        if (prefix != null) {
+            StringBuilder escapedPrefix = new StringBuilder();
+            for (char c : prefix.toCharArray()) {
+                if (UifConstants.JS_REGEX_SPECIAL_CHARS.indexOf(c) != -1) {
+                    escapedPrefix.append("\\");
                 }
-
-                regexString.insert(0, "(" + escapedPrefix + ")?");
+                escapedPrefix.append(c);
             }
 
-            if (suffix != null) {
-                StringBuilder escapedSuffix = new StringBuilder();
-                for (char c : suffix.toCharArray()) {
-                    if (UifConstants.JS_REGEX_SPECIAL_CHARS.indexOf(c) != -1) {
-                        escapedSuffix.append("\\");
-                    }
-                    escapedSuffix.append(c);
-                }
+            regexString.insert(0, "(" + escapedPrefix + ")?");
+        }
 
-                regexString.append("(" + escapedSuffix + ")?");
+        if (suffix != null) {
+            StringBuilder escapedSuffix = new StringBuilder();
+            for (char c : suffix.toCharArray()) {
+                if (UifConstants.JS_REGEX_SPECIAL_CHARS.indexOf(c) != -1) {
+                    escapedSuffix.append("\\");
+                }
+                escapedSuffix.append(c);
             }
 
+            regexString.append("(" + escapedSuffix + ")?");
         }
 
         return regexString.toString();

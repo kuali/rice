@@ -28,7 +28,6 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -527,7 +526,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
                     // the main principalId property on the main object would be null at this point
                     // but it is also unconditionally read only and not tested - checking that would
                     // require checking the relationships and be more complex than we want to get here
-                    String personProperty = DataObjectUtils.getNestedAttributePrefix(fieldName);
+                    String personProperty = ObjectUtils.getNestedAttributePrefix(fieldName);
                     if ( StringUtils.isNotBlank(personProperty) ) {
                         if ( StringUtils.isBlank( (String)ObjectUtils.getNestedValue(businessObject, personProperty+".entityId") ) ) {
                             String attributeLabel = dataDictionaryService.getAttributeLabel(businessObject.getClass(), fieldName);

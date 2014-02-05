@@ -189,6 +189,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String DOC_DESCRIPTION_XPATH ="//input[@id='document.documentHeader.documentDescription']";
 
     /**
+     * //div[@id='headerarea']/div/table/tbody/tr[1]/td[1]
+     */
+    public static final String DOC_INITIATOR_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[2]/td[1]";
+
+    /**
      * "//img[@alt='doc search']
      */
     public static final String DOC_SEARCH_XPATH = "//img[@alt='doc search']";
@@ -414,9 +419,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected WebDriver driver;
+
+    protected String namespaceCode = "KR-WKFLW";
+
     protected String user = "admin";
     protected int waitSeconds;
     protected String uiFramework = AutomatedFunctionalTestUtils.REMOTE_UIF_KNS;   // default to KNS
+
+    protected String uniqueString;
 
     public @Rule
     TestName testName = new TestName();
@@ -588,11 +598,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 waitAndClickLogoutIfPresent();
             } else {
                 System.out.println("Last AFT URL: " + driver.getCurrentUrl());
-                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true"))) {
-                    File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-                    FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
-                            System.getProperty("remote.driver.screenshot.filename",
-                            this.getClass().toString() + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true")) || screenshotSteps()) {
+                    screenshot();
                 }
             }
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
@@ -650,22 +657,44 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void impersonateUser(String user) throws InterruptedException {
         waitAndTypeByName(BACKDOOR_ID_TEXT,user);
+        jGrowl("Click Backdoor Login");
         waitAndClickByXpath(BACKDOOR_LOGIN_BUTTON_XPATH);
     }
 
-    /**
-     * @param adHocRecipients user, action option value
-     * @throws InterruptedException
-     */
-    protected void addAdHocRecipients(String[] adHocRecipients) throws InterruptedException {
-        addAdHocRecipients(new String[][] {adHocRecipients});
+    protected void addAdHocRecipientsGroup(String[] adHocRecipients) throws InterruptedException {
+        addAdHocRecipientsGroup(new String[][]{adHocRecipients});
+    }
+
+    protected void addAdHocRecipientsGroup(String[][] adHocRecipients) throws InterruptedException {
+        String today = getDateToday();
+        Calendar nextYearCal = Calendar.getInstance();
+        nextYearCal.add(Calendar.YEAR, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String nextYear = sdf.format(nextYearCal.getTime());
+
+        waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        for (int i = 0, s = adHocRecipients.length; i < s; i++) {
+            selectOptionByName("newAdHocRouteWorkgroup.actionRequested", adHocRecipients[i][1]);
+            waitAndTypeByName("newAdHocRouteWorkgroup.recipientName", adHocRecipients[i][0]);
+            waitAndTypeByName("newAdHocRouteWorkgroup.recipientNamespaceCode", adHocRecipients[i][2]);
+            WebDriverUtils.jGrowl(getDriver(), "Click Add Group", false, "Click Add Group");
+            waitAndClickByName("methodToCall.insertAdHocRouteWorkgroup");
+        }
     }
 
     /**
      * @param adHocRecipients user, action option value
      * @throws InterruptedException
      */
-    protected void addAdHocRecipients(String[][] adHocRecipients) throws InterruptedException {
+    protected void addAdHocRecipientsPerson(String[] adHocRecipients) throws InterruptedException {
+        addAdHocRecipientsPerson(new String[][]{adHocRecipients});
+    }
+
+    /**
+     * @param adHocRecipients user, action option value
+     * @throws InterruptedException
+     */
+    protected void addAdHocRecipientsPerson(String[][] adHocRecipients) throws InterruptedException {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
@@ -730,18 +759,25 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return true;
     }
 
-    protected void assertActionList(String docId, String actionListOptionValue) throws InterruptedException {
+    protected void assertActionList(String docId, String actionListOptionValue, String state) throws InterruptedException {
         selectTopFrame();
         waitAndClickActionList();
         selectFrameIframePortlet();
-        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
+        while (!waitForIsTextPresent(docId)) {
+            waitAndClickByLinkText("Next");
+        }
+        WebElement docIdTr = findElement(By.xpath("//table/tbody/tr/td/a[contains(text(), '" + docId + "')]/../.."));
+        assertTrue(docIdTr.getText() + " does not contain " + docId, docIdTr.getText().contains(docId));
+        assertTrue(docIdTr.getText() + " does not contain " + state, docIdTr.getText().contains(state));
+        assertTrue(docIdTr.getText() + " does not contain " + actionRequestLabelMap.get(actionListOptionValue), docIdTr.getText().contains(actionRequestLabelMap.get(actionListOptionValue)));
+//        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
         waitAndClickLinkContainingText(docId);
         selectChildWindow();
         waitAndClickByName(actionRequestButtonMap.get(actionListOptionValue));
 
         // Disapprove requires another step before checking outbox
         if ("D".equals(actionListOptionValue)) {
-            waitAndTypeByName("reason","blah");
+            waitAndTypeByName("reason","disapproved for AFT");
             jGrowl("Click yes button");
             waitAndClickByName("methodToCall.processAnswer.button0");
         } else if ("C".equals(actionListOptionValue)) {
@@ -754,18 +790,22 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void assertOutbox(String docId) throws InterruptedException {
         // find it in outbox
         waitAndClickLinkContainingText("Outbox");
+        while (!waitForIsTextPresent(docId)) {
+            waitAndClickByLinkText("Next");
+        }
         waitForTextPresent(docId);
 
-        // clear all items in the outbox
-        waitAndClickAllByName("outboxItems");
-        waitAndClickByName("methodToCall.removeOutboxItems");
+//        // clear all items in the outbox
+//        waitAndClickAllByName("outboxItems");
+//        waitAndClickByName("methodToCall.removeOutboxItems");
     }
 
     protected void assertAttributeClassRegexDoesntMatch(String field, String regex) throws InterruptedException {
         Thread.sleep(1000);
         String attribute = waitAndGetAttributeByName(field, "class");
         assertTrue("waitAndGetAttributeByName(" + field + ", \"class\") should not be null", attribute != null);
-        assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not", attribute.matches(regex));
+        assertFalse("attribute " + attribute + " matches regex " + regex + " and it should not", attribute.matches(
+                regex));
     }
 
     protected void assertAttributeClassRegexMatches(String field, String regex) throws InterruptedException {
@@ -800,6 +840,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocSearch(String docId, String docStatus) throws InterruptedException {
+        docSearch(docId);
+        waitForElementPresentByXpath(DOC_ID_XPATH_3);
+        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
+        assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
+    }
+
+    private void docSearch(String docId) throws InterruptedException {
         selectParentWindow();
         selectTopFrame();
         waitAndClickDocSearchTitle();
@@ -807,9 +854,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
-        waitForElementPresentByXpath(DOC_ID_XPATH_3);
-        assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
-        assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
+    }
+
+    protected void assertDocSearchNoResults(String docId) throws InterruptedException {
+        docSearch(docId);
+        waitForTextPresent("No values match this search.");
     }
 
     protected void assertFocusTypeBlurError(String field, String textToType) throws InterruptedException {
@@ -1196,6 +1245,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitIsVisibleByXpath(visibleLocator);
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
+    }
+
+    protected String getDescriptionBase() {
+        return this.getClass().toString().substring(this.getClass().toString().lastIndexOf(".") + 1,
+                this.getClass().toString().length()) +
+                "." + testMethodName + " description";
+    }
+
+    protected String getDescriptionUnique() {
+        if (uniqueString == null) {
+            uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        }
+        return getDescriptionBase() + " " + uniqueString;
     }
 
     /**
@@ -1605,6 +1667,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.get(url);
     }
 
+    public void screenshot() throws IOException {
+        if (driver instanceof TakesScreenshot) {
+            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
+                    System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
+                            + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
+        }
+    }
+
+    public boolean screenshotSteps() {
+        return "true".equals(System.getProperty("remote.driver.step.screenshot", "true"));
+    }
+
     protected void selectFrameIframePortlet() {
         selectFrame(IFRAMEPORTLET_NAME);
     }
@@ -1727,7 +1802,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.groupDescription", groupDescription);
 
         // Add Ad hoc Recipient
-        addAdHocRecipients(new String[]{"dev1", "F"});
+        addAdHocRecipientsPerson(new String[]{"dev1", "F"});
 
         // Add Ad hoc Workgroup
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -1780,7 +1855,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected String getDateTimeStampFormatted() {
         Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         return sdf.format(now);
     }
 
@@ -1916,10 +1991,28 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals(docId, findElement(By.xpath(DOC_ID_XPATH_2)).getText());
     }
 
+    protected String testCreateNew() throws InterruptedException {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        createNewEnterDetails();
+        return docId;
+    }
+
     protected void testCreateNewCancel() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        createNewEnterDetails();
         testCancelConfirmation();
+        assertDocSearchNoResults(docId);
+    }
+
+    private String verifyDocInitiated() throws InterruptedException {
+        String docId = waitForDocId();
+        assertEquals("INITIATED", waitForDocStatus());
+        assertEquals(getUserName(), waitForDocInitiator());
+        return docId;
     }
 
     protected List<String> testCreateNewParameter(String docId, String parameterName) throws Exception {
@@ -2478,6 +2571,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         waitAndClickButtonByText("submit");
         Thread.sleep(3000);
+        checkForDocError();
         checkForIncidentReport();
 
         //Close the Doc
@@ -2488,10 +2582,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(5000);
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         Thread.sleep(5000);
-        jGrowl("Is doc status enroute?");
-        assertEquals(DOC_STATUS_ENROUTE, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
+        jGrowl("Is doc status final?");
+        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
         driver.switchTo().defaultContent();
         findElement(By.name("imageField")).click();
         Thread.sleep(5000);
@@ -2513,7 +2608,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
         waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
         findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" + AutomatedFunctionalTestUtils.DTS);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" +
+                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars());
 
         jGrowl("Add Member kr");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
@@ -3155,29 +3251,45 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void createNewEnterDetails() throws InterruptedException {
-        // no-op overload to utilize
+        // overload to utilize
+        fail("createNewEnterDetails must be implemented by test class");
     }
 
-    protected String createNewTemplateMethod() throws InterruptedException {
-        waitAndCreateNew();
-        String docId = waitForDocId();
-
-        createNewEnterDetails();
-
-        // Ad Hoc Recipients with current user to test Action List
-        addAdHocRecipients(new String[]{getUserName(), "F"}); // FYI
-
-        waitAndClickSave();
-        waitAndClickSubmit();
-        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT);
-
-        // Action List
-        assertActionList(docId, "F"); // FYI
-
-        assertDocSearch(docId, DOC_STATUS_FINAL);
-        selectTopFrame();
-        return docId;
-    }
+//    protected String createNewTemplateMethod() throws InterruptedException {
+//        waitAndCreateNew();
+//        String docId = waitForDocId();
+//
+//        createNewEnterDetails();
+//
+//        // Ad Hoc Recipients with current user to test Action List
+//        addAdHocRecipientsPerson(new String[]{getUserName(), "F"}); // FYI
+//
+//        waitAndClickSave();
+//        waitAndClickSubmit();
+//        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT);
+//
+//        // Action List
+//        assertActionList(docId, "F", "ENROUTE"); // FYI
+//
+//        assertDocSearch(docId, DOC_STATUS_FINAL);
+//        selectTopFrame();
+//        return docId;
+//    }
+//
+//    protected String createNewTemplateMethodNoAction() throws InterruptedException {
+//        waitAndCreateNew();
+//        String docId = waitForDocId();
+//
+//        createNewEnterDetails();
+//
+//        waitAndClickSave();
+//        waitAndClickSubmit();
+//        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, CREATE_NEW_DOCUMENT_NOT_SUBMITTED_SUCCESSFULLY_MESSAGE_TEXT);
+//
+//        assertDocSearch(docId, DOC_STATUS_FINAL);
+//        selectTopFrame();
+//        return docId;
+//    }
 
     protected void waitAndClickActionList() throws InterruptedException {
         WebDriverUtils.jGrowl(driver, "Click Action List", false, "Click Action List");
@@ -4502,18 +4614,22 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickSearch() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH);
     }
 
     protected void waitAndClickSearch2() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH_2);
     }
 
     protected void waitAndClickSearch3() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_XPATH_3);
     }
 
     protected void waitAndClickSearchSecond() throws InterruptedException {
+        jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_SECOND);
     }
 
@@ -4522,6 +4638,18 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByXpath(DOC_ID_XPATH);
 
         return findElement(By.xpath(DOC_ID_XPATH)).getText();
+    }
+
+    protected String waitForDocInitiator() throws InterruptedException {
+        waitForElementPresentByXpath(DOC_INITIATOR_XPATH);
+
+        return findElement(By.xpath(DOC_INITIATOR_XPATH)).getText();
+    }
+
+    protected String waitForDocStatus() throws InterruptedException {
+        waitForElementPresentByXpath(DOC_STATUS_XPATH);
+
+        return findElement(By.xpath(DOC_STATUS_XPATH)).getText();
     }
 
     protected WebElement waitForElementPresent(By by) throws InterruptedException {

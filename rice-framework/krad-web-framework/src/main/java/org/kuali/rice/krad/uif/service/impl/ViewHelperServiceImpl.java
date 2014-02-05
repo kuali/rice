@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -66,6 +66,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.beans.PropertyAccessorUtils;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -383,7 +384,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                 "collectionObjectClass");
-        Object newLine = DataObjectUtils.newInstance(collectionObjectClass);
+        Object newLine = KRADUtils.createNewObjectFromClass(collectionObjectClass);
 
         List<Object> lineDataObjects = new ArrayList<Object>();
         lineDataObjects.add(newLine);
@@ -540,7 +541,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
             Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model, collectionPath);
-            collection = (Collection<Object>) DataObjectUtils.newInstance(collectionClass);
+            collection = (Collection<Object>) KRADUtils.createNewObjectFromClass(collectionClass);
             ObjectPropertyUtils.setPropertyValue(model, collectionPath, collection);
         }
 
@@ -567,7 +568,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 lineDataObject = moduleService.createNewObjectFromExternalizableClass(collectionObjectClass.asSubclass(
                         org.kuali.rice.krad.bo.ExternalizableBusinessObject.class));
             } else {
-                lineDataObject = DataObjectUtils.newInstance(collectionObjectClass);
+                lineDataObject = KRADUtils.createNewObjectFromClass(collectionObjectClass);
             }
 
             String[] fieldValues = StringUtils.splitByWholeSeparatorPreserveAllTokens(lineValue, ":");
@@ -1114,7 +1115,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 UifConstants.ComponentProperties.DEFAULT_VALUE)) {
             defaultValue = dataField.getExpressionGraph().get(UifConstants.ComponentProperties.DEFAULT_VALUE);
         } else if (dataField.getDefaultValueFinderClass() != null) {
-            ValueFinder defaultValueFinder = DataObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+            ValueFinder defaultValueFinder = KRADUtils.createNewObjectFromClass(dataField.getDefaultValueFinderClass());
 
             defaultValue = defaultValueFinder.getValue();
         } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
@@ -1165,7 +1166,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
         } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
             // refresh via data dictionary mapping
-            Object referenceObject = DataObjectUtils.getPropertyValue(parentObject, referenceObjectName);
+            Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(referenceObjectName);
             if (!(referenceObject instanceof PersistableBusinessObject)) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ". Class not of type PersistableBusinessObject");
@@ -1214,10 +1215,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             //ToDo: handle add line
 
-            if (DataObjectUtils.isNestedAttribute(reference)) {
-                String parentPath = DataObjectUtils.getNestedAttributePrefix(reference);
+            if (PropertyAccessorUtils.isNestedOrIndexedProperty(reference)) {
+                String parentPath = KRADUtils.getNestedAttributePrefix(reference);
                 Object parentObject = ObjectPropertyUtils.getPropertyValue(model, parentPath);
-                String referenceObjectName = DataObjectUtils.getNestedAttributePrimitive(reference);
+                String referenceObjectName = KRADUtils.getNestedAttributePrimitive(reference);
 
                 if (parentObject == null) {
                     LOG.warn("Unable to refresh references for " + referencesToRefresh +

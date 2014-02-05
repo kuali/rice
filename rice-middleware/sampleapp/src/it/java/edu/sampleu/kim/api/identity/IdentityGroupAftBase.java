@@ -49,7 +49,16 @@ public abstract class IdentityGroupAftBase extends AdminTmplMthdAftNavBase {
     protected String getLinkLocator() {
         return "Group";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.groupNamespace", namespaceCode);
+        jiraAwareTypeByName("document.groupName", "GroupName" + uniqueString);
+        jiraAwareTypeByName("member.memberId", "admin");
+        waitAndClickByName("methodToCall.addMember.anchorAssignees");
+    }
+
     public void testIdentityGroupBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

@@ -66,6 +66,7 @@ import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeUtils;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
@@ -1698,14 +1699,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
+                List<String> attributesForExactMatch = null;
                 try {
-                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                        copyRoleIds.remove(roleId);
-                        roleMemberBoList.addAll(getStoredRoleMembersForRoleIdsWithFilters(Collections.singletonList(roleId), principalId, groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
-                    }
+                    attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
                 } catch (Exception e) {
                     LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
+                }
+                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                    copyRoleIds.remove(roleId);
+                    roleMemberBoList.addAll(getStoredRoleMembersForRoleIdsWithFilters(Collections.singletonList(roleId), principalId, groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
                 }
             }
         }
@@ -1730,14 +1732,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : roleIds) {
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
             if (roleTypeService != null) {
+                List<String> attributesForExactMatch = null;
                 try {
-                    List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-                    if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-                        copyRoleIds.remove(roleId);
-                        roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
-                    }
+                    attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
                 } catch (Exception e) {
                     LOG.warn("Caught exception when attempting to invoke a role type service for role " + roleId, e);
+                }
+                if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                    copyRoleIds.remove(roleId);
+                    roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
                 }
             }
         }
@@ -2512,7 +2515,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected VersionedService<RoleTypeService> getVersionedRoleTypeService(KimType typeInfo) {
-        String serviceName = typeInfo.getServiceName();
+        QName serviceName = KimTypeUtils.resolveKimTypeServiceName(typeInfo.getServiceName());
         if (serviceName != null) {
             // default version since the base services have been available since then
             String version = CoreConstants.Versions.VERSION_2_0_0;
@@ -2521,11 +2524,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             try {
 
                 ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-                Endpoint endpoint = serviceBus.getEndpoint(QName.valueOf(serviceName));
+                Endpoint endpoint = serviceBus.getEndpoint(serviceName);
                 if (endpoint != null) {
                     version = endpoint.getServiceConfiguration().getServiceVersion();
                 }
-                KimTypeService service = (KimTypeService) GlobalResourceLoader.getService(QName.valueOf(serviceName));
+                KimTypeService service = GlobalResourceLoader.getService(serviceName);
                 if (service != null && service instanceof RoleTypeService) {
                     roleTypeService = (RoleTypeService) service;
                 } else {

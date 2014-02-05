@@ -85,7 +85,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertFalse(((Message) components.get(0)).isGenerateWrapperElement());
+        Assert.assertFalse(((Message) components.get(0)).isRenderWrapperTag());
         Assert.assertEquals("<b>Message Content</b>", ((Message) components.get(0)).getMessageText());
 
         //nested tags
@@ -340,7 +340,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertEquals("field1", ((InputField) components.get(1)).getPropertyName());
         Assert.assertTrue(components.get(2) instanceof Message);
         Assert.assertEquals("&nbsp;Message&nbsp;<b>text&nbsp;", ((Message) components.get(2)).getMessageText());
-        Assert.assertFalse(((Message) components.get(2)).isGenerateWrapperElement());
+        Assert.assertFalse(((Message) components.get(2)).isRenderWrapperTag());
         Assert.assertTrue(components.get(3) instanceof InputField);
         Assert.assertEquals("field2", ((InputField) components.get(3)).getPropertyName());
         Assert.assertTrue(components.get(4) instanceof Message);
@@ -519,7 +519,7 @@ public class RichMessageTest extends KRADTestCase {
         generateAndSetMessage("Message @{field1} text");
         components = message.getMessageComponentStructure();
         Assert.assertNull(components);
-        Assert.assertTrue(message.isGenerateWrapperElement());
+        Assert.assertTrue(message.isRenderWrapperTag());
         Assert.assertEquals("Message value text", message.getMessageText());
 
         //rich message wrapping
@@ -528,7 +528,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertFalse(((Message) components.get(0)).isGenerateWrapperElement());
+        Assert.assertFalse(((Message) components.get(0)).isRenderWrapperTag());
         Assert.assertEquals("Message <b>value</b> text", ((Message) components.get(0)).getMessageText());
 
         //spel value contains rich content
@@ -537,7 +537,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(1, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertFalse(((Message) components.get(0)).isGenerateWrapperElement());
+        Assert.assertFalse(((Message) components.get(0)).isRenderWrapperTag());
         Assert.assertEquals("Message <a href='http://www.kuali.org' target='_blank'>value2</a> text",
                 ((Message) components.get(0)).getMessageText());
 
@@ -547,7 +547,7 @@ public class RichMessageTest extends KRADTestCase {
         Assert.assertNotNull(components);
         Assert.assertEquals(2, components.size());
         Assert.assertTrue(components.get(0) instanceof Message);
-        Assert.assertFalse(((Message) components.get(0)).isGenerateWrapperElement());
+        Assert.assertFalse(((Message) components.get(0)).isRenderWrapperTag());
         Assert.assertEquals("Message text ", ((Message) components.get(0)).getMessageText());
         Assert.assertTrue(components.get(1) instanceof InputField);
         Assert.assertFalse(((InputField) components.get(1)).isRender());
@@ -566,7 +566,7 @@ public class RichMessageTest extends KRADTestCase {
         generateAndSetMessage("Message Content");
         components = message.getMessageComponentStructure();
         Assert.assertNull(components);
-        Assert.assertTrue(message.isGenerateWrapperElement());
+        Assert.assertTrue(message.isRenderWrapperTag());
         Assert.assertEquals("Message Content", message.getMessageText());
     }
 

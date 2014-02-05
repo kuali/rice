@@ -91,6 +91,52 @@ INSERT INTO KRIM_ROLE_MBR_T (MBR_ID,MBR_TYP_CD,OBJ_ID,ROLE_ID,ROLE_MBR_ID,VER_NB
   VALUES ('r4','R','d9ab94d8-7e6c-102c-97b6-ed716fdaf544','r6','r6r4',1)
 /
 
+-- Create role "r-campus" with members "p9", "r4"
+INSERT INTO KRIM_TYP_T(KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSPC_CD) 
+	VALUES('kt-campus', 'kt-campus', 1, 'Exact Match Campus Role Type', 'exactMatchCampusRoleTypeService', 'Y', 'AUTH_SVC_TEST2')
+/
+INSERT INTO KRIM_TYP_ATTR_T(KIM_TYP_ATTR_ID, OBJ_ID, VER_NBR, SORT_CD, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ACTV_IND) 
+	VALUES('kt-campus-campus', 'kt-campus-campus', 1, 'a', 'kt-campus', '12', 'Y')
+/
+INSERT INTO KRLC_CMP_T(CAMPUS_CD, CAMPUS_NM, OBJ_ID, ACTV_IND) 
+	VALUES('BL', 'Bloomington', 'BL', 'Y')
+/
+INSERT INTO KRLC_CMP_T(CAMPUS_CD, CAMPUS_NM, OBJ_ID, ACTV_IND) 
+	VALUES('FW', 'Fort Wayne', 'FW', 'Y')
+/
+
+INSERT INTO KRIM_ROLE_T (ACTV_IND,KIM_TYP_ID,NMSPC_CD,OBJ_ID,ROLE_ID,ROLE_NM,VER_NBR, DESC_TXT)
+  VALUES ('Y','kt-campus','AUTH_SVC_TEST2','r-campus','r-campus','Campus Reviewer',1, 'Campus Reviewer Test Role')
+/
+INSERT INTO KRIM_ROLE_MBR_T (MBR_ID,MBR_TYP_CD,OBJ_ID,ROLE_ID,ROLE_MBR_ID,VER_NBR)
+  VALUES ('p9','P','r-campus-p9','r-campus','r-campus-p9',1)
+/
+INSERT INTO KRIM_ROLE_MBR_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, ROLE_MBR_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) 
+	VALUES('r-campus-p9-BL', 'r-campus-p9-BL', 1, 'r-campus-p9', 'kt-campus', '12', 'BL')
+/
+INSERT INTO KRIM_ROLE_MBR_T (MBR_ID,MBR_TYP_CD,OBJ_ID,ROLE_ID,ROLE_MBR_ID,VER_NBR)
+  VALUES ('p3','P','r-campus-p3','r-campus','r-campus-p3',1)
+/
+INSERT INTO KRIM_ROLE_MBR_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, ROLE_MBR_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) 
+	VALUES('r-campus-p3-FW', 'r-campus-p3-FW', 1, 'r-campus-p3', 'kt-campus', '12', 'FW')
+/
+
+INSERT INTO KRIM_ROLE_T (ACTV_IND,KIM_TYP_ID,NMSPC_CD,OBJ_ID,ROLE_ID,ROLE_NM,VER_NBR, DESC_TXT)
+  VALUES ('Y','kt-campus','AUTH_SVC_TEST2','r-campus-2','r-campus-2','Campus Reviewer 2',1, 'Campus Reviewer 2 Test Role')
+/
+INSERT INTO KRIM_ROLE_MBR_T (MBR_ID,MBR_TYP_CD,OBJ_ID,ROLE_ID,ROLE_MBR_ID,VER_NBR)
+  VALUES ('r4','R','r-campus-2-r4','r-campus-2','r-campus-2-r4',1)
+/
+INSERT INTO KRIM_ROLE_MBR_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, ROLE_MBR_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) 
+	VALUES('r-campus-2-r4-BL', 'r-campus-2-r4-BL', 1, 'r-campus-2-r4', 'kt-campus', '12', 'BL')
+/
+INSERT INTO KRIM_ROLE_MBR_T (MBR_ID,MBR_TYP_CD,OBJ_ID,ROLE_ID,ROLE_MBR_ID,VER_NBR)
+  VALUES ('r1','R','r-campus-2-r1','r-campus-2','r-campus-2-r1',1)
+/
+INSERT INTO KRIM_ROLE_MBR_ATTR_DATA_T(ATTR_DATA_ID, OBJ_ID, VER_NBR, ROLE_MBR_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL) 
+	VALUES('r-campus-2-r1-BL', 'r-campus-2-r1-BL', 1, 'r-campus-2-r1', 'kt-campus', '12', 'FW')
+/
+
 -- Create delegation "d1" with members "p7", "r4"
 
 INSERT INTO KRIM_DLGN_T (DLGN_ID,VER_NBR,OBJ_ID,ROLE_ID,ACTV_IND,KIM_TYP_ID,DLGN_TYP_CD)

@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -47,6 +48,14 @@ public abstract class ConfigParameterTypeAftBase extends AdminTmplMthdAftNavBase
     protected String getLinkLocator() {
         return "Parameter Type";
     }
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(6));
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+    }
+
 
     public void testConfigParameterTypeBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();

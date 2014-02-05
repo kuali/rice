@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=cd45c8fc-586b-4174-866f-e2abf5171a49&cacheKey=qlapnzravopc76l0ypny3gjt9b&pageId=UifCompView-Page2#UifCompView-Page2";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page2#UifCompView-Page2";
     
     @Override
     protected String getBookmarkUrl() {
@@ -65,8 +65,8 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup2' and @class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     	
     	//Message View
-    	assertElementPresentByXpath("//span[@id='UifCompView-MessageField1_span']");
-    	assertElementPresentByXpath("//span[@id='UifCompView-MessageFieldWithExpression_span']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-MessageFields']//p[@id='UifCompView-MessageField1']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-MessageFields']//p[@id='UifCompView-MessageFieldWithExpression']");
     	
     	//Syntax Highliter
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter1']/div[@class='uif-syntaxHighlighter']");
@@ -106,17 +106,18 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//ul[@id='UifCompView-OtherField1_tabList']/li/a[contains(text(),'TextArea Control Options')]");
     
     	//Basic String Data tree and Tree with Data Group
-    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField2_tree']/ul/li/a/span[contains(text(),'Item 1 ')]");
+    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField2_tree']/ul/li/a/p[contains(text(),'Item 1 ')]");
     	assertElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     
     	//Scrollable Groups
-    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroups']/div[@style='height: 100px;overflow: auto;']");
-    	assertElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup1' and @style='width: 30%;height: 100px;overflow: auto;']");
+    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4' and @style='width: 30%;height: 100px;overflow: auto;']");
     }
 
-    private void testAttributeSecurity() {//Attribute Security
+    private void testAttributeSecurity() throws InterruptedException { //Attribute Security
         boolean fullMaskPassed = false;
         String fullMaskedError = "";
+        waitForTextPresent("*********"); // The Input Fields page use SecretInfo555 as a data key, so wait to make sure the Other Fields page has loaded
         if (isTextPresent("SecretInfo555")) {
             fullMaskedError = "SecretInfo555 not masked!";
         } else {

@@ -53,7 +53,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.DataObjectUtils;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
@@ -336,7 +336,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                     prop = ((GroupBo)element).getGroupAttributeValueById(id);
                 }
                 if (prop == null) {
-                    prop = DataObjectUtils.getPropertyValue(element, col.getPropertyName());
+                    prop = (String) KradDataServiceLocator.getDataObjectService().wrap(element).getPropertyValueNullSafe(col.getPropertyName());
                 } else {
                 }
 

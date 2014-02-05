@@ -55,6 +55,7 @@ public class DemoLookUpConditionalResultsAft extends WebDriverLegacyITBase {
      *  Date Created column
      */
     private static final String DATE_CREATED_COLUMN_NAME = "Date Created";
+    private static final String DATA_TABLE_TH = "div.dataTables_wrapper thead th";
 
     @Override
     public String getBookmarkUrl() {
@@ -72,26 +73,26 @@ public class DemoLookUpConditionalResultsAft extends WebDriverLegacyITBase {
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        Assert.assertEquals(2, getCssCount("div#uLookupResults thead th"));
-        assertElementPresent("div#uLookupResults thead th:nth-child(1)");
+        Assert.assertEquals(2, getCssCount(DATA_TABLE_TH));
+        assertElementPresent(DATA_TABLE_TH + ":nth-child(1)");
 
         // Deep pretty sure this selector has changed too, but passes as the text isn't found since the selector isn't
-        assertTextNotPresent(ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(1) label",
+        assertTextNotPresent(ACCOUNT_NAME_COLUMN_NAME, DATA_TABLE_TH + ":nth-child(1)" + " label",
                 ACCOUNT_NAME_COLUMN_NAME + " column not present");
 
         // Case 2 - Empty research shows all columns
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(3000);
-        Assert.assertEquals(4, getCssCount("div#uLookupResults thead th"));
-        assertElementPresent("div#uLookupResults thead th:nth-child(2)");
-        assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, "div#uLookupResults thead th:nth-child(2) label",
+        Assert.assertEquals(4, getCssCount(DATA_TABLE_TH));
+        assertElementPresent(DATA_TABLE_TH + ":nth-child(2)");
+        assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, DATA_TABLE_TH + ":nth-child(2) label",
                 TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME + " column not present");
-        assertElementPresent("div#uLookupResults thead th:nth-child(3)");
-        assertTextPresent(ACCOUNT_NAME_COLUMN_NAME, "div#uLookupResults thead th:nth-child(3) label",
+        assertElementPresent(DATA_TABLE_TH + ":nth-child(3)");
+        assertTextPresent(ACCOUNT_NAME_COLUMN_NAME, DATA_TABLE_TH + ":nth-child(3) label",
                 ACCOUNT_NAME_COLUMN_NAME + " column not present");
-        assertElementPresent("div#uLookupResults thead th:nth-child(4)");
-        assertTextPresent(DATE_CREATED_COLUMN_NAME, "div#uLookupResults thead th:nth-child(4) label",
+        assertElementPresent(DATA_TABLE_TH + ":nth-child(4)");
+        assertTextPresent(DATE_CREATED_COLUMN_NAME, DATA_TABLE_TH + ":nth-child(4) label",
                 DATE_CREATED_COLUMN_NAME + " column not present");
     }
 

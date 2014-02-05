@@ -35,5 +35,6 @@ public class XmlIngesterUserList extends XmlIngesterAftBase {
     @Test
     public void testXmlIngesterUserListNav() throws Exception {
         super.testXmlIngesterUserList();
+        passed();
     }
 }

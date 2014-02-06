@@ -82,32 +82,32 @@
                     p:actionLabel="Change to State 4"/>
               <bean parent="Uif-CheckFormAction"/>
               <bean parent="Uif-StateBased-RequiredInstructionsMessage"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="state" p:label="State" p:readOnly="true"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1" p:constraintText="Required
+              <bean parent="Uif-InputField" p:propertyName="state" p:label="State" p:readOnly="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" p:constraintText="Required
                                         for state2 only">
                 <property name="simpleConstraint">
                   <bean parent="SimpleConstraint" p:required="true" p:states="state2"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2" p:constraintText="Required
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:constraintText="Required
                   for state2 and after">
                 <property name="simpleConstraint">
                   <bean parent="SimpleConstraint" p:required="true" p:states="state2+"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3" p:constraintText="Required
+              <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3" p:constraintText="Required
               for state1 through state2">
                 <property name="simpleConstraint">
                   <bean parent="SimpleConstraint" p:required="true" p:states="state1>state2"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 4" p:constraintText="Required
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4" p:constraintText="Required
                                   for state1 and state3">
                 <property name="simpleConstraint">
                   <bean parent="SimpleConstraint" p:required="true" p:states="state1,state3"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field5" p:label="Field 5"
+              <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 5"
                     p:constraintText="For state 1 and 2 max 50 characters, for state 3 max 25 characters, for
                     state4 and after 15 characters">
                 <property name="simpleConstraint">
@@ -121,7 +121,7 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field6" p:label="Field 6"
+              <bean parent="Uif-InputField" p:propertyName="field6" p:label="Field 6"
                     p:constraintText="Alpha only, state4 and after only upperCase allowed">
                 <property name="validCharactersConstraint">
                   <bean parent="AlphaPatternConstraint" p:states="state1>state3">
@@ -133,7 +133,7 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field7" p:label="Field 8"
+              <bean parent="Uif-InputField" p:propertyName="field7" p:label="Field 8"
                     p:constraintText="AlphaNumeric only, state3 and after
                                         only Numeric allowed">
                 <property name="validCharactersConstraint">

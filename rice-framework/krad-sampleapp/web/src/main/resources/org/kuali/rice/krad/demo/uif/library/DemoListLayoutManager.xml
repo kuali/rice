@@ -42,7 +42,7 @@
           <property name="propertyName" value="groupedCollection1" />
           <property name="items">
             <list>
-              <bean id="Demo-ListLayoutManager-CollectionItem1" parent="Uif-MessageField"/>
+              <bean id="Demo-ListLayoutManager-CollectionItem1" parent="Uif-Message"/>
             </list>
           </property>
         </bean>

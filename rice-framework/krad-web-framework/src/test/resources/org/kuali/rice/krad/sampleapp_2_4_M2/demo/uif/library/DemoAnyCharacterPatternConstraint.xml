@@ -39,7 +39,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AnyCharacterPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Any printable character allowed (no whitespace)">
           <property name="validCharactersConstraint">
             <bean parent="AnyCharacterPatternConstraint"/>
@@ -56,7 +56,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AnyCharacterPatternConstraint-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Any printable character with whitespace allowed">
           <property name="validCharactersConstraint">
             <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>

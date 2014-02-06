@@ -52,7 +52,7 @@
                     <bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadBOAttachment"
                           p:ajaxSubmit="false"
-                          p:actionLabel="download attachment" p:title="download attachment"
+                          p:actionLabel="download attachment" p:headerText="download attachment"
                           p:disableBlocking="true"
                           p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
                       <property name="actionParameters">

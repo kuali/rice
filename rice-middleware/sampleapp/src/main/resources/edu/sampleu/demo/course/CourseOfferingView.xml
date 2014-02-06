@@ -132,9 +132,9 @@
           <property name="items">
             <list>
               <bean parent="GenericTextField" p:propertyName="section" p:label="Section" p:readOnly="true"
-                    p:labelPlacement="LEFT" p:fieldLabel.cssClasses="labelLeft" p:cssClasses="font-light"/>
+                    p:fieldLabel.cssClasses="labelLeft" p:cssClasses="font-light"/>
               <bean parent="GenericTextField" p:propertyName="registrationId" p:label="Registration ID"
-                    p:readOnly="true" p:fieldLabel.cssClasses="labelLeft" p:labelPlacement="LEFT"
+                    p:readOnly="true" p:fieldLabel.cssClasses="labelLeft"
                     p:cssClasses="font-light"/>
             </list>
           </property>
@@ -176,7 +176,7 @@
                   <list>
                     <bean parent="Uif-Message" p:messageText="System Calculated Information"
                           p:cssClasses="font-lightBold"/>
-                    <bean parent="Uif-HorizontalFieldGroup" p:label="Weekly Contact Hours" p:labelPlacement="TOP">
+                    <bean parent="Uif-HorizontalFieldGroup" p:label="Weekly Contact Hours">
                       <property name="items">
                         <list>
                           <bean parent="GenericTextFieldSmall" p:propertyName="weeklyInClassHours" p:label="In Class"/>
@@ -186,7 +186,7 @@
                         </list>
                       </property>
                     </bean>
-                    <bean parent="Uif-HorizontalFieldGroup" p:label="Term Contact Hours" p:labelPlacement="TOP">
+                    <bean parent="Uif-HorizontalFieldGroup" p:label="Term Contact Hours">
                       <property name="items">
                         <list>
                           <bean parent="GenericTextFieldSmall" p:propertyName="termInClassHours" p:label="In Class"/>

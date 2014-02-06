@@ -84,7 +84,7 @@
                 <property name="instructionalText" value="Fields are direct children of this section"/>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField1" p:label="Field 1">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField1" p:label="Field 1">
                       <!--<property name="help">
                         <bean parent="Uif-Help">
                           <property name="externalHelpUrl" value="http://www.kuali.org"/>
@@ -95,13 +95,13 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField2" p:label="Field 2">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField2" p:label="Field 2">
                       <property name="control">
                         <bean parent="Uif-TextControl"/>
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField3" p:label="Field 3">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField3" p:label="Field 3">
                       <property name="control">
                         <bean parent="Uif-DropdownControl"/>
                       </property>
@@ -110,7 +110,7 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField4" p:label="Field 4">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField4" p:label="Field 4">
                       <property name="control">
                         <bean parent="Uif-MultiSelectControl"/>
                       </property>
@@ -119,7 +119,7 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField5" p:label="Radio 1"
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField5" p:label="Radio 1"
                           p:width="auto"
                           p:instructionalText="RadioGroupControl using an optionsFinder">
                       <property name="control">
@@ -130,7 +130,7 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="booleanField1" p:label="Checkbox"
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="booleanField1" p:label="Checkbox"
                           p:defaultValue="true"
                           p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
                       <property name="control">
@@ -138,7 +138,7 @@
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField6" p:label="Checkboxes 1"
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField6" p:label="Checkboxes 1"
                           p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
                       <property name="control">
                         <bean parent="Uif-VerticalCheckboxesControl"/>
@@ -161,14 +161,14 @@
                 </property>-->
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField7" p:label="Field 5">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField7" p:label="Field 5">
                       <property name="control">
                         <bean parent="Uif-TextAreaControl">
                         </bean>
                       </property>
                     </bean>
 
-                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField8" p:label="Field 6">
+                    <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField8" p:label="Field 6">
                       <property name="control">
                         <bean parent="Uif-TextControl"/>
                       </property>

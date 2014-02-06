@@ -86,8 +86,6 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "inputField-bean", parent = "Uif-InputField"),
-        @BeanTag(name = "inputField-labelTop-bean", parent = "Uif-InputField-LabelTop"),
-        @BeanTag(name = "inputField-labelRight-bean", parent = "Uif-InputField-LabelRight"),
         @BeanTag(name = "checkboxInputField-bean", parent = "Uif-CheckboxInputField"),
         @BeanTag(name = "dialogResponse-bean", parent = "Uif-DialogResponse"),
         @BeanTag(name = "dialogExplanation-bean", parent = "Uif-DialogExplanation"),

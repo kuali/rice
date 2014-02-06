@@ -136,9 +136,9 @@
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="[strong]Document Info[/strong]"/>
-        <bean parent="Uif-MessageField" p:label="Doc Nbr" p:messageText="2743"/>
-        <bean parent="Uif-MessageField" p:label="Initiator" p:messageText="thrclark"/>
-        <bean parent="Uif-MessageField" p:label="Status" p:messageText="In Progress"/>
+        <bean parent="Uif-Message" p:label="Doc Nbr" p:messageText="2743"/>
+        <bean parent="Uif-Message" p:label="Initiator" p:messageText="thrclark"/>
+        <bean parent="Uif-Message" p:label="Status" p:messageText="In Progress"/>
         <ref bean="LabsProposal-MoreDocInfo"/>
       </list>
     </property>
@@ -151,21 +151,21 @@
             p:headerText="Document Info">
         <property name="items">
           <list>
-            <bean parent="Uif-MessageField" p:label="Doc Nbr" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Doc Nbr" p:fieldLabel.renderColon="false"
                   p:messageText="2743"/>
             <bean parent="Uif-LinkField" p:href="#" p:label="Initiator" p:fieldLabel.renderColon="false"
                   p:linkText="thrclark"/>
-            <bean parent="Uif-MessageField" p:label="Status" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Status" p:fieldLabel.renderColon="false"
                   p:messageText="In Progress"/>
-            <bean parent="Uif-MessageField" p:label="PI" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="PI" p:fieldLabel.renderColon="false"
                   p:messageText="Ken Graves"/>
-            <bean parent="Uif-MessageField" p:label="Created" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Created" p:fieldLabel.renderColon="false"
                   p:messageText="04:27pm 07/09/2013"/>
-            <bean parent="Uif-MessageField" p:label="Updated" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Updated" p:fieldLabel.renderColon="false"
                   p:messageText="12:22pm 07/12/2013"/>
-            <bean parent="Uif-MessageField" p:label="Proposal Nbr" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Proposal Nbr" p:fieldLabel.renderColon="false"
                   p:messageText="#23533"/>
-            <bean parent="Uif-MessageField" p:label="Sponsor Name" p:fieldLabel.renderColon="false"
+            <bean parent="Uif-Message" p:label="Sponsor Name" p:fieldLabel.renderColon="false"
                   p:messageText="NIH"/>
           </list>
         </property>
@@ -383,7 +383,7 @@
         <bean parent="Uif-CssGridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+              <bean parent="Uif-InputField" p:fieldLabel.renderColon="true"
                     p:propertyName="field10" p:label="Search for">
                 <property name="control">
                   <bean parent="Uif-VerticalRadioControl">
@@ -511,7 +511,7 @@
         <bean parent="Uif-CssGridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+              <bean parent="Uif-InputField" p:fieldLabel.renderColon="true"
                     p:propertyName="field20" p:label="Assign a role">
                 <property name="control">
                   <bean parent="Uif-VerticalRadioControl">

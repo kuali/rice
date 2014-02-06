@@ -37,9 +37,9 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Space-Example1 start-->
-        <bean parent="Uif-MessageField" p:messageText="Before space"/>
+        <bean parent="Uif-Message" p:messageText="Before space"/>
         <bean parent="Uif-Space"/>
-        <bean parent="Uif-MessageField" p:messageText="After space"/>
+        <bean parent="Uif-Message" p:messageText="After space"/>
         <!-- ex:Demo-Space-Example1 end-->
       </list>
     </property>

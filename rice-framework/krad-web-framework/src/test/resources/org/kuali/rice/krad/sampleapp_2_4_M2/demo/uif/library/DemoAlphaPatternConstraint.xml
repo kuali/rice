@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Alpha only">
           <property name="validCharactersConstraint">
             <bean parent="AlphaPatternConstraint"/>
@@ -57,14 +57,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaPatternConstraint-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Alpha with whitespace allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaPatternConstraint" p:allowWhitespace="true"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField3"
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField3"
               p:constraintText="Alpha with commas, semi-colon, and colon allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaPatternConstraint" p:allowComma="true" p:allowSemiColon="true" p:allowColon="true"/>
@@ -80,7 +80,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaPatternConstraint-Example3 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField4"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField4"
               p:constraintText="Alpha with basic punctuation allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaWithBasicPunc"/>

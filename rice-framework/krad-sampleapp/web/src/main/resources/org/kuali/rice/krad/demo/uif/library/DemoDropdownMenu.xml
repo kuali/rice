@@ -188,14 +188,14 @@
             <bean parent="Uif-DropdownTable">
               <property name="items">
                 <list>
-                  <bean parent="Uif-MessageField" p:label="Doc Nbr" p:messageText="2743"/>
+                  <bean parent="Uif-Message" p:label="Doc Nbr" p:messageText="2743"/>
                   <bean parent="Uif-LinkField" p:href="#" p:label="Initiator" p:linkText="thrclark"/>
-                  <bean parent="Uif-MessageField" p:label="Status" p:messageText="In Progress"/>
-                  <bean parent="Uif-MessageField" p:label="PI" p:messageText="Ken Graves"/>
-                  <bean parent="Uif-MessageField" p:label="Created" p:messageText="04:27pm 07/09/2013"/>
-                  <bean parent="Uif-MessageField" p:label="Updated" p:messageText="12:22pm 07/12/2013"/>
-                  <bean parent="Uif-MessageField" p:label="Proposal Nbr" p:messageText="#23533"/>
-                  <bean parent="Uif-MessageField" p:label="Sponsor Name" p:messageText="NIH"/>
+                  <bean parent="Uif-Message" p:label="Status" p:messageText="In Progress"/>
+                  <bean parent="Uif-Message" p:label="PI" p:messageText="Ken Graves"/>
+                  <bean parent="Uif-Message" p:label="Created" p:messageText="04:27pm 07/09/2013"/>
+                  <bean parent="Uif-Message" p:label="Updated" p:messageText="12:22pm 07/12/2013"/>
+                  <bean parent="Uif-Message" p:label="Proposal Nbr" p:messageText="#23533"/>
+                  <bean parent="Uif-Message" p:label="Sponsor Name" p:messageText="NIH"/>
                 </list>
               </property>
             </bean>

@@ -47,7 +47,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DataField-Example1 start-->
-        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:labelPlacement="LEFT"  p:propertyName="dataField1"/>
+        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:propertyName="dataField1"/>
         <!-- ex:Demo-DataField-Example1 end-->
       </list>
     </property>
@@ -58,7 +58,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DataField-Example2 start-->
-        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:labelPlacement="TOP"  p:propertyName="dataField1"/>
+        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:propertyName="dataField1"/>
         <!-- ex:Demo-DataField-Example2 end-->
       </list>
     </property>
@@ -69,7 +69,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-DataField-Example3 start-->
-        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:labelPlacement="RIGHT"  p:propertyName="dataField1"/>
+        <bean parent="Uif-DataField" p:label="DataField 1" p:shortLabel="DF1" p:propertyName="dataField1"/>
         <!-- ex:Demo-DataField-Example3 end-->
       </list>
     </property>

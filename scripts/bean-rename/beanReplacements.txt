@@ -247,3 +247,9 @@ suppressActions,renderResultActions
 hideReturnLinks,renderReturnLink
 renderSearchButtons,renderCriteriaActions
 readOnlySearchFields,readOnlyLookupFields
+Uif-DataField-LabelTop,Uif-DataField
+Uif-DataField-LabelRight,Uif-DataField
+Uif-InputField-LabelTop,Uif-InputField
+Uif-InputField-LabelRight,Uif-InputField
+Uif-DataField-Label,Uif-DataField
+Uif-InputField-Label,Uif-InputField

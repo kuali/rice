@@ -62,31 +62,31 @@
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="inputField1" p:label="Field 1">
+              <bean parent="Uif-InputField" p:required="true" p:propertyName="inputField1" p:label="Field 1">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30" p:maxLength="40"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="Field 2">
+              <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="60"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField3" p:label="Field 3">
+              <bean parent="Uif-InputField" p:propertyName="inputField3" p:label="Field 3">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30" p:textExpand="true"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField4" p:label="Field 4">
+              <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Field 4">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30" p:disabled="true"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField5" p:uppercaseValue="true"
+              <bean parent="Uif-InputField" p:propertyName="inputField5" p:uppercaseValue="true"
                     p:label="Field 5">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30"/>
@@ -160,7 +160,7 @@
                     p:readOnly="@{#line.field2 eq 'ab extra'}"/>
               <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 5"/>
               <bean parent="Uif-InputField" p:propertyName="field6" p:label="Field 6"/>
-              <bean parent="Uif-MessageField" p:messageText="@{#line.field3} and @{#line.field4}" p:label="Message"/>
+              <bean parent="Uif-Message" p:messageText="@{#line.field3} and @{#line.field4}" p:label="Message"/>
               <bean parent="Uif-InputField" p:propertyName="field8" p:label="Field 8"/>
             </list>
           </property>

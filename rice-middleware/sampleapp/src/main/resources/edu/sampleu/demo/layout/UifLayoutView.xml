@@ -116,7 +116,7 @@
   </bean>
 
   <bean id="TextAreaTestField" parent="Uif-InputField"
-        abstract="true" p:label="Field Label" p:labelPlacement="TOP"
+        abstract="true" p:label="Field Label"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
         p:required="true">
@@ -126,7 +126,7 @@
     </property>
   </bean>
 
-  <bean id="TestInputField" parent="Uif-InputField-LabelTop" abstract="true" p:label="Field Label" p:required="true"
+  <bean id="TestInputField" parent="Uif-InputField" abstract="true" p:label="Field Label" p:required="true"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30" p:watermarkText="Enter Data"/>
@@ -302,7 +302,7 @@
         <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field13" p:label="Field Label">
+              <bean parent="Uif-InputField" p:propertyName="field13" p:label="Field Label">
                 <property name="control">
                   <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"/>
                 </property>
@@ -383,7 +383,7 @@
         <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field16" p:label="Field Label">
+              <bean parent="Uif-InputField" p:propertyName="field16" p:label="Field Label">
                 <property name="control">
                   <bean parent="Uif-DropdownControl"/>
                 </property>
@@ -395,7 +395,7 @@
               <bean parent="Uif-VerticalBoxGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:propertyName="field17" p:label="Field Label">
+                    <bean parent="Uif-InputField" p:propertyName="field17" p:label="Field Label">
                       <property name="control">
                         <bean parent="Uif-DateControl" p:size="30"/>
                       </property>
@@ -494,7 +494,7 @@
 
   <bean id="gridGroup-4"
         parent="Uif-GridGroup"
-        p:title="Title"
+        p:headerText="Title"
         p:instructionalText="GridGroup Layout number of columns 2"
         p:layoutManager.numberOfColumns="2"
         p:layoutManager.renderAlternatingHeaderColumns="false"
@@ -554,7 +554,7 @@
   </bean>
   <bean id="gridGroup-5"
         parent="Uif-GridGroup"
-        p:title="Title"
+        p:headerText="Title"
         p:instructionalText="GridGroup Layout number of columns 3 and multiple rowspans and colspans"
         p:layoutManager.numberOfColumns="3"
         p:layoutManager.renderAlternatingHeaderColumns="false"

@@ -47,6 +47,7 @@ currentDir.eachFileRecurse(
                     def propertyMatcher = "(p:(\\w+\\.)*)${it.key}([\\s=\\.]+)";
                     fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value + '$3');
 
+                    //it.value.toString().empty
                     propertyMatcher = "(property name=\"(\\w+\\.)*)${it.key}([\\.\"]+)";
                     fileText = fileText.replaceAll(/${propertyMatcher}/, '$1' + it.value + '$3');
                 }

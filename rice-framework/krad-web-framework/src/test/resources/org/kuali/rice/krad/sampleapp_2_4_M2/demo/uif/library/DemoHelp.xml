@@ -53,7 +53,7 @@
                 </property>
               </bean>
 
-              <bean id="Demo-Help-Field2" parent="Uif-InputField" p:propertyName="inputField2" p:labelPlacement="RIGHT">
+              <bean id="Demo-Help-Field2" parent="Uif-InputField" p:propertyName="inputField2">
                 <property name="help">
                   <bean parent="Uif-Help"/>
                 </property>
@@ -62,7 +62,7 @@
                 </property>
               </bean>
 
-              <bean id="Demo-Help-Field3" parent="Uif-InputField" p:propertyName="inputField3" p:labelPlacement="TOP">
+              <bean id="Demo-Help-Field3" parent="Uif-InputField" p:propertyName="inputField3">
                 <property name="help">
                   <bean parent="Uif-Help"/>
                 </property>
@@ -191,7 +191,7 @@
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="inputField2" p:labelPlacement="RIGHT">
+              <bean parent="Uif-InputField" p:propertyName="inputField2">
                 <property name="help">
                   <bean parent="Uif-Help">
                     <property name="externalHelpUrl" value="http://www.kuali.org/?label_right"/>
@@ -201,7 +201,7 @@
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean id="field-label-top-external-help" parent="Uif-InputField" p:propertyName="inputField3" p:labelPlacement="TOP">
+              <bean id="field-label-top-external-help" parent="Uif-InputField" p:propertyName="inputField3">
                 <property name="help">
                   <bean parent="Uif-Help">
                     <property name="helpDefinition">

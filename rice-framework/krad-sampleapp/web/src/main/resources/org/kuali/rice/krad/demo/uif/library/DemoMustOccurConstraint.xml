@@ -40,10 +40,10 @@
     <property name="items">
       <list>
         <!-- ex:Demo-MustOccurConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1A" p:propertyName="inputField1"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2A" p:propertyName="inputField2"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2B" p:propertyName="inputField3"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field with MustOccurConstraint" p:propertyName="inputField4"
+        <bean parent="Uif-InputField" p:label="Field 1A" p:propertyName="inputField1"/>
+        <bean parent="Uif-InputField" p:label="Field 2A" p:propertyName="inputField2"/>
+        <bean parent="Uif-InputField" p:label="Field 2B" p:propertyName="inputField3"/>
+        <bean parent="Uif-InputField" p:label="Field with MustOccurConstraint" p:propertyName="inputField4"
               p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
           <property name="mustOccurConstraints">
             <list>
@@ -89,11 +89,11 @@
     <property name="items">
       <list>
         <!-- ex:Demo-MustOccurConstraint-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1A" p:propertyName="inputField5"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2A" p:propertyName="inputField6"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2B" p:propertyName="inputField7"/>
+        <bean parent="Uif-InputField" p:label="Field 1A" p:propertyName="inputField5"/>
+        <bean parent="Uif-InputField" p:label="Field 2A" p:propertyName="inputField6"/>
+        <bean parent="Uif-InputField" p:label="Field 2B" p:propertyName="inputField7"/>
         
-        <bean parent="Uif-InputField-LabelTop" p:label="Field With MustOccurConstraint" p:propertyName="inputField8"
+        <bean parent="Uif-InputField" p:label="Field With MustOccurConstraint" p:propertyName="inputField8"
                 p:constraintText="Field 1A; OR Field 2A with Field 2B; BUT NOT BOTH
                 (ie all 3 fields cannot be filled in) - must occur when this field has a value">
           <property name="mustOccurConstraints">
@@ -135,12 +135,12 @@
     <property name="items">
       <list>
         <!-- ex:Demo-MustOccurConstraint-Example3 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1A" p:propertyName="inputField9"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1B" p:propertyName="inputField10"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2A" p:propertyName="inputField11"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2B" p:propertyName="inputField12"/>
+        <bean parent="Uif-InputField" p:label="Field 1A" p:propertyName="inputField9"/>
+        <bean parent="Uif-InputField" p:label="Field 1B" p:propertyName="inputField10"/>
+        <bean parent="Uif-InputField" p:label="Field 2A" p:propertyName="inputField11"/>
+        <bean parent="Uif-InputField" p:label="Field 2B" p:propertyName="inputField12"/>
         
-        <bean parent="Uif-InputField-LabelTop" p:label="Field With MustOccurConstraint" p:propertyName="inputField13"
+        <bean parent="Uif-InputField" p:label="Field With MustOccurConstraint" p:propertyName="inputField13"
                 p:constraintText="(1A or 1B) OR (2A and 2B) must occur">
           <property name="mustOccurConstraints">
             <list>

@@ -61,8 +61,8 @@
         <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField2"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField2"/>
             </list>
           </property>
         </bean>
@@ -75,8 +75,8 @@
           </property>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField3"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField4"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField4"/>
             </list>
           </property>
         </bean>
@@ -97,8 +97,8 @@
         <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField5"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField6"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField5"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField6"/>
             </list>
           </property>
         </bean>
@@ -111,8 +111,8 @@
           </property>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField7"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField8"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField7"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField8"/>
             </list>
           </property>
         </bean>
@@ -134,16 +134,16 @@
               <bean parent="Uif-HorizontalBoxGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField9"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField10"/>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField9"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField10"/>
                   </list>
                 </property>
               </bean>
               <bean parent="Uif-HorizontalBoxGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField11"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField12"/>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField11"/>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField12"/>
                   </list>
                 </property>
               </bean>
@@ -169,16 +169,16 @@
               <bean parent="Uif-VerticalBoxGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField13"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField14"/>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField13"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField14"/>
                   </list>
                 </property>
               </bean>
               <bean parent="Uif-VerticalBoxGroup">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField15"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField16"/>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField15"/>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField16"/>
                   </list>
                 </property>
               </bean>
@@ -202,9 +202,9 @@
             <property name="layoutManager.padding" value="50px"/>
             <property name="items">
               <list>
-                <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField17"/>
-                <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField18"/>
-                <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField19"/>
+                <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField17"/>
+                <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField18"/>
+                <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField19"/>
               </list>
             </property>
           </bean>
@@ -225,9 +225,9 @@
           <property name="layoutManager.itemStyleClasses" value="demo-borderBottom"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField21"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField22"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField23"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField21"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField22"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField23"/>
             </list>
           </property>
         </bean>
@@ -248,8 +248,8 @@
           <property name="layoutManager.itemStyle" value="background-color: #99FF99; margin-right: 5px; padding: 5px;"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField24"/>
-              <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField25"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField24"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField25"/>
             </list>
           </property>
         </bean>

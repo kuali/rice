@@ -39,7 +39,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-IntegerPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Positive integer or zero only">
           <property name="validCharactersConstraint">
             <bean parent="IntegerPatternConstraint"/>
@@ -57,7 +57,7 @@
       <list>
         <!-- ex:Demo-IntegerPatternConstraint-Example2 start-->
         <!-- negative integers allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Positive, negative, or zero integer">
           <property name="validCharactersConstraint">
             <bean parent="IntegerPatternConstraint" p:allowNegative="true"/>
@@ -65,7 +65,7 @@
         </bean>
 
         <!-- zero not allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField3"
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField3"
               p:constraintText="Any positive non-zero integer">
           <property name="validCharactersConstraint">
             <bean parent="IntegerPatternConstraint" p:omitZero="true"/>
@@ -73,7 +73,7 @@
         </bean>
 
         <!-- ONLY negative integers allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField4"
+        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField4"
               p:constraintText="Only negative integers (non-zero) allowed">
           <property name="validCharactersConstraint">
             <bean parent="IntegerPatternConstraint" p:onlyNegative="true" p:omitZero="true"/>

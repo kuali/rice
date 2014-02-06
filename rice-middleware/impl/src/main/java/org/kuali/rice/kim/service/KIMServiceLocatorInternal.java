@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.kim.service;
 
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
-import org.kuali.rice.kim.service.dao.UiDocumentServiceDAO;
-
-import javax.xml.namespace.QName;
 
 /**
  * Service locator for KIM.
@@ -39,7 +38,6 @@ public final class KIMServiceLocatorInternal {
 
     public static final String KIM_UI_DOCUMENT_SERVICE = "kimUiDocumentService";
 	public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
-    public static final String UI_DOCUMENT_SERVICE_DAO = "uiDocumentServiceDAO";
 
     public static Object getService(String serviceName) {
 		return getBean(serviceName);
@@ -63,9 +61,5 @@ public final class KIMServiceLocatorInternal {
 
     public static GroupInternalService getGroupInternalService() {
         return (GroupInternalService)getService(GROUP_INTERNAL_SERVICE);
-    }
-
-    public static UiDocumentServiceDAO getUiDocumentServiceDAO() {
-        return (UiDocumentServiceDAO) getBean(UI_DOCUMENT_SERVICE_DAO);
     }
 }

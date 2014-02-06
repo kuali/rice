@@ -101,7 +101,7 @@
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifDialogTestForm"/>
   </bean>
 
-  <bean id="DialogTestView-SampleDialogs" parent="Uif-Disclosure-HorizontalBoxSection" p:headerText="Sample Dialogs">
+  <bean id="DialogTestView-SampleDialogs" parent="Uif-Disclosure-HorizontalBoxSection" p:title="Sample Dialogs">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See dialog" p:defaultValue="false"
@@ -248,7 +248,7 @@
     <property name="headerText" value="A Custom Hidden Group"/>
     <property name="items">
       <list merge="true">
-        <bean parent="Uif-Message" p:messageText="Your Name Here!"/>
+        <bean parent="Uif-MessageField" p:messageText="Your Name Here!"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="OK" p:actionScript="jQuery.fancybox.close();"/>
       </list>
     </property>
@@ -278,7 +278,7 @@
       <list>
         <bean parent="Uif-DataField" p:label="Course Offerings" p:propertyName="field2"
               p:fieldLabel.style="font-weight:bold;"/>
-        <bean parent="Uif-Message" p:label="Activity Offerings"
+        <bean parent="Uif-MessageField" p:label="Activity Offerings"
               p:messageText="All contained in the course offerings(@{field3}) " p:fieldLabel.style="font-weight:bold;"/>
       </list>
     </property>

@@ -81,7 +81,7 @@
     <property name="headerText" value="Term and College Information"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Term" p:propertyName="term" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:label="Term" p:propertyName="term" p:required="true">
           <property name="control">
             <bean parent="Uif-DropdownControl">
               <property name="options">
@@ -95,7 +95,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="College" p:propertyName="college" p:required="true">
+        <bean parent="Uif-InputField-LabelTop" p:label="College" p:propertyName="college" p:required="true">
           <property name="control">
             <bean parent="Uif-DropdownControl">
               <property name="options">
@@ -111,7 +111,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="Campus" p:propertyName="campus"
+        <bean parent="Uif-InputField-LabelTop" p:label="Campus" p:propertyName="campus"
               p:progressiveRender="@{#dp.college eq 'art' or #dp.college eq 'csc'}">
           <property name="control">
             <bean parent="Uif-DropdownControl">

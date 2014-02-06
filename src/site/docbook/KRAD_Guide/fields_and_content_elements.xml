@@ -156,9 +156,13 @@ public class FieldBase extends ComponentBase implements Field {
                 commonly used fields). </para>
       <para>Uif-DataField – Default which sets label placement to left, render colon as true,
                 and required message placement to right</para>
+      <para>Uif-DataField-LabelTop – Sets label placement as top, render colon as false, and
+                required message placement to right</para>
+      <para>Uif-DataField-LabelRight – Sets label placement to right, render colon as false,
+                and required message placement to left</para>
       <para>Similar beans exist for the Uif-InputField. To use one of the label
                 configurations, we simply change our parent bean:</para>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:labelText="My Data Field" /&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField-LabelTop" p:labelText="My Data Field" /&gt;</programlisting>
     </section>
     <section role="NotInToc">
       <title>Recap</title>
@@ -490,7 +494,7 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
           </listitem>
         </itemizedlist></para>
       <para>The following would put a dash with spaces between each item of the
-        list:<programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField" p:propertyName="field120" p:label="Alternate Delimiter"
+        list:<programlisting linenumbering = "numbered">&lt;bean parent="Uif-InputField-LabelTop" p:propertyName="field120" p:label="Alternate Delimiter"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyListDisplayType="DELIMITED" p:readOnlyListDelimiter=" - ">
 ...</programlisting>The
@@ -4492,7 +4496,7 @@ The following areas allow rich message content described by this section:
     <section>
       <title>Other Rich Message Usages</title>
       <para>Usage in InputField labels:</para>
-      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;field100&quot; <emphasis role="keyword">p:label=&quot;Label With [color=green]Color[/color]"</emphasis>/&gt;</programlisting>
+      <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;field100&quot; <emphasis role="keyword">p:label=&quot;Label With [color=green]Color[/color]"</emphasis>/&gt;</programlisting>
       <para>Usage in instructionalText (similar in other areas which are backed by the Message
             component in their Java object):</para>
       <programlisting linenumbering = "numbered">…
@@ -4501,7 +4505,7 @@ The following areas allow rich message content described by this section:
 </programlisting>
       <para>Usage in CheckboxControl - also demonstrating the ability to override a property of the component referenced by id (overriding propertyName with value &apos;field103&apos;):</para>
       <programlisting linenumbering = "numbered">...
-&lt;bean parent=&quot;Uif-InputField&quot; p:propertyName=&quot;bField1&quot; p:label=&quot;CheckboxControl&quot;&gt;
+&lt;bean parent=&quot;Uif-InputField-LabelTop&quot; p:propertyName=&quot;bField1&quot; p:label=&quot;CheckboxControl&quot;&gt;
        &lt;property name=&quot;control&quot;&gt;
                     &lt;bean parent=&quot;Uif-CheckboxControl&quot; <emphasis role="keyword">p:checkboxLabel=&quot;I, [id=Demo-SampleMessageInput4 propertyName=&apos;field103&apos;], agree to the terms and conditions of this form&quot;</emphasis>&gt;
          &lt;/bean&gt;

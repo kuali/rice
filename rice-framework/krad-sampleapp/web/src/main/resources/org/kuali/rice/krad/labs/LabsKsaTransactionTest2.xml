@@ -23,8 +23,8 @@
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
     <bean id="TransactionView2" parent="Uif-FormView" p:footer.render="false">
-        <property name="headerText" value="Transaction Overview"/>
-        <property name="title" value="Transactions"/>
+        <property name="title" value="Transaction Overview"/>
+        <property name="headerText" value="Transactions"/>
         <property name="entryPageId" value="ViewTransactions"/>
 
         <property name="items">
@@ -34,7 +34,7 @@
                     <property name="headerText" value="View Transactions"/>
                     <property name="items">
                         <list>
-                            <bean parent="Uif-Message" p:message.messageText="@{statusMessage}"/>
+                            <bean parent="Uif-MessageField" p:message.messageText="@{statusMessage}"/>
                             <ref bean="transactionDisplay"/>
                             <ref bean="transactionTabs"/>
 
@@ -42,12 +42,12 @@
                     </property>
                 </bean>
 
-                <bean parent="Uif-Page" p:id="RollUpTransactions" p:headerText="View Transactions">
-                    <property name="title" value="Roll-Up Transactions"/>
+                <bean parent="Uif-Page" p:id="RollUpTransactions" p:title="View Transactions">
+                    <property name="headerText" value="Roll-Up Transactions"/>
                     <property name="items">
                         <list>
                            <!--<ref bean="viewTransactionAccountInfo"/>-->
-                            <bean parent="Uif-Message" p:message.messageText="@{statusMessage}"/>
+                            <bean parent="Uif-MessageField" p:message.messageText="@{statusMessage}"/>
                             <ref bean="transactionDisplay"/>
                             <ref bean="transactionOptionalActions"/>
 
@@ -57,12 +57,12 @@
                         </list>
                     </property>
                 </bean>
-                <bean parent="Uif-Page" p:id="RunningBalanceTransactions" p:headerText="View Transactions">
-                    <property name="title" value="Running Balance"/>
+                <bean parent="Uif-Page" p:id="RunningBalanceTransactions" p:title="View Transactions">
+                    <property name="headerText" value="Running Balance"/>
                     <property name="items">
                         <list>
                             <!--<ref bean="viewTransactionAccountInfo"/>-->
-                            <bean parent="Uif-Message" p:message.messageText="@{statusMessage}"/>
+                            <bean parent="Uif-MessageField" p:message.messageText="@{statusMessage}"/>
                             <ref bean="transactionDisplay"/>
                             <ref bean="transactionOptionalActions"/>
 
@@ -103,7 +103,7 @@
                         <bean parent="Uif-HorizontalFieldGroup" >
                         <property name="items">
                             <list>
-<!--                                <bean parent="Uif-InputField" p:propertyName="zeroBalanceDate" p:label="Show Transactions from"
+<!--                                <bean parent="Uif-InputField" p:propertyName="zeroBalanceDate" p:labelPlacement="TOP" p:label="Show Transactions from"
                                       p:fieldLabel.renderColon="false">
                                     <property name="control">
                                         <bean parent="Uif-DropdownControl" p:width="100%"/>
@@ -112,13 +112,13 @@
                                 </bean>-->
 
 
-                                <bean parent="Uif-InputField" p:propertyName="startingDate" p:label="From"
+                                <bean parent="Uif-InputField" p:propertyName="startingDate" p:labelPlacement="TOP" p:label="From"
                                       p:fieldLabel.renderColon="false" p:constraintText="Format: mm/dd/yyyy">
                                     <property name="control">
                                         <bean parent="Uif-DateControl" p:size="11" p:maxLength="20"/>
                                     </property>
                                 </bean>
-                                <bean parent="Uif-InputField" p:propertyName="endingDate" p:label="To"
+                                <bean parent="Uif-InputField" p:propertyName="endingDate" p:labelPlacement="TOP" p:label="To"
                                       p:fieldLabel.renderColon="false" p:constraintText="Format: mm/dd/yyyy">
                                     <property name="control">
                                         <bean parent="Uif-DateControl" p:size="11" p:maxLength="20"/>
@@ -152,7 +152,7 @@
                                 </bean>
                                 <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="filterTags" p:actionLabel="Add this Tag"/>
                                 <!--<bean parent="Uif-ListCollectionGroup" >
-                                    <property name="headerText" value="Filter by Selected Tags"/>
+                                    <property name="title" value="Filter by Selected Tags"/>
                                     <property name="readOnly" value="true"/>
                                     <property name="collectionObjectClass" value="com.sigmasys.kuali.ksa.model.Tag"/>
                                     <property name="propertyName" value="filterTags"/>
@@ -168,7 +168,7 @@
                                                             </property>
                                                         </bean>
                                                         <bean parent="Uif-InputField" p:propertyName="name"/>
-                                                        <bean parent="Uif-Message"  p:messageText="(A)"/>
+                                                        <bean parent="Uif-MessageField"  p:messageText="(A)"/>
                                                     </list>
                                                 </property>
                                             </bean>
@@ -210,7 +210,7 @@
     </list></property></bean>
 
     <bean id="rollupList" parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="7">
-        <property name="headerText" value="Roll-Up"/>
+        <property name="title" value="Roll-Up"/>
         <property name="readOnly" value="true"/>
         <property name="collectionObjectClass" value="org.kuali.rice.krad.labs.transaction.TransactionModel"/>
         <property name="propertyName" value="rollupTransactions"/>
@@ -239,11 +239,11 @@
         </property>
         <property name="items">
             <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="paymentAmount" p:label="Payments" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="defermentAmount" p:label="Deferments" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="allocatedLockedAllocated" p:label="Allocated" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="unallocatedAmount" p:label="Unallocated" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="paymentAmount" p:label="Payments" p:labelPlacement="TOP" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="defermentAmount" p:label="Deferments" p:labelPlacement="TOP" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="allocatedLockedAllocated" p:label="Allocated" p:labelPlacement="TOP" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="unallocatedAmount" p:label="Unallocated" p:labelPlacement="TOP" p:style="text-align: right;"/>
             </list>
         </property>
 
@@ -302,7 +302,7 @@
                                     <bean parent="Uif-HorizontalBoxSection" p:style="float: right;">
                                         <property name="items">
                                             <list>
-                                                <bean parent="Uif-ImageField" p:source="../images/refund.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                                <bean parent="Uif-ImageField" p:source="../images/refund.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                                       p:onClickScript="showLightboxComponent('refundLightbox@{#lineSuffix}');" p:render="@{#line.isPaymentRefundable()}">
                                                     <property name="toolTip">
                                                         <bean parent="Uif-Tooltip" p:tooltipContent="&lt;b&gt;Refund:&lt;/b&gt; Click to determine if this transaction can be refunded"/>
@@ -330,7 +330,7 @@
                                                                 </property>
                                                             </bean>
 
-                                                            <bean parent="Uif-Message" p:messageText="@{#line.message}"/>
+                                                            <bean parent="Uif-MessageField" p:messageText="@{#line.message}"/>
 
                                                             <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="true" p:actionLabel="Refund" p:methodToCall="refund"
                                                                   p:onClickScript="writeHiddenToForm('transactionId', '@{#line.id}');"/>
@@ -338,13 +338,13 @@
                                                         </list>
                                                     </property>
                                                 </bean>
-                                                <bean parent="Uif-ImageField" p:source="../images/locked.png" p:style="float: right;" p:altText="" p:headerText=""
+                                                <bean parent="Uif-ImageField" p:source="../images/locked.png" p:style="float: right;" p:altText="" p:title=""
                                                       p:render="@{!#empty(#line.lockedAllocatedAmount) and #line.lockedAllocatedAmount != 0}">
                                                     <property name="toolTip">
                                                         <bean parent="Uif-Tooltip" p:tooltipContent="This transaction contains one or more locked allocations"/>
                                                     </property>
                                                 </bean>
-                                                <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                                <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                                       p:onClickScript="showLightboxComponent('memoLightboxRunningTotal@{#lineSuffix}');" p:render="true">
                                                     <property name="toolTip">
                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Memo:  Click icon to view"/>
@@ -361,7 +361,7 @@
                                                     </property>
                                                 </bean>
 
-                                                <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                                <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                                       p:onClickScript="showLightboxComponent('documentLightboxRunningTotal@{#lineSuffix}');">
                                                     <property name="toolTip">
                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Document: Click icon to view"/>
@@ -377,7 +377,7 @@
                                                     </property>
                                                 </bean>
 
-                                                <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                                <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                                       p:onClickScript="showLightboxComponent('tagLightboxRunningTotal@{#lineSuffix}');writeHiddenToForm('actionParameters[currentTagParent]', '@{#line.id}');" p:render="true">
                                                     <property name="toolTip">
                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Tags: @{#line.tagList}"/>
@@ -461,7 +461,7 @@
                                         </property>
                                     </bean>
 
-                                    <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('memoLightboxRunningTotalDeferment@{#lineSuffix}');">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Memo: Click icon to view"/>
@@ -478,7 +478,7 @@
                                         </property>
                                     </bean>
 
-                                    <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('documentLightboxRunningTotalDeferment@{#lineSuffix}');">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Document: Click icon to view"/>
@@ -494,7 +494,7 @@
                                         </property>
                                     </bean>
 
-                                    <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('tagLightboxRunningTotalDeferment@{#lineSuffix}');writeHiddenToForm('actionParameters[currentTagParent]', '@{#line.id}');" p:render="true">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Tags: @{#line.tagList}"/>
@@ -531,7 +531,7 @@
                 <property name="items">
                     <list>
                         <bean parent="Uif-Disclosure-GridSection" p:style="width: 60%;"><property name="items"><list>
-                            <bean parent="Uif-Message" p:label="Date Range" p:messageText="DATE RANGE"/>
+                            <bean parent="Uif-MessageField" p:label="Date Range" p:messageText="DATE RANGE"/>
                             <bean parent="Uif-InputField" p:label="Starting balance" p:propertyName="startingBalance"/>
                             <bean parent="Uif-InputField" p:label="Sum of Charges" p:propertyName="chargeTotal"/>
                             <bean parent="Uif-InputField" p:label="Sum of Payments" p:propertyName="paymentTotal"/>
@@ -552,7 +552,7 @@
         </property>
     </bean>
     <!--
-    <bean id="" parent="Uif-CollectionGroupBase" p:headerText="Transactions" p:propertyName="subTransactions"
+    <bean id="" parent="Uif-CollectionGroupBase" p:title="Transactions" p:propertyName="subTransactions"
           p:collectionObjectClass="org.kuali.rice.krad.labs.transaction.TransactionModel">
         <property name="items">
             <list>
@@ -596,7 +596,7 @@
                         <bean parent="Uif-HorizontalBoxSection" p:style="float: right;">
                             <property name="items">
                                 <list>
-                                    <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('memoLightbox@{#lineSuffix}');" p:render="true">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Memo: Click icon to view"/>
@@ -613,7 +613,7 @@
                                         </property>
                                     </bean>
 
-                                    <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('documentLightbox@{#lineSuffix}');">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Document: Click icon to view"/>
@@ -629,7 +629,7 @@
                                         </property>
                                     </bean>
 
-                                    <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText=""
+                                    <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:title=""
                                           p:onClickScript="showLightboxComponent('tagLightbox@{#lineSuffix}');writeHiddenToForm('actionParameters[currentTagParent]', '@{#line.id}');" p:render="true">
                                         <property name="toolTip">
                                             <bean parent="Uif-Tooltip" p:tooltipContent="Tags: @{#line.tagList}"/>
@@ -686,7 +686,7 @@
                 <bean parent="Uif-InputField" p:propertyName="allocatedTransaction.transactionTypeDescription" p:label="Description" p:style="width: 50%"/>
                 <bean parent="Uif-InputField" p:propertyName="allocatedTransaction.status" p:label="Status" p:style="width: 30%"/>
                 <bean parent="Uif-InputField" p:propertyName="allocation.amount" p:label="Amount" p:style="text-align: right; width: 30%"/>
-                <bean parent="Uif-Message" p:messageText="&lt;img src='../images/@{#line.allocation.isLocked() ? 'locked' : 'unlocked'}.png' alt='@{#line.allocation.isLocked() ? 'Locked' : 'Unlocked'}'&gt;" p:label="Locked" p:style="width: 20%">
+                <bean parent="Uif-MessageField" p:messageText="&lt;img src='../images/@{#line.allocation.isLocked() ? 'locked' : 'unlocked'}.png' alt='@{#line.allocation.isLocked() ? 'Locked' : 'Unlocked'}'&gt;" p:label="Locked" p:style="width: 20%">
                     <property name="toolTip">
                         <bean parent="Uif-Tooltip" p:tooltipContent="Transaction is @{#line.allocation.isLocked() ? 'locked' : 'unlocked'}"/>
                     </property>
@@ -846,7 +846,7 @@
     <property name="items">
     <list>
         <bean parent="Uif-ListCollectionGroup" >
-            <property name="headerText" value="Transaction Tags"/>
+            <property name="title" value="Transaction Tags"/>
             <property name="readOnly" value="true"/>
             <property name="collectionObjectClass" value="org.kuali.rice.krad.labs.transaction.Tag"/>
             <property name="propertyName" value="tagModels"/>
@@ -875,7 +875,7 @@
 
 
     <bean id="AllocateTransactionSection" parent="Uif-VerticalBoxSection"
-          p:headerText="@{accountId}"
+          p:title="@{accountId}"
           p:instructionalText="The following form will allow a payment to be allocated">
         <property name="items">
             <list>
@@ -947,19 +947,19 @@
                                                     <bean parent="Uif-HorizontalBoxSection" p:style="float: right;">
                                                         <property name="items">
                                                             <list>
-                                                                <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer;" p:altText="" p:headerText="" p:readOnly="true"
+                                                                <bean parent="Uif-ImageField" p:source="../images/memo.png" p:style="cursor:pointer;" p:altText="" p:title="" p:readOnly="true"
                                                                       p:onClickScript="showLightboxComponent('memoLightboxRunningTotalDeferment@{#lineSuffix}');" p:render="true">
                                                                     <property name="toolTip">
                                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Memo: Click icon to view"/>
                                                                     </property>
                                                                 </bean>
-                                                                <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText="" p:readOnly="true"
+                                                                <bean parent="Uif-ImageField" p:source="../images/document.png" p:style="cursor:pointer; float: right;" p:altText="" p:title="" p:readOnly="true"
                                                                       p:onClickScript="showLightboxComponent('documentLightboxRunningTotalDeferment@{#lineSuffix}');">
                                                                     <property name="toolTip">
                                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Document: Click icon to view"/>
                                                                     </property>
                                                                 </bean>
-                                                                <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:headerText="" p:readOnly="true"
+                                                                <bean parent="Uif-ImageField" p:source="../images/tag.png" p:style="cursor:pointer; float: right;" p:altText="" p:title="" p:readOnly="true"
                                                                       p:onClickScript="showLightboxComponent('tagLightboxRunningTotalDeferment@{#lineSuffix}');writeHiddenToForm('actionParameters[currentTagParent]', '@{#line.id}');" p:render="true">
                                                                     <property name="toolTip">
                                                                         <bean parent="Uif-Tooltip" p:tooltipContent="Tags: @{#line.tagList}"/>

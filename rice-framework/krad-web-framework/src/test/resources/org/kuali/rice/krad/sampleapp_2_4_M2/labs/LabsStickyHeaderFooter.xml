@@ -176,15 +176,15 @@
   <bean id="Lab-StickyHeaderFooter-Page1" parent="Uif-Page" p:headerText="Page Header 1">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField2"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField3"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField4"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField5"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField6"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField7"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField8"/>
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField9"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField1"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField2"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField3"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField4"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField5"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField6"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField7"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField8"/>
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField9"/>
       </list>
     </property>
     <property name="footer">

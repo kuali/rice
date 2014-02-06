@@ -37,14 +37,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ComponentRefresh-Example1 start-->
-        <bean parent="Uif-InputField" p:propertyName="booleanField1">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="booleanField1">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Field is refreshed when the checkbox is checked"/>
           </property>
         </bean>
 
         <!-- refresh when the checkbox is in a checked state -->
-        <bean parent="Uif-InputField" p:conditionalRefresh="@{booleanField1}" p:propertyName="inputField1" p:methodToCallOnRefresh="customRefresh"/>
+        <bean parent="Uif-InputField-LabelTop" p:conditionalRefresh="@{booleanField1}" p:propertyName="inputField1" p:methodToCallOnRefresh="customRefresh"/>
         <!-- ex:Demo-ComponentRefresh-Example1 end-->
       </list>
     </property>
@@ -54,14 +54,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ComponentRefresh-Example2 start-->
-        <bean parent="Uif-InputField" p:propertyName="booleanField2">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="booleanField2">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Field is refreshed when the checkbox is checked"/>
           </property>
         </bean>
 
         <!-- refresh when the checkbox is in a checked state -->
-        <bean parent="Uif-InputField" p:conditionalRefresh="@{booleanField2}" p:propertyName="inputField2" p:resetDataOnRefresh="true"/>
+        <bean parent="Uif-InputField-LabelTop" p:conditionalRefresh="@{booleanField2}" p:propertyName="inputField2" p:resetDataOnRefresh="true"/>
         <!-- ex:Demo-ComponentRefresh-Example2 end-->
       </list>
     </property>

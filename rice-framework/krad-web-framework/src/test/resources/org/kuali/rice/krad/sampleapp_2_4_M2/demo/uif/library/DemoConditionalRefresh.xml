@@ -40,14 +40,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ConditionalRefresh-Example1 start-->
-        <bean parent="Uif-InputField" p:label="Show/Hide" p:propertyName="booleanField1">
+        <bean parent="Uif-InputField-LabelTop" p:label="Show/Hide" p:propertyName="booleanField1">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Field is refreshed when the checkbox is checked"/>
           </property>
         </bean>
 
         <!-- refresh when the checkbox is in a checked state -->
-        <bean parent="Uif-InputField" p:conditionalRefresh="@{booleanField1}" p:propertyName="inputField1"/>
+        <bean parent="Uif-InputField-LabelTop" p:conditionalRefresh="@{booleanField1}" p:propertyName="inputField1"/>
         <!-- ex:Demo-ConditionalRefresh-Example1 end-->
       </list>
     </property>
@@ -71,7 +71,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField"
+        <bean parent="Uif-InputField-LabelTop"
               p:refreshWhenChangedPropertyNames="inputField2"
               p:readOnly="@{inputField2 eq 'readOnly'}" p:propertyName="inputField3"/>
         <!-- ex:Demo-ConditionalRefresh-Example2 end-->
@@ -84,7 +84,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ConditionalRefresh-Example3 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField4" p:defaultValue="Fruits">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField4" p:defaultValue="Fruits">
           <property name="control">
             <bean parent="Uif-DropdownControl">
               <property name="options">
@@ -99,7 +99,7 @@
 
         <!-- using an option finder that changes its options based on value of inputField4, so it changes when
         refreshed -->
-        <bean parent="Uif-InputField" p:propertyName="inputField5"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField5"
               p:optionsFinderClass="org.kuali.rice.krad.sampleapp_2_4_M2.demo.uif.options.FoodKeyValuesFinder"
               p:refreshWhenChangedPropertyNames="inputField4">
           <property name="control">

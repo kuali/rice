@@ -284,7 +284,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-GridLayoutManager-TestInputField" parent="Uif-InputField" abstract="true" p:label="Field Label" p:required="true"
+  <bean id="Demo-GridLayoutManager-TestInputField" parent="Uif-InputField-LabelTop" abstract="true" p:label="Field Label" p:required="true"
         p:instructionalText="Instructions" p:constraintText="Constraint text">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="20" p:watermarkText="Enter Data"/>
@@ -292,7 +292,7 @@
   </bean>
 
   <bean id="Demo-GridLayoutManager-TextAreaTestField" parent="Uif-InputField"
-        abstract="true" p:label="Field Label"
+        abstract="true" p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
         p:required="true">

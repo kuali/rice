@@ -38,7 +38,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-MessageField-Example1 start-->
-        <bean parent="Uif-Message" p:messageText="Message Field Text"/>
+        <bean parent="Uif-MessageField" p:messageText="Message Field Text"/>
         <!-- ex:Demo-MessageField-Example1 end-->
       </list>
     </property>
@@ -49,7 +49,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-MessageField-Example2 start-->
-        <bean parent="Uif-Message" p:messageText="Message Field with expression text: '@{messageField1}'"/>
+        <bean parent="Uif-MessageField" p:messageText="Message Field with expression text: '@{messageField1}'"/>
         <!-- ex:Demo-MessageField-Example2 end-->
       </list>
     </property>

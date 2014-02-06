@@ -85,7 +85,7 @@
         </bean>
 
         <bean id="field-label-right" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
-              p:instructionalText="Label right with help">
+              p:labelPlacement="RIGHT" p:instructionalText="Label right with help">
           <property name="help">
             <bean parent="Uif-Help">
               <property name="tooltipHelpContent" value="Sample text for field help - label right"/>
@@ -97,7 +97,7 @@
         </bean>
 
         <bean id="field-label-top" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
-              p:instructionalText="Label top with help">
+              p:labelPlacement="TOP" p:instructionalText="Label top with help">
           <property name="help">
             <bean parent="Uif-Help">
               <property name="tooltipHelpContent" value="Sample text for field help - label top"/>
@@ -241,7 +241,7 @@
         </bean>
 
         <bean id="field-label-right-external-help" parent="Uif-InputField" p:propertyName="field102"
-              p:label="Field Label"
+              p:label="Field Label" p:labelPlacement="RIGHT"
               p:instructionalText="Label right with help">
           <property name="help">
             <bean parent="Uif-Help">
@@ -255,6 +255,7 @@
 
 
         <bean id="field-label-top-external-help" parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+              p:labelPlacement="TOP"
               p:instructionalText="Label top with help from system parameters">
           <property name="help">
             <bean parent="Uif-Help">
@@ -401,7 +402,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
               p:instructionalText="Label right with help"
               p:help.helpDefinition.parameterNamespace="KR-SAP" p:help.helpDefinition.parameterName="TEST_PARAM"
               p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"
@@ -412,7 +413,7 @@
         </bean>
 
 
-        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label"
+        <bean parent="Uif-InputField" p:propertyName="field102" p:label="Field Label" p:labelPlacement="TOP"
               p:instructionalText="Label top with help"
               p:help.helpDefinition.parameterNamespace="KR-SAP" p:help.helpDefinition.parameterName="TEST_PARAM"
               p:help.helpDefinition.parameterDetailType="TEST_COMPONENT"

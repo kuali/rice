@@ -121,6 +121,7 @@
                     <bean parent="Uif-DataField"
                           id="Rice-LoginMessage"
                           p:label=""
+                          p:labelPlacement="LEFT"
                           p:propertyName="login_message"/>
 
                     <bean parent="Uif-SpaceField-parentBean"/>

@@ -45,7 +45,7 @@
         <bean parent="Uif-HorizontalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="inputField1"
+              <bean parent="Uif-InputField" p:propertyName="inputField1" p:labelPlacement="TOP"
                     p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="true" p:label="Input Field" p:instructionalText="Click the text box">
                 <property name="control">
                   <bean parent="Uif-TextControl">
@@ -54,7 +54,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Date Field" p:instructionalText="Default DateControl options">
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="Date Field" p:instructionalText="Default DateControl options">
                 <property name="control">
                   <bean parent="Uif-DateControl">
                     <property name="onClickScript" value="alert('Clicked Date Control');" />
@@ -128,7 +128,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="inputField7"
+              <bean parent="Uif-InputField" p:propertyName="inputField7" p:labelPlacement="TOP"
                     p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false" p:label="Field Control" p:instructionalText="Set the focus on the field">
                 <property name="control">
                   <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40">
@@ -214,7 +214,7 @@
           <property name="onMouseOutScript" value="jq(this).stop().animate({backgroundColor:'red'});" />
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="inputField9" p:style="padding-left:15px;" p:label="Date">
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField9" p:style="padding-left:15px;" p:label="Date">
                 <property name="control">
                   <bean parent="Uif-DateControl">
                   </bean>
@@ -237,7 +237,7 @@
           <property name="onMouseOverScript" value="jq(this).effect('bounce', { direction:'right', times:3 }, 300);" />
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="inputField11"
+              <bean parent="Uif-InputField" p:propertyName="inputField11" p:labelPlacement="TOP"
                     p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="true" p:style="padding-left:15px" p:label="Input Field">
                 <property name="control">
                   <bean parent="Uif-TextControl">
@@ -275,7 +275,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Events-Example6 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField13" p:fieldLabel.cssClasses="labelTop"
+        <bean parent="Uif-InputField" p:propertyName="inputField13" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
               p:fieldLabel.renderColon="true" p:instructionalText="Type within the input field">
           <property name="control">
             <bean parent="Uif-TextControl">
@@ -283,7 +283,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="inputField14" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
+        <bean parent="Uif-InputField" p:propertyName="inputField14" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
                 p:instructionalText="Press a key and hold it down.  Then release it.">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40" p:style="border=2px solid #88ff88;">

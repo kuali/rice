@@ -168,12 +168,12 @@
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"/>
-              <bean id="TableCollection1-Hover1" parent="Uif-Message">
+              <bean id="TableCollection1-Hover1" parent="Uif-MessageField">
                 <property name="toolTip">
                   <bean parent="Uif-TooltipFocus" p:onMouseHover="true"/>
                 </property>
               </bean>
-              <bean id="TableCollection1-Hover2" parent="Uif-Message">
+              <bean id="TableCollection1-Hover2" parent="Uif-MessageField">
                 <property name="toolTip">
                   <bean parent="Uif-TooltipFocus" p:onMouseHover="true"/>
                 </property>

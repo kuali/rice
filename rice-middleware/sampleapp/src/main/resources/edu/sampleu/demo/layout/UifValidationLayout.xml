@@ -126,22 +126,22 @@
         <bean id="Demo-ValidationLayout-NoSectionsPage" parent="Uif-Page">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field1" p:label="Field 1">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field1" p:label="Field 1">
                 <property name="control">
                   <bean parent="Uif-TextAreaControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field2" p:label="Field 2">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field2" p:label="Field 2">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field5" p:label="Field 3">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field5" p:label="Field 3">
                 <property name="control">
                   <bean parent="Uif-TextAreaControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field6" p:label="Field 4">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field6" p:label="Field 4">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
@@ -262,7 +262,7 @@
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field1" p:label="Field 1">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field1" p:label="Field 1">
           <property name="help">
             <bean parent="Uif-Help">
               <property name="externalHelpUrl" value="http://www.kuali.org"/>
@@ -273,13 +273,13 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field2" p:label="Field 2">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field2" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field3" p:label="Field 3">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field3" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-DropdownControl"/>
           </property>
@@ -288,7 +288,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field114" p:label="Field 4">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field114" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-MultiSelectControl"/>
           </property>
@@ -297,7 +297,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field117" p:label="Radio 1"
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field117" p:label="Radio 1"
               p:width="auto"
               p:instructionalText="RadioGroupControl using an optionsFinder">
           <property name="control">
@@ -308,7 +308,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="bField1" p:label="Checkbox"
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="bField1" p:label="Checkbox"
               p:defaultValue="true"
               p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
           <property name="control">
@@ -316,7 +316,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field115" p:label="Checkboxes 1"
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field115" p:label="Checkboxes 1"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl"/>
@@ -341,7 +341,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field5" p:label="Field 5">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field5" p:label="Field 5">
           <property name="control">
             <bean parent="Uif-TextAreaControl">
               <!--<property name="toolTip">
@@ -352,7 +352,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field6" p:label="Field 6">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field6" p:label="Field 6">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -369,12 +369,12 @@
               1 SubSection: with 1 field and 2 fields within a grid group"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field8" p:label="Field 8">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field8" p:label="Field 8">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:required="true" p:propertyName="field9" p:label="Field 9">
+        <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field9" p:label="Field 9">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -382,12 +382,12 @@
         <bean id="Uif-ValidationLayout-SubGroup" parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field10" p:label="Field 10">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field10" p:label="Field 10">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field11" p:label="Field 11">
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field11" p:label="Field 11">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
@@ -480,7 +480,7 @@
                 <property name="headerText" value="Tab 1"/>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:required="true" p:propertyName="field1" p:label="Field 1">
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field1" p:label="Field 1">
                       <property name="control">
                         <bean parent="Uif-TextAreaControl"/>
                       </property>
@@ -493,7 +493,7 @@
                 <property name="headerText" value="Tab 2"/>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:required="true" p:propertyName="field2" p:label="Field 2">
+                    <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field2" p:label="Field 2">
                       <property name="control">
                         <bean parent="Uif-TextControl"/>
                       </property>
@@ -509,7 +509,7 @@
   </bean>
 
   <bean id="Demo-ValidationLayout-NoTooltipField" p:validationMessages.useTooltip="false"
-        parent="Uif-InputField"/>
+        parent="Uif-InputField-LabelTop"/>
 
   <bean id="Demo-ValidationLayout-Section1-NoTooltip" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="headerText" value="Section 1 Title"/>
@@ -621,9 +621,9 @@
           <property name="layoutManager.summaryFields" value="field1"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1"
                     p:required="true"/>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+              <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2"
                     p:required="true"/>
             </list>
           </property>
@@ -633,13 +633,13 @@
                 <property name="propertyName" value="subList"/>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                    <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1"
                           p:required="true"/>
-                    <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                    <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2"
                           p:required="true"/>
-                    <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                    <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3"
                           p:required="true"/>
-                    <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+                    <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 4"
                           p:required="true"/>
                   </list>
                 </property>

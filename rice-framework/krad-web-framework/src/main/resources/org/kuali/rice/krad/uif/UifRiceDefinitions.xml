@@ -48,7 +48,7 @@
     <property name="parentViewUrl.href" value="@{#ConfigProperties['application.url']}/portal.do"/>
   </bean>
 
-  <bean id="Uif-MaintenanceLocationSuggestField" parent="Uif-InputField" p:label="Navigate to"
+  <bean id="Uif-MaintenanceLocationSuggestField" parent="Uif-InputField-LabelTop" p:label="Navigate to"
         p:propertyName="extensionData['NAV_SUGGEST']">
     <property name="bindingInfo.bindingPath" value="extensionData['NAV_SUGGEST']"/>
     <property name="suggest">
@@ -66,7 +66,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-InquiryLocationSuggestField" parent="Uif-InputField" p:label="Navigate to"
+  <bean id="Uif-InquiryLocationSuggestField" parent="Uif-InputField-LabelTop" p:label="Navigate to"
           p:propertyName="extensionData['NAV_SUGGEST']">
       <property name="bindingInfo.bindingPath" value="extensionData['NAV_SUGGEST']"/>
       <property name="suggest">

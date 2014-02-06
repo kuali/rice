@@ -108,14 +108,14 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field100"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field100"
               p:label="Label With [color=green]Color[/color]">
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field101" p:label="Label With [i][b]Html[/b][/i]">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field101" p:label="Label With [i][b]Html[/b][/i]">
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field102"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field102"
               p:label="Label With [id=Demo-RichMessagesImage]Image">
         </bean>
 
@@ -133,7 +133,7 @@
                     value="Getting a message from the form that mixes inlineComponents and id specified content into its value: @{#dp.richMessageField2}"/>
           <property name="inlineComponents">
             <list>
-              <bean parent="Uif-InputField" p:required="true" p:propertyName="field6"
+              <bean parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field6"
                     p:constraintText="Only [b]numbers[/b] allowed">
                 <property name="validCharactersConstraint">
                   <bean parent="NumericPatternConstraint"/>
@@ -182,7 +182,7 @@
         parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field24" p:label="Favorite Color" p:width="auto">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field24" p:label="Favorite Color" p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl">
               <property name="options">
@@ -196,7 +196,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="field115" p:label="You heard about us from?"
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="field115" p:label="You heard about us from?"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">
@@ -217,7 +217,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="CheckboxControl">
+        <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="CheckboxControl">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="I,
                     [id=Demo-SampleMessageInput4 propertyName=field103], agree to the terms
@@ -269,7 +269,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-SampleMessageInput2" parent="Uif-InputField" p:required="true" p:propertyName="field4">
+  <bean id="Demo-SampleMessageInput2" parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field4">
     <property name="control">
       <bean parent="Uif-DropdownControl"/>
     </property>
@@ -278,14 +278,14 @@
     </property>
   </bean>
 
-  <bean id="Demo-SampleMessageInput3" parent="Uif-InputField" p:required="true" p:propertyName="field5"
+  <bean id="Demo-SampleMessageInput3" parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field5"
         p:constraintText="Only [b]letters[/b] allowed">
     <property name="validCharactersConstraint">
       <bean parent="AlphaPatternConstraint"/>
     </property>
   </bean>
 
-  <bean id="Demo-SampleMessageInput4" parent="Uif-InputField" p:required="true" p:propertyName="field22">
+  <bean id="Demo-SampleMessageInput4" parent="Uif-InputField-LabelTop" p:required="true" p:propertyName="field22">
   </bean>
 
   <bean id="Demo-RichMessagesImage" parent="Uif-Image"

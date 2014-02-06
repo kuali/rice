@@ -44,11 +44,11 @@
       <list>
         <!-- ex:Demo-SimpleConstraint-Example1 start-->
         <!-- Configured through a helper property of InputField (preferred method) -->
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
                 p:required="true"/>
 
         <!-- Configured directly on the SimpleConstraint bean -->
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField2">
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField2">
           <property name="simpleConstraint">
             <bean parent="SimpleConstraint">
               <property name="required" value="true"/>
@@ -57,7 +57,7 @@
         </bean>
 
         <!-- Preconfigured KRAD SimpleConstraint bean with required already set to true -->
-        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField3">
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField3">
           <property name="simpleConstraint">
             <bean parent="RequiredConstraint"/>
           </property>
@@ -73,11 +73,11 @@
       <list>
         <!-- ex:Demo-SimpleConstraint-Example2 start-->
         <!-- Configured through a helper property of InputField (preferred method) -->
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField4"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField4"
                 p:minLength="1" p:maxLength="5" p:constraintText="Must be 1-5 characters long"/>
 
         <!-- Configured directly on the SimpleConstraint bean -->
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField5"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField5"
               p:constraintText="Must be 3-10 characters long">
           <property name="simpleConstraint">
             <bean parent="SimpleConstraint">
@@ -97,12 +97,12 @@
         <list>
           <!-- ex:Demo-SimpleConstraint-Example3 start-->
           <!-- Configured through a helper property of InputField (preferred method) -->
-          <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField6"
+          <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField6"
                 p:exclusiveMin="0" p:inclusiveMax="20"
                 p:constraintText="Must be a value greater than 0 and less than or equal to 20"/>
 
           <!-- Configured directly on the SimpleConstraint bean -->
-          <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField7"
+          <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField7"
                   p:constraintText="Must be a value greater than 4 and less than or equal to 500">
             <property name="simpleConstraint">
               <bean parent="SimpleConstraint">
@@ -121,16 +121,16 @@
           <list>
             <!-- ex:Demo-SimpleConstraint-Example4 start-->
             <!-- Configured through a helper property of InputField (preferred method) -->
-            <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField8"
+            <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField8"
                   p:dataType="DATE"
                   p:constraintText="Must be convertible to a date"/>
 
-            <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField9"
+            <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField9"
                   p:dataType="BOOLEAN"
                   p:constraintText="Must be convertible to true or false"/>
 
             <!-- Configured directly on the SimpleConstraint bean -->
-            <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField10"
+            <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField10"
                     p:constraintText="Must be convertible to an integer">
               <property name="simpleConstraint">
                 <bean parent="SimpleConstraint">

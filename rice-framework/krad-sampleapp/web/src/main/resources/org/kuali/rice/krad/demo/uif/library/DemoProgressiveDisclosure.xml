@@ -47,18 +47,18 @@
       <list>
         <!-- ex:Demo-ProgressiveDisclosure-Example1 start-->
         <!-- true/false -->
-        <bean parent="Uif-InputField" p:label="Show/Hide" p:propertyName="booleanField1">
+        <bean parent="Uif-InputField-LabelTop" p:label="Show/Hide" p:propertyName="booleanField1">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Click the checkbox to make the field appear"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="Progressive Field 1" p:progressiveRender="@{#dp.booleanField1}"
+        <bean parent="Uif-InputField-LabelTop" p:label="Progressive Field 1" p:progressiveRender="@{#dp.booleanField1}"
               p:propertyName="inputField1"/>
 
         <!-- textual comparison -->
-        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField2"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField2"
               p:constraintText="Type 'show' to show the progressively disclosed field"/>
-        <bean parent="Uif-InputField" p:label="Progressive Field 2"
+        <bean parent="Uif-InputField-LabelTop" p:label="Progressive Field 2"
               p:progressiveRender="@{#dp.inputField2 eq 'show'}" p:propertyName="inputField3"/>
         <!-- ex:Demo-ProgressiveDisclosure-Example1 end-->
       </list>
@@ -70,13 +70,13 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ProgressiveDisclosure-Example2 start-->
-        <bean parent="Uif-InputField" p:label="Show/Hide" p:propertyName="booleanField2">
+        <bean parent="Uif-InputField-LabelTop" p:label="Show/Hide" p:propertyName="booleanField2">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Click the checkbox to make the field appear"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:progressiveRenderViaAJAX="true"
+        <bean parent="Uif-InputField-LabelTop" p:progressiveRenderViaAJAX="true"
               p:progressiveRender="@{#dp.booleanField2}"
               p:propertyName="inputField18"/>
         <!-- ex:Demo-ProgressiveDisclosure-Example2 end-->
@@ -89,14 +89,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ProgressiveDisclosure-Example3 start-->
-        <bean parent="Uif-InputField" p:label="Show/Hide" p:propertyName="booleanField3">
+        <bean parent="Uif-InputField-LabelTop" p:label="Show/Hide" p:propertyName="booleanField3">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:checkboxLabel="Click the checkbox to make the field appear"/>
           </property>
         </bean>
 
         <!-- refresh everytime the field is disclosed -->
-        <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true"
+        <bean parent="Uif-InputField-LabelTop" p:progressiveRenderAndRefresh="true"
               p:progressiveRender="@{#dp.booleanField3}" p:propertyName="inputField5"/>
         <!-- ex:Demo-ProgressiveDisclosure-Example3 end-->
       </list>
@@ -107,7 +107,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ProgressiveDisclosure-Example4 start-->
-        <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:maxLength="1"
+        <bean parent="Uif-InputField-LabelTop" p:progressiveRenderAndRefresh="true" p:maxLength="1"
               p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
               p:propertyName="inputField6" />
         <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true" p:label="Field A"

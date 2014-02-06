@@ -377,7 +377,7 @@
     <property name="propertyName" value="list2" />
     <property name="items">
       <list>
-        <bean id="UifCompView-CollectionItem" parent="Uif-Message"/>
+        <bean id="UifCompView-CollectionItem" parent="Uif-MessageField"/>
       </list>
     </property>
   </bean>

@@ -118,7 +118,7 @@
                 </property>
               </bean>
               <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="cancelAttachment"
-                    p:actionLabel="cancel" p:headerText="Cancel Attachment"/>
+                    p:actionLabel="cancel" p:title="Cancel Attachment"/>
             </list>
           </property>
           <property name="propertyReplacers">
@@ -129,7 +129,7 @@
                   <list>
                     <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
                           p:ajaxSubmit="false"
-                          p:actionLabel="download attachment" p:headerText="download attachment"
+                          p:actionLabel="download attachment" p:title="download attachment"
                           p:disableBlocking="true"
                           p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
                             <property name="actionParameters">
@@ -170,14 +170,14 @@
     <property name="validationMessages.additionalKeysToMatch" value="attachmentFile"/>
     <property name="addLineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="add" p:headerText="Add a Note"/>
+        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note"/>
       </list>
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:headerText="Delete a Note"/>
+        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
         <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send"
-              p:headerText="Send FYI"
+              p:title="Send FYI"
               p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
       </list>
     </property>

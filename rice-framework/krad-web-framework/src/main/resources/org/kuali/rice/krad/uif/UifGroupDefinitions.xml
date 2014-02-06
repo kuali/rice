@@ -1209,7 +1209,7 @@
     <property name="onDialogResponseScript" value="submitDialogResponse();"/>
   </bean>
 
-  <bean id="Uif-DialogPrompt" parent="Uif-Message">
+  <bean id="Uif-DialogPrompt" parent="Uif-MessageField">
     <property name="cssClasses">
       <list>
         <value>uif-dialogPrompt</value>

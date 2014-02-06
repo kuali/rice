@@ -40,7 +40,7 @@
         <!-- ex:Demo-PrerequisiteConstraint-Example1 start-->
 
         <!-- require field2 and field3 to have values when this is filled out -->
-        <bean parent="Uif-InputField" p:label="Field A" p:propertyName="inputField1"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field A" p:propertyName="inputField1"
               p:constraintText="Field A requires Field B and Field C">
           <property name="dependencyConstraints">
             <list>
@@ -50,11 +50,11 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label="Field B" p:propertyName="inputField2"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field B" p:propertyName="inputField2"
               p:constraintText="Required when Field A has a value"/>
 
         <!-- require that field1 have a value for this to be filled out -->
-        <bean parent="Uif-InputField" p:label="Field C" p:propertyName="inputField3"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field C" p:propertyName="inputField3"
               p:constraintText="Required when Field A has a value, BUT also requires Field A to be filled out">
           <property name="dependencyConstraints">
             <list>

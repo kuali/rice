@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaNumericPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="AlphaNumeric only">
           <property name="validCharactersConstraint">
             <bean parent="AlphaNumericPatternConstraint"/>
@@ -57,14 +57,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaNumericPatternConstraint-Example2 start-->
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="AlphaNumeric with whitespace allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaNumericPatternConstraint" p:allowWhitespace="true"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField3"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField3"
               p:constraintText="AlphaNumeric with commas and colon allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaNumericPatternConstraint" p:allowComma="true" p:allowColon="true"/>
@@ -80,7 +80,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AlphaNumericPatternConstraint-Example3 start-->
-        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField4"
+        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField4"
               p:constraintText="AlphaNumeric with basic punctuation allowed">
           <property name="validCharactersConstraint">
             <bean parent="AlphaNumericWithBasicPunc"/>

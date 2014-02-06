@@ -24,16 +24,9 @@
 
     <@krad.div component=field>
 
-        <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-        <#local renderLabel=field.label?has_content && !field.labelRendered/>
-
-        <#-- render field label top -->
-        <#if renderLabel>
-            <@template component=field.fieldLabel/>
-        </#if>
-
-        <@krad.template component=field.image/>
-
+        <@krad.fieldLbl field=field>
+            <@krad.template component=field.image/>
+        </@krad.fieldLbl>
 
     </@krad.div>
 

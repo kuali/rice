@@ -110,7 +110,7 @@
     <property name="calculateOnKeyUp" value="false"/>
     <property name="recalculateTotalClientSide" value="true"/>
     <property name="totalField">
-      <bean parent="Uif-Message" p:message.messageText="N/A"
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
             p:fieldLabel.labelText="Total">
         <property name="message.dataAttributes">
           <map>
@@ -120,7 +120,7 @@
       </bean>
     </property>
     <property name="pageTotalField">
-      <bean parent="Uif-Message" p:message.messageText="N/A"
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
             p:fieldLabel.labelText="Page Total">
         <property name="message.dataAttributes">
           <map>
@@ -130,7 +130,7 @@
       </bean>
     </property>
     <property name="groupTotalFieldPrototype">
-      <bean parent="Uif-Message" p:message.messageText="N/A"
+      <bean parent="Uif-MessageField" p:message.messageText="N/A"
             p:fieldLabel.labelText="Group Total">
         <property name="message.dataAttributes">
           <map>

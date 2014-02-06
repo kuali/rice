@@ -175,7 +175,7 @@
 
   <!-- text area -->
   <bean id="textAreaInputField_attrs" parent="Uif-InputField"
-        p:label="Field Label"
+        p:label="Field Label" p:labelPlacement="TOP"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
         p:required="true" p:propertyName="field2">

@@ -146,7 +146,7 @@
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items[0].items" p:condition="dataObject eq null">
           <property name="replacement">
             <list>
-              <bean parent="Uif-Message" p:messageText="No records found for the given parameters."/>
+              <bean parent="Uif-MessageField" p:messageText="No records found for the given parameters."/>
             </list>
           </property>
         </bean>

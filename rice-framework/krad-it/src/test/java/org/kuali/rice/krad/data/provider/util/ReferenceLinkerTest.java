@@ -40,19 +40,19 @@ import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.ChildOfParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithGeneratedKey;
 import org.kuali.rice.krad.test.document.bo.ParentObjectWithUpdatableChild;
 import org.kuali.rice.krad.test.document.bo.ParentWithMultipleFieldKey;
 import org.kuali.rice.krad.test.document.bo.ParentWithMultipleFieldKeyId;
+import org.kuali.rice.krad.test.document.bo.SubAccount;
 import org.kuali.rice.krad.test.document.bo.UpdatableChildObject;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
-import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 
 /**
@@ -63,28 +63,28 @@ import org.kuali.rice.test.data.UnitTestSql;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@PerSuiteUnitTestData( {
-    @UnitTestData(
-            sqlStatements = {
-                    // Need to remove the not null constraint on the ACCT_TYPE column
-                    // TODO: Remove these when master data source corrected
-                     @UnitTestSql("DROP TABLE trv_acct_ext")
-                    ,@UnitTestSql("CREATE TABLE trv_acct_ext ( ACCT_NUM VARCHAR(10), ACCT_TYPE VARCHAR(100), OBJ_ID VARCHAR(36), VER_NBR DECIMAL(8) )")
-                    // For some reason, this table seems to be empty - populate with a couple needed values
-                    ,@UnitTestSql("delete from trv_acct_type")
-                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'EAT', 'EXPENSE', 'EX', 1 )")
-                    ,@UnitTestSql("INSERT INTO trv_acct_type ( ACCT_TYPE, ACCT_TYPE_NAME, OBJ_ID, VER_NBR ) VALUES ( 'IAT', 'INCOME', 'IN', 1 )")
-            })
-})
 @PerTestUnitTestData(
         value = @UnitTestData(
+                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
                 sqlStatements = {
-                         @UnitTestSql("delete from trv_acct_ext")
-                        ,@UnitTestSql("delete from trv_acct_fo")
-                        ,@UnitTestSql("delete from trv_acct")
-                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)")
-                        ,@UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EAT', 'EX_TYPE', 1)")
-                        ,@UnitTestSql("INSERT INTO TRV_ACCT_FO(ACCT_FO_ID, ACCT_FO_USER_NAME, OBJ_ID, VER_NBR) VALUES(1, 'One', '1', 1)")
+                        @UnitTestSql("delete from trv_acct"),
+                        @UnitTestSql("delete from trv_acct_ext"),
+                        @UnitTestSql("delete from trv_acct_type"),
+
+                        @UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)"),
+                        @UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EAT', 'EX_TYPE', 1)")
+                },
+                sqlFiles = {
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";"),
+                        @UnitTestFile(filename = "classpath:testAccountExtensions.sql", delimiter = ";"),
+                        @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                }
+        ),
+        tearDown = @UnitTestData(
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct"),
+                        @UnitTestSql("delete from trv_acct_ext"),
+                        @UnitTestSql("delete from trv_acct_type")
                 }
         )
 )
@@ -244,51 +244,44 @@ public class ReferenceLinkerTest extends KRADTestCase {
         disableJotmLogging();
     }
 
-//    @Test
-//    public void testChangePrimaryKey() {
-//        AccountManager am = getDOS().find(AccountManager.class, 1L);
-//        assertNotNull( "Error retrieving account manager", am );
-//        am.setAmId(124L);
-//        am = getDOS().save(am);
-//    }
-
     @Test
     public void existingParent_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
-        // Get the AM record
-        AccountManager am = getDOS().find(AccountManager.class, 1L);
-        assertNotNull( "Error retrieving account manager", am );
+        // Get the record
+        Account a = getDOS().find(Account.class, "b101");
+        assertNotNull( "Error retrieving account", a );
 
         // create the new collection records
-        ArrayList<Account> accounts = new ArrayList<Account>();
-        accounts.add( new Account( "a", "Account a") );
-        accounts.add( new Account( "b", "Account b") );
-        am.setAccounts(accounts);
+        ArrayList<SubAccount> subAccounts = new ArrayList<SubAccount>();
+        subAccounts.add( new SubAccount( "b101a", "SubAccount a") );
+        subAccounts.add( new SubAccount( "b101b", "SubAccount b") );
+        a.setSubAccounts(subAccounts);
 
-        for ( Account a : am.getAccounts() ) {
-            assertNull( "Before save, the FO ID on the Accounts should have been null", a.getAmId() );
+        for ( SubAccount sa : a.getSubAccounts() ) {
+            assertNull( "Before save, the number on the SubAccounts should have been null", sa.getAccountNumber() );
         }
-        am = getDOS().save(am);
-        for ( Account a : am.getAccounts() ) {
-            assertEquals( "After the save, the FO ID on the Accounts should have been the same as the AccountManager", am.getAmId(), a.getAmId() );
+        a = getDOS().save(a);
+        for ( SubAccount sa : a.getSubAccounts() ) {
+            assertEquals( "After the save, the number on the SubAccounts should have been the same as the Account", a.getNumber(), sa.getAccountNumber() );
         }
     }
 
     @Test
     public void newParentObject_noExistingCollectionRecords_settingOfCollectionKeysOnNew() {
-        AccountManager am = new AccountManager( 2L, "Two" );
+        // Create the record
+        Account a = new Account( "c101", "c101" );
 
         // create the new collection records
-        ArrayList<Account> accounts = new ArrayList<Account>();
-        accounts.add( new Account( "a", "Account a") );
-        accounts.add( new Account( "b", "Account b") );
-        am.setAccounts(accounts);
+        ArrayList<SubAccount> subAccounts = new ArrayList<SubAccount>();
+        subAccounts.add( new SubAccount( "c101a", "Account a") );
+        subAccounts.add( new SubAccount( "c101b", "Account b") );
+        a.setSubAccounts(subAccounts);
 
-        for ( Account a : am.getAccounts() ) {
-            assertNull( "Before save, the FO ID on the Accounts should have been null", a.getAmId() );
+        for ( SubAccount sa : a.getSubAccounts() ) {
+            assertNull( "Before save, the number on the SubAccounts should have been null", sa.getAccountNumber() );
         }
-        am = getDOS().save(am);
-        for ( Account a : am.getAccounts() ) {
-            assertEquals( "After the save, the FO ID on the Accounts should have been the same as the AccountManager", am.getAmId(), a.getAmId() );
+        a = getDOS().save(a);
+        for ( SubAccount sa : a.getSubAccounts() ) {
+            assertEquals( "After the save, the number on the SubAccounts should have been the same as the Account", a.getNumber(), sa.getAccountNumber() );
         }
     }
 

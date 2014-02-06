@@ -22,9 +22,12 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import java.util.List;
 
 @Entity
 @Table(name="TRV_ACCT")
@@ -41,6 +44,10 @@ public class Account extends PersistableBusinessObjectBase {
 	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
 	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
     private AccountManager accountManager;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+    @JoinColumn(name="acct_num",referencedColumnName="acct_num",insertable=false,updatable=false)
+    protected List<SubAccount> subAccounts;
 
     public Account() {}
 
@@ -80,5 +87,13 @@ public class Account extends PersistableBusinessObjectBase {
 
     public void setAccountManager(AccountManager accountManager) {
         this.accountManager = accountManager;
+    }
+
+    public List<SubAccount> getSubAccounts() {
+        return subAccounts;
+    }
+
+    public void setSubAccounts(List<SubAccount> subAccounts) {
+        this.subAccounts = subAccounts;
     }
 }

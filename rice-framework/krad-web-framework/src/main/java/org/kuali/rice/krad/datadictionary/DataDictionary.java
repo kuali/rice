@@ -564,6 +564,10 @@ public class DataDictionary {
         return ddMapper.getBusinessObjectEntries(ddIndex);
     }
 
+    public Map<String, DataObjectEntry> getDataObjectEntries() {
+        return ddMapper.getDataObjectEntries(ddIndex);
+    }
+
     /**
      * @param className
      * @return DataDictionaryEntryBase for the named class, or null if none

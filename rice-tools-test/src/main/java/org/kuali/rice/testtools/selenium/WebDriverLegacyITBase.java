@@ -159,6 +159,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String CREATE_NEW_XPATH2 = "//a[@title='Create a new record']";
 
     /**
+     * div.dataTables_wrapper thead th
+     */
+    public static final String DATA_TABLE_TH_CSS = "div.dataTables_wrapper thead th";
+
+    /**
+     * div.dataTables_wrapper thead th
+     */
+    public static final String DATA_TABLE_TR_CSS = "div.dataTables_wrapper tbody tr";
+
+    /**
      * //div[@class='left-errmsg-tab']/div/div
      */
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";

@@ -42,7 +42,7 @@ public class DemoElementsImageAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsImage() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Image-Example1']/img");
+        assertElementPresentByXpath("//section[@id='Demo-Image-Example1']/img");
     }
     
     @Test

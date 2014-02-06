@@ -42,22 +42,22 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsLink() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example1']/a[@target='_self']");
+        assertElementPresentByXpath("//section[@id='Demo-Link-Example1']/a[@target='_self']");
     }
     
     protected void testLibraryElementsCustomTarget() throws Exception {
         waitAndClickByLinkText("Custom Target");
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example2']/a[@target='_blank']");
+        assertElementPresentByXpath("//section[@id='Demo-Link-Example2']/a[@target='_blank']");
     }
     
     protected void testLibraryElementsLinkUsingLightbox() throws Exception {
         waitAndClickByLinkText("Link using lightbox");
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example3']/a");
+        assertElementPresentByXpath("//section[@id='Demo-Link-Example3']/a");
     }
     
     protected void testLibraryElementsLinkUsingBootstrapIcon() throws Exception {
         waitAndClickByLinkText("Link with a bootstrap icon");
-        assertElementPresentByXpath("//div[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
+        assertElementPresentByXpath("//section[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
     }
     
     @Test

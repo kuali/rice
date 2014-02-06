@@ -242,7 +242,7 @@
           <element id="archive" name="rice-sql-2.4.0-M4-SNAPSHOT.jar">
             <element id="module-output" name="rice-sql" />
           </element>
-          <element id="library" level="project" name="Maven: org.kuali.common:kuali-util:4.4.8" />
+          <element id="library" level="project" name="Maven: org.kuali.common:kuali-util:4.4.9" />
           <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-utils:3.0.10" />
           <element id="library" level="project" name="Maven: com.jcraft:jsch:0.1.50" />
           <element id="library" level="project" name="Maven: org.jasypt:jasypt:1.9.1" />

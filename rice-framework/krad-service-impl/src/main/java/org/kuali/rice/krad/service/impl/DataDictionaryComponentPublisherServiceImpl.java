@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.ConfigurationException;
@@ -22,8 +27,8 @@ import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
-import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.krad.document.TransactionalDocument;
@@ -31,11 +36,6 @@ import org.kuali.rice.krad.service.DataDictionaryComponentPublisherService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Reference implementation of the {@code DataDictionaryComponentPublisherService}.
@@ -72,13 +72,13 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
         List<Component> components = new ArrayList<Component>();
 
         Map<String, Component> uniqueComponentMap = new HashMap<String, Component>();
-        for (BusinessObjectEntry businessObjectEntry : getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().values()) {
+        for (DataObjectEntry dataObjectEntry : getDataDictionaryService().getDataDictionary().getDataObjectEntries().values()) {
             try {
-                Component component = deriveComponentFromBusinessObjectEntry(businessObjectEntry);
+                Component component = deriveComponentFromDataObjectEntry(dataObjectEntry);
                 uniqueComponentMap.put(component.getCode(), component);
             }
             catch (Exception e) {
-                LOG.error("An exception was encountered when attempting to publish all components for business object class: " + businessObjectEntry.getBusinessObjectClass(), e);
+                LOG.error("An exception was encountered when attempting to publish all components for business object class: " + dataObjectEntry.getDataObjectClass(), e);
             }
         }
         for (DocumentEntry documentEntry : getDataDictionaryService().getDataDictionary().getDocumentEntries().values()) {
@@ -107,12 +107,12 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
         return detailType.build();
     }
 
-    protected Component deriveComponentFromBusinessObjectEntry(BusinessObjectEntry businessObjectEntry) {
-        Class<?> businessObjectClass = businessObjectEntry.getBaseBusinessObjectClass();
-        if (businessObjectClass == null) {
-            businessObjectClass = businessObjectEntry.getBusinessObjectClass();
-        }
-        return deriveComponentFromClass(businessObjectClass);
+    protected Component deriveComponentFromDataObjectEntry(DataObjectEntry dataObjectEntry) {
+    	// feature regression from KNS - Data objects do not have a "base business object class"
+    	if ( dataObjectEntry instanceof BusinessObjectEntry && ((BusinessObjectEntry)dataObjectEntry).getBaseBusinessObjectClass() != null ) {
+    		return deriveComponentFromClass(((BusinessObjectEntry)dataObjectEntry).getBaseBusinessObjectClass());
+    	}
+    	return deriveComponentFromClass(dataObjectEntry.getDataObjectClass());
     }
 
     protected Component deriveComponentFromDocumentEntry(DocumentEntry documentEntry) {
@@ -127,20 +127,19 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
         if (componentSourceClass == null) {
             throw new IllegalArgumentException("The deriveComponentName method requires non-null componentSourceClass");
         }
-        
+
         /*
          * Some business objects have a Component annotation that sets the value
-         * of the classes annotaion.  This if block will test to see if it is there, try to get the
+         * of the classes annotation.  This if block will test to see if it is there, try to get the
          * component value from the Data Dictionary if the BusinessObjectEntry exists, if it doesn't
          * exist, it will fall back to the annotation's value.
          */
         if (componentSourceClass.isAnnotationPresent(ParameterConstants.COMPONENT.class)) {
-            BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentSourceClass.getName());
-            if (boe != null) {
-                return boe.getObjectLabel();
-            }
-            else {
-                return ((ParameterConstants.COMPONENT) componentSourceClass.getAnnotation(ParameterConstants.COMPONENT.class)).component();
+            DataObjectEntry doe = getDataDictionaryService().getDataDictionary().getDataObjectEntry(componentSourceClass.getName());
+            if (doe != null) {
+                return doe.getObjectLabel();
+            } else {
+                return componentSourceClass.getAnnotation(ParameterConstants.COMPONENT.class).component();
             }
         }
 
@@ -153,16 +152,12 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
         if (TransactionalDocument.class.isAssignableFrom(componentSourceClass)) {
             return getDataDictionaryService().getDocumentLabelByClass(componentSourceClass);
         }
-        else if (BusinessObject.class.isAssignableFrom(componentSourceClass) ) {
-            BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(componentSourceClass.getName());
-            if (boe != null) {
-                return boe.getObjectLabel();
-            }
-            else {
-                return KRADUtils.getBusinessTitleForClass(componentSourceClass);
-            }
+        DataObjectEntry doe = getDataDictionaryService().getDataDictionary().getDataObjectEntry(componentSourceClass.getName());
+        if (doe != null) {
+            return doe.getObjectLabel();
+        } else {
+            return KRADUtils.getBusinessTitleForClass(componentSourceClass);
         }
-        throw new IllegalArgumentException("The deriveComponentName method of requires TransactionalDocument or BusinessObject class. Was: " + componentSourceClass.getName() );
     }
 
     public DataDictionaryService getDataDictionaryService() {
@@ -199,5 +194,5 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
     }
-    
+
 }

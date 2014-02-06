@@ -47,11 +47,9 @@ public class LabsProgressiveDisclosureAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testProgressiveDisclosure() throws InterruptedException 
-    {
+    protected void testProgressiveDisclosure() throws InterruptedException {
     	//Progressive Disclosure of Fields
-    	if(isElementPresentByName("field35") && isElementPresentByName("field36"))
-    	{
+    	if(isElementPresentByName("field35") && isElementPresentByName("field36")) {
     		fail("Elements already present.");
     	}
     	waitAndClickByXpath("//input[@name='field34' and @value='show1']");
@@ -70,20 +68,19 @@ public class LabsProgressiveDisclosureAft extends LabsKitchenSinkBase {
     	waitForElementPresentByName("field49");
     	
     	//Progressive Disclosure of Groups
-    	if(isElementPresentByXpath("//div[@id='prog2-group1' and @style='display: block;']") || isElementPresentByXpath("//div[@id='prog2-group2' and @style='display: block;']"))
-    	{
+    	if(isElementPresentByXpath("//div[@id='prog2-group1' and @style='display: block;']")
+           || isElementPresentByXpath("//div[@id='prog2-group2' and @style='display: block;']")) {
     		fail("Groups already present.");
     	}
     	waitAndClickByXpath("//input[@name='field38' and @value='show1']");
-    	assertElementPresentByXpath("//div[@id='prog2-group1']");
+    	assertElementPresentByXpath("//div[@data-parent='prog2-group1']");
     	waitAndClickByXpath("//input[@name='field38' and @value='show2']");
-    	assertElementPresentByXpath("//div[@id='prog2-group2']");
+    	assertElementPresentByXpath("//div[@data-parent='prog2-group2']");
     	
     	//Conditional Refresh
     	waitAndTypeByName("field46","deepmoteria");
     	waitAndClickByXpath("//input[@name='field44' and @value='show2']");
-    	Thread.sleep(1000);
-    	assertTextPresent("deepmoteria");
+    	waitForTextPresent("deepmoteria");
     	selectByName("field88","Fruits");
     	selectByName("field89","Apples");
     	selectByName("field88","Vegetables");

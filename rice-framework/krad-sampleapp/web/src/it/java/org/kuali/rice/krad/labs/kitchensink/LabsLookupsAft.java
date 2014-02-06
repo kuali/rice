@@ -58,6 +58,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
     	clearTextByName("field72");
     	waitAndTypeByName("field72","a2");
         fireEvent("field72", "blur");
+        waitAndClickByName("field76"); // force blur on field72
     	waitForTextPresent("Travel Account 2");
 
         clearTextByName("field76");

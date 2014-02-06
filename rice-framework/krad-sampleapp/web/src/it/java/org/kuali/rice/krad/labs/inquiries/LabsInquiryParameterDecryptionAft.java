@@ -30,12 +30,12 @@ public class LabsInquiryParameterDecryptionAft extends LabsInquiryBase {
     /**
      * MkNJjQMvX6PWHLJdDgVyJ9RA9durPueTKPQ5P+KdoKY=
      */
-    private static final String TRAVEL_ACCOUNT_TYPE_CODE_ENCRYPTED="MkNJjQMvX6PWHLJdDgVyJ9RA9durPueTKPQ5P+KdoKY=";
+    private static final String TRAVEL_ACCOUNT_TYPE_CODE_ENCRYPTED="*********";
     
     /**
      * bmkm0hqKp30=
      */
-    private static final String TRAVEL_ACCOUNT_TYPE_CODE_ENCRYPTED_LIGHTBOX="bmkm0hqKp30=";
+    private static final String TRAVEL_ACCOUNT_TYPE_CODE_ENCRYPTED_LIGHTBOX="*********";
     
     @Override
     protected String getBookmarkUrl() {

@@ -51,7 +51,7 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	//Label
     	assertElementPresentByXpath("//label[@class='labelTop uif-labelBlock uif-tooltip' and contains(text(),'Field Label')]");
     	assertElementPresentByXpath("//label[@class='uif-label' and contains(text(),'Field Label:')]");
-    	assertElementPresentByXpath("//span[@class='uif-constraintMessage']");
+    	assertElementPresentByXpath("//p[@class='uif-constraintMessage']");
     	
     	//TextBox
     	assertElementPresentByXpath("//input[@placeholder and @size='30' and @maxlength='40']");
@@ -72,7 +72,7 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//input[@name='field133' and @placeholder='mm-dd-yyyy ']");
     	waitAndTypeByName("field133","asd");
     	waitAndTypeByName("date5","2");
-    	assertElementPresentByXpath("//input[@name='field133' and @class='form-control input-sm uif-dateControl validChar-field1330 hasDatepicker dirty error']");
+    	waitForElementPresentByXpath("//input[@name='field133' and @class='form-control input-sm uif-dateControl validChar-field1330 hasDatepicker dirty error']");
     	waitAndTypeByName("date6","");
     	assertElementPresentByXpath("//button[contains(text(),'Today')]");
     	assertElementPresentByXpath("//input[@class='form-control input-sm uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");

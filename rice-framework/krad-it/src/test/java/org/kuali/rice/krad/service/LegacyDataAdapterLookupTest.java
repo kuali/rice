@@ -38,10 +38,10 @@ public class LegacyDataAdapterLookupTest extends LookupServiceTest {
     }
 
     @Test
-    public void testJPALookupReturnLimits_AccountManager() throws Exception {
+    public void testJPALookupReturnLimits_Account() throws Exception {
         disableLegacyFramework();
         try {
-            testLookupReturnLimits_AccountManager();
+            testLookupReturnLimits_Account();
         } finally {
             enableLegacyFramework();
         }
@@ -62,16 +62,6 @@ public class LegacyDataAdapterLookupTest extends LookupServiceTest {
         disableLegacyFramework();
         try {
             testLookupReturnDefaultLimit();
-        } finally {
-            enableLegacyFramework();
-        }
-    }
-
-    @Test
-    public void testJPALookupReturnDefaultUnbounded_AccountManager() throws Exception {
-        disableLegacyFramework();
-        try {
-            testLookupReturnDefaultUnbounded_AccountManager();
         } finally {
             enableLegacyFramework();
         }

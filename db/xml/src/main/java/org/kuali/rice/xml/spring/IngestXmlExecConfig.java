@@ -15,8 +15,15 @@
  */
 package org.kuali.rice.xml.spring;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+import freemarker.core.Configurable;
 import org.kuali.common.util.execute.Executable;
+import org.kuali.common.util.metainf.model.ConfigurablePathComparator;
+import org.kuali.common.util.metainf.model.PathComparator;
 import org.kuali.common.util.metainf.service.MetaInfUtils;
+import org.kuali.common.util.metainf.spring.MetaInfDataLocation;
+import org.kuali.common.util.metainf.spring.MetaInfDataType;
 import org.kuali.common.util.metainf.spring.RiceXmlConfig;
 import org.kuali.common.util.spring.env.EnvironmentService;
 import org.kuali.rice.xml.ingest.IngestXmlExecutable;
@@ -25,6 +32,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Central configuration file for launching the workflow XML ingestion process.
@@ -43,11 +57,25 @@ public class IngestXmlExecConfig {
 
 	@Bean
 	public Executable ingestXmlExecutable() {
+        String qualifier = "upgrades" + File.separator + "*";
+        List<String> locations = new ArrayList<String>();
+
+        for (MetaInfDataType type : getTypes()) {
+            List<String> resources = MetaInfUtils.getPatternedClasspathResources(XmlProjectConstants.ID,
+                    Optional.of(qualifier), Optional.<MetaInfDataLocation> absent(), Optional.of(type), RiceXmlConfig.INGEST_FILENAME);
+            locations.addAll(resources);
+        }
+
+        ConfigurablePathComparator comparator = ConfigurablePathComparator.builder().typeOrder(getTypes()).build();
+        Collections.sort(locations, comparator);
 
 		// Setup the executable
 		boolean skip = env.getBoolean(SKIP_KEY, false);
-		String defaultLocationListing = MetaInfUtils.getClasspathResource(XmlProjectConstants.ID, RiceXmlConfig.INGEST_FILENAME);
-		String locationListing = env.getString(RESOURCES_KEY, defaultLocationListing);
-		return IngestXmlExecutable.builder(locationListing).skip(skip).build();
+		return new IngestXmlExecutable.Builder(locations).skip(skip).build();
 	}
+
+    private List<MetaInfDataType> getTypes() {
+        return Lists.newArrayList(MetaInfDataType.BOOTSTRAP, MetaInfDataType.DEMO, MetaInfDataType.TEST);
+    }
+
 }

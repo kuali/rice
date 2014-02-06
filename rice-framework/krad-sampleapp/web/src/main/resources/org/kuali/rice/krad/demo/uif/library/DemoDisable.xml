@@ -63,12 +63,23 @@
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:inputField2"/>
+          </property>
+          <property name="inquiry">
+            <bean parent="Uif-Inquiry"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:inquiryParameters="inputField2:number"/>
+          </property>
         </bean>
 
         <!-- textarea control -->
         <bean parent="Uif-InputField" p:label="Text Area" p:propertyName="inputField3">
           <property name="control">
-            <bean parent="Uif-TextAreaControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
+            <bean parent="Uif-TextAreaControl" p:disabled="@{#form.inputField1 eq 'disable'}"
+                  p:textExpand="true"/>
           </property>
         </bean>
 
@@ -79,6 +90,24 @@
           </property>
           <property name="optionsFinder">
             <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <!-- date picker control -->
+        <bean parent="Uif-InputField-LabelTop" p:label="Date Picker" p:propertyName="inputField5">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="10" p:disabled="@{#form.inputField1 eq 'disable'}">
+              <property name="datePicker">
+                <bean parent="Uif-DatePicker" />
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <!-- spinner control -->
+        <bean parent="Uif-InputField-LabelTop" p:label="Spinner" p:propertyName="inputField8">
+          <property name="control">
+            <bean parent="Uif-SpinnerControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
         </bean>
 

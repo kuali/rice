@@ -129,7 +129,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
-        waitAndClickByXpath("//div[@id='Demo-Breadcrumbs-Example10']/a[contains(text(),'Sibling Breadcrumbs')]");
+        waitAndClickByXpath("//section[@id='Demo-Breadcrumbs-Example10']/a[contains(text(),'Sibling Breadcrumbs')]");
         assertNewWindow("10", "Sibling Breadcrumbs");
     }
 

@@ -27,9 +27,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**
@@ -116,8 +114,7 @@ public class GroupServiceTest extends KIMTestCase {
         clearNamedCache(Group.Cache.NAME);
         clearNamedCache(GroupMember.Cache.NAME);
 
-		//Group gg = groupService.getGroup("g4");
-        GroupBo gg = KradDataServiceLocator.getDataObjectService().find(GroupBo.class, "g4");
+		Group gg = groupService.getGroup("g4");
         assertTrue(gg.isActive());
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 

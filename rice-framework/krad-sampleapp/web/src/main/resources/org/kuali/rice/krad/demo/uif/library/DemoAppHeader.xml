@@ -28,26 +28,60 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-AppHeader-Example1"/>
+        <ref bean="Demo-AppHeader-Example2"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-AppHeader-Example1" parent="Uif-VerticalBoxSection" p:headerText="Default">
+  <bean id="Demo-AppHeader-Example1" parent="Uif-VerticalBoxSection" p:headerText="Fluid">
     <property name="items">
       <list>
-        <bean parent="Uif-Link" p:linkText="Default Application Header"
+        <bean parent="Uif-Link" p:linkText="Fluid Application Header"
               p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Demo-AppHeader-View1"
               p:target="_blank"/>
       </list>
     </property>
   </bean>
 
+
   <bean id="Demo-AppHeader-View1" parent="Uif-FormView">
-    <property name="headerText" value="Default Application Header"/>
+    <property name="headerText" value="Fluid Application Header"/>
     <!-- ex:Demo-AppHeader-Example1 start-->
     <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
     <property name="applicationHeader">
       <bean parent="Demo-KC-AppHeader"/>
+    </property>
+    <!-- ex:Demo-AppHeader-Example1 end-->
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-AppHeader-Example2" parent="Uif-VerticalBoxSection" p:headerText="Fixed">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Fixed Application Header"
+              p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Demo-AppHeader-View2"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+
+  <bean id="Demo-AppHeader-View2" parent="Uif-FormView">
+    <property name="headerText" value="Fixed Application Header"/>
+    <!-- ex:Demo-AppHeader-Example1 start-->
+    <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+    <property name="contentContainerCssClasses">
+      <list>
+        <value>container</value>
+      </list>
     </property>
     <!-- ex:Demo-AppHeader-Example1 end-->
     <property name="items">

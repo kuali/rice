@@ -85,9 +85,6 @@ class MaintenanceDocumentEntryBeanReferenceTransformerTest extends BeanTransform
         def itemNode = resultNode.property.find {"items".equals(it.@name)};
         def codeInputFieldBean = itemNode.list.bean.find { "code" }
 
-        def quickFinderPropertyNode =  codeInputFieldBean.property.find {
-            "quickfinder.fieldConversions".equals(it.@name)};
-        Assert.assertNotNull(quickFinderPropertyNode);
         checkBeanPropertyValueExists(codeInputFieldBean, "quickfinder.fieldConversions", null);
 
         def quickfinderDataObjectClassName =  codeInputFieldBean.property.find {

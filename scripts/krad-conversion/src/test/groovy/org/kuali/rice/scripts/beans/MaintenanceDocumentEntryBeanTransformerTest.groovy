@@ -16,6 +16,7 @@
 package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
+import org.apache.commons.io.FilenameUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -304,7 +305,7 @@ class MaintenanceDocumentEntryBeanTransformerTest extends BeanTransformerTestBas
                     transformMaintainableFieldDefinitionBean(delegate, attachmentFieldBean);
         }
 
-        checkBeanStructure(resultBean, ["readOnlyDisplaySuffix", "readOnlyDisplayReplacement"],
+        checkBeanStructure(resultBean, ["readOnlyDisplayReplacement"],
                 ["additionalDisplayAttributeName", "alternateDisplayAttributeName"]);
     }
 

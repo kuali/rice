@@ -52,6 +52,7 @@ class SpringBeanTransformer {
 
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
+    Map<String, Map<String,String>> attributeDefinitionControls = [:];
 
     def useCarryoverAttributes;
     def useCarryoverProperties;

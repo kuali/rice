@@ -61,8 +61,11 @@ class DictionaryConverter {
 
     // spring bean maps (id: dataObject, id, parent) preloaded before conversion
     Map<String, String> definitionDataObjects = [:];
+    Map<String, Map<String,String>> attributeDefinitionControls = [:];
     Map<String, String> parentBeans = [:];
     Map<String, String> alternateBeanNames = [:];
+
+    String currentDataObjectClassName = "";
 
     // contains 'transform*Bean' and 'transform*Property' methods
     @Delegate LookupDefinitionBeanTransformer lookupDefinitionBeanTransformer = new LookupDefinitionBeanTransformer();
@@ -137,12 +140,15 @@ class DictionaryConverter {
             Node rootNode = parseSpringXml(springFile.text);
             preloadParentBeans(rootNode);
             preloadDefinitionDataObjects(rootNode);
+            findDataObjectClass(rootNode);
+            preloadAttributeDefinitionControls(rootNode);
             lookupDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
             inquiryDefinitionBeanTransformer.definitionDataObjects = definitionDataObjects;
             maintenanceDocumentEntryBeanTransformer.definitionDataObjects = definitionDataObjects;
             lookupDefinitionBeanTransformer.parentBeans = parentBeans;
             inquiryDefinitionBeanTransformer.parentBeans = parentBeans;
             maintenanceDocumentEntryBeanTransformer.parentBeans = parentBeans;
+            maintenanceDocumentEntryBeanTransformer.attributeDefinitionControls = attributeDefinitionControls;
         }
     }
 
@@ -174,7 +180,46 @@ class DictionaryConverter {
                 } else if (it.ref?.@bean) {
                     definitionDataObjects.put(it.ref.@bean[0], dataObjectName);
                 }
+            }
+        }
+    }
 
+    private void preloadAttributeDefinitionControls(def rootNode) {
+        Map<String, String> controls = [:];
+        rootNode?.bean?.findAll { "AttributeDefinition".equals(it.@parent) }.each {
+            def attributeDefinitionProperties = it.value();
+            String attributeName = "";
+            for( Node prop : attributeDefinitionProperties) {
+                def propName = prop.attributes();
+                def theActualName = propName.get("name");
+                if ("name".equals(theActualName))
+                {
+                    attributeName = propName.get("value");
+                }
+                boolean hasControl = "control".equals(theActualName);
+                if (hasControl){
+                    NodeList list = prop.value();
+                    Node controlNode = list.get(0);
+                    def theControlName = controlNode.attributes().get("parent");
+                    controls.put(attributeName, theControlName);
+                }
+            }
+        }
+        if (controls.size()>0) {
+            attributeDefinitionControls.put( currentDataObjectClassName, controls);
+        }
+    }
+
+    def findDataObjectClass (Node parentNode) {
+        for (Node childNode : (NodeList)parentNode.value()) {
+            boolean isBusinessObjectEntry = childNode.attributes().containsValue("BusinessObjectEntry");
+            if (isBusinessObjectEntry) {
+                for (Node propertyNode: (NodeList) childNode.value()) {
+                    boolean isBusinessObjectClassProperty = propertyNode.attributes().containsValue("businessObjectClass");
+                    if (isBusinessObjectClassProperty) {
+                        currentDataObjectClassName = propertyNode.attributes().get("value");
+                    }
+                }
             }
         }
     }

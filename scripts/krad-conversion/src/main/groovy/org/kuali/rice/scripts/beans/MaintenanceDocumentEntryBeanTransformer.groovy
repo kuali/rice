@@ -17,6 +17,9 @@ package org.kuali.rice.scripts.beans
 
 import groovy.util.logging.Log
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.scripts.ConversionUtils
+
+import javax.xml.namespace.QName
 
 /**
  * This class transforms maintenance document entry beans and its properties/children beans into their uif equivalent
@@ -45,6 +48,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
             "documentAuthorizerClass","documentPresentationControllerClass","webScriptFiles", "documentTypeName"]
     def umvIgnoreOnCarryoverAttributes = []
 
+    String currentDataObjectClassName = "";
 
     /**
      * Transforms maintenance document entry which results in an updated document entry
@@ -74,6 +78,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         } else {
             beanNode?.replaceNode {
                 addCommentIfNotExists(beanNode.parent(), "Maintenance View")
+                findDataObjectClass(beanNode);
                 bean(umvBeanAttributes) {
                     copyBeanProperties(delegate, beanNode, umvCopyProperties + umvCarryoverProperties)
                     renameProperties(delegate, maintDocParentBeanNode, umvRenameProperties)
@@ -91,7 +96,6 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
                 }
             }
         }
-
         return beanNode;
     }
 
@@ -541,11 +545,30 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         def beanAttributes = convertBeanAttributes(beanNode, "MaintainableFieldDefinition", "Uif-InputField", [],[:], [],
                 mfdCopyProperties, mfdRenameProperties, []);
         beanAttributes.putAt("parent", "Uif-InputField");
+
+        String propName = getPropertyName(beanAttributes);
+        if ( propName !=null ) {
+            String controlDef = attributeDefinitionControls.get(currentDataObjectClassName)?.get(propName);
+            //KULRICE-11711
+            if (controlDef!=null && controlDef.equals("LookupReadonlyControlDefinition")) {
+                beanAttributes.putAt("p:windgetInputOnly", "true");
+            }
+        }
+
         builder.bean(beanAttributes) {
             renameProperties(builder, beanNode, mfdRenameProperties);
             copyBeanProperties(builder, beanNode, mfdCopyProperties);
             transformReadOnlyProperty(delegate,beanNode)
             transformWebUILeaveFieldFunctionProperty(delegate,beanNode)
+        }
+    }
+
+    def findDataObjectClass (Node parentNode) {
+        for (Node childNode : (NodeList)parentNode.value()) {
+            boolean check = childNode.attributes().containsValue("businessObjectClass");
+            if (check) {
+                currentDataObjectClassName = childNode.attributes().get("value");
+            }
         }
     }
 
@@ -599,6 +622,16 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
 
             addCommentIfNotExists(beanNode,"TODO - Check if javascript is still relevant and correct")  ;
             builder.property(name:"onBlurScript", value:attrPropMap.get("webUILeaveFieldFunction") + "(" + paramList + ");");
+        }
+    }
+
+
+    private String getPropertyName(beanAttributes) {
+        QName pattern = new QName("http://www.springframework.org/schema/p","propertyName");
+        for (Object key : beanAttributes.keySet()) {
+            if (key.toString().equals("{http://www.springframework.org/schema/p}propertyName")) {
+                return beanAttributes.get(key);
+            }
         }
     }
 

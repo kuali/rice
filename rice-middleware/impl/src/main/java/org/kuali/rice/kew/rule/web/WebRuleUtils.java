@@ -216,35 +216,34 @@ public final class WebRuleUtils {
 	}
 
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {
-		rule.setActive(true);
+        rule.setActive(true);
 
-        RuleBaseValues defaultRule = null;
         if (rule.getRuleTemplate().getDelegationTemplateId() != null) {
-            defaultRule = ((RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).
+            RuleBaseValues defaultRule =
+                    ((RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).
                     findDefaultRuleByRuleTemplateId(rule.getRuleTemplate().getDelegationTemplateId());
-        }
 
-        if (defaultRule != null) {
-            defaultRule.setActivationDate(null);
-            defaultRule.setCurrentInd(null);
-            defaultRule.setDeactivationDate(null);
-            defaultRule.setDocTypeName(null);
-            defaultRule.setVersionNumber(null);
-            defaultRule.setId(null);
-            defaultRule.setTemplateRuleInd(Boolean.FALSE);
-            defaultRule.setVersionNbr(null);
-            try {
-				PropertyUtils.copyProperties(rule, defaultRule);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e);
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e);
-			} catch (NoSuchMethodException e) {
-				throw new RuntimeException(e);
-			}
+            if (defaultRule != null) {
+                defaultRule.setActivationDate(null);
+                defaultRule.setCurrentInd(null);
+                defaultRule.setDeactivationDate(null);
+                defaultRule.setDocTypeName(null);
+                defaultRule.setVersionNumber(null);
+                defaultRule.setId(null);
+                defaultRule.setTemplateRuleInd(Boolean.FALSE);
+                defaultRule.setVersionNbr(null);
+                try {
+                    PropertyUtils.copyProperties(rule, defaultRule);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-	}
-	
+    }
 
 	public static List<Section> customizeSections(RuleBaseValues rule, List<Section> sections, boolean delegateRule) {
 

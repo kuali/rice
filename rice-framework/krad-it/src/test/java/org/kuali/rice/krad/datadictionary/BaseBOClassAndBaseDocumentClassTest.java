@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementKimDocument;
@@ -34,6 +32,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2;
 import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent;
+import org.kuali.rice.krad.test.TestDictionaryConfig;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
 import org.kuali.rice.krad.test.document.bo.AccountType2;
 import org.kuali.rice.krad.test.document.bo.AccountType2Parent;
@@ -51,68 +50,8 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@TestDictionaryConfig(namespaceCode="KR-NS",dataDictionaryFiles="classpath:org/kuali/rice/krad/test/document")
 public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
-
-	DataDictionary dd = null;
-
-	/**
-	 * Performs setup tasks similar to those in ExtensionAttributeTest.
-	 */
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-
-		dd = new DataDictionary();
-
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifActionDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS",
-                "classpath:org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml");
-        dd.addConfigFileLocation("KR-NS",
-                "classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml");
-		dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/identity/PersonImpl.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/group/Group.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/role/RoleBo.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/type/KimType.xml");
-		dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/test/document/");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/campus/Campus.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/campus/CampusType.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/country/Country.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/state/State.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/county/County.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/parameter/Parameter.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/component/Component.xml");
-        dd.parseDataDictionaryConfigurationFiles( false );
-	}
-
-	/**
-	 * Performs tearDown tasks similar to those in ExtensionAttributeTest.
-	 */
-	@After
-	public void tearDown() throws Exception {
-		super.tearDown();
-		dd = null;
-	}
 	
 	/**
 	 * This method tests to make sure that business object entries and document entries can only define regular and "base" classes that are compatible.
@@ -163,9 +102,11 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
         };
 		for (Object[] test: tests) {
 			// Attempt to retrieve a BusinessObjectEntry that is indexed under the "base" class.
-			assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[0]), (Class) test[2], (Class) test[3], (String) test[4], (String) test[5]);
+			assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[0]), (Class) test[2], (Class) test[3],
+                    (String) test[4], (String) test[5]);
 			// Now check to ensure that the same BusinessObjectEntry can still be retrieved by specifying the actual BO class name.
-            assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[1]), (Class) test[2], (Class) test[3], (String) test[4], (String) test[5]);
+            assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[1]), (Class) test[2], (Class) test[3],
+                    (String) test[4], (String) test[5]);
 		}
 		
 		// Test the ability to retrieve a DocumentEntry by "base" class, using both the full name and the simple name.
@@ -263,7 +204,8 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	 * @throws Exception
 	 */
 	private void assertBusinessObjectEntryIsAccountType2(BusinessObjectEntry boEntry) throws Exception {
-        assertBusinessObjectEntry(boEntry, AccountType2.class, AccountType2Parent.class, "accountTypeCode2", "Account Type 2");
+        assertBusinessObjectEntry(boEntry, AccountType2.class, AccountType2Parent.class, "accountTypeCode2",
+                "Account Type 2");
 	}
 
     /**
@@ -274,7 +216,8 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
      */
     private void assertBusinessObjectEntry(BusinessObjectEntry boEntry, Class boClass, Class boBaseClass, String title, String label) throws Exception {
         assertNotNull("The DD entry should not be null", boEntry);
-        assertEquals("The DD entry does not represent the " + boClass.getName() + " entry", boClass, boEntry.getBusinessObjectClass());
+        assertEquals("The DD entry does not represent the " + boClass.getName() + " entry", boClass,
+                boEntry.getBusinessObjectClass());
         assertEquals("The DD entry does not have the expected base class", boBaseClass, boEntry.getBaseBusinessObjectClass());
         assertEquals("The DD entry does not have the expected title attribute", title, boEntry.getTitleAttribute());
         assertEquals("The DD entry does not have the expected object label", label, boEntry.getObjectLabel());

@@ -179,6 +179,7 @@
   </bean>
 
   <bean id="testPeopleFlow-InquiryView" parent="Uif-InquiryView">
+    <property name="viewName" value="testPeopleFlow-InquiryView"/>
     <property name="Items">
       <list>
         <bean parent="Uif-Disclosure-GridSection">

@@ -46,7 +46,7 @@ import org.springframework.transaction.UnexpectedRollbackException;
 @PerSuiteUnitTestData( {
         @UnitTestData(
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = "/")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
                 })
 })
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)

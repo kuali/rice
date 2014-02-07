@@ -568,8 +568,6 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
         // if the rule evaluation passed, let's add the note; otherwise, return with an error
         if (rulePassed) {
-            //newNote.refresh(); // OJB Method
-
             DocumentHeader documentHeader = document.getDocumentHeader();
 
             // adding the attachment after refresh gets called, since the attachment record doesn't get persisted

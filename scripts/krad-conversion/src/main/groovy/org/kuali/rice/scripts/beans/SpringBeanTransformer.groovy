@@ -373,7 +373,10 @@ class SpringBeanTransformer {
     }
 
     // Property utilities
-
+    @Deprecated
+    def copyProperties(NodeBuilder builderDelegate, Node beanNode, List<String> propertyNames) {
+        copyBeanProperties(builderDelegate, beanNode, propertyNames);
+    }
     /**
      * Copies properties from bean to the builder delegate based on the property names list
      *
@@ -382,7 +385,7 @@ class SpringBeanTransformer {
      * @param propertyNames
      * @return
      */
-    def copyProperties(NodeBuilder builderDelegate, Node beanNode, List<String> propertyNames) {
+    def copyBeanProperties(NodeBuilder builderDelegate, Node beanNode, List<String> propertyNames) {
         beanNode.property.findAll { propertyNames.contains(it.@name) }.each { Node beanProperty ->
             if (beanProperty.list) {
                 builderDelegate.property(beanProperty.attributes().clone()) {
@@ -523,6 +526,15 @@ class SpringBeanTransformer {
         };
 
         return returnAttributes != null ? returnAttributes : [:];
+    }
+
+    def cloneNode(Node node) {
+        return new XmlParser().parseText(XmlUtil.serialize(node));
+    }
+
+    def collectNamespaceProperties(Node beanNode) {
+        def beanNSAttributes = beanNode?.attributes()?.clone()?.findAll { it.key instanceof QName};
+        return beanNSAttributes != null ? beanNSAttributes : [:];
     }
 
     def collectCopyNamespaceProperties(Node beanNode, List<String> copyProperties) {

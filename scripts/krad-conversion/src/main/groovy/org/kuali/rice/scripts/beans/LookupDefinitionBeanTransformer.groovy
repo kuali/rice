@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.scripts.beans
 
-import groovy.util.logging.Log
-import org.apache.commons.lang.ClassUtils
+import groovy.util.logging.Log;
+import groovy.xml.XmlUtil;
+import org.apache.commons.lang.ClassUtils;
 
 /**
  * This class transforms lookup definitions into their uif counterpart as well as
@@ -77,7 +78,7 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
                     }
                     renameProperties(delegate, lookupDefParentBeanNode, ["title": "headerText",
                             "translateCodes": "translateCodesOnReadOnlyDisplay"])
-                    copyProperties(delegate, beanNode, copiedProperties);
+                    copyBeanProperties(delegate, beanNode, copiedProperties);
                     transformMenubarProperty(delegate, beanNode)
                     transformDefaultSortProperty(delegate, beanNode)
                     transformNumOfColumns(delegate, beanNode)
@@ -192,6 +193,27 @@ class LookupDefinitionBeanTransformer extends SpringBeanTransformer {
             return ["p:quickfinder.render": "true"];
         } else {
             return [:];
+        }
+    }
+
+    def transformHelpDefinitionProperty(NodeBuilder builder, Node beanNode) {
+        Node helpDefinitionProperty = ((Node)beanNode?.property?.find { "helpDefinition".equals(it.@name) });
+        Node helpUrlProperty = (Node) beanNode?.property?.find { "helpUrl".equals(it.@name) };
+        // if it contains a HelpDefinition bean
+        if (helpDefinitionProperty) {
+            Node helpDefinitionPropertyCopy  = cloneNode(helpDefinitionProperty);
+            // remove children, rename as help and copy clone of helpDefinition into help bean
+            helpDefinitionProperty.children().clear();
+            helpDefinitionProperty.attributes().put("name","help");
+            Node helpNode = new Node(helpDefinitionProperty, "bean", ["parent":"Uif-Help"]);
+            helpNode.append(helpDefinitionPropertyCopy);
+        } else if (helpUrlProperty) {
+            def helpUrl = helpUrlProperty.@value;
+            builder.property(name: "help") {
+                bean("parent": "Uif-Help") {
+                    property("name": "helpUrl", "value": helpUrl)
+                }
+            }
         }
     }
 

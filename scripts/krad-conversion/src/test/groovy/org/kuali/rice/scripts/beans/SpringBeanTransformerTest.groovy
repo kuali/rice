@@ -41,14 +41,14 @@ class SpringBeanTransformerTest extends BeanTransformerTestBase {
     // Utilities
 
     @Test
-    void testCopyProperties() {
+    void testCopyBeanProperties() {
         def rootBean = new XmlParser().parseText("<beans><bean parent='SampleAppBean'>" + "<property name='title' value='test' /><property name='title2' value='value2' />" + "<property name='title3'><list><value>1</value><value>2</value></list></property>" + "</bean></beans>");
         def copyNode = new XmlParser().parseText("<beans><bean parent='SampleAppBean'></bean></beans>");
         def beanNode = rootBean.bean[0];
 
         copyNode.bean[0].replaceNode {
             bean() {
-                springBeanTransformer.copyProperties(delegate, beanNode, ["title", "title3"]);
+                springBeanTransformer.copyBeanProperties(delegate, beanNode, ["title", "title3"]);
             }
         }
 

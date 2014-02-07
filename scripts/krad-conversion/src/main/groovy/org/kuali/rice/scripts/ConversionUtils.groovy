@@ -29,8 +29,6 @@ import org.apache.commons.lang.StringUtils;
 @Log
 class ConversionUtils {
 
-    static def baseResourcesDir = "./src/main/resources/";
-
     /**
      * converts java package name into a file path
      *
@@ -272,7 +270,7 @@ class ConversionUtils {
     }
 
     static def getTemplateDir() {
-        return baseResourcesDir + "templates/";
+        return "templates/";
     }
 
     /**
@@ -304,8 +302,7 @@ class ConversionUtils {
      * @return
      */
     static def buildTemplateToString(templateFileDir, templateFileName, binding) {
-        // TODO: replace base resource dir with getResource
-        def templateFile = new File(templateFileDir, templateFileName);
+        def templateFile = ConversionUtils.getResourceFile(templateFileDir + templateFileName);
         def engine = new GStringTemplateEngine();
         def processedTemplate = engine.createTemplate(templateFile).make(binding);
         processedTemplate.toString();

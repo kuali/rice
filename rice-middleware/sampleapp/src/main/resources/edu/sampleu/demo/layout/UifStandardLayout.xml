@@ -93,12 +93,12 @@
     <property name="instructionalText" value="Fields are direct children of this section"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -123,17 +123,17 @@
     <property name="instructionalText" value="Uses a Uif-HorizontalBoxSubSection for its fields"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 4">
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field5" p:label="Field 5">
+        <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 5">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -169,12 +169,12 @@
               1 SubSection: with 1 field and 2 fields within a grid group"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field8" p:label="Field 8">
+        <bean parent="Uif-InputField" p:propertyName="field8" p:label="Field 8">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field9" p:label="Field 9">
+        <bean parent="Uif-InputField" p:propertyName="field9" p:label="Field 9">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -182,12 +182,12 @@
         <bean parent="Uif-HorizontalBoxGroup">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field10" p:label="Field 10">
+              <bean parent="Uif-InputField" p:propertyName="field10" p:label="Field 10">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field11" p:label="Field 11">
+              <bean parent="Uif-InputField" p:propertyName="field11" p:label="Field 11">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
@@ -254,9 +254,9 @@
     <property name="propertyName" value="list1"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1"
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
               p:required="true"/>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2"
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
               p:required="true"/>
       </list>
     </property>
@@ -331,12 +331,12 @@
     <property name="instructionalText" value="Section with 2 fields and a collection SubSection"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field15" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field15" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field16" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field16" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -398,32 +398,32 @@
     <property name="headerText" value="Css Grid"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 4">
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field5" p:label="Field 5">
+        <bean parent="Uif-InputField" p:propertyName="field5" p:label="Field 5">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field6" p:label="Field 6">
+        <bean parent="Uif-InputField" p:propertyName="field6" p:label="Field 6">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -436,32 +436,32 @@
     <property name="headerText" value="Css Grid"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:colSpan="6" p:propertyName="field13" p:label="Field 1">
+        <bean parent="Uif-InputField" p:colSpan="6" p:propertyName="field13" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:colSpan="6" p:propertyName="field14" p:label="Field 2">
+        <bean parent="Uif-InputField" p:colSpan="6" p:propertyName="field14" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field15" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field15" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field16" p:label="Field 4">
+        <bean parent="Uif-InputField" p:colSpan="4" p:propertyName="field16" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field17" p:label="Field 5">
+        <bean parent="Uif-InputField" p:colSpan="4" p:propertyName="field17" p:label="Field 5">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:colSpan="4" p:propertyName="field18" p:label="Field 6">
+        <bean parent="Uif-InputField" p:colSpan="4" p:propertyName="field18" p:label="Field 6">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -474,17 +474,17 @@
     <property name="headerText" value="Css Grid"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field7" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field7" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field8" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field8" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field9" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field9" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -495,12 +495,12 @@
           </property>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field10" p:label="Field 5">
+              <bean parent="Uif-InputField" p:propertyName="field10" p:label="Field 5">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field111" p:label="Field 6">
+              <bean parent="Uif-InputField" p:propertyName="field111" p:label="Field 6">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
@@ -512,12 +512,12 @@
         <bean parent="Uif-VerticalFieldGroup" p:label="Inner Field Group">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field12" p:label="Field 5">
+              <bean parent="Uif-InputField" p:propertyName="field12" p:label="Field 5">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field13" p:label="Field 6">
+              <bean parent="Uif-InputField" p:propertyName="field13" p:label="Field 6">
                 <property name="control">
                   <bean parent="Uif-TextControl"/>
                 </property>

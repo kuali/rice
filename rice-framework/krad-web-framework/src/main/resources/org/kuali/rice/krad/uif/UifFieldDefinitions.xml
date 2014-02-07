@@ -57,25 +57,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-DataField-LabelTop" parent="Uif-DataField-LabelTop-parentBean"/>
-  <bean id="Uif-DataField-LabelTop-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="TOP"
-        p:fieldLabel.renderColon="false">
-    <property name="fieldLabel.cssClasses">
-      <list>
-        <value>uif-labelTop</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DataField-LabelRight" parent="Uif-DataField-LabelRight-parentBean"/>
-  <bean id="Uif-DataField-LabelRight-parentBean" abstract="true" parent="Uif-DataField" p:labelPlacement="RIGHT"
-        p:fieldLabel.renderColon="false">
-    <property name="fieldLabel.cssClasses">
-      <list>
-        <value>uif-labelRight</value>
-      </list>
-    </property>
-  </bean>
 
   <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
   <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" parent="Uif-DataField">
@@ -109,37 +90,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
-  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
-        p:fieldLabel.renderColon="false" >
-    <property name="cssClasses">
-      <list>
-        <value>uif-inputField</value>
-        <value>uif-inputField-labelTop</value>
-      </list>
-    </property>
-    <property name="fieldLabel.cssClasses">
-      <list>
-        <value>uif-labelTop</value>
-      </list>
-    </property>
-  </bean>
 
-  <bean id="Uif-InputField-LabelRight" parent="Uif-InputField-LabelRight-parentBean"/>
-  <bean id="Uif-InputField-LabelRight-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="RIGHT"
-        p:fieldLabel.renderColon="false">
-    <property name="cssClasses">
-      <list>
-        <value>uif-inputField</value>
-        <value>uif-inputField-labelRight</value>
-      </list>
-    </property>
-    <property name="fieldLabel.cssClasses">
-      <list>
-        <value>uif-labelRight</value>
-      </list>
-    </property>
-  </bean>
 
   <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
   <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
@@ -268,7 +219,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-CheckboxInputField" parent="Uif-InputField" p:labelPlacement="RIGHT">
+  <bean id="Uif-CheckboxInputField" parent="Uif-InputField">
     <property name="cssClasses">
       <list>
         <value>uif-inputField</value>

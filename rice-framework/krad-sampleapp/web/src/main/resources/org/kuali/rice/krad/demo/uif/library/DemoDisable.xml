@@ -84,7 +84,7 @@
         </bean>
 
         <!-- dropdown(select) control -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField4" p:label="Dropdown">
+        <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Dropdown">
           <property name="control">
             <bean parent="Uif-DropdownControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
@@ -94,7 +94,7 @@
         </bean>
 
         <!-- date picker control -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Date Picker" p:propertyName="inputField5">
+        <bean parent="Uif-InputField" p:label="Date Picker" p:propertyName="inputField5">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="10" p:disabled="@{#form.inputField1 eq 'disable'}">
               <property name="datePicker">
@@ -105,14 +105,14 @@
         </bean>
 
         <!-- spinner control -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Spinner" p:propertyName="inputField8">
+        <bean parent="Uif-InputField" p:label="Spinner" p:propertyName="inputField8">
           <property name="control">
             <bean parent="Uif-SpinnerControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
         </bean>
 
         <!-- multiselect control -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="multiSelectField1" p:label="Multi Select">
+        <bean parent="Uif-InputField" p:propertyName="multiSelectField1" p:label="Multi Select">
           <property name="control">
             <bean parent="Uif-MultiSelectControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
@@ -122,7 +122,7 @@
         </bean>
 
         <!-- radio control -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField6" p:label="Radio"
+        <bean parent="Uif-InputField" p:propertyName="inputField6" p:label="Radio"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
@@ -133,7 +133,7 @@
         </bean>
 
         <!-- checkbox control -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField7" p:label="Checkbox"
+        <bean parent="Uif-InputField" p:propertyName="inputField7" p:label="Checkbox"
               p:defaultValue="true">
           <property name="control">
             <bean parent="Uif-CheckboxControl" p:disabled="@{#form.inputField1 eq 'disable'}"
@@ -142,7 +142,7 @@
         </bean>
 
         <!-- checkbox group control -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField1" p:label="Checkboxes 1" p:width="auto">
+        <bean parent="Uif-InputField" p:propertyName="checkboxesField1" p:label="Checkboxes 1" p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl" p:disabled="@{#form.inputField1 eq 'disable'}"/>
           </property>
@@ -296,7 +296,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Disable-Example5 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField2" p:label="Checkboxes 1"
+        <bean parent="Uif-InputField" p:propertyName="checkboxesField2" p:label="Checkboxes 1"
               p:instructionalText="Make selections to disable the following controls" p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl"/>
@@ -306,21 +306,21 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField20" p:label="TestField 1"
+        <bean parent="Uif-InputField" p:propertyName="inputField20" p:label="TestField 1"
               p:constraintText="Disabled when Option 1 is selected">
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="@{#listContains(checkboxesField2, 1)}"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField21" p:label="TestField 2"
+        <bean parent="Uif-InputField" p:propertyName="inputField21" p:label="TestField 2"
               p:constraintText="Disabled when Option 2 and Option 3 is selected">
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="@{#listContains(checkboxesField2, {'2','3'})}"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField22" p:label="TestField 3"
+        <bean parent="Uif-InputField" p:propertyName="inputField22" p:label="TestField 3"
               p:constraintText="Disabled when no options selected">
           <property name="control">
             <bean parent="Uif-TextControl" p:disabled="@{#emptyList(checkboxesField2)}"/>

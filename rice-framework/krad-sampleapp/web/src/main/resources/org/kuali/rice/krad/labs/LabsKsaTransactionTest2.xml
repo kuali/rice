@@ -103,7 +103,7 @@
                         <bean parent="Uif-HorizontalFieldGroup" >
                         <property name="items">
                             <list>
-<!--                                <bean parent="Uif-InputField" p:propertyName="zeroBalanceDate" p:labelPlacement="TOP" p:label="Show Transactions from"
+<!--                                <bean parent="Uif-InputField" p:propertyName="zeroBalanceDate" p:label="Show Transactions from"
                                       p:fieldLabel.renderColon="false">
                                     <property name="control">
                                         <bean parent="Uif-DropdownControl" p:width="100%"/>
@@ -112,13 +112,13 @@
                                 </bean>-->
 
 
-                                <bean parent="Uif-InputField" p:propertyName="startingDate" p:labelPlacement="TOP" p:label="From"
+                                <bean parent="Uif-InputField" p:propertyName="startingDate" p:label="From"
                                       p:fieldLabel.renderColon="false" p:constraintText="Format: mm/dd/yyyy">
                                     <property name="control">
                                         <bean parent="Uif-DateControl" p:size="11" p:maxLength="20"/>
                                     </property>
                                 </bean>
-                                <bean parent="Uif-InputField" p:propertyName="endingDate" p:labelPlacement="TOP" p:label="To"
+                                <bean parent="Uif-InputField" p:propertyName="endingDate" p:label="To"
                                       p:fieldLabel.renderColon="false" p:constraintText="Format: mm/dd/yyyy">
                                     <property name="control">
                                         <bean parent="Uif-DateControl" p:size="11" p:maxLength="20"/>
@@ -239,11 +239,11 @@
         </property>
         <property name="items">
             <list>
-                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="paymentAmount" p:label="Payments" p:labelPlacement="TOP" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="defermentAmount" p:label="Deferments" p:labelPlacement="TOP" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="allocatedLockedAllocated" p:label="Allocated" p:labelPlacement="TOP" p:style="text-align: right;"/>
-                <bean parent="Uif-InputField" p:propertyName="unallocatedAmount" p:label="Unallocated" p:labelPlacement="TOP" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="paymentAmount" p:label="Payments" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="defermentAmount" p:label="Deferments" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="allocatedLockedAllocated" p:label="Allocated" p:style="text-align: right;"/>
+                <bean parent="Uif-InputField" p:propertyName="unallocatedAmount" p:label="Unallocated" p:style="text-align: right;"/>
             </list>
         </property>
 

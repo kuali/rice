@@ -383,7 +383,7 @@
         <bean parent="Uif-CssGridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+              <bean parent="Uif-InputField" p:fieldLabel.renderColon="true"
                     p:propertyName="field10" p:label="Search for">
                 <property name="control">
                   <bean parent="Uif-VerticalRadioControl">
@@ -511,7 +511,7 @@
         <bean parent="Uif-CssGridSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:fieldLabel.renderColon="true"
+              <bean parent="Uif-InputField" p:fieldLabel.renderColon="true"
                     p:propertyName="field20" p:label="Assign a role">
                 <property name="control">
                   <bean parent="Uif-VerticalRadioControl">

@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-NumericPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Numeric only">
           <property name="validCharactersConstraint">
             <bean parent="NumericPatternConstraint"/>
@@ -57,14 +57,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-NumericPatternConstraint-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Numeric with whitespace allowed">
           <property name="validCharactersConstraint">
             <bean parent="NumericPatternConstraint" p:allowWhitespace="true"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField3"
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField3"
               p:constraintText="Numeric with atSign and forward slash allowed allowed">
           <property name="validCharactersConstraint">
             <bean parent="NumericPatternConstraint" p:allowAtSign="true" p:allowForwardSlash="true"/>
@@ -80,7 +80,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-NumericPatternConstraint-Example3 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField4"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField4"
               p:constraintText="Numeric with numeric opertator characters and whitespace allowed">
           <property name="validCharactersConstraint">
             <bean parent="NumericWithOperators"/>

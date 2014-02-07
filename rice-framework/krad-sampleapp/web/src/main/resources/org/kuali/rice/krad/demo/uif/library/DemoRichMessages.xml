@@ -170,7 +170,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-RichMessages-Example7 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField20"
+        <bean parent="Uif-InputField" p:propertyName="inputField20"
               p:label="Label With [color=green]Color[/color]">
         </bean>
         <!-- ex:Demo-RichMessages-Example7 end-->
@@ -275,7 +275,7 @@
       <list>
         <!-- ex:Demo-RichMessages-Example12 start-->
         <!-- inside checkbox group options -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="checkboxesField1" p:label="Favorite Color" p:width="auto">
+        <bean parent="Uif-InputField" p:propertyName="checkboxesField1" p:label="Favorite Color" p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl">
               <property name="options">
@@ -291,7 +291,7 @@
         </bean>
 
         <!-- inside radio options -->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField10" p:label="You heard about us from?"
+        <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="You heard about us from?"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">

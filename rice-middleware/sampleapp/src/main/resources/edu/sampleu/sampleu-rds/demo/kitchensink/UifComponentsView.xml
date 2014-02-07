@@ -197,13 +197,13 @@
   </disclosure-verticalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextFields1">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field1">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true"
                        propertyName="field100">
         <control>
           <textControl-bean/>
@@ -218,23 +218,23 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextFields2">
     <items>
-      <inputField-bean id="UifCompView-Field102" labelPlacement="LEFT" propertyName="field102">
+      <inputField-bean id="UifCompView-Field102" propertyName="field102">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean id="UifCompView-Field102B" labelPlacement="RIGHT" propertyName="field102">
+      <inputField-bean id="UifCompView-Field102B" propertyName="field102">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field103">
         <control>
           <textControl-bean/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field104">
         <control>
           <textControl-bean/>
@@ -249,27 +249,27 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextFields3">
     <items>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field106">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field106">
         <control>
           <textControl-bean maxLength="40" size="30"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field107">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field107">
         <control>
           <textControl-bean size="60"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field108">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field108">
         <control>
           <textControl-bean size="30" textExpand="true"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field109">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field109">
         <control>
           <textControl-bean disabled="true" size="30"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field112"
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field112"
                        uppercaseValue="true">
         <control>
           <textControl-bean size="30"/>
@@ -279,17 +279,17 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-PasswordFields">
     <items>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field140">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field140">
         <control>
           <passwordControl-bean size="30"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field141">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field141">
         <control>
           <passwordControl-bean maxLength="10" size="15"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.renderColon="false" labelPlacement="TOP" propertyName="field142">
+      <inputField-bean fieldLabel.renderColon="false" propertyName="field142">
         <control>
           <passwordControl-bean disabled="true" size="30"/>
         </control>
@@ -298,13 +298,13 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-TextAreas">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field110">
         <control>
           <textAreaControl-bean cols="40" rows="5"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field111">
         <control>
           <textAreaControl-bean cols="50" rows="10" textExpand="true"/>

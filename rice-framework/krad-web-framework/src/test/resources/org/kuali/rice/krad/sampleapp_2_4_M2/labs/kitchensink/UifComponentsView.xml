@@ -373,15 +373,13 @@
   <bean id="UifCompView-TextFields1" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field1" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false" p:disableNativeAutocomplete="true">
+        <bean parent="Uif-InputField" p:propertyName="field1" p:fieldLabel.renderColon="false" p:disableNativeAutocomplete="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field100" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="true">
+        <bean parent="Uif-InputField" p:propertyName="field100" p:fieldLabel.renderColon="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -406,27 +404,25 @@
   <bean id="UifCompView-TextFields2" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" id="UifCompView-Field102" p:propertyName="field102" p:labelPlacement="LEFT">
+        <bean parent="Uif-InputField" id="UifCompView-Field102" p:propertyName="field102">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" id="UifCompView-Field102B" p:propertyName="field102" p:labelPlacement="RIGHT">
+        <bean parent="Uif-InputField" id="UifCompView-Field102B" p:propertyName="field102">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field103" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+        <bean parent="Uif-InputField" p:propertyName="field103" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field104" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+        <bean parent="Uif-InputField" p:propertyName="field104" p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
@@ -449,35 +445,35 @@
   <bean id="UifCompView-TextFields3" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field106" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="field106"
               p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:maxLength="40"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field107" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="field107"
               p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="60"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field108" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="field108"
               p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:textExpand="true"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field109" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="field109"
               p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30" p:disabled="true"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="field112" p:labelPlacement="TOP"
+        <bean parent="Uif-InputField" p:propertyName="field112"
               p:fieldLabel.renderColon="false" p:uppercaseValue="true">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="30"/>
@@ -495,15 +491,15 @@
   <bean id="UifCompView-TextAreas" parent="Uif-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="field110" p:labelPlacement="TOP"
-              p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+        <bean parent="Uif-InputField" p:propertyName="field110"
+              p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"/>
           </property>
         </bean>
 
         <bean parent="Uif-InputField" p:propertyName="field111"
-              p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+              p:fieldLabel.renderColon="false">
           <property name="control">
             <bean parent="Uif-TextAreaControl" p:rows="10" p:cols="50" p:textExpand="true"/>
           </property>
@@ -520,13 +516,13 @@
   <bean id="UifCompView-DateFields" parent="Uif-Disclosure-HorizontalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="date1" p:required="true">
+        <bean parent="Uif-InputField" p:propertyName="date1" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>
         </bean>
 
-        <bean id="myDate" parent="Uif-InputField-LabelTop" p:propertyName="date2" p:required="false">
+        <bean id="myDate" parent="Uif-InputField" p:propertyName="date2" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
               <property name="datePicker.templateOptions">
@@ -547,7 +543,7 @@
           </property>
         </bean>
 
-        <bean id="date3" parent="Uif-InputField-LabelTop" p:propertyName="field132" p:required="false">
+        <bean id="date3" parent="Uif-InputField" p:propertyName="field132" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
               <property name="datePicker.templateOptions">
@@ -568,7 +564,7 @@
           </property>
         </bean>
 
-        <bean id="myDate4" parent="Uif-InputField-LabelTop" p:propertyName="field133" p:required="false">
+        <bean id="myDate4" parent="Uif-InputField" p:propertyName="field133" p:required="false">
           <property name="validCharactersConstraint">
             <bean parent="BasicDatePatternConstraint"/>
           </property>
@@ -592,7 +588,7 @@
           </property>
         </bean>
 
-        <bean id="myDate4B" parent="Uif-InputField-LabelTop" p:propertyName="date4" p:required="false">
+        <bean id="myDate4B" parent="Uif-InputField" p:propertyName="date4" p:required="false">
           <property name="control">
             <bean parent="Uif-DateControl">
               <property name="datePicker.templateOptions">
@@ -613,7 +609,7 @@
           </property>
         </bean>
 
-        <bean id="myDate5" parent="Uif-InputField-LabelTop" p:propertyName="date5" p:required="false">
+        <bean id="myDate5" parent="Uif-InputField" p:propertyName="date5" p:required="false">
           <property name="validCharactersConstraint">
             <bean parent="BasicDatePatternConstraint"/>
           </property>
@@ -636,7 +632,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="date6">
+        <bean parent="Uif-InputField" p:propertyName="date6">
           <property name="control">
             <bean parent="Uif-DateControl">
               <property name="datePicker.templateOptions">
@@ -655,7 +651,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="date7">
+        <bean parent="Uif-InputField" p:propertyName="date7">
           <property name="control">
             <bean parent="Uif-DateControl" p:disabled="true"/>
           </property>
@@ -977,23 +973,21 @@
   </bean>
 
   <bean id="GenericTextField" parent="Uif-InputField" abstract="true"
-        p:labelPlacement="TOP"
-        p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+        p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextControl" p:size="30"/>
     </property>
   </bean>
 
   <bean id="GenericTextArea" parent="Uif-InputField" abstract="true"
-        p:labelPlacement="TOP"
-        p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false">
+        p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-TextAreaControl" p:rows="5" p:cols="40"/>
     </property>
   </bean>
 
   <bean id="GenericRadio" parent="Uif-InputField" abstract="true"
-        p:label="Radio" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
+        p:label="Radio"
         p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-VerticalRadioControl">
@@ -1009,7 +1003,6 @@
   </bean>
 
   <bean id="GenericSelection" parent="Uif-InputField" abstract="true"
-        p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"
         p:fieldLabel.renderColon="false">
     <property name="control">
       <bean parent="Uif-DropdownControl">
@@ -1027,8 +1020,7 @@
     </property>
   </bean>
 
-  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup" p:fieldLabel.cssClasses="labelTop"
-        p:labelPlacement="TOP"
+  <bean id="GenericHorizontalFieldGroup" parent="Uif-HorizontalFieldGroup"
         p:fieldLabel.renderColon="false"/>
 
 </beans>

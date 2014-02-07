@@ -44,7 +44,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-RadioControl-Example1 start-->
-          <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="RadioGroupControl"
+          <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="RadioGroupControl"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl"/>
@@ -63,7 +63,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-RadioControl-Example2 start-->
-          <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="RadioGroupControl"
+          <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="RadioGroupControl"
                p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalRadioControl">

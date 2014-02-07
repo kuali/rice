@@ -193,16 +193,16 @@
           <property name="hidden" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="field100"/>
                 <property name="label" value="Field 1"/>
                 <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="field101"/>
                 <property name="label" value="Field 2"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="field102"/>
                 <property name="label" value="Field 3"/>
                 <property name="required" value="true"/>
@@ -437,13 +437,13 @@
                         <property name="items">
                           <list>
                             <bean id="UifCompView-OtherField4" parent="Uif-InputField" p:propertyName="field1"
-                                  p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
+                                  p:required="true"/>
                             <bean id="UifCompView-OtherField5" parent="Uif-InputField" p:propertyName="field2"
-                                  p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
+                                  p:required="true"/>
                             <bean id="UifCompView-OtherField6" parent="Uif-InputField" p:propertyName="field3"
-                                  p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
+                                  p:required="true"/>
                             <bean id="UifCompView-OtherField7" parent="Uif-InputField" p:propertyName="field4"
-                                  p:required="true" p:labelPlacement="TOP" p:fieldLabel.cssClasses="labelTop"/>
+                                  p:required="true"/>
                           </list>
                         </property>
                       </bean>

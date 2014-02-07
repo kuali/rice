@@ -21,40 +21,91 @@
 
     <@krad.div component=field>
 
-        <@krad.fieldLbl field=field>
+        <#local renderLabel=field.label?has_content && !field.labelRendered/>
 
-            <#-- TODO: verify removal -->
-            <#--<#if field.renderFieldset>-->
-                <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
-                    <#--<legend style="display: none">${field.label!}</legend>-->
-            <#--</#if>-->
+        <#-- render field label -->
+        <#if renderLabel>
+            <@krad.template component=field.fieldLabel/>
+        </#if>
 
-            <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
-            <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
-            <#if readOnly || quickfinderInputOnly>
 
+    <#-- TODO: verify removal -->
+    <#--<#if field.renderFieldset>-->
+    <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
+    <#--<legend style="display: none">${field.label!}</legend>-->
+    <#--</#if>-->
+
+        <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
+
+    <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
+        <#if readOnly>
+
+            <#local readOnlyDisplay>
+                <#if field.forcedValue?has_content>
+                ${field.forcedValue}
+                <#else>
+                <#-- display replacement display value if set -->
+                    <#if field.readOnlyDisplayReplacement?has_content>
+                    ${field.readOnlyDisplayReplacement}
+                    <#else>
+                    <#-- display actual field value -->
+                        <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
+
+                    <#-- check escape flag -->
+                        <#if field.escapeHtmlInPropertyValue>
+                        ${(spring.status.value?default(""))?html}
+                        <#else>
+                        ${(spring.status.value?default(""))}
+                        </#if>
+
+                    <#-- add display suffix value if set -->
+                        <#if field.readOnlyDisplaySuffix?has_content>
+                        *-* ${field.readOnlyDisplaySuffix}
+                        </#if>
+                    </#if>
+                </#if>
+            </#local>
+
+            <#if field.multiLineReadOnlyDisplay>
+                <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+            </#if>
+
+        <#-- render inquiry if enabled -->
+            <#if field.inquiry?has_content && field.inquiry.render>
+                <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
+                readOnly=field.readOnly/>
+            <#else>
+            ${readOnlyDisplay}
+            </#if>
+
+        <#--render field quickfinder -->
+            <#if field.inputAllowed>
+                <@krad.template component=field.quickfinder componentId="${field.id}"/>
+            </#if>
+        <#else>
+            <#if quickfinderInputOnly>
                 <#local readOnlyDisplay>
                     <#if field.forcedValue?has_content>
-                        ${field.forcedValue}
+                    ${field.forcedValue}
                     <#else>
-                        <#-- display replacement display value if set -->
+                    <#-- display replacement display value if set -->
                         <#if field.readOnlyDisplayReplacement?has_content>
-                             ${field.readOnlyDisplayReplacement}
+                        ${field.readOnlyDisplayReplacement}
                         <#else>
-                            <#-- display actual field value -->
+                        <#-- display actual field value -->
                             <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
 
-                            <#-- check escape flag -->
+                        <#-- check escape flag -->
                             <#if field.escapeHtmlInPropertyValue>
-                                ${(spring.status.value?default(""))?html}
+                            ${(spring.status.value?default(""))?html}
                             <#else>
-                                ${(spring.status.value?default(""))}
+                            ${(spring.status.value?default(""))}
                             </#if>
 
-                            <#-- add display suffix value if set -->
+                        <#-- add display suffix value if set -->
                             <#if field.readOnlyDisplaySuffix?has_content>
-                                 *-* ${field.readOnlyDisplaySuffix}
+                            *-* ${field.readOnlyDisplaySuffix}
                             </#if>
                         </#if>
                     </#if>
@@ -64,111 +115,127 @@
                     <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
                 </#if>
 
-                <span id="${field.id}_control" class="uif-readOnlyContent">
-                    <#-- render inquiry if enabled -->
-                    <#if field.inquiry?has_content && field.inquiry.render>
-                        <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
-                          readOnly=field.readOnly/>
-                    <#else>
-                        ${readOnlyDisplay}
-                    </#if>
-                </span>
+            <span id="${field.id}_control" class="uif-readOnlyContent">
+                       <#-- render inquiry if enabled -->
+                       <#if field.inquiry?has_content && field.inquiry.render>
+                           <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
+                           readOnly=field.readOnly/>
+                       <#else>
+                       ${readOnlyDisplay}
+                       </#if>
+                   </span>
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                <div class="input-group inlineBlock">
+                </#if>
 
+                <#if field.postInputAddons??>
+                    <#list field.postInputAddons as postAddon>
+                        <#if postAddon.wrapperCssClassesAsString?has_content>
+                            <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                        <#else>
+                            <#local postAddonStyleClass=""/>
+                        </#if>
+
+                        <span ${postAddonStyleClass!}>
+                            <@krad.template component=postAddon/>
+                        </span>
+                    </#list>
+                </#if>
+
+                <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                </div>
+                </#if>
             <#else>
 
                 <#if field.postInputAddons?? || field.renderInputAddonGroup>
-                    <div class="input-group">
+                <div class="input-group">
                 </#if>
 
-                <#-- render field instructional text -->
+            <#-- render field instructional text -->
                 <@krad.template component=field.instructionalMessage/>
 
-                <#-- render control for input -->
+            <#-- render control for input -->
                 <@krad.template component=field.control field=field/>
 
                 <#if field.helperText?has_content>
                     <div class="uif-helperText">
-                        ${field.helperText}
+                    ${field.helperText}
                     </div>
                 </#if>
 
                 <#if field.postInputAddons??>
-                     <#list field.postInputAddons as postAddon>
-                         <#if postAddon.wrapperCssClassesAsString?has_content>
-                             <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
-                         <#else>
-                             <#local postAddonStyleClass=""/>
-                         </#if>
+                    <#list field.postInputAddons as postAddon>
+                        <#if postAddon.wrapperCssClassesAsString?has_content>
+                            <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
+                        <#else>
+                            <#local postAddonStyleClass=""/>
+                        </#if>
 
-                         <span ${postAddonStyleClass!}>
-                             <@krad.template component=postAddon/>
-                         </span>
-                     </#list>
+                        <span ${postAddonStyleClass!}>
+                            <@krad.template component=postAddon/>
+                        </span>
+                    </#list>
                 </#if>
 
                 <#if field.postInputAddons?? || field.renderInputAddonGroup>
-                    </div>
+                </div>
                 </#if>
             </#if>
+        </#if>
 
-            <#-- render field quickfinder -->
-            <#--<#if field.inputAllowed>-->
-                <#--<@krad.template component=field.quickfinder componentId="${field.id}"/>-->
-            <#--</#if>-->
+    <#-- render field direct inquiry if field is editable and inquiry is enabled-->
+        <#if !readOnly && (field.inquiry.render)!false>
 
-            <#-- render field direct inquiry if field is editable and inquiry is enabled-->
-            <#if !readOnly && (field.inquiry.render)!false>
+            <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
+        </#if>
 
-                <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
-            </#if>
+    <#-- render field help -->
+        <@krad.template component=field.help/>
 
-            <#-- render field help -->
-            <@krad.template component=field.help/>
+    <#--<#if field.renderFieldset>-->
+    <#--</fieldset>-->
+    <#--</#if>-->
 
-            <#--<#if field.renderFieldset>-->
-                <#--</fieldset>-->
-            <#--</#if>-->
 
-        </@krad.fieldLbl>
 
         <#if field.renderMarkerIconSpan>
-            <span id="${field.id}_markers"></span>
+        <span id="${field.id}_markers"></span>
         </#if>
 
         <#if !readOnly>
-            <#-- render field constraint -->
+        <#-- render field constraint -->
             <@krad.template component=field.constraintMessage/>
         </#if>
 
-        <#-- render span and values for informational properties -->
+    <#-- render span and values for informational properties -->
         <#if field.renderInfoMessageSpan>
-            <span id="${field.id}_info_message"></span>
+        <span id="${field.id}_info_message"></span>
         </#if>
 
         <#if field.propertyNamesForAdditionalDisplay??>
-	        <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-	            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+            <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
+            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
 	                <@spring.bind path="KualiForm.${infoPropertyPath}"/>
 	                 ${spring.status.value?default("")}
 	            </span>
-	        </#list>
+            </#list>
         </#if>
 
-        <#-- render field suggest if field is editable -->
+    <#-- render field suggest if field is editable -->
         <#if !readOnly>
             <@krad.template component=field.suggest parent=field/>
         </#if>
 
-        <#-- render hidden fields -->
-        <#-- TODO: always render hiddens if configured? -->
+    <#-- render hidden fields -->
+    <#-- TODO: always render hiddens if configured? -->
         <#if field.additionalHiddenPropertyNames??>
-	        <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
-	            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
-	            path="KualiForm.${hiddenPropertyName}"/>
-	        </#list>
+            <#list field.additionalHiddenPropertyNames as hiddenPropertyName>
+                <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
+                path="KualiForm.${hiddenPropertyName}"/>
+            </#list>
         </#if>
 
-        <#-- transform all text on attribute field to uppercase -->
+    <#-- transform all text on attribute field to uppercase -->
         <#if !readOnly && field.control?? && field.uppercaseValue>
             <@krad.script value="uppercaseValue('${field.control.id}');"/>
         </#if>

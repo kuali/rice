@@ -59,7 +59,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxControl-Example2 start-->
-        <bean id="ST-DemoCheckboxControlExample2-Input1" parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="CheckboxGroupControl"
+        <bean id="ST-DemoCheckboxControlExample2-Input1" parent="Uif-InputField" p:propertyName="inputField2" p:label="CheckboxGroupControl"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl"/>
@@ -78,7 +78,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxControl-Example3 start-->
-        <bean id="ST-DemoCheckboxControlExample3-Input1" parent="Uif-InputField-LabelTop" p:propertyName="inputField2" p:label="CheckboxGroupControl"
+        <bean id="ST-DemoCheckboxControlExample3-Input1" parent="Uif-InputField" p:propertyName="inputField2" p:label="CheckboxGroupControl"
               p:width="auto" p:instructionalText="Choose one of the options">
           <property name="control">
             <bean parent="Uif-VerticalCheckboxesControl">

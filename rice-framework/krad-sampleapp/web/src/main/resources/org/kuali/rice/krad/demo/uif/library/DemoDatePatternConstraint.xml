@@ -42,7 +42,7 @@
         <!-- ex:Demo-DatePatternConstraint-Example1 start-->
 
         <!-- Any valid date pattern allowed by system -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Date 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Date 1" p:propertyName="inputField1"
               p:constraintText="Valid date input only">
           <property name="validCharactersConstraint">
             <bean parent="DatePatternConstraint"/>
@@ -61,7 +61,7 @@
         <!-- ex:Demo-DatePatternConstraint-Example2 start-->
 
         <!-- Usage with date control (common recommended usage) -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Date 2" p:propertyName="inputField3">
+        <bean parent="Uif-InputField" p:label="Date 2" p:propertyName="inputField3">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>
@@ -71,7 +71,7 @@
         </bean>
 
         <!-- Basic dates only allowed - freeform entry -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Date 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Date 1" p:propertyName="inputField2"
               p:constraintText="Basic dates only allowed: MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy">
           <property name="validCharactersConstraint">
             <bean parent="BasicDatePatternConstraint"/>
@@ -90,7 +90,7 @@
         <!-- ex:Demo-DatePatternConstraint-Example3 start-->
 
         <!-- Basic dates only allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Date 1" p:propertyName="inputField4"
+        <bean parent="Uif-InputField" p:label="Date 1" p:propertyName="inputField4"
               p:constraintText="Force to only allow: MM/dd/yy">
           <property name="validCharactersConstraint">
             <bean parent="DatePatternConstraint">

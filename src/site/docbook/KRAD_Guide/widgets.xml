@@ -1048,28 +1048,24 @@ private void buildFooTree(Node sprout, Foo foo) {
                                     p:propertyName="field1"
                                     p:label="Field 1"
                                     p:required="true"
-                                    p:labelPlacement="TOP"
                                     p:instructionalText="instructions 1"
                                     p:labelField.styleClasses="labelTop"/>                        
                                 &lt;bean parent="Uif-InputField" 
                                     p:propertyName="field2"
                                     p:label="Field 2"
-                                    p:required="true"
-                                    p:labelPlacement="TOP"                               
+                                    p:required="true"                              
                                     p:instructionalText="instructions 2"
                                     p:labelField.styleClasses="labelTop"/>                        
                                 &lt;bean parent="Uif-InputField"
                                     p:propertyName="field3"
                                     p:label="Field 3"
-                                    p:required="true"
-                                    p:labelPlacement="TOP"                               
+                                    p:required="true"                           
                                     p:instructionalText="instructions 3"
                                     p:labelField.styleClasses="labelTop"/>                        
                                 &lt;bean parent="Uif-InputField"
                                     p:propertyName="field4"                          
                                     p:label="Field 4"
-                                    p:required="true"
-                                    p:labelPlacement="TOP"                               
+                                    p:required="true"                   
                                     p:instructionalText="instructions 4"
                                     p:labelField.styleClasses="labelTop"/>                     
                             &lt;/list>
@@ -1130,25 +1126,22 @@ private void buildFooTree(Node sprout, Foo foo) {
                       &lt;list>                         
                           &lt;bean parent="Uif-InputField" p:propertyName="field1"                                 
                             p:label="Field 1"   
-                            p:required="true" p:labelPlacement="TOP"                                
+                            p:required="true"                              
                             p:instructionalText="instructions 1"                                
                             p:labelField.styleClasses="labelTop"/>                         
                           &lt;bean parent="Uif-InputField" p:propertyName="field2"                                 
                             p:label="Field 2"                                
-                            p:required="true"
-                            p:labelPlacement="TOP"                                
+                            p:required="true"                                
                             p:instructionalText="instructions 2"                                
                             p:labelField.styleClasses="labelTop"/>                          
                           &lt;bean parent="Uif-InputField"
                             p:propertyName="field3"                                 
                             p:label="Field 3"                                
-                            p:required="true"
-                            p:labelPlacement="TOP"                                
+                            p:required="true"                             
                             p:instructionalText="instructions 3"                                
                             p:labelField.styleClasses="labelTop"/>                         
                           &lt;bean parent="Uif-InputField" p:propertyName="field4"                                 
-                            p:label="Field 4"                                
-                            p:labelPlacement="TOP"                                
+                            p:label="Field 4"                                                     
                             p:instructionalText="instructions 4"                                
                             p:labelField.styleClasses="labelTop"                                
                             p:progressiveRender="@{#np.field3 matches 'A.*'}"/>                        

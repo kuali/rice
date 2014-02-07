@@ -39,7 +39,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-FloatingPointPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Positive FloatingPoint or zero only">
           <property name="validCharactersConstraint">
             <bean parent="FloatingPointPatternConstraint"/>
@@ -57,7 +57,7 @@
       <list>
         <!-- ex:Demo-FloatingPointPatternConstraint-Example2 start-->
         <!-- negative FloatingPoints allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Positive, negative, or zero FloatingPoint">
           <property name="validCharactersConstraint">
             <bean parent="FloatingPointPatternConstraint" p:allowNegative="true"/>

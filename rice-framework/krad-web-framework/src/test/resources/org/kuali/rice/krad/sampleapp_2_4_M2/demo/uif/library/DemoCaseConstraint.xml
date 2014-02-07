@@ -60,7 +60,7 @@
 
         <!-- Field 2 is required when case1 OR case2 is selected, and only allows AlphaNumeric
           entry when case2 is selected -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1">
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="inputField10"/>
@@ -91,7 +91,7 @@
         </bean>
 
         <!-- Field 3 has maxLength 3 and inlclusiveMax 500 when case3 is selected-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField2">
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField2">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="inputField10"/>
@@ -113,7 +113,7 @@
         </bean>
 
         <!-- Field 4 requires that Field 5 be filled out if case4 has been selected -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField3">
+        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField3">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="inputField10"/>
@@ -130,7 +130,7 @@
             </bean>
           </property>
         </bean>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField4"/>
+        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField4"/>
 
         <!-- ex:Demo-CaseConstraint-Example1 end-->
       </list>
@@ -142,11 +142,11 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CaseConstraint-Example2 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField5"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField6"/>
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField5"/>
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField6"/>
 
 
-        <bean parent="Uif-InputField-LabelTop"
+        <bean parent="Uif-InputField"
               p:instructionalText="When Field 1 has a value AND when Field 2 does not have the value A, Field 3 is required" p:label="Field 3" p:propertyName="inputField7">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">

@@ -155,68 +155,68 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testHtmlNav() throws Exception {
         testGeneralFeaturesRichMessagesHtml();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesCompByIndexNav() throws Exception {
         testGeneralFeaturesRichMessagesCompByIndex();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesCssNav() throws Exception {
         testGeneralFeaturesRichMessagesCss();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesCombineNav() throws Exception {
         testGeneralFeaturesRichMessagesCombine();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesWInputFieldNav() throws Exception {
         testGeneralFeaturesRichMessagesWInputField();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesWSpringELNav() throws Exception {
         testGeneralFeaturesRichMessagesWSpringEL();
     }
 
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesImagesNav() throws Exception {
         testGeneralFeaturesRichMessagesImages();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesEscapeCheckboxRadioNav() throws Exception {
         testGeneralFeaturesRichMessagesEscapeCheckboxRadio();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesInLabelsNav() throws Exception {
         testGeneralFeaturesRichMessagesInLabels();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesCompByIdNav() throws Exception {
         testGeneralFeaturesRichMessagesCompById();
     }
 
     @Test
-    @Ignore // convience method for page redesign
+    @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesActionNav() throws Exception {
         testGeneralFeaturesRichMessagesAction();
     }

@@ -31,6 +31,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl;
 import org.springmodules.orm.ojb.OjbOperationException;
 
+import javax.persistence.OptimisticLockException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -157,9 +158,9 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         agenda = agendaBuilder.build();
         try {
             agenda = ruleManagementService.findCreateAgenda(agenda);
-            fail( "should have failed with OjbOperationException: OJB operation failed");
-        } catch (OjbOperationException e) {
-            // thrown OjbOperationException: OJB operation failed ...OptimisticLockException: Object has been modified by someone else
+            fail( "should have failed with OptimisticLockException");
+        } catch (OptimisticLockException e) {
+            // javax.persistence.OptimisticLockException
         }
 
         // create a new agendaItem to update the agenda with
@@ -452,7 +453,7 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         // find active agendas with same agendaType
-        builder.setPredicates(equal("active","Y"),equal("typeId", krmsType.getId()));
+        builder.setPredicates(equal("active",Boolean.TRUE),equal("typeId", krmsType.getId()));
         List<String> agendaIds = ruleManagementService.findAgendaIds(builder.build());
         assertEquals("Wrong number of Agendas returned",3,agendaIds.size());
 

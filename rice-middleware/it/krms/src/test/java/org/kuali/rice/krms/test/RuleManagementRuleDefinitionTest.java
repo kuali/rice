@@ -41,6 +41,7 @@ import static org.junit.Assert.assertEquals;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
 
 /**
  *   RuleManagementRuleDefinitionTest is to test the methods of ruleManagementServiceImpl relating to RuleDefinitions
@@ -202,17 +203,21 @@ public class RuleManagementRuleDefinitionTest  extends RuleManagementBaseTest{
         ruleBuilder2 = RuleDefinition.Builder.create(ruleManagementService.getRule(t2.rule_7_Id));
         Map<String, String> newAttributes = new HashMap<String, String>();
         newAttributes.put(t2.actionAttribute_Key, t2.actionAttribute1_Value);
+
         for (ActionDefinition.Builder ruleActionBuilder : ruleBuilder2.getActions()) {
             ruleActionBuilder.setAttributes(newAttributes);
         }
+
         ruleManagementService.updateRule(ruleBuilder2.build());
         rule0 = ruleManagementService.getRule(t2.rule_7_Id);
         assertEquals("Invalid AgendaItem Rule Actions count",1,rule0.getActions().size());
+
         for (ActionDefinition action : rule0.getActions()) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("actionId", action.getId());
-            Collection<ActionAttributeBo> actionAttributes = businessObjectService.findMatching(ActionAttributeBo.class, map);
+            map.put("action.id", action.getId());
+            Collection<ActionAttributeBo> actionAttributes = findMatching(dataObjectService, ActionAttributeBo.class, map);
             assertEquals("Invalid AgendaItem Rule Actions attribute count",1,actionAttributes.size());
+
             for (ActionAttributeBo actionAttribute : actionAttributes) {
                 String expectedAttribute = t2.actionAttribute1_Value;
                 String actualAttribute = actionAttribute.getValue();

@@ -16,11 +16,10 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -30,7 +29,6 @@ import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -44,13 +42,6 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 	private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermSpecificationMaintainable.class);
-
-	/**
-	 * @return the boService
-	 */
-	public BusinessObjectService getBoService() {
-		return KNSServiceLocator.getBusinessObjectService();
-	}
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
@@ -81,9 +72,10 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      * @param termSpecificationBo with
      */
     private void findContexts(TermSpecificationBo termSpecificationBo) {
-        Collection<ContextValidTermBo> validContextMappings =
-            getBoService().findMatching(ContextValidTermBo.class,
-                    Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
+        QueryResults<ContextValidTermBo> queryResults = getDataObjectService().findMatching(ContextValidTermBo.class,
+                QueryByCriteria.Builder.forAttribute("termSpecificationId", termSpecificationBo.getId()).build());
+
+        Collection<ContextValidTermBo> validContextMappings = queryResults.getResults();
 
         if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
             termSpecificationBo.getContextIds().add(validContextMapping.getContextId());
@@ -160,15 +152,18 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 
         if (termSpec.getId() != null) {
             // clear all context valid term mappings
-            getBoService().deleteMatching(ContextValidTermBo.class,
-                    Collections.singletonMap("termSpecificationId", termSpec.getId()));
+
+            QueryByCriteria criteria =
+                    QueryByCriteria.Builder.forAttribute("termSpecificationId", termSpec.getId()).build();
+
+            getDataObjectService().deleteMatching(ContextValidTermBo.class, criteria);
 
             // add a new mapping for each context in the collection
             for (String contextId : termSpec.getContextIds()) {
                 ContextValidTermBo contextValidTerm = new ContextValidTermBo();
                 contextValidTerm.setContextId(contextId);
                 contextValidTerm.setTermSpecificationId(termSpec.getId());
-                getBoService().save(contextValidTerm);
+                getDataObjectService().save(contextValidTerm);
             }
         }
     }

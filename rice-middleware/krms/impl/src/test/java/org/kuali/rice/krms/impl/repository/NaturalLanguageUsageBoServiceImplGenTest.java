@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.NaturalLanguageUsageGenTest;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
 
@@ -49,7 +49,7 @@ public final class NaturalLanguageUsageBoServiceImplGenTest {
     @Before
     public void setUp() {
         naturalLanguageUsageBoServiceImpl = new NaturalLanguageUsageBoServiceImpl();
-        naturalLanguageUsageBoServiceImpl.setBusinessObjectService(mock(BusinessObjectService.class));
+        naturalLanguageUsageBoServiceImpl.setDataObjectService(mock(DataObjectService.class));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

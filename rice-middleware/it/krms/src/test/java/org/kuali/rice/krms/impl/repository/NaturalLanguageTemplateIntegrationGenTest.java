@@ -54,11 +54,11 @@ public final class NaturalLanguageTemplateIntegrationGenTest extends AbstractBoT
         naturalLanguageTemplateBoServiceImpl.setNaturalLanguageTemplater(newStringReplaceTemplater()); // TODO gen?
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
         naturalLanguageTemplateBoServiceImpl.setAttributeDefinitionService(krmsAttributeDefinitionService);
-        naturalLanguageTemplateBoServiceImpl.setBusinessObjectService(getBoService());
+        naturalLanguageTemplateBoServiceImpl.setDataObjectService(getDataObjectService());
         krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
-        krmsTypeBoServiceImpl.setBusinessObjectService(getBoService());
+        krmsTypeBoServiceImpl.setDataObjectService(getDataObjectService());
         naturalLanguageUsageBoServiceImpl = new NaturalLanguageUsageBoServiceImpl();
-        naturalLanguageUsageBoServiceImpl.setBusinessObjectService(getBoService());
+        naturalLanguageUsageBoServiceImpl.setDataObjectService(getDataObjectService());
     }
 
     public static NaturalLanguageTemplaterContract newStringReplaceTemplater() {

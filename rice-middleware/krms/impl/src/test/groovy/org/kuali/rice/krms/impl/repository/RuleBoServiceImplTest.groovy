@@ -16,25 +16,36 @@
 package org.kuali.rice.krms.impl.repository
 
 import groovy.mock.interceptor.MockFor
+import org.apache.cxf.common.util.CollectionUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 
 import org.junit.Test
-import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.core.api.resourceloader.ResourceLoader
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.kuali.rice.krms.api.repository.action.ActionDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+
+import javax.xml.namespace.QName
+
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
 class RuleBoServiceImplTest {
 
 	private final shouldFail = new GroovyTestCase().&shouldFail
 
-	def mockBusinessObjectService
+	def mockDataObjectService
 
 	static def NAMESPACE = "KRMS_TEST"
 	static def TYPE_ID="1234ABCD"
@@ -70,6 +81,19 @@ class RuleBoServiceImplTest {
 	
 	@BeforeClass
 	static void createSamples() {
+        def config = new JAXBConfigImpl();
+        config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID");
+        ConfigContext.init(config);
+
+        GlobalResourceLoader.stop()
+        GlobalResourceLoader.addResourceLoader([
+                getName: { -> new QName("krmsAttributeDefinitionService") },
+                getService: { [
+                        getKrmsAttributeBo: { a, b -> KrmsAttributeDefinitionBo.from(KrmsAttributeDefinition.Builder.create("123", a, b).build()) }
+                ] as KrmsAttributeDefinitionService },
+                stop: {}
+        ] as ResourceLoader);
+
 		//  create krmsAttributeDefinitionBo
 		ADB1 = new KrmsAttributeDefinitionBo();
 		ADB1.id = ATTR_DEF_ID
@@ -88,9 +112,10 @@ class RuleBoServiceImplTest {
 		// Create ActionAttributeBo
 		ActionAttributeBo attributeBo1 = new ActionAttributeBo()
 		attributeBo1.setId( ATTR_ID_1 )
-		attributeBo1.setAttributeDefinitionId( ATTR_DEF_ID )
 		attributeBo1.setValue( ATTR_VALUE )
-		attributeBo1.setActionId( ACTION_ID_1 )
+
+        // commenting out, this is causing some interference issues with other tests
+        // attributeBo1.setAction( ActionBo.from(TEST_ACTION_DEF) )
 		attributeBo1.attributeDefinition = ADB1
 		Set<ActionAttributeBo> attrBos = [attributeBo1]
 				
@@ -100,7 +125,7 @@ class RuleBoServiceImplTest {
 		TEST_ACTION_BO.setNamespace NAMESPACE
 		TEST_ACTION_BO.setName ACTION_NAME_1
 		TEST_ACTION_BO.setTypeId TYPE_ID
-		TEST_ACTION_BO.setRuleId RULE_ID_1
+		TEST_ACTION_BO.setRule RuleBo.from(RuleDefinition.Builder.create(RULE_ID_1, RULE_NAME, NAMESPACE, TYPE_ID, PROP_ID_1).build())
 		TEST_ACTION_BO.setSequenceNumber SEQUENCE_1
 		TEST_ACTION_BO.setAttributeBos attrBos
 
@@ -119,33 +144,33 @@ class RuleBoServiceImplTest {
 
 	@Before
 	void setupBoServiceMockContext() {
-		mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+		mockDataObjectService = new MockFor(DataObjectService.class)
 	}
 
 	@Test
 	public void test_getRuleByRuleId() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {clazz, id -> TEST_RULE_BO}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) {clazz, id -> TEST_RULE_BO}
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		RuleDefinition myRule = service.getRuleByRuleId(RULE_ID_1)
 
 		Assert.assertEquals(RuleBo.to(TEST_RULE_BO), myRule)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
 	public void test_getRuleByRuleId_when_none_found() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) { clazz, id -> null}
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		RuleDefinition myRule = service.getRuleByRuleId("I_DONT_EXIST")
 
 		Assert.assertNull(myRule)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
@@ -164,28 +189,28 @@ class RuleBoServiceImplTest {
 
 	@Test
 	public void test_getRuleByNameAndNamespace() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {clazz, map -> TEST_RULE_BO}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, crit -> buildQueryResults([TEST_RULE_BO]) }
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		RuleDefinition myRule = service.getRuleByNameAndNamespace(RULE_ID_1, NAMESPACE)
 
 		Assert.assertEquals(RuleBo.to(TEST_RULE_BO), myRule)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
 	public void test_getRuleByNameAndNamespace_when_none_found() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([]) }
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		RuleDefinition myRule = service.getRuleByNameAndNamespace("I_DONT_EXIST", NAMESPACE)
 
-		Assert.assertNull(myRule)
-		mockBusinessObjectService.verify(bos)
+		Assert.assertTrue(CollectionUtils.isEmpty(myRule))
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
@@ -218,77 +243,77 @@ class RuleBoServiceImplTest {
 
 	@Test
 	public void test_createRule_null_input() {
-		def boService = mockBusinessObjectService.proxyDelegateInstance()
+		def boService = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(boService)
+		service.setDataObjectService(boService)
 		shouldFail(IllegalArgumentException.class) {
 			service.createRule(null)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(boService)
 	}
 
 	@Test
 	void test_createRule_exists() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			Class clazz, Map map -> TEST_RULE_BO
+		mockDataObjectService.demand.findMatching(1..1) {
+			clazz, crit -> buildQueryResults([TEST_RULE_BO])
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		shouldFail(IllegalStateException.class) {
 			service.createRule(TEST_RULE_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
 	void test_createRule_success() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
+		mockDataObjectService.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([])}
+		mockDataObjectService.demand.save { bo, opts -> bo }
 
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 
 		service.createRule(TEST_RULE_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
 	public void test_updateRule_null_input() {
-		def boService = mockBusinessObjectService.proxyDelegateInstance()
+		def boService = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(boService)
+		service.setDataObjectService(boService)
 		shouldFail(IllegalArgumentException.class) {
 			service.updateRule(null)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(boService)
 	}
 
 	@Test
 	void test_updateRule_does_not_exist() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
-			Class clazz, String id -> null
+		mockDataObjectService.demand.find(1..1) {
+			clazz, id -> null
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		shouldFail(IllegalStateException.class) {
 			service.updateRule(TEST_RULE_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	@Test
 	void test_updateRule_success() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_RULE_BO}
-		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_RULE_BO }
+		mockDataObjectService.demand.deleteMatching(1) { clazz, crit -> }
+		mockDataObjectService.demand.save { bo, opts -> bo }
+		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(bos)
 		service.updateRule(TEST_RULE_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(bos)
 	}
 
 	private static createPropositionParametersSet1(){

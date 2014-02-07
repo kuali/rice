@@ -27,35 +27,13 @@ import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
-import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
-import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.repository.term.TermDefinition;
-import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
-import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.impl.repository.ActionBoService;
-import org.kuali.rice.krms.impl.repository.AgendaBoService;
-import org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
-import org.kuali.rice.krms.impl.repository.RuleBoService;
-import org.kuali.rice.krms.impl.repository.TermBo;
-import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -145,7 +123,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
-        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
+        List<ResultEvent> rEvents1 = executeEngineResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -193,7 +171,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
-        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
+        List<ResultEvent> rEvents1 = executeEngineResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -248,7 +226,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution 1");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution 1");
-        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
+        List<ResultEvent> rEvents1 = executeEngineResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -298,7 +276,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         perfLog.log("starting rule execution 1");
         EngineResults eResults1 = KrmsApiServiceLocator.getEngine().execute(selectionCriteria, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution 1");
-        List<ResultEvent> rEvents1 = executeEngileResults(eResults1);
+        List<ResultEvent> rEvents1 = executeEngineResults(eResults1);
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RULE_EVALUATED.toString());
 
@@ -322,7 +300,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         assertAgendaDidNotExecute(AGENDA5);
     }
 
-    private List<ResultEvent> executeEngileResults(EngineResults eResults1) {
+    private List<ResultEvent> executeEngineResults(EngineResults eResults1) {
         try {
             return eResults1.getAllResults(); // CI NPE
         } catch (NullPointerException npe) {

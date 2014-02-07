@@ -17,11 +17,17 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.KrmsTypeGenTest;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -55,7 +61,9 @@ public final class KrmsTypeBoServiceImplGenTest {
         krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
         KrmsAttributeDefinitionService mockAttributeService = mock(KrmsAttributeDefinitionService.class);
 //        krmsTypeBoServiceImpl.setAttributeDefinitionService(mockAttributeService);
-        krmsTypeBoServiceImpl.setBusinessObjectService(mock(BusinessObjectService.class));
+        DataObjectService dosMock = mock(DataObjectService.class);
+        when(dosMock.findMatching(any(Class.class), any(QueryByCriteria.class))).thenReturn(GenericQueryResults.Builder.create());
+        krmsTypeBoServiceImpl.setDataObjectService(dosMock);
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

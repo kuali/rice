@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2014 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
        xmlns:cache="http://www.springframework.org/schema/cache"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                            http://www.springframework.org/schema/context
@@ -32,8 +33,18 @@
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/krms/config/_KRMSLocalServiceBusSpringBeans.xml" />
 
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
+  <import resource="classpath:org/kuali/rice/krms/config/_KRMSJpaSpringBeans.xml"/>
+
+  <!-- Still using OJB for some of BOs in KRMS -->
+  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+  <bean id="krmsOjbConfigurer"
+        class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer"
+        p:metadataLocation="classpath:org/kuali/rice/krms/config/OJB-repository-krms.xml"
+        p:jcdAliases="krmsDataSource"/>
+
   <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
-  <context:component-scan base-package="org.kuali.rice.krms.impl" />
+  <!-- context:component-scan base-package="org.kuali.rice.krms.impl" / -->
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
@@ -73,11 +84,6 @@
     <property name="serviceName" value="persistenceServiceOjb" />
   </bean>
 
-  <bean id="sequenceAccessorService"
-        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="sequenceAccessorService" />
-  </bean>
-
   <bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="krms"/>
     <property name="dataSourceName" value="krmsDataSource"/>
@@ -112,6 +118,15 @@
         <value>org.kuali.rice.krms.impl</value>
       </list>
     </property>
+
+    <property name="entityManager" ref="sharedEntityManager" />
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
+    </property>
+
   </bean>
 
   <bean id="krmsModuleService" class="org.kuali.rice.krad.service.impl.ModuleServiceBase">
@@ -121,44 +136,42 @@
   <!-- wire up BO services and the like -->
 
   <bean id="termBoService" class="org.kuali.rice.krms.impl.repository.TermBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <alias name="termBoService" alias="termRepositoryService"/>
 
   <bean id="contextBoService" class="org.kuali.rice.krms.impl.repository.ContextBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="krmsTypeRepositoryService" class="org.kuali.rice.krms.impl.repository.KrmsTypeRepositoryServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="typeTypeRelationBoService" class="org.kuali.rice.krms.impl.repository.TypeTypeRelationBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="propositionBoService" class="org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="ruleBoService" class="org.kuali.rice.krms.impl.repository.RuleBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="agendaBoService" class="org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
     <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
   </bean>
 
   <bean id="actionBoService" class="org.kuali.rice.krms.impl.repository.ActionBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="agendaAuthorizationService" class="org.kuali.rice.krms.impl.authorization.AgendaAuthorizationServiceImpl">
@@ -175,40 +188,37 @@
 
   <bean id="naturalLanguageTemplateBoService" class="org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBoServiceImpl">
     <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
     <property name="naturalLanguageTemplater" ref="propositionNaturalLanguageTemplater"/>
   </bean>
 
   <bean id="referenceObjectBindingBoService" class="org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBoServiceImpl">
     <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
 
   <!-- wire up services needed for execution -->
 
   <bean id="ruleRepositoryService" class="org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService" />
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="functionRepositoryService" class="org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService" />
+    <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
 
   <bean id="naturalLanguageUsageBoService" class="org.kuali.rice.krms.impl.repository.NaturalLanguageUsageBoServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
     <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
   </bean>
 
   <bean id="ruleManagementService" class="org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl">
     <property name="actionBoService" ref="actionBoService"/>
     <property name="agendaBoService" ref="agendaBoService"/>
-    <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="dataObjectService" ref="dataObjectService"/>
     <property name="contextBoService" ref="contextBoService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService"/>
     <property name="propositionBoService" ref="propositionBoService"/>
     <property name="ruleBoService" ref="ruleBoService"/>
     <property name="termRepositoryService" ref="termRepositoryService"/>
@@ -217,8 +227,8 @@
     <property name="naturalLanguageTemplateBoService" ref="naturalLanguageTemplateBoService"/>
     <property name="naturalLanguageUsageBoService" ref="naturalLanguageUsageBoService"/>
     <property name="referenceObjectBindingBoService" ref="referenceObjectBindingBoService"/>
-    <property name="sequenceAccessorService" ref="sequenceAccessorService"/>
     <property name="templater" ref="propositionNaturalLanguageTemplater"/>
+    <property name="dataSource" ref="krmsDataSource" />
   </bean>
 
   <!-- UI specific services -->

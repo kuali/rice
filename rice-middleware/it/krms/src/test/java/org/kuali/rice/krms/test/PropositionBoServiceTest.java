@@ -35,7 +35,7 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 	public void setup() {
 
 		krmsTypeBoService = new KrmsTypeBoServiceImpl();
-		((KrmsTypeBoServiceImpl) krmsTypeBoService).setBusinessObjectService(getBoService());
+		((KrmsTypeBoServiceImpl) krmsTypeBoService).setDataObjectService(getDataObjectService());
 		
 //		dao.setJcdAlias("krmsDataSource");
 //		

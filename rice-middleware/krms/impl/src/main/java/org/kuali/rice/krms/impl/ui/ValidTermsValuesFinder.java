@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -35,10 +35,9 @@ import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ValuesFinder used to populate the list of available Terms when creating/editing a proposition in a
@@ -69,9 +68,10 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
 
         // Get all valid terms
 
-        Collection<ContextValidTermBo> contextValidTerms = null;
-        contextValidTerms = KNSServiceLocator.getBusinessObjectService()
-                .findMatching(ContextValidTermBo.class, Collections.singletonMap("contextId", contextId));
+        QueryByCriteria criteria = QueryByCriteria.Builder.forAttribute("contextId", contextId).build();
+
+        Collection<ContextValidTermBo> contextValidTerms =
+                KRADServiceLocator.getDataObjectService().findMatching(ContextValidTermBo.class, criteria).getResults();
 
         List<String> termSpecIds = new ArrayList();
         for (ContextValidTermBo validTerm : contextValidTerms) {
@@ -79,13 +79,16 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
         }
 
         if (termSpecIds.size() > 0) { // if we don't have any valid terms, skip it
-            Collection<TermBo> terms = null;
-            Map<String,Object> criteria = new HashMap<String,Object>();
-            criteria.put("specificationId", termSpecIds);
-            terms = KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
+            QueryResults<TermBo> terms = null;
+            Map<String,Object> critMap = new HashMap<String,Object>();
+            critMap.put("specificationId", termSpecIds);
+            QueryByCriteria.Builder critBuilder = QueryByCriteria.Builder.forAttribute("specificationId", termSpecIds);
+            critBuilder.setOrderByAscending("description");
+
+            terms = KRADServiceLocator.getDataObjectService().findMatching(TermBo.class, critBuilder.build());
 
             // add all terms that are in the selected category (or else add 'em all if no category is selected)
-            for (TermBo term : terms) {
+            if (!CollectionUtils.isEmpty(terms.getResults())) for (TermBo term : terms.getResults()) {
                 String selectName = term.getDescription();
 
                 if (StringUtils.isBlank(selectName) || "null".equals(selectName)) {
@@ -107,14 +110,14 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
             //
 
             // get term resolvers for the given term specs
-            Collection<TermResolverBo> termResolvers =
-                    KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(
-                            TermResolverBo.class, Collections.singletonMap("outputId", termSpecIds), "name", true
-                    );
+            QueryByCriteria.Builder termResolverCritBuilder = QueryByCriteria.Builder.forAttribute("outputId", termSpecIds);
+            termResolverCritBuilder.setOrderByAscending("name");
+            QueryResults<TermResolverBo> termResolvers =
+                    KRADServiceLocator.getDataObjectService().findMatching(TermResolverBo.class, termResolverCritBuilder.build());
 
             // TODO: what if there is more than one resolver for a given term specification?
 
-            if (termResolvers != null) for (TermResolverBo termResolver : termResolvers) {
+            if (termResolvers.getResults() != null) for (TermResolverBo termResolver : termResolvers.getResults()) {
                 if (!CollectionUtils.isEmpty(termResolver.getParameterSpecifications())) {
                     TermSpecificationBo output = termResolver.getOutput();
 
@@ -147,6 +150,7 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
                 }
             }
         }
+
         return false;
     }
 
@@ -165,6 +169,7 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
                 }
             }
         }
+
         return result;
     }
 

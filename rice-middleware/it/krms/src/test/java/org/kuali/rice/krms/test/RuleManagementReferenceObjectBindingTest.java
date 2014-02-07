@@ -457,7 +457,7 @@ public class RuleManagementReferenceObjectBindingTest extends RuleManagementBase
 
         // find the two active ReferenceObjectBindings in the list
         query = QueryByCriteria.Builder.create();
-        query.setPredicates( equal("active","Y"), in("id", refObjBindingBuilderIds.toArray(new String[]{})));
+        query.setPredicates( equal("active", Boolean.TRUE), in("id", refObjBindingBuilderIds.toArray(new String[]{})));
 
         referenceObjectBindingIds = ruleManagementService.findReferenceObjectBindingIds(query.build());
         for (String referenceObjectBindingId : referenceObjectBindingIds ) {

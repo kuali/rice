@@ -17,13 +17,14 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.tree.Node;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -51,6 +52,7 @@ import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
+import org.kuali.rice.krms.impl.repository.RepositoryBoIncrementer;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
@@ -70,7 +72,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -85,7 +86,9 @@ import java.util.Map;
 @RequestMapping(value = org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_EDITOR_PATH)
 public class AgendaEditorController extends MaintenanceDocumentController {
 
-    private SequenceAccessorService sequenceAccessorService;
+    private static final RepositoryBoIncrementer agendaIdIncrementer = new RepositoryBoIncrementer(AgendaBo.AGENDA_SEQ_NAME);
+    private static final RepositoryBoIncrementer agendaItemIdIncrementer = new RepositoryBoIncrementer(AgendaItemBo.AGENDA_ITEM_SEQ_NAME);
+    private static final RepositoryBoIncrementer ruleIdIncrementer = new RepositoryBoIncrementer(RuleBo.RULE_SEQ_NAME);
 
     /**
      * Override route to set the setSelectedAgendaItemId to empty and disable all the buttons
@@ -179,8 +182,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
-                    .toString());
+            rule.setId(ruleIdIncrementer.getNewId());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
             } else {
@@ -199,7 +201,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             ActionBo actionBo = new ActionBo();
             actionBo.setTypeId("");
             actionBo.setNamespace(agendaItem.getRule().getNamespace());
-            actionBo.setRuleId(agendaItem.getRule().getId());
+            actionBo.setRule(agendaItem.getRule());
             actionBo.setSequenceNumber(1);
             agendaEditor.setAgendaItemLineRuleAction(actionBo);
         } else {
@@ -343,15 +345,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
         MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
+
         if (rule.processAgendaItemBusinessRules(document)) {
-            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S", AgendaItemBo.class)
-                    .toString());
+            newAgendaItem.setId(agendaItemIdIncrementer.getNewId());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
+
             if (agenda.getFirstItemId() == null) {
                 agenda.setFirstItemId(newAgendaItem.getId());
             } else {
                 // insert agenda in tree
                 String selectedAgendaItemId = getSelectedAgendaItemId(form);
+
                 if (StringUtils.isBlank(selectedAgendaItemId)) {
                     // add after the last root node
                     AgendaItemBo node = getFirstAgendaItem(agenda);
@@ -377,6 +381,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         } else {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
         }
+
         return super.navigate(form, result, request, response);
     }
 
@@ -529,15 +534,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 result &= false;
             } else { // check if the term name is unique
 
-                Map<String, String> criteria = new HashMap<String, String>();
+                Map<String, String> critMap = new HashMap<String, String>();
 
-                criteria.put("description", proposition.getNewTermDescription());
-                criteria.put("specification.namespace", namespace);
+                critMap.put("description", proposition.getNewTermDescription());
+                critMap.put("specification.namespace", namespace);
+                QueryByCriteria criteria = QueryByCriteria.Builder.andAttributes(critMap).build();
 
-                Collection<TermBo> matchingTerms =
-                        KNSServiceLocator.getBusinessObjectService().findMatching(TermBo.class, criteria);
+                QueryResults<TermBo> matchingTerms =
+                        KRADServiceLocator.getDataObjectService().findMatching(TermBo.class, criteria);
 
-                if (!CollectionUtils.isEmpty(matchingTerms)) {
+                if (!CollectionUtils.isEmpty(matchingTerms.getResults())) {
                     // this is a Warning -- maybe it should be an error?
                     GlobalVariables.getMessageMap().putWarningWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                             "warning.rule.proposition.simple.duplicateTermName", proposition.getDescription());
@@ -610,8 +616,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private String getCreateAgendaId(AgendaBo agenda) {
         if (agenda.getId() == null) {
-            agenda.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_S", AgendaItemBo.class).toString());
+            agenda.setId(agendaIdIncrementer.getNewId());
         }
+
         return agenda.getId();
     }
 
@@ -1585,16 +1592,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return result;
     }
 
-    /**
-     *  return the sequenceAssessorService
-     */
-    private SequenceAccessorService getSequenceAccessorService() {
-        if ( sequenceAccessorService == null ) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        return sequenceAccessorService;
-    }
-
     private FunctionBoService getFunctionBoService() {
         return KrmsRepositoryServiceLocator.getFunctionBoService();
     }
@@ -1926,7 +1923,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (root.getChildren().isEmpty()){
                 PropositionBo blank = PropositionBo.createSimplePropositionBoStub(null,PropositionType.SIMPLE.getCode());
                 blank.setRuleId(rule.getId());
-                rule.setPropId(blank.getId());
+                rule.setProposition(blank);
                 rule.setProposition(blank);
                 rule.refreshPropositionTree(true);
             }
@@ -2342,7 +2339,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (KRADUtils.isNotNull(parentNode)) {
                 parentNode.getChildren().clear();
                 agendaEditor.getAgendaItemLine().getRule().getPropositionTree().setRootElement(null);
-                agendaEditor.getAgendaItemLine().getRule().setPropId(null);
                 agendaEditor.getAgendaItemLine().getRule().setProposition(null);
             } else {
                 GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,

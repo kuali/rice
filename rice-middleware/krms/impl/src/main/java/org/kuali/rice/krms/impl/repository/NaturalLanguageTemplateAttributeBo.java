@@ -15,30 +15,55 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplateAttribute;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplateAttributeContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.io.Serializable;
 
 /**
  * The mutable implementation of the @{link NaturalLanguageTemplateAttributeContract} interface, the counterpart to the immutable implementation {@link NaturalLanguageTemplateAttribute}.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class NaturalLanguageTemplateAttributeBo
-    extends PersistableBusinessObjectBase
-    implements NaturalLanguageTemplateAttributeContract
-{
+@Entity
+@Table(name = "KRMS_NL_TMPL_ATTR_T")
+public class NaturalLanguageTemplateAttributeBo implements NaturalLanguageTemplateAttributeContract, Serializable {
 
+    private static final long serialVersionUID = 1l;
+
+    @Column(name = "NL_TMPL_ID")
     private String naturalLanguageTemplateId;
+
+    @Column(name = "VER_NBR")
+    @Version
     private Long versionNumber;
+
+    @Column(name = "ATTR_VAL")
     private String value;
+
+    @Column(name = "ATTR_DEFN_ID")
     private String attributeDefinitionId;
+
+    @ManyToOne(targetEntity = KrmsAttributeDefinitionBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "ATTR_DEFN_ID", referencedColumnName = "ATTR_DEFN_ID", insertable = false, updatable = false)
     private KrmsAttributeDefinitionContract attributeDefinition;
+
+    @PortableSequenceGenerator(name = "KRMS_NL_TMPL_ATTR_S")
+    @GeneratedValue(generator = "KRMS_NL_TMPL_ATTR_S")
+    @Id
+    @Column(name = "NL_TMPL_ATTR_ID")
     private String id;
-    private SequenceAccessorService sequenceAccessorService;
 
     /**
      * Default Constructor
@@ -144,7 +169,10 @@ public class NaturalLanguageTemplateAttributeBo
      * 
      */
     public static NaturalLanguageTemplateAttribute to(NaturalLanguageTemplateAttributeBo naturalLanguageTemplateAttributeBo) {
-        if (naturalLanguageTemplateAttributeBo == null) { return null; }
+        if (naturalLanguageTemplateAttributeBo == null) {
+            return null;
+        }
+
         return NaturalLanguageTemplateAttribute.Builder.create(naturalLanguageTemplateAttributeBo).build();
     }
 
@@ -155,7 +183,10 @@ public class NaturalLanguageTemplateAttributeBo
      * 
      */
     public static org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateAttributeBo from(NaturalLanguageTemplateAttribute naturalLanguageTemplateAttribute) {
-        if (naturalLanguageTemplateAttribute == null) return null;
+        if (naturalLanguageTemplateAttribute == null) {
+            return null;
+        }
+
         NaturalLanguageTemplateAttributeBo naturalLanguageTemplateAttributeBo = new NaturalLanguageTemplateAttributeBo();
         naturalLanguageTemplateAttributeBo.setNaturalLanguageTemplateId(naturalLanguageTemplateAttribute.getNaturalLanguageTemplateId());
         naturalLanguageTemplateAttributeBo.setVersionNumber(naturalLanguageTemplateAttribute.getVersionNumber());
@@ -163,34 +194,8 @@ public class NaturalLanguageTemplateAttributeBo
         naturalLanguageTemplateAttributeBo.setAttributeDefinitionId(naturalLanguageTemplateAttribute.getAttributeDefinitionId());
         naturalLanguageTemplateAttributeBo.setAttributeDefinition(naturalLanguageTemplateAttribute.getAttributeDefinition());
         naturalLanguageTemplateAttributeBo.setId(naturalLanguageTemplateAttribute.getId());
-        // TODO collections, etc.
+
+        // TODO collections, etc. 
         return naturalLanguageTemplateAttributeBo;
     }
-
-    /**
-     * Returns the next available id for the given table and class.
-     * @return String the next available id for the given table and class.
-     * 
-     */
-    private String getNewId(String table, Class clazz) {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
-        return id.toString();
-    }
-
-    /**
-     * Set the SequenceAccessorService, useful for testing.
-     * @param sas SequenceAccessorService to use for getNewId.
-     * 
-     */
-    public void setSequenceAccessorService(SequenceAccessorService sas) {
-        sequenceAccessorService = sas;
-    }
-
-    public SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService;
-    }
-
 }

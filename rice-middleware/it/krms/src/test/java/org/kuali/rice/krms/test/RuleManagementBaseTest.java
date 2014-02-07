@@ -17,11 +17,9 @@
 package org.kuali.rice.krms.test;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.junit.Before;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
@@ -58,7 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Base test case and methods for testing RuleManagementServiceImpl
@@ -75,7 +73,7 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
     protected ActionBoService actionBoService;
     protected FunctionBoServiceImpl functionBoService;
     protected KrmsAttributeDefinitionService krmsAttributeDefinitionService;
-    protected BusinessObjectService businessObjectService;
+    protected DataObjectService dataObjectService;
 
     protected String CLASS_DISCRIMINATOR;
 
@@ -95,7 +93,7 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         actionBoService = KrmsRepositoryServiceLocator.getBean("actionBoService");
         functionBoService = KrmsRepositoryServiceLocator.getBean("functionRepositoryService");
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
-        businessObjectService = (BusinessObjectService)GlobalResourceLoader.getService("businessObjectService");
+        dataObjectService = (DataObjectService)GlobalResourceLoader.getService("dataObjectService");
     }
 
     /**
@@ -172,13 +170,16 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
                 agendaId);
         agendaItemDefinitionBuilder.setRuleId(ruleId);
 
-        String id = ruleManagementService.createAgendaItem(agendaItemDefinitionBuilder.build()).getId();
-        AgendaItemDefinition agendaItemDefinition = ruleManagementService.getAgendaItem(id);
+        AgendaItemDefinition agendaItemDefinition =
+                ruleManagementService.createAgendaItem(agendaItemDefinitionBuilder.build());
 
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
         AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
         agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
         ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
+
+        // re-fetch the item because it's version field will have changed in the above update
+        agendaItemDefinition = ruleManagementService.getAgendaItem(agendaItemDefinition.getId());
 
         return agendaItemDefinition;
     }
@@ -282,19 +283,26 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         createTestTermSpecification(termSpecId, termSpecId, namespace, termSpecType, termSpecDescr);
         KrmsTypeDefinition krmsTypeDefinition = createKrmsTypeDefinition(null, namespace, termSpecId, "testTypeService");
 
-        List<PropositionParameter.Builder> propParam =  new ArrayList<PropositionParameter.Builder>();
-        propParam.add(PropositionParameter.Builder.create(propId + "_0", "unused_notnull", termSpecId,
-                PropositionParameterType.TERM.getCode(), 0));
-        propParam.add(PropositionParameter.Builder.create(propId + "_1", "unused_notnull", propConstant,
-                PropositionParameterType.CONSTANT.getCode(), 1));
-        propParam.add(PropositionParameter.Builder.create(propId + "_2", "unused_notnull", propOperator,
-                PropositionParameterType.OPERATOR.getCode(), 2));
         PropositionDefinition.Builder propBuilder = PropositionDefinition.Builder.create(null,
-                PropositionType.SIMPLE.getCode(), ruleId, krmsTypeDefinition.getId(), propParam);
+                PropositionType.SIMPLE.getCode(), ruleId, krmsTypeDefinition.getId(), Collections.<PropositionParameter.Builder>emptyList());
         propBuilder.setDescription(propId + "_simple_proposition");
 
-        String id = ruleManagementService.createProposition(propBuilder.build()).getId();
-        PropositionDefinition propositionDefinition = ruleManagementService.getProposition(id);
+        PropositionDefinition propositionDefinition = ruleManagementService.createProposition(propBuilder.build());
+
+        List<PropositionParameter.Builder> propParam =  new ArrayList<PropositionParameter.Builder>();
+        propParam.add(PropositionParameter.Builder.create(propId + "_0", propositionDefinition.getId(), termSpecId,
+                PropositionParameterType.TERM.getCode(), 0));
+        propParam.add(PropositionParameter.Builder.create(propId + "_1", propositionDefinition.getId(), propConstant,
+                PropositionParameterType.CONSTANT.getCode(), 1));
+        propParam.add(PropositionParameter.Builder.create(propId + "_2", propositionDefinition.getId(), propOperator,
+                PropositionParameterType.OPERATOR.getCode(), 2));
+
+        propBuilder = PropositionDefinition.Builder.create(propositionDefinition);
+        propBuilder.setParameters(propParam);
+
+        ruleManagementService.updateProposition(propBuilder.build());
+        // re-fetch to get the updated version numbers
+        propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         return propositionDefinition;
     }
@@ -530,8 +538,11 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         AgendaItemDefinition.Builder itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(agendaItemOBJECT6);
         itemBuilderOBJECT2.setAlways(itemBuilderOBJECT6);
         itemBuilderOBJECT2.setAlwaysId(itemBuilderOBJECT6.getId());
-        itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementService.createAgendaItem(
-                itemBuilderOBJECT2.build()));
+
+        // update and re-fetch
+        ruleManagementService.updateAgendaItem(itemBuilderOBJECT2.build());
+        itemBuilderOBJECT2 =
+                AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT2.getId()));
 
         AgendaItemDefinition agendaItemOBJECT1 = buildTestAgendaItemDefinition(names.agendaItem_1_Id, agenda.getId(),
                 rule1.getId());

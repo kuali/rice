@@ -19,17 +19,19 @@ import groovy.mock.interceptor.MockFor
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
-
 import org.junit.Test
 import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+import org.kuali.rice.krms.framework.engine.Agenda
+
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
 class AgendaBoServiceImplTest {
 
 	private final shouldFail = new GroovyTestCase().&shouldFail
-	def mockBusinessObjectService
+	def mockDataObjectService
     def mockAttributeDefinitionService
 
 	private static final String NAMESPACE = "KRMS_TEST"
@@ -106,13 +108,9 @@ class AgendaBoServiceImplTest {
 
 		// build the set of agenda attribute BOs
 		AgendaAttributeBo attributeBo1 = new AgendaAttributeBo();
-		attributeBo1.setAgendaId( AGENDA_ID_1 );
-		attributeBo1.setAttributeDefinitionId( ATTR_DEF_ID_1 );
 		attributeBo1.setValue( ATTR_VALUE_1 );
 		attributeBo1.attributeDefinition = ADB1;
 		AgendaAttributeBo attributeBo2 = new AgendaAttributeBo();
-		attributeBo2.setAgendaId( AGENDA_ID_1 );
-		attributeBo2.setAttributeDefinitionId( ATTR_DEF_ID_2 );
 		attributeBo2.setValue( ATTR_VALUE_2 );
 		attributeBo2.attributeDefinition = ADB2;
 		Set<AgendaAttributeBo> attributes = [attributeBo1, attributeBo2]
@@ -122,7 +120,7 @@ class AgendaBoServiceImplTest {
 
 	@Before
 	void setupBoServiceMockContext() {
-		mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+		mockDataObjectService = new MockFor(DataObjectService.class)
 	}
 
     @Before
@@ -132,28 +130,28 @@ class AgendaBoServiceImplTest {
 
 	@Test
 	public void test_getAgendaByAgendaId() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {clazz, id -> TEST_AGENDA_BO}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) {clazz, id -> TEST_AGENDA_BO}
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		AgendaDefinition myAgenda = service.getAgendaByAgendaId(AGENDA_ID_1)
 
 		Assert.assertEquals(service.to(TEST_AGENDA_BO), myAgenda)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getAgendaByAgendaId_when_none_found() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) {Class clazz, String id -> null}
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		AgendaDefinition myAgenda = service.getAgendaByAgendaId("I_DONT_EXIST")
 
 		Assert.assertNull(myAgenda)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
@@ -172,28 +170,28 @@ class AgendaBoServiceImplTest {
 	
 	@Test
 	public void test_getAgendaByNameAndContextId() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {clazz, map -> TEST_AGENDA_BO}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) {clazz, map -> buildQueryResults([TEST_AGENDA_BO]) }
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		AgendaDefinition myAgenda = service.getAgendaByNameAndContextId(AGENDA_ID_1, CONTEXT_ID_1)
 
 		Assert.assertEquals(service.to(TEST_AGENDA_BO), myAgenda)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getAgendaByNameAndContextId_when_none_found() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> buildQueryResults([]) }
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		AgendaDefinition myAgenda = service.getAgendaByNameAndContextId("I_DONT_EXIST", CONTEXT_ID_1)
 
 		Assert.assertNull(myAgenda)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
@@ -226,30 +224,28 @@ class AgendaBoServiceImplTest {
 
 	@Test
 	public void test_getAgendasByContextId() {
-		List<AgendaBo> results = new ArrayList<AgendaBo>();
-        results.add(TEST_AGENDA_BO);
-		mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> results}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> buildQueryResults([TEST_AGENDA_BO])}
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		List<AgendaDefinition> myAgendas = service.getAgendasByContextId(CONTEXT_ID_1)
 
 		Assert.assertEquals(service.to(TEST_AGENDA_BO), myAgendas.iterator().next())
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getAgendasByContextId_when_none_found() {
-		mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> buildQueryResults([])}
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		Set<AgendaDefinition> myAgendas = service.getAgendasByContextId("I_DONT_EXIST")
 
 		Assert.assertEquals(myAgendas.size(), 0)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
@@ -269,97 +265,104 @@ class AgendaBoServiceImplTest {
 
   @Test
   public void test_createAgenda_null_input() {
-	  def boService = mockBusinessObjectService.proxyDelegateInstance()
+	  def boService = mockDataObjectService.proxyDelegateInstance()
 	  AgendaBoService service = new AgendaBoServiceImpl()
-	  service.setBusinessObjectService(boService)
+	  service.setDataObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.createAgenda(null)
 	  }
-	  mockBusinessObjectService.verify(boService)
+	  mockDataObjectService.verify(boService)
   }
 
   @Test
   void test_createAgenda_exists() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			Class clazz, Map map -> TEST_AGENDA_BO
+		mockDataObjectService.demand.findMatching(1..1) {
+			clazz, map -> buildQueryResults([TEST_AGENDA_BO])
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			service.createAgenda(TEST_NEW_AGENDA_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   void test_createAgenda_success() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> buildQueryResults([]) }
+		mockDataObjectService.demand.save { bo, po ->
+            ((AgendaBo)bo).setId("1");
+            return bo;
+        }
+
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
         mockAttributeDefinitionService.demand.findAttributeDefinitionsByType { String typeId ->
             [KrmsAttributeDefinition.Builder.create(ADB1).build(), KrmsAttributeDefinition.Builder.create(ADB2).build()] };
         KrmsAttributeDefinitionService attributeDefinitionService = mockAttributeDefinitionService.proxyDelegateInstance();
 
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
         service.setAttributeDefinitionService(attributeDefinitionService);
 
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
-		kads.setBusinessObjectService(bos)
+		kads.setDataObjectService(dataObjectService)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 				
 		service.createAgenda(TEST_NEW_AGENDA_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   public void test_updateAgenda_null_input() {
-	  def boService = mockBusinessObjectService.proxyDelegateInstance()
+	  def boService = mockDataObjectService.proxyDelegateInstance()
 	  AgendaBoService service = new AgendaBoServiceImpl()
-	  service.setBusinessObjectService(boService)
+	  service.setDataObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.updateAgenda(null)
 	  }
-	  mockBusinessObjectService.verify(boService)
+	  mockDataObjectService.verify(boService)
   }
 
   @Test
   void test_updateAgenda_does_not_exist() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
+		mockDataObjectService.demand.find(1..1) {
 			Class clazz, String id -> null
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   void test_updateAgenda_success() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_AGENDA_BO}
-		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
+		mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+		mockDataObjectService.demand.deleteMatching(1) { clazz, map -> }
+		mockDataObjectService.demand.save { bo, po ->
+            ((AgendaBo)bo).setId("1");
+            return bo;
+        }
 
         mockAttributeDefinitionService.demand.findAttributeDefinitionsByType { String typeId ->
             [KrmsAttributeDefinition.Builder.create(ADB1).build(), KrmsAttributeDefinition.Builder.create(ADB2).build()] };
         KrmsAttributeDefinitionService attributeDefinitionService = mockAttributeDefinitionService.proxyDelegateInstance();
 
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		AgendaBoService service = new AgendaBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
         service.setAttributeDefinitionService(attributeDefinitionService);
 
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
-		kads.setBusinessObjectService(bos)
+		kads.setDataObjectService(dataObjectService)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 		
 		service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
 }

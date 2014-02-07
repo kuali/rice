@@ -19,8 +19,8 @@ package org.kuali.rice.krms.test;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
-import org.springframework.dao.DataIntegrityViolationException;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
@@ -137,9 +137,13 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         naturalLanguageTemplateBuilder.setId("da" + "-" + "reqActive");
         try {
             ruleManagementService.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
-            fail("Should have thrown DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails");
-        } catch (DataIntegrityViolationException e) {
-            // throws DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails
+            fail("Should have thrown PersistenceException");
+        } catch (PersistenceException e) {
+            // throws avax.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services
+            // - 2.5.1.v20130918-f2b9fc5): org.eclipse.persistence.exceptions.DatabaseException
+            // Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot
+            // add or update a child row: a foreign key constraint fails (`rice24test`.`krms_nl_tmpl_t`, CONSTRAINT
+            // `KRMS_TYP_T` FOREIGN KEY (`TYP_ID`) REFERENCES `krms_typ_t` (`TYP_ID`))
         }
     }
 

@@ -20,6 +20,10 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.engine.EngineResults;
@@ -63,6 +67,7 @@ import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
+import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.RuleAttributeBo;
@@ -122,22 +127,25 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
         krmsTypeBoService = new KrmsTypeBoServiceImpl();
-        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setBusinessObjectService(getBoService());
+        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(getDataObjectService());
 
         // like RepositoryCreateAndExecuteIntegrationTest
         propositionBoService = new PropositionBoServiceImpl();
-        ((PropositionBoServiceImpl)propositionBoService).setBusinessObjectService(getBoService());
+        ((PropositionBoServiceImpl)propositionBoService).setDataObjectService(getDataObjectService());
         termBoService = new TermBoServiceImpl();
-        ((TermBoServiceImpl)termBoService).setBusinessObjectService(getBoService());
+
+        // TODO: fix
+        ((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService("dataObjectService"));
+
         contextRepository = new ContextBoServiceImpl();
-        ((ContextBoServiceImpl)contextRepository).setBusinessObjectService(getBoService());
+        ((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
         agendaBoService = new AgendaBoServiceImpl();
-        ((AgendaBoServiceImpl)agendaBoService).setBusinessObjectService(getBoService());
+        ((AgendaBoServiceImpl)agendaBoService).setDataObjectService(getDataObjectService());
         ((AgendaBoServiceImpl)agendaBoService).setAttributeDefinitionService(krmsAttributeDefinitionService);
         ruleBoService = new RuleBoServiceImpl();
-        ((RuleBoServiceImpl)ruleBoService).setBusinessObjectService(getBoService());
+        ((RuleBoServiceImpl)ruleBoService).setDataObjectService(getDataObjectService());
         actionBoService = new ActionBoServiceImpl();
-        ((ActionBoServiceImpl)actionBoService).setBusinessObjectService(getBoService());
+        ((ActionBoServiceImpl)actionBoService).setDataObjectService(getDataObjectService());
     }
 
     @Transactional
@@ -286,10 +294,10 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         // Context Attribute
         // TODO: do this fur eel
         ContextAttributeBo contextAttribute = new ContextAttributeBo();
-        contextAttribute.setAttributeDefinitionId(contextTypeAttributeDefinition.getId());
-        contextAttribute.setContextId(contextDefinition.getId());
+        contextAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(contextTypeAttributeDefinition));
+        contextAttribute.setContext(ContextBo.from(contextDefinition));
         contextAttribute.setValue("BLAH");
-        getBoService().save(contextAttribute);
+        getDataObjectService().save(contextAttribute, PersistenceOption.FLUSH);
 
         return contextDefinition;
     }
@@ -384,7 +392,8 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         contextBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
         contextBo.setName(CONTEXT_NAME);
         contextBo.setTypeId(defs.typeDef.getId());
-        return (ContextBo)getBoService().save(contextBo);
+
+        return getDataObjectService().save(contextBo, PersistenceOption.FLUSH);
     }
 
     private KrmsAttributeTypeDefinitionAndBuilders createKrmsAttributeTypeDefinitionAndBuilders(String attributeName,
@@ -395,7 +404,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         attributeDefinitionBo.setName(attributeName);
         attributeDefinitionBo.setLabel(label);
         attributeDefinitionBo.setActive(active);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getBoService().save(attributeDefinitionBo);
+        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getDataObjectService().save(attributeDefinitionBo, PersistenceOption.FLUSH);
         assertNotNull(attributeDefinitionBo.getId());
         KrmsAttributeDefinition attribDef = KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
 
@@ -417,21 +426,10 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         rule.setTypeId(ruleBits.typeDef.getId());
         rule.setNamespace(ruleBits.typeDef.getNamespace());
         rule.setName(ruleBits.typeDef.getName());
-        List<RuleAttributeBo> ruleAttributes = new ArrayList<RuleAttributeBo>();
-        rule.setAttributeBos(ruleAttributes);
-        RuleAttributeBo ruleType = new RuleAttributeBo();
-        ruleAttributes.add(ruleType);
-        ruleType.setAttributeDefinitionId(ruleBits.attribDef.getId());
-        ruleType.setAttributeDefinition(KrmsAttributeDefinitionBo.from(ruleBits.attribDef));
-        ruleType.setValue(ruleBits.typeAttribBuilder.getTypeId());
-        ruleType.setRuleId(rule.getId());
-
-        List<ActionBo> actions = new ArrayList<ActionBo>();
 
         ActionBo action = new ActionBo();
         action.setTypeId(actionBits.get(0).typeDef.getId());
         action.setDescription("Description of validation action for message " + actionBits.get(0).attribDef.getDescription());
-        actions.add(action);
         action.setNamespace(actionBits.get(0).typeDef.getNamespace());
         action.setName(actionBits.get(0).typeDef.getName());
         action.setSequenceNumber(actionBits.get(0).typeAttribBuilder.getSequenceNumber());
@@ -442,21 +440,34 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
             ActionAttributeBo actionAttribute = new ActionAttributeBo();
             actionAttributes.add(actionAttribute);
-            actionAttribute.setAttributeDefinitionId(actionBit.attribDef.getId());
             actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(actionBit.attribDef));
             actionAttribute.setValue(actionBit.typeAttribBuilder.getTypeId());
+            actionAttribute.setAction(action);
 
-//            createActionAttributeBo(actionBit.attribDef.getNamespace(), actionBit.attribDef.getName(), "Action Message", actionBit.attribDef.isActive(), actionBit.attribDef.getDescription(), message, actionAttributes);
+            //            createActionAttributeBo(actionBit.attribDef.getNamespace(), actionBit.attribDef.getName(), "Action Message", actionBit.attribDef.isActive(), actionBit.attribDef.getDescription(), message, actionAttributes);
         }
 
-        rule = (RuleBo) getBoService().save(rule);
+        rule.getActions().add(action);
+        action.setRule(rule);
+
+        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
+
+        // set attributes
+        RuleAttributeBo ruleType = new RuleAttributeBo();
+        ruleType.setAttributeDefinition(KrmsAttributeDefinitionBo.from(ruleBits.attribDef));
+        ruleType.setValue(ruleBits.typeAttribBuilder.getTypeId());
+        ruleType.setRuleId(rule.getId());
+        rule.getAttributeBos().add(ruleType);
+
+        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
+
         RuleDefinition ruleDef = RuleBo.to(rule);
         
         PropositionDefinition propDef = createPropositionDefinition1(ContextBo.to(contextBo), ruleDef).build();
         propDef = propositionBoService.createProposition(propDef);
-        rule.setPropId(propDef.getId());
-        rule.setActions(actions);
-        rule = (RuleBo) getBoService().save(rule);
+        rule.setProposition(PropositionBo.from(propDef));
+
+        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
 
         assertNotNull(rule.getId());
         assertNotNull(propDef.getId());
@@ -464,6 +475,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         assertEquals(1, rule.getActions().size());
         assertNotNull(rule.getActions().get(0).getId());
         assertEquals(2, rule.getActions().get(0).getAttributeBos().size());
+
         return rule;
     }
 
@@ -474,13 +486,13 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         attributeDefinitionBo.setName(attributeName);
         attributeDefinitionBo.setLabel(label);
         attributeDefinitionBo.setActive(active);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getBoService().save(attributeDefinitionBo);
+        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getDataObjectService().save(attributeDefinitionBo,
+                PersistenceOption.FLUSH);
         assertNotNull(attributeDefinitionBo.getId());
         KrmsAttributeDefinition attribDef = KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
 
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
-        actionAttribute.setAttributeDefinitionId(attribDef.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attribDef));
         actionAttribute.setValue(value);
     }
@@ -588,7 +600,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         attributeDefinitionBo.setName(EVENT_ATTRIBUTE);
         attributeDefinitionBo.setLabel("Event");
         attributeDefinitionBo.setActive(true);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo) getBoService().save(attributeDefinitionBo);
+        attributeDefinitionBo = (KrmsAttributeDefinitionBo) getDataObjectService().save(attributeDefinitionBo, PersistenceOption.FLUSH);
         assertNotNull(attributeDefinitionBo.getId());
         return attributeDefinitionBo;
     }
@@ -599,13 +611,13 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaBo.setContextId(contextBo.getId());
         agendaBo.setName("MyAgenda");
         agendaBo.setTypeId(null);
-        agendaBo = (AgendaBo)getBoService().save(agendaBo);
+        agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
 
         agendaBo.setFirstItemId(ruleBo.getId());
         AgendaItemBo agendaItemBo = new AgendaItemBo();
         agendaItemBo.setRule(ruleBo);
         agendaItemBo.setAgendaId(agendaBo.getId());
-        agendaItemBo = (AgendaItemBo)getBoService().save(agendaItemBo);
+        agendaItemBo = getDataObjectService().save(agendaItemBo, PersistenceOption.FLUSH);
 
         List<AgendaItemBo> agendaItems = new ArrayList<AgendaItemBo>();
         agendaItems.add(agendaItemBo);
@@ -617,11 +629,11 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaBo.setAttributeBos(agendaAttributes);
         AgendaAttributeBo agendaAttribute = new AgendaAttributeBo();
         agendaAttributes.add(agendaAttribute);
-        agendaAttribute.setAttributeDefinitionId(eventAttributeDefinition.getId());
         agendaAttribute.setAttributeDefinition(eventAttributeDefinition);
         agendaAttribute.setValue(EVENT_ATTRIBUTE);
+        agendaAttribute.setAgenda(agendaBo);
 //        agendaAttribute.setValue("workflow");
-        agendaBo = (AgendaBo)getBoService().save(agendaBo);
+        agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
 
         contextBo.getAgendas().add(agendaBo);
 

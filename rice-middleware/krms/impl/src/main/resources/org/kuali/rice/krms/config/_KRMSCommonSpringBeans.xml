@@ -136,7 +136,7 @@
   </bean>
 
   <bean id="notificationPeopleFlowActionTypeService"
-        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService">
     <constructor-arg>
       <value>NOTIFICATION</value>
     </constructor-arg>
@@ -144,7 +144,7 @@
   </bean>
 
   <bean id="approvalPeopleFlowActionTypeService"
-        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService">
     <constructor-arg>
       <value>APPROVAL</value>
     </constructor-arg>

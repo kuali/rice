@@ -17,8 +17,8 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.InquiryForm;
@@ -26,7 +26,6 @@ import org.kuali.rice.krms.impl.ui.AgendaEditor;
 import org.kuali.rice.krms.impl.util.KrmsRetriever;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,16 +36,15 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
 
     private transient KrmsRetriever krmsRetriever = new KrmsRetriever();
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
 
     @Override
     public AgendaEditor retrieveDataObject(Map fieldValues) {
         AgendaEditor agendaEditor = null;
 
-        Map<String, Object> primaryKeys = new HashMap<String, Object>();
-        primaryKeys.put("id", fieldValues.get("id"));
-//        String agendaId = (String) fieldValues.get("id");
-        AgendaBo agenda = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
+        Map<String, Object> primaryKeys = Collections.singletonMap("id", fieldValues.get("id"));
+
+        AgendaBo agenda = getDataObjectService().find(AgendaBo.class, primaryKeys);
         if (agenda != null) {
             agendaEditor = new AgendaEditor();
             agendaEditor.setAgenda(agenda);
@@ -119,15 +117,15 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
     }
 
 
-    public BusinessObjectService getBusinessObjectService() {
-        if(businessObjectService == null){
-            return KNSServiceLocator.getBusinessObjectService();
+    public DataObjectService getDataObjectService() {
+        if(dataObjectService == null){
+            return KRADServiceLocator.getDataObjectService();
         }
-        return businessObjectService;
+        return dataObjectService;
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

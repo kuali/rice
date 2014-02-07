@@ -34,17 +34,17 @@ public interface FunctionBoService extends FunctionRepositoryService {
      * @throws IllegalArgumentException if the function is null
      * @throws IllegalStateException if the function already exists in the system
      */
-	public FunctionDefinition createFunction(FunctionDefinition function);
-	
+    public FunctionDefinition createFunction(FunctionDefinition function);
+
     /**
      * This will update an existing {@link FunctionDefinition}.
      *
      * @param function  The Function to update
      * @throws IllegalArgumentException if the function is null
      * @throws IllegalStateException if the function does not exist in the system
-     */	
-	public void updateFunction(FunctionDefinition function);
-	
+     */
+    public void updateFunction(FunctionDefinition function);
+
     /**
      * Retrieves a Function from the repository based on the given function id.
      *
@@ -52,8 +52,8 @@ public interface FunctionBoService extends FunctionRepositoryService {
      * @return a {@link FunctionDefinition} identified by the given functionId.  
      * A null reference is returned if an invalid or non-existent functionId is supplied.
      */
-	public FunctionDefinition getFunctionById(String functionId);
-	
+    public FunctionDefinition getFunctionById(String functionId);
+
     /**
      * Retrieves a Function from the repository based on the provided function name
      * and namespace.
@@ -64,6 +64,6 @@ public interface FunctionBoService extends FunctionRepositoryService {
      * A null reference is returned if an invalid or non-existent function name and
      * namespace combination is supplied.
      */
-	public FunctionDefinition getFunctionByNameAndNamespace(String name, String namespace);
-	
+    public FunctionDefinition getFunctionByNameAndNamespace(String name, String namespace);
+
 }

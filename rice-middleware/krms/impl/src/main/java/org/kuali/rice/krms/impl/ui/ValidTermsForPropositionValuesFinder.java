@@ -15,20 +15,34 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
-import org.kuali.rice.krms.impl.repository.*;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.repository.AgendaItemBo;
+import org.kuali.rice.krms.impl.repository.CategoryBo;
+import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.PropositionBo;
+import org.kuali.rice.krms.impl.repository.TermBo;
+import org.kuali.rice.krms.impl.repository.TermResolverBo;
+import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * ValuesFinder used to populate the list of available Terms when creating/editing a proposition in a
@@ -55,23 +69,26 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
 
         // Get all valid terms
 
-        Collection<ContextValidTermBo> contextValidTerms = null;
-        contextValidTerms = KNSServiceLocator.getBusinessObjectService()
-                .findMatching(ContextValidTermBo.class, Collections.singletonMap("contextId", "20000"));
+        List<ContextValidTermBo> contextValidTerms = getContextValidTerms(rootProposition.getRuleId());
 
         List<String> termSpecIds = new ArrayList();
+
         for (ContextValidTermBo validTerm : contextValidTerms) {
             termSpecIds.add(validTerm.getTermSpecificationId());
         }
 
         if (termSpecIds.size() > 0) { // if we don't have any valid terms, skip it
-            Collection<TermBo> terms = null;
-            Map<String,Object> criteria = new HashMap<String,Object>();
-            criteria.put("specificationId", termSpecIds);
-            terms = KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
+            QueryResults<TermBo> terms = null;
+            Map<String,Object> critMap = new HashMap<String,Object>();
+            critMap.put("specificationId", termSpecIds);
+
+            QueryByCriteria criteria =
+                    QueryByCriteria.Builder.forAttribute("specificationId", termSpecIds).setOrderByAscending("description").build();
+
+            terms = KRADServiceLocator.getDataObjectService().findMatching(TermBo.class, criteria);
 
             // add all terms that are in the selected category (or else add 'em all if no category is selected)
-            for (TermBo term : terms) {
+            if (!CollectionUtils.isEmpty(terms.getResults())) for (TermBo term : terms.getResults()) {
                 String selectName = term.getDescription();
 
                 if (StringUtils.isBlank(selectName) || "null".equals(selectName)) {
@@ -93,14 +110,14 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
             //
 
             // get term resolvers for the given term specs
-            Collection<TermResolverBo> termResolvers =
-                    KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(
-                            TermResolverBo.class, Collections.singletonMap("outputId", termSpecIds), "name", true
-                    );
+            QueryByCriteria.Builder termResolverCritBuilder = QueryByCriteria.Builder.forAttribute("outputId", termSpecIds);
+            termResolverCritBuilder.setOrderByAscending("name");
+            QueryResults<TermResolverBo> termResolvers =
+                    KRADServiceLocator.getDataObjectService().findMatching(TermResolverBo.class, termResolverCritBuilder.build());
 
             // TODO: what if there is more than one resolver for a given term specification?
 
-            if (termResolvers != null) for (TermResolverBo termResolver : termResolvers) {
+            if (termResolvers.getResults() != null) for (TermResolverBo termResolver : termResolvers.getResults()) {
                 if (!CollectionUtils.isEmpty(termResolver.getParameterSpecifications())) {
                     TermSpecificationBo output = termResolver.getOutput();
 
@@ -119,6 +136,49 @@ public class ValidTermsForPropositionValuesFinder extends UifKeyValuesFinderBase
         }
 
         return keyValues;
+    }
+
+    /**
+     * Get all of the valid terms for the Context that we're in.  This is a bit of a process since we're starting
+     * from the proposition and there is a lot of indirection to get the context ID.
+     *
+     * @param ruleId
+     * @return the mappings from the context(s) to the valid terms
+     */
+    private List<ContextValidTermBo> getContextValidTerms(String ruleId) {
+        RuleDefinition rule = KrmsRepositoryServiceLocator
+            .getRuleBoService().getRuleByRuleId(ruleId);
+
+        QueryByCriteria agendaItemCriteria = QueryByCriteria.Builder.forAttribute("ruleId", rule.getId()).build();
+        QueryResults<AgendaItemBo> agendaItems =
+                KRADServiceLocator.getDataObjectService().findMatching(AgendaItemBo.class, agendaItemCriteria);
+
+        Set<String> agendaIds = new HashSet<String>();
+        if (!CollectionUtils.isEmpty(agendaItems.getResults())) for (AgendaItemBo agendaItem : agendaItems.getResults()) {
+            agendaIds.add(agendaItem.getAgendaId());
+        }
+
+        Set<String> contextIds = new HashSet<String>();
+        for (String agendaId : agendaIds) {
+            AgendaDefinition agenda = KrmsRepositoryServiceLocator.getAgendaBoService().getAgendaByAgendaId(agendaId);
+
+            if (agenda != null) {
+                contextIds.add(agenda.getContextId());
+            }
+        }
+
+        List<ContextValidTermBo> contextValidTerms = new ArrayList<ContextValidTermBo>();
+
+        for (String contextId : contextIds) {
+            QueryResults<ContextValidTermBo> queryResults =
+                    KRADServiceLocator.getDataObjectService().findMatching(ContextValidTermBo.class,
+                            QueryByCriteria.Builder.forAttribute("contextId", contextId).build());
+
+            if (!CollectionUtils.isEmpty(queryResults.getResults())) {
+                contextValidTerms.addAll(queryResults.getResults());
+            }
+        }
+        return contextValidTerms;
     }
 
     /**

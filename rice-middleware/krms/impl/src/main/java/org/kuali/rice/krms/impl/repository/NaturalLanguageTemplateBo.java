@@ -16,15 +16,25 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplateContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,22 +49,46 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class NaturalLanguageTemplateBo
-    extends PersistableBusinessObjectBase
-    implements NaturalLanguageTemplateContract
-{
+@Entity
+@Table(name = "KRMS_NL_TMPL_T")
+public class NaturalLanguageTemplateBo implements NaturalLanguageTemplateContract, Versioned, Serializable {
 
+    private static final long serialVersionUID = 1l;
+
+    @Transient
     private Map<String, String> attributes;
+
+    @Column(name = "LANG_CD")
     private String languageCode;
+
+    @Column(name = "NL_USAGE_ID")
     private String naturalLanguageUsageId;
+
+    @Column(name = "TYP_ID")
     private String typeId;
+
+    @Column(name = "TMPL")
     private String template;
+
+    @PortableSequenceGenerator(name = "KRMS_NL_TMPL_S")
+    @GeneratedValue(generator = "KRMS_NL_TMPL_S")
+    @Id
+    @Column(name = "NL_TMPL_ID")
     private String id;
+
+    @Transient
     private boolean active;
+
+    @Column(name = "VER_NBR")
+    @Version
     private Long versionNumber;
-    private SequenceAccessorService sequenceAccessorService;
+
+    @OneToMany(targetEntity = NaturalLanguageTemplateAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "NL_TMPL_ID", referencedColumnName = "NL_TMPL_ID", insertable = false, updatable = false)
     private Set<NaturalLanguageTemplateAttributeBo> attributeBos;
+
     private static KrmsAttributeDefinitionService attributeDefinitionService;
+
     private static KrmsTypeRepositoryService typeRepositoryService;
 
     /**
@@ -196,7 +230,10 @@ public class NaturalLanguageTemplateBo
      * 
      */
     public static NaturalLanguageTemplate to(NaturalLanguageTemplateBo naturalLanguageTemplateBo) {
-        if (naturalLanguageTemplateBo == null) { return null; }
+        if (naturalLanguageTemplateBo == null) {
+            return null;
+        }
+
         return NaturalLanguageTemplate.Builder.create(naturalLanguageTemplateBo).build();
     }
 
@@ -207,7 +244,10 @@ public class NaturalLanguageTemplateBo
      * 
      */
     public static org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBo from(NaturalLanguageTemplate naturalLanguageTemplate) {
-        if (naturalLanguageTemplate == null) return null;
+        if (naturalLanguageTemplate == null) {
+            return null;
+        }
+
         NaturalLanguageTemplateBo naturalLanguageTemplateBo = new NaturalLanguageTemplateBo();
         naturalLanguageTemplateBo.setLanguageCode(naturalLanguageTemplate.getLanguageCode());
         naturalLanguageTemplateBo.setNaturalLanguageUsageId(naturalLanguageTemplate.getNaturalLanguageUsageId());
@@ -216,46 +256,23 @@ public class NaturalLanguageTemplateBo
         naturalLanguageTemplateBo.setId(naturalLanguageTemplate.getId());
         naturalLanguageTemplateBo.setActive(naturalLanguageTemplate.isActive());
         naturalLanguageTemplateBo.setVersionNumber(naturalLanguageTemplate.getVersionNumber());
-        // TODO collections, etc.
         naturalLanguageTemplateBo.setAttributeBos(buildAttributeBoSet(naturalLanguageTemplate));
-        //naturalLanguageTemplateBo.setAttributeBos(buildAttributeBoList(naturalLanguageTemplate));
+
         return naturalLanguageTemplateBo;
-    }
-
-    /**
-     * Returns the next available id for the given table and class.
-     * @return String the next available id for the given table and class.
-     * 
-     */
-    private String getNewId(String table, Class clazz) {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
-        return id.toString();
-    }
-
-    /**
-     * Set the SequenceAccessorService, useful for testing.
-     * @param sas SequenceAccessorService to use for getNewId.
-     * 
-     */
-    public void setSequenceAccessorService(SequenceAccessorService sas) {
-        sequenceAccessorService = sas;
-    }
-
-    public SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService;
     }
 
     @Override
     public Map<String, String> getAttributes() {
-        if (attributeBos == null) return Collections.emptyMap();
+        if (attributeBos == null) {
+            return Collections.emptyMap();
+        }
 
         HashMap<String, String> attributes = new HashMap<String, String>(attributeBos.size());
-        for (NaturalLanguageTemplateAttributeBo attr: attributeBos) {
+
+        for (NaturalLanguageTemplateAttributeBo attr : attributeBos) {
             attributes.put(attr.getAttributeDefinition().getName(), attr.getValue());
         }
+
         return attributes;
     }
 
@@ -264,13 +281,16 @@ public class NaturalLanguageTemplateBo
      * 
      */
     public void setAttributes(Map<String, String> attributes) {
-        this.attributeBos  = new HashSet<NaturalLanguageTemplateAttributeBo>();
+        this.attributeBos = new HashSet<NaturalLanguageTemplateAttributeBo>();
+
         if (!org.apache.commons.lang.StringUtils.isBlank(this.typeId)) {
             List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(this.getTypeId());
             Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>(attributeDefinitions.size());
+
             if (attributeDefinitions != null) for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
                 attributeDefinitionsByName.put(attributeDefinition.getName(), attributeDefinition);
             }
+
             for (Map.Entry<String, String> attr : attributes.entrySet()) {
                 KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.getKey());
                 NaturalLanguageTemplateAttributeBo attributeBo = new NaturalLanguageTemplateAttributeBo();
@@ -284,51 +304,50 @@ public class NaturalLanguageTemplateBo
     }
 
     private static Collection<NaturalLanguageTemplateAttributeBo> buildAttributes(NaturalLanguageTemplate im, Collection<NaturalLanguageTemplateAttributeBo> attributes) {
-
         KrmsTypeDefinition krmsTypeDefinition = getTypeRepositoryService().getTypeById(im.getTypeId());
 
-        // for each entry, build a NaturalLanguageTemplateAttributeBo and add it
+        // for each entry, build a NaturalLanguageTemplateAttributeBo and add it 
         if (im.getAttributes() != null) {
-            for (Map.Entry<String,String> entry  : im.getAttributes().entrySet()) {
-
-                KrmsAttributeDefinition attrDef =
-                        getAttributeDefinitionService().getAttributeDefinitionByNameAndNamespace(entry.getKey(),
-                                krmsTypeDefinition.getNamespace());
+            for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
+                KrmsAttributeDefinition attrDef = getAttributeDefinitionService().getAttributeDefinitionByNameAndNamespace(entry.getKey(), krmsTypeDefinition.getNamespace());
 
                 if (attrDef != null) {
                     NaturalLanguageTemplateAttributeBo attributeBo = new NaturalLanguageTemplateAttributeBo();
-                    attributeBo.setNaturalLanguageTemplateId( im.getId() );
+                    attributeBo.setNaturalLanguageTemplateId(im.getId());
                     attributeBo.setAttributeDefinitionId(attrDef.getId());
                     attributeBo.setValue(entry.getValue());
                     attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
                     attributes.add(attributeBo);
                 } else {
-                    throw new RiceIllegalStateException("there is no attribute definition with the name '" +
-                                 entry.getKey() + "' that is valid for the naturalLanguageTemplate type with id = '" + im.getTypeId() +"'");
+                    throw new RiceIllegalStateException("there is no attribute definition with the name '" + entry.getKey() + "' that is valid for the naturalLanguageTemplate type with id = '" + im.getTypeId() + "'");
                 }
             }
         }
+
         return attributes;
     }
 
     private static Set<NaturalLanguageTemplateAttributeBo> buildAttributeBoSet(NaturalLanguageTemplate im) {
         Set<NaturalLanguageTemplateAttributeBo> attributes = new HashSet<NaturalLanguageTemplateAttributeBo>();
-        return (Set)buildAttributes(im, attributes);
+
+        return (Set) buildAttributes(im, attributes);
     }
 
     private static List<NaturalLanguageTemplateAttributeBo> buildAttributeBoList(NaturalLanguageTemplate im) {
         List<NaturalLanguageTemplateAttributeBo> attributes = new LinkedList<NaturalLanguageTemplateAttributeBo>();
-        return (List)buildAttributes(im, attributes);
+
+        return (List) buildAttributes(im, attributes);
     }
 
     public static void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
-        NaturalLanguageTemplateBo.attributeDefinitionService = attributeDefinitionService; // TODO gen
+        NaturalLanguageTemplateBo.attributeDefinitionService = attributeDefinitionService;
     }
 
     public static KrmsTypeRepositoryService getTypeRepositoryService() {
         if (typeRepositoryService == null) {
             typeRepositoryService = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
         }
+
         return typeRepositoryService;
     }
 
@@ -340,7 +359,7 @@ public class NaturalLanguageTemplateBo
         if (attributeDefinitionService == null) {
             attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
         }
+
         return attributeDefinitionService;
     }
-
 }

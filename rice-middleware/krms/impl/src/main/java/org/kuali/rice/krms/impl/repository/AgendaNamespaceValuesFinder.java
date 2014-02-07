@@ -30,6 +30,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
@@ -44,7 +45,8 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         // TODO: this is not efficient -- do a smart 'select distinct' and make sure we have a good index!
 
-        Collection<ContextBo> contexts = KNSServiceLocator.getBusinessObjectService().findAll(ContextBo.class);
+        QueryByCriteria contextCrit = QueryByCriteria.Builder.create().build();
+        QueryResults<ContextBo> contexts = KRADServiceLocator.getDataObjectService().findMatching(ContextBo.class, contextCrit);
 
         QueryResults<NamespaceBo> namespaceBos = KradDataServiceLocator.getDataObjectService().findMatching(NamespaceBo.class,
                 QueryByCriteria.Builder.create().build());
@@ -57,8 +59,8 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         List<String> namespaceCodes = new ArrayList<String>();
 
-        if (!CollectionUtils.isEmpty(contexts)) {
-            for (ContextBo context : contexts) {
+        if (!CollectionUtils.isEmpty(contexts.getResults())) {
+            for (ContextBo context : contexts.getResults()) {
                 if (!namespaceCodes.contains(context.getNamespace())) {
                     // add if not already there
                     namespaceCodes.add(context.getNamespace());

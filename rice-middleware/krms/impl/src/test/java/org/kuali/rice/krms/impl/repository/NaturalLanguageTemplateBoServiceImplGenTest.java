@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.NaturalLanguageTemplateGenTest;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
@@ -70,7 +70,7 @@ public final class NaturalLanguageTemplateBoServiceImplGenTest {
         KrmsTypeRepositoryService mockTypeRepositoryService = mock(KrmsTypeRepositoryService.class);
         NaturalLanguageTemplateBo.setTypeRepositoryService(mockTypeRepositoryService);
         naturalLanguageTemplateBoServiceImpl.setAttributeDefinitionService(mockAttributeService);
-        naturalLanguageTemplateBoServiceImpl.setBusinessObjectService(mock(BusinessObjectService.class));
+        naturalLanguageTemplateBoServiceImpl.setDataObjectService(mock(DataObjectService.class));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

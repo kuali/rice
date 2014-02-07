@@ -21,8 +21,8 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.KrmsConstants;
@@ -65,7 +65,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     private static final String PEOPLE_FLOW_NAME_ATTRIBUTE = "peopleFlowName";
     private static final String EVENT_ATTRIBUTE = "Event";
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
 
     private KrmsAttributeDefinition peopleFlowIdAttributeDefinition;
     private KrmsAttributeDefinition peopleFlowNameAttributeDefinition;
@@ -76,8 +76,8 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("KewToRulesEngineIntegrationTest.xml");
-        businessObjectService = KNSServiceLocator.getBusinessObjectService();
-        assertNotNull(businessObjectService);
+        dataObjectService = KRADServiceLocator.getDataObjectService();
+        assertNotNull(dataObjectService);
         PeopleFlowDefinition peopleFlow = createFirstPeopleFlow();
         this.peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();
         this.peopleFlowNameAttributeDefinition = createPeopleFlowNameAttributeDefinition();
@@ -125,7 +125,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         attributeDefinitionBo.setName(attribute);
         attributeDefinitionBo.setLabel(label);
         attributeDefinitionBo.setActive(true);
-        attributeDefinitionBo = businessObjectService.save(attributeDefinitionBo);
+        attributeDefinitionBo = dataObjectService.save(attributeDefinitionBo, PersistenceOption.FLUSH);
         assertNotNull(attributeDefinitionBo.getId());
         return KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
     }
@@ -177,13 +177,11 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
-        actionAttribute.setAttributeDefinitionId(peopleFlowIdAttributeDefinition.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlowId);
 
         ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
         actionAttributes.add(actionNameAttribute);
-        actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
         actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
 
@@ -197,7 +195,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
         // now assign the default type to the rule and save it
         rule.setTypeId(defaultRuleType.getId());
-        rule = businessObjectService.save(rule);
+        rule = dataObjectService.save(rule, PersistenceOption.FLUSH);
         assertNotNull(rule.getId());
         assertEquals(1, rule.getActions().size());
         assertNotNull(rule.getActions().get(0).getId());
@@ -215,7 +213,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         contextBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
         contextBo.setName("MyContext");
         contextBo.setTypeId(defaultContextType.getId());
-        return businessObjectService.save(contextBo);
+        return dataObjectService.save(contextBo, PersistenceOption.FLUSH);
     }
 
     /**
@@ -229,7 +227,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         attributeDefinitionBo.setName(EVENT_ATTRIBUTE);
         attributeDefinitionBo.setLabel("Event");
         attributeDefinitionBo.setActive(true);
-        attributeDefinitionBo = businessObjectService.save(attributeDefinitionBo);
+        attributeDefinitionBo = dataObjectService.save(attributeDefinitionBo, PersistenceOption.FLUSH);
         assertNotNull(attributeDefinitionBo.getId());
         return attributeDefinitionBo;
     }
@@ -241,13 +239,13 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         agendaBo.setContextId(contextBo.getId());
         agendaBo.setName("MyAgenda");
         agendaBo.setTypeId(null);
-        agendaBo = businessObjectService.save(agendaBo);
+        agendaBo = dataObjectService.save(agendaBo, PersistenceOption.FLUSH);
 
         agendaBo.setFirstItemId(ruleBo.getId());
         AgendaItemBo agendaItemBo = new AgendaItemBo();
         agendaItemBo.setRule(ruleBo);
         agendaItemBo.setAgendaId(agendaBo.getId());
-        agendaItemBo = businessObjectService.save(agendaItemBo);
+        agendaItemBo = dataObjectService.save(agendaItemBo, PersistenceOption.FLUSH);
 
         List<AgendaItemBo> agendaItems = new ArrayList<AgendaItemBo>();
         agendaItems.add(agendaItemBo);
@@ -259,10 +257,9 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         agendaBo.setAttributeBos(agendaAttributes);
         AgendaAttributeBo agendaAttribute = new AgendaAttributeBo();
         agendaAttributes.add(agendaAttribute);
-        agendaAttribute.setAttributeDefinitionId(eventAttributeDefinition.getId());
         agendaAttribute.setAttributeDefinition(eventAttributeDefinition);
         agendaAttribute.setValue("workflow");
-        agendaBo = businessObjectService.save(agendaBo);
+        agendaBo = dataObjectService.save(agendaBo, PersistenceOption.FLUSH);
 
         contextBo.getAgendas().add(agendaBo);
 
@@ -374,17 +371,15 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setAttributeBos(actionAttributes);
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
-        actionAttribute.setAttributeDefinitionId(peopleFlowIdAttributeDefinition.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlow.getId());
 
         ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
         actionAttributes.add(actionNameAttribute);
-        actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
         actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
 
-        businessObjectService.save(ruleBo);
+        dataObjectService.save(ruleBo, PersistenceOption.FLUSH);
         
     }
 

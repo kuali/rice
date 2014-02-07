@@ -16,20 +16,22 @@
 package org.kuali.rice.krms.impl.repository
 
 import groovy.mock.interceptor.MockFor
+import org.apache.cxf.common.util.CollectionUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
-
 import org.junit.Test
 import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
-import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krms.api.repository.LogicalOperator
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
 import org.kuali.rice.krms.api.repository.term.TermDefinition
-import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator
+
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
 class PropositionBoServiceImplTest {
     private def MockFor mock
@@ -56,13 +58,13 @@ class PropositionBoServiceImplTest {
 	@BeforeClass
 	static void createSampleBOs() {
 		PropositionParameterBo bo1 = new PropositionParameterBo(id: "1000",
-			propId:"2001", value: "campusCode", parameterType: "T",
+			proposition: new PropositionBo(id:"2001"), value: "campusCode", parameterType: "T",
 			sequenceNumber: new Integer("0"), versionNumber: new Long(1))
 		PropositionParameterBo bo2 = new PropositionParameterBo(id: "1001",
-			propId:"2001", value: "BL", parameterType: "C", 
+			proposition: new PropositionBo(id:"2001"), value: "BL", parameterType: "C",
 			sequenceNumber: new Integer("1"), versionNumber: new Long(1))
 		PropositionParameterBo bo3 = new PropositionParameterBo(id: "1003",
-			propId:"2001", value: ComparisonOperator.EQUALS, parameterType: "F", 
+			proposition: new PropositionBo(id:"2001"), value: ComparisonOperator.EQUALS, parameterType: "F",
 			sequenceNumber: new Integer("2"), versionNumber: new Long(1))
 		for (bo in [bo1, bo2, bo3]) {
 		  boList.add(bo)
@@ -106,7 +108,7 @@ class PropositionBoServiceImplTest {
 
     @Before
     void setupBoServiceMockContext() {
-        mock = new MockFor(BusinessObjectService.class)
+        mock = new MockFor(DataObjectService.class)
 		pservice = new PropositionBoServiceImpl()
     }
 
@@ -115,100 +117,100 @@ class PropositionBoServiceImplTest {
 //			
 	@Test
 	public void test_create_proposition_null_proposition() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService)
 		shouldFail(IllegalArgumentException.class) {
 			pservice.createProposition(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_create_proposition_exists() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			pservice.createProposition(propositionWithId)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
     @Test
     void test_create_proposition_success() {
-        mock.demand.save { PersistableBusinessObject bo -> }
-        def boService = mock.proxyDelegateInstance()
-        pservice.setBusinessObjectService(boService)
+        mock.demand.save { bo, po -> bo }
+        def dataObjectService = mock.proxyDelegateInstance()
+        pservice.setDataObjectService(dataObjectService)
         pservice.createProposition(propositionWithNullId)
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
 	@Test
 	public void test_update_proposition_null_proposition() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService)
 		shouldFail(IllegalArgumentException.class) {
 			pservice.updateProposition(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
     void test_update_proposition_exists() {
-        mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> bo }
-        mock.demand.save { PersistableBusinessObject bo -> }
-        def boService = mock.proxyDelegateInstance()
-        pservice.setBusinessObjectService(boService)
+        mock.demand.find (1..1) { clazz, crit -> bo }
+        mock.demand.save { bo, po -> bo }
+        def dataObjectService = mock.proxyDelegateInstance()
+        pservice.setDataObjectService(dataObjectService)
         pservice.updateProposition(propositionWithId)
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
 	@Test
     void test_update_proposition_does_not_exist() {
-        mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> null }
-        def boService = mock.proxyDelegateInstance()
-        pservice.setBusinessObjectService(boService)
+        mock.demand.find (1..1) { clazz, crit -> null }
+        def dataObjectService = mock.proxyDelegateInstance()
+        pservice.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			pservice.updateProposition(propositionWithId)
 		}
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
 	@Test
 	void test_get_proposition_by_id_null_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getPropositionById(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
     @Test
     void test_get_proposition_by_id_exists() {
-        mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> bo }
-        def boService = mock.proxyDelegateInstance()
-        pservice.setBusinessObjectService(boService)
+        mock.demand.find (1..1) { clazz, crit -> bo }
+        def dataObjectService = mock.proxyDelegateInstance()
+        pservice.setDataObjectService(dataObjectService)
         Assert.assertEquals (propositionWithId, pservice.getPropositionById("2002"))
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
     @Test
     void test_get_proposition_by_id_does_not_exist() {
-        mock.demand.findBySinglePrimaryKey (1..1) { clazz, map -> null }
-        def boService = mock.proxyDelegateInstance()
-        pservice.setBusinessObjectService(boService)
+        mock.demand.find (1..1) { clazz, crit -> null }
+        def dataObjectService = mock.proxyDelegateInstance()
+        pservice.setDataObjectService(dataObjectService)
         Assert.assertNull (pservice.getPropositionById("blah"))
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
 	@Test
 	void test_create_compound_proposition_success() {
-		mock.demand.save { PersistableBusinessObject bo -> }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		mock.demand.save { bo, opts -> bo }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService)
 		pservice.createProposition(compoundPropositionWithNullId)
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 //
@@ -217,198 +219,198 @@ class PropositionBoServiceImplTest {
 	
 	@Test
 	public void test_create_parameter_null_parameter() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService)
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService)
 		shouldFail(IllegalArgumentException.class) {
 			pservice.createParameter(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_create_parameter_exists() {
-		mock.demand.findByPrimaryKey (1..1) { clazz, map -> boList.get(0) }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([boList.get(0)]) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		shouldFail(IllegalStateException.class) {
 			pservice.createParameter(parmList.get(0))
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_create_parameter_does_not_exist() {
-		mock.demand.findByPrimaryKey (1..1) { clazz, map -> null }
-		mock.demand.save { PersistableBusinessObject  myBo ->  }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([]) }
+		mock.demand.save { bo, opts -> bo }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		pservice.createParameter(parmList.get(0))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_update_parameter_null_parameter() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.updateParameter(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_update_parameter_exists() {
-		mock.demand.findByPrimaryKey (1..1) { clazz, map -> boList.get(0) }
-		mock.demand.save { bo -> }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([boList.get(0)]) }
+		mock.demand.save { bo, opts -> bo }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		pservice.updateParameter(parmList.get(0))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_update_parameter_does_not_exist() {
-		mock.demand.findByPrimaryKey (1..1) { clazz, map -> null }
+		mock.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([]) }
 
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalStateException.class) {
 			pservice.updateParameter(parmList.get(0))
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_id_null_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameterById(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_id_blank_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameterById("")
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_id_does_not_exist() {
-		mock.demand.findBySinglePrimaryKey(1..1){ clazz, id -> null }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.find (1..1) { clazz, id -> null }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		Assert.assertNull pservice.getParameterById("blah")
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_id_success() {
-		mock.demand.findBySinglePrimaryKey(1..1){ clazz, id -> boList.get(0) }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.find (1..1) { clazz, id -> boList.get(0) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		Assert.assertEquals(parmList.get(0), pservice.getParameterById("1000"))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_prop_id_and_seq_null_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameterByPropIdAndSequenceNumber(null, new Integer("1"))
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_prop_id_and_seq_blank_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameterByPropIdAndSequenceNumber("", new Integer("2"))
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_prop_id_and_seq_null_seq() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameterByPropIdAndSequenceNumber("2001", null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_prop_id_and_seq_does_not_exist() {
-		mock.demand.findByPrimaryKey(1..1){ clazz, map -> null }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1){ clazz, crit -> buildQueryResults([]) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		Assert.assertNull pservice.getParameterByPropIdAndSequenceNumber("blah", new Integer("0"))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameter_by_prop_id_and_seq_success() {
-		mock.demand.findByPrimaryKey(1..1){ clazz, map -> boList.get(1) }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1) { clazz, crit -> buildQueryResults([boList.get(1)]) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		Assert.assertEquals(parmList.get(1), pservice.getParameterByPropIdAndSequenceNumber("2001", new Integer("1")))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameters_null_prop_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameters(null)
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameters_null_blank_id() {
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 
 		shouldFail(IllegalArgumentException.class) {
 			pservice.getParameters("")
 		}
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameters_does_not_exist() {
-		mock.demand.findMatchingOrderBy (1..1) { clazz, fieldValues, sortField, sortAscending -> null }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
-		Assert.assertNull (pservice.getParameters("blah"))
-		mock.verify(boService)
+		mock.demand.findMatching(1..1) { clazz, crit -> buildQueryResults([]) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
+		Assert.assertTrue (CollectionUtils.isEmpty(pservice.getParameters("blah")))
+		mock.verify(dataObjectService)
 	}
 
 	@Test
 	void test_get_parameters_success() {
-		mock.demand.findMatchingOrderBy (1..1) { clazz, fieldValues, sortField, sortAscending -> boList }
-		def boService = mock.proxyDelegateInstance()
-		pservice.setBusinessObjectService(boService);
+		mock.demand.findMatching (1..1) { clazz, crit-> buildQueryResults(boList) }
+		def dataObjectService = mock.proxyDelegateInstance()
+		pservice.setDataObjectService(dataObjectService);
 		Assert.assertEquals (parmList, pservice.getParameters("2001"))
-		mock.verify(boService)
+		mock.verify(dataObjectService)
 	}
 
 

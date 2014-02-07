@@ -17,8 +17,6 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.web.controller.InquiryController;
 import org.kuali.rice.krad.web.form.InquiryForm;
@@ -28,6 +26,7 @@ import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.RepositoryBoIncrementer;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -42,6 +41,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_INQUIRY_PATH)
 public class AgendaInquiryController  extends InquiryController {
 
+    private static final RepositoryBoIncrementer ruleIdIncrementer = new RepositoryBoIncrementer(RuleBo.RULE_SEQ_NAME);
+
+
     /**
      * This method updates the existing rule in the agenda.
      */
@@ -51,9 +53,10 @@ public class AgendaInquiryController  extends InquiryController {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
         agendaEditor.setAddRuleInProgress(false);
+
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
-        //TODO: remove the hardcoded item number ... its used only for testing until the selectedAgendaItemId stuff works
+
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
@@ -123,8 +126,7 @@ public class AgendaInquiryController  extends InquiryController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class)
-                    .toString());
+            rule.setId(ruleIdIncrementer.getNewId());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
             } else {
@@ -143,7 +145,7 @@ public class AgendaInquiryController  extends InquiryController {
             ActionBo actionBo = new ActionBo();
             actionBo.setTypeId("");
             actionBo.setNamespace(agendaItem.getRule().getNamespace());
-            actionBo.setRuleId(agendaItem.getRule().getId());
+            actionBo.setRule(agendaItem.getRule());
             actionBo.setSequenceNumber(1);
             agendaEditor.setAgendaItemLineRuleAction(actionBo);
         } else {
@@ -238,13 +240,6 @@ public class AgendaInquiryController  extends InquiryController {
             default: throw new IllegalStateException();
             }
         }
-    }
-
-    /**
-     *  return the sequenceAssessorService
-     */
-    private SequenceAccessorService getSequenceAccessorService() {
-        return KNSServiceLocator.getSequenceAccessorService();
     }
 
     /**

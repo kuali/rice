@@ -16,6 +16,8 @@
 package org.kuali.rice.krms.test;
 
 import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
@@ -24,6 +26,8 @@ import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.test.runners.BootstrapTest;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -35,6 +39,8 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(KRMSTestCase.BootstrapTest.class)
 public abstract class KRMSTestCase extends BaselineTestCase {
 
 	private static final String KRMS_MODULE_NAME = "krms";
@@ -68,7 +74,7 @@ public abstract class KRMSTestCase extends BaselineTestCase {
     	return krmsTestResourceLoader;
 	}
 
-	
+	@Override
 	protected List<String> getPerTestTablesNotToClear() {
 		List<String> tablesNotToClear = new ArrayList<String>();
 
@@ -98,4 +104,8 @@ public abstract class KRMSTestCase extends BaselineTestCase {
 	protected String getModuleName() {
 		return KRMS_MODULE_NAME;
 	}
+
+    public static final class BootstrapTest extends KRMSTestCase {
+        @Test public void bootstrapTest() {};
+    }
 }

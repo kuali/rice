@@ -369,26 +369,32 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
 
         /**
          * Set the value of the agenda item for the "when true" condition on this builder to the given value.
+         * Has the additional side effect of setting whenTrueId to the ID value of the {{whenTrue}} argument.
          * @param whenTrue the agenda item for the "when true" condition of the agenda item to set
          */
 		public void setWhenTrue(AgendaItemDefinition.Builder whenTrue) {
 			this.whenTrue = whenTrue;
+            this.whenTrueId = (whenTrue != null) ? whenTrue.getId() : null;
 		}
 
         /**
          * Set the value of the agenda item for the "when false" condition on this builder to the given value.
+         * Has the additional side effect of setting whenTrueId to the ID value of the {{whenFalse}} argument.
          * @param whenFalse the agenda item for the "when false" condition of the agenda item to set
          */
 		public void setWhenFalse(AgendaItemDefinition.Builder whenFalse) {
 			this.whenFalse = whenFalse;
-		}
+            this.whenFalseId = (whenFalse != null) ? whenFalse.getId() : null;
+        }
 
         /**
          * Set the value of the agenda item for the "always" condition on this builder to the given value.
+         * Has the additional side effect of setting {{whenTrueId}} to the ID value of the always argument.
          * @param always the agenda item for the "always" condition of the agenda item to set
          */
 		public void setAlways(AgendaItemDefinition.Builder always) {
 			this.always = always;
+            this.alwaysId = (always != null) ? always.getId() : null;
 		}
 
         /**

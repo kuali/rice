@@ -16,14 +16,15 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.CriteriaLookupService;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBindingQueryResults;
 import org.kuali.rice.krms.impl.AttributeTransform;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,39 +33,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
+
 /**
  * Implementation of the @{link ReferenceObjectBindingBoService} interface for accessing  {@link ReferenceObjectBindingBo} related business objects.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class ReferenceObjectBindingBoServiceImpl
-    implements ReferenceObjectBindingBoService
-{
+public final class ReferenceObjectBindingBoServiceImpl implements ReferenceObjectBindingBoService {
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
-    private CriteriaLookupService criteriaLookupService;
 
     /**
-     * Sets the value of BusinessObjectService to the given value.
+     * Sets the value of DataObjectService to the given value.
      * 
-     * @param businessObjectService the BusinessObjectService value to set.
-     * 
+     * @param dataObjectService the DataObjectService value to set.
      */
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    public void setCriteriaLookupService(CriteriaLookupService criteriaLookupService) {
-        this.criteriaLookupService = criteriaLookupService;
-    }
-
-    public CriteriaLookupService getCriteriaLookupService() {
-        if ( criteriaLookupService == null ) {
-            criteriaLookupService = KrmsRepositoryServiceLocator.getCriteriaLookupService();
-        }
-        return this.criteriaLookupService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     public void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
@@ -75,6 +63,7 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (attributeDefinitionService == null) {
             attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
         }
+
         return attributeDefinitionService;
     }
 
@@ -83,15 +72,21 @@ public final class ReferenceObjectBindingBoServiceImpl
         incomingParamCheck(referenceObjectBinding , "referenceObjectBinding");
         final String referenceObjectBindingIdKey = referenceObjectBinding.getId();
         final ReferenceObjectBinding existing = getReferenceObjectBinding(referenceObjectBindingIdKey);
-        if (existing != null){ throw new IllegalStateException("the ReferenceObjectBinding to create already exists: " + referenceObjectBinding);	}
-        ReferenceObjectBindingBo bo = (ReferenceObjectBindingBo)businessObjectService.save(from(referenceObjectBinding));
+
+        if (existing != null) {
+            throw new IllegalStateException("the ReferenceObjectBinding to create already exists: " + referenceObjectBinding);
+        }
+
+        ReferenceObjectBindingBo bo = dataObjectService.save(from(referenceObjectBinding), PersistenceOption.FLUSH);
+
         return ReferenceObjectBindingBo.to(bo);
     }
 
     @Override
     public ReferenceObjectBinding getReferenceObjectBinding(String referenceObjectBindingId) {
         incomingParamCheck(referenceObjectBindingId , "referenceObjectBindingId");
-        ReferenceObjectBindingBo bo = businessObjectService.findBySinglePrimaryKey(ReferenceObjectBindingBo.class, referenceObjectBindingId);
+        ReferenceObjectBindingBo bo = dataObjectService.find(ReferenceObjectBindingBo.class, referenceObjectBindingId);
+
         return ReferenceObjectBindingBo.to(bo);
     }
 
@@ -99,8 +94,13 @@ public final class ReferenceObjectBindingBoServiceImpl
     public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBinding) {
         incomingParamCheck(referenceObjectBinding , "referenceObjectBinding");
         final ReferenceObjectBinding existing = getReferenceObjectBinding(referenceObjectBinding.getId());
-        if (existing == null){ throw new IllegalStateException("the ReferenceObjectBinding to update does not exists: " + referenceObjectBinding);}
+
+        if (existing == null) {
+            throw new IllegalStateException("the ReferenceObjectBinding to update does not exists: " + referenceObjectBinding);
+        }
+
         final ReferenceObjectBinding toUpdate;
+
         if (!existing.getId().equals(referenceObjectBinding.getId())){
             // if passed in id does not match existing id, correct it
             final ReferenceObjectBinding.Builder builder = ReferenceObjectBinding.Builder.create(referenceObjectBinding);
@@ -114,15 +114,19 @@ public final class ReferenceObjectBindingBoServiceImpl
         ReferenceObjectBindingBo boToUpdate = from(toUpdate);
 
         // update the rule and create new attributes
-         businessObjectService.save(boToUpdate);
+         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
 
     @Override
     public void deleteReferenceObjectBinding(String referenceObjectBindingId) {
         incomingParamCheck(referenceObjectBindingId , "referenceObjectBindingId");
         final ReferenceObjectBinding existing = getReferenceObjectBinding(referenceObjectBindingId);
-        if (existing == null){ throw new IllegalStateException("the ReferenceObjectBinding to delete does not exists: " + referenceObjectBindingId);}
-        businessObjectService.delete(from(existing));
+
+        if (existing == null) {
+            throw new IllegalStateException("the ReferenceObjectBinding to delete does not exists: " + referenceObjectBindingId);
+        }
+
+        dataObjectService.delete(from(existing));
     }
 
     @Override
@@ -130,9 +134,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(collectionName)) {
             throw new IllegalArgumentException("collectionName is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("collectionName", collectionName);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -141,9 +147,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(krmsDiscriminatorType)) {
             throw new IllegalArgumentException("krmsDiscriminatorType is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("krmsDiscriminatorType", krmsDiscriminatorType);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -152,9 +160,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(krmsObjectId)) {
             throw new IllegalArgumentException("krmsObjectId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("krmsObjectId", krmsObjectId);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -163,9 +173,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(namespace)) {
             throw new IllegalArgumentException("namespace is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespace);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -174,9 +186,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(referenceDiscriminatorType)) {
             throw new IllegalArgumentException("referenceDiscriminatorType is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("referenceDiscriminatorType", referenceDiscriminatorType);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -185,9 +199,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(referenceObjectId)) {
             throw new IllegalArgumentException("referenceObjectId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("referenceObjectId", referenceObjectId);
-        List<ReferenceObjectBindingBo> bos = (List<ReferenceObjectBindingBo>) businessObjectService.findMatching(ReferenceObjectBindingBo.class, map);
+        List<ReferenceObjectBindingBo> bos = findMatching(dataObjectService, ReferenceObjectBindingBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -196,9 +212,11 @@ public final class ReferenceObjectBindingBoServiceImpl
         incomingParamCheck(queryByCriteria, "queryByCriteria");
         ReferenceObjectBindingQueryResults results = findReferenceObjectBindings(queryByCriteria);
         List<String> result = new ArrayList<String>();
+
         for (ReferenceObjectBinding referenceObjectBinding: results.getResults()) {
             result.add(referenceObjectBinding.getId());
         }
+
         return Collections.unmodifiableList(result);
     }
 
@@ -206,15 +224,21 @@ public final class ReferenceObjectBindingBoServiceImpl
     public ReferenceObjectBindingQueryResults findReferenceObjectBindings(final QueryByCriteria queryByCriteria) {
         LookupCustomizer.Builder<ReferenceObjectBindingBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
-        GenericQueryResults<ReferenceObjectBindingBo> results = getCriteriaLookupService().lookup(ReferenceObjectBindingBo.class, queryByCriteria, lc.build());
+
+        QueryResults<ReferenceObjectBindingBo> results =
+                dataObjectService.findMatching(ReferenceObjectBindingBo.class, queryByCriteria);
+
         ReferenceObjectBindingQueryResults.Builder builder = ReferenceObjectBindingQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
         builder.setTotalRowCount(results.getTotalRowCount());
         final List<ReferenceObjectBinding.Builder> ims = new ArrayList<ReferenceObjectBinding.Builder>();
+
         for (ReferenceObjectBindingBo bo : results.getResults()) {
             ims.add(ReferenceObjectBinding.Builder.create(bo));
         }
+
         builder.setResults(ims);
+
         return builder.build();
     }
 
@@ -222,11 +246,13 @@ public final class ReferenceObjectBindingBoServiceImpl
         List<ReferenceObjectBinding> immutables = new LinkedList<ReferenceObjectBinding>();
         if (referenceObjectBindingBos != null) {
             ReferenceObjectBinding immutable = null;
+
             for (ReferenceObjectBindingBo bo : referenceObjectBindingBos ) {
                 immutable = to(bo);
                 immutables.add(immutable);
             }
         }
+
         return Collections.unmodifiableList(immutables);
     }
 
@@ -247,5 +273,4 @@ public final class ReferenceObjectBindingBoServiceImpl
             throw new IllegalArgumentException(name + " was blank");
         }
     }
-
 }

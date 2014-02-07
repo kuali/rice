@@ -19,18 +19,22 @@
 
 <#macro uif_groupContentWrap group>
 
-    <#inline 'groupWrap-open' />
+    <@krad.wrap component=group renderAs="${group.wrapperTag}">
 
-    <div class="${view.contentContainerClassesAsString}">
-   	    <#if !group.renderLoading>
-            <#-- invoke layout manager -->
-            <#local templateName=".main.${group.layoutManager.templateName}"/>
-            <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
+        <#inline 'groupWrap-open' />
 
-            <#dyncall templateName templateParms/>
-      	</#if>
-    </div>
+            <div class="${view.contentContainerClassesAsString}">
+                <#if !group.renderLoading>
+                    <#-- invoke layout manager -->
+                    <#local templateName=".main.${group.layoutManager.templateName}"/>
+                    <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
 
-    <#inline 'groupWrap-close' />
+                    <#dyncall templateName templateParms/>
+                </#if>
+            </div>
+
+        <#inline 'groupWrap-close' />
+
+    </@krad.wrap>
 
 </#macro>

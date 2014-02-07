@@ -16,5 +16,7 @@
 
 -->
 <#macro uif_collectionGroup group>
-	<#inline 'collectionGroup' />
+    <@krad.wrap component=group renderAs="${group.wrapperTag}">
+	    <#inline 'collectionGroup' />
+    </@krad.wrap>
 </#macro>

@@ -977,21 +977,45 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
  * @param columnId
  * @returns {boolean}
  */
+/**
+ * Identifies if there are visible elements in data column.
+ *
+ * Currently determines visibility for action columns and uses
+ * links, inputs, buttons or images as test. Should be expanded
+ * later to include divs/spans with text.
+ *
+ * @param tableId
+ * @param columnId
+ * @returns {boolean}
+ */
 function hasVisibleElementsInColumn(tableId, columnId) {
     var oTable = getDataTableHandle(tableId);
     var columns = jQuery(oTable).find('tbody td' + columnId);
     var isColumnsEmpty = true;
 
-    jQuery.each(columns, function (index, value) {
-        var column = jQuery(value);
-        var visibleColumns = column.find(":has(a:visible,img:visible,input:visible,button:visible)");
-        if (visibleColumns.size() > 0) {
+    jQuery.each(columns, function (index, td) {
+        var column = jQuery(td);
+        var columnContent = column.find("a, img, input[type!='hidden'], button");
+        var columnGroup = column.find("> div");
+        var columnGroupVisible = true;
+
+        if (columnGroup.css("display") == "none") {
+            columnGroupVisible = false;
+        }
+
+        columnContent.filter(function() {
+             return jQuery(this).css("display") != "none";
+        });
+
+        if (columnContent.size() > 0 && columnGroupVisible) {
             isColumnsEmpty = false;
+
+            // break
+            return false;
         }
     });
 
     return !isColumnsEmpty;
-
 }
 
 /**

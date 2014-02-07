@@ -35,30 +35,31 @@ class SpringBeanTransformer {
     public static String OUTPUT_CONV_FILE_PREFIX = "KradConv";
 
     // holds all variables
-    def config
+    def config;
 
     // dictionary properties transform map
-    def ddPropertiesMap
+    def ddPropertiesMap;
 
     // control definition transform map
-    def ddBeanControlMap
+    def ddBeanControlMap;
 
     // bean property removal list
-    def ddPropertiesRemoveList
+    def ddPropertiesRemoveList;
 
     // namespace schema (p and xsi)
-    def pNamespaceSchema
-    def xsiNamespaceSchema
+    def pNamespaceSchema;
+    def xsiNamespaceSchema;
 
     Map<String, String> definitionDataObjects = [:];
     Map<String, String> parentBeans = [:];
 
-    def useCarryoverAttributes
-    def useCarryoverProperties
-    def replacePropertyDuringConversion
-    def controlPropertiesMap
-    def validationPatternMap
-    def validationPatternPropertiesMap
+    def useCarryoverAttributes;
+    def useCarryoverProperties;
+    def replacePropertyDuringConversion;
+    boolean maintainBusinessObjectStructure = false;
+    def controlPropertiesMap;
+    def validationPatternMap;
+    def validationPatternPropertiesMap;
 
     def init(config) {
         ddPropertiesMap = config.map.convert.dd_prop
@@ -71,7 +72,8 @@ class SpringBeanTransformer {
         controlPropertiesMap = config.map.convert_control_properties
         validationPatternMap = config.map.convert.dd_validation_patterns
         validationPatternPropertiesMap = config.map.convert_validation_pattern_properties
-        replacePropertyDuringConversion = config.bool.dictionaryconversion.replaceControlProperty
+        replacePropertyDuringConversion = config.bool.dictionaryconversion.replaceControlProperty;
+        maintainBusinessObjectStructure = config.bool.dictionaryconversion.maintainBusinessObjectStructure;
     }
 
     public String getTranslatedBeanId(String beanId, String originalBeanType, String transformBeanType) {

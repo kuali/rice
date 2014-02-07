@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import com.google.common.collect.Maps;
-
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.comparator.NumericValueComparator;
 import org.kuali.rice.krad.comparator.TemporalValueComparator;
@@ -29,8 +26,8 @@ import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.layout.TableRow;
-import org.kuali.rice.krad.uif.layout.TableRowBuilder;
+import org.kuali.rice.krad.uif.layout.collections.TableRow;
+import org.kuali.rice.krad.uif.layout.collections.TableRowBuilder;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;

@@ -998,7 +998,6 @@ function hasVisibleElementsInColumn(tableId, columnId) {
  * Checks for visible elements in the action column and toggle its
  * display accordingly.
  *
- *
  * @param tableId
  * @param columnId
  */

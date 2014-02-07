@@ -33,7 +33,7 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexTestDocument.class);
 	private static final long serialVersionUID = -2290510385815271758L;
 	@Column(name="RTE_LVL_CNT")
-	private int routeLevelCount = 0;
+	private Long routeLevelCount = 0L;
 	@Column(name="CNSTNT_STR")
 	private String constantString;
 	@Column(name="RTD_STR")
@@ -41,7 +41,7 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	@Column(name="HLD_RTD_STR")
 	private String heldRoutedString;
 	@Column(name="RD_ACCS_CNT")
-	private int readAccessCount = 0;
+	private Long readAccessCount = 0L;
 	
 	/**
 	 * Constructor for the document which sets the constant string and keeps a hole of the routedString
@@ -56,8 +56,8 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	/**
 	 * @return the count of how many route levels have been passed
 	 */
-	public int getRouteLevelCount() {
-		readAccessCount += 1;
+	public Long getRouteLevelCount() {
+		readAccessCount += 1L;
 		return routeLevelCount;
 	}
 	
@@ -82,7 +82,7 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
     /**
 	 * @return the readAccessCount
 	 */
-	public int getReadAccessCount() {
+	public Long getReadAccessCount() {
 		return this.readAccessCount;
 	}
 
@@ -94,7 +94,7 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	@Override
 	public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
 		super.doRouteLevelChange(levelChangeEvent);
-		routeLevelCount += 1;
+		routeLevelCount += 1L;
 		if (routedString == null) {
 			routedString = heldRoutedString;
 		}

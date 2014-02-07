@@ -218,8 +218,12 @@ public final class WebRuleUtils {
 	public static void establishDefaultRuleValues(RuleBaseValues rule) {
 		rule.setActive(true);
 
-        RuleBaseValues defaultRule = ((RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).findDefaultRuleByRuleTemplateId(
-        		rule.getRuleTemplate().getDelegationTemplateId());
+        RuleBaseValues defaultRule = null;
+        if (rule.getRuleTemplate().getDelegationTemplateId() != null) {
+            defaultRule = ((RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE)).
+                    findDefaultRuleByRuleTemplateId(rule.getRuleTemplate().getDelegationTemplateId());
+        }
+
         if (defaultRule != null) {
             defaultRule.setActivationDate(null);
             defaultRule.setCurrentInd(null);

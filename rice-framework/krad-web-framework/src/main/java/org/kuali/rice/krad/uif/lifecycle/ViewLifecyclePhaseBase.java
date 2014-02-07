@@ -504,6 +504,12 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         }
     }
 
+    /**
+     * Adds phases added as successors to the processor, or if there are no pending successors invokes
+     * the complete notification step.
+     *
+     * @param successors phases to process
+     */
     protected void processSuccessors(Queue<ViewLifecyclePhase> successors) {
         pendingSuccessors = successors.size();
         trace("processed " + pendingSuccessors);
@@ -520,7 +526,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     successorBase.trace("succ-pend");
                 }
 
-                ViewLifecycle.getProcessor().offerPendingPhase(successor);
+                ViewLifecycle.getProcessor().pushPendingPhase(successor);
             }
         }
     }

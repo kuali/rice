@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 /**
@@ -60,7 +61,7 @@ public class TextControlBase extends ControlBase implements TextControl, SizedCo
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (parent instanceof InputField) {

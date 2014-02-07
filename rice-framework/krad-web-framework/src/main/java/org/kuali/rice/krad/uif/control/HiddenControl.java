@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Represents a HTML Hidden control, generally rendered as an input control of
@@ -34,8 +35,9 @@ public class HiddenControl extends ControlBase {
 	}
 
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
-        parent.setStyle(null);
+
+        ((Component) parent).setStyle(null);
     }
 }

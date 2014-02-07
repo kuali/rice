@@ -94,7 +94,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         View view = ViewLifecycle.getView();

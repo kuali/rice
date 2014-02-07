@@ -32,10 +32,9 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
- * Base class for all <code>Control</code> implementations
+ * Base class for all {@link Control} implementations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @see org.kuali.rice.krad.uif.control.Control
  */
 @BeanTag(name = "controlBase-bean", parent = "Uif-ControlBase")
 public abstract class ControlBase extends ContentElementBase implements Control {
@@ -90,7 +89,8 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * @param model top level object containing the data
      * @param parent parent component
      */
-    public void performFinalize(Object model, Component parent) {
+    @Override
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();

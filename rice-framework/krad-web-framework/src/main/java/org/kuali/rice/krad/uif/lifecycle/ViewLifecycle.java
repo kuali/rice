@@ -192,7 +192,7 @@ public class ViewLifecycle implements Serializable {
         ViewPostMetadata postMetadata = new ViewPostMetadata(view.getId());
 
         ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, request, response,
-                new ViewLifecycleFullBuild(parameters, null));
+                new ViewLifecycleBuild(parameters, null, false));
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
@@ -226,11 +226,7 @@ public class ViewLifecycle implements Serializable {
         Map<String, Tree<String, String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
 
         encapsulateLifecycle(view, model, viewPostMetadata, refreshPathMappings, request, response,
-                new ViewLifecycleFullBuild(null, refreshPathMappings));
-
-        // regenerate server message content for page
-        PageGroup page = view.getCurrentPage();
-        page.getValidationMessages().generateMessages(view, model, page);
+                new ViewLifecycleBuild(null, refreshPathMappings, true));
 
         return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
     }

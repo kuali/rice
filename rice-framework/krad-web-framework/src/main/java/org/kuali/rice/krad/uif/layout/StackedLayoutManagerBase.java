@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
@@ -140,14 +141,18 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * {@inheritDoc}
      */
     @Override
-    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
-            Object currentLine, int lineIndex) {
-        boolean isAddLine = lineIndex == -1;
+    public void buildLine(LineBuilderContext lineBuilderContext) {
+        List<Field> lineFields = lineBuilderContext.getLineFields();
+        CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
+        int lineIndex = lineBuilderContext.getLineIndex();
+        String idSuffix = lineBuilderContext.getIdSuffix();
+        Object currentLine = lineBuilderContext.getCurrentLine();
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
+        String bindingPath = lineBuilderContext.getBindingPath();
 
         // construct new group
         Group lineGroup = null;
-        if (isAddLine) {
+        if (lineBuilderContext.isAddLine()) {
             stackedGroups = new ArrayList<Group>();
 
             if (addLineGroup == null) {
@@ -169,7 +174,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }
 
-        if (((UifFormBase) model).isAddedCollectionItem(currentLine)) {
+        if (((UifFormBase) lineBuilderContext.getModel()).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
         }
 
@@ -184,14 +189,14 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         ComponentUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
 
         // build header for the group
-        if (isAddLine) {
+        if (lineBuilderContext.isAddLine()) {
             if (lineGroup.getHeader() != null) {
                 Message headerMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel());
                 lineGroup.getHeader().setRichHeaderMessage(headerMessage);
             }
         } else {
             // get the collection for this group from the model
-            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
+            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(lineBuilderContext.getModel(),
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
             String headerText = buildLineHeaderText(modelCollection.get(lineIndex), lineGroup);
@@ -205,7 +210,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         // stack all fields (including sub-collections) for the group
         List<Component> groupFields = new ArrayList<Component>();
         groupFields.addAll(lineFields);
-        groupFields.addAll(subCollectionFields);
+
+        if (lineBuilderContext.getSubCollectionFields() != null) {
+            groupFields.addAll(lineBuilderContext.getSubCollectionFields());
+        }
 
         // set line actions on group footer
         if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
@@ -273,9 +281,15 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager#getSupportedContainer()
+     * {@inheritDoc}
+     */
+    @Override
+    public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
+
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {

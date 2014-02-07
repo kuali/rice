@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -168,6 +169,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private int displayStart = -1;
     private int displayLength = -1;
     private int filteredCollectionSize = -1;
+    private int totalCollectionSize = -1;
 
     private List<String> totalColumns;
 
@@ -293,14 +295,25 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
+        ViewModel viewModel = (ViewModel) model;
         View view = ViewLifecycle.getView();
 
-        if (StringUtils.isNotBlank(this.getId())
-                && model instanceof ViewModel
-                && ((ViewModel) model).getViewPostMetadata() != null
-                && ((ViewModel) model).getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
-            List<Object> newLines = ((ViewModel) model).getViewPostMetadata().getAddedCollectionObjects().get(
-                    this.getId());
+        // if we are processing a paging request, invoke the layout managers to carry out the paging,
+        // otherwise if server paging is enabled get the display start so we build the correct page
+        if (viewModel.isCollectionPagingRequest()) {
+            ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
+        } else if (this.isUseServerPaging()) {
+            Object displayStart = ViewLifecycle.getViewPostMetadata().getComponentPostData(this.getId(),
+                    UifConstants.PageRequest.DISPLAY_START_PROP);
+
+            if (displayStart != null) {
+                this.setDisplayStart(((Integer) displayStart).intValue());
+            }
+        }
+        
+        if (StringUtils.isNotBlank(this.getId()) && viewModel.getViewPostMetadata() != null
+                && viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
+            List<Object> newLines = viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId());
 
             // if newLines is empty this means its an addLine case (no additional processing) so init collection line
             if (newLines.isEmpty()) {
@@ -309,17 +322,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
             for (Object newLine : newLines) {
                 ViewLifecycle.getHelper().applyDefaultValuesForCollectionLine(this, newLine);
-            }
-        }
-
-        // If we are using server paging, determine if a displayStart value has been set for this collection
-        // and used that value as the displayStart
-        if (model instanceof UifFormBase && this.isUseServerPaging()) {
-            Object displayStart = ((UifFormBase) model).getExtensionData().get(
-                    this.getId() + UifConstants.PageRequest.DISPLAY_START_PROP);
-
-            if (displayStart != null) {
-                this.setDisplayStart(((Integer) displayStart).intValue());
             }
         }
 
@@ -1211,6 +1213,14 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     public void setFilteredCollectionSize(int filteredCollectionSize) {
         this.filteredCollectionSize = filteredCollectionSize;
+    }
+
+    public int getTotalCollectionSize() {
+        return totalCollectionSize;
+    }
+
+    public void setTotalCollectionSize(int totalCollectionSize) {
+        this.totalCollectionSize = totalCollectionSize;
     }
 
     /**

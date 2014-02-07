@@ -312,7 +312,7 @@ public class UifConstants {
         public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
-        public static final String JSON_TEMPLATE = "dataTablesJson.ftl";
+        public static final String JSON_TEMPLATE = "components/element/dataTablesJson.ftl";
     }
 
     public static class TableLayoutValues {
@@ -481,6 +481,7 @@ public class UifConstants {
     }
 
     public static final class JsFunctions {
+        public static final String COLLECTION_LINE_CHANGED = "collectionLineChanged";
         public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";

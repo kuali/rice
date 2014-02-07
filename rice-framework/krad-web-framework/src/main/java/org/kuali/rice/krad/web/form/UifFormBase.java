@@ -139,7 +139,7 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     private String requestJsonTemplate;
     @SessionTransient
-    private boolean originalComponentRequest;
+    private boolean collectionPagingRequest;
 
     // dialog fields
     @SessionTransient
@@ -1197,6 +1197,22 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCollectionPagingRequest() {
+        return collectionPagingRequest;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCollectionPagingRequest(boolean collectionPagingRequest) {
+        this.collectionPagingRequest = collectionPagingRequest;
     }
 
     /**

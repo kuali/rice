@@ -241,9 +241,10 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Called by the add line action for a new collection line. Method
-     * determines which collection the add action was selected for and invokes
-     * the view helper service to add the line
+     * Called by the add line action for a new collection line.
+     *
+     * <p>Method determines which collection the add action was selected for and invokes the view helper
+     * service to add the line</p>
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
     public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
@@ -1077,11 +1078,12 @@ public abstract class UifControllerBase {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
 
         String formKey = request.getParameter(UifParameters.FORM_KEY);
-        String tableId = request.getParameter(UifParameters.TABLE_ID);
 
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
 
         View view = currentForm.getView();
+
+        String tableId = currentForm.getUpdateComponentId();
 
         LOG.debug("identifying table from model and form");
         tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
@@ -1108,16 +1110,7 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Retrieve a page defined by the page number parameter for a collection
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
+     * Retrieve a page defined by the page number parameter for a collection group.
      */
     @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -1127,6 +1120,8 @@ public abstract class UifControllerBase {
 
         CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
         pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
+
+        form.setCollectionPagingRequest(true);
 
         return getUIFModelAndView(form);
     }
@@ -1170,17 +1165,12 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        String tableId = request.getParameter(UifParameters.TABLE_ID);
+        form.setCollectionPagingRequest(true);
 
-        DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
+        // set property to trigger special JSON rendering logic
+        form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
 
-        DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
-        pagingHelper.processPagingRequest(tableId, form, request, response, dataTablesInputs);
-
-        Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
-        additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);
-
-        return getUIFModelAndView(form, additionalViewAttributes);
+        return getUIFModelAndView(form);
     }
 
     /**

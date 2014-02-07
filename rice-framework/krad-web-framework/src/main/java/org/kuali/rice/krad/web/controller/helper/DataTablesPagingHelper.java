@@ -25,87 +25,56 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ColumnSort;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.MultiColumnComparator;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataTablesPagingHelper {
 
-    private int totalCollectionSize;
-    private Integer filteredCollectionSize;
-
-    private TableLayoutManager tableLayoutManager;
-
-    public void processPagingRequest(String tableId, UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response,
+    public static void processPagingRequest(View view, ViewModel form, CollectionGroup collectionGroup,
             DataTablesInputs dataTablesInputs) {
-        // Set property to trigger special JSON rendering logic in uifRender.ftl
-        form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
-        
-        ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
-
-        if (viewPostMetadata != null) { // avoid blowing the stack if the session expired
-            // don't set the component to update unless we have a postedView, otherwise we'll get an NPE later
-            form.setUpdateComponentId(tableId);
-
-            @SuppressWarnings("unchecked") List<ColumnSort> oldColumnSorts =
-                    (List<ColumnSort>) form.getExtensionData().get(tableId + UifConstants.IdSuffixes.COLUMN_SORTS);
-
-            // Create references that we'll need beyond the synchronized block here.
-            CollectionGroup newCollectionGroup = null;
-            List<Object> modelCollection = null;
-            List<ColumnSort> newColumnSorts = null;
-
-            synchronized (viewPostMetadata) { // only one concurrent request per view please
-
-                newColumnSorts = buildColumnSorts(form, dataTablesInputs, tableId);
-
-                // get the collection for this group from the model
-                modelCollection = ObjectPropertyUtils.getPropertyValue(form,
-                        (String) viewPostMetadata.getComponentPostMetadata(tableId)
-                        .getData(UifConstants.PostMetadata.BINDING_PATH));
-
-                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, tableId);
-
-                // get a new instance of the collection group component that we'll run the lifecycle on
-                newCollectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(
-                        form.getViewPostMetadata(), tableId);
-
-                // set up the collection group properties related to paging in the collection group to set the bounds for
-                // what needs to be rendered
-                newCollectionGroup.setUseServerPaging(true);
-                newCollectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
-                newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
-
-                // run lifecycle on the table component and update in view
-//                ViewLifecycle.performComponentLifecycle(view, form, form.getViewPostMetadata(), request, response,
-//                                newCollectionGroup, oldCollectionGroup.getId());
-            }
-
-            this.tableLayoutManager = (TableLayoutManager) newCollectionGroup.getLayoutManager();
-            this.filteredCollectionSize = newCollectionGroup.getFilteredCollectionSize();
-            this.totalCollectionSize = modelCollection.size();
-
-            // these other params above don't need to stay in the form after this request, but <tableId>_columnSorts
-            // does so that we avoid re-sorting on each request.
-            form.getExtensionData().put(tableId + "_columnSorts", newColumnSorts);
+        if (view == null) {
+            return;
         }
+
+        String collectionGroupId = collectionGroup.getId();
+
+        List<ColumnSort> newColumnSorts;
+        synchronized (view) {
+            // get the collection for this group from the model
+            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(form,
+                    collectionGroup.getBindingInfo().getBindingPath());
+
+            List<ColumnSort> oldColumnSorts =
+                    (List<ColumnSort>) ViewLifecycle.getViewPostMetadata().getComponentPostData(collectionGroupId,
+                            UifConstants.IdSuffixes.COLUMN_SORTS);
+
+            newColumnSorts = buildColumnSorts(view, form, dataTablesInputs, collectionGroup);
+
+            applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, collectionGroup, form, view);
+
+            // set up the collection group properties related to paging in the collection group to set the bounds for
+            // what needs to be rendered
+            collectionGroup.setUseServerPaging(true);
+            collectionGroup.setDisplayStart(dataTablesInputs.iDisplayStart);
+            collectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
+        }
+
+        // these other params above don't need to stay in the form after this request, but <collectionGroupId>_columnSorts
+        // does so that we avoid re-sorting on each request.
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(collectionGroupId,
+                UifConstants.IdSuffixes.COLUMN_SORTS, newColumnSorts);
     }
 
     /**
@@ -116,13 +85,14 @@ public class DataTablesPagingHelper {
      * @param dataTablesInputs the parsed request data from dataTables
      * @return the List of ColumnSort elements representing the requested sort columns, types, and directions
      */
-    private List<ColumnSort> buildColumnSorts(UifFormBase form, DataTablesInputs dataTablesInputs, String collectionGroupId) {
+    private static List<ColumnSort> buildColumnSorts(View view, ViewModel form, DataTablesInputs dataTablesInputs,
+            CollectionGroup collectionGroup) {
         int[] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
         boolean[] sortable = dataTablesInputs.bSortable_; // which columns are sortable
         String[] sortDir = dataTablesInputs.sSortDir_; // direction to sort
 
         // parse table options to gather the sort types
-        String aoColumnDefsValue = (String) form.getViewPostMetadata().getComponentPostData(collectionGroupId,
+        String aoColumnDefsValue = (String) form.getViewPostMetadata().getComponentPostData(collectionGroup.getId(),
                 UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
 
         JsonArray jsonColumnDefs = null;
@@ -155,9 +125,9 @@ public class DataTablesPagingHelper {
      * options
      * @param sortCol the index of the column to get the sort type for
      * @return the name of the sort type specified in the template options, or the default of "string" if none is
-     *         found.
+     * found.
      */
-    private String getSortType(JsonArray jsonColumnDefs, int sortCol) {
+    private static String getSortType(JsonArray jsonColumnDefs, int sortCol) {
         String sortType = "string"; // default to string if nothing is spec'd
 
         if (jsonColumnDefs != null) {
@@ -206,10 +176,13 @@ public class DataTablesPagingHelper {
      * @param modelCollection the collection to sort
      * @param oldColumnSorts the sorting that reflects the current state of the collection
      * @param newColumnSorts the sorting to apply to the collection
-     * @param tableId id of the table being refreshed
+     * @param collectionGroup the CollectionGroup that is being rendered
+     * @param form object containing the view's data
+     * @param view the view
      */
-    protected void applyTableJsonSort(final List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
-            final List<ColumnSort> newColumnSorts, String tableId) {
+    protected static void applyTableJsonSort(final List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
+            final List<ColumnSort> newColumnSorts, final CollectionGroup collectionGroup, ViewModel form,
+            final View view) {
 
         boolean isCollectionEmpty = CollectionUtils.isEmpty(modelCollection);
         boolean isSortingSpecified = !CollectionUtils.isEmpty(newColumnSorts);
@@ -221,8 +194,8 @@ public class DataTablesPagingHelper {
                 sortIndices[i] = i;
             }
 
-            MultiColumnComparator comparator =
-                    new MultiColumnComparator(modelCollection, tableId, newColumnSorts);
+            MultiColumnComparator comparator = new MultiColumnComparator(modelCollection, collectionGroup,
+                    newColumnSorts, form, view);
             Arrays.sort(sortIndices, comparator);
 
             // apply the sort to the modelCollection
@@ -230,22 +203,11 @@ public class DataTablesPagingHelper {
             for (int i = 0; i < sortIndices.length; i++) {
                 sorted[i] = modelCollection.get(sortIndices[i]);
             }
+
             for (int i = 0; i < sorted.length; i++) {
                 modelCollection.set(i, sorted[i]);
             }
         }
-    }
-
-    public int getTotalCollectionSize() {
-        return totalCollectionSize;
-    }
-
-    public Integer getFilteredCollectionSize() {
-        return filteredCollectionSize;
-    }
-
-    public TableLayoutManager getTableLayoutManager() {
-        return tableLayoutManager;
     }
 
     /**

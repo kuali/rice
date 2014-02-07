@@ -33,7 +33,6 @@ public class UifParameters {
     public static final String CONVERSION_FIELDS = "conversionFields";
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
 	public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
-    public static final String DATA_TABLES_PAGING_HELPER = "DataTablesPagingHelper";
 	public static final String RENDER_CRITERIA_ACTIONS = "renderCriteriaActions";
     public static final String DOCUMENT_CLASS = "documentClass";
     public static final String DOC_NUM = "docNum";
@@ -69,7 +68,6 @@ public class UifParameters {
     public static final String SESSION_ID = "sessionId";
 	public static final String RENDER_MAINTENANCE_LINKS = "renderMaintenanceLinks";
 	public static final String RENDER_RESULT_ACTIONS = "renderResultActions";
-    public static final String TABLE_ID = "tableId";
 	public static final String PAGE_ID = "pageId";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
     public static final String VALUE = "value";

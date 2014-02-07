@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
@@ -31,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Perform the full view lifecycle.
+ * Perform the lifecycle process for the view or a component.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see ViewLifecycle#encapsulateLifecycle(View, Object, javax.servlet.http.HttpServletRequest,
@@ -39,38 +40,79 @@ import org.slf4j.LoggerFactory;
  * @see UifControllerHelper#prepareViewForRendering(javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse, UifFormBase)
  */
-public class ViewLifecycleFullBuild implements Runnable {
-    private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleFullBuild.class);
+public class ViewLifecycleBuild implements Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleBuild.class);
 
     private final Map<String, String> parameters;
     private final Map<String, Tree<String, String>> refreshPathMappings;
 
+    private final boolean refresh;
+
     /**
      * Constructor.
      *
-     * @param parameters Map of key values pairs that provide configuration for the
-     * <code>View</code>, this is generally comes from the request and can be the request
-     * parameter Map itself. Any parameters not valid for the View will be filtered out
+     * @param parameters Map of key values pairs that provide configuration for the view, this is generally comes from
+     * the request and can be the request parameter Map itself. Any parameters not valid for the View will be
+     * filtered out
+     * @param refreshPathMappings in the case of a component refresh, tree of parent paths that will be refreshed
+     * before the refresh component is built
+     * @param refresh indicates whether this is a component refresh build
      */
-    public ViewLifecycleFullBuild(Map<String, String> parameters,
-            Map<String, Tree<String, String>> refreshPathMappings) {
+    public ViewLifecycleBuild(Map<String, String> parameters, Map<String, Tree<String, String>> refreshPathMappings,
+            boolean refresh) {
         this.parameters = parameters;
         this.refreshPathMappings = refreshPathMappings;
+        this.refresh = refresh;
     }
 
+    /**
+     * Runs the three lifecycle phases and performs post finalize processing.
+     */
     @Override
     public void run() {
-        ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+        View view = ViewLifecycle.getView();
+
+        ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
+
+        populateViewRequestParameters();
+
+        runInitializePhase();
+
+        runApplyModelPhase();
+
+        runFinalizePhase();
+
+        // build script for generating growl messages
+        String growlScript = ViewLifecycle.getHelper().buildGrowlScript();
+        ((ViewModel) ViewLifecycle.getModel()).setGrowlScript(growlScript);
+
+        // on component refreshes regenerate server message content for page
+        if (refresh) {
+            PageGroup page = view.getCurrentPage();
+            page.getValidationMessages().generateMessages(view, ViewLifecycle.getModel(), page);
+        }
+
+        LifecycleRefreshPathBuilder.processLifecycleElements();
+
+        // clear old added collection objects data since they are only needed during the lifecycle
+        ViewLifecycle.getViewPostMetadata().setAddedCollectionObjects(new HashMap<String, List<Object>>());
+
+        ProcessLogger.trace("finalize:" + view.getId());
+    }
+
+    /**
+     * Invokes the view helper to populate view attributes from request parameters, then makes a back up of the
+     * view request parameters on the form.
+     */
+    protected void populateViewRequestParameters() {
         View view = ViewLifecycle.getView();
         ViewHelperService helper = ViewLifecycle.getHelper();
         UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
 
-        ProcessLogger.trace("begin-view-lifecycle:" + view.getId());
-
         // populate view from request parameters. In case of refresh, the parameters will be stored on the
         // form from the initial build
         Map<String, String> parametersToPopulate = parameters;
-        if (parametersToPopulate == null) {
+        if (refresh) {
             parametersToPopulate = model.getViewRequestParameters();
         }
 
@@ -78,8 +120,21 @@ public class ViewLifecycleFullBuild implements Runnable {
 
         // backup view request parameters on form for refreshes
         model.setViewRequestParameters(view.getViewRequestParameters());
+    }
 
-        // invoke initialize phase on the views helper service
+    /**
+     * Runs the initialize lifecycle phase.
+     *
+     * <p>First the view helper is invoked to perform any custom processing, then the processor is invoked
+     * to perform any tasks for this phase.</p>
+     */
+    protected void runInitializePhase() {
+        ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        View view = ViewLifecycle.getView();
+        ViewHelperService helper = ViewLifecycle.getHelper();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+
         if (LOG.isInfoEnabled()) {
             LOG.info("performing initialize phase for view: " + view.getId());
         }
@@ -87,15 +142,28 @@ public class ViewLifecycleFullBuild implements Runnable {
         helper.performCustomViewInitialization(model);
 
         Tree<String, String> refreshPaths = null;
-        if (refreshPathMappings!= null) {
+        if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.INITIALIZE);
         }
 
         processor.performPhase(LifecyclePhaseFactory.initialize(view, model, "", refreshPaths, null, null));
 
         ProcessLogger.trace("initialize:" + view.getId());
+    }
 
-        // Apply Model Phase
+    /**
+     * Runs the apply model lifecycle phase.
+     *
+     * <p>Default values are applied and context is setup for expression evaluation. Then the processor is invoked
+     * to perform any tasks for this phase. </p>
+     */
+    protected void runApplyModelPhase() {
+        ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        View view = ViewLifecycle.getView();
+        ViewHelperService helper = ViewLifecycle.getHelper();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+
         if (LOG.isInfoEnabled()) {
             LOG.info("performing apply model phase for view: " + view.getId());
         }
@@ -112,35 +180,37 @@ public class ViewLifecycleFullBuild implements Runnable {
         // set view context for conditional expressions
         helper.setViewContext();
 
-        if (refreshPathMappings!= null) {
+        Tree<String, String> refreshPaths = null;
+        if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.APPLY_MODEL);
         }
 
         processor.performPhase(LifecyclePhaseFactory.applyModel(view, model, "", refreshPaths));
 
         ProcessLogger.trace("apply-model:" + view.getId());
+    }
 
-        // Finalize Phase
+    /**
+     * Runs the finalize lifecycle phase.
+     *
+     * <p>Processor is invoked to perform any tasks for this phase.</p>
+     */
+    protected void runFinalizePhase() {
+        ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        View view = ViewLifecycle.getView();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+
         if (LOG.isInfoEnabled()) {
             LOG.info("performing finalize phase for view: " + view.getId());
         }
 
-        if (refreshPathMappings!= null) {
+        Tree<String, String> refreshPaths = null;
+        if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.FINALIZE);
         }
 
         processor.performPhase(LifecyclePhaseFactory.finalize(view, model, "", refreshPaths, null));
-
-        // get script for generating growl messages
-        String growlScript = helper.buildGrowlScript();
-        ((ViewModel) model).setGrowlScript(growlScript);
-
-        LifecycleRefreshPathBuilder.processLifecycleElements();
-
-        // Clear old added collection objects data
-        ViewLifecycle.getViewPostMetadata().setAddedCollectionObjects(new HashMap<String, List<Object>>());
-
-        ProcessLogger.trace("finalize:" + view.getId());
     }
 
 }

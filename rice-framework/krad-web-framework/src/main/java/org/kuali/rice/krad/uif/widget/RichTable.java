@@ -198,7 +198,7 @@ public class RichTable extends WidgetBase {
                     + "="
                     + UifConstants.MethodToCallNames.TABLE_JSON
                     + "&"
-                    + UifParameters.TABLE_ID
+                    + UifParameters.UPDATE_COMPONENT_ID
                     + "="
                     + parent.getId()
                     + "&"
@@ -208,7 +208,7 @@ public class RichTable extends WidgetBase {
                     + "&"
                     + UifParameters.AJAX_RETURN_TYPE
                     + "="
-                    + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
+                    + UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey()
                     + "&"
                     + UifParameters.AJAX_REQUEST
                     + "="
@@ -238,7 +238,7 @@ public class RichTable extends WidgetBase {
         templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
                 + ((UifFormBase) model).getControllerMapping()
                 + "?"
-                + UifParameters.TABLE_ID
+                + UifParameters.UPDATE_COMPONENT_ID
                 + "="
                 + parent.getId()
                 + "&"

@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
@@ -53,21 +54,22 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
- * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
- * Table
+ * Implementation of table layout manager.
  *
- * <p>
- * Based on the fields defined, the {@code TableLayoutManager} will dynamically create instances of
+ * <p>Based on the fields defined, the {@code TableLayoutManager} will dynamically create instances of
  * the fields for each collection row. In addition, the manager can create standard fields like the
  * action and sequence fields for each row. The manager supports options inherited from the
- * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width settings.
- * </p>
+ * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width settings.</p>
+ *
+ * {@inheritDoc}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -263,19 +265,19 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
     /**
      * Sets up the grouping MessageField to be used in the first column of the table layout for
-     * grouping collection content into groups based on values of the line's fields
+     * grouping collection content into groups based on values of the line's fields.
      *
      * @param model The model for the active lifecycle
      * @param collectionGroup collection group for this layout
      */
-    private void setupGrouping(Object model, CollectionGroup collectionGroup) {
-        //Grouping setup
+    protected void setupGrouping(Object model, CollectionGroup collectionGroup) {
         String groupingTitleExpression = "";
+
         if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
             groupingTitleExpression = this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE);
+
             this.setGroupingTitle(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE));
         } else if (this.getGroupingPropertyNames() != null) {
-
             for (String propertyName : this.getGroupingPropertyNames()) {
                 groupingTitleExpression = groupingTitleExpression + ", " + propertyName;
             }
@@ -289,6 +291,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         if (StringUtils.isNotBlank(groupingTitleExpression)) {
             MessageField groupingMessageField = ComponentFactory.getColGroupingField();
+
             groupingMessageField.getMessage().getPropertyExpressions().put(UifPropertyPaths.MESSAGE_TEXT,
                     groupingTitleExpression);
 
@@ -489,19 +492,26 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Assembles the field instances for the collection line. The given sequence field prototype is
-     * copied for the line sequence field. Likewise a copy of the actionFieldPrototype is made and
-     * the given actions are set as the items for the action field. Finally the generated items are
-     * assembled together into the allRowFields list with the given lineFields.
+     * Assembles the field instances for the collection line.
+     *
+     * <p>The given sequence field prototype is copied for the line sequence field. Likewise a copy of
+     * the actionFieldPrototype is made and the given actions are set as the items for the action field.
+     * Finally the generated items are assembled together into the allRowFields list with the given
+     * lineFields.</p>
      *
      * {@inheritDoc}
      */
     @Override
-    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions,
-            String idSuffix, Object currentLine, int lineIndex) {
-
+    public void buildLine(LineBuilderContext lineBuilderContext) {
         View view = ViewLifecycle.getView();
+
+        List<Field> lineFields = lineBuilderContext.getLineFields();
+        CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
+        int lineIndex = lineBuilderContext.getLineIndex();
+        String idSuffix = lineBuilderContext.getIdSuffix();
+        Object currentLine = lineBuilderContext.getCurrentLine();
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
+        String bindingPath = lineBuilderContext.getBindingPath();
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
@@ -551,7 +561,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         boolean addLineInTable =
                 collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() && !isSeparateAddLine();
 
-        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(currentLine)) {
+        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) lineBuilderContext.getModel())
+                .isAddedCollectionItem(currentLine)) {
             rowCss = collectionGroup.getNewItemsCssClass();
         } else if (isAddLine && addLineInTable) {
             rowCss = collectionGroup.getAddItemCssClass();
@@ -636,7 +647,12 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
 
         int rowCount = calculateNumberOfRows(lineFields);
-        int rowSpan = rowCount + subCollectionFields.size();
+        int rowSpan = rowCount;
+
+        List<FieldGroup> subCollectionFields = lineBuilderContext.getSubCollectionFields();
+        if (subCollectionFields != null) {
+            rowSpan += subCollectionFields.size();
+        }
 
         if (actionColumnIndex == 1 && renderActions) {
             addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
@@ -785,12 +801,14 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
 
         // update colspan on sub-collection fields
-        for (FieldGroup subCollectionField : subCollectionFields) {
-            subCollectionField.setColSpan(numberOfDataColumns);
-        }
+        if (subCollectionFields != null) {
+            for (FieldGroup subCollectionField : subCollectionFields) {
+                subCollectionField.setColSpan(numberOfDataColumns);
+            }
 
-        // add sub-collection fields to end of data fields
-        allRowFields.addAll(subCollectionFields);
+            // add sub-collection fields to end of data fields
+            allRowFields.addAll(subCollectionFields);
+        }
     }
 
     /**
@@ -804,7 +822,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * @param rowSpan number of rows the action field should span
      * @param actions action components that should be to the field group
      */
-    private void addActionColumn(CollectionGroup collectionGroup, String idSuffix, Object currentLine, int lineIndex,
+    protected void addActionColumn(CollectionGroup collectionGroup, String idSuffix, Object currentLine, int lineIndex,
             int rowSpan, List<? extends Component> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
@@ -1022,9 +1040,22 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getSupportedContainer()
+     * Invokes instance of {@link org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper} to carry out
+     * the paging request using data tables API.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
+        DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(
+                ViewLifecycle.getRequest());
+
+        DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(), (ViewModel) model, collectionGroup,
+                dataTablesInputs);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {

@@ -510,6 +510,18 @@ public interface ViewModel extends Serializable {
     public void setRequestJsonTemplate(String requestJsonTemplate);
 
     /**
+     * Indicates whether the request is for paging a collection (or sorting).
+     *
+     * @return boolean true if a paging request is present, false if not
+     */
+    boolean isCollectionPagingRequest();
+
+    /**
+     * @see ViewModel#isCollectionPagingRequest()
+     */
+    void setCollectionPagingRequest(boolean collectionPagingRequest);
+
+    /**
      * A generic map for framework pieces (such as component modifiers) that need to dynamically store
      * data to the form
      *

@@ -28,36 +28,27 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 
 /**
  * Single-threaded view lifecycle processor implementation.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBase {
-
     private static final Logger LOG = Logger.getLogger(SynchronousViewLifecycleProcessor.class);
 
-    /**
-     * Pending lifecycle phases.
-     */
+    // pending lifecycle phases.
     private final Deque<ViewLifecyclePhase> pendingPhases = new LinkedList<ViewLifecyclePhase>();
 
-    /**
-     * The phase currently active on this lifecycle.
-     */
+    // the phase currently active on this lifecycle.
     private ViewLifecyclePhase activePhase;
 
-    /**
-     * The rendering context.
-     */
+    // the rendering context.
     private LifecycleRenderingContext renderingContext;
 
-    /**
-     * The expression evaluator to use with this lifecycle.
-     */
+    // the expression evaluator to use with this lifecycle.
     private final ExpressionEvaluator expressionEvaluator;
 
     /**
      * Creates a new synchronous processor for a lifecycle.
-     * 
+     *
      * @param lifecycle The lifecycle to process.
      */
     public SynchronousViewLifecycleProcessor(ViewLifecycle lifecycle) {
@@ -79,47 +70,6 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
         } else {
             expressionEvaluator = expressionEvaluatorFactory.createExpressionEvaluator();
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public LifecycleRenderingContext getRenderingContext() {
-        if (renderingContext == null && ViewLifecycle.isRenderInLifecycle()) {
-            ViewLifecycle lifecycle = getLifecycle();
-            this.renderingContext = new LifecycleRenderingContext(
-                    lifecycle.model, lifecycle.request, lifecycle.response);
-        }
-
-        return this.renderingContext;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ExpressionEvaluator getExpressionEvaluator() {
-        return this.expressionEvaluator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecyclePhase getActivePhase() {
-        return activePhase;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void setActivePhase(ViewLifecyclePhase phase) {
-        if (activePhase != null && phase != null) {
-            throw new IllegalStateException("Another phase is already active on this lifecycle thread " + activePhase);
-        }
-
-        activePhase = phase;
     }
 
     /**
@@ -148,6 +98,47 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
             ViewLifecyclePhase pendingPhase = pendingPhases.poll();
             pendingPhase.run();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewLifecyclePhase getActivePhase() {
+        return activePhase;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public LifecycleRenderingContext getRenderingContext() {
+        if (renderingContext == null && ViewLifecycle.isRenderInLifecycle()) {
+            ViewLifecycle lifecycle = getLifecycle();
+            this.renderingContext = new LifecycleRenderingContext(lifecycle.model, lifecycle.request,
+                    lifecycle.response);
+        }
+
+        return this.renderingContext;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        return this.expressionEvaluator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void setActivePhase(ViewLifecyclePhase phase) {
+        if (activePhase != null && phase != null) {
+            throw new IllegalStateException("Another phase is already active on this lifecycle thread " + activePhase);
+        }
+
+        activePhase = phase;
     }
 
 }

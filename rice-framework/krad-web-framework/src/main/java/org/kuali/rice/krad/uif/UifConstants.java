@@ -326,7 +326,6 @@ public class UifConstants {
         public static final String FIRST = "first";
         public static final String LAST = "last";
         public static final String PAGE_NUMBER = "pageNumber";
-        public static final String DISPLAY_START_PROP = "#displayStart";
     }
 
     public static class TabOptionKeys {

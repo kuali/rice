@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -123,17 +124,13 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     @Override
     public void performFinalize(Object model, LifecycleElement element) {
         super.performFinalize(model, element);
-        
-        Component parent = ViewLifecycle.getPhase().getParent();
 
-        // Calculate the number of pages for the pager widget if we are using server paging
-        if (parent instanceof CollectionGroup
-                && ((CollectionGroup) parent).isUseServerPaging()
-                && this.getPagerWidget() != null) {
-            CollectionGroup collectionGroup = (CollectionGroup) parent;
+        boolean serverPagingEnabled =
+                (element instanceof CollectionGroup) && ((CollectionGroup) element).isUseServerPaging();
 
-            // Set the appropriate page, total pages, and link script into the Pager
-            CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
+        // set the appropriate page, total pages, and link script into the Pager
+        if (serverPagingEnabled && this.getPagerWidget() != null) {
+            CollectionLayoutUtils.setupPagerWidget(pagerWidget, (CollectionGroup) element, model);
         }
     }
 
@@ -281,11 +278,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
+     * Invokes {@link org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper} to carry out the
+     * paging request.
+     *
      * {@inheritDoc}
      */
     @Override
     public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
+        String pageNumber = ViewLifecycle.getRequest().getParameter(UifConstants.PageRequest.PAGE_NUMBER);
 
+        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
+        pagingHelper.processPagingRequest(ViewLifecycle.getView(), collectionGroup, (UifFormBase) model, pageNumber);
     }
 
     /**

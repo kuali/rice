@@ -298,19 +298,26 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         ViewModel viewModel = (ViewModel) model;
         View view = ViewLifecycle.getView();
 
-        // if we are processing a paging request, invoke the layout managers to carry out the paging,
-        // otherwise if server paging is enabled get the display start so we build the correct page
-        if (viewModel.isCollectionPagingRequest()) {
-            ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
-        } else if (this.isUseServerPaging()) {
+        // if server paging is enabled get the display start from post data so we build the correct page
+        if (this.isUseServerPaging()) {
             Object displayStart = ViewLifecycle.getViewPostMetadata().getComponentPostData(this.getId(),
-                    UifConstants.PageRequest.DISPLAY_START_PROP);
-
+                    UifConstants.PostMetadata.COLL_DISPLAY_START);
             if (displayStart != null) {
                 this.setDisplayStart(((Integer) displayStart).intValue());
             }
+
+            Object displayLength = ViewLifecycle.getViewPostMetadata().getComponentPostData(this.getId(),
+                    UifConstants.PostMetadata.COLL_DISPLAY_LENGTH);
+            if (displayLength != null) {
+                this.setDisplayLength(((Integer) displayLength).intValue());
+            }
         }
-        
+
+        // if we are processing a paging request, invoke the layout managers to carry out the paging,
+        if (viewModel.isCollectionPagingRequest()) {
+            ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
+        }
+
         if (StringUtils.isNotBlank(this.getId()) && viewModel.getViewPostMetadata() != null
                 && viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
             List<Object> newLines = viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId());
@@ -358,34 +365,30 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (this.getCollectionLookup() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
                     this.getCollectionLookup().getFieldConversions());
         }
 
-        if (this.getCollectionObjectClass() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS,
-                    this.getCollectionObjectClass());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS,
+                this.getCollectionObjectClass());
 
-        if (this.getBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_INFO,
-                    this.getBindingInfo());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_INFO,
+                this.getBindingInfo());
 
-        if (this.getAddLineBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO,
-                    this.getAddLineBindingInfo());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO,
+                this.getAddLineBindingInfo());
 
-        if (StringUtils.isNotBlank(this.getAddLinePlacement())) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_PLACEMENT,
-                    this.getAddLinePlacement());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_PLACEMENT,
+                this.getAddLinePlacement());
 
         if (this.getHeader() != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LABEL,
@@ -393,22 +396,23 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
 
         if (this.getDuplicateLinePropertyNames() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES,
-                    this.getDuplicateLinePropertyNames());
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING,
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES, this.getDuplicateLinePropertyNames());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING,
                     ViewLifecycle.getHelper().getDuplicateLineLabelString(this, this.getDuplicateLinePropertyNames()));
         }
 
         boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
         if (hasBindingPath) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                    this, UifConstants.PostMetadata.BINDING_PATH, getBindingInfo().getBindingPath());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_PATH,
+                    getBindingInfo().getBindingPath());
         }
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                this, UifConstants.PostMetadata.COLL_DISPLAY_START, getDisplayStart());
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH, getDisplayLength());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_DISPLAY_START,
+                getDisplayStart());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH,
+                getDisplayLength());
     }
     
     /**

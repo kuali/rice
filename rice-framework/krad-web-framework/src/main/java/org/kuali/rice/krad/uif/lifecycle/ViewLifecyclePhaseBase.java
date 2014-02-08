@@ -129,44 +129,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     protected abstract void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks);
 
-    protected Node<String, String> getRefreshNodeForCurrentPath() {
-        if (getRefreshPaths() == null) {
-            return null;
-        }
-
-        if (StringUtils.isBlank(getViewPath())) {
-            return getRefreshPaths().getRootElement();
-        }
-
-        Node<String, String> pathNode = null;
-
-        Node<String, String> nextNode = getRefreshPaths().getRootElement();
-
-        String[] pathNodes = ObjectPropertyUtils.splitPropertyPath(getViewPath());
-        for (int i = 0; i < pathNodes.length; i++) {
-            String path = pathNodes[i];
-
-            if (nextNode.getChildren() == null) {
-                break;
-            }
-
-            for (Node<String, String> nodeChild : nextNode.getChildren()) {
-                if (nodeChild.getData().equals(path)) {
-                    nextNode = nodeChild;
-                    break;
-                }
-            }
-
-            if (nextNode == null) {
-                break;
-            } else if (i == (pathNodes.length - 1)) {
-                pathNode = nextNode;
-            }
-        }
-
-        return pathNode;
-    }
-
     /**
      * Initializes queue of successor phases.
      *
@@ -188,7 +150,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     /**
      * Initializes only the lifecycle successors applicable to a refresh operation.
      * 
-     * @param successors The successor queue.
+     * @param successors the successor queue
      */
     protected void initializeRefreshSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
@@ -205,13 +167,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
         Node<String, String> currentPathNode = getRefreshNodeForCurrentPath();
         if (currentPathNode == null) {
-            // throw exception?
-            return;
+            throw new RuntimeException("Path cannot be found for current node, this should not occur during refresh.");
         }
-
-        //                if (getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE))  {
-        //                    initializePrototypeSuccessors(successors)
-        //                }
 
         if (UifConstants.REFRESH_ELEMENT_NODE_LABEL.equals(currentPathNode.getNodeLabel())) {
             refreshPaths = null;
@@ -272,6 +229,44 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
+
+    protected Node<String, String> getRefreshNodeForCurrentPath() {
+        if (getRefreshPaths() == null) {
+            return null;
+        }
+
+        if (StringUtils.isBlank(getViewPath())) {
+            return getRefreshPaths().getRootElement();
+        }
+
+        Node<String, String> pathNode = null;
+
+        Node<String, String> nextNode = getRefreshPaths().getRootElement();
+
+        String[] pathNodes = ObjectPropertyUtils.splitPropertyPath(getViewPath());
+        for (int i = 0; i < pathNodes.length; i++) {
+            String path = pathNodes[i];
+
+            if (nextNode.getChildren() == null) {
+                break;
+            }
+
+            for (Node<String, String> nodeChild : nextNode.getChildren()) {
+                if (nodeChild.getData().equals(path)) {
+                    nextNode = nodeChild;
+                    break;
+                }
+            }
+
+            if (nextNode == null) {
+                break;
+            } else if (i == (pathNodes.length - 1)) {
+                pathNode = nextNode;
+            }
+        }
+
+        return pathNode;
+    }
 
     /**
      * {@inheritDoc}

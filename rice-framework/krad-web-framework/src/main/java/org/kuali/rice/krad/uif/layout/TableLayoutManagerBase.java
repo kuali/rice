@@ -30,6 +30,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -46,6 +47,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
@@ -58,7 +60,7 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -260,7 +262,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
-
     }
 
     /**
@@ -1040,18 +1041,31 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Invokes instance of {@link org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper} to carry out
+     * Invokes instance of {@link org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper} to carry out
      * the paging request using data tables API.
+     *
+     * <p>There are two types of paging supported in the table layout, one that uses data tables paging API, and one
+     * that handles basic table paging.</p>
      *
      * {@inheritDoc}
      */
     @Override
     public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
-        DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(
-                ViewLifecycle.getRequest());
+        boolean richTableEnabled = ((getRichTable() != null) && (getRichTable().isRender()));
 
-        DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(), (ViewModel) model, collectionGroup,
-                dataTablesInputs);
+        if (richTableEnabled) {
+            DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(
+                    ViewLifecycle.getRequest());
+
+            DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(), (ViewModel) model, collectionGroup,
+                    dataTablesInputs);
+        } else {
+            String pageNumber = ViewLifecycle.getRequest().getParameter(UifConstants.PageRequest.PAGE_NUMBER);
+
+            CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
+            pagingHelper.processPagingRequest(ViewLifecycle.getView(), collectionGroup, (UifFormBase) model,
+                    pageNumber);
+        }
     }
 
     /**

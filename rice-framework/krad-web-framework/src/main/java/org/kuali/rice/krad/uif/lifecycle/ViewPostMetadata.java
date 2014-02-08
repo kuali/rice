@@ -19,7 +19,6 @@ import org.kuali.rice.krad.uif.component.Component;
 
 import java.beans.PropertyEditor;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +41,7 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
     private Set<String> inputFieldIds;
+    private Set<String> allRenderedPropertyPaths;
     private Map<String, List<Object>> addedCollectionObjects;
 
     public ViewPostMetadata() {
@@ -101,6 +101,10 @@ public class ViewPostMetadata implements Serializable {
     }
 
     public void addComponentPostData(String componentId, String key, Object value) {
+        if (value == null) {
+            return;
+        }
+
         ComponentPostMetadata componentPostMetadata = initializeComponentPostMetadata(componentId);
 
         componentPostMetadata.addData(key, value);
@@ -214,6 +218,22 @@ public class ViewPostMetadata implements Serializable {
         this.inputFieldIds = inputFieldIds;
     }
 
+    public Set<String> getAllRenderedPropertyPaths() {
+        return allRenderedPropertyPaths;
+    }
+
+    public void setAllRenderedPropertyPaths(Set<String> allRenderedPropertyPaths) {
+        this.allRenderedPropertyPaths = allRenderedPropertyPaths;
+    }
+
+    public void addRenderedPropertyPath(String propertyPath) {
+        if (this.allRenderedPropertyPaths == null) {
+            this.allRenderedPropertyPaths = new HashSet<String>();
+        }
+
+        this.allRenderedPropertyPaths.add(propertyPath);
+    }
+    
     public Map<String, List<Object>> getAddedCollectionObjects() {
         return addedCollectionObjects;
     }

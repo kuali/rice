@@ -37,8 +37,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.controller.helper.CollectionPagingHelper;
-import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -1115,12 +1114,6 @@ public abstract class UifControllerBase {
     @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
-        String pageNumber = request.getParameter(UifConstants.PageRequest.PAGE_NUMBER);
-
-        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
-        pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
-
         form.setCollectionPagingRequest(true);
 
         return getUIFModelAndView(form);

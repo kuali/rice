@@ -27,13 +27,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interface that must be implemented for classes the provide the backing data (model) for a {@link View}
+ * Interface that must be implemented for classes the provide the backing data (model) for a
+ * {@link org.kuali.rice.krad.uif.view.View}.
  *
- * <p>
- * Since the View relies on helper properties from the model it is necessary the backing object implement the
+ * <p>Since the View relies on helper properties from the model it is necessary the backing object implement the
  * ViewModel interface. Note model objects can extend {@link org.kuali.rice.krad.web.form.UifFormBase} which implements
- * the ViewModel interface.
- * </p>
+ * the ViewModel interface.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -122,18 +121,6 @@ public interface ViewModel extends Serializable {
      * @return instance of view helper service, null if view is null
      */
     public ViewHelperService getViewHelperService() throws IllegalAccessException, InstantiationException;
-
-    /**
-     * View instance for the page that made a request. Since a new view instance
-     * gets initialized for each request before the controller logic is invoked,
-     * any state about the previous view is lost. This could be needed to read
-     * metadata from the view for such things as collection processing. When
-     * this is necessary the previous view instance can be retrieved
-     *
-     * @return View instance
-     * @deprecated TODO: REMOVE
-     */
-    public View getPostedView();
 
     /**
      * Gets the {@link org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata} that has been built up from processing
@@ -403,14 +390,14 @@ public interface ViewModel extends Serializable {
      *
      * @return boolean true if the request was an ajax call, false if not
      */
-    public boolean isAjaxRequest();
+    boolean isAjaxRequest();
 
     /**
      * Set the ajaxRequest
      *
      * @param ajaxRequest
      */
-    public void setAjaxRequest(boolean ajaxRequest);
+    void setAjaxRequest(boolean ajaxRequest);
 
     /**
      * Gets the return type for the ajax call
@@ -423,28 +410,35 @@ public interface ViewModel extends Serializable {
      * @return String return type
      * @see org.kuali.rice.krad.uif.UifConstants.AjaxReturnTypes
      */
-    public String getAjaxReturnType();
+    String getAjaxReturnType();
+
+    /**
+     * Setter for the type of ajax return
+     *
+     * @param ajaxReturnType
+     */
+    void setAjaxReturnType(String ajaxReturnType);
 
     /**
      * Indicates whether the request is to update a component (only applicable for ajax requests)
      *
      * @return boolean true if the request is for update component, false if not
      */
-    public boolean isUpdateComponentRequest();
+    boolean isUpdateComponentRequest();
 
     /**
      * Indicates whether the request is to update a page (only applicable for ajax requests)
      *
      * @return boolean true if the request is for update page, false if not
      */
-    public boolean isUpdatePageRequest();
+    boolean isUpdatePageRequest();
 
     /**
      * Indicates whether the request is to update a dialog (only applicable for ajax requests)
      *
      * @return boolean true if the request is for update dialog, false if not
      */
-    public boolean isUpdateDialogRequest();
+    boolean isUpdateDialogRequest();
 
     /**
      * Indicates whether the request is for a non-update of the view (only applicable for ajax requests)
@@ -455,23 +449,7 @@ public interface ViewModel extends Serializable {
      *
      * @return boolean true if the request is for non-update, false if not
      */
-    public boolean isUpdateNoneRequest();
-
-    /**
-     * Indicates whether the request will result in building an entire view
-     *
-     * @return boolean true if the full view will be built, false if not
-     */
-    public boolean isBuildViewRequest();
-
-    public boolean isUpdateViewRequest();
-
-    /**
-     * Setter for the type of ajax return
-     *
-     * @param ajaxReturnType
-     */
-    public void setAjaxReturnType(String ajaxReturnType);
+    boolean isUpdateNoneRequest();
 
     /**
      * Indicates whether the request should return a JSON string
@@ -488,7 +466,7 @@ public interface ViewModel extends Serializable {
      *
      * @return boolean true if request is for JSON, false if not
      */
-    public boolean isJsonRequest();
+    boolean isJsonRequest();
 
     /**
      * Template the will be invoked to return a JSON string
@@ -500,14 +478,14 @@ public interface ViewModel extends Serializable {
      *
      * @return path to template
      */
-    public String getRequestJsonTemplate();
+    String getRequestJsonTemplate();
 
     /**
      * Setter for the template to render for the request
      *
      * @param requestJsonTemplate
      */
-    public void setRequestJsonTemplate(String requestJsonTemplate);
+    void setRequestJsonTemplate(String requestJsonTemplate);
 
     /**
      * Indicates whether the request is for paging a collection (or sorting).

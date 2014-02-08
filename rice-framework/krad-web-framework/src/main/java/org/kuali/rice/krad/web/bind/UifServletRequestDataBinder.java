@@ -35,7 +35,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 
 /**
  * Override of ServletRequestDataBinder in order to hook in the UifBeanPropertyBindingResult
- * which instantiates a custom BeanWrapperImpl, and to initialize the view
+ * which instantiates a custom BeanWrapperImpl, and to initialize the view.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -109,7 +109,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
     
     /**
-     * Calls {@link org.kuali.rice.krad.web.form.UifFormBase#preBind(HttpServletRequest)}, Performs data binding from servlet request parameters to the form, initializes view object, then calls
+     * Calls {@link org.kuali.rice.krad.web.form.UifFormBase#preBind(HttpServletRequest)}, Performs data binding
+     * from servlet request parameters to the form, initializes view object, then calls
      * {@link org.kuali.rice.krad.web.form.UifFormBase#postBind(javax.servlet.http.HttpServletRequest)}
      *
      * <p>
@@ -118,11 +119,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      * to retrieve a view based on type, the view request parameter {@code viewTypeName} must be present. If all else
      * fails and the viewId is populated on the form (could be populated from a previous request), this is used to
      * retrieve the view.
-     * </p>
-     *
-     * <p>
-     * Note the view is not initialized for Ajax requests that perform partial page updates or dialog updates or no
-     * updates at all
      * </p>
      *
      * @param request - HTTP Servlet Request instance
@@ -135,16 +131,14 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
         _bind(request);
 
-        // if doing a partial page update or ajax request with no updating, do not initialize view
-        if (!form.isUpdateNoneRequest() && !form.isUpdateDialogRequest()) {
-            View view = null;
-
+        if (!form.isUpdateNoneRequest()) {
             // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
             String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
             if (StringUtils.isBlank(viewId)) {
                 viewId = request.getParameter(UifParameters.VIEW_ID);
             }
 
+            View view = null;
             if (StringUtils.isNotBlank(viewId)) {
                 view = getViewService().getViewById(viewId);
             }

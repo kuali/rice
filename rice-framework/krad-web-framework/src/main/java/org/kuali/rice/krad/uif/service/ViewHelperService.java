@@ -25,7 +25,6 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
@@ -166,7 +165,7 @@ public interface ViewHelperService {
      * collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    public void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
+    void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Adds a blank line to the collection
@@ -179,7 +178,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    public void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
+    void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
@@ -190,7 +189,7 @@ public interface ViewHelperService {
      * @param collectionPath full path to the collection on the model
      * @param selectedLineIndex The index within the collection of the line to save.
      */
-    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
+    void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the delete line action is chosen for a collection. The
@@ -205,7 +204,7 @@ public interface ViewHelperService {
      * @param collectionPath full path to the collection on the model
      * @param lineIndex index of the collection line that was selected for removal
      */
-    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
+    void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
 
     /**
      * Process the results returned from a multi-value lookup populating the lines for the collection given
@@ -216,19 +215,8 @@ public interface ViewHelperService {
      * @param collectionPath binding path to the collection to populated
      * @param lookupResultValues String containing the selected line values
      */
-    public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
+    void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
             String lookupResultValues);
-
-    /**
-     * Generates table formatted data based on data collected from the table model
-     *
-     * @param view view instance where the table is located
-     * @param model top level object containing the data
-     * @param tableId id of the table being generated
-     * @param formatType format which the table should be generated in
-     * @return The generated table data.
-     */
-    public String buildExportTableData(View view, Object model, String tableId, String formatType);
 
     /**
      * Invoked by the <code>Inquiry</code> widget to build the inquiry link
@@ -247,7 +235,7 @@ public interface ViewHelperService {
      * @param propertyName name of the property the inquiry is being built for
      * @param inquiry instance of the inquiry widget being built for the property
      */
-    public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
+    void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
     /**
      * Sets up the view context which will be available to other components through their context

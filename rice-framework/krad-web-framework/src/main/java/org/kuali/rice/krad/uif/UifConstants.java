@@ -139,6 +139,9 @@ public class UifConstants {
         _blank, _self, _parent, _top
     }
 
+    public static class ControllerMappings {
+        public static final String EXPORT = "export";
+    }
 
     public static class MethodToCallNames {
         public static final String NAVIGATE = "navigate";

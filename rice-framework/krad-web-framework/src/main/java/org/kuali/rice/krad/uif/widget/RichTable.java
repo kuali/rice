@@ -190,29 +190,15 @@ public class RichTable extends WidgetBase {
             templateOptions.put(UifConstants.TableToolsKeys.BPROCESSING, "true");
             templateOptions.put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
 
-            //build sAjaxSource url to call
-            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
-                    + ((UifFormBase) model).getControllerMapping()
-                    + "?"
-                    + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
-                    + "="
-                    + UifConstants.MethodToCallNames.TABLE_JSON
-                    + "&"
-                    + UifParameters.UPDATE_COMPONENT_ID
-                    + "="
-                    + parent.getId()
-                    + "&"
-                    + UifParameters.FORM_KEY
-                    + "="
-                    + ((UifFormBase) model).getFormKey()
-                    + "&"
-                    + UifParameters.AJAX_RETURN_TYPE
-                    + "="
-                    + UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey()
-                    + "&"
-                    + UifParameters.AJAX_REQUEST
-                    + "="
-                    + "true");
+            // build sAjaxSource url to call
+            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE,
+                    kradUrl + ((UifFormBase) model).getControllerMapping() + "?" +
+                            UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME + "=" +
+                            UifConstants.MethodToCallNames.TABLE_JSON + "&" + UifParameters.UPDATE_COMPONENT_ID + "=" +
+                            parent.getId() + "&" + UifParameters.FORM_KEY + "=" + ((UifFormBase) model).getFormKey() +
+                            "&" + UifParameters.AJAX_RETURN_TYPE + "=" +
+                            UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey() + "&" + UifParameters.AJAX_REQUEST +
+                            "=" + "true");
 
 
             //TODO: Figure out where to move this script file constant?
@@ -234,25 +220,12 @@ public class RichTable extends WidgetBase {
                     UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
-        //build sAjaxSource url to call
-        templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
-                + ((UifFormBase) model).getControllerMapping()
-                + "?"
-                + UifParameters.UPDATE_COMPONENT_ID
-                + "="
-                + parent.getId()
-                + "&"
-                + UifParameters.FORM_KEY
-                + "="
-                + ((UifFormBase) model).getFormKey()
-                + "&"
-                + UifParameters.AJAX_RETURN_TYPE
-                + "="
-                + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
-                + "&"
-                + UifParameters.AJAX_REQUEST
-                + "="
-                + "true");
+        // build export url to call
+        templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE,
+                kradUrl + "/" + UifConstants.ControllerMappings.EXPORT + "?" + UifParameters.UPDATE_COMPONENT_ID + "=" +
+                        parent.getId() + "&" + UifParameters.FORM_KEY + "=" + ((UifFormBase) model).getFormKey() + "&" +
+                        UifParameters.AJAX_RETURN_TYPE + "=" + UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey() +
+                        "&" + UifParameters.AJAX_REQUEST + "=" + "true");
     }
 
     /**

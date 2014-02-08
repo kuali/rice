@@ -37,10 +37,7 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -99,46 +96,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
     /**
-     * Helper function to determine whether if column should be displayed. Used to help extract
-     * columns used in screen format such as action or select that is not needed for export.
-     *
-     * @param layoutManager The layout manager.
-     * @param collectionGroup The collection group.
-     * @return Index numbers for all columns that should be ignored.
-     */
-    private List<Integer> findIgnoredColumns(TableLayoutManager layoutManager, CollectionGroup collectionGroup) {
-        List<Integer> ignoreColumns = new ArrayList<Integer>();
-        int actionColumnIndex = layoutManager.getActionColumnIndex();
-        int numberOfColumns = layoutManager.getNumberOfColumns();
-        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
-        boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
-        boolean renderSequenceField = layoutManager.isRenderSequenceField();
-
-        if (renderActions || renderSelectField || renderSequenceField) {
-            int shiftColumn = 0;
-
-            if (renderSelectField) {
-                ignoreColumns.add(shiftColumn);
-                shiftColumn++;
-            }
-            if (renderSequenceField) {
-                ignoreColumns.add(shiftColumn);
-                shiftColumn++;
-            }
-            if (renderActions) {
-                if (actionColumnIndex == 1) {
-                    ignoreColumns.add(shiftColumn);
-                } else if (actionColumnIndex == -1) {
-                    ignoreColumns.add(numberOfColumns - 1);
-                } else if (actionColumnIndex > 1) {
-                    ignoreColumns.add(actionColumnIndex);
-                }
-            }
-        }
-        return ignoreColumns;
-    }
-
-    /**
      * Hook for creating new components with code and adding them to a container
      *
      * <p>
@@ -157,62 +114,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void addCustomContainerComponents(ViewModel model, Container container) {
 
-    }
-
-    /**
-     * Generates formatted table data based on the posted view results and format type
-     *
-     * @param view view instance where the table is located
-     * @param model top level object containing the data
-     * @param tableId id of the table being generated
-     * @param formatType format which the table should be generated in
-     * @return The generated table data.
-     */
-    @Override
-    public String buildExportTableData(View view, Object model, String tableId, String formatType) {
-        // load table format elements used for generated particular style
-        Map<String, String> exportTableFormatOptions = getExportTableFormatOptions(formatType);
-        String startTable = exportTableFormatOptions.get("startTable");
-        String endTable = exportTableFormatOptions.get("endTable");
-
-        Component component = view.getViewIndex().getComponentById(tableId);
-        StringBuilder tableRows = new StringBuilder("");
-
-        // table layout manager is needed for header and gathering field data
-        if (component instanceof CollectionGroup && ((CollectionGroup) component)
-                .getLayoutManager() instanceof TableLayoutManager) {
-
-            CollectionGroup collectionGroup = (CollectionGroup) component;
-            TableLayoutManager layoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
-            List<Label> headerLabels = layoutManager.getHeaderLabels();
-            List<Field> rowFields = layoutManager.getAllRowFields();
-            int numberOfColumns = layoutManager.getNumberOfColumns();
-            List<Integer> ignoredColumns = findIgnoredColumns(layoutManager, collectionGroup);
-
-            // append table header data as first row
-            if (headerLabels.size() > 0) {
-                List<String> labels = new ArrayList<String>();
-                for (Label label : headerLabels) {
-                    labels.add(label.getLabelText());
-                }
-
-                tableRows.append(buildExportTableRow(labels, exportTableFormatOptions, ignoredColumns));
-            }
-
-            // load all subsequent rows to the table
-            if (rowFields.size() > 0) {
-                List<String> columnData = new ArrayList<String>();
-                for (Field field : rowFields) {
-                    columnData.add(KRADUtils.getSimpleFieldValue(model, field));
-                    if (columnData.size() >= numberOfColumns) {
-                        tableRows.append(buildExportTableRow(columnData, exportTableFormatOptions, ignoredColumns));
-                        columnData.clear();
-                    }
-                }
-            }
-        }
-
-        return startTable + tableRows.toString() + endTable;
     }
 
     /**
@@ -604,96 +505,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         } else {
             collection.add(addLine);
         }
-    }
-
-    /**
-     * Helper method used to build formatted table row data for export
-     *
-     * @param columnData Formatted column data.
-     * @param tableFormatOptions Format options: startRow and endRow are added to the row,
-     * startColumn and endColumn are added to each column.
-     * @param ignoredColumns Index numbers of columns to ignore.
-     * @return Formatted table data for one row.
-     */
-    protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
-            List<Integer> ignoredColumns) {
-        String startRow = tableFormatOptions.get("startRow");
-        String endRow = tableFormatOptions.get("endRow");
-        String startColumn = tableFormatOptions.get("startColumn");
-        String endColumn = tableFormatOptions.get("endColumn");
-        boolean appendLastColumn = Boolean.valueOf(tableFormatOptions.get("appendLastColumn"));
-        int columnIndex = 0;
-
-        StringBuilder builder = new StringBuilder();
-        for (String columnItem : columnData) {
-            boolean displayColumn = !ignoredColumns.contains(columnIndex);
-            if (displayColumn) {
-                builder.append(startColumn + columnItem + endColumn);
-            }
-            if (columnIndex >= columnData.size() - 1 && !appendLastColumn) {
-                builder.delete(builder.length() - endColumn.length(), builder.length());
-            }
-            columnIndex++;
-        }
-
-        return startRow + builder.toString() + endRow;
-    }
-
-    /**
-     * Identify table formatting elements based on formatType. Defaults to txt format if not found
-     *
-     * @param formatType The format type: csv, xls, or xml.
-     * @return The format options for to use with the indicated format type.
-     */
-    protected Map<String, String> getExportTableFormatOptions(String formatType) {
-        HashMap<String, String> map = new HashMap<String, String>();
-
-        map.put("contentType", "text/plain");
-        map.put("formatType", "txt");
-        map.put("startTable", "");
-        map.put("endTable", "");
-        map.put("startRow", "");
-        map.put("endRow", "\n");
-        map.put("startColumn", "");
-        map.put("endColumn", ", ");
-        map.put("appendLastColumn", "false");
-
-        if ("csv".equals(formatType)) {
-            map.put("contentType", "text/csv");
-            map.put("formatType", "csv");
-            map.put("startTable", "");
-            map.put("endTable", "");
-            map.put("startRow", "");
-            map.put("endRow", "\n");
-            map.put("startColumn", "");
-            map.put("endColumn", ", ");
-            map.put("appendLastColumn", "false");
-
-        } else if ("xls".equals(formatType)) {
-            map.put("contentType", "application/vnd.ms-excel");
-            map.put("formatType", "xls");
-            map.put("startTable", "");
-            map.put("endTable", "");
-            map.put("startRow", "");
-            map.put("endRow", "\n");
-            map.put("startColumn", "\"");
-            map.put("endColumn", "\"\t");
-            map.put("appendLastColumn", "true");
-
-        } else if ("xml".equals(formatType)) {
-            map.put("contentType", "application/xml");
-            map.put("formatType", "xml");
-            map.put("startTable", "<table>\n");
-            map.put("endTable", "</table>\n");
-            map.put("startRow", "  <row>\n");
-            map.put("endRow", "  </row>\n");
-            map.put("startColumn", "    <column>");
-            map.put("endColumn", "</column>\n");
-            map.put("appendLastColumn", "true");
-
-        }
-
-        return map;
     }
 
     /**

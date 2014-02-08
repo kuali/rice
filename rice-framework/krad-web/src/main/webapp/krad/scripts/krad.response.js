@@ -146,6 +146,10 @@ KradResponse.prototype = {
 
         // replace component
         if ($componentInDom.length) {
+            if ($componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
+                var isNewlyDisclosed = true;
+            }
+
             $componentInDom.replaceWith(component.html());
 
             $componentInDom = jQuery("#" + id);
@@ -177,10 +181,11 @@ KradResponse.prototype = {
             }
 
             $componentInDom.unblock({onUnblock: function () {
-                $componentInDom.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-                $componentInDom.animate({backgroundColor: "transparent"}, 6000);
-               // jQuery(component).find("#" + id).animate({backgroundColor: "transparent"}, 6000);
-            }
+                if (isNewlyDisclosed) {
+                    $componentInDom.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+                    $componentInDom.animate({backgroundColor: "transparent"}, 6000);
+                }
+              }
             });
 
             $componentInDom.trigger(kradVariables.EVENTS.UPDATE_CONTENT);

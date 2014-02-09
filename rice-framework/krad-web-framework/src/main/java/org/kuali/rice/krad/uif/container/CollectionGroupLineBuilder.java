@@ -75,8 +75,15 @@ public class CollectionGroupLineBuilder implements Serializable {
     public void buildLine() {
         preprocessLine();
 
+        boolean hasLineFields =
+                (lineBuilderContext.getLineFields() != null) && (!lineBuilderContext.getLineFields().isEmpty());
+        boolean hasSubCollections = (lineBuilderContext.getSubCollectionFields() != null) &&
+                (!lineBuilderContext.getSubCollectionFields().isEmpty());
+
         // invoke layout manager to build the complete line
-        lineBuilderContext.getLayoutManager().buildLine(lineBuilderContext);
+        if (hasLineFields || hasSubCollections) {
+            lineBuilderContext.getLayoutManager().buildLine(lineBuilderContext);
+        }
     }
 
     /**
@@ -229,8 +236,8 @@ public class CollectionGroupLineBuilder implements Serializable {
                 continue;
             }
 
-            boolean focusLineFirst = StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) && action
-                    .getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString());
+            boolean focusLineFirst = StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
+                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString());
             boolean lineHasFields = !lineFields.isEmpty();
             if (focusLineFirst && lineHasFields) {
                 action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
@@ -261,10 +268,8 @@ public class CollectionGroupLineBuilder implements Serializable {
 
             ControlBase control = (ControlBase) ((InputField) field).getControl();
 
-            String onChangeScript = UifConstants.JsFunctions.COLLECTION_LINE_CHANGED
-                    + "(this, '"
-                    + CssConstants.Classes.NEW_COLLECTION_ITEM
-                    + "');";
+            String onChangeScript = UifConstants.JsFunctions.COLLECTION_LINE_CHANGED + "(this, '" +
+                    CssConstants.Classes.NEW_COLLECTION_ITEM + "');";
             onChangeScript = ScriptUtils.appendScript(control.getOnChangeScript(), onChangeScript);
 
             control.setOnChangeScript(onChangeScript);

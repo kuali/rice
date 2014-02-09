@@ -15,26 +15,35 @@
  */
 package org.kuali.rice.krad.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Embeddable;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
 
     private static final long serialVersionUID = 1194744068788100482L;
-	// Code and Name will be overridden by Column annotations in their children classes
+
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends KualiCodeBase {}
+
+    // Code and Name will be overridden by Column annotations in their children classes
     @Id
-    @Column(name="CODE",length=10)
+    @Column(name = "CODE", length=10)
     protected String code;
-    @Column(name="NM",length=40)
+    @Column(name = "NM", length=40)
     protected String name;
 
-    @Column(name="ACTV_IND")
+    @Column(name = "ACTV_IND")
     @Convert(converter = BooleanYNConverter.class)
     protected Boolean active;
 

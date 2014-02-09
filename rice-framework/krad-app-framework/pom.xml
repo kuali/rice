@@ -84,5 +84,27 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.9-RC1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
+      <plugin>
+        <groupId>au.com.alderaan</groupId>
+        <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>

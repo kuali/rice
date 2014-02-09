@@ -1253,6 +1253,35 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>au.com.alderaan</groupId>
+          <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+          <version>1.0.4</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>weave</goal>
+              </goals>
+              <phase>process-classes</phase>
+              <configuration>
+                <logLevel>FINER</logLevel>
+                <persistenceXMLLocation>META-INF/persistence-weaving.xml</persistenceXMLLocation>
+              </configuration>
+            </execution>
+          </executions>
+          <dependencies>
+            <dependency>
+              <groupId>org.eclipse.persistence</groupId>
+              <artifactId>eclipselink</artifactId>
+              <version>${eclipselink.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.eclipse.persistence</groupId>
+              <artifactId>javax.persistence</artifactId>
+              <version>${jpa.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
     </pluginManagement>
 

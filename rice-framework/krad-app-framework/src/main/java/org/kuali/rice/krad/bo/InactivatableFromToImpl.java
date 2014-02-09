@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
@@ -31,7 +32,14 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "ACTV_FRM_DT")
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends InactivatableFromToImpl {}
+
+    @Column(name = "ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
 	@Column(name = "ACTV_TO_DT")
 	protected Timestamp activeToDate;

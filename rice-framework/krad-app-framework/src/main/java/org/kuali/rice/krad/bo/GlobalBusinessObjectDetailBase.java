@@ -16,12 +16,20 @@
 package org.kuali.rice.krad.bo;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public abstract class GlobalBusinessObjectDetailBase extends PersistableBusinessObjectBase implements GlobalBusinessObjectDetail {
 
-	@Column(name="DOC_HDR_ID",length=14)
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends GlobalBusinessObjectDetailBase {}
+
+    @Column(name = "DOC_HDR_ID", length = 14)
     private String documentNumber;
 
     @Override

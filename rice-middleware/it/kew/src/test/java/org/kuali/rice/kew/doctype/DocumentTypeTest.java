@@ -63,11 +63,6 @@ public class DocumentTypeTest extends KEWTestCase {
         loadXmlFile("DoctypeConfig.xml");
     }
 
-    /**
-     * TODO: Ignored currently, this method goes into an infinite loop in document type parsing (ick!) when invoked...not good.
-     * 
-     * KULRICE-3526
-     */
     @Test public void testDuplicateNodeName() throws Exception {
         try {
             loadXmlFile("DocTypeConfig_loadDupliateNodes.xml");
@@ -75,6 +70,7 @@ public class DocumentTypeTest extends KEWTestCase {
         } catch (Exception e) {
         }
     }
+
     @Test public void testDuplicateNodeNameInRoutePath() throws Exception {
         loadXmlFile("DocTypeConfig_duplicateNodes.xml");
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");

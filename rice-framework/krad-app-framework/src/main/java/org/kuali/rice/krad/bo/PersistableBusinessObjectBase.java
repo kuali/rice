@@ -26,6 +26,7 @@ import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
@@ -51,62 +52,48 @@ import java.util.UUID;
 @Deprecated
 @MappedSuperclass
 public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware, Versioned, GloballyUnique {
-	private static final long serialVersionUID = 1451642350593233282L;
+
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends PersistableBusinessObjectBase {}
+
+    private static final long serialVersionUID = 1451642350593233282L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
 
 	@Version
-    @Column(name="VER_NBR",length=8)
+    @Column(name = "VER_NBR", length = 8)
     protected Long versionNumber;
-    @Column(name="OBJ_ID",length=36,unique=true)
+
+    @Column(name = "OBJ_ID", length = 36, unique = true)
     protected String objectId;
-    @Transient
-    protected boolean newCollectionRecord;
-    @Transient
-    protected PersistableBusinessObjectExtension extension;
+
+    @Transient protected boolean newCollectionRecord;
+    @Transient protected PersistableBusinessObjectExtension extension;
 
     private static transient LegacyAppFrameworkAdapterService legacyDataAdapter;
 
-    /**
-     * @see PersistableBusinessObject#getVersionNumber()
-     */
     @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
 
-    /**
-     * @see PersistableBusinessObject#getVersionNumber()
-     */
     @Override
     public void setVersionNumber(Long versionNumber) {
         this.versionNumber = versionNumber;
     }
 
-
-    /**
-     * getter for the guid based object id that is assignable to all objects, in order to support custom attributes a mapping must
-     * also be added to the OJB file and a column must be added to the database for each business object that extension attributes
-     * are supposed to work on.
-     *
-     * @return
-     */
     @Override
     public String getObjectId() {
         return objectId;
     }
 
-    /**
-     * setter for the guid based object id that is assignable to all objects, in order to support custom attributes a mapping must
-     * also be added to the OJB file and column must be added to the database for each business object that extension attributes are
-     * supposed to work on.
-     *
-     * @param objectId
-     */
     @Override
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-
 
     /**
      * Gets the newCollectionRecord attribute.
@@ -321,9 +308,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         getLegacyDataAdapter().refresh(this);
     }
 
-    /**
-     * @see BusinessObject#refresh()
-     */
     @Override
     public void refreshNonUpdateableReferences() {
         getLegacyDataAdapter().refreshNonUpdateableReferences(this);
@@ -334,9 +318,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         getLegacyDataAdapter().refreshReferenceObject(this, referenceObjectName);
 	}
 
-    /**
-     * @see PersistableBusinessObject#buildListOfDeletionAwareLists()
-     */
     @Override
     public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
         return new ArrayList<Collection<PersistableBusinessObject>>();

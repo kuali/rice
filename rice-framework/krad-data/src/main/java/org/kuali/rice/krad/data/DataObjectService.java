@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 /**
  * KRAD Data Layer API containing basic CRUD operations and access to a metadata repository.
@@ -62,6 +63,23 @@ public interface DataObjectService {
      * @throws DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Executes a query for the data object matching the given queryByCriteria and expecting a single unique result to
+     * be returned. If no results match the given criteria, then null will be returned. If the given criteria matches
+     * more than one result, then an {@link IncorrectResultSizeDataAccessException} will be
+     * thrown.
+     *
+     * @param type the type of the data object to query
+     * @param queryByCriteria query object defining the criteria for the query
+     * @param <T> the data object class type
+     *
+     * @return the single result of the query, or null if no objects were matched
+     *
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws IncorrectResultSizeDataAccessException if more than one object matched the given criteria
+     */
+    <T> T findUnique(Class<T> type, QueryByCriteria queryByCriteria);
 
     /**
      * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then

@@ -27,6 +27,7 @@ import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 /**
  * DataObjectService implementation backed by the {@link ProviderRegistry}.
@@ -71,6 +72,19 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     @Override
     public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer) {
         return persistenceProviderForType(type).findMatching(type, queryByCriteria, lookupCustomizer);
+    }
+
+    @Override
+    public <T> T findUnique(Class<T> type, QueryByCriteria queryByCriteria) {
+        QueryResults<T> results = findMatching(type, queryByCriteria);
+        if (results.getResults().isEmpty()) {
+            return null;
+        } else if (results.getResults().size() > 1) {
+            throw new IncorrectResultSizeDataAccessException("Attempted to find single result but found more than "
+                    + "one for class " + type + " and criteria " + queryByCriteria, 1, results.getResults().size());
+        } else {
+            return results.getResults().get(0);
+        }
     }
 
     @Override

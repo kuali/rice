@@ -140,8 +140,8 @@ public class UifExportController extends UifControllerBase {
         DataDictionaryService dictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
         DataDictionary dictionary = dictionaryService.getDataDictionary();
 
-        String dataObjectClassName = collectionGroup.getCollectionObjectClass().getName();
-        DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClassName);
+        Class<?> dataObjectClass = collectionGroup.getCollectionObjectClass();
+        DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClass.getName());
 
         Class<? extends Exporter> exporterClass = null;
         if (dataObjectEntry != null) {
@@ -154,13 +154,16 @@ public class UifExportController extends UifControllerBase {
                         collectionGroup.getBindingInfo().getBindingPath());
 
                 Exporter exporter = exporterClass.newInstance();
-                exporter.export(dataObjectEntry.getDataObjectClass(), modelCollection, formatType,
-                        response.getOutputStream());
+
+                if (exporter.getSupportedFormats(dataObjectClass).contains(formatType)) {
+                    exporter.export(dataObjectEntry.getDataObjectClass(), modelCollection, formatType,
+                            response.getOutputStream());
+
+                    return null;
+                }
             } catch (Exception e) {
                 throw new RuntimeException("Cannot invoked custom exporter class", e);
             }
-
-            return null;
         }
 
         // generic export

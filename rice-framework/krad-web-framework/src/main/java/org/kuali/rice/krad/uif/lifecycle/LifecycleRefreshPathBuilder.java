@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -48,7 +49,8 @@ public class LifecycleRefreshPathBuilder {
         }
 
         Component component = (Component) element;
-        if (ComponentUtils.canBeRefreshed(component) || component.isForceSessionPersistence()) {
+        if (ComponentUtils.canBeRefreshed(component) || (component instanceof CollectionGroup) ||
+                component.isForceSessionPersistence()) {
             ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
 
             ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(component.getId());

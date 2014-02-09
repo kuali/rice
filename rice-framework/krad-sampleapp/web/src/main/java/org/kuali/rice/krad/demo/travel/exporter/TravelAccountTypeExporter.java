@@ -19,7 +19,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType;
 import org.kuali.rice.krad.exception.ExportNotSupportedException;
@@ -27,7 +26,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,14 +61,11 @@ public class TravelAccountTypeExporter implements Exporter {
         }
 
         XMLOutputter outputer = new XMLOutputter(Format.getPrettyFormat());
-        StringWriter writer = new StringWriter();
-
         try {
             outputer.output(document, outputStream);
         } catch (IOException e) {
-            throw new WorkflowRuntimeException("Could not write XML data export.", e);
+            throw new RuntimeException("Could not write XML data export.", e);
         }
-
     }
 
     @Override

@@ -18,7 +18,6 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -352,12 +351,9 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         }
 
         if (agendaBo != null) {
-            Map<String, String> primaryKeys = new HashMap<String, String>();
-            primaryKeys.put("id", agendaBo.getId());
             AgendaBo dbAgendaBo = getDataObjectService().find(AgendaBo.class, agendaBo.getId());
 
-            QueryByCriteria queryForFirstItem = QueryByCriteria.Builder.forAttribute("id", dbAgendaBo.getFirstItemId()).build();
-            AgendaItemBo dbFirstAgendaItemBo = getDataObjectService().find(AgendaItemBo.class, queryForFirstItem);
+            AgendaItemBo dbFirstAgendaItemBo = getDataObjectService().find(AgendaItemBo.class, dbAgendaBo.getFirstItemId());
 
             List<AgendaItemBo> deletionOrder = new ArrayList<AgendaItemBo>();
             addItemsToListForDeletion(deletionOrder, dbFirstAgendaItemBo);

@@ -22,7 +22,6 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -47,7 +46,7 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	@Column(name="ACCT_BAL")
 	private KualiDecimal accountBalance;
 	@Column(name="ACCT_OPN_DAT")
-	private Date accountOpenDate;
+	private Timestamp accountOpenDate;
 	@Column(name="ACCT_UPDATE_DT_TM")
 	private Timestamp accountUpdateDateTime;
 	@Column(name="ACCT_STAT")
@@ -80,11 +79,11 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 		this.accountBalance = accountBalance;
 	}
 
-	public Date getAccountOpenDate() {
+	public Timestamp getAccountOpenDate() {
 		return this.accountOpenDate;
 	}
 
-	public void setAccountOpenDate(Date accountOpenDate) {
+	public void setAccountOpenDate(Timestamp accountOpenDate) {
 		this.accountOpenDate = accountOpenDate;
 	}
 

@@ -36,7 +36,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.krad.test.KRADTestCase;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,25 +64,33 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     private final static String ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME = "AccountWithDDAttributes";
     
     enum DOCUMENT_FIXTURE {
-    	NORMAL_DOCUMENT("Testing NORMAL_DOCUMENT", new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createDate(2009, Calendar.OCTOBER, 15), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
-    	ZERO_NUMBER_DOCUMENT("Testing ZERO_NUMBER_DOCUMENT", new Integer(0), "Jane Doe", new KualiDecimal(-100), createDate(2009, Calendar.OCTOBER, 16), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
-    	FALSE_AWAKE_DOCUMENT("Testing FALSE_AWAKE_DOCUMENT", new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createDate(2006, Calendar.OCTOBER, 17), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
-    	ODD_NAME_DOCUMENT("Testing ODD_NAME_DOCUMENT", new Integer(88), "_", new KualiDecimal(10000051.0), createDate(2009, Calendar.OCTOBER, 18), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
-    	ODD_TIMESTAMP_DOCUMENT("Testing ODD_TIMESTAMP_DOCUMENT", new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createDate(2012, Calendar.OCTOBER, 19), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
-    	ANOTHER_ODD_NAME_DOCUMENT("Testing ANOTHER_ODD_NAME_DOCUMENT", new Integer(1234567889), "---", new KualiDecimal(501), createDate(2009, Calendar.APRIL, 20), createTimestamp(2009, Calendar.NOVEMBER, 6, 12, 59, 59), "ThirdState", true),
-    	INVALID_STATE_DOCUMENT("Testing INVALID_STATE_DOCUMENT", new Integer(99999), "AAAAAAAAA", new KualiDecimal(2.22), createDate(2009, Calendar.OCTOBER, 21), createTimestamp(2009, Calendar.NOVEMBER, 7, 0, 0, 1), "SeventhState", true),
-    	WILDCARD_NAME_DOCUMENT("Testing WILDCARD_NAME_DOCUMENT", new Integer(1), "Sh*ne><K!=e?", new KualiDecimal(771.05), createDate(2054, Calendar.OCTOBER, 22), createTimestamp(2008, Calendar.NOVEMBER, 8, 12, 0, 0), "FirstState", true);
+    	NORMAL_DOCUMENT("Testing NORMAL_DOCUMENT", new Integer(1234567890), "John Doe", new KualiDecimal(501.77), createTimestamp(
+                2009, Calendar.OCTOBER, 15, 0, 0, 0), createTimestamp(2009, Calendar.NOVEMBER, 1, 0, 0, 0), "SecondState", true),
+    	ZERO_NUMBER_DOCUMENT("Testing ZERO_NUMBER_DOCUMENT", new Integer(0), "Jane Doe", new KualiDecimal(-100), createTimestamp(
+                2009, Calendar.OCTOBER, 16, 0, 0, 0), createTimestamp(2015, Calendar.NOVEMBER, 2, 0, 0, 0), "FirstState", true),
+    	FALSE_AWAKE_DOCUMENT("Testing FALSE_AWAKE_DOCUMENT", new Integer(987654321), "John D'oh", new KualiDecimal(0.0), createTimestamp(
+                2006, Calendar.OCTOBER, 17, 0, 0, 0), createTimestamp(1900, Calendar.NOVEMBER, 3, 0, 0, 0), "FourthState", false),
+    	ODD_NAME_DOCUMENT("Testing ODD_NAME_DOCUMENT", new Integer(88), "_", new KualiDecimal(10000051.0), createTimestamp(
+                2009, Calendar.OCTOBER, 18, 0, 0, 0), createTimestamp(2009, Calendar.NOVEMBER, 4, 0, 0, 0), "FourthState", true),
+    	ODD_TIMESTAMP_DOCUMENT("Testing ODD_TIMESTAMP_DOCUMENT", new Integer(9000), "Shane Kloe", new KualiDecimal(4.54), createTimestamp(
+                2012, Calendar.OCTOBER, 19, 0, 0, 0), createTimestamp(2007, Calendar.NOVEMBER, 5, 12, 4, 38), "ThirdState", false),
+    	ANOTHER_ODD_NAME_DOCUMENT("Testing ANOTHER_ODD_NAME_DOCUMENT", new Integer(1234567889), "---", new KualiDecimal(501), createTimestamp(
+                2009, Calendar.APRIL, 20, 0, 0, 0), createTimestamp(2009, Calendar.NOVEMBER, 6, 12, 59, 59), "ThirdState", true),
+    	INVALID_STATE_DOCUMENT("Testing INVALID_STATE_DOCUMENT", new Integer(99999), "AAAAAAAAA", new KualiDecimal(2.22), createTimestamp(
+                2009, Calendar.OCTOBER, 21, 0, 0, 0), createTimestamp(2009, Calendar.NOVEMBER, 7, 0, 0, 1), "SeventhState", true),
+    	WILDCARD_NAME_DOCUMENT("Testing WILDCARD_NAME_DOCUMENT", new Integer(1), "Sh*ne><K!=e?", new KualiDecimal(771.05), createTimestamp(
+                2054, Calendar.OCTOBER, 22, 0, 0, 0), createTimestamp(2008, Calendar.NOVEMBER, 8, 12, 0, 0), "FirstState", true);
     	
     	private String accountDocumentDescription;
     	private Integer accountNumber;
     	private String accountOwner;
     	private KualiDecimal accountBalance;
-    	private Date accountOpenDate;
+    	private Timestamp accountOpenDate;
     	private Timestamp accountUpdateDateTime;
     	private String accountState;
     	private boolean accountAwake;
     	
-    	private DOCUMENT_FIXTURE(String accountDocumentDescription, Integer accountNumber, String accountOwner, KualiDecimal accountBalance, Date accountOpenDate, Timestamp accountUpdateDateTime, String accountState, boolean accountAwake) {
+    	private DOCUMENT_FIXTURE(String accountDocumentDescription, Integer accountNumber, String accountOwner, KualiDecimal accountBalance, Timestamp accountOpenDate, Timestamp accountUpdateDateTime, String accountState, boolean accountAwake) {
     		this.accountDocumentDescription = accountDocumentDescription;
     		this.accountNumber = accountNumber;
     		this.accountOwner = accountOwner;
@@ -199,24 +206,10 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 				new int[]    {-1                    , 2                                        , -1                   , 2,
 						3             , 3                    , 2                    , -1,
 						2                                     , 3,
-						4                                                        , -1          , 2,
+						4                                                    , -1          , 2,
 						2                      , 8                      , -1                   , -1                     , 8});
 	}
-    
-    /**
-     * Creates a date quickly
-     * 
-     * @param year the year of the date
-     * @param month the month of the date
-     * @param day the day of the date
-     * @return a new java.sql.Date initialized to the precise date given
-     */
-    private static Date createDate(int year, int month, int day) {
-    	Calendar date = Calendar.getInstance();
-		date.set(year, month, day, 0, 0, 0);
-		return new java.sql.Date(date.getTimeInMillis());
-    }
-    
+
     /**
      * Utility method to create a timestamp quickly
      * 

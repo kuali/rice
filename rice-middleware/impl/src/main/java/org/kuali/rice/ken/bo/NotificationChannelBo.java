@@ -23,8 +23,8 @@ import org.kuali.rice.ken.api.notification.NotificationListRecipient;
 import org.kuali.rice.ken.api.notification.NotificationProducer;
 import org.kuali.rice.ken.api.notification.UserChannelSubscription;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -61,7 +61,7 @@ public class NotificationChannelBo extends PersistableBusinessObjectBase impleme
 	private String name;
 	@Column(name = "DESC_TXT", nullable = false)
 	private String description;
-    @Convert(converter = BooleanTFConverter.class)
+    @Convert(converter = BooleanYNConverter.class)
     @Column(name = "SUBSCRB_IND", nullable = false)
     private boolean subscribable;
 

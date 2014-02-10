@@ -19,7 +19,7 @@
 <%@ include file="tldHeader.jsp"%>
 
 <c:set var="textAreaAttributes"
-	value="${DataDictionary.AttributeReferenceElements.attributes}" />
+	value="${DataDictionary.AttributeReference.attributes}" />
 
 <c:set var="parameters" value="<%=request.getAttribute(\"KualiExceptionHandlerAction\")%>" />
 

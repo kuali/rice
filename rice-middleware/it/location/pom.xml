@@ -61,14 +61,6 @@
       </dependency>
 
       <dependency>
-        <groupId>org.kuali.rice</groupId>
-        <version>${project.version}</version>
-        <artifactId>rice-it-kns</artifactId>
-        <scope>test</scope>
-        <type>test-jar</type>
-      </dependency>
-
-      <dependency>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>
         <artifactId>rice-krad-sampleapp-impl</artifactId>

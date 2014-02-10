@@ -253,8 +253,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
+                request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
@@ -287,8 +287,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
+                request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
@@ -326,8 +326,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
+                request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
@@ -367,8 +367,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
+                request, response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
@@ -504,8 +504,8 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request, response,
-                new ViewLifecycleRefreshBuild());
+        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, false, request,
+                response, new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
     }

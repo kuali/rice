@@ -46,8 +46,6 @@ public class ViewLifecycleBuild implements Runnable {
     private final Map<String, String> parameters;
     private final Map<String, Tree<String, String>> refreshPathMappings;
 
-    private final boolean refresh;
-
     /**
      * Constructor.
      *
@@ -56,13 +54,10 @@ public class ViewLifecycleBuild implements Runnable {
      * filtered out
      * @param refreshPathMappings in the case of a component refresh, tree of parent paths that will be refreshed
      * before the refresh component is built
-     * @param refresh indicates whether this is a component refresh build
      */
-    public ViewLifecycleBuild(Map<String, String> parameters, Map<String, Tree<String, String>> refreshPathMappings,
-            boolean refresh) {
+    public ViewLifecycleBuild(Map<String, String> parameters, Map<String, Tree<String, String>> refreshPathMappings) {
         this.parameters = parameters;
         this.refreshPathMappings = refreshPathMappings;
-        this.refresh = refresh;
     }
 
     /**
@@ -87,7 +82,7 @@ public class ViewLifecycleBuild implements Runnable {
         ((ViewModel) ViewLifecycle.getModel()).setGrowlScript(growlScript);
 
         // on component refreshes regenerate server message content for page
-        if (refresh) {
+        if (ViewLifecycle.isRefreshLifecycle()) {
             PageGroup page = view.getCurrentPage();
             page.getValidationMessages().generateMessages(view, ViewLifecycle.getModel(), page);
         }
@@ -112,7 +107,7 @@ public class ViewLifecycleBuild implements Runnable {
         // populate view from request parameters. In case of refresh, the parameters will be stored on the
         // form from the initial build
         Map<String, String> parametersToPopulate = parameters;
-        if (refresh) {
+        if (ViewLifecycle.isRefreshLifecycle()) {
             parametersToPopulate = model.getViewRequestParameters();
         }
 

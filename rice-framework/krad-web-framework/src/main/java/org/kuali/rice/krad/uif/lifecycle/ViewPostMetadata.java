@@ -42,7 +42,7 @@ public class ViewPostMetadata implements Serializable {
     private static final long serialVersionUID = -515221881981451818L;
 
     private String id;
-    
+
     private Map<String, ComponentPostMetadata> componentPostMetadataMap;
 
     private Map<String, PropertyEditor> fieldPropertyEditors;
@@ -52,6 +52,9 @@ public class ViewPostMetadata implements Serializable {
     private Set<String> allRenderedPropertyPaths;
     private Map<String, List<Object>> addedCollectionObjects;
 
+    /**
+     * Default contructor.
+     */
     public ViewPostMetadata() {
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
@@ -59,38 +62,55 @@ public class ViewPostMetadata implements Serializable {
         addedCollectionObjects = new HashMap<String, List<Object>>();
     }
 
+    /**
+     * Constructor that takes the view id.
+     *
+     * @param id id for the view
+     */
     public ViewPostMetadata(String id) {
         this();
 
         this.id = id;
     }
 
+    /**
+     * Id for the view the post metadata is associated with.
+     *
+     * @return view id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @see ViewPostMetadata#getId()
+     */
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getComponentPath(String componentId) {
-        if ((componentPostMetadataMap == null) || !componentPostMetadataMap.containsKey(componentId)) {
-            return null;
-        }
-
-        ComponentPostMetadata postMetadata = componentPostMetadataMap.get(componentId);
-
-        return postMetadata.getPath();
-    }
-
+    /**
+     * Map containing post metadata for a component keyed by the component id.
+     *
+     * @return post metadata map, key is component id and value is post metadata
+     */
     public Map<String, ComponentPostMetadata> getComponentPostMetadataMap() {
         return componentPostMetadataMap;
     }
 
+    /**
+     * @see ViewPostMetadata#getComponentPostMetadataMap()
+     */
     public void setComponentPostMetadataMap(Map<String, ComponentPostMetadata> componentPostMetadataMap) {
         this.componentPostMetadataMap = componentPostMetadataMap;
     }
 
+    /**
+     * Gets the component post metadata for the given component id.
+     *
+     * @param componentId id for the component whose post metadata should be retrieved
+     * @return post metadata object
+     */
     public ComponentPostMetadata getComponentPostMetadata(String componentId) {
         ComponentPostMetadata componentPostMetadata = null;
 
@@ -101,6 +121,13 @@ public class ViewPostMetadata implements Serializable {
         return componentPostMetadata;
     }
 
+    /**
+     * Adds post data for the given component (this is a convenience method for add component post metadata).
+     *
+     * @param component component instance the data should be added for
+     * @param key key for the post data, this will be used to retrieve the value
+     * @param value value for the post data
+     */
     public void addComponentPostData(Component component, String key, Object value) {
         if (component == null) {
             throw new IllegalArgumentException("Component must not be null for adding post data");
@@ -109,6 +136,13 @@ public class ViewPostMetadata implements Serializable {
         addComponentPostData(component.getId(), key, value);
     }
 
+    /**
+     * Adds post data for the given component id (this is a convenience method for add component post metadata).
+     *
+     * @param componentId id for the component the data should be added for
+     * @param key key for the post data, this will be used to retrieve the value
+     * @param value value for the post data
+     */
     public void addComponentPostData(String componentId, String key, Object value) {
         if (value == null) {
             return;
@@ -119,6 +153,13 @@ public class ViewPostMetadata implements Serializable {
         componentPostMetadata.addData(key, value);
     }
 
+    /**
+     * Retrieves post data that has been stored for the given component id and key.
+     *
+     * @param componentId id for the component the data should be retrieved for
+     * @param key key for the post data to retrieve
+     * @return value for the data, or null if the data does not exist
+     */
     public Object getComponentPostData(String componentId, String key) {
         ComponentPostMetadata componentPostMetadata = getComponentPostMetadata(componentId);
 
@@ -129,6 +170,12 @@ public class ViewPostMetadata implements Serializable {
         return null;
     }
 
+    /**
+     * Initializes a component post metadata instance for the given component.
+     *
+     * @param component component instance to initialize post metadata for
+     * @return post metadata instance
+     */
     public ComponentPostMetadata initializeComponentPostMetadata(Component component) {
         if (component == null) {
             throw new IllegalArgumentException("Component must not be null to initialize post metadata");
@@ -137,6 +184,12 @@ public class ViewPostMetadata implements Serializable {
         return initializeComponentPostMetadata(component.getId());
     }
 
+    /**
+     * Initializes a component post metadata instance for the given component id.
+     *
+     * @param componentId id for the component to initialize post metadata for
+     * @return post metadata instance
+     */
     public ComponentPostMetadata initializeComponentPostMetadata(String componentId) {
         ComponentPostMetadata componentPostMetadata;
 
@@ -219,14 +272,32 @@ public class ViewPostMetadata implements Serializable {
         this.inputFieldIds = inputFieldIds;
     }
 
+    /**
+     * Set of property paths that have been rendered as part of the lifecycle.
+     *
+     * <p>Note this will include all property paths (of data fields) that were rendered as part of the
+     * last full lifecycle and any component refreshes since then. It will not contain all paths of a view
+     * (which would include all pages)</p>
+     *
+     * @return set of property paths as strings
+     */
     public Set<String> getAllRenderedPropertyPaths() {
         return allRenderedPropertyPaths;
     }
 
+    /**
+     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
+     */
     public void setAllRenderedPropertyPaths(Set<String> allRenderedPropertyPaths) {
         this.allRenderedPropertyPaths = allRenderedPropertyPaths;
     }
 
+    /**
+     * Adds a property path to the list of rendered property paths.
+     *
+     * @param propertyPath property path to add
+     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
+     */
     public void addRenderedPropertyPath(String propertyPath) {
         if (this.allRenderedPropertyPaths == null) {
             this.allRenderedPropertyPaths = new HashSet<String>();
@@ -234,7 +305,7 @@ public class ViewPostMetadata implements Serializable {
 
         this.allRenderedPropertyPaths.add(propertyPath);
     }
-    
+
     public Map<String, List<Object>> getAddedCollectionObjects() {
         return addedCollectionObjects;
     }

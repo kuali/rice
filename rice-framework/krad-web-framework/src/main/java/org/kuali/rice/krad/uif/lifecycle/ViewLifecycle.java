@@ -65,54 +65,36 @@ public class ViewLifecycle implements Serializable {
     private static Boolean renderInLifecycle;
     private static Boolean trace;
 
-    /**
-     * List of event registrations.
-     */
     private final List<EventRegistration> eventRegistrations;
+    private final View view;
+    private final boolean refresh;
 
-    /**
-     * The helper service active on this context.
-     */
     final ViewHelperService helper;
 
-    /**
-     * The view being processed by this lifecycle.
-     */
-    private final View view;
-
-    /**
-     * The model involved in the current view lifecycle.
-     */
     final Object model;
 
-    /**
-     * The active servlet request for this lifecycle.
-     */
     final HttpServletRequest request;
-
-    /**
-     * The active servlet response for this lifecycle.
-     */
     final HttpServletResponse response;
 
     private ViewPostMetadata viewPostMetadata;
 
-    private Map<String, Tree<String, String>> refreshPathMappings;
-
     /**
      * Private constructor, for spawning a lifecycle context.
      *
-     * @param view The view to process with the lifecycle.
-     * @param model The model to use in processing the lifecycle.
-     * @param request The active servlet request.
-     * @param response The active servlet response.
+     * @param view The view to process with the lifecycle
+     * @param model The model to use in processing the lifecycle
+     * @param refresh indicates whether this is a component refresh lifecycle
+     * @param request The active servlet request
+     * @param response The active servlet response
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
-    private ViewLifecycle(View view, Object model, HttpServletRequest request, HttpServletResponse response) {
+    private ViewLifecycle(View view, Object model, boolean refresh, HttpServletRequest request,
+            HttpServletResponse response) {
         this.view = view;
         this.model = model;
         this.request = request;
         this.response = response;
+        this.refresh = refresh;
         this.helper = view.getViewHelperService();
         this.eventRegistrations = Collections.synchronizedList(new ArrayList<EventRegistration>());
     }
@@ -128,7 +110,7 @@ public class ViewLifecycle implements Serializable {
      */
     public static void encapsulateLifecycle(View view, Object model, HttpServletRequest request,
             HttpServletResponse response, Runnable lifecycleProcess) {
-        encapsulateLifecycle(view, model, null, null, request, response, lifecycleProcess);
+        encapsulateLifecycle(view, model, null, null, false, request, response, lifecycleProcess);
     }
 
     /**
@@ -137,7 +119,7 @@ public class ViewLifecycle implements Serializable {
      * @param lifecycleProcess The lifecycle process to encapsulate.
      */
     public static void encapsulateLifecycle(View view, Object model, ViewPostMetadata viewPostMetadata,
-            Map<String, Tree<String, String>> refreshPathMappings, HttpServletRequest request,
+            Map<String, Tree<String, String>> refreshPathMappings, boolean refresh, HttpServletRequest request,
             HttpServletResponse response, Runnable lifecycleProcess) {
         ViewLifecycleProcessor processor = PROCESSOR.get();
         if (processor != null) {
@@ -145,7 +127,7 @@ public class ViewLifecycle implements Serializable {
         }
 
         try {
-            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, request, response);
+            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, refresh, request, response);
             processor = isAsynchronousLifecycle() ? new AsynchronousViewLifecycleProcessor(viewLifecycle) :
                     new SynchronousViewLifecycleProcessor(viewLifecycle);
             PROCESSOR.set(processor);
@@ -153,8 +135,6 @@ public class ViewLifecycle implements Serializable {
             if (viewPostMetadata != null) {
                 viewLifecycle.viewPostMetadata = viewPostMetadata;
             }
-
-            viewLifecycle.refreshPathMappings = refreshPathMappings;
 
             lifecycleProcess.run();
 
@@ -191,8 +171,8 @@ public class ViewLifecycle implements Serializable {
             HttpServletResponse response, final Map<String, String> parameters) {
         ViewPostMetadata postMetadata = new ViewPostMetadata(view.getId());
 
-        ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, request, response,
-                new ViewLifecycleBuild(parameters, null, false));
+        ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, false, request, response,
+                new ViewLifecycleBuild(parameters, null));
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
@@ -225,8 +205,8 @@ public class ViewLifecycle implements Serializable {
 
         Map<String, Tree<String, String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
 
-        encapsulateLifecycle(view, model, viewPostMetadata, refreshPathMappings, request, response,
-                new ViewLifecycleBuild(null, refreshPathMappings, true));
+        encapsulateLifecycle(view, model, viewPostMetadata, refreshPathMappings, true, request, response,
+                new ViewLifecycleBuild(null, refreshPathMappings));
 
         return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
     }
@@ -375,7 +355,7 @@ public class ViewLifecycle implements Serializable {
     public static boolean isAsynchronousLifecycle() {
         Config config = ConfigContext.getCurrentContextConfig();
         return config != null && config.getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
+                KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
     }
 
     /**
@@ -433,8 +413,8 @@ public class ViewLifecycle implements Serializable {
      * @throws IllegalStateException If strict mode is enabled.
      */
     public static void reportIllegalState(String message, Throwable cause) {
-        IllegalStateException illegalState = new IllegalStateException(
-                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
+        IllegalStateException illegalState = new IllegalStateException(message + "\nPhase: " + ViewLifecycle.getPhase(),
+                cause);
 
         if (ViewLifecycle.isStrict()) {
             throw illegalState;
@@ -488,7 +468,8 @@ public class ViewLifecycle implements Serializable {
         ViewLifecycleProcessor processor = PROCESSOR.get();
 
         if (processor == null) {
-            ExpressionEvaluatorFactory expressionEvaluatorFactory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+            ExpressionEvaluatorFactory expressionEvaluatorFactory =
+                    KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
 
             if (expressionEvaluatorFactory == null) {
                 return new DefaultExpressionEvaluator();
@@ -515,6 +496,11 @@ public class ViewLifecycle implements Serializable {
         return active.model;
     }
 
+    /**
+     * Returns the view post metadata instance associated with the view and lifecycle.
+     *
+     * @return view post metadata instance
+     */
     public static ViewPostMetadata getViewPostMetadata() {
         ViewLifecycle active = getActiveLifecycle();
 
@@ -523,6 +509,21 @@ public class ViewLifecycle implements Serializable {
         }
 
         return active.viewPostMetadata;
+    }
+
+    /**
+     * Indicates whether the lifecycle is performing a component refresh (as opposed to a full view build).
+     *
+     * @return boolean true if this is a refresh lifecycle, false if a full build
+     */
+    public static boolean isRefreshLifecycle() {
+        ViewLifecycle active = getActiveLifecycle();
+
+        if (active == null) {
+            throw new IllegalStateException("No lifecycle is active");
+        }
+
+        return active.refresh;
     }
 
     /**
@@ -621,19 +622,19 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Performs preliminary processing on a view, prior to caching.
-     * 
+     *
      * <p>
      * Logic evaluated at this preliminary phase result in global modifications to the view's
      * subcomponents, so this method can be used apply additional logic to the View that is both
      * pre-evaluated and shared by all instances of the component.
      * </p>
-     * 
+     *
      * @param view The view to preprocess.
      */
     public static void preProcess(View view) {
         encapsulateLifecycle(view, null, null, null, new ViewLifecyclePreProcessBuild());
     }
-    
+
     /**
      * Enumerates potential lifecycle events.
      */

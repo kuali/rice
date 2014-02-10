@@ -839,14 +839,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
-        jiraAwareWaitFor(By.linkText("spreadsheet"), this.getClass().toString());
-
-        if (isElementPresent(By.linkText(docId))) {
-            assertEquals(DOC_STATUS_FINAL, getDocStatus());
-        } else {
-            assertEquals(docId,findElement(By.xpath(DOC_ID_XPATH_2)).getText());
-            assertEquals(DOC_STATUS_FINAL, getDocStatus());
-        }
+        assertDocSearch(docId, DOC_STATUS_FINAL);
     }
 
     protected void assertDocSearch(String docId, String docStatus) throws InterruptedException {
@@ -1025,13 +1018,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.navigate().back();
     }
 
-    private void blanketApproveAssert() throws InterruptedException {
+    private void blanketApproveAssert(String docId) throws InterruptedException {
         checkForDocError();
-        waitAndClickDocSearch();
-        waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
-        assertEquals("Kuali Portal Index", driver.getTitle());
-        selectFrameIframePortlet();
-        waitAndClickSearch();
+        assertDocSearch(docId, DOC_STATUS_FINAL);
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
@@ -1046,13 +1035,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      *
      * @throws InterruptedException
      */
-    protected void blanketApproveTest() throws InterruptedException {
+    protected void blanketApproveTest(String docId) throws InterruptedException {
         jGrowl("Click Blanket Approve");
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
 
-        blanketApproveAssert();
+        blanketApproveAssert(docId);
     }
 
     protected void check(By by) throws InterruptedException {
@@ -1940,8 +1929,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testCreateNewAgenda() throws Exception {
@@ -2282,8 +2270,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
@@ -2299,8 +2286,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByXpath("//select[@name='document.newMaintainableObject.templateId']", LABEL_KUALI_DEFAULT);
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']",
                 "ValidationTestPermission" + dtsTwo);
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
@@ -2324,8 +2310,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName("newName.dflt");
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
@@ -2342,8 +2327,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + dtsTwo);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {
@@ -2364,8 +2348,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationCampusBlanketApprove() throws Exception {
@@ -2380,8 +2363,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
         selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
@@ -2403,8 +2385,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertBlanketApproveButtonsPresent();
         blanketApproveCheck();
         if (!hasDocError("same primary key already exists")) { // don't fail as to still have the same key after 25 sequential attempts we've created many today already
-            blanketApproveAssert();
-            assertDocFinal(docId);
+            blanketApproveAssert(docId);
         }
     }
 
@@ -2430,8 +2411,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String countyName = "Validation Test County" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationPostBlanketApprove() throws Exception {
@@ -2455,8 +2435,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
         String cityName = "Validation Test Postal Code " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationStateBlanketApprove() throws Exception {
@@ -2477,8 +2456,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String state = "Validation Test State " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", state);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLookUp() throws Exception {
@@ -4167,8 +4145,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 "Workflow Maintenance Document Type Document " + dts);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
                 "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void uncheck(By by) throws InterruptedException {

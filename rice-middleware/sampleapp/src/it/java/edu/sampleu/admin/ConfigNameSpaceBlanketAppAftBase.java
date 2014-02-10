@@ -63,7 +63,6 @@ public abstract class ConfigNameSpaceBlanketAppAftBase extends AdminTmplMthdAftN
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = configNameSpaceBlanketApprove();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 }

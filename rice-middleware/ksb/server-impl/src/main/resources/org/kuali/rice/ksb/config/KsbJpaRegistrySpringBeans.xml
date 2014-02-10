@@ -47,6 +47,7 @@
   <util:list id="rice.ksb.registry.managedClassNames">
     <value>org.kuali.rice.ksb.impl.registry.ServiceInfoBo</value>
     <value>org.kuali.rice.ksb.impl.registry.ServiceDescriptorBo</value>
+    <!-- If you add an entity to this list, please also remember to add it to META-INF/persistence-weaving.xml -->
   </util:list>
 
   <bean

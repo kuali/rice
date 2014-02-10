@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -30,9 +31,10 @@ import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
  */
 @MappedSuperclass
 public class KimDocumentBoActivatableBase  extends KimDocumentBoBase {
+
     private static final long serialVersionUID = 9042706897191231670L;
 
-	@Column(name="ACTV_IND")
+    @Column(name="ACTV_IND")
 	@Convert(converter = BooleanYNConverter.class)
     protected boolean active = true;
 	

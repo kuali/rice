@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.krad.test;
+package org.kuali.rice.krms.impl;
 
 import org.junit.Test;
 import org.reflections.Reflections;
@@ -42,7 +42,7 @@ public class StaticWeavingTest {
     @Test
     public void testStaticWeaving() {
         // first, scan for all files on the classpath with an @Entity or @MappedSuperClass annotation
-        Reflections reflections = new Reflections("org.kuali.rice.krad");
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
         Set<Class<?>> entityTypes = reflections.getTypesAnnotatedWith(Entity.class);
         Set<Class<?>> superTypes = reflections.getTypesAnnotatedWith(MappedSuperclass.class);
         Set<Class<?>> embeddableTypes = reflections.getTypesAnnotatedWith(Embeddable.class);

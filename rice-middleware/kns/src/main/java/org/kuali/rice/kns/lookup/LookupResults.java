@@ -15,24 +15,8 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import javax.persistence.FetchType;
-import javax.persistence.Basic;
-import javax.persistence.Lob;
-import javax.persistence.Column;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
-@Entity
-@Table(name="KRNS_LOOKUP_RSLT_T")
-@NamedQueries({
-        @NamedQuery(name = "LookupResults.deleteOldLookupResults", query = "delete from LookupResults where lookupDate < :expirationDate")
-})
 public class LookupResults extends MultipleValueLookupMetadata {
-    @Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SERIALZD_RSLTS")
+
 	private String serializedLookupResults;
 
     public String getSerializedLookupResults() {

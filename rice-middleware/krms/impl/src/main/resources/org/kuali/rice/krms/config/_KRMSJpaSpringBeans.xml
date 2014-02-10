@@ -78,6 +78,8 @@
 
     <!-- Type converters go in here as well -->
     <value>org.kuali.rice.krms.impl.repository.jpa.RelationshipTypeConverter</value>
+
+    <!-- If you add an entity to this list, please also remember to add it to META-INF/persistence-weaving.xml -->
   </util:list>
 
   <util:list id="additionalMetadataProviders" />

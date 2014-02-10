@@ -18,6 +18,7 @@ package org.kuali.rice.kim.bo.ui;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -28,10 +29,11 @@ import javax.persistence.Transient;
  *
  */
 @MappedSuperclass
-public class KimDocumentBoActiveToFromBase  extends KimDocumentBoBase {
+public class KimDocumentBoActiveToFromBase extends KimDocumentBoBase {
+
     private static final long serialVersionUID = 9042706897191231671L;
 
-	@Column(name="ACTV_FRM_DT")
+    @Column(name="ACTV_FRM_DT")
 	protected Timestamp activeFromDate;
 	@Column(name="ACTV_TO_DT")
 	protected Timestamp activeToDate;

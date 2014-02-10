@@ -37,6 +37,7 @@
     <value>org.kuali.rice.ksb.messaging.PersistedMessagePayload</value>
     <value>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</value>
     <value>org.kuali.rice.ksb.messaging.bam.BAMParam</value>
+    <!-- If you add an entity to this list, please also remember to add it to META-INF/persistence-weaving.xml -->
   </util:list>
 
   <bean

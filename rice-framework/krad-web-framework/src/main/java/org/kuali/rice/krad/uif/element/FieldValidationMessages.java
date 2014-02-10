@@ -27,7 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ValidationMessages for logic and options specific to groups
+ * ValidationMessages for logic and options specific to fields.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "fieldValidationMessages-bean", parent = "Uif-FieldValidationMessages")
 public class FieldValidationMessages extends ValidationMessages {

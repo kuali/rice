@@ -15,16 +15,13 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -34,11 +31,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
-import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
@@ -63,7 +57,7 @@ import org.kuali.rice.krad.util.MessageMap;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "validationMessages-bean", parent = "Uif-ValidationMessagesBase")
-public class ValidationMessages extends UifDictionaryBeanBase implements LifecycleEventListener {
+public class ValidationMessages extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 780940788435330077L;
 
     private List<String> additionalKeysToMatch;
@@ -129,11 +123,6 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
             masterKeyList.add(parentContainerId);
         }
 
-        if (parent instanceof PageGroup) {
-            //ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
-            //viewLifecycle.registerLifecycleCompleteListener(view, this);
-        }
-
         for (String key : masterKeyList) {
             errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
             warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
@@ -154,7 +143,7 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
      * @param lists
      * @return list of messages
      */
-    private List<String> getMessages(View view, String key, List<List<ErrorMessage>> lists) {
+    protected List<String> getMessages(View view, String key, List<List<ErrorMessage>> lists) {
         List<String> result = new ArrayList<String>();
         for (List<ErrorMessage> errorList : lists) {
             if (errorList != null && StringUtils.isNotBlank(key)) {
@@ -171,42 +160,6 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
     }
 
     /**
-     * Check for message keys that are not matched anywhere on the page, these unmatched messages must still be
-     * displayed at the page level.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
-            LifecycleElement eventComponent) {
-        Map<String, PropertyEditor> propertyEditors = ViewLifecycle.getViewPostMetadata().getFieldPropertyEditors();
-        Map<String, PropertyEditor> securePropertyEditors =
-                ViewLifecycle.getViewPostMetadata().getSecureFieldPropertyEditors();
-
-        List<String> masterKeyList = new ArrayList<String>();
-
-//        List<String> allPossibleKeys = new ArrayList<String>(propertyEditors.keySet());
-//        allPossibleKeys.addAll(securePropertyEditors.keySet());
-//
-//        this.addNestedGroupKeys(allPossibleKeys, parent);
-//        if (additionalKeysToMatch != null) {
-//            allPossibleKeys.addAll(additionalKeysToMatch);
-//        }
-//        if (StringUtils.isNotBlank(parent.getId())) {
-//            allPossibleKeys.add(parent.getId());
-//        }
-//
-//        Set<String> messageKeys = new HashSet<String>();
-//        messageKeys.addAll(messageMap.getAllPropertiesWithErrors());
-//        messageKeys.addAll(messageMap.getAllPropertiesWithWarnings());
-//        messageKeys.addAll(messageMap.getAllPropertiesWithInfo());
-//
-//        messageKeys.removeAll(allPossibleKeys);
-//
-//        masterKeyList.addAll(messageKeys);
-    }
-
-    /**
      * Gets all the keys associated to this ValidationMessages. This includes the id of
      * the parent component, additional keys to match, and the bindingPath if
      * this is an ValidationMessages for an InputField. These are the keys that are
@@ -217,12 +170,15 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
      */
     protected List<String> getKeys(Component parent) {
         List<String> keyList = new ArrayList<String>();
+
         if (additionalKeysToMatch != null) {
             keyList.addAll(additionalKeysToMatch);
         }
+
         if (StringUtils.isNotBlank(parent.getId())) {
             keyList.add(parent.getId());
         }
+
         if (parent instanceof InputField) {
             if (((InputField) parent).getBindingInfo() != null && StringUtils.isNotEmpty(
                     ((InputField) parent).getBindingInfo().getBindingPath())) {
@@ -240,7 +196,7 @@ public class ValidationMessages extends UifDictionaryBeanBase implements Lifecyc
      * @param keyList
      * @param component
      */
-    private void addNestedGroupKeys(Collection<String> keyList, Component component) {
+    protected void addNestedGroupKeys(Collection<String> keyList, Component component) {
         @SuppressWarnings("unchecked")
         Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
         try {

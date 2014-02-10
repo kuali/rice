@@ -26,6 +26,16 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Holds data about the rendered view that might be needed to handle a post request.
+ *
+ * <p>When an action is requested on a view (for example add/delete line, field query, so on), it might be
+ * necessary to read configuration from the view that was rendered to cary out the action. However, the rendered
+ * view is not stored, and the new view is not rendered until after the controller completes. Therefore it is
+ * necessary to provide this mechanism.</p>
+ *
+ * <p>The post metadata is retrieved in the controller though the {@link org.kuali.rice.krad.web.form.UifFormBase}
+ * instance</p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewPostMetadata implements Serializable {
@@ -33,8 +43,6 @@ public class ViewPostMetadata implements Serializable {
 
     private String id;
     
-    private boolean persistFormToSession;
-
     private Map<String, ComponentPostMetadata> componentPostMetadataMap;
 
     private Map<String, PropertyEditor> fieldPropertyEditors;
@@ -53,6 +61,7 @@ public class ViewPostMetadata implements Serializable {
 
     public ViewPostMetadata(String id) {
         this();
+
         this.id = id;
     }
 
@@ -144,14 +153,6 @@ public class ViewPostMetadata implements Serializable {
         }
 
         return componentPostMetadata;
-    }
-    
-    public boolean isPersistFormToSession() {
-        return persistFormToSession;
-    }
-
-    public void setPersistFormToSession(boolean persistFormToSession) {
-        this.persistFormToSession = persistFormToSession;
     }
 
     /**

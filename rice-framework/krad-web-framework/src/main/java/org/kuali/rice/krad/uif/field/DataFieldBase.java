@@ -198,6 +198,10 @@ public class DataFieldBase extends FieldBase implements DataField {
         if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
+
+        if (isRender()) {
+            ViewLifecycle.getViewPostMetadata().addRenderedPropertyPath(getBindingInfo().getBindingPath());
+        }
     }
 
     /**

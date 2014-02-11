@@ -1250,6 +1250,21 @@
                     <ignore />
                   </action>
                 </pluginExecution>
+                <pluginExecution>
+                	<pluginExecutionFilter>
+                		<groupId>au.com.alderaan</groupId>
+                		<artifactId>
+                			eclipselink-staticweave-maven-plugin
+                		</artifactId>
+                		<versionRange>[1.0.4,)</versionRange>
+                		<goals>
+                			<goal>weave</goal>
+                		</goals>
+                	</pluginExecutionFilter>
+                	<action>
+                		<ignore></ignore>
+                	</action>
+                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>

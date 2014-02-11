@@ -49,7 +49,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View
      */
-    public static final String TARGET_URL_CHECK = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View";
+    public static final String TARGET_URL_CHECK = "/kr-krad/kradsampleapp?viewId=Demo-BreadcrumbsView";
 
     @Override
     protected String getBookmarkUrl() {

@@ -1789,7 +1789,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String nextYear = sdf.format(nextYearCal.getTime());
 
         //Enter details for BrownGroup.
@@ -1842,14 +1842,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByLinkText("edit");
         waitAndClickByName("methodToCall.showAllTabs");
         waitForTextPresent("admin admin");
-        assertTextPresent("Adding Brown Group");
-        assertTextPresent("I want to add Brown Group to test KIM");
-        assertTextPresent(organizationDocumentNumber);
         assertTextPresent(groupDescription);
-        assertTextPresent("One, Developer");
-        if (adHocWrkGrp != null ) {
-            assertTextPresent(adHocWrkGrp);
-        }
+        assertTextPresent(nameSpace);
+        assertTextPresent(groupName);
     }
 
     protected String getDateTimeStampFormatted() {

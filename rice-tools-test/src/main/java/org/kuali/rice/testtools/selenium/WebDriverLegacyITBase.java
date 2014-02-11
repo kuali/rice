@@ -84,7 +84,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     /**
      * "//input[@aria-invalid]"
      */
-    public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid]";
+    public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid='true']";
 
     /**
      * backdoorId
@@ -1723,7 +1723,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void select(By by, String selectText) throws InterruptedException {
-        checkForIncidentReport(by.toString(), "trying to select text " + selectText);
+//        checkForIncidentReport(by.toString(), "trying to select text " + selectText); // I think a report will now be picked-up by the jiraAwareFail
         WebElement select1 = findElement(by);
         String name = select1.getAttribute("name");
         WebDriverUtils.jGrowl(getDriver(), "Select " + selectText, false, "Select " + selectText + " from " + name);

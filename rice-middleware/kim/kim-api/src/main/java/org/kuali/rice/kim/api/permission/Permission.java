@@ -211,7 +211,7 @@ public final class Permission extends AbstractDataTransferObject implements Perm
         private String description;
         private Template.Builder template;
         private Map<String, String> attributes;
-        private Long versionNumber = 1L;
+        private Long versionNumber;
         private String objectId;
         private boolean active;
 

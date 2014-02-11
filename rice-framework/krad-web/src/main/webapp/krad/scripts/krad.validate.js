@@ -946,7 +946,7 @@ function recursiveGroupMessageCount(parentId) {
         return data;
     }
 
-    jQuery("#" + parentId).find("div[data-parent='" + parentId + "']").not("div[data-role='InputField']").each(function () {
+    jQuery("#" + parentId).find("[data-parent='" + parentId + "']").not("div[data-role='InputField']").each(function () {
         var groupData = getValidationData(jQuery(this), true);
         if (groupData) {
             data.errorTotal = data.errorTotal + groupData.serverErrors.length + (groupData.errors ? groupData.errors.length : 0);

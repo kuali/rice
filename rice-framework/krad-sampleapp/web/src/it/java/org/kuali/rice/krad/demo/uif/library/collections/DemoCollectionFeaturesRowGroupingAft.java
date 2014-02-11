@@ -101,7 +101,7 @@ public class DemoCollectionFeaturesRowGroupingAft extends WebDriverLegacyITBase 
         passed();
     }
 
-//    @Test
+    @Test
     public void testCollectionFeaturesRowGroupingNav() throws Exception {
         testCollectionFeaturesRowGroupingBaseFunctionality();
         testCollectionFeaturesRowGrouping2FieldGrouping();

@@ -101,30 +101,35 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorization() throws Exception {
     	waitAndTypeByName(DESCRIPTION_NAME,"Travel Authorization Description");
     	waitAndTypeByName(CONTACT_NUMBER_NAME,"918000884215");
+        jGrowl("Traveler Lookup Quickfinder");
     	waitAndClickByXpath("//a[@id='travelerQuickfinder_quickfinder_act']");
     	waitAndGetReturnValue();
 
         // KNS/KRAD Equiv M38
+        jGrowl("Click Primary Destination Id Quickfinder");
     	waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/span/a");
     	waitAndGetReturnValue();
-    	
+        String primaryDestinationId = waitAndGetAttributeByName("document.tripDestinationId", "value");
+
     	//Actual Expense
-    	waitAndTypeByXpath(ACTUAL_EXPENSE_GENERIC_XPATH+"td[2]/div/input","Kuali");
-    	selectByXpath(ACTUAL_EXPENSE_GENERIC_XPATH+"td[3]/div/select","Airfare");
-    	waitAndTypeByXpath(ACTUAL_EXPENSE_GENERIC_XPATH+"td[4]/div/input","Expence Description");
-    	waitAndTypeByXpath(ACTUAL_EXPENSE_GENERIC_XPATH+"td[6]/div/input","123.12");
-    	waitAndClickByXpath(ACTUAL_EXPENSE_GENERIC_XPATH+"td[9]/div/fieldset/div/button");
+        waitAndTypeByName("newCollectionLines['document.actualExpenseItems'].travelCompanyName", "Kuali");
+        selectOptionByName("newCollectionLines['document.actualExpenseItems'].travelExpenseTypeCd", "A"); // Airfare
+        waitAndTypeByName("newCollectionLines['document.actualExpenseItems'].expenseDesc", "Expense Description");
+        waitAndTypeByName("newCollectionLines['document.actualExpenseItems'].expenseAmount", "123.12");
+        jGrowl("Click Actual Expense Items Add Button");
+    	waitAndClickByXpath("//button[contains(@data-submit_data, 'document.actualExpenseItems')]");
     	
     	//Daily Cost Estimate
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[2]/div/input","12/12/13");
-    	selectByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[3]/div/div/select","Colorado");
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[4]/div/input","100");
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[5]/div/input","100");
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[6]/div/input","100");
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[7]/div/input","200");
-    	selectByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[8]/div/div/select","DO");
-    	waitAndTypeByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[9]/div/input","10");
-    	waitAndClickByXpath(DAILY_COST_ESTIMATE_GENERIC_XPATH+"td[10]/div/fieldset/div/button");
+    	waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].perDiemDate","12/12/13");
+        selectOptionByName("newCollectionLines['document.dailyExpenseEstimates'].travelDestinationId", primaryDestinationId);
+        waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].breakfastValue","16");
+        waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].lunchValue","18");
+        waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].dinnerValue","20");
+        waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].incidentalsValue","7");
+        selectOptionByName("newCollectionLines['document.dailyExpenseEstimates'].mileageRateId", "10000"); // DO
+        waitAndTypeByName("newCollectionLines['document.dailyExpenseEstimates'].estimatedMileage","13");
+        jGrowl("Click Daily Expense Estimates Add Button");
+        waitAndClickByXpath("//button[contains(@data-submit_data, 'document.dailyExpenseEstimates')]");
     }
     
     protected void waitAndGetReturnValue() throws Exception {

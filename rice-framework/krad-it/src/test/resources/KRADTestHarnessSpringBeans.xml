@@ -117,8 +117,6 @@
         <value>classpath:org/kuali/rice/krad/test/document/Account.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountExtension.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/krad/test/document/AccountManager.xml</value>
-        <value>classpath:org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</value>

@@ -41,10 +41,6 @@ public class Account extends PersistableBusinessObjectBase {
 	@Column(name="acct_fo_id")
     private Long amId;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
-	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
-    private AccountManager accountManager;
-
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name="acct_num",referencedColumnName="acct_num",insertable=false,updatable=false)
     protected List<SubAccount> subAccounts;
@@ -79,14 +75,6 @@ public class Account extends PersistableBusinessObjectBase {
 
     public void setAmId(Long id) {
         this.amId = id;
-    }
-
-    public AccountManager getAccountManager() {
-        return this.accountManager;
-    }
-
-    public void setAccountManager(AccountManager accountManager) {
-        this.accountManager = accountManager;
     }
 
     public List<SubAccount> getSubAccounts() {

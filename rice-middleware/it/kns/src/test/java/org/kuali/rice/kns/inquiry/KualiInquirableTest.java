@@ -20,10 +20,10 @@ import org.junit.Test;
 import org.kuali.rice.kns.KNSTestCase;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.test.KRADTestCase;
 
 import org.junit.Assert;
+import org.kuali.rice.krad.test.document.bo.AccountType;
 
 /**
  * KualiInquirableTest tests {@link KualiInquirableImpl} methods
@@ -32,25 +32,24 @@ import org.junit.Assert;
  */
 public class KualiInquirableTest extends KNSTestCase {
 
-    private AccountManager am;
+    private AccountType at;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        am = new AccountManager();
-        am.setAmId(new Long(1));
-        
+        at = new AccountType();
+        at.setAccountTypeCode("ABC");
     }
 
     /**
      * Tests the inquiry url output for a given bo and property name
      */
     @Test public final void testBuildInquiryUrl() {
-    	String inquiryUrl = ((HtmlData.AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(am, "amId", true)).getHref();
-        Assert.assertTrue("An inquiry URL to AccountManager should be built. CI Failure - https://jira.kuali.org/browse/KULRICE-9286", StringUtils.contains(inquiryUrl,
-                "amId=1"));
-        Assert.assertTrue("An inquiry URL to AccountManager should be built", StringUtils.contains(inquiryUrl,
-                "businessObjectClassName=" + AccountManager.class.getName()));
+    	String inquiryUrl = ((HtmlData.AnchorHtmlData)new KualiInquirableImpl().getInquiryUrl(at, "accountTypeCode", true)).getHref();
+        Assert.assertTrue("An inquiry URL to AccountType should be built. CI Failure - ", StringUtils.contains(inquiryUrl,
+                "accountTypeCode=ABC"));
+        Assert.assertTrue("An inquiry URL to AccountType should be built", StringUtils.contains(inquiryUrl,
+                "businessObjectClassName=" + AccountType.class.getName()));
     }
 
 }

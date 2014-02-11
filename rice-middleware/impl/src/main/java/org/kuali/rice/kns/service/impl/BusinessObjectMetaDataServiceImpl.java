@@ -304,7 +304,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 		// TODO move out to a separate method
 		// so that the logic for finding the relationships is similar to
 		// primitiveReference
-		if (ddReference != null && isLookupable(ddReference.getTargetClass()) && bo != null
+		if (ddReference != null && BusinessObject.class.isAssignableFrom(ddReference.getTargetClass()) && isLookupable(ddReference.getTargetClass()) && bo != null
 				&& ddReference.getPrimitiveAttributes().size() < maxSize) {
 			relationship = new DataObjectRelationship(boClass, ddReference.getObjectAttributeName(),
 					ddReference.getTargetClass());

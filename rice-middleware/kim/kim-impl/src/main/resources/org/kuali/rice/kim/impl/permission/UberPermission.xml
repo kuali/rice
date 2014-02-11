@@ -23,7 +23,13 @@
         p:titleAttribute="id"
         p:objectLabel="Uber Permission"
         p:inquiryDefinition-ref="UberPermissionImpl-inquiryDefinition" 
-        p:lookupDefinition-ref="UberPermissionImpl-lookupDefinition">
+        p:lookupDefinition-ref="UberPermissionImpl-lookupDefinition"
+        >
+    <property name="primaryKeys">
+    	<list>
+    		<value>id</value>
+    	</list>
+    </property>
     <property name="attributes">
       <list>
         <ref bean="UberPermissionImpl-template.namespaceCode"/>

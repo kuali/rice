@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -67,18 +79,6 @@ import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  *
@@ -401,9 +401,23 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public List<String> listPrimaryKeyFieldNames(Class<?> type) {
-        List<String> keys = new ArrayList<String>();
+        List<String> keys = Collections.emptyList();
         if (dataObjectService.getMetadataRepository().contains(type)) {
             keys = dataObjectService.getMetadataRepository().getMetadata(type).getPrimaryKeyAttributeNames();
+        } else {
+            // check the Data Dictionary for PK's of non-persisted objects
+            DataObjectEntry dataObjectEntry = dataDictionaryService.getDataDictionary().getDataObjectEntry(type.getName());
+            if ( dataObjectEntry != null ) {
+                List<String> pks = dataObjectEntry.getPrimaryKeys();
+                if (pks != null ) {
+                    keys = pks;
+                }
+            } else {
+                ModuleService responsibleModuleService = kualiModuleService.getResponsibleModuleService(type);
+                if (responsibleModuleService != null && responsibleModuleService.isExternalizable(type)) {
+                    keys = responsibleModuleService.listPrimaryKeyFieldNames(type);
+                }
+            }
         }
         return keys;
     }

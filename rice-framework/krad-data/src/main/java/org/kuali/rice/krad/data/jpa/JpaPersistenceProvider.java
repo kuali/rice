@@ -15,7 +15,14 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import com.google.common.collect.Sets;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.metamodel.ManagedType;
+
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -34,8 +41,6 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.ChainedPersistenceExceptionTranslator;
 import org.springframework.dao.support.DataAccessUtils;
@@ -43,12 +48,7 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.metamodel.ManagedType;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
+import com.google.common.collect.Sets;
 
 /**
  * Java Persistence API (JPA) implementation of {@link PersistenceProvider}.
@@ -69,6 +69,7 @@ import java.util.concurrent.Callable;
  */
 @Transactional
 public class JpaPersistenceProvider implements PersistenceProvider, InitializingBean, BeanFactoryAware {
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
 
     private EntityManager sharedEntityManager;
     private DataObjectService dataObjectService;
@@ -133,7 +134,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> T save(final T dataObject, final PersistenceOption... options) {
         return doWithExceptionTranslation(new Callable<T>() {
-            public T call() {
+            @Override
+			public T call() {
                 verifyDataObjectWritable(dataObject);
 
         		Set<PersistenceOption> optionSet = Sets.newHashSet(options);
@@ -156,7 +158,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> T find(final Class<T> type, final Object id) {
         return doWithExceptionTranslation(new Callable<T>() {
-            public T call() {
+            @Override
+			public T call() {
                 if (id instanceof CompoundKey) {
 			        QueryResults<T> results = findMatching(type,
 				        	QueryByCriteria.Builder.andAttributes(((CompoundKey) id).getKeys()).build());
@@ -178,7 +181,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
-            public QueryResults<T> call() {
+            @Override
+			public QueryResults<T> call() {
                 return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria);
             }
         });
@@ -188,7 +192,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria,
             final LookupCustomizer<T> lookupCustomizer) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
-            public QueryResults<T> call() {
+            @Override
+			public QueryResults<T> call() {
                 return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria, lookupCustomizer);
             }
         });
@@ -197,7 +202,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public void delete(final Object dataObject) {
         doWithExceptionTranslation(new Callable<Object>() {
-            public Object call() {
+            @Override
+			public Object call() {
                 verifyDataObjectWritable(dataObject);
                 sharedEntityManager.remove(sharedEntityManager.merge(dataObject));
                 return null;
@@ -208,12 +214,18 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public boolean handles(final Class<?> type) {
         return doWithExceptionTranslation(new Callable<Boolean>() {
-            public Boolean call() {
+            @Override
+			public Boolean call() {
                 try {
                     ManagedType<?> managedType = sharedEntityManager.getMetamodel().managedType(type);
                     return Boolean.valueOf(managedType != null);
                 } catch (IllegalArgumentException iae) {
                     return Boolean.FALSE;
+				} catch (IllegalStateException ex) {
+					// This catches cases where the entity manager is not initialized or has already been destroyed
+					LOG.warn("sharedEntityManager " + sharedEntityManager + " is not in a state to be used: "
+							+ ex.getMessage());
+					return Boolean.FALSE;
                 }
             }
         }).booleanValue();
@@ -222,7 +234,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public void flush(final Class<?> type) {
         doWithExceptionTranslation(new Callable<Object>() {
-            public Object call() {
+            @Override
+			public Object call() {
                 sharedEntityManager.flush();
                 return null;
             }

@@ -58,14 +58,14 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//div[@class='dataTables_length']/label/select");
     	
     	//Collection Group 6 - CollectionGroupTableLayout with jQuery table features on
-    	assertElementPresentByXpath("//div[@class='uif-collectionItem uif-tableCollectionItem uif-collectionAddItem']/table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']");
+    	assertElementPresentByXpath("//section[@class='uif-collectionItem uif-tableCollectionItem uif-collectionAddItem']/table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']");
     	assertElementPresentByXpath("//div[@class='dataTables_scrollBody']/table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr/td[@class='uif-collection-column-action ']");
     	
     	//Collection Group 3 - Stacked
-    	assertElementPresentByXpath("//div[@id='collection3_disclosureContent']/div/table");
+    	assertElementPresentByXpath("//div[@id='collection3_disclosureContent']/section/table");
     	
     	//Collection Group 4 - Stacked Collection with a Table subcollection
-    	assertElementPresentByXpath("//div[@id='collection4_disclosureContent']/div/table");
+    	assertElementPresentByXpath("//div[@id='collection4_disclosureContent']/section/table");
     	waitAndClickByXpath("//span[contains(text(),'SubCollection - (3 lines)')]");
     	assertElementPresentByXpath("//div[@id='subCollection1_line0_disclosureContent']");
     	

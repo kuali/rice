@@ -68,6 +68,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 
         waitAndTypeByName("field79", "");
         fireEvent("field79", "blur");
+        waitAndClickByName("field60"); // force blur on field79
         waitForTextPresent("Travel Account 3");
 
     	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");

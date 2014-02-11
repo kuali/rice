@@ -372,7 +372,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
             boolean allPopulated = true;
             Map<String, Object> attributeMap = new LinkedHashMap<String, Object>();
             for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
-                String attributeName = attributeRelationship.getParentAttributeName();
+                String attributeName = attributeRelationship.getChildAttributeName();
                 Object attributeValue = getPropertyValue(attributeName);
                 if (attributeValue == null) {
                     allPopulated = false;

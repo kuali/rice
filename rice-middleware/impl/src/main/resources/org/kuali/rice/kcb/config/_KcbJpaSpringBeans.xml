@@ -75,12 +75,28 @@
           class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
           p:entityManager-ref="rice.kcb.sharedEntityManager"/>
 
+	<bean
+		id="rice.kcb.metadataProviderAnnotation"
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
+		p:jpaMetadataProvider-ref="rice.kcb.metadataProviderJpa" />
+
+	<bean
+		id="rice.kcb.metadataProvider"
+		class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+		<property name="providers">
+			<list>
+				<ref bean="rice.kcb.metadataProviderJpa" />
+				<ref bean="rice.kcb.metadataProviderAnnotation" />
+			</list>
+		</property>
+	</bean>
+
   <bean id="org.kuali.rice.kcb.providerRegister" class="org.kuali.rice.krad.data.config.ProviderRegistrationFactory">
     <property name="providerRegistry" ref="providerRegistry" />
     <property name="providers">
       <util:list>
         <ref bean="rice.kcb.jpaPersistenceProvider" />
-        <ref bean="rice.kcb.metadataProviderJpa" />
+        <ref bean="rice.kcb.metadataProvider" />
       </util:list>
     </property>
   </bean>

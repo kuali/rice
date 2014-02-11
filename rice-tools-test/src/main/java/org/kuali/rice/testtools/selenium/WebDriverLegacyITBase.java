@@ -2972,10 +2972,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath(startTimeId, inputTime);
         String allDaySelector = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
         Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickByXpath(allDaySelector);
+//        waitAndClickByXpath(allDaySelector);
+        waitAndClickByName("newCollectionLines['listTimeInfo'].allDay");
         Thread.sleep(5000); //allow for ajax refresh
         checkForIncidentReport();
-        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+//        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
+        waitAndClickButtonByText("add");
         Thread.sleep(5000); //allow for line to be added
     }
 

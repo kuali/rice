@@ -274,7 +274,7 @@ public class DataDictionary {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info( "Generating Inquiry View for : " + entry.getDataObjectClass() );
             }
-            String inquiryBeanName = entry.getFullClassName()+"-InquiryView-default";
+            String inquiryBeanName = entry.getDataObjectClass().getSimpleName()+"-InquiryView-default";
 
             InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);
             inquiryView.setId(inquiryBeanName);
@@ -315,7 +315,7 @@ public class DataDictionary {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info( "Generating Lookup View for : " + entry.getDataObjectClass() );
             }
-            String lookupBeanName = entry.getFullClassName()+"-LookupView-default";
+            String lookupBeanName = entry.getDataObjectClass().getSimpleName()+"-LookupView-default";
 
             LookupView lookupView = KRADServiceLocatorWeb.getUifDefaultingService().deriveLookupViewFromMetadata(entry);
             lookupView.setId(lookupBeanName);

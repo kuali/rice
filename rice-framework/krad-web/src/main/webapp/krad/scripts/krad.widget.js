@@ -1199,7 +1199,7 @@ function createTabs(id, widgetId, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);
 
     // when active tab changes we need to update the client side state
-    tabs.on("activate", function (event, ui) {
+    tabs.on("tabsactivate", function (event, ui) {
         var activeTabId = ui.newPanel.attr('id');
         activeTabId = activeTabId.replace(/_tab$/, "");
 

@@ -21,6 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
@@ -37,15 +38,18 @@ public class TravelSubAccount extends DataObjectBase implements Serializable {
 	@Id
 	@Column(name="ACCT_NUM",length=10)
 	@Label("Travel Account Number")
+    @NotNull
 	private String travelAccountNumber;
 
 	@Id
     @ForceUppercase
 	@Column(name="SUB_ACCT",length=10)
 	@Label("Travel Sub Account Number")
+    @NotNull
 	private String subAccount;
 
 	@Column(name="SUB_ACCT_NAME",length=40)
+    @NotNull
 	private String subAccountName;
 
     public String getTravelAccountNumber() {

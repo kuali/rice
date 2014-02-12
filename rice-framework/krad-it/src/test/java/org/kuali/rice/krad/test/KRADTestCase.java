@@ -34,7 +34,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.xml.namespace.QName;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 

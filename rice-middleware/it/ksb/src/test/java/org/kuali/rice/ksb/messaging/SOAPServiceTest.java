@@ -63,28 +63,26 @@ public class SOAPServiceTest extends KSBTestCase {
 	}
 
 	
-	@Test public void testSimpleSOAPService() throws Exception{
- 
-		
+	@Test
+    public void testSimpleSOAPService() throws Exception{
 		EchoService echoService = GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"));
 		String result = echoService.trueEcho("Yo yo yo");
 		assertNotNull(result);
-		
+
 		QName serviceName = new QName("testNameSpace", "soap-repeatTopic");
 		SOAPService soapService = GlobalResourceLoader.getService(serviceName);
 		soapService.doTheThing("hello");
 	}
-	
+
 	@Test
-	public void testJaxWsSOAPService(){	
-		
+	public void testJaxWsSOAPService(){
 		JaxWsEchoService jaxwsEchoService = GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"));
 		String result = jaxwsEchoService.doEcho("Fi Fi Fo Fum");
 		assertTrue(("Fi Fi Fo Fum").equals(result));
 	}
-	
-	@Test 
-	public void testBusSecureSoapService() throws Exception{
+
+	@Test
+	public void testBusSecureSOAPService() throws Exception{
 		//Create non-secure client to access secure service
 		ClientProxyFactoryBean clientFactory;		
 		clientFactory = new ClientProxyFactoryBean();
@@ -113,19 +111,28 @@ public class SOAPServiceTest extends KSBTestCase {
 		assertTrue("I can echo".equals(result));		
 	}
 
+    /**
+     * Tests WSDL generation from a URL.
+     *
+     * This is similar to another KEW test but it is good to have it as part of the KSB tests.  Note that the
+     * {@link Client} modifies the current thread's class loader.
+     *
+     * @throws Exception for any errors connecting to the client
+     */
 	@Test
 	public void testWsdlGeneration() throws Exception {
-		//This is similar to a KEW test, but good to have it as part of KSB tests.
+		ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
 
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-
 		Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
 		client.getInInterceptors().add(new LoggingInInterceptor());
 		client.getOutInterceptors().add(new LoggingOutInterceptor());
-		Object[] results = client.invoke("echo", new Object[] { "testing" });
+		Object[] results = client.invoke("echo", "testing");
 		assertNotNull(results);
 		assertEquals(1, results.length);
         assertEquals("testing", results[0]);
+
+        Thread.currentThread().setContextClassLoader(originalClassLoader);
 	}
 
 }

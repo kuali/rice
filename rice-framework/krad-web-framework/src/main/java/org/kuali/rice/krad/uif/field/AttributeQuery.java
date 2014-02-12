@@ -472,7 +472,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T attributeQuery) {

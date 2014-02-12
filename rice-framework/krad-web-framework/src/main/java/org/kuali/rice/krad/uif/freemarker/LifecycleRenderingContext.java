@@ -233,7 +233,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#getOutputStream()
+         * {@inheritDoc}
          */
         @Override
         public ServletOutputStream getOutputStream() throws IOException {
@@ -246,7 +246,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#getWriter()
+         * {@inheritDoc}
          */
         @Override
         public PrintWriter getWriter() throws IOException {
@@ -254,7 +254,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#getBufferSize()
+         * {@inheritDoc}
          */
         @Override
         public int getBufferSize() {
@@ -262,7 +262,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#flushBuffer()
+         * {@inheritDoc}
          */
         @Override
         public void flushBuffer() throws IOException {
@@ -270,7 +270,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#reset()
+         * {@inheritDoc}
          */
         @Override
         public void reset() {
@@ -278,7 +278,7 @@ public class LifecycleRenderingContext {
         }
 
         /**
-         * @see ServletResponseWrapper#resetBuffer()
+         * {@inheritDoc}
          */
         @Override
         public void resetBuffer() {

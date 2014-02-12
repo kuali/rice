@@ -38,7 +38,7 @@ public class FreeMarkerTemplateAdaptor implements InlineTemplateAdaptor, Seriali
     /**
      * Render a KRAD component template inline.
      * 
-     * @see freemarker.core.InlineKradAdaptor#accept(freemarker.core.Environment)
+     * {@inheritDoc}
      */
     @Override
     public void accept(Environment env) throws TemplateException, IOException {

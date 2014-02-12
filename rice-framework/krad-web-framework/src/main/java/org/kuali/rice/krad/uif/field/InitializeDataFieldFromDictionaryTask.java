@@ -53,7 +53,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      * Sets properties of the <code>InputField</code> (if blank) to the corresponding attribute
      * entry in the data dictionary
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

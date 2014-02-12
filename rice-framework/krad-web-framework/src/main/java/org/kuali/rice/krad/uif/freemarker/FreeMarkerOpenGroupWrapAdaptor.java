@@ -36,7 +36,7 @@ public class FreeMarkerOpenGroupWrapAdaptor implements InlineTemplateAdaptor, Se
     /**
      * Render a opening elements for wrapping a group component inline.
      * 
-     * @see freemarker.core.InlineTemplateAdaptor#accept(freemarker.core.Environment)
+     * {@inheritDoc}
      */
     @Override
     public void accept(Environment env) throws TemplateException, IOException {

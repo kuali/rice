@@ -39,7 +39,7 @@ public class FreeMarkerStackedAdaptor implements InlineTemplateAdaptor, Serializ
     /**
      * Render a KRAD collection via the stacked layout manager inline.
      * 
-     * @see freemarker.core.InlineKradAdaptor#accept(freemarker.core.Environment)
+     * {@inheritDoc}
      */
     @Override
     public void accept(Environment env) throws TemplateException, IOException {

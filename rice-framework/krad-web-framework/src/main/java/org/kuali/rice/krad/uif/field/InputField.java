@@ -160,8 +160,7 @@ public class InputField extends DataField implements SimpleConstrainable, CaseCo
      * <li>Initializes instructional and constraint message fields if necessary</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {

@@ -34,6 +34,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.xml.namespace.QName;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -177,9 +178,12 @@ public abstract class KRADTestCase extends BaselineTestCase {
         // cache the KRAD test harness spring resource loader
         // this is not great because it doesn't conform to the lifecycle
         // ...but why are we creating sub-resourceloaders instead of just adding locations to the test harness context?
+        List<String> resourceLocations = new ArrayList<String>();
+        resourceLocations.add("classpath:KRADTestHarnessSpringBeans.xml");
+        resourceLocations.add("classpath:KNSTestSpringBeans.xml");
         if (kradTestHarnessSpringResourceLoader == null) {
             kradTestHarnessSpringResourceLoader = new SpringResourceLoader(new QName("KRADTestResourceLoader"),
-                    "classpath:KRADTestHarnessSpringBeans.xml", null);
+                    resourceLocations, null);
             kradTestHarnessSpringResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
         }
         return kradTestHarnessSpringResourceLoader;

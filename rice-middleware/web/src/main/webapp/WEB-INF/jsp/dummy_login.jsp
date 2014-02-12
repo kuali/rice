@@ -31,56 +31,6 @@
 	        <script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
 		</c:if>
 	</c:forEach>
-
-    <style type="text/css">
-        div.body {
-            background-image: url("${ConfigProperties.application.url}/rice-portal/images/os-guy.gif"${ConfigProperties.application.url}/rice-portal/images/os-guy.gif");
-            background-repeat: no-repeat;
-            padding-top: 5em;
-        }
-
-        table#login {
-            margin: auto;
-            background-color: #dfdda9;
-            border: .5em solid #fffdd8;
-            /* simple rounded corners for mozilla & webkit */
-            -moz-border-radius: 10px;
-            -webkit-border-radius: 10px;
-        }
-
-        table#login th {
-            height: 30px;
-            padding-top: .8em;
-            padding-bottom: .8em;
-            color: #a02919;
-            font-size: 2em;
-        }
-
-        #login td {
-            padding: .2em;
-            height: 20px;
-        }
-
-        #login .rightTd {
-            padding-right: 1.2em;
-        }
-
-        #login .leftTd {
-            padding-left: 1.2em;
-        }
-
-        table#login td#buttonRow {
-            padding-top: 1em;
-            padding-bottom: .6em;
-        }
-
-        div.build {
-            float: right;
-            color: #dfdda9;
-            margin: .3em;
-        }
-
-    </style>
   </head>
 
 <body OnLoad="document.loginForm.__login_user.focus();">
@@ -119,7 +69,7 @@
             </tr>
             </c:if>
             <tr>
-              <td id="buttonRow" height="30" colspan="2" align="center"><input type="submit" value="Login"/>
+              <td id="buttonRow" height="30" colspan="2"><input type="submit" value="Login" class="btn btn-primary login-button"/>
               <!-- input type="image" title="Click to login." value="login" name="imageField" src="${pageContext.request.contextPath}/rice-portal/images/tinybutton-login.gif"/ -->
               </td>
             </tr>

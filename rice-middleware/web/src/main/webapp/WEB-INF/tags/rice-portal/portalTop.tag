@@ -40,11 +40,4 @@ if (top.location != self.location) {
 
 </head>
 <body>
-
-<div id="header" title="<c:out value="${ConfigProperties.portal.title}"/>"> 
-    <h1 class="headerImage"></h1>
-  </div>
-  <div id="feedback">
-  	<a class="portal_link" href="<bean:message key="app.feedback.link"/>" target="_blank" title="<bean:message key="app.feedback.linkText" />"><bean:message key="app.feedback.linkText" /></a>
-  </div>
-  <div id="build">${ConfigProperties.version} (${ConfigProperties.datasource.ojb.platform})</div>
+<portal:portalTabs selectedTab="${sessionScope.selectedTab}" channelTitle="${param.channelTitle}" />

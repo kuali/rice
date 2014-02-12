@@ -15,8 +15,7 @@
     limitations under the License.
 
 --%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <%-- Redirected because we can't set the welcome page to a virtual URL. --%>
 <%
 	response.sendRedirect("Portal.do?methodToCall=portal");

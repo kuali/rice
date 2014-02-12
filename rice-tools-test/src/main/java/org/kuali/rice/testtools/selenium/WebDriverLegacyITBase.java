@@ -1801,7 +1801,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.groupDescription", groupDescription);
 
         // Add Ad hoc Recipient
-        addAdHocRecipientsPerson(new String[]{"dev1", "F"});
+        addAdHocRecipientsPerson(new String[]{"dev1", "F"}); // "One, Developer"
 
         // Add Ad hoc Workgroup
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -1827,12 +1827,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickSearch();
+        String adHocPerson = waitForElementPresentByXpath("//table[@id='row']/tbody/tr/td[2]/a").getText();
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitAndClickSave();
         waitAndClickSubmit();
         waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
+
+        // Verify Document Overview info
+        docSearch(docId);
+        waitAndClickByLinkText(docId);
+        switchToWindow("Kuali :: Group");
+        assertTextPresent(new String[]{"Adding Brown Group", "I want to add Brown Group to test KIM", organizationDocumentNumber});
+        waitAndClickByName("methodToCall.close");
+
         waitAndClickByLinkText("Administration");
         waitAndClickByLinkText("Group");
         selectFrameIframePortlet();
@@ -1841,10 +1850,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresent(By.linkText(groupName), docId + " with groupName "+ groupName + " not present!");
         waitAndClickByLinkText("edit");
         waitAndClickByName("methodToCall.showAllTabs");
-        waitForTextPresent("admin admin");
-        assertTextPresent(groupDescription);
-        assertTextPresent(nameSpace);
-        assertTextPresent(groupName);
+        assertTextPresent(new String[]{adHocPerson, groupDescription, nameSpace, groupName});
     }
 
     protected String getDateTimeStampFormatted() {

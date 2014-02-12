@@ -21,6 +21,8 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -49,7 +51,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View
      */
-    public static final String TARGET_URL_CHECK = "/kr-krad/kradsampleapp?viewId=Demo-BreadcrumbsView";
+    public static final String TARGET_URL_CHECK = "/kr-krad/kradsampleapp?viewId=Demo-Breadcrumbs-View";
 
     @Override
     protected String getBookmarkUrl() {
@@ -114,11 +116,24 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue("Path-based", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
-        waitAndClickByLinkText("Page 2");
-        waitForElementPresentByName("inputField9");
-        assertElementPresentByName("inputField9");
+        assertBreadcrumb(3);
+        waitAndClickByLinkText("Click me to continue chaining path-based breadcrumbs", "first click");
+        assertBreadcrumb(4);
+        waitAndClickByLinkText("Click me to continue chaining path-based breadcrumbs", "second click");
+        assertBreadcrumb(5);
         driver.close();
         switchToWindow(START_PAGE_TITLE);
+    }
+
+    protected void assertBreadcrumb(int depth) throws Exception {
+        WebElement element = findElement(By.xpath("//ol[@role='navigation']"));
+        List<WebElement> elements = element.findElements(By.xpath("li"));
+        assertEquals(depth, elements.size());
+        assertTrue(elements.get(0).getText().contains("Home"));
+        for (int i = 1; i < elements.size() - 1; i++) {
+            assertTrue(elements.get(i).getText().contains("View Title"));
+        }
+        assertTrue(elements.get(elements.size() - 1).getText().contains("Page 1 Title"));
     }
 
     protected void testWidgetsBreadcrumbOverrides() throws Exception {

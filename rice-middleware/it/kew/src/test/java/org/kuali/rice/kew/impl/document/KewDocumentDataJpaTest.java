@@ -38,12 +38,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.persistence.OptimisticLockException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -116,7 +114,7 @@ public class KewDocumentDataJpaTest extends KEWTestCase {
         assertTrue("saveRouteHeader saved correctly",StringUtils.equals(dv.getAppDocStatus(),"X"));
     }
 
-    @Test(expected = OptimisticLockException.class)
+    @Test(expected = OptimisticLockingFailureException.class)
     public void testDocumentRouteHeaderValueSaveRouteHeaderThrowsOptimisticException() throws Exception{
         DocumentRouteHeaderValue dv = setupDocumentRouteHeaderValue();
         dv.setVersionNumber(null);

@@ -188,7 +188,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     }
 
     @Test
-    public void testClientResponsivenessProgressiveDisclosureConditionalRefreshNave() throws Exception {
+    public void testClientResponsivenessProgressiveDisclosureConditionalRefreshNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureConditionalRefresh();
         passed();
     }

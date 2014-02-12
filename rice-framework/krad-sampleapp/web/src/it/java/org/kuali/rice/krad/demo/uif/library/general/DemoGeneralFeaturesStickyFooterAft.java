@@ -45,7 +45,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Application Footer");
        waitAndClickByLinkText("Sticky application footer");
        switchToWindow("Kuali :: View Header");
-       assertElementPresentByXpath("//div[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
+       assertElementPresentByXpath("//footer[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
        switchToWindow("Kuali");
     }
     
@@ -53,7 +53,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Page Footer");
         waitAndClickByLinkText("Sticky page footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//footer[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -61,7 +61,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky View Footer");
         waitAndClickByLinkText("Sticky view footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//footer[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -69,7 +69,7 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky View Footer and Page Footer");
         waitAndClickByLinkText("Sticky page and view footer");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//footer[@class='uif-horizontalBoxGroup clearfix uif-stickyFooter uif-stickyButtonFooter' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     
@@ -77,8 +77,8 @@ public class DemoGeneralFeaturesStickyFooterAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Everything");
         waitAndClickByLinkText("All footer content sticky");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//div[@class='uif-stickyFooter' and @data-sticky_footer='true']");
-        assertElementPresentByXpath("//div[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//footer[@class='uif-stickyFooter' and @data-sticky_footer='true']");
+        assertElementPresentByXpath("//footer[@id='Uif-ApplicationFooter-Wrapper' and @data-sticky_footer='true']");
         switchToWindow("Kuali");
     }
     

@@ -21,6 +21,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -29,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -401,6 +403,29 @@ public final class ObjectPropertyUtils {
      */
     public static boolean isWritableProperty(Object object, String propertyPath) {
         return ObjectPropertyReference.resolvePath(object, object.getClass(), propertyPath, false).canWrite();
+    }
+
+    /**
+     * Returns an List of {@code Field} objects reflecting all the fields
+     * declared by the class or interface represented by this
+     * {@code Class} object. This includes public, protected, default
+     * (package) access, and private fields, and includes inherited fields.
+     *
+     * @param fields A list of {@code Field} objects which gets returned.
+     * @param type Type of class or interface for which fields are returned.
+     * @param stopAt The Superclass upto which the inherited fields are to be included
+     * @return List of all fields
+     */
+    public static List<Field> getAllFields(List<Field> fields, Class<?> type, Class<?> stopAt) {
+        for (Field field : type.getDeclaredFields()) {
+            fields.add(field);
+        }
+
+        if (type.getSuperclass() != null && !type.getName().equals(stopAt.getName())) {
+            fields = getAllFields(fields, type.getSuperclass(), stopAt);
+        }
+
+        return fields;
     }
 
     /**

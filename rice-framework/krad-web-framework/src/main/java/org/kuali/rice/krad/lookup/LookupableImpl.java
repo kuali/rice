@@ -478,12 +478,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(
                 getDataObjectClass());
 
-        Map<String, String> filteredFieldValues = new HashMap<String, String>();
-        for (String fieldName : searchCriteria.keySet()) {
-            if (ddEntry.getAttributeNames().contains(fieldName)) {
-                filteredFieldValues.put(fieldName, searchCriteria.get(fieldName));
-            }
-        }
+        Map<String, Object> filteredFieldValues = KRADUtils.getFilteredSearchCriteria(
+                (Class<? extends ExternalizableBusinessObject>) getDataObjectClass(),searchCriteria,ddEntry);
 
         List<?> searchResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(
                 (Class<? extends ExternalizableBusinessObject>) getDataObjectClass(), (Map) filteredFieldValues,

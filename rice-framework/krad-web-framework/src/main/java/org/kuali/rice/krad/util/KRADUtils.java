@@ -23,15 +23,19 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -67,11 +71,13 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -610,6 +616,77 @@ public final class KRADUtils {
         }
 
         return properties;
+    }
+
+    /**
+     * Utility method to convert the search criteria which is a Map<String,String> into a Map<String,Object>.
+     *
+     * <p>
+     * This is done because OJB used to take strings and coerce them automatically into the right type but JPA does
+     * no such thing
+     * </p>
+     *
+     * @param dataObjectClass - business object class
+     * @param searchCriteria - map of criteria currently set
+     * @param ddEntry - the business object dictionary entry for the passed in business object class
+     * @return Map <String,Object> containing all the converted values
+     */
+    public static Map<String, Object> getFilteredSearchCriteria(
+            Class<? extends ExternalizableBusinessObject> dataObjectClass, Map<String, String> searchCriteria,
+            BusinessObjectEntry ddEntry) {
+        Map<String, Object> filteredFieldValues = new HashMap<String, Object>();
+        List<java.lang.reflect.Field> allFields = ObjectPropertyUtils.getAllFields(
+                new ArrayList<java.lang.reflect.Field>(), dataObjectClass, Object.class);
+
+        //Check if there is a @Convert annotation on any of the fields
+        for (String fieldName : searchCriteria.keySet()) {
+            boolean convertAnnotationFound = false;
+            for (java.lang.reflect.Field f : allFields) {
+                if (f.getName().equalsIgnoreCase(fieldName)) {
+                    if (f.getAnnotation(javax.persistence.Convert.class) != null) {
+                        convertAnnotationFound = true;
+                    }
+                    break;
+                }
+            }
+
+            //Check for the propertyType of the field and based on that convert the fieldValues to the appropriate type
+            if (convertAnnotationFound && ddEntry.getAttributeNames().contains(fieldName)) {
+                Class<?> propertyType = ObjectPropertyUtils.getPropertyType(dataObjectClass, fieldName);
+                String strValue = searchCriteria.get(fieldName);
+                if (TypeUtils.isBooleanClass(propertyType)) {
+                    filteredFieldValues.put(fieldName, ("Y".equalsIgnoreCase(strValue)
+                            || "T".equalsIgnoreCase(strValue)
+                            || "1".equalsIgnoreCase(strValue)
+                            || "true".equalsIgnoreCase(strValue)));
+                } else if (TypeUtils.isDecimalClass(propertyType)) {
+                    try {
+                        filteredFieldValues.put(fieldName, new BigDecimal(strValue));
+                    } catch (NumberFormatException nfe) {
+                        GlobalVariables.getMessageMap().putError("searchCriteria[" + fieldName + "]",
+                                RiceKeyConstants.ERROR_NUMBER, strValue);
+                        return new HashMap<String, Object>();
+                    }
+                } else if (TypeUtils.isTemporalClass(propertyType)) {
+                    try {
+                        filteredFieldValues.put(fieldName, CoreApiServiceLocator.getDateTimeService().convertToSqlDate(
+                                strValue));
+                    } catch (ParseException pe) {
+                        GlobalVariables.getMessageMap().putError("searchCriteria[" + fieldName + "]",
+                                RiceKeyConstants.ERROR_DATE_TIME, strValue);
+                        return new HashMap<String, Object>();
+                    }
+                }
+            }
+
+            // If value not converted set the value from searchCriteria
+            if (filteredFieldValues.get(fieldName) == null) {
+                filteredFieldValues.put(fieldName, searchCriteria.get(fieldName));
+            }
+
+        }
+        return filteredFieldValues;
+
     }
 
     /**

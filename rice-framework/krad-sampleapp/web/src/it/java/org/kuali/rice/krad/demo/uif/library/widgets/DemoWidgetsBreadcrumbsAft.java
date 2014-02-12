@@ -130,9 +130,11 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         List<WebElement> elements = element.findElements(By.xpath("li"));
         assertEquals(depth, elements.size());
         assertTrue(elements.get(0).getText().contains("Home"));
+
         for (int i = 1; i < elements.size() - 1; i++) {
             assertTrue(elements.get(i).getText().contains("View Title"));
         }
+
         assertTrue(elements.get(elements.size() - 1).getText().contains("Page 1 Title"));
     }
 

@@ -941,7 +941,6 @@ public class DocumentServiceImpl implements DocumentService {
         Note note = new Note();
 
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
-        note.setVersionNumber(Long.valueOf(1));
         note.setNoteText(text);
         note.setNoteTypeCode(document.getNoteType().getCode());
 

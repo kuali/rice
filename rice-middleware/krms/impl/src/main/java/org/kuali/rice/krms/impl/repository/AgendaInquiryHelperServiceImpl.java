@@ -42,9 +42,7 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
     public AgendaEditor retrieveDataObject(Map fieldValues) {
         AgendaEditor agendaEditor = null;
 
-        Map<String, Object> primaryKeys = Collections.singletonMap("id", fieldValues.get("id"));
-
-        AgendaBo agenda = getDataObjectService().find(AgendaBo.class, primaryKeys);
+        AgendaBo agenda = getDataObjectService().find(AgendaBo.class, fieldValues.get("id"));
         if (agenda != null) {
             agendaEditor = new AgendaEditor();
             agendaEditor.setAgenda(agenda);
@@ -58,16 +56,18 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
 
     /**
      * Returns the AgendaEditor from the given InquiryForm
+     *
      * @param model InquiryFrom to retrieve the AgendaEditor from.
      * @return AgendaEditor retrieved from the given InquiryForm.
      */
     private AgendaEditor retrieveAgendaEditor(InquiryForm model) {
-        InquiryForm inquiryForm = (InquiryForm)model;
-        return (AgendaEditor)inquiryForm.getDataObject();
+        InquiryForm inquiryForm = (InquiryForm) model;
+        return (AgendaEditor) inquiryForm.getDataObject();
     }
 
     /**
      * Returns the Agenda's RemotableAttributeFields
+     *
      * @param view
      * @param model InquiryFrom to retrieve the AgendaEditor from.
      * @param container
@@ -80,33 +80,36 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
 
     /**
      * Returns the Rule Action RemotableAttributeFields. This only supports a single action within a rule.
+     *
      * @param view
      * @param model InquiryFrom to retrieve the AgendaEditor from.
      * @param container
      * @return List<RemotableAttributeField>
      */
-    public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model, Container container) {
-        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm)model);
+    public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model,
+            Container container) {
+        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm) model);
         return krmsRetriever.retrieveRuleActionCustomAttributes(agendaEditor);
     }
 
     /**
      * Returns the Rule RemotableAttributeFields. This only supports a single action within a rule.
+     *
      * @param view
      * @param model InquiryFrom to retrieve the AgendaEditor from.
      * @param container
      * @return List<RemotableAttributeField>
      */
     public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
-        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm)model);
+        AgendaEditor agendaEditor = retrieveAgendaEditor((InquiryForm) model);
         return krmsRetriever.retrieveRuleCustomAttributes(agendaEditor);
     }
-
 
     /**
      * Retrieve a list of {@link RemotableAttributeField}s for the parameters (if any) required by the resolver for
      * the selected term in the proposition that is under edit.  Since this method is part of the inquiry view,
      * non of the propositions will ever be under edit when it is called, and an empty list will be returned.
+     *
      * @param view
      * @param model InquiryFrom to retrieve the AgendaEditor from.
      * @param container
@@ -116,9 +119,8 @@ public class AgendaInquiryHelperServiceImpl extends KualiInquirableImpl {
         return Collections.emptyList();
     }
 
-
     public DataObjectService getDataObjectService() {
-        if(dataObjectService == null){
+        if (dataObjectService == null) {
             return KRADServiceLocator.getDataObjectService();
         }
         return dataObjectService;

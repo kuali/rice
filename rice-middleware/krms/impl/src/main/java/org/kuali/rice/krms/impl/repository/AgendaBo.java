@@ -81,7 +81,8 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
     @JoinColumn(name = "AGENDA_ID", referencedColumnName = "AGENDA_ID", insertable = true, updatable = true)
     private Set<AgendaAttributeBo> attributeBos;
 
-    @OneToMany(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(orphanRemoval = true, targetEntity = AgendaItemBo.class,
+            cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "AGENDA_ID", referencedColumnName = "AGENDA_ID", insertable = false, updatable = false)
     private List<AgendaItemBo> items;
 

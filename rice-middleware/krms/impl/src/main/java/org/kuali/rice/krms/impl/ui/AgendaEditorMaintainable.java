@@ -252,23 +252,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                     ((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
 
             // HACK: force lazy loaded items to be fetched
-            for (AgendaItemBo item : agenda.getItems()) {
-                LOG.debug(item.toString());
-                for (ActionBo action : item.getRule().getActions()) {
-                    if (!CollectionUtils.isEmpty(action.getAttributeBos())) {
-                        for (ActionAttributeBo actionAttribute : action.getAttributeBos()) {
-                            actionAttribute.getAttributeDefinition();
-                        }
-                    }
-                }
-
-                Tree propTree = item.getRule().refreshPropositionTree(true);
-                walkPropositionTree(item.getRule().getProposition());
-
-                for (RuleAttributeBo ruleAttribute : item.getRule().getAttributeBos()) {
-                    ruleAttribute.getAttributeDefinition();
-                }
-            }
+            forceLoadLazyRelations(agenda);
 
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
                 String dateTimeStamp = (new Date()).getTime() + "";
@@ -301,6 +285,26 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         }
 
         return dataObject;
+    }
+
+    private void forceLoadLazyRelations(AgendaBo agenda) {
+        for (AgendaItemBo item : agenda.getItems()) {
+            LOG.debug(item.toString());
+            for (ActionBo action : item.getRule().getActions()) {
+                if (!CollectionUtils.isEmpty(action.getAttributeBos())) {
+                    for (ActionAttributeBo actionAttribute : action.getAttributeBos()) {
+                        actionAttribute.getAttributeDefinition();
+                    }
+                }
+            }
+
+            Tree propTree = item.getRule().refreshPropositionTree(true);
+            walkPropositionTree(item.getRule().getProposition());
+
+            for (RuleAttributeBo ruleAttribute : item.getRule().getAttributeBos()) {
+                ruleAttribute.getAttributeDefinition();
+            }
+        }
     }
 
     private void walkPropositionTree(PropositionBo prop) {
@@ -351,22 +355,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         }
 
         if (agendaBo != null) {
-            AgendaBo dbAgendaBo = getDataObjectService().find(AgendaBo.class, agendaBo.getId());
-
-            AgendaItemBo dbFirstAgendaItemBo = getDataObjectService().find(AgendaItemBo.class, dbAgendaBo.getFirstItemId());
-
-            List<AgendaItemBo> deletionOrder = new ArrayList<AgendaItemBo>();
-            addItemsToListForDeletion(deletionOrder, dbFirstAgendaItemBo);
-
-            for (AgendaItemBo agendaItemToDelete : deletionOrder) {
-                getDataObjectService().delete(agendaItemToDelete);
-            }
-
-            dbAgendaBo.setItems(null);
-            getDataObjectService().delete(dbAgendaBo);
-
             flushCacheBeforeSave();
-
             getDataObjectService().save(agendaBo);
         } else {
             throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");

@@ -1314,6 +1314,10 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findContextIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria must not be null");
+        }
+
         QueryResults<ContextBo> results = getDataObjectService().findMatching(ContextBo.class, queryByCriteria);
 
         List<String> list = new ArrayList<String> ();

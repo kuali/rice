@@ -17,8 +17,6 @@ package org.kuali.rice.krad.uif;
 
 import org.junit.Test;
 import org.kuali.rice.krad.test.TestDictionaryBean;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.TestDictionaryConfig;
@@ -231,35 +229,6 @@ public class UifBeanFactoryPostProcessorTest extends KRADTestCase {
         TestDictionaryBean uifTestBeanObject1 = testListBeanDefinitionNaming.getListReference1().get(1);
         assertTrue("expression graph should have a property1", uifTestBeanObject1.getExpressionGraph().containsKey(
                 "property1"));
-    }
-
-    /**
-     * Tests that base ids are being correctly assigned by the post processor.
-     */
-    @Test
-    public void testBaseIdAssignments() {
-        Group testGroup = (Group) getTestDictionaryObject("testBaseId");
-
-        assertEquals("Base id not correct when bean id given", "testBaseId", testGroup.getBaseId());
-
-        List<? extends Component> items = testGroup.getItems();
-
-        assertTrue("Base id not assigned when bean id is not given", items.get(0).getBaseId().startsWith("b"));
-        assertEquals("Base id not correct when nested input field bean id is given", "InputField-BaseId", items.get(1)
-                .getBaseId());
-        assertTrue("Base id not assigned when bean overrides parent", items.get(2).getBaseId().startsWith("b"));
-        assertEquals("Base id not correct when nested group bean id is given", "Group-BaseId", items.get(3)
-                .getBaseId());
-
-        Group testGroup2 = (Group) getTestDictionaryObject("testBaseId2");
-
-        assertEquals("Base id not correct when bean id given and extends parent", "testBaseId2",
-                testGroup2.getBaseId());
-
-        List<? extends Component> items2 = testGroup.getItems();
-
-        assertEquals("Base id not correct when bean extends but does not override", "testBaseId", items2.get(0)
-                .getBaseId());
     }
 
 }

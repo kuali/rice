@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -44,7 +43,7 @@ public class ViewLifecycleBuild implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleBuild.class);
 
     private final Map<String, String> parameters;
-    private final Map<String, Tree<String, String>> refreshPathMappings;
+    private final Map<String, List<String>> refreshPathMappings;
 
     /**
      * Constructor.
@@ -52,10 +51,9 @@ public class ViewLifecycleBuild implements Runnable {
      * @param parameters Map of key values pairs that provide configuration for the view, this is generally comes from
      * the request and can be the request parameter Map itself. Any parameters not valid for the View will be
      * filtered out
-     * @param refreshPathMappings in the case of a component refresh, tree of parent paths that will be refreshed
-     * before the refresh component is built
+     * @param refreshPathMappings
      */
-    public ViewLifecycleBuild(Map<String, String> parameters, Map<String, Tree<String, String>> refreshPathMappings) {
+    public ViewLifecycleBuild(Map<String, String> parameters, Map<String, List<String>> refreshPathMappings) {
         this.parameters = parameters;
         this.refreshPathMappings = refreshPathMappings;
     }
@@ -136,7 +134,7 @@ public class ViewLifecycleBuild implements Runnable {
 
         helper.performCustomViewInitialization(model);
 
-        Tree<String, String> refreshPaths = null;
+        List<String> refreshPaths = null;
         if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.INITIALIZE);
         }
@@ -175,7 +173,7 @@ public class ViewLifecycleBuild implements Runnable {
         // set view context for conditional expressions
         helper.setViewContext();
 
-        Tree<String, String> refreshPaths = null;
+        List<String> refreshPaths = null;
         if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.APPLY_MODEL);
         }
@@ -200,7 +198,7 @@ public class ViewLifecycleBuild implements Runnable {
             LOG.info("performing finalize phase for view: " + view.getId());
         }
 
-        Tree<String, String> refreshPaths = null;
+        List<String> refreshPaths = null;
         if (refreshPathMappings != null) {
             refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.FINALIZE);
         }

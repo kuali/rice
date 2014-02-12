@@ -57,7 +57,6 @@ public class ComponentUtilsTest {
         component = new InputFieldBase();
         componentId = "field1";
         component.setId(componentId);
-        component.setBaseId(componentId);
     }
 
     // Initialization methods

@@ -20,8 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -31,7 +29,6 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.TypedStringValue;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedArray;
 import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.beans.factory.support.ManagedMap;
@@ -67,10 +64,7 @@ import java.util.Set;
 public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     private static final Log LOG = LogFactory.getLog(UifBeanFactoryPostProcessor.class);
 
-    private int baseIdSequence;
-
     public UifBeanFactoryPostProcessor() {
-        baseIdSequence = 1;
     }
 
     /**
@@ -217,8 +211,6 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
                 expressionGraph.put(expressionPath, parentExpression.getValue());
             }
         }
-
-       assignIdPropertiesAndRegister(beanName, beanClass, beanDefinition, pvs, beanFactory);
 
         if (StringUtils.isNotBlank(beanName)) {
             processedBeanNames.add(beanName);
@@ -404,52 +396,6 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
         expressionGraph.clear();
         expressionGraph.putAll(adjustedExpressionGraph);
-    }
-
-    /**
-     * For {@link Group} and {@link Field} components, assigns a base id to the component that will allow the
-     * component to be retrieved from spring for doing refreshes.
-     *
-     * <p>If an id was given for the bean definition, this is used as the base id. If not, a unique sequence
-     * generated id is assigned. If necessary, the bean definition is also registered with the bean factory
-     * so it can be retrieved independently.</p>
-     *
-     * @param beanName configured id/name for the bean
-     * @param beanClass class for the object the bean creates
-     * @param beanDefinition definition for the bean
-     * @param pvs property values configured through definition
-     * @param beanFactory bean factory for registering new beans
-     */
-    protected void assignIdPropertiesAndRegister(String beanName, Class<?> beanClass, BeanDefinition beanDefinition,
-            MutablePropertyValues pvs, ConfigurableListableBeanFactory beanFactory) {
-        if (!(Group.class.isAssignableFrom(beanClass) || Field.class.isAssignableFrom(beanClass))) {
-            return;
-        }
-
-        String baseId = "";
-
-        // if id was given on the bean, use that as the base id
-        if (StringUtils.isNotBlank(beanName) && !StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName,
-                "#")) {
-            baseId = beanName;
-        } else {
-            // if the bean has a parent and sets no additional properties, we can let the bean inherit the
-            // base id. If either of these conditions is not true, we need to assign a unique base id
-            if (StringUtils.isBlank(beanDefinition.getParentName()) || !pvs.isEmpty()) {
-                baseId = UifConstants.BASE_ID_PREFIX + baseIdSequence;
-
-                baseIdSequence += 1;
-            }
-        }
-
-        if (StringUtils.isNotBlank(baseId)) {
-            pvs.addPropertyValue(UifPropertyPaths.BASE_ID, baseId);
-
-            // if factory doesn't contain the bean, register it by its base id
-            if (!beanFactory.containsBean(baseId)) {
-                ((BeanDefinitionRegistry) beanFactory).registerBeanDefinition(baseId, beanDefinition);
-            }
-        }
     }
 
     /**

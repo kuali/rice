@@ -17,11 +17,12 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import org.kuali.rice.core.api.util.tree.Tree;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -36,7 +37,6 @@ import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewTheme;
-import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -94,12 +94,13 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      *
      * @param element The element the model should be applied to
      * @param model Top level object containing the data
-     * @param path The path to the element relative to the parent element.
-     * @param parent The parent element.
-     * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
-     * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
+     * @param path The path to the element relative to the parent element
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
+     * @param parent The parent element
+     * @param nextPhase The phase to queue directly upon completion of this phase, if applicable
+     * @param visitedIds Tracks components ids that have been seen for adjusting duplicates
      */
-    protected void prepare(LifecycleElement element, Object model, String path, Tree<String, String> refreshPaths,
+    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
             Component parent, ViewLifecyclePhaseBase nextPhase, Set<String> visitedIds) {
         super.prepare(element, model, path, refreshPaths, parent, nextPhase);
 
@@ -200,7 +201,8 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, this));
 
-        if (isRefreshComponent()) {
+        if (ViewLifecycle.isRefreshLifecycle() && StringUtils.equals(getViewPath(),
+                ViewLifecycle.getRefreshElementPath())) {
             tasks.add(LifecycleTaskFactory.getTask(RefreshStateModifyTask.class, this));
         }
 

@@ -222,8 +222,8 @@ public abstract class UifControllerBase {
         boolean canOpenView = form.getView().getAuthorizer().canOpenView(form.getView(), form, user);
         if (!canOpenView) {
             throw new AuthorizationException(user.getPrincipalName(), "open", form.getView().getId(),
-                    "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " + form.getView()
-                            .getId(), null);
+                    "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " +
+                            form.getView().getId(), null);
         }
     }
 
@@ -253,8 +253,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
-                request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
@@ -287,8 +287,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
-                request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
@@ -326,8 +326,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
-                request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
@@ -367,8 +367,8 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, false,
-                request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
@@ -418,10 +418,8 @@ public abstract class UifControllerBase {
             returnToStart = request.getParameter(UifConstants.HistoryFlow.RETURN_TO_START);
         }
 
-        if (StringUtils.isNotBlank(returnToStart)
-                && Boolean.parseBoolean(returnToStart)
-                && historyFlow != null
-                && StringUtils.isNotBlank(historyFlow.getFlowStartPoint())) {
+        if (StringUtils.isNotBlank(returnToStart) && Boolean.parseBoolean(returnToStart) && historyFlow != null &&
+                StringUtils.isNotBlank(historyFlow.getFlowStartPoint())) {
             returnUrl = historyFlow.getFlowStartPoint();
         }
 
@@ -504,8 +502,8 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, false, request,
-                response, new ViewLifecycleRefreshBuild());
+        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request, response,
+                new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
     }
@@ -611,16 +609,17 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
-                    + UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
         }
 
         // get the field term to match
         String queryTerm = request.getParameter(UifParameters.QUERY_TERM);
         if (StringUtils.isBlank(queryTerm)) {
             throw new RuntimeException(
-                    "Unable to find id for query term value for attribute query on under request parameter name: "
-                            + UifParameters.QUERY_TERM);
+                    "Unable to find id for query term value for attribute query on under request parameter name: " +
+                            UifParameters.QUERY_TERM);
         }
 
         // invoke attribute query service to perform the query
@@ -662,8 +661,9 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
-                    + UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
         }
 
         // invoke attribute query service to perform the query
@@ -741,8 +741,8 @@ public abstract class UifControllerBase {
             // ToDo: It would be nice if showDialog could be called here and avoid this exception.
             //       This would also remove the need of having to call showDialog explicitly.
 
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                    + "Check that hasDialogBeenAnswered(id) returns true.");
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
+                    "Check that hasDialogBeenAnswered(id) returns true.");
         }
 
         return dm.wasDialogAnswerAffirmative(dialogId);
@@ -783,8 +783,8 @@ public abstract class UifControllerBase {
             // ToDo: It would be nice if showDialog could be called here and avoid this exception.
             //       This would also remove the need of having to call showDialog explicitly.
 
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                    + "Check that hasDialogBeenAnswered(id) returns true.");
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
+                    "Check that hasDialogBeenAnswered(id) returns true.");
         }
 
         return dm.getDialogAnswer(dialogId);

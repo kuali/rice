@@ -67,7 +67,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
-    private String baseId;
     private String viewPath;
     private Map<String, String> phasePathMapping;
 
@@ -580,23 +579,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setId(String id) {
         checkMutable(true);
         this.id = id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getBaseId() {
-        return this.baseId;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBaseId(String baseId) {
-        checkMutable(true);
-        this.baseId = baseId;
     }
 
     /**
@@ -2410,7 +2392,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         ComponentBase componentCopy = ((ComponentBase) component);
 
         componentCopy.setId(this.id);
-        componentCopy.setBaseId(this.baseId);
 
         if (this.phasePathMapping != null) {
             componentCopy.setPhasePathMapping(new HashMap<String, String>(this.phasePathMapping));

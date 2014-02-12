@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+
+import java.util.List;
 
 /**
  * Represents a phase in the view lifecycle. 
@@ -41,17 +42,12 @@ public interface ViewLifecyclePhase extends LifecycleElementState, Runnable {
     Component getParent();
 
     /**
-     * Indicates whether the component the phase is being applied for is being built as part of
-     * a refresh request.
+     * When a refresh component lifecycle is being processed, list of paths the lifecycle should be invoked
+     * on (including the path for the component that is being refreshed).
      *
-     * <p>Note this only returns true for the topmost component (the component the request was made for), not
-     * nested components of the refresh component</p>
-     *
-     * @return boolean true if the component is a refresh component, false if not
+     * @return list of component paths (relative to the view)
      */
-    boolean isRefreshComponent();
-
-    Tree<String, String> getRefreshPaths();
+    List<String> getRefreshPaths();
     
     /**
      * Determines if this lifecycle phase has completed processing.

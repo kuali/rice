@@ -43,9 +43,10 @@
 
             <#dyncall templateName templateParms/>
         </#if>
+
         <!-- PAGE RELATED VARS -->
         <#if KualiForm.view.renderForm>
-            <@spring.formHiddenInput id="pageId" path="KualiForm.view.currentPageId"/>
+            <@spring.formHiddenInput id="pageId" path="KualiForm.pageId"/>
         </#if>
     </@krad.groupWrap>
 

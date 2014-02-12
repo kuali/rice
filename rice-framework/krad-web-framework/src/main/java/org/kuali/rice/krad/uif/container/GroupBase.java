@@ -204,25 +204,6 @@ public class GroupBase extends ContainerBase implements Group {
                 }
             }
         }
-        
-//        if (isReadOnly()) {
-//            setValidationMessages(null);
-//            if (getHeader() != null) {
-//                getHeader().setReadOnly(true);
-//            }
-//            if (getFooter() != null) {
-//                getFooter().setReadOnly(true);
-//            }
-//
-//            List<? extends Component> items = getItems();
-//            if (items != null) {
-//                for (Component item : items) {
-//                    if (item != null) {
-//                        item.setReadOnly(true);
-//                    }
-//                }
-//            }
-//        }
     }
 
     /**

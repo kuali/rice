@@ -56,30 +56,6 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
 public interface Component extends UifDictionaryBean, LifecycleElement, Serializable, Ordered, ScriptEventSupport {
 
     /**
-     * Holds the id for the component that can be used to request new instances of that component from the
-     * {@link org.kuali.rice.krad.uif.util.ComponentFactory}
-     *
-     * <p>
-     * During component refreshes the component is reinitialized and the lifecycle is performed again to
-     * reflect the component state based on the latest updates (data, other component state). Since the lifecycle
-     * is only performed on the component, a new instance with configured initial state needs to be retrieved. Some
-     * component instances, such as those that are nested or created in code, cannot be obtained from the spring
-     * factory. For those the initial state is captured during the perform initialize phase and the factory id
-     * generated for referencing retrieving that configuration during a refresh
-     * </p>
-     *
-     * @return String bean id for component
-     */
-    String getBaseId();
-    
-    /**
-     * Setter for the base id that backs the component instance
-     *
-     * @param baseId
-     */
-    void setBaseId(String baseId);
-
-    /**
      * The name for the component type
      *
      * <p>

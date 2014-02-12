@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -46,9 +45,6 @@ public class PopulatePathTask extends ViewLifecycleTaskBase<LifecycleElement> {
         LifecycleElementState elementState = getElementState();
         LifecycleElement element = elementState.getElement();
 
-        if (element instanceof Component) {
-            ((Component) element).setBaseId(element.getId());
-        }
         element.setViewPath(elementState.getViewPath());
     }
 

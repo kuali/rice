@@ -246,7 +246,7 @@ public class FreeMarkerInlineRenderUtils {
                         "var condition = function(){return ("
                                 + component.getProgressiveDisclosureConditionJs()
                                 + ");};setupProgressiveCheck('" + StringEscapeUtils.escapeJavaScript(cName)
-                                + "', '" + component.getId() + "', '" + component.getBaseId() + "', condition,"
+                                + "', '" + component.getId() + "', condition,"
                                 + component.isProgressiveRenderAndRefresh() + ", '"
                                 + methodToCallOnRefresh + "');";
             }

@@ -277,9 +277,6 @@ public class View extends ContainerBase {
                     page.setItems(new ArrayList<Group>());
                 }
 
-                // TODO: REMOVE
-                // assignComponentIds(page);
-
                 // add the items configured on the view to the page items, and set as the
                 // new page items
                 List<Component> newItems = (List<Component>) page.getItems();
@@ -532,15 +529,19 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Iterates through the contained page items and returns the Page that
-     * matches the set current page id
+     * Iterates through the contained page items and returns the Page that matches the set current page id or
+     * the first page in the case of a single page view.
      *
-     * @return Page instance
+     * @return page group instance
      */
     public PageGroup getCurrentPage() {
-        for (Component pageGroup : this.getItems()) {
-            if (pageGroup instanceof PageGroup && StringUtils.equals(pageGroup.getId(), getCurrentPageId())) {
-                return (PageGroup) pageGroup;
+        for (Component item : this.getItems()) {
+            if (!(item instanceof PageGroup)) {
+                continue;
+            }
+
+            if (singlePageView || StringUtils.equals(item.getId(), getCurrentPageId())) {
+                return (PageGroup) item;
             }
         }
 

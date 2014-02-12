@@ -543,54 +543,52 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
  * @param condition - function which returns true to disclose, false otherwise
  * @param methodToCall - name of the method that should be invoked for the retrieve call (if custom method is needed)
  */
-function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall) {
-    if (!baseId.match("\_c0$")) {
-        jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
-            var refreshDisclosure = jQuery("#" + disclosureId);
-            if (refreshDisclosure.length) {
-                var displayWithId = disclosureId;
+function setupProgressiveCheck(controlName, disclosureId, condition, alwaysRetrieve, methodToCall) {
+    jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
+        var refreshDisclosure = jQuery("#" + disclosureId);
+        if (refreshDisclosure.length) {
+            var displayWithId = disclosureId;
 
-                if (condition()) {
-                    if (refreshDisclosure.data("role") == "placeholder" || alwaysRetrieve) {
-                        retrieveComponent(disclosureId, methodToCall);
-                    }
-                    else {
-                        refreshDisclosure.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-                        refreshDisclosure.show();
-
-                        if (refreshDisclosure.parent().is("td")) {
-                            refreshDisclosure.parent().show();
-                        }
-
-                        refreshDisclosure.animate({backgroundColor: "transparent"}, 6000);
-
-                        //re-enable validation on now shown inputs
-                        hiddenInputValidationToggle(disclosureId);
-
-                        var displayWithLabel = jQuery(".displayWith-" + displayWithId);
-                        displayWithLabel.show();
-                        if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
-                            displayWithLabel.parent().show();
-                        }
-                    }
+            if (condition()) {
+                if (refreshDisclosure.data("role") == "placeholder" || alwaysRetrieve) {
+                    retrieveComponent(disclosureId, methodToCall);
                 }
                 else {
-                    refreshDisclosure.hide();
+                    refreshDisclosure.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+                    refreshDisclosure.show();
 
-                    // ignore validation on hidden inputs
+                    if (refreshDisclosure.parent().is("td")) {
+                        refreshDisclosure.parent().show();
+                    }
+
+                    refreshDisclosure.animate({backgroundColor: "transparent"}, 6000);
+
+                    //re-enable validation on now shown inputs
                     hiddenInputValidationToggle(disclosureId);
 
                     var displayWithLabel = jQuery(".displayWith-" + displayWithId);
-                    displayWithLabel.hide();
+                    displayWithLabel.show();
                     if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
-                        displayWithLabel.parent().hide();
+                        displayWithLabel.parent().show();
                     }
                 }
-
-                hideEmptyCells();
             }
-        });
-    }
+            else {
+                refreshDisclosure.hide();
+
+                // ignore validation on hidden inputs
+                hiddenInputValidationToggle(disclosureId);
+
+                var displayWithLabel = jQuery(".displayWith-" + displayWithId);
+                displayWithLabel.hide();
+                if (displayWithLabel.parent().is("td") || displayWithLabel.parent().is("th")) {
+                    displayWithLabel.parent().hide();
+                }
+            }
+
+            hideEmptyCells();
+        }
+    });
 }
 
 /**

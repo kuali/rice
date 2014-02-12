@@ -65,9 +65,18 @@ public interface LifecycleElement extends Serializable, Copyable {
      * @param viewPath The property path.
      */
     void setViewPath(String viewPath);
-    
+
+    /**
+     * Map of paths for this component that will be used to process a refresh (if necessary).
+     *
+     * @return map of refresh paths, key represents the lifecycle phase and the value is the path for
+     * the component at that phase
+     */
     Map<String, String> getPhasePathMapping();
 
+    /**
+     * @see LifecycleElement#getPhasePathMapping()
+     */
     void setPhasePathMapping(Map<String, String> phasePathMapping);
     
     /**

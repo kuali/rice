@@ -183,6 +183,9 @@ public class UifControllerHelper {
                     Component updateComponent = form.getView().getCurrentPage();
                     form.setUpdateComponent(updateComponent);
                 }
+
+                // update the page on the form to reflect the current page of the view
+                form.setPageId(view.getCurrentPageId());
             } else {
                 LOG.warn("View in form was null: " + form);
             }

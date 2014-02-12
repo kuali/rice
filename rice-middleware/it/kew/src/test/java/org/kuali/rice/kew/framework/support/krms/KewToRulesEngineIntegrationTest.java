@@ -174,16 +174,19 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setTypeId(actionType.getId());
         Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
         peopleFlowAction.setAttributeBos(actionAttributes);
+        peopleFlowAction.setRule(rule);
 
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlowId);
+        actionAttribute.setAction(peopleFlowAction);
 
         ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
         actionAttributes.add(actionNameAttribute);
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
         actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
+        actionNameAttribute.setAction(peopleFlowAction);
 
         // set up a simple default type for the rule
         KrmsTypeRepositoryService krmsTypeRepositoryService = KrmsApiServiceLocator.getKrmsTypeRepositoryService();
@@ -259,6 +262,8 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         agendaAttributes.add(agendaAttribute);
         agendaAttribute.setAttributeDefinition(eventAttributeDefinition);
         agendaAttribute.setValue("workflow");
+        agendaAttribute.setAgenda(agendaBo);
+
         agendaBo = dataObjectService.save(agendaBo, PersistenceOption.FLUSH);
 
         contextBo.getAgendas().add(agendaBo);
@@ -369,19 +374,20 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setTypeId(approvalPeopleFlowActionType.getId());
         Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
         peopleFlowAction.setAttributeBos(actionAttributes);
+        peopleFlowAction.setRule(ruleBo);
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlow.getId());
+        actionAttribute.setAction(peopleFlowAction);
 
         ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
         actionAttributes.add(actionNameAttribute);
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
         actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
+        actionNameAttribute.setAction(peopleFlowAction);
 
         dataObjectService.save(ruleBo, PersistenceOption.FLUSH);
-        
     }
-
 }
 

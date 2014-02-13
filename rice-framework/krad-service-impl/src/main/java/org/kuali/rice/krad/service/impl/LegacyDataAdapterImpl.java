@@ -88,7 +88,7 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
-        return selectAdapter(clazz).findMatching(clazz,fieldValues);
+        return selectAdapter(clazz).findMatching(clazz, fieldValues);
     }
 
     @Override
@@ -141,7 +141,8 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
             List<String> wildcardAsLiteralPropertyNames, boolean unbounded,
             boolean allPrimaryKeyValuesPresentAndNotWildcard, Integer searchResultsLimit) {
         return selectAdapter(dataObjectClass).findCollectionBySearchHelper(dataObjectClass, formProperties,
-                wildcardAsLiteralPropertyNames, unbounded, allPrimaryKeyValuesPresentAndNotWildcard, searchResultsLimit);
+                wildcardAsLiteralPropertyNames, unbounded, allPrimaryKeyValuesPresentAndNotWildcard,
+                searchResultsLimit);
     }
 
     @Override
@@ -258,12 +259,12 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
+    public Object getReferenceIfExists(Object bo, String referenceName) {
         return selectAdapter(bo).getReferenceIfExists(bo, referenceName);
     }
 
     @Override
-    public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
+    public boolean allForeignKeyValuesPopulatedForReference(Object bo, String referenceName) {
         return selectAdapter(bo).allForeignKeyValuesPopulatedForReference(bo, referenceName);
     }
 
@@ -312,14 +313,13 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
             Class<?> dataObjectClass, String attributeName, String attributePrefix, boolean keysOnly,
             boolean supportsLookup, boolean supportsInquiry) {
         return selectAdapter(dataObjectClass).getDataObjectRelationship(dataObject, dataObjectClass, attributeName,
-                    attributePrefix, keysOnly, supportsLookup, supportsInquiry);
+                attributePrefix, keysOnly, supportsLookup, supportsInquiry);
     }
 
     @Override
     public boolean isPersistable(Class<?> dataObjectClass) {
         return selectAdapter(dataObjectClass).isPersistable(dataObjectClass);
     }
-
 
     @Override
     public ForeignKeyFieldsPopulationState getForeignKeyFieldsPopulationState(Object dataObject, String referenceName) {
@@ -338,36 +338,36 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void setObjectPropertyDeep(Object bo, String propertyName, Class type,
-            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         selectAdapter(bo).setObjectPropertyDeep(bo, propertyName, type, propertyValue);
     }
 
     @Override
     @SuppressWarnings("rawtypes")
-    public Class materializeClassForProxiedObject(Object object){
+    public Class materializeClassForProxiedObject(Object object) {
         return selectAdapter(object).materializeClassForProxiedObject(object);
     }
 
     @Override
-    public Object getNestedValue(Object bo, String fieldName){
+    public Object getNestedValue(Object bo, String fieldName) {
         return selectAdapter(bo).getNestedValue(bo, fieldName);
     }
 
     @Override
     @SuppressWarnings("rawtypes")
-    public Object createNewObjectFromClass(Class clazz){
+    public Object createNewObjectFromClass(Class clazz) {
         return selectAdapter(clazz).createNewObjectFromClass(clazz);
     }
 
     @Override
-    public boolean isNull(Object object){
+    public boolean isNull(Object object) {
         return selectAdapter(object).isNull(object);
     }
 
     @Override
     public void setObjectProperty(Object bo, String propertyName, Class propertyType,
-            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-        selectAdapter(bo).setObjectProperty(bo,propertyName,propertyType,propertyValue);
+            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        selectAdapter(bo).setObjectProperty(bo, propertyName, propertyType, propertyValue);
     }
 
     @Override
@@ -381,9 +381,11 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     protected LegacyDataAdapter selectAdapter(Object dataObject) {
-        if (LegacyUtils.isKnsEnabled() && (dataObject instanceof Class) && LegacyUtils.useLegacy((Class<?>)dataObject)) {
+        if (LegacyUtils.isKnsEnabled() && (dataObject instanceof Class) && LegacyUtils.useLegacy(
+                (Class<?>) dataObject)) {
             return getKnsLegacyDataAdapter();
-        } else if(LegacyUtils.isKnsEnabled() && !(dataObject instanceof Class) && LegacyUtils.useLegacyForObject(dataObject)){
+        } else if (LegacyUtils.isKnsEnabled() && !(dataObject instanceof Class) && LegacyUtils.useLegacyForObject(
+                dataObject)) {
             return getKnsLegacyDataAdapter();
         } else {
             return getKradLegacyDataAdapter();

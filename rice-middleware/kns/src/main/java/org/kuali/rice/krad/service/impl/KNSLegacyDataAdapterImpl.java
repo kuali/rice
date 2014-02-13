@@ -88,9 +88,10 @@ import java.util.regex.Pattern;
 *
  */
 @Deprecated
-public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KNSLegacyDataAdapterImpl.class);
-	
+public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
+            KNSLegacyDataAdapterImpl.class);
+
     private static final Pattern VALUE_HOLDER_FIELD_PATTERN = Pattern.compile("^_persistence_(.*)_vh$");
 
     private final ConcurrentMap<Class<?>, List<ValueHolderFieldPair>> valueHolderFieldCache =
@@ -639,13 +640,21 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter{
     }
 
     @Override
-    public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
-        return businessObjectService.getReferenceIfExists(bo, referenceName);
+    public BusinessObject getReferenceIfExists(Object bo, String referenceName) {
+        if (!(bo instanceof BusinessObject)) {
+            throw new UnsupportedOperationException("getReferenceIfExists only supports BusinessObject in KNS");
+        }
+        return businessObjectService.getReferenceIfExists((BusinessObject) bo, referenceName);
     }
 
     @Override
-    public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
-        return persistenceService.allForeignKeyValuesPopulatedForReference(bo, referenceName);
+    public boolean allForeignKeyValuesPopulatedForReference(Object bo, String referenceName) {
+        if (!(bo instanceof PersistableBusinessObject)) {
+            throw new UnsupportedOperationException(
+                    "getReferenceIfExists only supports PersistableBusinessObject in KNS");
+        }
+        return persistenceService.allForeignKeyValuesPopulatedForReference((PersistableBusinessObject) bo,
+                referenceName);
     }
 
     /**

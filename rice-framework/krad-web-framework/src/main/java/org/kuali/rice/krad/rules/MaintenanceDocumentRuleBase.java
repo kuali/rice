@@ -409,10 +409,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // TODO: Will be covered by KULRICE-7666
         /*
-        // apply rules that check whether child objects that cannot be hooked up by normal means exist and are active
+        // apply rules that check whether child objects that cannot be hooked up by normal means exist and are active   */
         success &= dictionaryValidationService.validateDefaultExistenceChecksForNewCollectionItem(
-                document.getNewMaintainableObject().getDataObject(), addLine, collectionName);
-        */
+                maintenanceDocument.getNewMaintainableObject().getDataObject(), addLine, collectionName);
 
         // apply rules that are specific to the class of the maintenance document (if implemented)
         success &= processCustomAddCollectionLineBusinessRules(maintenanceDocument, collectionName, addLine);
@@ -666,7 +665,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected boolean dataDictionaryValidate(MaintenanceDocument document) {
         LOG.debug("MaintenanceDocument validation beginning");
-
+        boolean success = true;
         // explicitly put the errorPath that the dictionaryValidationService
         // requires
         GlobalVariables.getMessageMap().addToErrorPath("document.newMaintainableObject");
@@ -701,14 +700,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         // validate default existence checks
         // TODO: Default existence checks need support for general data objects, see KULRICE-7666
-        //        success &= getDictionaryValidationService().validateDefaultExistenceChecks((BusinessObject) dataObject);
-        //        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
+        success &= getDictionaryValidationService().validateDefaultExistenceChecks(dataObject);
+        GlobalVariables.getMessageMap().removeFromErrorPath("dataObject");
 
         // explicitly remove the errorPath we've added
         GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
         LOG.debug("MaintenanceDocument validation ending");
-        return true;
+        return success;
     }
 
     /**

@@ -451,7 +451,7 @@ public interface LegacyDataAdapter {
      * @return A populated object from the DB, if it exists
      *
      */
-    BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName);
+    Object getReferenceIfExists(Object bo, String referenceName);
 
     /**
      *
@@ -462,9 +462,9 @@ public interface LegacyDataAdapter {
      * @return true if they all are accessible and have values, false otherwise
      *
      */
-    boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName);
+    boolean allForeignKeyValuesPopulatedForReference(Object bo, String referenceName);
 
-	RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
+    RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
 
     /**
      * This method gets the title attribute from the datadictionary for the given data object class

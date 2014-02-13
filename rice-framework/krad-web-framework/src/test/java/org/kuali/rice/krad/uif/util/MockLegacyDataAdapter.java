@@ -117,7 +117,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findMatchingOrderBy(java.lang.Class, java.util.Map,
+     * java.lang.String, boolean)
      */
     @Override
     public <T> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField,
@@ -171,7 +172,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findCollectionBySearchHelper(java.lang.Class, java.util.Map, boolean, boolean, java.lang.Integer)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findCollectionBySearchHelper(java.lang.Class, java.util.Map,
+     * boolean, boolean, java.lang.Integer)
      */
     @Override
     public <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps,
@@ -180,7 +182,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findCollectionBySearchHelper(java.lang.Class, java.util.Map, java.util.List, boolean, boolean, java.lang.Integer)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#findCollectionBySearchHelper(java.lang.Class, java.util.Map,
+     * java.util.List, boolean, boolean, java.lang.Integer)
      */
     @Override
     public <T> Collection<T> findCollectionBySearchHelper(Class<T> clazz, Map<String, String> formProps,
@@ -198,13 +201,13 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#allPrimaryKeyValuesPresentAndNotWildcard(java.lang.Class, java.util.Map)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#allPrimaryKeyValuesPresentAndNotWildcard(java.lang.Class,
+     * java.util.Map)
      */
     @Override
     public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class<?> boClass, Map<String, String> formProps) {
         return false;
     }
-
 
     /**
      * @see org.kuali.rice.krad.service.LegacyDataAdapter#listPrimaryKeyFieldNames(java.lang.Class)
@@ -215,7 +218,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#determineCollectionObjectType(java.lang.Class, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#determineCollectionObjectType(java.lang.Class,
+     * java.lang.String)
      */
     @Override
     public Class<?> determineCollectionObjectType(Class<?> containingClass, String collectionPropertyName) {
@@ -223,7 +227,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getForeignKeyFieldsPopulationState(java.lang.Object, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getForeignKeyFieldsPopulationState(java.lang.Object,
+     * java.lang.String)
      */
     @Override
     public ForeignKeyFieldsPopulationState getForeignKeyFieldsPopulationState(Object bo, String referenceName) {
@@ -263,7 +268,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#isExtensionAttribute(java.lang.Class, java.lang.String, java.lang.Class)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#isExtensionAttribute(java.lang.Class, java.lang.String,
+     * java.lang.Class)
      */
     @Override
     public boolean isExtensionAttribute(Class<?> boClass, String attributePropertyName, Class<?> propertyType) {
@@ -322,13 +328,13 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
      */
     @Override
     public PersistableBusinessObjectExtension getExtension(
-            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException,
-            IllegalAccessException {
+            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
         return null;
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#refreshReferenceObject(org.kuali.rice.krad.bo.PersistableBusinessObject, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#refreshReferenceObject(org.kuali.rice.krad.bo.PersistableBusinessObject,
+     * java.lang.String)
      */
     @Override
     public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
@@ -390,18 +396,19 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getReferenceIfExists(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getReferenceIfExists(java.lang.Object, java.lang.String)
      */
     @Override
-    public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
+    public BusinessObject getReferenceIfExists(Object bo, String referenceName) {
         return null;
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#allForeignKeyValuesPopulatedForReference(org.kuali.rice.krad.bo.PersistableBusinessObject, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#allForeignKeyValuesPopulatedForReference(java.lang.Object,
+     * java.lang.String)
      */
     @Override
-    public boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName) {
+    public boolean allForeignKeyValuesPopulatedForReference(Object bo, String referenceName) {
         return false;
     }
 
@@ -438,7 +445,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getInquiryObjectClassIfNotTitle(java.lang.Object, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getInquiryObjectClassIfNotTitle(java.lang.Object,
+     * java.lang.String)
      */
     @Override
     public Class<?> getInquiryObjectClassIfNotTitle(Object dataObject, String propertyName) {
@@ -446,7 +454,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getInquiryParameters(java.lang.Object, java.util.List, java.lang.String)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getInquiryParameters(java.lang.Object, java.util.List,
+     * java.lang.String)
      */
     @Override
     public Map<String, String> getInquiryParameters(Object dataObject, List<String> keys, String propertyName) {
@@ -470,7 +479,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDataObjectRelationship(java.lang.Object, java.lang.Class, java.lang.String, java.lang.String, boolean, boolean, boolean)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#getDataObjectRelationship(java.lang.Object, java.lang.Class,
+     * java.lang.String, java.lang.String, boolean, boolean, boolean)
      */
     @Override
     public DataObjectRelationship getDataObjectRelationship(Object dataObject, Class<?> dataObjectClass,
@@ -488,11 +498,12 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#setObjectPropertyDeep(java.lang.Object, java.lang.String, java.lang.Class, java.lang.Object)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#setObjectPropertyDeep(java.lang.Object, java.lang.String,
+     * java.lang.Class, java.lang.Object)
      */
     @Override
-    public void setObjectPropertyDeep(Object bo, String propertyName, Class<?> type, Object propertyValue)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void setObjectPropertyDeep(Object bo, String propertyName, Class<?> type,
+            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
     }
 
     /**
@@ -538,11 +549,12 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#setObjectProperty(java.lang.Object, java.lang.String, java.lang.Class, java.lang.Object)
+     * @see org.kuali.rice.krad.service.LegacyDataAdapter#setObjectProperty(java.lang.Object, java.lang.String,
+     * java.lang.Class, java.lang.Object)
      */
     @Override
-    public void setObjectProperty(Object bo, String propertyName, Class propertyType, Object propertyValue)
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public void setObjectProperty(Object bo, String propertyName, Class propertyType,
+            Object propertyValue) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
     }
 
     /**

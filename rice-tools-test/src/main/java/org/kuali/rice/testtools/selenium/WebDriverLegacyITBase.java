@@ -82,11 +82,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String AGENDA_LOOKUP_LINK_TEXT = "Agenda Lookup";
 
     /**
-     * "//input[@aria-invalid]"
-     */
-    public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid='true']";
-
-    /**
      * backdoorId
      */
     public static final String BACKDOOR_ID_TEXT = "backdoorId";
@@ -4100,43 +4095,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void uncheckByXpath(String locator) throws InterruptedException {
         uncheck(By.xpath(locator));
-    }
-
-    protected boolean validateErrorImage(boolean validateVisible) throws Exception {
-        Thread.sleep(500);
-        boolean valid = false;
-
-        for (int second = 0; second < 5; second++) {
-            if ((valid = validateErrorImage(validateVisible, second, ARIA_INVALID_XPATH)) == true) {
-                break;
-            }
-        }
-
-        if (validateVisible) {
-            assertTrue("valid = " + valid + " when validateVisible is " + validateVisible, valid);
-        } else {
-            assertFalse("valid = " + valid + " when validateVisible is " + validateVisible, valid);
-        }
-
-        return valid;
-    }
-
-    private boolean validateErrorImage(boolean validateVisible, int second, String xpath) throws InterruptedException {
-        try {
-            if (validateVisible) {
-                if (isElementPresentByXpath(xpath) && isVisibleByXpath(xpath)) {
-                    return true;
-                }
-            } else {
-                if (!isElementPresentByXpath(xpath) || !isVisibleByXpath(xpath)) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            // don't fail here, we're in a loop let the caller decide when to fail
-        }
-        Thread.sleep(1000);
-        return false;
     }
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception

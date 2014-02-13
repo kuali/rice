@@ -122,6 +122,9 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
         // copy all updateable fields to bo
         AgendaBo boToUpdate = from(toUpdate);
 
+        // move over AgendaBo members that don't get populated from AgendaDefinition
+        boToUpdate.setItems(existing.getItems());
+
         // delete any old, existing attributes
         Map<String,String> fields = new HashMap<String,String>(1);
         fields.put("agenda.id", toUpdate.getId());

@@ -29,9 +29,8 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.RuleManagementServiceImpl;
-import org.springmodules.orm.ojb.OjbOperationException;
+import org.springframework.dao.DataAccessException;
 
-import javax.persistence.OptimisticLockException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -159,8 +158,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         try {
             agenda = ruleManagementService.findCreateAgenda(agenda);
             fail( "should have failed with OptimisticLockException");
-        } catch (OptimisticLockException e) {
-            // javax.persistence.OptimisticLockException
+        } catch (DataAccessException e) {
+            // DataAccessException
         }
 
         // create a new agendaItem to update the agenda with

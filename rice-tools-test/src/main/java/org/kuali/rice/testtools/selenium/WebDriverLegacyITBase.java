@@ -1459,8 +1459,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
+    protected void gotoIframeById(final String iframeId) {
+        if (driver.findElements(By.id(iframeId)).size() > 0) { // find elements so an exception isn't thrown if not found
+            WebElement contentFrame = driver.findElement(By.id(iframeId)); // don't highlight
+            driver.switchTo().frame(contentFrame);
+        }
+    }
     protected void gotoIframeByXpath(final String iframeXpath) {
-        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {
+        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {  // find elements so an exception isn't thrown if not found
             WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
         }

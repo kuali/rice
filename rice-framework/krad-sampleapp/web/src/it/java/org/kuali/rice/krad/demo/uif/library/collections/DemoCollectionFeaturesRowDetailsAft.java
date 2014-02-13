@@ -73,9 +73,9 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/div/table");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/section/div/div/table");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/div/table")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section3']/div/table/tbody/tr[@class='detailsRow']/td/div/section/div/div/table")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section3_detLink_line0']");
@@ -101,9 +101,9 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");
-        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/table");
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/section/div/table/tbody/tr/td/div/fieldset/div/a");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/div[2]/div[2]/table")) {
+        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section5']/div/table/tbody/tr[@class='detailsRow']/td/div/section/div/table")) {
             fail("Row Details Present");
         }
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section5_detLink_line0']");

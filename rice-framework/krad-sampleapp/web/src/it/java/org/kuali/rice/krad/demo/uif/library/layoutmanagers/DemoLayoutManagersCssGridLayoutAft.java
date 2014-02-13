@@ -59,9 +59,9 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersCssGridLayoutFieldLabelColumns() throws Exception {
         selectByName("exampleShown", "Field Label Columns");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-3 uif-cssGridLabelCol']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-2 uif-cssGridLabelCol']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-4']");
+        waitForElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-3 uif-cssGridLabelCol']");
+        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-2 uif-cssGridLabelCol']");
+        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-4']");
      }
     
     protected void testLayoutManagersCssGridLayoutRowCss() throws Exception {
@@ -80,8 +80,8 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersCssGridLayoutGroupLayout() throws Exception {
         selectByName("exampleShown", "Group Layout");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-4']/div[@class='uif-boxSection' and @style='background-color: #00CC66; height: 200px;']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-8']/div[@class='uif-boxSection' and @style='background-color: #00CCFF; height: 200px;']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-4']/section[@class='uif-boxSection' and @style='background-color: #00CC66; height: 200px;']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-8']/section[@class='uif-boxSection' and @style='background-color: #00CCFF; height: 200px;']");
      }
     
     @Test

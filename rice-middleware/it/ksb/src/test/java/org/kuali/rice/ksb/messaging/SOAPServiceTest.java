@@ -123,16 +123,18 @@ public class SOAPServiceTest extends KSBTestCase {
 	public void testWsdlGeneration() throws Exception {
 		ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
 
-        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
-		client.getInInterceptors().add(new LoggingInInterceptor());
-		client.getOutInterceptors().add(new LoggingOutInterceptor());
-		Object[] results = client.invoke("echo", "testing");
-		assertNotNull(results);
-		assertEquals(1, results.length);
-        assertEquals("testing", results[0]);
-
-        Thread.currentThread().setContextClassLoader(originalClassLoader);
+        try {
+            JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+            Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
+            client.getInInterceptors().add(new LoggingInInterceptor());
+            client.getOutInterceptors().add(new LoggingOutInterceptor());
+            Object[] results = client.invoke("echo", "testing");
+            assertNotNull(results);
+            assertEquals(1, results.length);
+            assertEquals("testing", results[0]);
+        } finally {
+            Thread.currentThread().setContextClassLoader(originalClassLoader);
+        }
 	}
 
 }

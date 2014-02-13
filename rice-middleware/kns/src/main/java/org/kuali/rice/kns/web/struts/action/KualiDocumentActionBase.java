@@ -53,6 +53,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.DocumentActionParameters;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -1017,7 +1018,7 @@ public class KualiDocumentActionBase extends KualiAction {
         doProcessingAfterPost(docForm, request);
         Document document = docForm.getDocument();
         // only want to prompt them to save if they already can save
-        if (canSave(docForm)) {
+        if (canSave(form)) {
 
             Object question = getQuestion(request);
             // logic for close question
@@ -1089,7 +1090,8 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected boolean canSave(ActionForm form) {
         KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
-        return docForm.getDocumentActions().containsKey(KRADConstants.KUALI_ACTION_CAN_SAVE);
+        Document document = docForm.getDocument();
+        return document.getDocumentHeader().getWorkflowDocument().isValidAction(ActionType.SAVE);
     }
 
     protected Object getQuestion(HttpServletRequest request) {

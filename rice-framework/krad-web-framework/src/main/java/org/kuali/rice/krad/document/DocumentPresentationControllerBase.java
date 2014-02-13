@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -77,7 +78,8 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canCancel(Document document) {
-        return canEdit(document);
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+        return workflowDocument.isValidAction(ActionType.CANCEL);
     }
 
     public boolean canRecall(Document document) {

@@ -105,7 +105,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     protected void testClientResponsivenessProgressiveDisclosureConditionalRefresh() throws Exception {
     	waitAndClickByXpath("//li[@data-tabfor='Demo-ProgressiveDisclosure-Example6']/a[contains(text(),'Conditional Refresh')]");
     	waitAndClickByXpath("//input[@name='inputField15' and @value='show1']");
-    	waitForTextPresent("Loading...");
+    	waitForTextNotPresent("Loading...");
     	waitAndTypeByName("inputField16","Hello World!");
     	waitAndTypeByName("inputField17","Hello Deep!");
     	waitAndClickByXpath("//input[@name='inputField15' and @value='show2']");

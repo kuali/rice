@@ -817,6 +817,28 @@ public class WebDriverUtils {
         return element;
     }
 
+    public static void waitToAcceptAlert(WebDriver driver, int waitSeconds, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds)
+                failed = true;
+            try {
+                if (failed) {
+                    break;
+                } else if (isAlertPresent(driver)) {
+                    acceptAlertIfPresent(driver);
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
+    }
+
     /**
      * <p>
      * Wait for the given amount of seconds, for the given by, using the given driver.  The message is displayed if the

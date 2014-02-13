@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 /**
@@ -100,6 +101,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
 
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
+        WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2, this.getClass().toString());
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
     }

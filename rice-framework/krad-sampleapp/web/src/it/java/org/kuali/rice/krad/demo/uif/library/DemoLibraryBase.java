@@ -57,9 +57,7 @@ public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
 
         if(isElementPresentById("ComponentLibrary-TabGroup_tabList")
                 && isElementPresentByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId)){
-            WebElement menuItem = getElementByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId);
-            WebDriverUtils.highlightElement(driver, menuItem.findElement(By.cssSelector("a")));
-            menuItem.findElement(By.cssSelector("a")).click();
+            getElementByAttributeValue("href", tabId).click();
 
             waitForElementPresent(tabId);
             waitForElementVisible(tabId, "");

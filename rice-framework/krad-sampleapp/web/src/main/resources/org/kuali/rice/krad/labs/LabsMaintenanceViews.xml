@@ -84,5 +84,16 @@
     </property>
   </bean>
 
+  <bean id="LabsMaintenance-PromptBeforeRoutingView" parent="LabsMaintenance-DefaultView">
+    <property name="viewName" value="LabsMaintenance-PromptBeforeRoutingView"/>
+    <property name="dialogs">
+      <list>
+        <bean id="TravelAccount-RouteConfirmationDialog" parent="Uif-Yes-No-DialogGroup">
+          <property name="headerText" value="Submit Travel Account?"/>
+          <property name="promptText" value="Are you really sure you want to submit the travel account?"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
 </beans>

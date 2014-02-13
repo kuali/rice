@@ -243,9 +243,9 @@
               p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Prompt Before Validation"
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Prompt Before Routing"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR5C1"/>
-            <bean parent="Uif-Message" p:messageText="Demonstrate Prompt Before Validation"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrate Prompt Before Routing"/>
           </list>
           </property>
         </bean>

@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Interface to be implemented by objects that participates in the view lifecycle.
@@ -245,5 +246,12 @@ public interface LifecycleElement extends Serializable, Copyable {
      */
     @Deprecated
     void performFinalize(Object model, LifecycleElement parent);
+
+    /**
+     * Return true if the lifecycle should be skipped for this component
+     *
+     * @return true if lifecycle should be skipped for this component
+     */
+    boolean skipLifecycle();
 
 }

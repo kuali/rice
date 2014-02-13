@@ -561,6 +561,14 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         this.propertyReplacers = propertyReplacers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean skipLifecycle() {
+        return false;
+    }
+
     @Override
     public LayoutManagerBase clone() throws CloneNotSupportedException {
         LayoutManagerBase copy = (LayoutManagerBase) super.clone();

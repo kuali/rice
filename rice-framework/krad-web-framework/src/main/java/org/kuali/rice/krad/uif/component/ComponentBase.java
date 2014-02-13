@@ -25,7 +25,10 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -33,9 +36,11 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -182,6 +187,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String preRenderContent;
     private String postRenderContent;
+
+    protected Boolean skipLifecycle;
 
     public ComponentBase() {
         super();
@@ -2380,6 +2387,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         viewStatus = UifConstants.ViewStatus.CACHED;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean skipLifecycle() {
+        if (this.skipLifecycle == null) {
+            this.skipLifecycle = this.isRetrieveViaAjax() && !ViewLifecycle.isRefreshLifecycle();
+        }
+
+        return this.skipLifecycle;
     }
 
     /**

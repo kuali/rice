@@ -1519,16 +1519,14 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         dataAttributes.put("open", Boolean.toString(this.rowDetailsOpen));
         this.getRowDetailsGroup().setDataAttributes(dataAttributes);
 
-        if (ajaxDetailsRetrieval) {
-            this.getRowDetailsGroup().setRender(false);
-            this.getRowDetailsGroup().setDisclosedByAction(true);
-        } else {
-            this.getRowDetailsGroup().setHidden(true);
-        }
-
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
+        this.getRowDetailsGroup().setHidden(true);
+
+        if (ajaxDetailsRetrieval) {
+            this.getRowDetailsGroup().setRetrieveViaAjax(true);
+        }
         
         detailsFieldGroup.setReadOnly(collectionGroup.isReadOnly());
 

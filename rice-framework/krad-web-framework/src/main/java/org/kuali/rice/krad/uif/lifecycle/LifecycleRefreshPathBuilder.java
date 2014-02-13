@@ -64,8 +64,9 @@ public class LifecycleRefreshPathBuilder {
         }
 
         Component component = (Component) element;
-        if (ComponentUtils.canBeRefreshed(component) || (component instanceof CollectionGroup) ||
-                component.isForceSessionPersistence()) {
+        if (ComponentUtils.canBeRefreshed(component)
+                || (component instanceof CollectionGroup)
+                || component.isForceSessionPersistence()) {
             ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
 
             ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(component.getId());

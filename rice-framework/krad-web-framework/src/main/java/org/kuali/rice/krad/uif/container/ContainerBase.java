@@ -17,26 +17,35 @@ package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
+import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * Base <code>Container</code> implementation which container implementations
@@ -104,7 +113,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
         }
 
-		if (layoutManager != null) {
+		if (layoutManager != null && !this.getItems().isEmpty()) {
 			layoutManager.performInitialization(model);
 		}
 	}
@@ -122,9 +131,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 			instructionalMessage.setMessageText(instructionalText);
 		}
 
-		if (layoutManager != null) {
-			layoutManager.performApplyModel(model, this);
-		}
+        if (layoutManager != null && !this.getItems().isEmpty()) {
+            layoutManager.performApplyModel(model, this);
+        }
 	}
 
 	/**
@@ -147,9 +156,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             header.addDataAttribute(UifConstants.DataAttributes.HEADER_FOR, this.getId());
         }
 
-		if (layoutManager != null) {
-			layoutManager.performFinalize(model, this);
-		}
+        if (layoutManager != null && !this.getItems().isEmpty()) {
+            layoutManager.performFinalize(model, this);
+        }
 
         // Generate validation messages
         if (validationMessages != null) {

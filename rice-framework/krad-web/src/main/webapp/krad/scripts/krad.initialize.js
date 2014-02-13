@@ -621,7 +621,7 @@ function setupDisclosureHandler() {
                         disclosureContent.show();
 
                         // This a specialized methodToCall passed in for retrieving the originally generated component
-                        retrieveComponent(linkId.replace("_toggle", ""));
+                        retrieveComponent(linkId.replace("_toggle", ""), null, null, null, true);
                     }
                     else{
                         // If no ajax retrieval, slide down animationg

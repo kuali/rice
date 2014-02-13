@@ -35,14 +35,20 @@ public class ExpressionUtils {
     private static final Log LOG = LogFactory.getLog(ExpressionUtils.class);
 
     /**
-     * Pulls expressions within the expressionConfigurable's expression graph and moves them to the property expressions
-     * map for the expressionConfigurable or a nested expressionConfigurable (for the case of nested expression property names)
+     * Pulls expressions within the expressionConfigurable's expression graph and moves them to the property
+     * expressions
+     * map for the expressionConfigurable or a nested expressionConfigurable (for the case of nested expression
+     * property
+     * names)
      *
      * <p>
      * Expressions that are configured on properties and pulled out by the {@link org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor}
-     * and put in the {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getExpressionGraph()} for the bean that is
+     * and put in the {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getExpressionGraph()} for the
+     * bean
+     * that is
      * at root (non nested) level. Before evaluating the expressions, they need to be moved to the
-     * {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions()} map for the expressionConfigurable that
+     * {@link org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions()} map for the
+     * expressionConfigurable that
      * property
      * is on.
      * </p>
@@ -73,10 +79,23 @@ public class ExpressionUtils {
                 adjustedPropertyName = StringUtils.substringAfterLast(propertyName, ".");
 
                 Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
+
+                // skip missing expression object for components skipping their lifecycle
+                if (nestedObject == null
+                        && expressionConfigurable instanceof LifecycleElement
+                        && ((LifecycleElement) expressionConfigurable).skipLifecycle()) {
+                    continue;
+                }
+
                 if ((nestedObject == null) || !(nestedObject instanceof UifDictionaryBean)) {
-                    throw new RiceRuntimeException(
-                            "Object for which expression is configured on is null or does not implement UifDictionaryBean: '"
-                                    + configurablePath + "'");
+                    throw new RiceRuntimeException("Object for which expression is configured on is null or does not "
+                            + "implement UifDictionaryBean: '"
+                            + configurablePath
+                            + "' on class "
+                            + expressionConfigurable.getClass().getName()
+                            + " while evaluating "
+                            + "expression for "
+                            + propertyName);
                 }
 
                 // use nested object as the expressionConfigurable which will get the property expression
@@ -154,8 +173,9 @@ public class ExpressionUtils {
                 "\\s(?i:gt)\\s", " > ").replaceAll("\\s(?i:lt)\\s", " < ").replaceAll("\\s(?i:lte)\\s", " <= ")
                 .replaceAll("\\s(?i:gte)\\s", " >= ").replaceAll("\\s(?i:and)\\s", " && ").replaceAll("\\s(?i:or)\\s",
                         " || ").replaceAll("\\s(?i:not)\\s", " != ").replaceAll("\\s(?i:null)\\s?", " '' ").replaceAll(
-                        "\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)").replaceAll("\\s?(?i:#listContains)\\((.*?)\\)",
-                        "listContains($1)").replaceAll("\\s?(?i:#emptyList)\\((.*?)\\)", "emptyList($1)");
+                        "\\s?(?i:#empty)\\((.*?)\\)", "isValueEmpty($1)").replaceAll(
+                        "\\s?(?i:#listContains)\\((.*?)\\)", "listContains($1)").replaceAll(
+                        "\\s?(?i:#emptyList)\\((.*?)\\)", "emptyList($1)");
 
         if (conditionJs.contains("matches")) {
             conditionJs = conditionJs.replaceAll("\\s+(?i:matches)\\s+'.*'", ".match(/" + "$0" + "/) != null ");
@@ -168,7 +188,7 @@ public class ExpressionUtils {
         //convert property names to use coerceValue function and convert arrays to js arrays
         for (String propertyName : controlNames) {
             //array definitions are caught in controlNames because of the nature of the parse - convert them and remove
-            if(propertyName.trim().startsWith("{") && propertyName.trim().endsWith("}")){
+            if (propertyName.trim().startsWith("{") && propertyName.trim().endsWith("}")) {
                 String array = propertyName.trim().replace('{', '[');
                 array = array.replace('}', ']');
                 conditionJs = conditionJs.replace(propertyName, array);
@@ -177,14 +197,12 @@ public class ExpressionUtils {
             }
 
             //handle not
-            if (propertyName.startsWith("!")){
+            if (propertyName.startsWith("!")) {
                 String actualPropertyName = StringUtils.removeStart(propertyName, "!");
-                conditionJs = conditionJs.replace(propertyName,
-                        "!coerceValue(\"" + actualPropertyName + "\")");
+                conditionJs = conditionJs.replace(propertyName, "!coerceValue(\"" + actualPropertyName + "\")");
                 removeControlNames.add(propertyName);
                 addControlNames.add(actualPropertyName);
-            }
-            else{
+            } else {
                 conditionJs = conditionJs.replace(propertyName, "coerceValue(\"" + propertyName + "\")");
             }
         }
@@ -241,7 +259,7 @@ public class ExpressionUtils {
 
                 if (!(isNumber)) {
                     //correct argument of a custom function ending in comma
-                    if(StringUtils.endsWith(stack, ",")){
+                    if (StringUtils.endsWith(stack, ",")) {
                         stack = StringUtils.removeEnd(stack, ",").trim();
                     }
 

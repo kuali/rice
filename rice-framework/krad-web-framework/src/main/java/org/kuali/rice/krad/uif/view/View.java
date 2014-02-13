@@ -467,10 +467,6 @@ public class View extends ContainerBase {
         super.notifyCompleted(phase);
 
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
-            // initialize the expression evaluator impl
-            // TODO: This may be superfluous here - consider handling this initialization
-            // in SynchronousViewLifecycleProcessor
-            ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(phase.getModel());
 
             // get the list of dialogs from the view and then set the refreshedByAction on the
             // dialog to true.

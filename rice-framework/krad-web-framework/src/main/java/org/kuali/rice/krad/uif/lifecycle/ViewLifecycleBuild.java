@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
@@ -127,6 +128,8 @@ public class ViewLifecycleBuild implements Runnable {
         View view = ViewLifecycle.getView();
         ViewHelperService helper = ViewLifecycle.getHelper();
         UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+
+        ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(model);
 
         if (LOG.isInfoEnabled()) {
             LOG.info("performing initialize phase for view: " + view.getId());

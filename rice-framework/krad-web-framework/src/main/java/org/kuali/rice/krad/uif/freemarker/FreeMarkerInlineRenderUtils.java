@@ -163,6 +163,14 @@ public class FreeMarkerInlineRenderUtils {
 
         String s;
         Writer out = env.getOut();
+        // For specific types of Placeholders simply write out the placeholder div
+        if (component.skipLifecycle()) {
+            out.write("<span id=\"");
+            out.write(component.getId());
+            out.write("\" data-role=\"placeholder\" class=\"uif-placeholder\"></span>");
+            return;
+        }
+
         if ((component.isRender() && (!component.isRetrieveViaAjax() || componentUpdate)) || (component
                 .getProgressiveRender() != null && !component.getProgressiveRender().equals("") && !component
                 .isProgressiveRenderViaAJAX() && !component.isProgressiveRenderAndRefresh())) {

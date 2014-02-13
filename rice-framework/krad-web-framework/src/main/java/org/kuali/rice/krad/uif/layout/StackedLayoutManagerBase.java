@@ -42,7 +42,9 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -223,6 +225,12 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         }
 
         lineGroup.setItems(groupFields);
+        
+        // Must evaluate the client-side state on the lineGroup's disclosure for PlaceholderDisclosureGroup processing
+        if (lineBuilderContext.getModel() instanceof ViewModel){
+            KRADUtils.syncClientSideStateForComponent(lineGroup.getDisclosure(),
+                    ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
+        }
 
         stackedGroups.add(lineGroup);
     }

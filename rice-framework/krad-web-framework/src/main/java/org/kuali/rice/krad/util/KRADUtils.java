@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.URLCodec;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -38,6 +38,7 @@ import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
@@ -50,6 +51,7 @@ import org.kuali.rice.krad.uif.field.ImageField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
+import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -64,6 +66,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -162,7 +165,7 @@ public final class KRADUtils {
      *
      * @param decimalNumber decimal number to be converted
      * @return an integer string of the given money amount through multiplying by 100 and removing the fraction
-     *         portion.
+     * portion.
      */
     public final static String convertDecimalIntoInteger(KualiDecimal decimalNumber) {
         KualiDecimal decimalAmount = decimalNumber.multiply(ONE_HUNDRED);
@@ -213,8 +216,8 @@ public final class KRADUtils {
                 attributeValueObject = Truth.strToBooleanIgnoreCase(attributeValue);
             } else {
                 // try to create one with KRADUtils for other misc data types
-                attributeValueObject = KRADUtils.createObject(propertyType, new Class[] {String.class},
-                        new Object[] {attributeValue});
+                attributeValueObject = KRADUtils.createObject(propertyType, new Class[]{String.class},
+                        new Object[]{attributeValue});
                 // if that didn't work, we'll get a null back
             }
         }
@@ -282,6 +285,7 @@ public final class KRADUtils {
      * TODO this method will probably need to be exposed in a public KRADUtils class as it is used
      * by several different modules.  That will have to wait until ModuleService and KualiModuleService are moved
      * to core though.
+     *
      * @param clazz class to get a namespace code for
      * @return namespace code
      */
@@ -497,7 +501,7 @@ public final class KRADUtils {
      * and should be consulted for security checks
      * @param requestParameters - all request parameters to pull from
      * @return Map<String, String> populated with parameter name/value pairs
-     *         pulled from the request
+     * pulled from the request
      */
     public static Map<String, String> getParametersFromRequest(List<String> parameterNames, Class<?> parentObjectClass,
             Map<String, String> requestParameters) {
@@ -535,7 +539,7 @@ public final class KRADUtils {
      * @param propertyNames - list of property names to get key/value pairs for
      * @param dataObject - object instance containing the properties for which the values will be pulled
      * @return Map<String, String> containing entry for each property name with the property name as the map key
-     *         and the property value as the value
+     * and the property value as the value
      */
     public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
             Object dataObject) {
@@ -728,6 +732,7 @@ public final class KRADUtils {
      * In some cases (different threads) the UserSession cannot be retrieved
      * from GlobalVariables but can still be accessed via the session object
      * </p>
+     *
      * @param request servlet request
      * @return user session found in the request's servlet session
      */
@@ -845,7 +850,7 @@ public final class KRADUtils {
      *
      * @param requestParameters the request parameters to use in the string
      * @return a request parameter string starting with "?" with "&" separators, or blank if the mapped passed in is
-     *         blank
+     * blank
      */
     public static String getRequestStringFromMap(Map<String, String> requestParameters) {
         String requestString = "";
@@ -884,8 +889,8 @@ public final class KRADUtils {
      * @param fileSize the size of the attachment
      * @throws IOException if attachment to the results fails due to an IO error
      */
-    public static void addAttachmentToResponse(HttpServletResponse response,
-            InputStream inputStream, String contentType, String fileName, long fileSize) throws IOException {
+    public static void addAttachmentToResponse(HttpServletResponse response, InputStream inputStream,
+            String contentType, String fileName, long fileSize) throws IOException {
 
         // If there are quotes in the name, we should replace them to avoid issues.
         // The filename will be wrapped with quotes below when it is set in the header
@@ -990,12 +995,22 @@ public final class KRADUtils {
             URL urlTwo = new URL(secondDomain.toLowerCase());
 
             if (urlOne.getHost().equals(urlTwo.getHost())) {
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain
+                LOG.debug("Hosts "
+                        + urlOne.getHost()
+                        + " of domains "
+                        + firstDomain
+                        + " and "
+                        + secondDomain
                         + " were determined to be equal");
 
                 return false;
             } else {
-                LOG.debug("Hosts " + urlOne.getHost() + " of domains " + firstDomain + " and " + secondDomain
+                LOG.debug("Hosts "
+                        + urlOne.getHost()
+                        + " of domains "
+                        + firstDomain
+                        + " and "
+                        + secondDomain
                         + " are not equal");
 
                 return true;
@@ -1015,7 +1030,7 @@ public final class KRADUtils {
      * @param form the form
      * @param view the view
      * @return the headerText with the title attribute in parenthesis or just the headerText if it title attribute
-     *         cannot be determined
+     * cannot be determined
      */
     public static String generateUniqueViewTitle(UifFormBase form, View view) {
         String title = view.getHeader().getHeaderText();
@@ -1076,18 +1091,18 @@ public final class KRADUtils {
     }
 
     /**
-	 * Helper method for building title text for an element and a map of key/value pairs,
+     * Helper method for building title text for an element and a map of key/value pairs,
      *
      * <p>
      * Each key of the key value map is assumed to be an attribute for the given element class. The label is then
      * retrieved for the attribute from the data dictionary and used in the title (instead of the key)
      * </p>
-	 *
-	 * @param prependText text to prepend to the title
-	 * @param element element class the title is being generated for, used as the parent for getting the key labels
-	 * @param keyValueMap map of key value pairs to add to the title text
-	 * @return title string
-	 */
+     *
+     * @param prependText text to prepend to the title
+     * @param element element class the title is being generated for, used as the parent for getting the key labels
+     * @param keyValueMap map of key value pairs to add to the title text
+     * @return title string
+     */
     public static String buildAttributeTitleString(String prependText, Class<?> element,
             Map<String, String> keyValueMap) {
         StringBuffer titleText = new StringBuffer(prependText);
@@ -1095,8 +1110,10 @@ public final class KRADUtils {
         for (String key : keyValueMap.keySet()) {
             String fieldVal = keyValueMap.get(key).toString();
 
-            titleText.append(" " + KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(element, key)
-                    + "=" + fieldVal.toString());
+            titleText.append(" "
+                    + KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(element, key)
+                    + "="
+                    + fieldVal.toString());
         }
 
         return titleText.toString();
@@ -1271,16 +1288,16 @@ public final class KRADUtils {
     /**
      * Sets the property of an object with the given value. Converts using the formatter of the type for the property.
      * Note: propertyType does not need passed, is found by util method.
+     *
      * @param bo business object
      * @param propertyName property name
      * @param propertyValue propery value
-     * @throws IllegalAccessException 
-     * @throws InvocationTargetException 
-     * @throws NoSuchMethodException 
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
      */
     public static void setObjectProperty(Object bo, String propertyName,
-            Object propertyValue)
-            throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         Class propertyType = easyGetPropertyType(bo, propertyName);
         setObjectProperty(bo, propertyName, propertyType, propertyValue);
 
@@ -1299,8 +1316,7 @@ public final class KRADUtils {
      * @throws IllegalAccessException
      */
     public static void setObjectProperty(Object bo, String propertyName, Class propertyType,
-            Object propertyValue)
-            throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectProperty(bo, propertyName, propertyType, propertyValue);
     }
 
@@ -1375,7 +1391,6 @@ public final class KRADUtils {
         return lastIndex != -1 ? StringUtils.substring(attributeName, 0, lastIndex) : StringUtils.EMPTY;
     }
 
-
     /**
      * Returns the primitive part of an attribute name string.
      *
@@ -1428,6 +1443,45 @@ public final class KRADUtils {
             kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();
         }
         return kualiModuleService;
+    }
+
+    /**
+     * Updates the properties of the given component instance with the value found from the
+     * corresponding map of client state (if found)
+     *
+     * @param component component instance to update
+     * @param clientSideState map of state to sync with
+     */
+    public static void syncClientSideStateForComponent(Component component, Map<String, Object> clientSideState) {
+        // find the map of state that was sent for component (if any)
+        Map<String, Object> componentState = null;
+        if (component instanceof View) {
+            componentState = clientSideState;
+        } else {
+            if (clientSideState.containsKey(component.getId())) {
+                componentState = (Map<String, Object>) clientSideState.get(component.getId());
+            }
+        }
+
+        // if state was sent, match with fields on the component that are annotated to have client state
+        if ((componentState != null) && (!componentState.isEmpty())) {
+            Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
+                    ClientSideState.class);
+
+            for (Map.Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {
+                ClientSideState clientSideStateAnnot = (ClientSideState) annotatedField.getValue();
+
+                String variableName = clientSideStateAnnot.variableName();
+                if (StringUtils.isBlank(variableName)) {
+                    variableName = annotatedField.getKey();
+                }
+
+                if (componentState.containsKey(variableName)) {
+                    Object value = componentState.get(variableName);
+                    ObjectPropertyUtils.setPropertyValue(component, annotatedField.getKey(), value);
+                }
+            }
+        }
     }
 
 }

@@ -132,6 +132,11 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
             validateBeforeProcessing();
 
+            boolean skipTasks = false;
+            if (this.getModel() != null) {
+                skipTasks = element.skipLifecycle();
+            }
+
             try {
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
                     ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":",
@@ -178,15 +183,17 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());
 
-                Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
-                initializePendingTasks(pendingTasks);
+                if(!skipTasks) {
+                    Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
+                    initializePendingTasks(pendingTasks);
 
-                while (!pendingTasks.isEmpty()) {
-                    ViewLifecycleTask<?> task = pendingTasks.poll();
+                    while (!pendingTasks.isEmpty()) {
+                        ViewLifecycleTask<?> task = pendingTasks.poll();
 
-                    currentTask = task;
-                    task.run();
-                    currentTask = null;
+                        currentTask = task;
+                        task.run();
+                        currentTask = null;
+                    }
                 }
 
                 element.setViewStatus(this);
@@ -201,12 +208,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 }
             }
 
-            assert pendingSuccessors == -1 : this;
+            //if (!skipTasks) {
+                assert pendingSuccessors == -1 : this;
 
-            Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
+                Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
 
-            initializeSuccessors(successors);
-            processSuccessors(successors);
+                initializeSuccessors(successors);
+                processSuccessors(successors);
+            //}
         } catch (Throwable t) {
             trace("error");
             LOG.warn("Error in lifecycle phase " + this, t);

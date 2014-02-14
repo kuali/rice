@@ -73,6 +73,6 @@ public abstract class ConfigParameterCreateNewAftBase extends AdminTmplMthdAftNa
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

@@ -82,6 +82,6 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
         assertDocSearch(docId, DOC_STATUS_FINAL);
 
 //        waitAndClickByName("methodToCall.close");
-//        waitAndClickByName("methodToCall.processAnswer.button1");
+////         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

@@ -42,7 +42,7 @@ public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavBase {
         waitAndClickByName("methodToCall.save");
         waitForTextPresent("Document was successfully saved");
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 
     protected void submitAndClose() throws InterruptedException {
@@ -50,6 +50,6 @@ public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavBase {
         waitAndClickByName("methodToCall.route");
         waitForTextPresent("Document was successfully submitted");
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

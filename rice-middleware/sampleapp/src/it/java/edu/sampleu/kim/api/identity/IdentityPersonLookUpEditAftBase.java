@@ -91,6 +91,6 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
             assertTextPresent("Document was successfully submitted.");
         }
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

@@ -71,7 +71,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

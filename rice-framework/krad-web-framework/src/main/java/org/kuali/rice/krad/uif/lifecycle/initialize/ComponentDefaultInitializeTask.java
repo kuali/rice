@@ -35,7 +35,7 @@ public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @SuppressWarnings("deprecation")
     @Override

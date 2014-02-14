@@ -42,7 +42,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

@@ -36,7 +36,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * {@inheritDoc}
      */
     @Override
     public ApplyModelComponentPhase getPhase() {
@@ -44,7 +44,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @SuppressWarnings("deprecation")
     @Override

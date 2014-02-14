@@ -36,7 +36,7 @@ public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskB
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

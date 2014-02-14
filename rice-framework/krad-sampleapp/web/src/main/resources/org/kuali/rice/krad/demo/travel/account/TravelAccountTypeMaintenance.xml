@@ -31,4 +31,23 @@
     </property>
   </bean>
 
+  <bean id="TravelAccountType-MaintenanceView" parent="Uif-MaintenanceView">
+    <property name="headerText" value="Travel Account Type Maintenance"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceGridSection">
+          <property name="headerText" value="Account Type Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="accountTypeName" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="active" p:required="true" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

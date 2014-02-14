@@ -33,7 +33,7 @@ public class XmlIngesterUserList extends XmlIngesterAftBase {
      * @throws Exception
      */
     @Test
-    public void testXmlIngesterUserListNav() throws Exception {
+    public void testXmlIngesterUserListBookmark() throws Exception {
         super.testXmlIngesterUserList();
         passed();
     }

@@ -107,7 +107,7 @@
         <bean parent="Uif-DataField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
         <bean parent="Uif-DataField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
         <bean parent="Uif-InputField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}"/>
-        <bean parent="Uif-InputField" p:propertyName="noteText" p:required="true" p:readOnly="@{#line.noteText != ''}"/>
+        <bean parent="Uif-InputField" p:propertyName="noteText" p:required="true" p:readOnly="@{!#isAddLine}"/>
         <bean parent="Uif-VerticalFieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
           <property name="items">
             <list>

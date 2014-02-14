@@ -115,18 +115,4 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     public void setOrder(int order) {
         this.order = order;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T componentModifier) {
-        super.copyProperties(componentModifier);
-
-        ComponentModifierBase componentModifierBase = (ComponentModifierBase) componentModifier;
-
-        componentModifierBase.setOrder(this.order);
-        componentModifierBase.setRunCondition(this.runCondition);
-        componentModifierBase.setRunPhase(this.runPhase);
-    }
 }

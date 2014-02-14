@@ -79,16 +79,4 @@ public class NavigationGroup extends GroupBase {
     public void setNavigationType(String navigationType) {
         this.navigationType = navigationType;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        NavigationGroup navigationGroupCopy = (NavigationGroup) component;
-
-        navigationGroupCopy.setNavigationType(this.navigationType);
-    }
 }

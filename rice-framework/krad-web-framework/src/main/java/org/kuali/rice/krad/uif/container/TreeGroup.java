@@ -315,47 +315,6 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TreeGroup treeGroupCopy = (TreeGroup) component;
-
-        treeGroupCopy.setPropertyName(this.propertyName);
-
-        if (this.bindingInfo != null) {
-            treeGroupCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
-        }
-
-        if (this.defaultNodePrototype != null) {
-            treeGroupCopy.setDefaultNodePrototype((NodePrototype) this.defaultNodePrototype.copy());
-        }
-
-        if (this.treeGroups != null) {
-            Tree<Group, Message> treeGroupsCopy = new Tree<Group, Message>();
-            treeGroupsCopy.setRootElement(copyNode(this.treeGroups.getRootElement()));
-
-            treeGroupCopy.setTreeGroups(treeGroupsCopy);
-        }
-
-        if (this.tree != null) {
-            treeGroupCopy.setTree((org.kuali.rice.krad.uif.widget.Tree) this.tree.copy());
-        }
-
-        if (this.nodePrototypeMap != null) {
-            Map<Class<?>, NodePrototype> nodePrototypeMapCopy = new HashMap<Class<?>, NodePrototype>();
-            for (Map.Entry<Class<?>, NodePrototype> nodePrototypeMapEntry : nodePrototypeMap.entrySet()) {
-                NodePrototype prototypeCopy = nodePrototypeMapEntry.getValue().copy();
-                nodePrototypeMapCopy.put(nodePrototypeMapEntry.getKey(), prototypeCopy);
-            }
-
-            treeGroupCopy.setNodePrototypeMap(nodePrototypeMapCopy);
-        }
-    }
-
-    /**
      * Copies a {@link Node} instance and then recursively copies each of its child nodes
      *
      * @param node node instance to copy

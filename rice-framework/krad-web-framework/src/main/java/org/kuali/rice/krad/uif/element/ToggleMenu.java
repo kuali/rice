@@ -232,37 +232,4 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
     public void setMenuGroup(Group menuGroup) {
         this.menuGroup = menuGroup;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ToggleMenu dropdownCopy = (ToggleMenu) component;
-
-        if (this.toggleMessage != null) {
-            dropdownCopy.setToggleMessage((Message) this.toggleMessage.copy());
-        }
-        dropdownCopy.setToggleText(this.toggleText);
-
-        dropdownCopy.setToggleCaretClass(this.toggleCaretClass);
-        dropdownCopy.setIconClass(this.iconClass);
-        dropdownCopy.setRenderToggleButton(this.renderToggleButton);
-        dropdownCopy.setRenderedInList(this.renderedInList);
-
-        if (this.menuItems != null) {
-            List<Component> optionsCopy = new ArrayList<Component>();
-
-            for (Component item : this.menuItems) {
-                optionsCopy.add((Component) item.copy());
-            }
-            dropdownCopy.setMenuItems(optionsCopy);
-        }
-
-        if (this.menuGroup != null) {
-            dropdownCopy.setMenuGroup((Group) menuGroup.copy());
-        }
-    }
 }

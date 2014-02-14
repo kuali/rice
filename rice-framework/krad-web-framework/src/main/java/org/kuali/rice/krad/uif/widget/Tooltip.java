@@ -105,18 +105,4 @@ public class Tooltip extends WidgetBase {
     public void setOnMouseHover(boolean onMouseHover) {
         this.onMouseHover = onMouseHover;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Tooltip tooltipCopy = (Tooltip) component;
-
-        tooltipCopy.setTooltipContent(this.tooltipContent);
-        tooltipCopy.setOnFocus(this.onFocus);
-        tooltipCopy.setOnMouseHover(this.onMouseHover);
-    }
 }

@@ -265,35 +265,6 @@ public class Label extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Label labelCopy = (Label) component;
-
-        if (this.inlineComponents != null) {
-            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
-            labelCopy.setInlineComponents(inlineComponentsCopy);
-        }
-
-        labelCopy.setLabelForComponentId(this.labelForComponentId);
-        labelCopy.setLabelText(this.labelText);
-        labelCopy.setRenderColon(this.renderColon);
-
-        if (this.requiredIndicator != null) {
-            labelCopy.setRequiredIndicator(this.requiredIndicator);
-        }
-
-        labelCopy.setRenderRequiredIndicator(this.renderRequiredIndicator);
-
-        if (this.richLabelMessage != null) {
-            labelCopy.setRichLabelMessage((Message)this.richLabelMessage.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 

@@ -141,19 +141,4 @@ public class SidebarNavigationGroup extends GroupBase {
     public void setDefaultItemIconClass(String defaultItemIconClass) {
         this.defaultItemIconClass = defaultItemIconClass;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        SidebarNavigationGroup groupCopy = (SidebarNavigationGroup) component;
-
-        groupCopy.setRenderCollapse(this.renderCollapse);
-        groupCopy.setClosedToggleIconClass(this.closedToggleIconClass);
-        groupCopy.setOpenedToggleIconClass(this.openedToggleIconClass);
-        groupCopy.setDefaultItemIconClass(this.defaultItemIconClass);
-    }
 }

@@ -421,50 +421,6 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        Group groupCopy = (Group) component;
-        copyGroupProperties(component);
-    }
-
-    /**
-     * This method is a version of copyProperties which ONLY copies the Group properties
-     * because this method is NOT overridden in subclasses.
-     *
-     * <p>This access is necessary for PlaceholderDisclosureGroup to copy information to its placeholder
-     * for rendering a cut-down version of the group which does not require information/properties from sub
-     * class implementations of copyProperties (and will break it because those properties do not exist on its
-     * object).</p>
-     *
-     * @param component
-     * @param <T>
-     */
-    protected <T> void copyGroupProperties(T component) {
-        super.copyProperties(component);
-
-        GroupBase groupCopy = (GroupBase) component;
-
-        groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
-        groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
-        groupCopy.setWrapperTag(this.wrapperTag);
-
-        if (this.disclosure != null) {
-            groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
-        }
-
-        if (this.scrollpane != null) {
-            groupCopy.setScrollpane((Scrollpane) this.scrollpane.copy());
-        }
-
-        if (this.items != null) {
-            List<Component> itemsCopy = ComponentUtils.copy(new ArrayList<Component>(items));
-            groupCopy.setItems(itemsCopy);
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

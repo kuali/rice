@@ -84,16 +84,4 @@ public class BlockUI extends WidgetBase {
     public void setBlockingImageSource(String blockingImageSource) {
         this.blockingImageSource = blockingImageSource;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        BlockUI blockUICopy = (BlockUI) component;
-
-        blockUICopy.setBlockingImageSource(this.blockingImageSource);
-    }
 }

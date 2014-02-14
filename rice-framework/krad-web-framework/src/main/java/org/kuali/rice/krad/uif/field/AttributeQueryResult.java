@@ -149,19 +149,4 @@ public class AttributeQueryResult implements Serializable, Copyable {
     public Copyable unwrap() {
         return this;
     }
-
-    /**
-     * Copies the properties over for the copy method.
-     *
-     * @param attributeQueryResultCopy The AttributeQuery to copy
-     */
-    protected void copyProperties(AttributeQueryResult attributeQueryResultCopy) {
-
-        if (this.resultFieldData != null) {
-            attributeQueryResultCopy.setResultFieldData(new HashMap<String, String>(this.resultFieldData));
-        }
-
-        attributeQueryResultCopy.setResultMessage(this.resultMessage);
-        attributeQueryResultCopy.setResultMessageStyleClasses(this.resultMessageStyleClasses);
-    }
 }

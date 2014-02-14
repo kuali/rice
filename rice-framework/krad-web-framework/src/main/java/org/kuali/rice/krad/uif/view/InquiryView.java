@@ -94,16 +94,4 @@ public class InquiryView extends FormView {
     public void setDataObjectClassName(Class<?> dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        InquiryView inquiryViewCopy = (InquiryView) component;
-
-        inquiryViewCopy.setDataObjectClassName(this.dataObjectClassName);
-    }
 }

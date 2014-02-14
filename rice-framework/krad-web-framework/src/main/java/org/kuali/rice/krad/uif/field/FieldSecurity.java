@@ -76,17 +76,4 @@ public class FieldSecurity extends ComponentSecurity {
     public void setViewInLineAuthz(Boolean viewInLineAuthz) {
         this.viewInLineAuthz = viewInLineAuthz;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T componentSecurity) {
-        super.copyProperties(componentSecurity);
-
-        FieldSecurity fieldSecurityCopy = (FieldSecurity) componentSecurity;
-
-        fieldSecurityCopy.setEditInLineAuthz(this.editInLineAuthz);
-        fieldSecurityCopy.setViewInLineAuthz(this.viewInLineAuthz);
-    }
 }

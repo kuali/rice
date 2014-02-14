@@ -173,18 +173,4 @@ public class MaintenanceDocumentView extends DocumentView {
     public void setMaintenanceAction(String maintenanceAction) {
         this.maintenanceAction = maintenanceAction;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        MaintenanceDocumentView maintenanceDocumentViewCopy = (MaintenanceDocumentView) component;
-
-        maintenanceDocumentViewCopy.setDataObjectClassName(this.dataObjectClassName);
-        maintenanceDocumentViewCopy.setOldObjectBindingPath(this.oldObjectBindingPath);
-        maintenanceDocumentViewCopy.setMaintenanceAction(this.maintenanceAction);
-    }
 }

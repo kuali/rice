@@ -139,18 +139,4 @@ public class FieldGroup extends FieldBase {
             group.setItems(items);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        FieldGroup fieldGroupCopy = (FieldGroup) component;
-
-        if (this.group != null) {
-            fieldGroupCopy.setGroup((Group)this.group.copy());
-        }
-    }
 }

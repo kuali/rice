@@ -73,17 +73,4 @@ public class Breadcrumbs extends WidgetBase {
     public void setUsePathBasedBreadcrumbs(boolean usePathBasedBreadcrumbs) {
         this.usePathBasedBreadcrumbs = usePathBasedBreadcrumbs;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Breadcrumbs breadcrumbsCopy = (Breadcrumbs) component;
-
-        breadcrumbsCopy.setDisplayBreadcrumbsWhenOne(this.displayBreadcrumbsWhenOne);
-        breadcrumbsCopy.setUsePathBasedBreadcrumbs(this.usePathBasedBreadcrumbs);
-    }
 }

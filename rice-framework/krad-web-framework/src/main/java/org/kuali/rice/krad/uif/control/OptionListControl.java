@@ -91,18 +91,4 @@ public class OptionListControl extends MultiValueControlBase {
     public void setSelectedItemCssClass(String selectedItemCssClass) {
         this.selectedItemCssClass = selectedItemCssClass;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        OptionListControl optionListControlCopy = (OptionListControl) component;
-
-        optionListControlCopy.setItemCssClass(this.itemCssClass);
-        optionListControlCopy.setSelectedItemCssClass(this.selectedItemCssClass);
-        optionListControlCopy.setShowOnlySelected(this.showOnlySelected);
-    }
 }

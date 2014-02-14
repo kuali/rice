@@ -373,23 +373,4 @@ public class FieldBase extends ComponentBase implements Field {
 
         getFieldSecurity().setViewInLineAuthz(viewInLineAuthz);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        FieldBase fieldBaseCopy = (FieldBase) component;
-
-        fieldBaseCopy.setShortLabel(this.shortLabel);
-        fieldBaseCopy.setLabelRendered(this.labelRendered);
-
-        if (this.fieldLabel != null) {
-            fieldBaseCopy.setFieldLabel((Label)this.fieldLabel.copy());
-        }
-
-        fieldBaseCopy.setLabelPlacement(this.labelPlacement);
-    }
 }

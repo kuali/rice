@@ -84,18 +84,4 @@ public class MessageView extends FormView {
 
         this.message.setMessageText(messageText);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        MessageView messageViewCopy = (MessageView) component;
-
-        if(this.message != null) {
-            messageViewCopy.setMessage((Message)this.message.copy());
-        }
-    }
 }

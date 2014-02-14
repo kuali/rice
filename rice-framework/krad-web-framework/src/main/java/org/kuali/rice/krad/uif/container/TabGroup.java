@@ -85,18 +85,4 @@ public class TabGroup extends GroupBase {
         this.tabsWidget = tabsWidget;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TabGroup tabGroupCopy = (TabGroup) component;
-
-        if(tabsWidget != null) {
-            tabGroupCopy.setTabsWidget((Tabs)this.tabsWidget.copy());
-        }
-    }
-
 }

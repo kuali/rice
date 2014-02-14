@@ -30,14 +30,4 @@ public class Tree extends WidgetBase {
     public Tree() {
         super();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Tree treeCopy = (Tree) component;
-    }
 }

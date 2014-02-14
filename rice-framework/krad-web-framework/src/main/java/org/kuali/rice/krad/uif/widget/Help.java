@@ -268,23 +268,4 @@ public class Help extends WidgetBase {
     protected ParameterService getParameterService() {
         return CoreFrameworkServiceLocator.getParameterService();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Help helpCopy = (Help) component;
-
-        helpCopy.setExternalHelpUrl(this.externalHelpUrl);
-
-        if (this.helpAction != null) {
-            helpCopy.setHelpAction((Action)this.helpAction.copy());
-        }
-
-        helpCopy.setHelpDefinition(this.helpDefinition);
-        helpCopy.setTooltipHelpContent(this.tooltipHelpContent);
-    }
 }

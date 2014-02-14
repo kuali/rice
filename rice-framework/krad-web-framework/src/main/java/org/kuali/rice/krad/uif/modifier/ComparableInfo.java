@@ -234,22 +234,4 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     public void setHighlightValueChange(boolean highlightValueChange) {
         this.highlightValueChange = highlightValueChange;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T comparableInfo) {
-        super.copyProperties(comparableInfo);
-
-        ComparableInfo comparableInfoCopy = (ComparableInfo) comparableInfo;
-
-        comparableInfoCopy.setBindingObjectPath(this.bindingObjectPath);
-        comparableInfoCopy.setCompareToForValueChange(this.compareToForValueChange);
-        comparableInfoCopy.setHeaderText(this.headerText);
-        comparableInfoCopy.setHighlightValueChange(this.highlightValueChange);
-        comparableInfoCopy.setIdSuffix(this.idSuffix);
-        comparableInfoCopy.setOrder(this.order);
-        comparableInfoCopy.setReadOnly(this.readOnly);
-    }
 }

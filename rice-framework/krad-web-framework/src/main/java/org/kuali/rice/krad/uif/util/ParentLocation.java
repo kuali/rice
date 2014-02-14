@@ -498,37 +498,4 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     public List<BreadcrumbItem> getResolvedBreadcrumbItems() {
         return resolvedBreadcrumbItems;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    protected <T> void copyProperties(T parentLocation) {
-        super.copyProperties(parentLocation);
-
-        ParentLocation parentLocationCopy = (ParentLocation) parentLocation;
-
-        if (this.parentViewUrl != null) {
-            parentLocationCopy.setParentViewUrl((UrlInfo) this.parentViewUrl.copy());
-        }
-
-        if (this.parentPageUrl != null) {
-            parentLocationCopy.setParentPageUrl((UrlInfo) this.parentPageUrl.copy());
-        }
-
-        parentLocationCopy.setParentViewLabel(this.parentViewLabel);
-        parentLocationCopy.setParentPageLabel(this.parentPageLabel);
-
-        if (this.viewBreadcrumbItem != null) {
-            parentLocationCopy.setViewBreadcrumbItem((BreadcrumbItem) this.viewBreadcrumbItem.copy());
-        }
-
-        if (this.pageBreadcrumbItem != null) {
-            parentLocationCopy.setPageBreadcrumbItem((BreadcrumbItem) this.pageBreadcrumbItem.copy());
-        }
-
-        if (this.resolvedBreadcrumbItems != null) {
-            List<BreadcrumbItem> resolvedBreadcrumbItemsCopy = ComponentUtils.copy(resolvedBreadcrumbItems);
-            parentLocationCopy.resolvedBreadcrumbItems = resolvedBreadcrumbItemsCopy;
-        }
-    }
 }

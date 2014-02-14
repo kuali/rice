@@ -279,37 +279,6 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ControlBase controlBaseCopy = (ControlBase) component;
-
-        controlBaseCopy.setTabIndex(this.tabIndex);
-        controlBaseCopy.setDisabled(this.disabled);
-        controlBaseCopy.setDisabledExpression(this.disabledExpression);
-        controlBaseCopy.setDisabledReason(this.disabledReason);
-        controlBaseCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
-        controlBaseCopy.setDisabledConditionJs(this.disabledConditionJs);
-
-        if (disabledConditionControlNames != null) {
-            controlBaseCopy.setDisabledConditionControlNames(new ArrayList<String>(this.disabledConditionControlNames));
-        }
-
-        if (disabledWhenChangedPropertyNames != null) {
-            controlBaseCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(
-                    this.disabledWhenChangedPropertyNames));
-        }
-
-        if (enabledWhenChangedPropertyNames != null) {
-            controlBaseCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(
-                    this.enabledWhenChangedPropertyNames));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 

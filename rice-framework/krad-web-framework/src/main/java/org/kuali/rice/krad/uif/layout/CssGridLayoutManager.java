@@ -157,16 +157,4 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
     public void setDefaultItemColSpan(int defaultItemColSpan) {
         this.defaultItemColSpan = defaultItemColSpan;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
-
-        cssGridLayoutManagerCopy.setDefaultItemColSpan(this.defaultItemColSpan);
-    }
 }

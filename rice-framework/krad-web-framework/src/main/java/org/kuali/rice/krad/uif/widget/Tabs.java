@@ -129,17 +129,4 @@ public class Tabs extends WidgetBase {
     public void setPosition(UifConstants.Position position) {
         this.position = position;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Tabs tabsCopy = (Tabs) component;
-
-        tabsCopy.setDefaultActiveTabId(this.defaultActiveTabId);
-        tabsCopy.setPosition(this.position);
-    }
 }

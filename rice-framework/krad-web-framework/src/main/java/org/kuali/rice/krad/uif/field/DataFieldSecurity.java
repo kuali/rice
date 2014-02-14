@@ -59,18 +59,4 @@ public class DataFieldSecurity extends FieldSecurity {
     public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
         this.attributeSecurity = attributeSecurity;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T componentSecurity) {
-        super.copyProperties(componentSecurity);
-
-        DataFieldSecurity dataFieldCopy = (DataFieldSecurity) componentSecurity;
-
-        if (this.attributeSecurity != null) {
-            dataFieldCopy.setAttributeSecurity((AttributeSecurity)this.attributeSecurity.copy());
-        }
-    }
 }

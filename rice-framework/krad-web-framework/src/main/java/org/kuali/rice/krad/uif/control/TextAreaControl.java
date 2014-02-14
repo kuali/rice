@@ -196,21 +196,4 @@ public class TextAreaControl extends ControlBase {
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TextAreaControl textAreaControlCopy = (TextAreaControl) component;
-
-        textAreaControlCopy.setRows(this.rows);
-        textAreaControlCopy.setCols(this.cols);
-        textAreaControlCopy.setMaxLength(this.maxLength);
-        textAreaControlCopy.setMinLength(this.minLength);
-        textAreaControlCopy.setTextExpand(this.textExpand);
-        textAreaControlCopy.setWatermarkText(this.watermarkText);
-    }
 }

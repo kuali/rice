@@ -419,30 +419,4 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     public void setComparables(List<ComparableInfo> comparables) {
         this.comparables = comparables;
     }
-
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T componentModifier) {
-        super.copyProperties(componentModifier);
-
-        CompareFieldCreateModifier compareFieldCreateModifierCopy = (CompareFieldCreateModifier) componentModifier;
-
-        compareFieldCreateModifierCopy.setDefaultOrderSequence(this.defaultOrderSequence);
-        compareFieldCreateModifierCopy.setGenerateCompareHeaders(this.generateCompareHeaders);
-
-        if(comparables != null) {
-            List<ComparableInfo> comparables = new ArrayList<ComparableInfo>();
-            for (ComparableInfo comparable : this.comparables) {
-                comparables.add((ComparableInfo)comparable.copy());
-            }
-            compareFieldCreateModifierCopy.setComparables(comparables);
-        }
-
-        if (this.headerFieldPrototype != null) {
-            compareFieldCreateModifierCopy.setHeaderFieldPrototype((Header)this.headerFieldPrototype.copy());
-        }
-    }
 }

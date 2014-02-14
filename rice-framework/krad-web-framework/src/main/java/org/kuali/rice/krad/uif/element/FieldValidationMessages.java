@@ -126,17 +126,4 @@ public class FieldValidationMessages extends ValidationMessages {
     public void setShowIcons(boolean showIcons) {
         this.showIcons = showIcons;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        FieldValidationMessages fieldValidationMessagesCopy = (FieldValidationMessages) component;
-
-        fieldValidationMessagesCopy.setUseTooltip(this.useTooltip);
-        fieldValidationMessagesCopy.setShowIcons(this.showIcons);
-    }
 }

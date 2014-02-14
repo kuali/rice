@@ -1080,39 +1080,4 @@ public class RichTable extends WidgetBase {
     protected ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        RichTable richTableCopy = (RichTable) component;
-
-        richTableCopy.setEmptyTableMessage(this.emptyTableMessage);
-        richTableCopy.setDisableTableSort(this.disableTableSort);
-        richTableCopy.setForceAoColumnDefsOverride(this.forceAoColumnDefsOverride);
-        richTableCopy.setForceLocalJsonData(this.forceLocalJsonData);
-        richTableCopy.setNestedLevel(this.nestedLevel);
-        richTableCopy.setAaData(this.aaData);
-
-        if (hiddenColumns != null) {
-            richTableCopy.setHiddenColumns(new HashSet<String>(hiddenColumns));
-        }
-
-        if (sortableColumns != null) {
-            richTableCopy.setSortableColumns(new HashSet<String>(sortableColumns));
-        }
-
-        if (cellCssClasses != null) {
-            richTableCopy.setCssClasses(new ArrayList<String>(this.cellCssClasses));
-        }
-
-        richTableCopy.setAjaxSource(this.ajaxSource);
-        richTableCopy.setShowSearchAndExportOptions(this.showSearchAndExportOptions);
-        richTableCopy.setShowSearchOption(this.showSearchOption);
-        richTableCopy.setShowExportOption(this.showExportOption);
-        richTableCopy.setGroupingOptionsJSString(this.groupingOptionsJSString);
-    }
 }

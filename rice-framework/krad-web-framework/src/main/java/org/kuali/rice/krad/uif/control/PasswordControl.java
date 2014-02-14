@@ -154,19 +154,4 @@ public class PasswordControl extends ControlBase implements SizedControl {
 
         this.watermarkText = watermarkText;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        PasswordControl passwordControlCopy = (PasswordControl) component;
-
-        passwordControlCopy.setSize(this.size);
-        passwordControlCopy.setMaxLength(this.maxLength);
-        passwordControlCopy.setMinLength(this.minLength);
-        passwordControlCopy.setWatermarkText(this.watermarkText);
-    }
 }

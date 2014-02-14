@@ -765,46 +765,4 @@ public class ComponentLibraryView extends FormView {
     public void setHtmlCodeViewer(SyntaxHighlighter htmlCodeViewer) {
         this.htmlCodeViewer = htmlCodeViewer;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ComponentLibraryView libraryViewCopy = (ComponentLibraryView) component;
-
-        libraryViewCopy.setRootJavadocAddress(this.rootJavadocAddress);
-        libraryViewCopy.setRootDocBookAddress(this.rootDocBookAddress);
-        libraryViewCopy.setDocBookAnchor(this.docBookAnchor);
-        libraryViewCopy.setComponentName(this.componentName);
-        libraryViewCopy.setJavaFullClassPath(this.javaFullClassPath);
-        libraryViewCopy.setXmlFilePath(this.xmlFilePath);
-        libraryViewCopy.setDescription(this.description);
-        libraryViewCopy.setUsage(this.usage);
-        libraryViewCopy.setLargeExampleFieldId(this.largeExampleFieldId);
-        libraryViewCopy.setExampleSize(this.exampleSize);
-
-        if (this.htmlCodeViewer != null) {
-            libraryViewCopy.setHtmlCodeViewer((SyntaxHighlighter) this.htmlCodeViewer.copy());
-        }
-
-        if (this.detailsGroup != null) {
-            libraryViewCopy.setDetailsGroup((Group) this.detailsGroup.copy());
-        }
-
-        if (this.exhibit != null) {
-            libraryViewCopy.setExhibit((ComponentExhibit) this.exhibit.copy());
-        }
-
-        if (this.demoGroups != null) {
-            List<Group> demoGroupsCopy = new ArrayList<Group>();
-
-            for (Group demoGroup : this.demoGroups) {
-                demoGroupsCopy.add((Group) demoGroup.copy());
-            }
-            libraryViewCopy.setDemoGroups(demoGroupsCopy);
-        }
-    }
 }

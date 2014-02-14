@@ -135,23 +135,4 @@ public class SyntaxHighlighter extends WidgetBase {
     public void setShowCopyConfirmation(boolean showCopyConfirmation) {
         this.showCopyConfirmation = showCopyConfirmation;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        SyntaxHighlighter syntaxHighlighterCopy = (SyntaxHighlighter) component;
-
-        if (this.header != null) {
-            syntaxHighlighterCopy.setHeader((Header) this.header.copy());
-        }
-
-        syntaxHighlighterCopy.setSourceCode(this.sourceCode);
-        syntaxHighlighterCopy.setPluginCssClass(this.pluginCssClass);
-        syntaxHighlighterCopy.setAllowCopy(this.allowCopy);
-        syntaxHighlighterCopy.setShowCopyConfirmation(this.showCopyConfirmation);
-    }
 }

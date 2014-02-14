@@ -359,32 +359,4 @@ public class ValidationMessages extends UifDictionaryBeanBase {
         this.infos = infos;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ValidationMessages validationMessagesCopy = (ValidationMessages) component;
-
-        if (additionalKeysToMatch != null) {
-            validationMessagesCopy.setAdditionalKeysToMatch(new ArrayList<String>(this.additionalKeysToMatch));
-        }
-
-        validationMessagesCopy.setDisplayMessages(this.displayMessages);
-
-        if (warnings != null) {
-            validationMessagesCopy.setWarnings(new ArrayList<String>(this.warnings));
-        }
-
-        if (errors != null) {
-            validationMessagesCopy.setErrors(new ArrayList<String>(this.errors));
-        }
-
-        if (infos != null) {
-            validationMessagesCopy.setInfos(new ArrayList<String>(this.infos));
-        }
-    }
-
 }

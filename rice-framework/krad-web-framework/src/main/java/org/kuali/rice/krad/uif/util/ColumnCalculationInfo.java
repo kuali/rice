@@ -312,37 +312,4 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T columnCalculationInfo) {
-        super.copyProperties(columnCalculationInfo);
-
-        ColumnCalculationInfo columnCalculationInfoCopy = (ColumnCalculationInfo) columnCalculationInfo;
-
-        columnCalculationInfoCopy.setCalculateOnKeyUp(this.calculateOnKeyUp);
-        columnCalculationInfoCopy.setCalculationFunctionExtraData(this.calculationFunctionExtraData);
-        columnCalculationInfoCopy.setCalculationFunctionName(this.calculationFunctionName);
-        columnCalculationInfoCopy.setColumnNumber(this.columnNumber);
-
-        if (this.groupTotalFieldPrototype != null) {
-            columnCalculationInfoCopy.setGroupTotalFieldPrototype((MessageField) this.groupTotalFieldPrototype.copy());
-        }
-
-        if (this.pageTotalField != null) {
-            columnCalculationInfoCopy.setPageTotalField((MessageField) this.pageTotalField.copy());
-        }
-
-        columnCalculationInfoCopy.setPropertyName(this.propertyName);
-        columnCalculationInfoCopy.setRecalculateTotalClientSide(this.recalculateTotalClientSide);
-        columnCalculationInfoCopy.setShowGroupTotal(this.showGroupTotal);
-        columnCalculationInfoCopy.setShowPageTotal(this.showPageTotal);
-        columnCalculationInfoCopy.setShowTotal(this.showTotal);
-
-        if (this.totalField != null) {
-            columnCalculationInfoCopy.setTotalField((MessageField) this.totalField.copy());
-        }
-    }
 }

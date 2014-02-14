@@ -68,18 +68,6 @@ public class Icon extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Icon iconCopy = (Icon) component;
-
-        iconCopy.setIconClass(this.iconClass);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 

@@ -207,25 +207,4 @@ public class TextControlBase extends ControlBase implements TextControl, SizedCo
     public void setTextExpand(boolean textExpand) {
         this.textExpand = textExpand;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TextControlBase textControlCopy = (TextControlBase) component;
-
-        textControlCopy.setSize(this.size);
-        textControlCopy.setMaxLength(this.maxLength);
-        textControlCopy.setMinLength(this.minLength);
-
-        if(datePicker != null) {
-            textControlCopy.setDatePicker((DatePicker)this.datePicker.copy());
-        }
-
-        textControlCopy.setWatermarkText(this.watermarkText);
-        textControlCopy.setTextExpand(this.textExpand);
-    }
 }

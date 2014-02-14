@@ -430,37 +430,4 @@ public class DialogGroup extends GroupBase {
     public void setOnShowDialogScript(String onShowDialogScript) {
         this.onShowDialogScript = onShowDialogScript;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        DialogGroup dialogGroupCopy = (DialogGroup) component;
-
-        if (this.availableResponses != null) {
-            dialogGroupCopy.setAvailableResponses(new ArrayList<KeyValue>(this.availableResponses));
-        }
-
-        dialogGroupCopy.setDisplayExplanation(this.displayExplanation);
-        dialogGroupCopy.setOnDialogResponseScript(this.onDialogResponseScript);
-        dialogGroupCopy.setOnShowDialogScript(this.onShowDialogScript);
-
-        if (this.prompt != null) {
-            dialogGroupCopy.setPrompt((MessageField)this.prompt.copy());
-        }
-
-        dialogGroupCopy.setPromptText(this.promptText);
-        dialogGroupCopy.setReverseButtonOrder(this.reverseButtonOrder);
-
-        if (this.explanation != null) {
-            dialogGroupCopy.setExplanation((InputField) this.explanation.copy());
-        }
-
-        if (this.responseInputField != null) {
-            dialogGroupCopy.setResponseInputField((InputField) this.responseInputField.copy());
-        }
-    }
 }

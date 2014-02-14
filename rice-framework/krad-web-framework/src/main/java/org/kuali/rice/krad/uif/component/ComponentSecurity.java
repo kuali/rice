@@ -226,28 +226,4 @@ public class ComponentSecurity extends UifDictionaryBeanBase implements Serializ
             // don't call super.finalize() in attempt to avoid loop between maps.
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T componentSecurity) {
-        super.copyProperties(componentSecurity);
-
-        ComponentSecurity componentSecurityCopy = (ComponentSecurity) componentSecurity;
-
-        if (this.additionalPermissionDetails != null) {
-            componentSecurityCopy.setAdditionalPermissionDetails(new HashMap<String, String>(this.additionalPermissionDetails));
-        }
-
-        if (this.additionalRoleQualifiers != null) {
-            componentSecurityCopy.setAdditionalRoleQualifiers(new HashMap<String, String>(this.additionalRoleQualifiers));
-        }
-
-        componentSecurityCopy.setComponentAttribute(this.componentAttribute);
-        componentSecurityCopy.setEditAuthz(this.editAuthz);
-        componentSecurityCopy.setIdAttribute(this.idAttribute);
-        componentSecurityCopy.setNamespaceAttribute(this.namespaceAttribute);
-        componentSecurityCopy.setViewAuthz(this.viewAuthz);
-    }
 }

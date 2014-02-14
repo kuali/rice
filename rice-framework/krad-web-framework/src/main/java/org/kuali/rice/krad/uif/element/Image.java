@@ -320,34 +320,6 @@ public class Image extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Image imageCopy = (Image) component;
-
-        imageCopy.setAltText(this.altText);
-
-        if (this.captionHeader != null) {
-            imageCopy.setCaptionHeader((Header)this.captionHeader.copy());
-        }
-
-        imageCopy.setCaptionHeaderPlacementAboveImage(this.captionHeaderPlacementAboveImage);
-        imageCopy.setCaptionHeaderText(this.captionHeaderText);
-
-        if (this.cutlineMessage != null) {
-            imageCopy.setCutlineMessage((Message)this.cutlineMessage.copy());
-        }
-
-        imageCopy.setCutlineText(this.cutlineText);
-        imageCopy.setHeight(this.height);
-        imageCopy.setSource(this.source);
-        imageCopy.setWidth(this.width);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 

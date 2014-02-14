@@ -138,20 +138,4 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     public void setFormKey(String formKey) {
         this.formKey = formKey;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        HistoryEntry historyEntryCopy = (HistoryEntry) component;
-
-        historyEntryCopy.setViewId(this.viewId);
-        historyEntryCopy.setPageId(this.pageId);
-        historyEntryCopy.setTitle(this.title);
-        historyEntryCopy.setUrl(this.url);
-        historyEntryCopy.setFormKey(this.formKey);
-    }
 }

@@ -366,28 +366,4 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     protected void setOriginalHref(String originalHref) {
         this.originalHref = originalHref;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T dictionaryBaseBean) {
-        super.copyProperties(dictionaryBaseBean);
-
-        UrlInfo urlInfoCopy = (UrlInfo) dictionaryBaseBean;
-
-        urlInfoCopy.setHref(this.href);
-        urlInfoCopy.setOriginalHref(this.originalHref);
-        urlInfoCopy.setBaseUrl(this.baseUrl);
-        urlInfoCopy.setControllerMapping(this.controllerMapping);
-        urlInfoCopy.setViewType(this.viewType);
-        urlInfoCopy.setViewId(this.viewId);
-        urlInfoCopy.setPageId(this.pageId);
-        urlInfoCopy.setFormKey(this.formKey);
-        urlInfoCopy.setMethodToCall(this.methodToCall);
-
-        if (this.requestParameters != null) {
-            urlInfoCopy.setRequestParameters(new HashMap<String, String>(requestParameters));
-        }
-    }
 }

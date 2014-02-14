@@ -130,16 +130,4 @@ public class PageValidationMessages extends GroupValidationMessages implements L
     public void setShowPageSummaryHeader(boolean showPageSummaryHeader) {
         this.showPageSummaryHeader = showPageSummaryHeader;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        PageValidationMessages pageValidationMessagesCopy = (PageValidationMessages) component;
-
-        pageValidationMessagesCopy.setShowPageSummaryHeader(this.showPageSummaryHeader);
-    }
 }

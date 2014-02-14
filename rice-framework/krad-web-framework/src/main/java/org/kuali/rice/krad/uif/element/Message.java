@@ -322,32 +322,6 @@ public class Message extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Message messageCopy = (Message) component;
-
-        messageCopy.setRenderWrapperTag(this.renderWrapperTag);
-
-        if (this.inlineComponents != null) {
-            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
-            messageCopy.setInlineComponents(inlineComponentsCopy);
-        }
-
-        if (this.messageComponentStructure != null) {
-            List<Component> messageComponentStructureCopy = ComponentUtils.copy(messageComponentStructure);
-            messageCopy.setMessageComponentStructure(messageComponentStructureCopy);
-        }
-
-        messageCopy.setMessageText(this.messageText);
-        messageCopy.setParseComponents(this.parseComponents);
-        messageCopy.setWrapperTag(this.wrapperTag);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 

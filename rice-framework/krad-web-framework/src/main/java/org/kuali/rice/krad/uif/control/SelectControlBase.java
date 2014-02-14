@@ -83,17 +83,4 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        SelectControlBase selectControlCopy = (SelectControlBase) component;
-
-        selectControlCopy.setSize(this.size);
-        selectControlCopy.setMultiple(this.multiple);
-    }
 }

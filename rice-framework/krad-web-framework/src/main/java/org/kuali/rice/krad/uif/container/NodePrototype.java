@@ -67,22 +67,4 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
     public Group getDataGroupPrototype() {
         return this.dataGroupPrototype;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T dictionaryBaseBean) {
-        super.copyProperties(dictionaryBaseBean);
-
-        NodePrototype nodePrototypeCopy = (NodePrototype) dictionaryBaseBean;
-
-        if (this.labelPrototype != null) {
-            nodePrototypeCopy.setLabelPrototype((Message) this.labelPrototype.copy());
-        }
-
-        if (this.dataGroupPrototype != null) {
-            nodePrototypeCopy.setDataGroupPrototype((Group) this.dataGroupPrototype.copy());
-        }
-    }
 }

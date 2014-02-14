@@ -154,16 +154,4 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
     @Override
     public void preventModification() {}
 
-    /**
-     * Copies the properties over for the copy method.
-     *
-     * @param methodInvokerConfig MethodInvokerConfig instance to copy properties to
-     */
-    protected <T> void copyProperties(T methodInvokerConfig) {
-        MethodInvokerConfig methodInvokerConfigCopy = (MethodInvokerConfig) methodInvokerConfig;
-
-        methodInvokerConfigCopy.setStaticMethod(this.staticMethod);
-        methodInvokerConfigCopy.setArgumentTypes(this.argumentTypes);
-    }
-
 }

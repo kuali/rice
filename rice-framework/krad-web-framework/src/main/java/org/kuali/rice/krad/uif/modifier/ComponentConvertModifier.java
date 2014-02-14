@@ -198,17 +198,4 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     public void setComponentReplacementPrototype(Component componentReplacementPrototype) {
         this.componentReplacementPrototype = componentReplacementPrototype;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T componentModifier) {
-        super.copyProperties(componentModifier);
-
-        ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier) componentModifier;
-
-        componentConvertModifierCopy.setComponentReplacementPrototype((Component)this.componentReplacementPrototype.copy());
-        componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
-    }
 }

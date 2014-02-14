@@ -665,40 +665,4 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     public ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T viewTheme) {
-        super.copyProperties(viewTheme);
-
-        ViewTheme viewThemeCopy = (ViewTheme) viewTheme;
-
-        viewThemeCopy.setName(this.name);
-        viewThemeCopy.setDirectory(this.directory);
-        viewThemeCopy.setImageDirectory(this.imageDirectory);
-        viewThemeCopy.setMinVersionSuffix(this.minVersionSuffix);
-        viewThemeCopy.setIncludeMinFiles(this.includeMinFiles);
-        viewThemeCopy.setMinCssFile(this.minCssFile);
-        viewThemeCopy.setMinScriptFile(this.minScriptFile);
-
-        if (this.minCssSourceFiles != null) {
-            viewThemeCopy.setMinCssSourceFiles(new ArrayList<String>(this.minCssSourceFiles));
-        }
-
-        if (this.minScriptSourceFiles != null) {
-            viewThemeCopy.setMinScriptSourceFiles(new ArrayList<String>(this.minScriptSourceFiles));
-        }
-
-        if (this.cssFiles != null) {
-            viewThemeCopy.setCssFiles(new ArrayList<String>(this.cssFiles));
-        }
-
-        if (this.scriptFiles != null) {
-            viewThemeCopy.setScriptFiles(new ArrayList<String>(this.scriptFiles));
-        }
-
-        viewThemeCopy.setUsesThemeBuilder(this.usesThemeBuilder);
-    }
 }

@@ -188,23 +188,4 @@ public class FormView extends View {
     public void setAdditionalHiddenValues(Map<String, String> additionalHiddenValues) {
         this.additionalHiddenValues = additionalHiddenValues;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        FormView formViewCopy = (FormView) component;
-
-        formViewCopy.setRenderForm(this.renderForm);
-        formViewCopy.setValidateServerSide(this.validateServerSide);
-        formViewCopy.setValidateClientSide(this.validateClientSide);
-        formViewCopy.setFormPostUrl(this.formPostUrl);
-
-        if (this.additionalHiddenValues != null) {
-            formViewCopy.setAdditionalHiddenValues(new HashMap<String, String>(this.additionalHiddenValues));
-        }
-    }
 }

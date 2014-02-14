@@ -99,20 +99,4 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
         return "";
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CheckboxGroupControl checkboxGroupControlCopy = (CheckboxGroupControl) component;
-
-        checkboxGroupControlCopy.setDelimiter(this.delimiter);
-
-        if(fieldsetClasses != null) {
-            checkboxGroupControlCopy.setFieldsetClasses(new ArrayList<String>(this.fieldsetClasses));
-        }
-    }
 }

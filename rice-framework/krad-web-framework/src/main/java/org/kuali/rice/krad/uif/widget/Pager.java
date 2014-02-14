@@ -221,23 +221,4 @@ public class Pager extends WidgetBase {
     public int getPagesEnd() {
         return pagesEnd;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Pager pagerCopy = (Pager) component;
-
-        pagerCopy.setLinkScript(this.linkScript);
-        pagerCopy.setMaxNumberedLinksShown(this.maxNumberedLinksShown);
-        pagerCopy.setNumberOfPages(this.numberOfPages);
-        pagerCopy.setCurrentPage(this.currentPage);
-        pagerCopy.setRenderPrevNext(this.renderPrevNext);
-        pagerCopy.setRenderFirstLast(this.renderFirstLast);
-        pagerCopy.pagesStart = this.pagesStart;
-        pagerCopy.pagesEnd = this.pagesEnd;
-    }
 }

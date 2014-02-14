@@ -180,21 +180,4 @@ public class Disclosure extends WidgetBase {
     public void setAjaxRetrievalWhenOpened(boolean ajaxRetrievalWhenOpened) {
         this.ajaxRetrievalWhenOpened = ajaxRetrievalWhenOpened;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Disclosure disclosureCopy = (Disclosure) component;
-
-        disclosureCopy.setCollapsedIconClass(this.collapsedIconClass);
-        disclosureCopy.setExpandedIconClass(this.expandedIconClass);
-        disclosureCopy.setRenderIcon(this.renderIcon);
-        disclosureCopy.setAnimationSpeed(this.animationSpeed);
-        disclosureCopy.setDefaultOpen(this.defaultOpen);
-        disclosureCopy.setAjaxRetrievalWhenOpened(this.ajaxRetrievalWhenOpened);
-    }
 }

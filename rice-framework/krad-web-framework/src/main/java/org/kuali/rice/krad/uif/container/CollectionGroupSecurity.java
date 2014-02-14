@@ -82,17 +82,4 @@ public class CollectionGroupSecurity extends ComponentSecurity {
     public void setViewLineAuthz(boolean viewLineAuthz) {
         this.viewLineAuthz = viewLineAuthz;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T componentSecurity) {
-        super.copyProperties(componentSecurity);
-
-        CollectionGroupSecurity collectionGroupSecurityCopy = (CollectionGroupSecurity) componentSecurity;
-
-        collectionGroupSecurityCopy.setEditLineAuthz(this.editLineAuthz);
-        collectionGroupSecurityCopy.setViewLineAuthz(this.viewLineAuthz);
-    }
 }

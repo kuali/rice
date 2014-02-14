@@ -117,17 +117,4 @@ public class IframeView extends FormView {
     public void setIframe(Iframe iframe) {
         this.iframe = iframe;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        IframeView viewCopy = (IframeView) component;
-
-        viewCopy.setIframe((Iframe) iframe.copy());
-        viewCopy.setLocation((UrlInfo) location.copy());
-    }
 }

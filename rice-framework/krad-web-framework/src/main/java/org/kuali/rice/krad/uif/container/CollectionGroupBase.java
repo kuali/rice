@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -27,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -48,6 +44,11 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -316,7 +317,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
         }
 
-        if (StringUtils.isNotBlank(this.getId()) && viewModel.getViewPostMetadata() != null
+        if (StringUtils.isNotBlank(this.getId())
+                && viewModel.getViewPostMetadata() != null
                 && viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
             List<Object> newLines = viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId());
 
@@ -370,6 +372,14 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
+        addCollectionPostMetadata();
+    }
+
+    /**
+     * Add the metadata about this collection to the ViewPostMetadata
+     * that is to be kept in memory between posts for use by other methods
+     */
+    protected void addCollectionPostMetadata() {
         if (this.getCollectionLookup() != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
                     UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
@@ -390,15 +400,15 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
         if (this.getHeader() != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LABEL,
-                    ViewLifecycle.getHelper().getCollectionLabel(this));
+                    this.getCollectionLabel());
         }
 
         if (this.getDuplicateLinePropertyNames() != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
                     UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES, this.getDuplicateLinePropertyNames());
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING,
-                    ViewLifecycle.getHelper().getDuplicateLineLabelString(this, this.getDuplicateLinePropertyNames()));
+                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING, this.getDuplicateLineLabelString(
+                    this.getDuplicateLinePropertyNames()));
         }
 
         boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
@@ -412,7 +422,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH,
                 getDisplayLength());
     }
-    
+
     /**
      * Sets a reference in the context map for all nested components to the collection group
      * instance, and sets name as parameter for an action fields in the group
@@ -426,6 +436,48 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID, this.getId());
         }
+    }
+
+    /**
+     * Gets the label for the collection in a human-friendly format.
+     *
+     * @return a human-friendly collection label
+     */
+    protected String getCollectionLabel() {
+        String collectionLabel = this.getHeaderText();
+
+        if (StringUtils.isBlank(collectionLabel)) {
+            String propertyName = this.getPropertyName();
+            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(
+                    propertyName);
+        }
+
+        return collectionLabel;
+    }
+
+    /**
+     * Gets a comma-separated list of the data field labels that are keyed a duplicates.
+     *
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     * @return a comma-separated list of labels
+     */
+    protected String getDuplicateLineLabelString(List<String> duplicateLinePropertyNames) {
+        List<String> duplicateLineLabels = new ArrayList<String>();
+
+        for (Component addLineItem : this.getAddLineItems()) {
+            if (addLineItem instanceof DataField) {
+                DataField addLineField = (DataField) addLineItem;
+
+                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
+                    String label = addLineField.getLabel();
+                    String shortLabel = addLineField.getShortLabel();
+                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                }
+            }
+
+        }
+
+        return StringUtils.join(duplicateLineLabels, ", ");
     }
 
     /**

@@ -306,10 +306,24 @@ public class ViewPostMetadata implements Serializable {
         this.allRenderedPropertyPaths.add(propertyPath);
     }
 
+    /**
+     * The collection objects that were added during the current controller call, these will be emptied after
+     * the lifecycle process is run.
+     *
+     * <p>Note: If a list is empty this means that a collection had an addLine call occur and a new line must
+     * be initialized for the collection.</p>
+     *
+     * @return the collection objects that were added during the current controller call if added through a process
+     * other than the collection's own addLine call
+     * @see org.kuali.rice.krad.uif.container.CollectionGroupBase
+     */
     public Map<String, List<Object>> getAddedCollectionObjects() {
         return addedCollectionObjects;
     }
 
+    /**
+     * @see ViewPostMetadata#getAddedCollectionObjects()
+     */
     public void setAddedCollectionObjects(Map<String, List<Object>> addedCollectionObjects) {
         this.addedCollectionObjects = addedCollectionObjects;
     }

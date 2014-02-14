@@ -17,13 +17,12 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
-import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AgendaEditor extends DataObjectBase {
+public class AgendaEditor implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -329,12 +328,4 @@ public class AgendaEditor extends DataObjectBase {
     public void setCutPropositionId(String cutPropositionId) {
         this.cutPropositionId = cutPropositionId;
     }
-
-    // Need to override this method since the actual persistable BO is wrapped inside dataObject.
-/*    @Override
-    public void refreshNonUpdateableReferences() {
-        // throw new UnsupportedOperationException("refreshNonUpdateableReferences is not supported");
-        //getPersistenceService().refreshAllNonUpdatingReferences(this.getAgenda());
-    }*/
-
 }

@@ -72,7 +72,6 @@ public class TermBo implements TermDefinitionContract, Serializable {
             cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST },
             mappedBy = "term"
     )
-
     private List<TermParameterBo> parameters;
 
     @Transient

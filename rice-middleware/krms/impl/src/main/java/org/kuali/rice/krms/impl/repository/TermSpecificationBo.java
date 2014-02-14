@@ -15,15 +15,11 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.krad.data.jpa.RemoveMapping;
-import org.kuali.rice.krad.data.jpa.RemoveMappings;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract;
-import org.kuali.rice.krms.impl.repository.CategoryBo;
-import org.kuali.rice.krms.impl.repository.ContextBo;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -82,11 +78,11 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
     @Transient
     private List<String> contextIds = new ArrayList<String>();
 
-    /**
-     * This field may require manual population based on the {@link #contextIds} list.
-     */
-    @Transient
-    private transient List<ContextBo> contexts = new ArrayList<ContextBo>();
+    @ManyToMany(cascade = { CascadeType.REFRESH })
+    @JoinTable(name = "KRMS_CNTXT_VLD_TERM_SPEC_T",
+            joinColumns = { @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CNTXT_ID", referencedColumnName = "CNTXT_ID") })
+    private List<ContextBo> contexts = new ArrayList<ContextBo>();
 
     /**
      * Converts a mutable bo to it's immutable counterpart

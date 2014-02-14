@@ -289,12 +289,11 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     private void forceLoadLazyRelations(AgendaBo agenda) {
         for (AgendaItemBo item : agenda.getItems()) {
-            LOG.debug(item.toString());
             for (ActionBo action : item.getRule().getActions()) {
-                if (!CollectionUtils.isEmpty(action.getAttributeBos())) {
-                    for (ActionAttributeBo actionAttribute : action.getAttributeBos()) {
-                        actionAttribute.getAttributeDefinition();
-                    }
+                if (CollectionUtils.isEmpty(action.getAttributeBos())) { continue; }
+
+                for (ActionAttributeBo actionAttribute : action.getAttributeBos()) {
+                    actionAttribute.getAttributeDefinition();
                 }
             }
 

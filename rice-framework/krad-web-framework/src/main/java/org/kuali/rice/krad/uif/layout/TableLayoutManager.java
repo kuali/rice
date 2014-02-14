@@ -158,8 +158,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * <li>Initializes the prototypes</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -203,8 +202,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * Sets up the final column count for rendering based on whether the sequence and action fields
      * have been generated, sets up column calculations, and richTable rowGrouping options
      *
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component component) {
@@ -1058,7 +1056,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see CollectionLayoutManager#getSupportedContainer()
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -1066,7 +1064,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -1094,7 +1092,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentPrototypes() {
@@ -2146,7 +2144,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {

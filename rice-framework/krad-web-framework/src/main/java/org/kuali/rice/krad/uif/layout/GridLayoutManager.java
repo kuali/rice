@@ -75,8 +75,7 @@ public class GridLayoutManager extends LayoutManagerBase {
      * <li>Adjust the cell attributes for the container items</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component component) {
@@ -137,7 +136,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see LayoutManagerBase#getSupportedContainer()
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -357,7 +356,7 @@ public class GridLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {

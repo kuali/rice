@@ -96,8 +96,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * <li>Initializes the prototypes</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -113,8 +112,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * <li>If wrapper group is specified, places the stacked groups into the wrapper</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component component) {
@@ -128,8 +126,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     /**
      * Calculates the values that must be pased into the pagerWidget if using paging
      *
-     * @see BoxLayoutManager#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component container) {
@@ -293,7 +290,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -301,7 +298,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {
@@ -321,7 +318,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentPrototypes() {
@@ -558,7 +555,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T layoutManager) {

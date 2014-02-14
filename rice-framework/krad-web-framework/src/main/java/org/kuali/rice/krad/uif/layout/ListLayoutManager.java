@@ -75,7 +75,7 @@ public class ListLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T listLayoutManager) {

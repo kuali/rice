@@ -46,8 +46,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     /**
      * CssGridLabelColumnLayoutManager's performFinalize method calculates and separates the items into rows
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View, Object,
-     *      org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component component) {

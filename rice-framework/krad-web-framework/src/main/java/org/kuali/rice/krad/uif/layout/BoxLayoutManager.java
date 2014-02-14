@@ -66,8 +66,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
     /**
      * Sets the item span style
      *
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, Component container) {
@@ -218,7 +217,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T layout) {

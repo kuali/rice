@@ -54,6 +54,11 @@ public class TestPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
+    public <T> T copyInstance(T dataObject) {
+        return null;
+    }
+
+    @Override
     public boolean handles(Class<?> type) {
         return true;  //To change body of implemented methods use File | Settings | File Templates.
     }

@@ -15,14 +15,8 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.metamodel.ManagedType;
-
+import com.google.common.collect.Sets;
+import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -48,7 +42,12 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Sets;
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.metamodel.ManagedType;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * Java Persistence API (JPA) implementation of {@link PersistenceProvider}.
@@ -207,6 +206,16 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
                 verifyDataObjectWritable(dataObject);
                 sharedEntityManager.remove(sharedEntityManager.merge(dataObject));
                 return null;
+            }
+        });
+    }
+
+    @Override
+    public <T> T copyInstance(final T dataObject) {
+        return doWithExceptionTranslation(new Callable<T>() {
+            @Override
+            public T call() {
+                return (T) sharedEntityManager.unwrap(JpaEntityManager.class).getDatabaseSession().copy(dataObject);
             }
         });
     }

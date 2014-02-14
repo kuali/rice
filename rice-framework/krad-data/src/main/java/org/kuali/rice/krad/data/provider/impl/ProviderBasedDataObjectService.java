@@ -111,6 +111,11 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     }
 
     @Override
+    public <T> T copyInstance(T dataObject) {
+        return persistenceProviderForObject(dataObject).copyInstance(dataObject);
+    }
+
+    @Override
     public <T> DataObjectWrapper<T> wrap(T dataObject) {
         if (dataObject == null) {
             throw new IllegalArgumentException("data object was null");

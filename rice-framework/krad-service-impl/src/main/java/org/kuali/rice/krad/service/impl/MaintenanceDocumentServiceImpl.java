@@ -50,8 +50,6 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-import javax.xml.bind.annotation.XmlElementDecl;
-
 /**
  * Service implementation for the MaintenanceDocument structure. This is the
  * default implementation, that is delivered with Kuali
@@ -141,9 +139,15 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                 !KRADConstants.MAINTENANCE_NEWWITHEXISTING_ACTION.equals(maintenanceAction)) {
             Object oldDataObject = retrieveObjectForMaintenance(document, requestParameters);
 
+            Object newDataObject = null;
+
             // TODO should we be using ObjectUtils? also, this needs dictionary
             // enhancement to indicate fields to/not to copy
-            Object newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
+            if (dataObjectService.supports(oldDataObject.getClass())) {
+                newDataObject = dataObjectService.copyInstance(oldDataObject);
+            } else {
+                newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
+            }
 
             // set object instance for editing
             document.getOldMaintainableObject().setDataObject(oldDataObject);

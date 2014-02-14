@@ -170,6 +170,19 @@ public interface DataObjectService {
     <T> DataObjectWrapper<T> wrap(T dataObject);
 
     /**
+     * Returns a copy of the given data object instance.
+     *
+     * <p>The method of copying is provider dependent, and will handle instances (including nested) using whatever
+     * measures might be required to deal with the quirks of said provider (e.g. fetching lazy loaded relations).
+     * </p>
+     *
+     * @param dataObject the data object to copy
+     * @param <T> the type of the data object
+     * @return a copy of the given data object
+     */
+    <T> T copyInstance(T dataObject);
+
+    /**
      * Returns whether the DataObjectService supports the given type, where
      * "supports" means that there is at least one PersistenceProvider that handles the given type.
      *

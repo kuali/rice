@@ -803,8 +803,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed || (getElementByAttributeValue(driver, attribute, attributeValue) != null)) {
                     break;
@@ -824,8 +825,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed) {
                     break;
@@ -863,8 +865,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed) {
                     break;
@@ -933,8 +936,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed || (driver.findElements(by)).size() > 0) {
                     break;

@@ -146,6 +146,7 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
                 break;
             }
         }
+
         return valid;
     }
 
@@ -156,7 +157,9 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
         } catch (Exception e) {
             // don't fail here, we're in a loop let the caller decide when to fail
         }
+
         Thread.sleep(1000);
+
         return false;
     }
 

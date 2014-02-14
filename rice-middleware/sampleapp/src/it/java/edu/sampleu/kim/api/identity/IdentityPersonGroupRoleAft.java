@@ -21,12 +21,14 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
+import java.util.StringTokenizer;
+
 /**
  * Sets up Person Roles for load-testing
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class IdentityPersonRoleAft extends WebDriverLegacyITBase {
+public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
 
     public static final String EDIT_URL = WebDriverUtils.getBaseUrlString() + "/kim/identityManagementPersonDocument.do?&principalId=LTID&docTypeName=IdentityManagementPersonDocument&methodToCall=docHandler&command=initiate";
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Person&channelUrl=" + WebDriverUtils
@@ -36,8 +38,14 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase {
     private int userCnt = Integer.valueOf(System.getProperty("test.role.user.cnt", "2")); // set to 176 for load testing
     private int userCntStart = Integer.valueOf(System.getProperty("test.role.user.cnt.start", "1"));  // set to 0 for load testing
     private String idBase = System.getProperty("test.role.user.base", "testadmin"); // set to lt for load testing
-    public static final String ADMIN_ROLE_ID = "63";
-    public static final String KRMS_ADMIN_ROLE_ID = "98";
+    private static final String ROLE_ID_ADMIN = "63";
+    private static final String ROLE_ID_KRMS_ADMIN = "98";
+    private static final String ROLE_ID_SAP = "KRSAP10004";
+    private static final String[] ROLES = {ROLE_ID_ADMIN, ROLE_ID_KRMS_ADMIN, ROLE_ID_SAP};
+
+    private static final String GROUP_WORKFLOW_ADMIN_ID = "1";
+    private static final String GROUP_NOTIFICATION_ADMIN_ID = "2000";
+    private static final String[] GROUPS = {GROUP_WORKFLOW_ADMIN_ID, GROUP_NOTIFICATION_ADMIN_ID};
 
     @Override
     protected String getBookmarkUrl() {
@@ -50,27 +58,59 @@ public class IdentityPersonRoleAft extends WebDriverLegacyITBase {
         passed();
     }
 
+    @Test
+    public void testPersonRoleUserListBookmark() throws InterruptedException {
+        testPersonRoleUserList();
+        passed();
+    }
+
     private void testPersonRole() throws InterruptedException {
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + String.format(format, i);
-            open(EDIT_URL.replace("LTID", id));
-            waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
+            addPerson(id);
+        }
+    }
 
-            selectByName("newAffln.affiliationTypeCode", "Affiliate");
-            selectOptionByName("newAffln.campusCode", "BL");
-            checkByName("newAffln.dflt");
-            waitAndClickByName("methodToCall.addAffln.anchor");
+    private void testPersonRoleUserList() throws InterruptedException {
+        String usersArg = System.getProperty("xmlingester.user.list", "test1,test2");
+        StringTokenizer token = new StringTokenizer(usersArg, ",");
+        while (token.hasMoreTokens()) {
+            addPerson(token.nextToken());
+        }
+    }
 
-            waitAndClick(By.id("tab-Membership-imageToggle"));
-            waitAndType(By.id("newRole.roleId"), ADMIN_ROLE_ID);
-            driver.findElement(By.name("methodToCall.addRole.anchor")).click();
+    private void addPerson(String id) throws InterruptedException {
+        open(EDIT_URL.replace("LTID", id));
+        waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
-            waitAndType(By.id("newRole.roleId"), KRMS_ADMIN_ROLE_ID);
-            driver.findElement(By.name("methodToCall.addRole.anchor")).click();
-            waitAndClickByName("methodToCall.blanketApprove");
-            waitForPageToLoad();
+        selectByName("newAffln.affiliationTypeCode", "Affiliate");
+        selectOptionByName("newAffln.campusCode", "BL");
+        checkByName("newAffln.dflt");
+        waitAndClickByName("methodToCall.addAffln.anchor");
+
+        waitAndClick(By.id("tab-Membership-imageToggle"));
+        addGroups();
+        addRoles();
+
+        waitAndClickByName("methodToCall.blanketApprove");
+        waitForPageToLoad();
+    }
+
+    private void addGroups() throws InterruptedException {
+
+        for (String groupId : GROUPS) {
+            waitAndType(By.id("newRole.roleId"), groupId);
+            waitAndClickByName("methodToCall.addGroup.anchor");
+        }
+    }
+
+    private void addRoles() throws InterruptedException {
+
+        for (String roleId : ROLES) {
+            waitAndType(By.id("newRole.roleId"), roleId);
+            waitAndClickByName("methodToCall.addRole.anchor");
         }
     }
 }

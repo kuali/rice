@@ -17,8 +17,6 @@ package edu.sampleu.admin;
 
 import edu.sampleu.common.FreemarkerAftBase;
 import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
@@ -29,12 +27,9 @@ import org.openqa.selenium.By;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -205,9 +200,8 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
 
             // build files and add to array
             fileUploadList.add(
-                    writeTemplateToFile(newTempFile("loadtest-users.xml"), cfg.getTemplate("UserListIngestion.ftl"), props));
-            fileUploadList.add(
-                    writeTemplateToFile(newTempFile("loadtest-group.xml"), cfg.getTemplate("UserGroupListIngestion.ftl"), props));
+                    writeTemplateToFile(newTempFile("userlist-users.xml"), cfg.getTemplate("UserListIngestion.ftl"), props));
+
         } catch( Exception e) {
             throw new Exception("Unable to generate files for upload " + e.getMessage(), e);
         }

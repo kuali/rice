@@ -183,7 +183,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 	/** flush the write queue immediately. */
 	@Override
 	public void destroy() throws Exception {
-		KSBServiceLocator.getThreadPool().execute(shutdownWriter);
+		shutdownWriter.run();
 	}
 
 	/**

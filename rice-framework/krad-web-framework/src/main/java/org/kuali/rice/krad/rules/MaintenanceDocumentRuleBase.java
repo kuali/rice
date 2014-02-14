@@ -410,7 +410,8 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // TODO: Will be covered by KULRICE-7666
         /*
         // apply rules that check whether child objects that cannot be hooked up by normal means exist and are active   */
-        success &= dictionaryValidationService.validateDefaultExistenceChecksForNewCollectionItem(
+
+        success &= getDictionaryValidationService().validateDefaultExistenceChecksForNewCollectionItem(
                 maintenanceDocument.getNewMaintainableObject().getDataObject(), addLine, collectionName);
 
         // apply rules that are specific to the class of the maintenance document (if implemented)

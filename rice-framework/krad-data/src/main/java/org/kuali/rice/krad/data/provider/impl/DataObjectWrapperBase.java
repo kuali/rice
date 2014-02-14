@@ -367,24 +367,28 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 	public Map<String, Object> getForeignKeyAttributeMap(String relationshipName) {
 		MetadataChild relationship = findAndValidateRelationship(relationshipName);
         List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
+
         if (!attributeRelationships.isEmpty()) {
-            // ok, it has some of these relationships, are they all populated?
-            boolean allPopulated = true;
             Map<String, Object> attributeMap = new LinkedHashMap<String, Object>();
+
             for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
-                String attributeName = attributeRelationship.getChildAttributeName();
-                Object attributeValue = getPropertyValue(attributeName);
-                if (attributeValue == null) {
-                    allPopulated = false;
-                    break;
+                // obtain the property value on the current parent object
+                String parentAttributeName = attributeRelationship.getParentAttributeName();
+                Object parentAttributeValue = getPropertyValue(parentAttributeName);
+
+                // not all of our relationships are populated, so we cannot obtain a valid foreign key
+                if (parentAttributeValue == null) {
+                    return null;
                 }
-                attributeMap.put(attributeName, attributeValue);
+
+                // store the mapping with the child attribute name to fetch on the referenced child object
+                String childAttributeName = attributeRelationship.getChildAttributeName();
+                attributeMap.put(childAttributeName, parentAttributeValue);
             }
-            if (allPopulated) {
-                // if they are all populated, then we have our foreign key!
-				return attributeMap;
-            }
+
+            return attributeMap;
         }
+
         return null;
     }
 

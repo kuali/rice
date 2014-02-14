@@ -49,7 +49,7 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
       * the <code>ComponentModifier</code> before running
       * </p>
       * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

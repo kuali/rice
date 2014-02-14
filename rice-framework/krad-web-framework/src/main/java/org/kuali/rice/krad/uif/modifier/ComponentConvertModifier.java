@@ -53,8 +53,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performModification(Object model, Component component) {
@@ -117,7 +116,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -183,7 +182,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T componentModifier) {

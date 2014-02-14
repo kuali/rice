@@ -51,7 +51,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     /**
      * Default performInitialization impl (does nothing)
      *
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#performInitialization
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model, Component component) {
@@ -117,7 +117,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T componentModifier) {

@@ -79,8 +79,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     /**
      * Calls <code>ViewHelperService</code> to initialize the header field prototype
      *
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model, Component component) {
@@ -101,8 +100,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * to suffixing the id and setting the readOnly property
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performModification(Object model, Component component) {
@@ -310,7 +308,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -426,7 +424,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T componentModifier) {

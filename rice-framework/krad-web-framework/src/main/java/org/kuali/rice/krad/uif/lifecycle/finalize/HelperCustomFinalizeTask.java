@@ -37,7 +37,7 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * {@inheritDoc}
      */
     @Override
     public FinalizeComponentPhase getPhase() {
@@ -45,7 +45,7 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

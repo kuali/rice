@@ -644,6 +644,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
         if (!(bo instanceof BusinessObject)) {
             throw new UnsupportedOperationException("getReferenceIfExists only supports BusinessObject in KNS");
         }
+
         return businessObjectService.getReferenceIfExists((BusinessObject) bo, referenceName);
     }
 
@@ -653,6 +654,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
             throw new UnsupportedOperationException(
                     "getReferenceIfExists only supports PersistableBusinessObject in KNS");
         }
+
         return persistenceService.allForeignKeyValuesPopulatedForReference((PersistableBusinessObject) bo,
                 referenceName);
     }

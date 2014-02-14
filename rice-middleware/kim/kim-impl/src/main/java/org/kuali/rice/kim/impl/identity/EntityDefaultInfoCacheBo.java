@@ -46,9 +46,6 @@ public class EntityDefaultInfoCacheBo {
 
     private static final String UNAVAILABLE = "Unavailable";
 
-    @Column(name="OBJ_ID",length=36,unique=true)
-    protected String objectId;
-
     @Id
     @Column(name = "PRNCPL_ID")
     private String principalId;
@@ -85,6 +82,9 @@ public class EntityDefaultInfoCacheBo {
 
     @Column(name = "LAST_UPDT_TS")
     private Timestamp lastUpdateTimestamp;
+
+    @Column(name="OBJ_ID", length=36, unique=true, nullable = false)
+    protected String objectId;
 
     public EntityDefaultInfoCacheBo() {
     }
@@ -168,10 +168,15 @@ public class EntityDefaultInfoCacheBo {
         if (StringUtils.isEmpty(getObjectId())) {
             setObjectId(UUID.randomUUID().toString());
         }
+
         lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
     }
     @PreUpdate
     protected void preUpdate() {
+        if (StringUtils.isEmpty(getObjectId())) {
+            setObjectId(UUID.randomUUID().toString());
+        }
+
         lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
     }
 

@@ -44,7 +44,7 @@ public class BlockUI extends WidgetBase {
     /**
      * Override to add property values to the template options
      *
-     * @see org.kuali.rice.krad.uif.component.Component#getTemplateOptions()
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> getTemplateOptions() {

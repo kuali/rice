@@ -1733,7 +1733,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         for (WebElement option : options) {
             if (option.getText().equals(selectText)) {
                 option.click();
-                break;
+//                break; // seems to be causing a hang?
             }
         }
     }

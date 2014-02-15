@@ -187,7 +187,7 @@ public abstract class XmlIngesterAftBase extends FreemarkerAftBase {
         try {
             Properties props = loadProperties(PROPS_LOCATION, DEFAULT_PROPS_LOCATION);
 
-            String usersArg = System.getProperty("xmlingester.user.list");
+            String usersArg = System.getProperty("xmlingester.user.list").replace(".", "").replace("-", "").toLowerCase();
             List<XmlIngesterUser> xmlIngesterUsers = new LinkedList<XmlIngesterUser>();
             StringTokenizer token = new StringTokenizer(usersArg, ",");
             while (token.hasMoreTokens()) {

@@ -74,7 +74,7 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
     }
 
     private void testPersonRoleUserList() throws InterruptedException {
-        String usersArg = System.getProperty("xmlingester.user.list", "test1,test2");
+        String usersArg = System.getProperty("xmlingester.user.list", "test1,test2").replace(".", "").replace("-", "").toLowerCase();
         StringTokenizer token = new StringTokenizer(usersArg, ",");
         while (token.hasMoreTokens()) {
             addPerson(token.nextToken());
@@ -85,10 +85,9 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
         open(EDIT_URL.replace("LTID", id));
         waitAndTypeByName("document.documentHeader.documentDescription", "Admin permissions for " + id); // don't make unique
 
-        selectByName("newAffln.affiliationTypeCode", "Affiliate");
-        selectOptionByName("newAffln.campusCode", "BL");
-        checkByName("newAffln.dflt");
-        waitAndClickByName("methodToCall.addAffln.anchor");
+        if (noAffilication()) {
+            addAffiliation();
+        }
 
         waitAndClick(By.id("tab-Membership-imageToggle"));
         addGroups();
@@ -98,18 +97,27 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
         waitForPageToLoad();
     }
 
-    private void addGroups() throws InterruptedException {
+    private void addAffiliation() throws InterruptedException {
+        selectByName("newAffln.affiliationTypeCode", "Affiliate");
+        selectOptionByName("newAffln.campusCode", "BL");
+        checkByName("newAffln.dflt");
+        waitAndClickByName("methodToCall.addAffln.anchor");
+    }
 
+    private boolean noAffilication() {
+        return !isElementPresentByName("document.affiliations[0].dflt");
+    }
+
+    private void addGroups() throws InterruptedException {
         for (String groupId : GROUPS) {
-            waitAndType(By.id("newRole.roleId"), groupId);
+            waitAndTypeByName("newGroup.groupId", groupId);
             waitAndClickByName("methodToCall.addGroup.anchor");
         }
     }
 
     private void addRoles() throws InterruptedException {
-
         for (String roleId : ROLES) {
-            waitAndType(By.id("newRole.roleId"), roleId);
+            waitAndTypeByName("newRole.roleId", roleId);
             waitAndClickByName("methodToCall.addRole.anchor");
         }
     }

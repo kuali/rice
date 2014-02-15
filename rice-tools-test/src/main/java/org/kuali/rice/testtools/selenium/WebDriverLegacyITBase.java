@@ -2782,8 +2782,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testVerifyPerson(String docId, String personName) throws Exception
-    {
+    protected List<String> testVerifyPerson(String docId, String personName) throws Exception {
         waitAndClickByLinkText(personName);
         waitForPageToLoad();
         Thread.sleep(5000);
@@ -2813,38 +2812,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         params.add(personName);
 
         return params;
-    }
-
-    protected void testUifTooltipByName(String nameField1, String nameField2) throws Exception {
-        findElement(By.name(nameField2)); // fields must be in view for tooltips to be displayed
-
-        // check if tooltip opens on focus
-        fireEvent(nameField1, "focus");
-        fireMouseOverEventByName(nameField1);
-
-        assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
-                "td.jquerybubblepopup-innerHtml"));
-        fireEvent(nameField1, "blur");
-
-        fireEvent(nameField2, "focus");
-        Thread.sleep(5000);
-
-        // check if tooltip opens on mouse over
-        fireMouseOverEventByName(nameField2);
-        assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
-
-        // check if tooltip closed on mouse out of nameField2
-        fireEvent(nameField2, "blur");
-        waitAndTypeByName(nameField1, "");
-        Thread.sleep(5000);
-        assertFalse(isVisibleByXpath(
-                "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
-
-        // check that default tooltip does not display when there are an error message on the field
-        waitAndTypeByName(nameField1, "1");
-        fireEvent(nameField1, "blur");
-        fireMouseOverEventByName(nameField1);
-        Thread.sleep(10000);
     }
 
     protected void testValidCharsConstraintIT() throws Exception {

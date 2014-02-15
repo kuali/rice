@@ -43,7 +43,7 @@ public interface DocumentService {
      * get a new blank document instance based on the document type name
      *
      * @param documentTypeName
-     * @return
+     * @return new document instance
      */
     public Document getNewDocument(String documentTypeName) throws WorkflowException;
 
@@ -51,7 +51,7 @@ public interface DocumentService {
      * get a new blank document instance having the given Document class
      *
      * @param documentClass
-     * @return
+     * @return new document instance
      */
     public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
 
@@ -61,7 +61,7 @@ public interface DocumentService {
      *
      * @param documentTypeName
      * @param initiatorPrincipalNm
-     * @return
+     * @return new document instance
      */
     public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException;
 
@@ -69,7 +69,7 @@ public interface DocumentService {
      * get a document based on the document header id which is the primary key for all document types
      *
      * @param documentHeaderId
-     * @return
+     * @return document, by id
      */
     public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
     /**
@@ -78,14 +78,14 @@ public interface DocumentService {
      * is not being processed (e.g. during workflow indexing/post-processing).
      *
      * @param documentHeaderId
-     * @return
+     * @return document, by id
      */
     public Document getByDocumentHeaderIdSessionless(String documentHeaderId) throws WorkflowException;
 
     /**
      * This method retrieves a list of fully-populated documents given a list of document header id values.
      *
-     * @param clazz
+     * @param documentClass
      * @param documentHeaderIds
      * @return List of fully-populated documents
      * @throws WorkflowException
@@ -134,8 +134,8 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @param adHocRoutingRecipients
-     * @return
-     * @throws ValidationErrorList
+     * @return document
+     * @throws WorkflowException
      */
     public Document routeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
@@ -146,8 +146,8 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @param adHocRoutingRecipients
-     * @return
-     * @throws ValidationErrorList
+     * @return document
+     * @throws WorkflowException
      */
     public Document approveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
@@ -157,8 +157,8 @@ public interface DocumentService {
      *
      * @param document
      * @param annotation
-     * @return
-     * @throws ValidationErrorList
+     * @return document
+     * @throws WorkflowException
      */
     public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException;
 
@@ -168,7 +168,7 @@ public interface DocumentService {
      *
      * @param document
      * @param annotation
-     * @return
+     * @return document
      * @throws WorkflowException
      */
     public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException;
@@ -179,7 +179,7 @@ public interface DocumentService {
      *
      * @param document
      * @param annotation
-     * @return
+     * @return document
      * @throws WorkflowException
      */
     public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
@@ -190,7 +190,7 @@ public interface DocumentService {
      *
      * @param document
      * @param annotation
-     * @return
+     * @return document
      * @throws WorkflowException
      */
     public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException;
@@ -213,7 +213,8 @@ public interface DocumentService {
      *
      * @param document
      * @param annotation
-     * @return
+     * @return document
+     * @throws WorkflowException
      */
     public Document cancelDocument(Document document, String annotation) throws WorkflowException;
 
@@ -226,7 +227,8 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @param adHocRecipients
-     * @return
+     * @return document
+     * @throws WorkflowException
      */
     public Document acknowledgeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
@@ -241,8 +243,8 @@ public interface DocumentService {
      * @param document
      * @param annotation
      * @param adHocRecipients
-     * @return
-     * @throws ValidationErrorList
+     * @return document
+     * @throws WorkflowException
      */
     public Document blanketApproveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
@@ -252,7 +254,8 @@ public interface DocumentService {
      *
      * @param document
      * @param adHocRecipients
-     * @return
+     * @return document
+     * @throws WorkflowException
      */
     public Document clearDocumentFyi(Document document, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
@@ -306,7 +309,8 @@ public interface DocumentService {
      * @since 2.1
      * @param document
      * @param annotation
-     * @return
+     * @return document
+     * @throws WorkflowException
      */
     public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
 

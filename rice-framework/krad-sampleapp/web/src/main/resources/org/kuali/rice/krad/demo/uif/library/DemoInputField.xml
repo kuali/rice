@@ -23,7 +23,7 @@
   <!-- InputField demo -->
   <bean id="Demo-InputFieldView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInputField.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.InputField"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.InputFieldBase"/>
     <property name="docBookAnchor" value="d7339e4811"/>
     <property name="demoGroups">
       <list>

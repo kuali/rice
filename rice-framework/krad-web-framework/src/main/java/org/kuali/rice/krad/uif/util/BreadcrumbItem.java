@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
@@ -49,7 +52,7 @@ public class BreadcrumbItem extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         View view = ViewLifecycle.getView();
@@ -64,21 +67,6 @@ public class BreadcrumbItem extends ContentElementBase {
             ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(url, false);
             ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, url, context);
         }
-    }
-
-    /**
-     * Adds siblingBreadcrumbComponent to the components for the lifecycle
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(siblingBreadcrumbComponent);
-        components.addAll(super.getComponentsForLifecycle());
-
-        return components;
     }
 
     /**

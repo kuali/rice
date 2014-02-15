@@ -31,8 +31,10 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -90,6 +92,16 @@ public final class ObjectPropertyUtils {
             throw new IllegalArgumentException("Property " + propertyName
                     + " not found for bean " + beanClass);
         }
+    }
+
+    /**
+     * Gets the names of all readable properties for the bean class.
+     * 
+     * @param beanClass The bean class.
+     * @return set of property names
+     */
+    public static Set<String> getReadablePropertyNames(Class<?> beanClass) {
+        return getMetadata(beanClass).readMethods.keySet();
     }
 
     /**
@@ -249,6 +261,7 @@ public final class ObjectPropertyUtils {
     /**
      * Look up a property value.
      * 
+     * @param <T> property type
      * @param object The bean instance to look up a property value for.
      * @param propertyPath A valid property path expression in the context of the bean.
      * @return The value of the property referred to by the provided bean and property path.
@@ -362,8 +375,8 @@ public final class ObjectPropertyUtils {
      * @param propertyPath A property path expression in the context of the bean.
      * @param propertyValue The value to populate value in the property referred to by the provided
      *        bean and property path.
-     * @param ignore True if invalid property values should be ignored, false to throw a
-     *        RuntimeException if the property refernce is invalid.
+     * @param ignoreUnknown True if invalid property values should be ignored, false to throw a
+     *        RuntimeException if the property reference is invalid.
      * @see ObjectPathExpressionParser
      */
     public static void setPropertyValue(Object object, String propertyPath, Object propertyValue, boolean ignoreUnknown) {
@@ -428,6 +441,123 @@ public final class ObjectPropertyUtils {
         return fields;
     }
 
+    /**
+     * Get the best known component type for a generic type.
+     * 
+     * <p>
+     * When the type is not parameterized or has no explicitly defined parameters, {@link Object} is
+     * returned.
+     * </p>
+     * 
+     * <p>
+     * When the type has multiple parameters, the right-most parameter is considered the component
+     * type. This facilitates identifying the value type of a Map.
+     * </p>
+     * 
+     * @param type The generic collection or map type.
+     * @return component or value type, resolved from the generic type
+     */
+    public static Type getComponentType(Type type) {
+        if (!(type instanceof ParameterizedType)) {
+            return Object.class;
+        }
+
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type[] params = parameterizedType.getActualTypeArguments();
+        if (params.length == 0) {
+            return Object.class;
+        }
+
+        Type valueType = params[params.length - 1];
+        return valueType;
+    }
+
+    /**
+     * Get the upper bound of a generic type.
+     * 
+     * <p>
+     * When the type is a class, the class is returned.
+     * </p>
+     * 
+     * <p>
+     * When the type is a wildcard, and the upper bound is a class, the upper bound of the wildcard
+     * is returned.
+     * </p>
+     * 
+     * <p>
+     * If the type has not been explicitly defined at compile time, {@link Object} is returned.
+     * </p>
+     * 
+     * @param valueType The generic collection or map type.
+     * @return component or value type, resolved from the generic type
+     */
+    public static Class<?> getUpperBound(Type valueType) {
+        if (valueType instanceof WildcardType) {
+            Type[] upperBounds = ((WildcardType) valueType).getUpperBounds();
+
+            if (upperBounds.length >= 1) {
+                valueType = upperBounds[0];
+            }
+        }
+
+        if (valueType instanceof ParameterizedType) {
+            valueType = ((ParameterizedType) valueType).getRawType();
+        }
+
+        if (valueType instanceof Class) {
+            return (Class<?>) valueType;
+        }
+
+        return Object.class;
+    }
+
+    /**
+     * Locate the generic type declaration for a given target class in the generic type hierarchy of
+     * the source class.
+     * 
+     * @param sourceClass The class representing the generic type hierarchy to scan.
+     * @param targetClass The class representing the generic type declaration to locate within the
+     *        source class' hierarchy.
+     * @return The generic type representing the target class within the source class' generic
+     *         hierarchy.
+     */
+    public static Type findGenericType(Class<?> sourceClass, Class<?> targetClass) {
+        if (!targetClass.isAssignableFrom(sourceClass)) {
+            throw new IllegalArgumentException(targetClass + " is not assignable from " + sourceClass);
+        }
+
+        if (sourceClass.equals(targetClass)) {
+            return sourceClass;
+        }
+        
+        @SuppressWarnings("unchecked")
+        Queue<Type> typeQueue = RecycleUtils.getInstance(LinkedList.class);
+        typeQueue.offer(sourceClass);
+        while (!typeQueue.isEmpty()) {
+            Type type = typeQueue.poll();
+            
+            Class<?> upperBound = getUpperBound(type);
+            if (targetClass.equals(upperBound)) {
+                return type;
+            }
+
+            Type genericSuper = upperBound.getGenericSuperclass();
+            if (genericSuper != null) {
+                typeQueue.offer(genericSuper);
+            }
+
+            Type[] genericInterfaces = upperBound.getGenericInterfaces();
+            for (int i=0; i<genericInterfaces.length; i++) {
+                if (genericInterfaces[i] != null) {
+                    typeQueue.offer(genericInterfaces[i]);
+                }
+            }
+        }
+        
+        throw new IllegalStateException(targetClass + " is assignable from " + sourceClass
+                + " but could not be found in the generic type hierarchy");
+    }
+    
     /**
      * Private constructor - utility class only.
      */
@@ -615,7 +745,7 @@ public final class ObjectPropertyUtils {
             }
             
             propertyNames = Collections.unmodifiableSet(propertyNames);
-            readablePropertyNamesByPropertyType.put(collectionType, propertyNames);
+            readablePropertyNamesByCollectionType.put(collectionType, propertyNames);
             
             return propertyNames;
         }

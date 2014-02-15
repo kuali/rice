@@ -44,7 +44,7 @@
   </bean>
 
   <bean id="Uif-TextControl" parent="Uif-TextControl-parentBean"/>
-  <bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControl"
+  <bean id="Uif-TextControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.TextControlBase"
         scope="prototype" parent="Uif-ControlBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/text.ftl"/>
     <property name="templateName" value="uif_text"/>
@@ -172,7 +172,7 @@
   </bean>
 
   <bean id="Uif-DropdownControl" parent="Uif-DropdownControl-parentBean"/>
-  <bean id="Uif-DropdownControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
+  <bean id="Uif-DropdownControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControlBase"
         scope="prototype" parent="Uif-ControlBase" p:multiple="false">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="templateName" value="uif_select"/>
@@ -185,7 +185,7 @@
   </bean>
 
   <bean id="Uif-MultiSelectControl" parent="Uif-MultiSelectControl-parentBean"/>
-  <bean id="Uif-MultiSelectControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControl"
+  <bean id="Uif-MultiSelectControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SelectControlBase"
         scope="prototype" parent="Uif-ControlBase" p:multiple="true">
     <property name="template" value="/krad/WEB-INF/ftl/components/control/select.ftl"/>
     <property name="templateName" value="uif_select"/>

@@ -88,7 +88,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     /**
      * Gets all InputFields (which extend Constrainable)
      *
-     * @return
+     * @return constrainable input fields
      */
     @Override
     public List<Constrainable> getDefinitions() {
@@ -98,8 +98,8 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
     /**
      * Returns the label associated with the InputField which has that AttributeName
      *
-     * @param attributeName
-     * @return
+     * @param attributeName attribute name
+     * @return label associated with the named attribute
      */
     @Override
     public String getLabel(String attributeName) {
@@ -145,7 +145,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
      * Gets the type of value for this AttributeName as represented on the Form
      *
      * @param attributeName
-     * @return
+     * @return attribute type
      */
     @Override
     public Class<?> getType(String attributeName) {

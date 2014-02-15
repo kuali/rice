@@ -532,6 +532,10 @@ public class ProcessLogger {
     /**
      * Get a human readable representation of the system memory.
      * 
+     * @param free free heap memory, in bytes
+     * @param tot total heap memory, in bytes
+     * @param max maximum total heap memory, in bytes
+     * 
      * @return A human readable representation of the system memory.
      */
     public static String memoryToString(long free, long tot, long max) {
@@ -551,6 +555,7 @@ public class ProcessLogger {
      * Follow a callable process using the system default verbose setting and checked exception
      * handling.
      * 
+     * @param <T> callable return type
      * @param name The name of the process.
      * @param processDescription A message describing the process to report at the top of the trace.
      * @param callableProcess The callable process.
@@ -573,6 +578,7 @@ public class ProcessLogger {
     /**
      * Follow a callable process with checked exception handling.
      * 
+     * @param <T> callable return type
      * @param name The name of the process.
      * @param processDescription A message describing the process to report at the top of the trace.
      * @param verbose Verbose operation flag, see {@link ProcessStatus#verbose}.
@@ -596,10 +602,12 @@ public class ProcessLogger {
     /**
      * Follow a callable process using the system default verbose setting.
      * 
+     * @param <T> callable return type
      * @param name The name of the process.
      * @param processDescription A message describing the process to report at the top of the trace.
      * @param callableProcess The callable process.
      * @return The result of calling the process.
+     * @throws Exception from {@link Callable#call()}
      */
     public static <T> T follow(String name, String processDescription, Callable<T> callableProcess)
             throws Exception {
@@ -609,10 +617,13 @@ public class ProcessLogger {
     /**
      * Follow a callable process.
      * 
+     * @param <T> callable return type
      * @param name The name of the process.
      * @param processDescription A message describing the process to report at the top of the trace.
+     * @param verbose True to note every trace entry, false to only note those that take longer than 1ms.
      * @param callableProcess The callable process.
      * @return The result of calling the process.
+     * @throws Exception from {@link Callable#call()}
      */
     public static <T> T follow(String name, String processDescription, Boolean verbose,
             Callable<T> callableProcess) throws Exception {
@@ -852,7 +863,6 @@ public class ProcessLogger {
      * 
      * @param name The name of the process counter.
      * @param detail Details on the operation that just ended.
-     * @return The process counter.
      */
     public static void countEnd(String name, String detail) {
         if (TL_STAT.get() != null) {
@@ -869,7 +879,6 @@ public class ProcessLogger {
      * @param traceName The name of the process trace.
      * @param name The name of the process counter.
      * @param detail Details on the operation that just ended.
-     * @return The process counter.
      */
     public static void countEnd(String traceName, String name,
             String detail) {

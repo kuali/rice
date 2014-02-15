@@ -334,6 +334,8 @@ public class ErrorReport {
 
     /**
      * Returns whether this message represents an error per its errorStatus.
+     * 
+     * @return true if the message represents an error
      */
     public boolean isError() {
         return errorStatus == ERROR;
@@ -341,6 +343,8 @@ public class ErrorReport {
 
     /**
      * Returns whether this message represents a warning per its errorStatus.
+     * 
+     * @return true if the message represents a warning
      */
     public boolean isWarning() {
         return errorStatus == WARNING;

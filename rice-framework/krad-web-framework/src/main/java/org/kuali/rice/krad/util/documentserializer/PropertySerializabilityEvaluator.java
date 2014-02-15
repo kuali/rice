@@ -25,7 +25,7 @@ import org.kuali.rice.krad.document.Document;
 public interface PropertySerializabilityEvaluator {
 
     /**
-     * Initializes the evaluator so that calls to {@link #isPropertySerializable(DocumentSerializationState, Object, String, Object)} and
+     * Initializes the evaluator so that calls to {@link #isPropertySerializable(SerializationState, Object, String, Object)} and
      * {@link #determinePropertyType(Object)} will function properly
      *
      * @param document the document instance

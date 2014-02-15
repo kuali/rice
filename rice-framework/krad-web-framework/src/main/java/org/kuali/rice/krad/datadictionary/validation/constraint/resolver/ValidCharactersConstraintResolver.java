@@ -25,6 +25,7 @@ import java.util.List;
  * An object that returns the valid characters constraint as a list for a definition implementing the capability {@link
  * ValidCharactersConstrainable}.
  *
+ * @param <T> constrainable type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidCharactersConstraintResolver<T extends ValidCharactersConstrainable> implements ConstraintResolver<T> {

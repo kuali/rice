@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.data.jpa.eclipselink;
 
+import java.util.Map;
+
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
-
-import java.util.Map;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure an

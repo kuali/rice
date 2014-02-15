@@ -21,8 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -72,7 +71,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return String bean id for component
      */
     String getBaseId();
-
+    
     /**
      * Setter for the base id that backs the component instance
      *
@@ -93,28 +92,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     String getComponentTypeName();
     
     /**
-     * Indicates whether the component has been initialized.
-     *
-     * @return True if the component has been initialized, false if not.
-     */
-    boolean isInitialized();
-
-    /**
-     * Indicates whether the component has been updated from the model.
-     *
-     * @return True if the component has been updated, false if not.
-     */
-    boolean isModelApplied();
-
-    /**
-     * Indicates whether the component has been updated from the model and final
-     * updates made.
-     *
-     * @return True if the component has been updated, false if not.
-     */
-    boolean isFinal();
-
-    /**
      * Indicates whether the component has been fully rendered.
      *
      * @return True if the component has fully rendered, false if not.
@@ -122,30 +99,9 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     boolean isRendered();
 
     /**
-     * Get the view lifecycle processing status for this component.
-     * 
-     * @return The view lifecycle processing status for this component.
-     * @see UifConstants.ViewStatus
-     */
-    String getViewStatus();
-
-    /**
-     * Set the view lifecycle processing status for this component.
-     * 
-     * @param phase The phase that has just finished processing the component.
-     */
-    void setViewStatus(ViewLifecyclePhase phase);
-    
-    /**
-     * Receive notification that a lifecycle phase, and all successor phases, have been completed on
-     * this component.
-     */
-    void notifyCompleted(ViewLifecyclePhase phase);
-
-    /**
      * Set the view lifecycle processing status for this component, explicitly.
      * 
-     * @param phase The view status for this component.
+     * @param status The view status for this component.
      */
     void setViewStatus(String status);
 
@@ -199,7 +155,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * e.g. 'uif_text'
      * </p>
      *
-     * @return
+     * @return template name
      */
     public String getTemplateName();
 
@@ -231,31 +187,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setTitle(String title);
 
     /**
-     * List of components that are contained within the component and should be sent through
-     * the lifecycle
-     *
-     * <p>
-     * Used by {@code ViewHelperService} for the various lifecycle callbacks
-     * </p>
-     *
-     * @return List<Component> child components
-     */
-    List<Component> getComponentsForLifecycle();
-
-    /**
-     * List of components that are maintained by the component as prototypes for creating other component instances
-     *
-     * <p>
-     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
-     * are the fields in a collection group that are created for each collection record. They only participate in the
-     * initialize phase.
-     * </p>
-     *
-     * @return List<Component> child component prototypes
-     */
-    List<Component> getComponentPrototypes();
-
-    /**
      * List of components that are contained within the List of {@code PropertyReplacer} in component
      *
      * <p>
@@ -277,8 +208,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return List of component modifiers
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * @see RunComponentModifiersTask
      */
     List<ComponentModifier> getComponentModifiers();
 
@@ -713,35 +643,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param context
      */
     void setContext(Map<String, Object> context);
-
-    /**
-     * Places the given object into the context Map for the component with the
-     * given name
-     *
-     * <p>
-     * Note this also will push context to property replacers configured on the component.
-     * To place multiple objects in the context, you should use #pushAllToContext since that
-     * will call this method for each and update property replacers. Using {@link #getContext().putAll()}
-     * will bypass property replacers.
-     * </p>
-     *
-     * @param objectName - name the object should be exposed under in the context map
-     * @param object - object instance to place into context
-     */
-    void pushObjectToContext(String objectName, Object object);
-
-    /**
-     * Places each entry of the given Map into the context for the component
-     *
-     * <p>
-     * Note this will call #pushObjectToContext for each entry which will update any configured property
-     * replacers as well. This should be used in place of getContext().putAll()
-     * </p>
-     *
-     * @param objects - Map<String, Object> objects to add to context, where the entry key will be the context key
-     * and the entry value will be the context value
-     */
-    void pushAllToContext(Map<String, Object> objects);
 
     /**
      * gets a list of {@code PropertyReplacer} instances
@@ -1315,5 +1216,19 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param postRenderContent
      */
     public void setPostRenderContent(String postRenderContent);
+
+    /**
+     * Gets the method to call on refresh.
+     * 
+     * @return method to call
+     */
+    String getMethodToCallOnRefresh();
+
+    /**
+     * Gets a string representing all CSS style classes.
+     * 
+     * @return string representation of CSS classes
+     */
+    String getStyleClassesAsString();
 
 }

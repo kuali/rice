@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 
@@ -47,13 +48,13 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 /**
  * Utilities class for establishing a minimal environment for testing operations involving Uif
  * components.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class UifUnitTestUtils {
 
     private final static Logger LOG = Logger.getLogger(UifUnitTestUtils.class);
-    
+
     private final static ThreadLocal<Properties> TL_CONFIG_PROPERTIES = new ThreadLocal<Properties>();
 
     private static ConfigurableWebApplicationContext webApplicationContext;
@@ -68,7 +69,7 @@ public final class UifUnitTestUtils {
 
         MutablePropertyValues mpv = new MutablePropertyValues();
         mpv.add("preferFileSystemAccess", false);
-        mpv.add("templateLoaderPath", "/krad-web_2_4_M3");
+        mpv.add("templateLoaderPath", "/krad-web");
         Properties props = new Properties();
         props.put("number_format", "computer");
         props.put("template_update_delay", "2147483647");
@@ -91,12 +92,13 @@ public final class UifUnitTestUtils {
 
     /**
      * Get the config properties for the current thread.
+     *
      * @return The config properties for the current thread.
      */
     public static Properties getConfigProperties() {
         return TL_CONFIG_PROPERTIES.get();
     }
-    
+
     /**
      * Get the web application context.
      */
@@ -107,7 +109,7 @@ public final class UifUnitTestUtils {
     /**
      * Establish a Rice configuration providing enough mock services via
      * {@link GlobalResourceLoader} to support the use of KRAD UIF components in unit tests.
-     * 
+     *
      * @param applicationId The application ID for the fake environment.
      * @throws Exception
      */
@@ -117,14 +119,44 @@ public final class UifUnitTestUtils {
         SimpleConfig config = new SimpleConfig();
         Properties configProperties = new Properties();
 
-        InputStream defaultPropertyResource = loader.getResourceAsStream("KRAD-UifDefaults.properties");
+        URL defaultsUrl = loader.getResource("KRAD-UifDefaults.properties");
+        URL rootUrl = new URL(defaultsUrl.toExternalForm().substring(0, defaultsUrl.toExternalForm().lastIndexOf('/')));
+        configProperties.setProperty("root.url", rootUrl.toExternalForm());
+
+        InputStream defaultPropertyResource = defaultsUrl.openStream();
         Assert.assertNotNull("KRAD-UifDefaults.properties", defaultPropertyResource);
         configProperties.load(defaultPropertyResource);
 
         InputStream appPropertyResource = loader.getResourceAsStream(applicationId + ".properties");
         Assert.assertNotNull(applicationId + ".properties", appPropertyResource);
         configProperties.load(appPropertyResource);
-        
+
+        for (String propName : configProperties.stringPropertyNames()) {
+            String propValue = (String) configProperties.getProperty(propName);
+            StringBuilder propBuilder = new StringBuilder(propValue);
+            int exprStart = 0, exprEnd = 0;
+            while (exprStart != -1) {
+                exprStart = propBuilder.indexOf("${", exprEnd);
+                if (exprStart == -1) {
+                    continue;
+                }
+
+                exprEnd = propBuilder.indexOf("}", exprStart);
+                if (exprEnd - exprStart < 3) {
+                    continue;
+                }
+
+                String expr = propBuilder.substring(exprStart + 2, exprEnd);
+                String exprValue = configProperties.getProperty(expr);
+                if (exprValue != null) {
+                    propBuilder.delete(exprStart, exprEnd + 1);
+                    propBuilder.insert(exprStart, exprValue);
+                    configProperties.setProperty(propName, propBuilder.toString());
+                    exprEnd = exprStart + exprValue.length();
+                }
+            }
+        }
+
         String resourceBundles = configProperties.getProperty("test.resource.bundles");
         if (resourceBundles != null) {
             for (String resourceBundle : resourceBundles.split(",")) {
@@ -141,10 +173,10 @@ public final class UifUnitTestUtils {
         ConfigContext.init(config);
 
         MockServletContext servletContext = new MockServletContext();
-        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName("KRAD-UifDefaults"), Arrays
-                .asList("KRAD-UifDefaults-test-context.xml"), servletContext));
-        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName(applicationId), Arrays
-                .asList(applicationId + "-test-context.xml"), servletContext));
+        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName("KRAD-UifDefaults"), Arrays.asList(
+                "KRAD-UifDefaults-test-context.xml"), servletContext));
+        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName(applicationId), Arrays.asList(
+                applicationId + "-test-context.xml"), servletContext));
 
         TL_CONFIG_PROPERTIES.set(ConfigContext.getCurrentContextConfig().getProperties());
         try {
@@ -173,12 +205,12 @@ public final class UifUnitTestUtils {
 
     /**
      * Establish a user session with the given principal name.
-     * 
+     *
      * <p>
      * This method will use KIM API calls to look up a person with the provided principal name. Use
      * {@link #establishMockConfig(String)} to set up a mock KIM environment if needed.
      * </p>
-     * 
+     *
      * @param principalName The principal name of the user to establish a session with.
      */
     public static void establishMockUserSession(String principalName) {
@@ -197,6 +229,7 @@ public final class UifUnitTestUtils {
 
     /**
      * Get a view authorizer allowing most operations.
+     *
      * @return A view authorizer allowing most operations.
      */
     public static ViewAuthorizer getAllowMostViewAuthorizer() {

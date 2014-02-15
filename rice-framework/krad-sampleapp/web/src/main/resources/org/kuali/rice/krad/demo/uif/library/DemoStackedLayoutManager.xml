@@ -23,7 +23,7 @@
   <!-- ListLayoutManager demo -->
   <bean id="Demo-StackedLayoutManagerView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoStackedLayoutManager.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.StackedLayoutManager"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.StackedLayoutManagerBase"/>
     <property name="docBookAnchor" value="d6813e6638"/>
     <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">

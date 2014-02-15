@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
+
 /**
  * Extends the {@link Cloneable} interface to mark UIF objects that can be cloned, rather than
  * constructed, for faster copying.
@@ -27,9 +29,11 @@ package org.kuali.rice.krad.uif.util;
 public interface UifCloneable extends Cloneable {
 
     /**
-     * Override {@link Object#clone()} is overriden to assign the public modifier.
+     * Override {@link Object#clone()} is overridden to assign the public modifier.
      * 
-     * {@see Object#clone()}
+     * @return {@link Object#clone()}
+     * @throws CloneNotSupportedException if {@link Cloneable} is not implemented. This should not
+     *         be possible when using this interface.
      */
     Object clone() throws CloneNotSupportedException;
     

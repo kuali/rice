@@ -46,6 +46,7 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
@@ -621,6 +622,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the details group
      */
+    @ViewLifecycleRestriction
     public Group getDetailsGroup() {
         return detailsGroup;
     }
@@ -639,6 +641,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the ComponentExhibit for this component demo view
      */
+    @ViewLifecycleRestriction
     public ComponentExhibit getExhibit() {
         return exhibit;
     }
@@ -658,6 +661,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the demoGroups
      */
+    @ViewLifecycleRestriction
     public List<Group> getDemoGroups() {
         return demoGroups;
     }
@@ -750,6 +754,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the SyntaxHighlighter
      */
+    @ViewLifecycleRestriction
     public SyntaxHighlighter getHtmlCodeViewer() {
         return htmlCodeViewer;
     }

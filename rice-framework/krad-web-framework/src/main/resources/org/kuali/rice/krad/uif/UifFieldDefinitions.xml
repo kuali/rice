@@ -44,7 +44,7 @@
   </bean>
 
   <bean id="Uif-DataField" parent="Uif-DataField-parentBean"/>
-  <bean id="Uif-DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
+  <bean id="Uif-DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataFieldBase"
         parent="Uif-FieldBase-withLabel">
     <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="templateName" value="uif_dataInputField"/>
@@ -70,7 +70,7 @@
         p:fieldLabel.renderColon="false" p:fieldLabel.wrapperCssClasses="col-md-3"/>
 
   <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
-  <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField"
+  <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputFieldBase"
         parent="Uif-DataField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="templateName" value="uif_dataInputField"/>

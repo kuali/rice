@@ -112,12 +112,10 @@ public class ReferenceDefinition extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * This method returns true if the displayFieldName is set, otherwise it returns false. Whether the
-     * displayFieldName
-     * is set is
-     * defined by whether it has any non-whitespace content in it.
-     *
-     * @return
+     * This method returns true if the displayFieldName is set, otherwise it returns false. Whether
+     * the displayFieldName is set is defined by whether it has any non-whitespace content in it.
+     * 
+     * @return true if the display field name is set
      */
     public boolean isDisplayFieldNameSet() {
         return StringUtils.isNotBlank(displayFieldName);

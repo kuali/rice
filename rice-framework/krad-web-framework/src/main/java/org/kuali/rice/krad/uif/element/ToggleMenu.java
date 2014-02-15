@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -22,9 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ListAware;
 import org.kuali.rice.krad.uif.container.Group;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Renders a toggle menu (aka sub menu, dropdown menu) of items.
@@ -71,7 +73,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (StringUtils.isNotBlank(toggleText) && StringUtils.isBlank(toggleMessage.getMessageText())) {
@@ -80,30 +82,15 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(toggleMessage);
-
-        if (menuGroup != null) {
-            components.add(menuGroup);
-        }
-
-        return components;
-    }
-
-    /**
      * Text to display as the toggle menu toggle link
-     *
+     * 
      * <p>
-     * This text will appear as a link for the user to click on, which then will bring up the toggle menu menu. This
-     * property is a shortcut for {@link #getToggleMessage().setMessageText()}. This text is not required, in which
+     * This text will appear as a link for the user to click on, which then will bring up the toggle
+     * menu menu. This property is a shortcut for {@link #getToggleMessage()}
+     * {@link Message#setMessageText(String) .setMessageText}. This text is not required, in which
      * case only the caret will render
      * </p>
-     *
+     * 
      * @return text to display for the toggle menu toggle link
      */
     @BeanTagAttribute(name = "toggleText")
@@ -212,6 +199,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return List of menu items for the toggle menu
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "menuItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getMenuItems() {
         return menuItems;

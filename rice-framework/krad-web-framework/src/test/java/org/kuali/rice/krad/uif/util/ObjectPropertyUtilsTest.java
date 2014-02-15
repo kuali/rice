@@ -40,12 +40,15 @@ import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.CollectionGroupBase;
 import org.kuali.rice.krad.uif.container.CollectionGroupBuilder;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.GroupBase;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
+import org.kuali.rice.krad.uif.layout.StackedLayoutManagerBase;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
@@ -521,12 +524,12 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         view.setPresentationController(new ViewPresentationControllerBase());
         view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
 
-        CollectionGroup collectionGroup = new CollectionGroup();
+        CollectionGroup collectionGroup = new CollectionGroupBase();
         collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
         collectionGroup.setAddLinePropertyName("addLineFoo");
 
-        StackedLayoutManager layoutManager = new StackedLayoutManager();
-        Group lineGroupPrototype = new Group();
+        StackedLayoutManager layoutManager = new StackedLayoutManagerBase();
+        Group lineGroupPrototype = new GroupBase();
         layoutManager.setLineGroupPrototype(lineGroupPrototype);
         collectionGroup.setLayoutManager(layoutManager);
 

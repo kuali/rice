@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a
@@ -49,7 +50,7 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component component) {
+    public void performFinalize(Object model, LifecycleElement component) {
         super.performFinalize(model, component);
 
         Container container = (Container) component;

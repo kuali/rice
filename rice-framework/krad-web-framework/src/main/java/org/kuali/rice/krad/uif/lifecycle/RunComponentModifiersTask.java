@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.modifier.ComponentModifier;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
+public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -37,7 +37,7 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
      * @param phase The lifecycle phase to run component modifiers for.
      */
     public RunComponentModifiersTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
      /**
@@ -53,15 +53,15 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getElementState().getElement();
         
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers == null) {
             return;
         }
 
-        Object model = getPhase().getModel();
-        String runPhase = getPhase().getViewPhase();
+        Object model = ViewLifecycle.getModel();
+        String runPhase = getElementState().getViewPhase();
         for (ComponentModifier modifier : component.getComponentModifiers()) {
             // if run phase is initialize, invoke initialize method on modifier first
             if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {

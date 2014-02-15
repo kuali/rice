@@ -21,8 +21,12 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
  * Defines methods a Copyable document must implement.
  */
 public interface Copyable {
+    
     /**
      * Converts this Document instance into a copy of itself.
+     * 
+     * @throws WorkflowException If the copy operation fails.
      */
     public void toCopy() throws WorkflowException;
+    
 }

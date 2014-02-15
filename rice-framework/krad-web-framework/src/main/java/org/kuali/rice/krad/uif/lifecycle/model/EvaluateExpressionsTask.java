@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
+public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public EvaluateExpressionsTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -58,7 +58,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
      * @return original or adjusted id
      */
     public String adjustIdIfNecessary(LifecycleElement element) {
-        ApplyModelComponentPhase phase = (ApplyModelComponentPhase) getPhase();
+        ApplyModelComponentPhase phase = (ApplyModelComponentPhase) getElementState();
         String id = element.getId();
         
         if (phase.visit(element)) {
@@ -77,7 +77,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase {
     protected void performLifecycleTask() {
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         View view = ViewLifecycle.getView();
-        Component component = getPhase().getComponent();
+        Component component = (Component) getElementState().getElement();
 
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();
         if (componentPropertyReplacers != null) {

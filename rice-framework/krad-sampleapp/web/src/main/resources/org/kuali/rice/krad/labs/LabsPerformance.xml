@@ -22,6 +22,7 @@
 
   <bean id="Lab-PerformanceMedium" parent="Uif-FormView">
     <property name="headerText" value="Performance Medium"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.KradLabsForm" />
     <property name="items">
       <list>
         <ref bean="Lab-Performance-Page1"/>

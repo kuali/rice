@@ -26,7 +26,7 @@ public interface BeanOverride {
     /**
      * Return the name of the bean to perform the override.
      *
-     * @return
+     * @return bean name
      */
     public String getBeanName();
 

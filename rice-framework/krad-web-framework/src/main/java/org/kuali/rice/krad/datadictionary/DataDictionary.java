@@ -544,7 +544,7 @@ public class DataDictionary {
      * This method gets the business object entry for a concrete class
      *
      * @param className
-     * @return
+     * @return business object entry
      */
     public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(String className) {
         return ddMapper.getBusinessObjectEntryForConcreteClass(ddIndex, className);
@@ -861,7 +861,7 @@ public class DataDictionary {
      *
      * @param boClass
      * @param attributeName
-     * @return
+     * @return property type
      */
     private static Class<?> getAttributeClassWhenBOIsClass(Class<?> boClass, String attributeName) {
         Object boInstance;
@@ -887,7 +887,7 @@ public class DataDictionary {
      *
      * @param boClass
      * @param attributeName
-     * @return
+     * @return property type
      */
     private static Class<?> getAttributeClassWhenBOIsInterface(Class<?> boClass, String attributeName) {
         if (boClass == null) {
@@ -934,7 +934,7 @@ public class DataDictionary {
      *
      * @param boClass Class that the collectionName collection exists in.
      * @param collectionName the name of the collection you want the element class for
-     * @return
+     * @return collection element type
      */
     public static Class getCollectionElementClass(Class boClass, String collectionName) {
         if (boClass == null) {

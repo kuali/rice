@@ -26,7 +26,9 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.control.TextControlBase;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.InputFieldBase;
 
 /**
  * ViewIndexTest has various tests for ViewIndex
@@ -48,7 +50,7 @@ public class ViewIndexTest {
     @Test
     public void testClearIndexesAfterRender() throws Exception {
         // create an input field
-        InputField field = new InputField();
+        InputField field = new InputFieldBase();
         BindingInfo bindingInfo = new BindingInfo();
         bindingInfo.setBindingPath("property1");
         field.setBindingInfo(bindingInfo);
@@ -62,7 +64,7 @@ public class ViewIndexTest {
         field.setRefreshWhenChangedPropertyNames(refreshWhenChangedPropertyNames);
 
         // set a control
-        TextControl textControl = new TextControl();
+        TextControl textControl = new TextControlBase();
         String controlId = "text1";
         textControl.setId(controlId);
         field.setControl(textControl);

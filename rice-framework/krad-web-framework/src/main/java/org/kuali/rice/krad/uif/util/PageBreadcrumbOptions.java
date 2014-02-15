@@ -43,7 +43,6 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
     /**
      * Setup the BreadcrumbOptions and BreadcrumbItem for a PageGroup.  To be called from performInitialization.
      *
-     * @param view the page's View
      * @param model the model
      */
     @Override
@@ -81,7 +80,6 @@ public class PageBreadcrumbOptions extends BreadcrumbOptions {
      * Finalize the setup of the BreadcrumbOptions and the BreadcrumbItem for the PageGroup.  To be called from the
      * performFinalize method.
      *
-     * @param view the page's View
      * @param model the model
      */
     @Override

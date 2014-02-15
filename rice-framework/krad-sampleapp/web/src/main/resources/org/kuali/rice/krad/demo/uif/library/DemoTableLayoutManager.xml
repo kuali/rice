@@ -23,7 +23,7 @@
   <!-- TableLayoutManager demo -->
   <bean id="Demo-TableLayoutManagerView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTableLayoutManager.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.TableLayoutManager"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.TableLayoutManagerBase"/>
     <property name="docBookAnchor" value=""/>
     <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">

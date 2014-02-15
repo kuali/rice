@@ -69,7 +69,7 @@ public class InputFieldTest {
         when(bindingInfo.clone()).thenReturn(bindingInfo);
 
         // setup input field with binding info and readonly
-        final InputField testObj = new InputField();
+        final InputField testObj = new InputFieldBase();
         testObj.setBindingInfo(bindingInfo);
         testObj.setReadOnly(true);
         testObj.setOptionsFinder(optionsFinder);

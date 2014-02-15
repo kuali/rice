@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,230 +15,90 @@
  */
 package org.kuali.rice.krad.uif.control;
 
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 /**
- * Represents a HTML Text control, generally rendered as a input field of type
- * 'text'. This can display and receive a single value
- *
+ * Interface representing a text input control component. 
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "textControl-bean", parent = "Uif-TextControl"),
-        @BeanTag(name = "smallTextControl-bean", parent = "Uif-SmallTextControl"),
-        @BeanTag(name = "mediumTextControl-bean", parent = "Uif-MediumTextControl"),
-        @BeanTag(name = "largeTextControl-bean", parent = "Uif-LargeTextControl"),
-        @BeanTag(name = "currencyTextControl-bean", parent = "Uif-CurrencyTextControl"),
-        @BeanTag(name = "dateControl-bean", parent = "Uif-DateControl")})
-public class TextControl extends ControlBase implements SizedControl {
-    private static final long serialVersionUID = -8267606288443759880L;
-
-    private int size;
-    private Integer maxLength;
-    private Integer minLength;
-
-    private DatePicker datePicker;
-    private String watermarkText = StringUtils.EMPTY;
-    private boolean textExpand;
-
-    public TextControl() {
-        super();
-    }
+public interface TextControl extends Control {
 
     /**
-     * {@inheritDoc}
+     * Gets the date picker widget, if applicable.
+     * 
+     * @return date picker, null if not a date input field
      */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(datePicker);
-
-        return components;
-    }
+    DatePicker getDatePicker();
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Defaults maxLength, minLength (if not set) to maxLength of parent field</li>
-     * </ul>
-     *
-     * {@inheritDoc}
+     * Gets the size of the text input.
+     * 
+     * @return text input size
      */
-    @Override
-    public void performFinalize(Object model, Component parent) {
-        super.performFinalize(model, parent);
-
-        if (parent instanceof InputField) {
-            InputField field = (InputField) parent;
-            if (getMaxLength() == null) {
-                setMaxLength(field.getMaxLength());
-            }
-
-            if (getMinLength() == null) {
-                setMinLength(field.getMinLength());
-            }
-
-            if (textExpand) {
-                field.setRenderInputAddonGroup(true);
-            }
-        }
-    }
+    int getSize();
 
     /**
-     * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
+     * Gets the min length of the text input.
+     * 
+     * @return min length
      */
-    @BeanTagAttribute(name = "size")
-    public int getSize() {
-        return this.size;
-    }
+    Integer getMinLength();
 
     /**
-     * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
+     * Gets the max length of the text input.
+     * 
+     * @return max length
      */
-    public void setSize(int size) {
-        this.size = size;
-    }
+    Integer getMaxLength();
 
     /**
-     * Maximum number of characters that can be inputted
-     *
-     * <p>If not set on control, max length of field will be used</p>
-     *
-     * @return max number of characters
+     * Indicates if the text expand popup should be used.
+     * 
+     * @return true if the text expand popup should be used
      */
-    @BeanTagAttribute(name = "maxLength")
-    public Integer getMaxLength() {
-        return maxLength;
-    }
+    boolean isTextExpand();
 
     /**
-     * Setter for the max number of input characters
-     *
-     * @param maxLength
+     * Gets the watermark text.
+     * 
+     * @return watermark text
      */
-    public void setMaxLength(Integer maxLength) {
-        this.maxLength = maxLength;
-    }
+    String getWatermarkText();
 
     /**
-     * Minimum number of characters that can be inputted
-     *
-     * <p>If not set on control, min length of field will be used</p>
-     *
-     * @return max number of characters
+     * Setter for {@link #getMaxLength()}
+     * 
+     * @param maxLength property value
      */
-    @BeanTagAttribute(name = "minLength")
-    public Integer getMinLength() {
-        return minLength;
-    }
+    void setMaxLength(Integer maxLength);
 
     /**
-     * Setter for the min number of input characters
-     *
-     * @param minLength
+     * Setter for {@link #getSize()}
+     * 
+     * @param size property value
      */
-    public void setMinLength(Integer minLength) {
-        this.minLength = minLength;
-    }
+    void setSize(int size);
 
     /**
-     * Renders a calendar that can be used to select a date value for the text
-     * control. The <code>Calendar</code> instance contains configuration such
-     * as the date format string
-     *
-     * @return Calendar
+     * Setter for {@link #isTextExpand()}
+     * 
+     * @param b property value
      */
-    @BeanTagAttribute(name = "datePicker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public DatePicker getDatePicker() {
-        return this.datePicker;
-    }
+    void setTextExpand(boolean b);
 
     /**
-     * Setter for the date picker
-     *
-     * @param datePicker
+     * Setter for {@link #getMinLength()}
+     * 
+     * @param minLength property value
      */
-    public void setDatePicker(DatePicker datePicker) {
-        this.datePicker = datePicker;
-    }
+    void setMinLength(Integer minLength);
 
     /**
-     * Gets the watermark text for this TextControl.
-     *
-     * <p>
-     * A watermark typically appears as light gray text within the text input element whenever the
-     * element is empty and does not have focus. This provides a hint to the user as to what the input
-     * is used for, or the type of input that is required.
-     * </p>
-     *
-     * @return the watermarkText
+     * Setter for {@link #getWatermarkText()}
+     * 
+     * @param watermark property value
      */
-    @BeanTagAttribute(name = "watermarkText")
-    public String getWatermarkText() {
-        return this.watermarkText;
-    }
+    void setWatermarkText(String watermark);
 
-    /**
-     * Sets the watermark text for this TextControl
-     *
-     * @param watermarkText the watermarkText to set
-     */
-    public void setWatermarkText(String watermarkText) {
-        //to avoid users from putting in the same value as the watermark adding some spaces here
-        //see watermark troubleshooting for more info
-        if (StringUtils.isNotEmpty(watermarkText)) {
-            watermarkText = watermarkText + "   ";
-        }
-        this.watermarkText = watermarkText;
-    }
-
-    /**
-     * If set to true, this control will have a button which can be clicked to expand the text area through
-     * a popup window so the user has more space to type and see the data they are entering in this text field.
-     *
-     * @return the textExpand
-     */
-    @BeanTagAttribute(name = "textExpand")
-    public boolean isTextExpand() {
-        return this.textExpand;
-    }
-
-    /**
-     * Sets whether this control will have a button to expand the text area through a popup window.
-     *
-     * @param textExpand the textExpand to set
-     */
-    public void setTextExpand(boolean textExpand) {
-        this.textExpand = textExpand;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TextControl textControlCopy = (TextControl) component;
-
-        textControlCopy.setSize(this.size);
-        textControlCopy.setMaxLength(this.maxLength);
-        textControlCopy.setMinLength(this.minLength);
-
-        if(datePicker != null) {
-            textControlCopy.setDatePicker((DatePicker)this.datePicker.copy());
-        }
-
-        textControlCopy.setWatermarkText(this.watermarkText);
-        textControlCopy.setTextExpand(this.textExpand);
-    }
 }

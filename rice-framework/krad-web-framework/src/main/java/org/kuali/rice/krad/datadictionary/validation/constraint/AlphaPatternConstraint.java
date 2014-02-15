@@ -33,8 +33,9 @@ public class AlphaPatternConstraint extends AllowCharacterConstraint {
     protected boolean upperCase = false;
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
+     * {@inheritDoc}
      */
+    @Override
     protected String getRegexString() {
         StringBuilder regexString = new StringBuilder("[A-Za-z");
         /*

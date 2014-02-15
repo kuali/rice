@@ -56,6 +56,7 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
     /**
      * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
      * delimiter
+     * @param cellCssClasses list of cell CSS classes
      *
      * @return class attribute string
      */
@@ -136,19 +137,6 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
      */
     public void setRowLayoutCssClass(String rowLayoutCssClass) {
         this.rowLayoutCssClass = rowLayoutCssClass;
-    }
-
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        for(List<Component> row:rows) {
-            for(Component component: row){
-                components.add(component);
-            }
-        }
-
-        return components;
     }
 
     /**

@@ -38,7 +38,7 @@ import org.kuali.rice.krad.uif.view.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase {
+public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase<DataField> {
 
     /**
      * Constructor.
@@ -46,7 +46,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      * @param phase The initialize phase for the data field.
      */
     public InitializeDataFieldFromDictionaryTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, DataField.class);
     }
 
     /**
@@ -57,7 +57,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      */
     @Override
     protected void performLifecycleTask() {
-        DataField field = (DataField) getPhase().getComponent();
+        DataField field = (DataField) getElementState().getElement();
 
         AttributeDefinition attributeDefinition = null;
 
@@ -124,11 +124,9 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
     /**
      * Helper method for optimzing a call to
-     * {@link ViewModelUtils#getPropertyTypeByClassAndView(View, String)} while parsing a path
+     * {@link ViewModelUtils#getPropertyTypeByClassAndView(View, Object, String)} while parsing a path
      * expression for an attribute definition.
      *
-     * @param formClass The view's form class.
-     * @param modelClasses The view's model classes mapping.
      * @param rootPath The root path of the parse.
      * @param parentPath The parent path of the current parse entry.
      * @return The name of the dictionary entry to check at the current parse node.
@@ -176,7 +174,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
         if (dictionaryModelClass == null) {
             // If no full or partial match, look up based on the model directly
-            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(getPhase().getModel(), modelClassPath);
+            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(ViewLifecycle.getModel(), modelClassPath);
         }
 
         return dictionaryModelClass == null ? null : dictionaryModelClass.getName();
@@ -257,7 +255,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      */
     protected AttributeDefinition findNestedDictionaryAttribute(String propertyPath) {
         // attempt to find definition for parent and property
-        DataField field = (DataField) getPhase().getComponent();
+        DataField field = (DataField) getElementState().getElement();
         String fieldBindingPrefix = null;
         String dictionaryAttributePath = propertyPath;
 

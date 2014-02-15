@@ -34,7 +34,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 @BeanTags({@BeanTag(name = "linkGroup-bean", parent = "Uif-LinkGroup"),
         @BeanTag(name = "linkSubGroup-bean", parent = "Uif-LinkSubGroup"),
         @BeanTag(name = "lookupView-resultActions-bean", parent = "Uif-LookupView-ResultActions")})
-public class LinkGroup extends Group {
+public class LinkGroup extends GroupBase {
     private static final long serialVersionUID = -4173031543626881250L;
 
     private String groupBeginDelimiter;

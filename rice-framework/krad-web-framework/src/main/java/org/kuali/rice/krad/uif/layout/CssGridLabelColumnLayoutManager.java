@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component component) {
+    public void performFinalize(Object model, LifecycleElement component) {
         super.performFinalize(model, component);
 
         Container container = (Container) component;
@@ -113,11 +114,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
                 // rendered with the attribute
                 field.setLabelRendered(true);
             } else {
-                throw new RuntimeException("Label must exist when separateFieldLabelsIntoColumns option is "
-                        + "true for CssGridLayouts. Item class: "
+                throw new RuntimeException("Label must exist on fields in CssGridLabelColumnLayoutManager. Item class: "
                         + item.getClass().getName()
-                        +
-                        " in Container id: "
+                        + " in Container id: "
                         + container.getId());
             }
 
@@ -172,8 +171,6 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
         }
     }
 
-
-
     /**
      * The css class to use on the label column's div "cells"
      *
@@ -185,7 +182,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager#getLabelColumnCssClass()
+     * Setter for {@link #getLabelColumnCssClass()}.
+     *
+     * @param labelColumnCssClass property value
      */
     public void setLabelColumnCssClass(String labelColumnCssClass) {
         this.labelColumnCssClass = labelColumnCssClass;
@@ -207,7 +206,9 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.CssGridLabelColumnLayoutManager#getLabelColumnCssClass()
+     * Setter for {@link #getNumberOfLabelColumns()}.
+     *
+     * @param numberOfLabelColumns property value
      */
     public void setNumberOfLabelColumns(int numberOfLabelColumns) {
         this.numberOfLabelColumns = numberOfLabelColumns;

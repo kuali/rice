@@ -22,9 +22,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Represents a HTML Checkbox control. Typically used for boolean attributes (where the
@@ -48,10 +48,12 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
     }
 
     /**
+     * Sets up rich message content for the label, if any exists
+     *
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (richLabelMessage == null) {
@@ -59,21 +61,8 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
             message.setMessageText(checkboxLabel);
             message.setInlineComponents(inlineComponents);
             message.setRenderWrapperTag(false);
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
             this.setRichLabelMessage(message);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richLabelMessage);
-
-        return components;
     }
 
     /**
@@ -131,7 +120,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
 
     /**
      * Returns true if checked, false if not checked.
-     * @return
+     * @return true if checked
      */
     public boolean isChecked() {
         return checked;

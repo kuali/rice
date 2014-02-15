@@ -37,8 +37,6 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService" />
-
 	<bean id="legacyDataAdapter" class="org.kuali.rice.krad.uif.util.MockLegacyDataAdapter" />
 	
 	<bean id="messageService" class="org.kuali.rice.krad.uif.util.MockMessageService" />
@@ -49,8 +47,10 @@
 	
   <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
 
+	<bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
+
 	<util:list id="uifDictionaryBeans">
-		<value>classpath:/org/kuali/rice/kns_2_4_M2/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
+		<value>classpath:/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRouteWorkgroup.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/Attachment.xml</value>
@@ -79,7 +79,6 @@
 		<value>classpath:/org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
-		<value>classpath:/UifTestOverrides.xml</value>
 	</util:list>
 
 </beans>

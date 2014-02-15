@@ -100,6 +100,9 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     /**
      * Check the {@link UifDisplayHint}s on an attribute, return true if any of them have the
      * given type.
+     * @param attr data object attribute
+     * @param hintType hint type
+     * @return true if the hint type is present on the attribute
      */
     protected boolean hasHintOfType( DataObjectAttribute attr, UifDisplayHintType hintType ) {
         return getHintOfType(attr, hintType) != null;

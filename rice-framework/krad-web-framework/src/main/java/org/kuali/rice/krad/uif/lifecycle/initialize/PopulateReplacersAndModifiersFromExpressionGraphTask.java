@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase {
+public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
      * @param phase The initialize phase for the component.
      */
     public PopulateReplacersAndModifiersFromExpressionGraphTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -46,7 +46,7 @@ public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLi
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getElementState().getElement();
 
         // move expressions on property replacers and component modifiers
         List<PropertyReplacer> componentPropertyReplacers = component.getPropertyReplacers();

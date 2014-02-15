@@ -23,14 +23,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ViewLifecyclePhase extends Runnable {
-    
-    /**
-     * Gets the component this lifecycle phase is responsible for processing.
-     * 
-     * @return component this lifecycle phase is responsible for processing
-     */
-    Component getComponent();
+public interface ViewLifecyclePhase extends LifecycleElementState, Runnable {
     
     /**
      * Gets the model to use in processing this phase.
@@ -46,13 +39,6 @@ public interface ViewLifecyclePhase extends Runnable {
      */
     Component getParent();
 
-    /**
-     * Gets the index within a parent phase's original list of successors of this phase.
-     * 
-     * @return index of this phase within a successor list
-     */
-    int getIndex();
-    
     /**
      * Determines if this lifecycle phase has completed processing.
      * 
@@ -75,13 +61,12 @@ public interface ViewLifecyclePhase extends Runnable {
     boolean isComplete();
     
     /**
-     * Gets the view lifecycle phase constant that corresponds to this phase processing task.
+     * Gets the task currently running.
      * 
-     * @return view lifecycle phase constant corresponding to this phase
-     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
+     * @return the task currently running, null if this phase is not active.
      */
-    String getViewPhase();
-
+    ViewLifecycleTask<?> getCurrentTask();
+    
     /**
      * Gets the event to notify on completion.
      * 

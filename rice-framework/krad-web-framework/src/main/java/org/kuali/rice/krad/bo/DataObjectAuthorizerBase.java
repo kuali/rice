@@ -161,6 +161,7 @@ public class DataObjectAuthorizerBase implements DataObjectAuthorizer, Serializa
      *
      * @param primaryDataObjectOrDocument the primary data object (i.e. the main object instance behind
      * the lookup result row or inquiry) or the document
+     * @param principalId
      * @return a Map containing role qualifications
      */
     protected final Map<String, String> getRoleQualification(Object primaryDataObjectOrDocument, String principalId) {

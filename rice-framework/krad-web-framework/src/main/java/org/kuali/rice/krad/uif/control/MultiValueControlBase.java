@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -58,7 +59,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (options != null && richOptions == null) {
@@ -82,8 +83,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
                 message.setRenderWrapperTag(false);
-
-                ViewLifecycle.spawnSubLifecyle(model, message, this);
                 richOptions.add(new KeyMessage(key, value, message));
             }
         }
@@ -135,22 +134,6 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (richOptions != null) {
-            for (KeyMessage richOption : richOptions) {
-                components.add(richOption.getMessage());
-            }
-        }
-
-        return components;
-    }
-
-    /**
      * @see MultiValueControl#getOptions()
      */
     @BeanTagAttribute(name = "options", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -159,7 +142,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     }
 
     /**
-     * @see MultiValueControl#setOptions(java.util.List<org.kuali.rice.core.api.util.KeyValue>)
+     * {@inheritDoc}
      */
     public void setOptions(List<KeyValue> options) {
         this.options = options;

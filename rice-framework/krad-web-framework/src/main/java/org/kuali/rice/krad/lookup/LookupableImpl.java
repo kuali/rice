@@ -368,6 +368,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @param searchCriteria map of search criteria that was used for the search
      * @param searchResults list of result data objects from the search
      * @param bounded whether the search was bounded
+     * @param searchResultsLimit maximum number of search results to return
      */
     protected void generateLookupResultsMessages(Map<String, String> searchCriteria, Collection<?> searchResults,
             boolean bounded, Integer searchResultsLimit) {
@@ -745,11 +746,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      *
      * <p>Will build a URL containing keys of the data object to invoke the given maintenance action method
      * within the maintenance controller</p>
-     *
+     * 
+     * @param lookupForm lookup form
      * @param dataObject data object instance for the line to build the maintenance action link for
      * @param methodToCall method name on the maintenance controller that should be invoked
      * @param pkNames list of primary key field names for the data object whose key/value pairs will be added to
      * the maintenance link
+     *
      * @return String URL link for the maintenance action
      */
     protected String getMaintenanceActionUrl(LookupForm lookupForm, Object dataObject, String methodToCall,
@@ -841,6 +844,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Determines if given data object has associated maintenance document that allows edit maintenance
      * actions.
+     * @param dataObject data object
      *
      * @return boolean true if the maintenance edit action is allowed for the data object instance, false otherwise
      */
@@ -859,6 +863,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Determines if given data object has associated maintenance document that allows delete maintenance
      * actions.
+     * @param dataObject data object
      *
      * @return boolean true if the maintenance delete action is allowed for the data object instance, false otherwise
      */

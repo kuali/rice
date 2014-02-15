@@ -27,7 +27,7 @@ public interface Ordered extends org.springframework.core.Ordered {
 	 * Setter for the order value
 	 *
 	 * @param order
-	 * @see org.springframework.core.Ordered.getOrder()
+	 * @see org.springframework.core.Ordered#getOrder()
 	 */
 	public void setOrder(int order);
 }

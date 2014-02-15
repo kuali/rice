@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.modifier;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.Ordered;
+import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 import org.kuali.rice.krad.uif.util.UifCloneable;
 
 import java.io.Serializable;
@@ -65,10 +67,9 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      * in this method by calling the view helper service
      * </p>
      *
-     * @param view - View instance the component modifier is a part of
-     * @parma model - object instance containing the view data
+     * @param model - object instance containing the view data
      * @param component - Component the modifier is configured on
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization
+     * @see RunComponentModifiersTask
      */
     public void performInitialization(Object model, Component component);
 
@@ -77,11 +78,9 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      * where the <code>ComponentModifier</code> should perform its work against
      * the given <code>Component</code> instance
      *
-     * @param view - the view instance to which the component belongs
      * @param model - top level object containing the view data
      * @param component - the component instance to modify
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification
-     *      (View, Object, Component)
+     * @see RunComponentModifiersTask
      */
     public void performModification(Object model, Component component);
 
@@ -143,8 +142,10 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
 
     /**
      * Copy the object
+     * @param <T> The type being copied
      *
      * @return the copied object
      */
     public <T> T copy();
+    
 }

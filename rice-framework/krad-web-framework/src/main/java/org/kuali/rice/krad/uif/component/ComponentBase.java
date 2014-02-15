@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -26,10 +34,11 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
@@ -38,16 +47,9 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
 
 /**
  * Base implementation of <code>Component</code> which other component implementations should extend
@@ -66,6 +68,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String id;
     private String baseId;
+    private String viewPath;
     private String template;
     private String templateName;
 
@@ -172,6 +175,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private Map<String, String> dataAttributes;
     private Map<String, String> scriptDataAttributes;
 
+    @ReferenceCopy(referenceTransient = true)
+    private transient Map<String, Component> componentsForLifecycle;
+
     private String preRenderContent;
     private String postRenderContent;
 
@@ -267,7 +273,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Setter for the view status
      *
-     * @param viewStatus
+     * @param status view status
      */
     @Override
     public void setViewStatus(String status) {
@@ -281,11 +287,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * Setter for the view status
      *
-     * @param viewStatus
+     * @param phase completed view lifecycle phase
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus())) {
+        if (!viewStatus.equals(phase.getStartViewStatus()) &&
+                !viewStatus.equals(phase.getEndViewStatus())) {
             ViewLifecycle.reportIllegalState("Component "
                     + getClass().getName()
                     + " is not in expected status "
@@ -304,6 +311,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
+        ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
+        if (viewIndex != null) {
+            viewIndex.indexComponent(this);
+        }
     }
 
     /**
@@ -344,17 +355,33 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * The following updates are done here:
+     * 
+     * <ul>
+     * <li>tooltip is removed if content is null</li>
+     * </ul>
+     * 
      * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
+//        if (toolTip != null && toolTip.getTooltipContent() == null) {
+//            toolTip = null;
+//        }
     }
 
     /**
+     * The following updates are done here:
+     * 
+     * <ul>
+     * <li>Evaluate the progressive render condition (if set) and combine with the current render
+     * status to set the render status</li>
+     * </ul>
+     * 
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         View view = ViewLifecycle.getView();
 
         if (this.render && StringUtils.isNotEmpty(progressiveRender)) {
@@ -372,10 +399,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * The following finalization is done here:
+     * 
+     * <ul>
+     * <li>progressiveRender and conditionalRefresh variables are processed if set</li>
+     * <li>If any of the style properties were given, sets the style string on the style property</li>
+     * <li>Set the skipInTabOrder flag for nested components</li>
+     * </ul>
+     * 
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         View view = ViewLifecycle.getView();
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
         // progressiveRender expression setup
@@ -425,7 +460,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
         if (skipInTabOrder) {
-            for (Component component : getComponentsForLifecycle()) {
+            for (LifecycleElement component : ViewLifecycleUtils.getElementsForLifecycle(this).values()) {
                 if (component != null && component instanceof ComponentBase) {
                     ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
                     if (component instanceof ControlBase) {
@@ -504,50 +539,16 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *      java.util.Queue)
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
-        // TODO: migrate tasks
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NoLifecycle
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(toolTip);
-
-        return components;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = new ArrayList<Component>();
-
-        if (componentModifiers != null) {
-            for (ComponentModifier modifier : componentModifiers) {
-                components.addAll(modifier.getComponentPrototypes());
-            }
-        }
-
-        List<Component> propertyReplacerComponents = getPropertyReplacerComponents();
-        if (propertyReplacerComponents != null) {
-            components.addAll(propertyReplacerComponents);
-        }
-
-        return components;
-    }
-
+    
     /**
      * Returns list of components that are being held in property replacers configured for this
      * component
      *
      * @return List<Component>
      */
+    @ViewLifecycleRestriction
     public List<Component> getPropertyReplacerComponents() {
         if (propertyReplacers == null) {
             return Collections.emptyList();
@@ -594,6 +595,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setBaseId(String baseId) {
         checkMutable(true);
         this.baseId = baseId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getViewPath() {
+        return this.viewPath;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setViewPath(String viewPath) {
+        checkMutable(true);
+        this.viewPath = viewPath;
     }
 
     /**
@@ -1230,7 +1248,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setEditAuthz(boolean)
+     * Setter for {@link #isEditAuthz()}
+     * 
+     * @param editAuthz property value
      */
     public void setEditAuthz(Boolean editAuthz) {
         checkMutable(true);
@@ -1249,7 +1269,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentSecurity#setViewAuthz(boolean)
+     * Setter for {@link #isViewAuthz()}
+     * 
+     * @param viewAuthz property value
      */
     public void setViewAuthz(Boolean viewAuthz) {
         checkMutable(true);
@@ -2341,7 +2363,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Set view status to {@link UifConstants.ViewStatus#CACHED} to prevent modification.
+     * Set view status to {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED} to prevent modification.
      *
      * @see Copyable#preventModification()
      */

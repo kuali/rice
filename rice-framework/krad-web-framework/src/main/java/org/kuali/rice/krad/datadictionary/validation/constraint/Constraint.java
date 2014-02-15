@@ -17,6 +17,10 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 
 import java.io.Serializable;
 
+import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
+import org.kuali.rice.krad.datadictionary.validation.constraint.provider.ConstraintProvider;
+import org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor;
+
 /**
  * This is the marker interface for constraints. Constraints are a central concept in the Rice data dictionary
  * validation, and are the
@@ -29,9 +33,9 @@ import java.io.Serializable;
  *
  * Any interface that extends Constraint is by definition a constraint, and may have one of the following defined:
  *
- * - A sub-interface for {@see Constrainable} that advises on how a constraint maps to data dictionary metadata
- * - A {@see ConstraintProvider} that looks up constraints for a specific constrainable definition
- * - A {@see ConstraintProcessor} that processes the constraint against some object value to determine if it is valid
+ * - A sub-interface for {@link Constrainable} that advises on how a constraint maps to data dictionary metadata
+ * - A {@link ConstraintProvider} that looks up constraints for a specific constrainable definition
+ * - A {@link ConstraintProcessor} that processes the constraint against some object value to determine if it is valid
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1

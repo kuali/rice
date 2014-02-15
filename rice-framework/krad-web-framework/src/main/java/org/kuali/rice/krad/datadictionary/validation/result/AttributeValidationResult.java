@@ -57,7 +57,7 @@ public class AttributeValidationResult implements Serializable {
      * gets a constraint validation result with the given constraintName
      *
      * @param constraintName - a descriptive name of the current constraint processor
-     * @return
+     * @return validation result
      */
     protected ConstraintValidationResult getConstraintValidationResult(String constraintName) {
         ConstraintValidationResult constraintValidationResult = constraintValidationResultMap.get(constraintName);

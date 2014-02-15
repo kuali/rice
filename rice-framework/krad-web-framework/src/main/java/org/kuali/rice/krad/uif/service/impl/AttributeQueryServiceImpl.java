@@ -55,9 +55,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     private ConfigurationService configurationService;
 
     /**
-     * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldSuggestQuery(
-     *org.kuali.rice.krad.uif.view.View, java.lang.String, java.lang.String, java.util.Map<java.lang.String,
-     *      java.lang.String>)
+     * {@inheritDoc}
      */
     @Override
     public AttributeQueryResult performFieldSuggestQuery(View view, String fieldId, String fieldTerm,
@@ -251,8 +249,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldQuery(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.String, java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
     @Override
     public AttributeQueryResult performFieldQuery(View view, String fieldId, Map<String, String> queryParameters) {

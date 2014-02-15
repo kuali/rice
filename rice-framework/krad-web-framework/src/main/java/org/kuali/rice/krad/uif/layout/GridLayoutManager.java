@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,133 +15,14 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.CssConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.Group;
-
 /**
- * Layout manager that organizes its components in a table based grid
- *
- * <p>
- * Items are laid out from left to right (with each item taking up one column)
- * until the configured number of columns is reached. If the item count is
- * greater than the number of columns, a new row will be created to render the
- * remaining items (and so on until all items are placed). Labels for the fields
- * can be pulled out (default) and rendered as a separate column. The manager
- * also supports the column span and row span options for the field items. If
- * not specified the default is 1.
- * </p>
- *
+ * Layout manager interface for grid layouts. 
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "gridLayout-bean", parent = "Uif-GridLayoutBase"),
-        @BeanTag(name = "twoColumnGridLayout-bean", parent = "Uif-TwoColumnGridLayout"),
-        @BeanTag(name = "fourColumnGridLayout-bean", parent = "Uif-FourColumnGridLayout"),
-        @BeanTag(name = "sixColumnGridLayout-bean", parent = "Uif-SixColumnGridLayout")})
-public class GridLayoutManager extends LayoutManagerBase {
-    private static final long serialVersionUID = 1890011900375071128L;
-
-    private int numberOfColumns;
-
-    private boolean suppressLineWrapping;
-    private boolean applyAlternatingRowStyles;
-    private boolean applyDefaultCellWidths;
-    private boolean renderFirstRowHeader;
-    private boolean renderAlternatingHeaderColumns;
-    private boolean renderRowFirstCellHeader;
-
-    private List<String> rowCssClasses;
-
-    public GridLayoutManager() {
-        super();
-
-        rowCssClasses = new ArrayList<String>();
-    }
-
-    /**
-     * The following finalization is performed:
-     *
-     * <ul>
-     * <li>If suppressLineWrapping is true, sets the number of columns to the
-     * container's items list size</li>
-     * <li>Adjust the cell attributes for the container items</li>
-     * </ul>
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public void performFinalize(Object model, Component component) {
-        super.performFinalize(model, component);
-        
-        Container container = (Container) component;
-
-        // Default equal cell widths class
-        if (this.isApplyDefaultCellWidths()){
-            this.addStyleClass("uif-table-fixed");
-        }
-
-        if (suppressLineWrapping) {
-            numberOfColumns = container.getItems().size();
-        }
-
-        for (Component item : container.getItems()) {
-            if (!(this instanceof TableLayoutManager)) {
-                item.addWrapperCssClass("uif-gridLayoutCell");
-            }
-            setCellAttributes(item);
-        }
-    }
-
-    /**
-     * Moves the width, align, and valign settings of the component to the corresponding cell properties (if not
-     * already configured)
-     *
-     * @param component instance to adjust settings for
-     */
-    protected void setCellAttributes(Component component) {
-        if (StringUtils.isNotBlank(component.getWidth()) && StringUtils.isBlank(component.getCellWidth())) {
-            component.setCellWidth(component.getWidth());
-            component.setWidth("");
-        }
-
-        if (StringUtils.isNotBlank(component.getAlign()) && !StringUtils.contains(component.getWrapperStyle(),
-                CssConstants.TEXT_ALIGN)) {
-            if (component.getWrapperStyle() == null) {
-                component.setWrapperStyle("");
-            }
-
-            component.setWrapperStyle(
-                    component.getWrapperStyle() + CssConstants.TEXT_ALIGN + component.getAlign() + ";");
-            component.setAlign("");
-        }
-
-        if (StringUtils.isNotBlank(component.getValign()) && !StringUtils.contains(component.getWrapperStyle(),
-                CssConstants.VERTICAL_ALIGN)) {
-            if (component.getWrapperStyle() == null) {
-                component.setWrapperStyle("");
-            }
-
-            component.setWrapperStyle(
-                    component.getWrapperStyle() + CssConstants.VERTICAL_ALIGN + component.getValign() + ";");
-            component.setValign("");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<? extends Container> getSupportedContainer() {
-        return Group.class;
-    }
+public interface GridLayoutManager extends LayoutManager {
 
     /**
      * Indicates the number of columns that should make up one row of data
@@ -160,19 +41,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return int
      */
-    @BeanTagAttribute(name = "numberOfColumns")
-    public int getNumberOfColumns() {
-        return this.numberOfColumns;
-    }
+    int getNumberOfColumns();
 
     /**
      * Setter for the number of columns (each row)
      *
      * @param numberOfColumns
      */
-    public void setNumberOfColumns(int numberOfColumns) {
-        this.numberOfColumns = numberOfColumns;
-    }
+    void setNumberOfColumns(int numberOfColumns);
 
     /**
      * Indicates whether the number of columns for the table data should match
@@ -189,19 +65,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return true if the column count should match the container's
      *         field count, false to use the configured number of columns
      */
-    @BeanTagAttribute(name = "suppressLineWrapping")
-    public boolean isSuppressLineWrapping() {
-        return this.suppressLineWrapping;
-    }
+    boolean isSuppressLineWrapping();
 
     /**
      * Setter for the suppressLineWrapping indicator
      *
      * @param suppressLineWrapping
      */
-    public void setSuppressLineWrapping(boolean suppressLineWrapping) {
-        this.suppressLineWrapping = suppressLineWrapping;
-    }
+    void setSuppressLineWrapping(boolean suppressLineWrapping);
 
     /**
      * Indicates whether alternating row styles should be applied
@@ -214,19 +85,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return true if alternating styles should be applied, false if
      *         all rows should have the same style
      */
-    @BeanTagAttribute(name = "applyAlternatingRowStyles")
-    public boolean isApplyAlternatingRowStyles() {
-        return this.applyAlternatingRowStyles;
-    }
+    boolean isApplyAlternatingRowStyles();
 
     /**
      * Setter for the alternating row styles indicator
      *
      * @param applyAlternatingRowStyles
      */
-    public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
-        this.applyAlternatingRowStyles = applyAlternatingRowStyles;
-    }
+    void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles);
 
     /**
      * Indicates whether the manager should default the cell widths
@@ -239,19 +105,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      * @return true if default cell widths should be applied, false if
      *         no defaults should be applied
      */
-    @BeanTagAttribute(name = "applyDefaultCellWidths")
-    public boolean isApplyDefaultCellWidths() {
-        return this.applyDefaultCellWidths;
-    }
+    boolean isApplyDefaultCellWidths();
 
     /**
      * Setter for the default cell width indicator
      *
      * @param applyDefaultCellWidths
      */
-    public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
-        this.applyDefaultCellWidths = applyDefaultCellWidths;
-    }
+    void setApplyDefaultCellWidths(boolean applyDefaultCellWidths);
 
     /**
      * Indicates whether the first cell of each row should be rendered as a header cell (th)
@@ -264,19 +125,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return true if first cell of each row should be rendered as a header cell
      */
-    @BeanTagAttribute(name = "renderRowFirstCellHeader")
-    public boolean isRenderRowFirstCellHeader() {
-        return renderRowFirstCellHeader;
-    }
+    boolean isRenderRowFirstCellHeader();
 
     /**
      * Setter for render first row column as header indicator
      *
      * @param renderRowFirstCellHeader
      */
-    public void setRenderRowFirstCellHeader(boolean renderRowFirstCellHeader) {
-        this.renderRowFirstCellHeader = renderRowFirstCellHeader;
-    }
+    void setRenderRowFirstCellHeader(boolean renderRowFirstCellHeader);
 
     /**
      * Indicates whether the first row of items rendered should all be rendered as table header (th) cells
@@ -290,19 +146,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return true if first row should be rendered as header cells
      */
-    @BeanTagAttribute(name = "renderFirstRowHeader")
-    public boolean isRenderFirstRowHeader() {
-        return renderFirstRowHeader;
-    }
+    boolean isRenderFirstRowHeader();
 
     /**
      * Setter for the first row as header indicator
      *
      * @param renderFirstRowHeader
      */
-    public void setRenderFirstRowHeader(boolean renderFirstRowHeader) {
-        this.renderFirstRowHeader = renderFirstRowHeader;
-    }
+    void setRenderFirstRowHeader(boolean renderFirstRowHeader);
 
     /**
      * Indicates whether header columns (th for tables) should be rendered for
@@ -315,19 +166,14 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return true if alternating headers should be rendered, false if not
      */
-    @BeanTagAttribute(name = "renderAlternatingHeaderColumns")
-    public boolean isRenderAlternatingHeaderColumns() {
-        return this.renderAlternatingHeaderColumns;
-    }
+    boolean isRenderAlternatingHeaderColumns();
 
     /**
      * Setter for the render alternating header columns indicator
      *
      * @param renderAlternatingHeaderColumns
      */
-    public void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns) {
-        this.renderAlternatingHeaderColumns = renderAlternatingHeaderColumns;
-    }
+    void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns);
 
     /**
      * The list of styles for each row
@@ -341,39 +187,13 @@ public class GridLayoutManager extends LayoutManagerBase {
      *
      * @return list of styles for the rows
      */
-    @BeanTagAttribute(name = "rowCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
-    public List<String> getRowCssClasses() {
-        return rowCssClasses;
-    }
+    List<String> getRowCssClasses();
 
     /**
      * Setter for the list that stores the css style names of each row
      *
      * @param rowCssClasses
      */
-    public void setRowCssClasses(List<String> rowCssClasses) {
-        this.rowCssClasses = rowCssClasses;
-    }
+    void setRowCssClasses(List<String> rowCssClasses);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T layoutManager) {
-        super.copyProperties(layoutManager);
-
-        GridLayoutManager gridLayoutManagerCopy = (GridLayoutManager) layoutManager;
-
-        gridLayoutManagerCopy.setNumberOfColumns(this.numberOfColumns);
-        gridLayoutManagerCopy.setSuppressLineWrapping(this.suppressLineWrapping);
-        gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.applyAlternatingRowStyles);
-        gridLayoutManagerCopy.setApplyDefaultCellWidths(this.applyDefaultCellWidths);
-        gridLayoutManagerCopy.setRenderFirstRowHeader(this.renderFirstRowHeader);
-        gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.renderAlternatingHeaderColumns);
-        gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.renderRowFirstCellHeader);
-
-        if (rowCssClasses != null) {
-            gridLayoutManagerCopy.setRowCssClasses(new ArrayList<String>(rowCssClasses));
-        }
-    }
 }

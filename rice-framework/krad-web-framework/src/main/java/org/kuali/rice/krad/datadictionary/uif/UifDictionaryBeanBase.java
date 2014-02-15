@@ -43,29 +43,33 @@ public class UifDictionaryBeanBase extends DictionaryBeanBase implements UifDict
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getExpressionGraph()
+     * {@inheritDoc}
      */
+    @Override
     public Map<String, String> getExpressionGraph() {
         return expressionGraph;
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#setExpressionGraph(java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public void setExpressionGraph(Map<String, String> expressionGraph) {
         this.expressionGraph = expressionGraph;
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getRefreshExpressionGraph()
+     * {@inheritDoc}
      */
+    @Override
     public Map<String, String> getRefreshExpressionGraph() {
         return refreshExpressionGraph;
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#setRefreshExpressionGraph(java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
+    @Override
     public void setRefreshExpressionGraph(Map<String, String> refreshExpressionGraph) {
         this.refreshExpressionGraph = refreshExpressionGraph;
     }

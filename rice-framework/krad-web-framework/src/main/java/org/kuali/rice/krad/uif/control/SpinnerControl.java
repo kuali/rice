@@ -17,10 +17,7 @@ package org.kuali.rice.krad.uif.control;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.widget.Spinner;
-
-import java.util.List;
 
 /**
  * Text control that as decorated with a spinner widget (allowing the control value to be modified using the
@@ -29,25 +26,13 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "spinnerControl-bean", parent = "Uif-SpinnerControl")
-public class SpinnerControl extends TextControl {
+public class SpinnerControl extends TextControlBase {
     private static final long serialVersionUID = -8267606288443759880L;
 
     private Spinner spinner;
 
     public SpinnerControl() {
         super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(getSpinner());
-
-        return components;
     }
 
     /**

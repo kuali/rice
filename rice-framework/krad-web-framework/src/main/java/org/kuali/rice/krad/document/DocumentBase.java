@@ -401,7 +401,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#getDocumentHeader()
+     * {@inheritDoc}
      */
     @Override
     public DocumentHeader getDocumentHeader() {
@@ -409,7 +409,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#setDocumentHeader(org.kuali.rice.krad.document.DocumentHeader)
+     * {@inheritDoc}
      */
     @Override
     public void setDocumentHeader(DocumentHeader documentHeader) {
@@ -417,7 +417,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#getDocumentNumber()
+     * {@inheritDoc}
      */
     @Override
     public String getDocumentNumber() {
@@ -425,7 +425,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#setDocumentNumber(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setDocumentNumber(String documentNumber) {
@@ -433,7 +433,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#getAdHocRoutePersons()
+     * {@inheritDoc}
      */
     @Override
     public List<AdHocRoutePerson> getAdHocRoutePersons() {
@@ -441,7 +441,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#setAdHocRoutePersons(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons) {
@@ -449,7 +449,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#getAdHocRouteWorkgroups()
+     * {@inheritDoc}
      */
     @Override
     public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups() {
@@ -457,7 +457,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#setAdHocRouteWorkgroups(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups) {

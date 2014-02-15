@@ -83,6 +83,7 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
      * @param constraint - the range constraint to use
      * @param attributeValueReader - provides access to the attribute being validated
      * @return the passed in result, updated with the results of the processing
+     * @throws AttributeValidationException if validation fails
      */
     protected ConstraintValidationResult processSingleRangeConstraint(DictionaryValidationResult result, Object value,
             RangeConstraint constraint, AttributeValueReader attributeValueReader) throws AttributeValidationException {
@@ -175,13 +176,13 @@ public class RangeConstraintProcessor extends MandatoryElementConstraintProcesso
     /**
      * checks whether the value provided is in the range specified by inclusiveMax and exclusiveMin
      *
-     * @param - a holder for any already run validation results
-     * @param value - the value to check
-     * @param inclusiveMax - the maximum value of the attribute
-     * @param inclusiveMaxText - the string representation of inclusiveMax
-     * @param exclusiveMin -  the minimum value of the attribute
-     * @param exclusiveMinText - the string representation of exclusiveMin
-     * @param attributeValueReader - provides access to the attribute being validated
+     * @param result a holder for any already run validation results
+     * @param value the value to check
+     * @param inclusiveMax the maximum value of the attribute
+     * @param inclusiveMaxText the string representation of inclusiveMax
+     * @param exclusiveMin the minimum value of the attribute
+     * @param exclusiveMinText the string representation of exclusiveMin
+     * @param attributeValueReader provides access to the attribute being validated
      * @return the passed in result, updated with the results of the range check
      */
     private <T> ConstraintValidationResult isInRange(DictionaryValidationResult result, T value,

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Queue;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
@@ -23,6 +24,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 
 /**
  * Interface to be implemented by objects that participates in the view lifecycle.
@@ -53,14 +55,32 @@ public interface LifecycleElement extends Serializable, Copyable {
     void setId(String id);
     
     /**
+     * Gets a property for referring to this component from the view, relative to the view, as
+     * assigned by the current or most recent lifecycle.
+     * 
+     * @return property path
+     */
+    String getViewPath();
+
+    /**
+     * Setter for {@link #getViewPath()}.
+     * 
+     * @param viewPath The property path.
+     */
+    void setViewPath(String viewPath);
+    
+    /**
      * Determine if this lifecycle element is mutable.
-     *
+     * 
      * <p>
-     * Most lifecycle element are immutable, and all are immutable expect during initialization
-     * and the during the view lifecycle. Those that have been copied within the view lifecycle,
+     * Most lifecycle element are immutable, and all are immutable expect during initialization and
+     * the during the view lifecycle. Those that have been copied within the view lifecycle,
      * however, may be modified during the same lifecycle.
      * </p>
-     *
+     * @param legalBeforeConfiguration true if the current operation may be called before the
+     *        lifecycle element has been cached, for example while being initialized as part of a
+     *        Spring context.
+     * 
      * @return True if the component is mutable.
      */
     boolean isMutable(boolean legalBeforeConfiguration);
@@ -77,19 +97,92 @@ public interface LifecycleElement extends Serializable, Copyable {
     void checkMutable(boolean legalDuringInitialization);
 
     /**
-     * Initialize the lifecycle task queue for this component on the given lifecycle phase.
-     *
+     * Initialize the lifecycle task queue for custom tasks specific to this component on the given
+     * lifecycle phase.
+     * 
      * <p>
      * Any tasks added to the queue by this method will be performed after the default lifecycle
      * phase processing method {@link #performInitialization(Object)},
-     * {@link #performApplyModel(Object, Component)}, or {@link #performFinalize(Object, Component)}
-     * has been called.
+     * {@link #performApplyModel(Object, LifecycleElement)}, or
+     * {@link #performFinalize(Object, LifecycleElement)} has been called.
      * </p>
-     *
+     * 
      * @param phase The lifecycle phase to queue pending tasks for.
      * @param pendingTasks The pending task queue.
      */
-    void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks);
+    void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks);
+    
+    /**
+     * Get the view lifecycle processing status for this component.
+     * 
+     * @return The view lifecycle processing status for this component.
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
+     */
+    String getViewStatus();
+
+    /**
+     * Set the view lifecycle processing status for this component.
+     * 
+     * @param phase The phase that has just finished processing the component.
+     */
+    void setViewStatus(ViewLifecyclePhase phase);
+    
+    /**
+     * Indicates whether the component has been initialized.
+     *
+     * @return True if the component has been initialized, false if not.
+     */
+    boolean isInitialized();
+
+    /**
+     * Indicates whether the component has been updated from the model.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    boolean isModelApplied();
+
+    /**
+     * Indicates whether the component has been updated from the model and final
+     * updates made.
+     *
+     * @return True if the component has been updated, false if not.
+     */
+    boolean isFinal();
+
+    /**
+     * Receive notification that a lifecycle phase, and all successor phases, have been completed on
+     * this component.
+     * @param phase The completed view lifecycle phase
+     */
+    void notifyCompleted(ViewLifecyclePhase phase);
+
+    /**
+     * Places the given object into the context Map for the component with the given name
+     * 
+     * <p>
+     * Note this also will push context to property replacers configured on the component. To place
+     * multiple objects in the context, you should use #pushAllToContext since that will call this
+     * method for each and update property replacers. Using {@link Component#getContext()}{@link
+     * Map#putAll(Map) .putAll()} will bypass property replacers.
+     * </p>
+     * 
+     * @param objectName - name the object should be exposed under in the context map
+     * @param object - object instance to place into context
+     */
+    void pushObjectToContext(String objectName, Object object);
+
+    /**
+     * Places each entry of the given Map into the context for the component
+     *
+     * <p>
+     * Note this will call #pushObjectToContext for each entry which will update any configured property
+     * replacers as well. This should be used in place of getContext().putAll()
+     * </p>
+     *
+     * @param objects - Map<String, Object> objects to add to context, where the entry key will be the context key
+     * and the entry value will be the context value
+     */
+    void pushAllToContext(Map<String, Object> objects);
 
     /**
      * Initializes the component
@@ -101,8 +194,7 @@ public interface LifecycleElement extends Serializable, Copyable {
      * </p>
      *
      * @param model - object instance containing the view data
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      Object)
+     * @see ComponentDefaultInitializeTask
      * @deprecated Special processing within this method should be replaced by
      *             {@link ViewLifecycleTask} and initialized by
      *             {@link #initializePendingTasks(ViewLifecyclePhase, Queue)}.
@@ -120,12 +212,13 @@ public interface LifecycleElement extends Serializable, Copyable {
      *
      * @param model - Top level object containing the data (could be the form or a
      * top level business object, dto)
+     * @param parent parent lifecycle element
      * @deprecated Special processing within this method should be replaced by
      *             {@link ViewLifecycleTask} and initialized by
      *             {@link #initializePendingTasks(ViewLifecyclePhase, Queue)}.
      */
     @Deprecated
-    void performApplyModel(Object model, Component parent);
+    void performApplyModel(Object model, LifecycleElement parent);
 
     /**
      * The last phase before the view is rendered
@@ -134,7 +227,6 @@ public interface LifecycleElement extends Serializable, Copyable {
      * Here final preparations can be made based on the updated view state.
      * </p>
      *
-     * @param view - view instance that should be finalized for rendering
      * @param model - top level object containing the data
      * @param parent - parent component
      * @deprecated Special processing within this method should be replaced by
@@ -142,6 +234,6 @@ public interface LifecycleElement extends Serializable, Copyable {
      *             {@link #initializePendingTasks(ViewLifecyclePhase, Queue)}.
      */
     @Deprecated
-    void performFinalize(Object model, Component parent);
+    void performFinalize(Object model, LifecycleElement parent);
 
 }

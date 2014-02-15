@@ -15,18 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 
 /**
@@ -34,26 +29,15 @@ import org.kuali.rice.krad.uif.view.ViewIndex;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AssignIdsTask extends ViewLifecycleTaskBase {
-
-    /**
-     * Reusable linked queue for walking the lifecycle phase tree while generating an ID, without
-     * object creation.
-     */
-    private static final ThreadLocal<Queue<ViewLifecyclePhase>> TAIL_QUEUE = new ThreadLocal<Queue<ViewLifecyclePhase>>() {
-        @Override
-        protected Queue<ViewLifecyclePhase> initialValue() {
-            return new LinkedList<ViewLifecyclePhase>();
-        }
-    };
+public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Create a task to assign component IDs during the initialize phase.
      * 
-     * @param phase The initialize phase for the component.
+     * @param elementState The initialize phase for the component.
      */
-    public AssignIdsTask(ViewLifecyclePhase phase) {
-        super(phase);
+    public AssignIdsTask(LifecycleElementState elementState) {
+        super(elementState, LifecycleElement.class);
     }
 
     /**
@@ -69,81 +53,47 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      * The hash code that the generated ID is based on is equivalent (though not identical) to
      * taking the hash code of the string concenation of all class names, non-null IDs, and
      * successor index positions in the lifecycle phase tree for all predecessors of the current
-     * phase.  This technique leads to a reliably unique ID that is also repeatable across server
+     * phase. This technique leads to a reliably unique ID that is also repeatable across server
      * instances and test runs.
      * </p>
      * 
+     * <p>
+     * The use of large primes by this method minimizes collisions, and therefore reduces the
+     * likelihood of a race condition causing components to come out with different IDs on different
+     * server instances and/or test runs.
+     * </p>
+     * 
      * @param element The lifecycle element for which to generate an ID.
+     * @param view View containing the lifecycle element.
      * @return An ID, unique within the current view, for the given element.
      * 
      * @see ViewIndex#observeAssignedId(String)
      * @see String#hashCode() for the algorithm this method is based on.
      */
-    private String generateId(LifecycleElement element) {
+    public static String generateId(LifecycleElement element, View view) {
         // Calculate a hash code based on the path to the top of the phase tree
         // without building a string.
-
-        final int prime = 6971; // Seed prime for hashing
+        int prime = 6971;
 
         // Initialize hash to the class of the lifecycle element
         int hash = element.getClass().getName().hashCode();
-
-        // Reuse a tail recursion queue to avoid object creation overhead.
-        Queue<ViewLifecyclePhase> phaseQueue = TAIL_QUEUE.get();
-        try {
-            // Start with the current phase.
-            phaseQueue.offer(getPhase());
-            while (!phaseQueue.isEmpty()) {
-
-                // Poll the queue for the next phase to calculate
-                ViewLifecyclePhase phase = phaseQueue.poll();
-
-                // Include the class name and ID of the component
-                // at the current phase to the hash
-                Component component = phase.getComponent();
-                hash *= prime;
-                if (component != null) {
-                    hash += component.getClass().getName().hashCode();
-
-                    String id = component.getId();
-                    hash *= prime;
-                    if (id != null) {
-                        hash += id.hashCode();
-                    }
-                }
-
-                // Include the index of the current phase in the successor
-                // list of the predecessor phase that defined it.
-                hash = prime * hash + phase.getIndex();
-
-                // Include the predecessors in the hash.
-                ViewLifecyclePhase predecessor = phase.getPredecessor();
-                if (predecessor != null) {
-                    phaseQueue.add(predecessor);
-                }
-            }
-        } finally {
-            // Ensure that the recursion queue is clear to prevent
-            // corruption by pooled thread reuse.
-            phaseQueue.clear();
+        
+        // Add the element's path to the hash code.
+        hash += prime;
+        if (element.getViewPath() != null) {
+            hash += element.getViewPath().hashCode();
         }
-
-        String id;
-        do {
+        
+        // Eliminate negatives without losing precision, and express in base-36
+        String id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
+        while (!view.getViewIndex().observeAssignedId(id)) {
             // Iteratively take the product of the hash and another large prime
-            hash *= 4507; // until a unique ID has been generated.
-            // The use of large primes will minimize collisions, reducing the
-            // likelihood of race conditions leading to components coming out
-            // with different IDs on different server instances and/or test runs.
-            
-            // Eliminate negatives without losing precision, and express in base-36
+            // until a unique ID has been generated.
+            hash *= 4507;
             id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
-            
-            // Use the view index to detect collisions, keep looping until an
-            // id unique to the current view has been generated.
-        } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
-
-        return id;
+        }
+        
+        return UifConstants.COMPONENT_ID_PREFIX + id;
     }
 
     /**
@@ -151,18 +101,10 @@ public class AssignIdsTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        LifecycleElement element = getElementState().getElement();
 
-        if (StringUtils.isBlank(component.getId())) {
-            component.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(component));
-        }
-
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(UifConstants.COMPONENT_ID_PREFIX + generateId(layoutManager));
-            }
+        if (StringUtils.isBlank(element.getId())) {
+            element.setId(generateId(element, ViewLifecycle.getView()));
         }
     }
 

@@ -79,7 +79,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
      * Note at this point on business objects are supported by the default implementation
      * </p>
      *
-     * @see Inquirable#retrieveDataObject(java.util.Map<java.lang.String,java.lang.String>)
+     * {@inheritDoc}
      */
     @Override
     public Object retrieveDataObject(Map<String, String> parameters) {

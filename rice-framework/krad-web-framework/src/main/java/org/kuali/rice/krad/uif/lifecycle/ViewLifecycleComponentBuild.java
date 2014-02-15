@@ -72,8 +72,12 @@ public class ViewLifecycleComponentBuild implements Runnable {
             ProcessLogger.trace("begin-component-lifecycle:" + component.getId());
         }
 
-        Component newComponent = component;
         Component origComponent = view.getViewIndex().getComponentById(origId);
+
+        String viewPath = origComponent.getViewPath();
+        assert origComponent == ObjectPropertyUtils.getPropertyValue(view, viewPath);
+        component.setViewPath(origComponent.getViewPath());
+        ObjectPropertyUtils.setPropertyValue(view, viewPath, component);
 
         // check if the component is nested in a box layout in order to
         // reapply the layout item style
@@ -94,16 +98,16 @@ public class ViewLifecycleComponentBuild implements Runnable {
 
         // update context on all components within the refresh component to catch context set by parent
         if (origContext != null) {
-            newComponent.pushAllToContext(origContext);
+            component.pushAllToContext(origContext);
 
-            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(newComponent);
+            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
             for (Component nestedComponent : nestedComponents) {
                 nestedComponent.pushAllToContext(origContext);
             }
         }
 
         // make sure the dataAttributes are the same as original
-        newComponent.setDataAttributes(origComponent.getDataAttributes());
+        component.setDataAttributes(origComponent.getDataAttributes());
 
         // initialize the expression evaluator
         ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(model);
@@ -112,62 +116,73 @@ public class ViewLifecycleComponentBuild implements Runnable {
         // might have come from a parent), after getting the expression graph then we need to populate the expressions
         // on the configurable for which they apply
         Map<String, String> expressionGraph = view.getViewIndex().getComponentExpressionGraphs().get(
-                newComponent.getBaseId());
-        newComponent.setExpressionGraph(expressionGraph);
-        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(newComponent, false);
+                component.getBaseId());
+        component.setExpressionGraph(expressionGraph);
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(component, false);
 
         // binding path should stay the same
-        if (newComponent instanceof DataBinding) {
-            ((DataBinding) newComponent).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
-            ((DataBinding) newComponent).getBindingInfo().setBindingPath(
+        if (component instanceof DataBinding) {
+            ((DataBinding) component).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
+            ((DataBinding) component).getBindingInfo().setBindingPath(
                     ((DataBinding) origComponent).getBindingInfo().getBindingPath());
         }
 
         // copy properties that are set by parent components in the full view lifecycle
-        if (newComponent instanceof Field) {
-            ((Field) newComponent).setLabelRendered(((Field) origComponent).isLabelRendered());
+        if (component instanceof Field) {
+            ((Field) component).setLabelRendered(((Field) origComponent).isLabelRendered());
         }
 
         if (origComponent.isRefreshedByAction()) {
-            newComponent.setRefreshedByAction(true);
+            component.setRefreshedByAction(true);
         }
 
         // reset data if needed
-        if (newComponent.isResetDataOnRefresh()) {
+        if (component.isResetDataOnRefresh()) {
             // TODO: this should handle groups as well, going through nested data fields
-            if (newComponent instanceof DataField) {
+            if (component instanceof DataField) {
                 // TODO: should check default value
 
                 // clear value
                 ObjectPropertyUtils.initializeProperty(model,
-                        ((DataField) newComponent).getBindingInfo().getBindingPath());
+                        ((DataField) component).getBindingInfo().getBindingPath());
             }
         }
 
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("ready:" + newComponent.getId());
+            ProcessLogger.trace("ready:" + component.getId());
         }
 
-        processor.performPhase(LifecyclePhaseFactory.initialize(newComponent, model));
+        String origViewPath = origComponent.getViewPath();
+        String parentPath;
+        if (!origViewPath.startsWith(parent.getViewPath() + ".")) {
+            ViewLifecycle.reportIllegalState("orig component and parent are not related " + origViewPath + " "
+                    + parent.getViewPath());
+            parentPath = origViewPath;
+        } else {
+            parentPath = origViewPath.substring(parent.getViewPath().length() + 1);
+        }
+        
+        processor.performPhase(LifecyclePhaseFactory.initialize(component, model, parentPath, parent, null));
 
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("initialize:" + newComponent.getId());
+            ProcessLogger.trace("initialize:" + component.getId());
         }
 
         // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
         String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getBaseId(), "");
         if (StringUtils.isNotBlank(suffix)) {
-            ComponentUtils.updateIdWithSuffix(newComponent, suffix);
-            ComponentUtils.updateChildIdsWithSuffixNested(newComponent, suffix);
+            ComponentUtils.updateIdWithSuffix(component, suffix);
+            ComponentUtils.updateChildIdsWithSuffixNested(component, suffix);
         }
 
         // for collections that are nested in the refreshed group, we need to adjust the binding prefix and
         // set the sub collection id prefix from the original component (this is needed when the group being
         // refreshed is part of another collection)
-        if (newComponent instanceof Group || newComponent instanceof FieldGroup) {
-            List<CollectionGroup> origCollectionGroups = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+        if (component instanceof Group || component instanceof FieldGroup) {
+            List<CollectionGroup> origCollectionGroups = ViewLifecycleUtils.getElementsOfTypeShallow(
+                    origComponent,
                     CollectionGroup.class);
-            List<CollectionGroup> collectionGroups = ComponentUtils.getComponentsOfTypeShallow(newComponent,
+            List<CollectionGroup> collectionGroups = ViewLifecycleUtils.getElementsOfTypeShallow(component,
                     CollectionGroup.class);
 
             for (int i = 0; i < collectionGroups.size(); i++) {
@@ -185,9 +200,10 @@ public class ViewLifecycleComponentBuild implements Runnable {
             }
 
             // Handle LightTables, as well
-            List<LightTable> origLightTables = ComponentUtils.getComponentsOfTypeShallow(origComponent,
+            List<LightTable> origLightTables = ViewLifecycleUtils.getElementsOfTypeShallow(origComponent,
                     LightTable.class);
-            List<LightTable> lightTables = ComponentUtils.getComponentsOfTypeShallow(newComponent, LightTable.class);
+            List<LightTable> lightTables = ViewLifecycleUtils.getElementsOfTypeShallow(component,
+                    LightTable.class);
 
             for (int i = 0; i < lightTables.size(); i++) {
                 LightTable origLightTable = origLightTables.get(i);
@@ -202,28 +218,28 @@ public class ViewLifecycleComponentBuild implements Runnable {
         }
 
         // if disclosed by action and request was made, make sure the component will display
-        if (newComponent.isDisclosedByAction()) {
-            ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.RENDER, true);
-            ComponentUtils.setComponentPropertyFinal(newComponent, UifPropertyPaths.HIDDEN, false);
+        if (component.isDisclosedByAction()) {
+            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.RENDER, true);
+            ComponentUtils.setComponentPropertyFinal(component, UifPropertyPaths.HIDDEN, false);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.applyModel(newComponent, model, parent));
+        processor.performPhase(LifecyclePhaseFactory.applyModel(component, model, parent, parentPath));
 
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("apply-model:" + newComponent.getId());
+            ProcessLogger.trace("apply-model:" + component.getId());
         }
 
         // adjust nestedLevel property on some specific collection cases
-        if (newComponent instanceof Container) {
-            ComponentUtils.adjustNestedLevelsForTableCollections((Container) newComponent, 0);
-        } else if (newComponent instanceof FieldGroup) {
-            ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) newComponent).getGroup(), 0);
+        if (component instanceof Container) {
+            ComponentUtils.adjustNestedLevelsForTableCollections((Container) component, 0);
+        } else if (component instanceof FieldGroup) {
+            ComponentUtils.adjustNestedLevelsForTableCollections(((FieldGroup) component).getGroup(), 0);
         }
 
-        processor.performPhase(LifecyclePhaseFactory.finalize(newComponent, model, parent));
+        processor.performPhase(LifecyclePhaseFactory.finalize(component, model, parentPath, parent));
 
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("finalize:" + newComponent.getId());
+            ProcessLogger.trace("finalize:" + component.getId());
         }
 
         // make sure id, binding, and label settings stay the same as initial
@@ -265,14 +281,14 @@ public class ViewLifecycleComponentBuild implements Runnable {
         String growlScript = ViewLifecycle.getHelper().buildGrowlScript();
         ((ViewModel) model).setGrowlScript(growlScript);
 
-        view.getViewIndex().indexComponent(newComponent);
+        view.getViewIndex().indexComponent(component);
 
         PageGroup page = view.getCurrentPage();
         // regenerate server message content for page
         page.getValidationMessages().generateMessages(false, view, model, page);
 
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.trace("end-component-lifecycle:" + newComponent.getId());
+            ProcessLogger.trace("end-component-lifecycle:" + component.getId());
         }
     }
 

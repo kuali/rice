@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krad.labs.inquiry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.InquiryView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Demonstrates the ability to add new sections and modify old ones.
@@ -34,7 +35,7 @@ import java.util.List;
 public class LabsInquiryDynamicSectionsInquirable extends InquirableImpl {
 
     @Override
-    public void performCustomInitialization(Component component) {
+    public void performCustomInitialization(LifecycleElement component) {
         super.performCustomInitialization(component);
 
         if (component instanceof InquiryView) {

@@ -130,6 +130,9 @@ public class LookupController extends UifControllerBase {
     /**
      * Performs the search action using the given lookup criteria and sets the results onto the lookup form, then
      * renders the same lookup view.
+     * @param lookupForm lookup form
+     * 
+     * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
@@ -176,6 +179,9 @@ public class LookupController extends UifControllerBase {
 
     /**
      * Resets values in the lookup criteria group to their initial default values.
+     * @param lookupForm lookup form
+     * 
+     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=clearValues")
     public ModelAndView clearValues(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
@@ -246,6 +252,10 @@ public class LookupController extends UifControllerBase {
      * selectedLookupResultsCache
      *
      * @param lookupForm lookup form instance containing the selected results and lookup configuration
+     * @param request servlet request
+     * @param redirectAttributes redirect attributes instance
+     * 
+     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=selectAllPages")
     public ModelAndView selectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
@@ -272,6 +282,10 @@ public class LookupController extends UifControllerBase {
      * Invoked from the UI to mark values from all pages as deselected. Clears the selectedLookupResultsCache
      *
      * @param lookupForm lookup form instance containing the selected results and lookup configuration
+     * @param request servlet request
+     * @param redirectAttributes redirect attributes instance
+     * 
+     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deselectAllPages")
     public ModelAndView deselectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
@@ -327,6 +341,10 @@ public class LookupController extends UifControllerBase {
      * the caller and then a redirect is performed.
      *
      * @param lookupForm lookup form instance containing the selected results and lookup configuration
+     * @param request servlet request
+     * @param redirectAttributes redirect attributes instance
+     * 
+     * @return redirect URL for the return location
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")
     public String returnSelected(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,

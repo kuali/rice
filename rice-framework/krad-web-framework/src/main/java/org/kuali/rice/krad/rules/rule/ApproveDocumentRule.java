@@ -24,7 +24,7 @@ import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
  */
 public interface ApproveDocumentRule extends BusinessRule {
     /**
-     * @param document
+     * @param approveEvent document approve event 
      * @return false if the rule fails
      */
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent);

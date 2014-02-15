@@ -34,6 +34,9 @@ import org.kuali.rice.krad.uif.util.RecycleUtils;
  */
 public final class LifecycleTaskFactory {
 
+    /**
+     * Weak mapping of task constructors by task class.
+     */
     private final static Map<Class<?>, Constructor<?>> TASK_CONSTRUCTOR =
             Collections.synchronizedMap(new WeakHashMap<Class<?>, Constructor<?>>());
 
@@ -42,15 +45,15 @@ public final class LifecycleTaskFactory {
      * 
      * @param <T> The lifecycle task type to return.
      * @param taskClass The task class.
-     * @param phase The lifecycle phase.
+     * @param elementState The lifecycle element state..
      * @return A lifecycle processing task for the indicated phase, ready for processing.
      */
-    public static <T extends ViewLifecycleTaskBase> T getTask(Class<T> taskClass, ViewLifecyclePhase phase) {
+    public static <T extends ViewLifecycleTaskBase<?>> T getTask(Class<T> taskClass, LifecycleElementState elementState) {
         T task = RecycleUtils.getRecycledInstance(taskClass);
 
         if (task == null) {
             try {
-                task = taskClass.cast(getConstructor(taskClass).newInstance(phase));
+                task = taskClass.cast(getConstructor(taskClass).newInstance(elementState));
             } catch (InstantiationException e) {
                 throw new IllegalStateException("Error creating lifecycle task", e);
             } catch (IllegalAccessException e) {
@@ -59,7 +62,7 @@ public final class LifecycleTaskFactory {
                 throw new IllegalStateException("Error creating lifecycle task", e);
             }
         } else {
-            task.setPhase(phase);
+            task.setElementState(elementState);
         }
 
         return task;
@@ -70,7 +73,7 @@ public final class LifecycleTaskFactory {
      * 
      * @param task The task to recycle.
      */
-    static void recycle(ViewLifecycleTaskBase task) {
+    static void recycle(ViewLifecycleTaskBase<?> task) {
         task.recycle();
         RecycleUtils.recycle(task);
     }
@@ -87,15 +90,22 @@ public final class LifecycleTaskFactory {
 
         if (constructor == null) {
             try {
-                constructor = taskClass.getDeclaredConstructor(ViewLifecyclePhase.class);
+                constructor = taskClass.getDeclaredConstructor(LifecycleElementState.class);
             } catch (NoSuchMethodException e) {
-                throw new IllegalArgumentException(taskClass
-                        + " doesn't define an available lifecycle phase constructor.", e);
+                // TODO: ensure tasks are no longer using this method and remove this extraneous lookup
+                try {
+                    constructor = taskClass.getDeclaredConstructor(ViewLifecyclePhase.class);
+                } catch (NoSuchMethodException e2) {
+                    throw new IllegalArgumentException(taskClass
+                            + " doesn't define an available lifecycle phase constructor.", e);
+                }
             } catch (SecurityException e) {
                 throw new IllegalArgumentException(taskClass
                         + " doesn't define an available lifecycle phase constructor.", e);
             }
+            
             constructor.setAccessible(true);
+
             TASK_CONSTRUCTOR.put(taskClass, constructor);
         }
 

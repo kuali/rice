@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.finalize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Perform custom finalize behavior for the component defined by the helper.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
+public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Constructor.
@@ -33,15 +34,15 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
      * @param phase The finalize phase for the component.
      */
     public HelperCustomFinalizeTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, LifecycleElement.class);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public FinalizeComponentPhase getPhase() {
-        return (FinalizeComponentPhase) super.getPhase();
+    public FinalizeComponentPhase getElementState() {
+        return (FinalizeComponentPhase) super.getElementState();
     }
 
     /**
@@ -50,8 +51,9 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke service override hook
-        ViewLifecycle.getHelper().performCustomFinalize(getPhase().getComponent(), getPhase().getModel(),
-                getPhase().getParent());
+        ViewLifecycle.getHelper().performCustomFinalize(getElementState().getElement(),
+                ViewLifecycle.getModel(),
+                getElementState().getParent());
     }
 
 }

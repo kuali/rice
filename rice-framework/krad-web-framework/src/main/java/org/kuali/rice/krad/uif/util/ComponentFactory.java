@@ -188,6 +188,7 @@ public class ComponentFactory {
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
      * the view index, then retrieve a new instance with initial state configured using the factory id
      *
+     * @param view view enclosing the original component
      * @param id id for the component in the view index
      * @return Component new instance
      */
@@ -585,6 +586,8 @@ public class ComponentFactory {
      * is really just a more configuration complete field
      * </p>
      *
+     * @param remotableField field defined by a remove attribute
+     * 
      * @return AttributeField instance built from remotable field
      */
     public static InputField translateRemotableField(RemotableAttributeField remotableField) {
@@ -1235,6 +1238,7 @@ public class ComponentFactory {
 
     /**
      * Gets a component instance for an input field in the lookup criteria section
+     * @return lookup input field instance
      */
     public static LookupInputField getLookupCriteriaInputField() {
         return (LookupInputField) getNewComponentInstance(LOOKUP_CRITERIA_FIELD);
@@ -1243,6 +1247,7 @@ public class ComponentFactory {
     /**
      * Gets a component instance for an input field for the active indicator
      * in the lookup criteria section
+     * @return lookup input field instance
      */
     public static LookupInputField getLookupCriteriaActiveIndicatorInputField() {
         return (LookupInputField) getNewComponentInstance(LOOKUP_CRITERIA_ACTIVE_INDICATOR_FIELD);

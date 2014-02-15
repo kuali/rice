@@ -24,6 +24,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
@@ -52,8 +54,7 @@ public class FieldGroup extends FieldBase {
      * <li>Set the align on group if empty and the align has been set on the field</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
@@ -62,10 +63,14 @@ public class FieldGroup extends FieldBase {
         if (StringUtils.isNotBlank(getAlign()) && group != null) {
             group.setAlign(getAlign());
         }
+        
+        if (group != null) {
+            group.setReadOnly(isReadOnly());
+        }
     }
 
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
@@ -78,18 +83,6 @@ public class FieldGroup extends FieldBase {
         if (this.getFieldLabel() != null) {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.FIELDSET);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(group);
-
-        return components;
     }
 
     /**
@@ -121,6 +114,7 @@ public class FieldGroup extends FieldBase {
      *
      * @return List<? extends Component> items
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (group != null) {

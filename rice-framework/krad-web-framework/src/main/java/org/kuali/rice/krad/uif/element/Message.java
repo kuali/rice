@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -84,7 +85,7 @@ public class Message extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         //if messageText contains the special characters [] then parse and fill in the messageComponentStructure
@@ -104,12 +105,6 @@ public class Message extends ContentElementBase {
 
             messageComponentStructure = MessageStructureUtils.parseMessage(this.getId(), this.getMessageText(),
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
-
-            if (messageComponentStructure != null) {
-                for (Component component : messageComponentStructure) {
-                    ViewLifecycle.spawnSubLifecyle(model, component, this);
-                }
-            }
         } else if (messageText != null && messageText.contains("<") && messageText.contains(">")) {
             // Straight inline html case
             // Check to see if message contains pontential block elements (non-inline)
@@ -133,29 +128,13 @@ public class Message extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (messageComponentStructure != null && !messageComponentStructure.isEmpty()) {
             // Message needs to be aware of its own parent because it now contains content that can have validation
             this.addDataAttribute(UifConstants.DataAttributes.PARENT, parent.getId());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (messageComponentStructure != null) {
-            for (Component component : messageComponentStructure) {
-                components.add(component);
-            }
-        }
-
-        return components;
     }
 
     /**
@@ -242,7 +221,7 @@ public class Message extends ContentElementBase {
      */
     @BeanTagAttribute(name = "renderWrapperTag")
     public boolean isRenderWrapperTag() {
-        return renderWrapperTag;
+        return renderWrapperTag && wrapperTag != null;
     }
 
     /**

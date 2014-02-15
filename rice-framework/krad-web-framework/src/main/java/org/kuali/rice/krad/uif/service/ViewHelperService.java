@@ -22,8 +22,8 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
@@ -38,7 +38,7 @@ import org.kuali.rice.krad.uif.widget.Inquiry;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ViewHelperService {
-
+    
     /**
      * Hook for service overrides to perform custom initialization prior to view initialization.
      * 
@@ -51,7 +51,7 @@ public interface ViewHelperService {
      * 
      * @param component component instance to initialize
      */
-    void performCustomInitialization(Component component);
+    void performCustomInitialization(LifecycleElement component);
 
     /**
      * Hook for service overrides to perform custom apply model logic on the component
@@ -60,7 +60,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the data (could be the model or a top level business
      *        object, dto)
      */
-    void performCustomApplyModel(Component component, Object model);
+    void performCustomApplyModel(LifecycleElement component, Object model);
 
     /**
      * Hook for service overrides to perform custom component finalization
@@ -69,7 +69,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the data
      * @param parent Parent component for the component being finalized
      */
-    void performCustomFinalize(Component component, Object model, Component parent);
+    void performCustomFinalize(LifecycleElement component, Object model, LifecycleElement parent);
 
     /**
      * Hook for service overrides to perform view component finalization
@@ -377,7 +377,7 @@ public interface ViewHelperService {
     /**
      * Gets an expression evaluator factory for use with the current view.
      *
-     * @returns expression evaluator factory
+     * @return expression evaluator factory
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
 

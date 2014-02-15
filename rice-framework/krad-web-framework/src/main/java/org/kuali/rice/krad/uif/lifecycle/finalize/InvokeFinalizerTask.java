@@ -32,7 +32,7 @@ import org.springframework.util.MethodInvoker;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
+public class InvokeFinalizerTask extends ViewLifecycleTaskBase<Component> {
     
     private final Logger LOG = LoggerFactory.getLogger(InvokeFinalizerTask.class);
 
@@ -42,7 +42,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public InvokeFinalizerTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -51,7 +51,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = getPhase().getComponent();
+        Component component = (Component) getElementState().getElement();
         String finalizeMethodToCall = component.getFinalizeMethodToCall();
         MethodInvoker finalizeMethodInvoker = component.getFinalizeMethodInvoker();
 
@@ -82,7 +82,7 @@ public class InvokeFinalizerTask extends ViewLifecycleTaskBase {
 
         Object[] arguments = new Object[2 + additionalArguments.size()];
         arguments[0] = component;
-        arguments[1] = getPhase().getModel();
+        arguments[1] = ViewLifecycle.getModel();
 
         int argumentIndex = 1;
         for (Object argument : additionalArguments) {

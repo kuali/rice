@@ -33,7 +33,7 @@ public interface InactivationBlockingDisplayService {
 	 *
 	 * @param blockedBo
 	 * @param inactivationBlockingMetadata the blocking relationship
-	 * @return
+	 * @return list of blocking records
      *
      * @deprecated use {@link #displayAllBlockingRecords(Object, org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)} instead
 	 */

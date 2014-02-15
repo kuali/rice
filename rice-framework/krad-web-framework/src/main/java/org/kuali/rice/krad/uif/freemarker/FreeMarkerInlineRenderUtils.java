@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -215,13 +214,13 @@ public class FreeMarkerInlineRenderUtils {
 
         }
 
-        if (componentUpdate) {
+        if (componentUpdate || UifConstants.ViewStatus.RENDERED.equals(component.getViewStatus())) {
             renderScript(dataJsScripts, component, UifConstants.RoleTypes.DATA_SCRIPT, out);
             renderScript(templateJsScripts, component, null, out);
             return;
         }
 
-        String methodToCallOnRefresh = ((ComponentBase) component).getMethodToCallOnRefresh();
+        String methodToCallOnRefresh = component.getMethodToCallOnRefresh();
         if (!StringUtils.hasText(methodToCallOnRefresh)) {
             methodToCallOnRefresh = "";
         }
@@ -350,23 +349,22 @@ public class FreeMarkerInlineRenderUtils {
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
     public static void renderAttrBuild(Component component, Writer out) throws IOException {
-        String s;
-        if (component instanceof ComponentBase) {
-            ComponentBase componentBase = (ComponentBase) component;
-            if (StringUtils.hasText(s = componentBase.getStyleClassesAsString())) {
-                out.write(" class=\"");
-                out.write(s);
-                out.write("\"");
-            }
+        String s = component.getStyleClassesAsString();
+        if (StringUtils.hasText(s)) {
+            out.write(" class=\"");
+            out.write(s);
+            out.write("\"");
         }
 
-        if (StringUtils.hasText(s = component.getStyle())) {
+        s = component.getStyle();
+        if (StringUtils.hasText(s)) {
             out.write(" style=\"");
             out.write(s);
             out.write("\"");
         }
 
-        if (StringUtils.hasText(s = component.getTitle())) {
+        s = component.getTitle();
+        if (StringUtils.hasText(s)) {
             out.write(" title=\"");
             out.write(s);
             out.write("\"");
@@ -416,7 +414,6 @@ public class FreeMarkerInlineRenderUtils {
      * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
@@ -430,7 +427,7 @@ public class FreeMarkerInlineRenderUtils {
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
-     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
      * 
@@ -475,7 +472,7 @@ public class FreeMarkerInlineRenderUtils {
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
-     * {@link #renderCloseGroupWrap(Writer)} after rendering the body related to a call to
+     * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
      * 
@@ -516,7 +513,6 @@ public class FreeMarkerInlineRenderUtils {
      * template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
      * @param group The collection group to render.
      * @throws IOException If rendering is interrupted due to an I/O error.
      * @throws TemplateException If FreeMarker rendering fails.
@@ -580,8 +576,10 @@ public class FreeMarkerInlineRenderUtils {
      * template.
      * </p>
      * 
-     * @param component The component to render a wrapper div for.
-     * @param group The collection group to render.
+     * @param env The FreeMarker environment
+     * @param items List of items to render in a stacked layout
+     * @param manager Layout manager for the container
+     * @param container Container to render
      * @throws IOException If rendering is interrupted due to an I/O error.
      * @throws TemplateException If FreeMarker rendering fails.
      */
@@ -603,13 +601,15 @@ public class FreeMarkerInlineRenderUtils {
         out.write(manager.getId());
         out.write("\"");
 
-        if (StringUtils.hasText(s = manager.getStyle())) {
+        s = manager.getStyle();
+        if (StringUtils.hasText(s)) {
             out.write(" style=\"");
             out.write(s);
             out.write("\"");
         }
 
-        if (StringUtils.hasText(s = manager.getStyleClassesAsString())) {
+        s = manager.getStyleClassesAsString();
+        if (StringUtils.hasText(s)) {
             out.write(" class=\"");
             out.write(s);
             out.write("\"");

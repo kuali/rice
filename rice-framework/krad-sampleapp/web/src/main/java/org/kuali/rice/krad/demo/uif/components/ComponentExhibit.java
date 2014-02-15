@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
 
 import java.util.ArrayList;
@@ -75,25 +76,11 @@ public class ComponentExhibit extends ContentElementBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(sourceCodeViewer);
-        components.add(additionalSourceCodeViewer1);
-        components.add(additionalSourceCodeViewer2);
-        components.add(tabGroup);
-
-        return components;
-    }
-
-    /**
      * Get the demoGroups demonstrating the component's features
      *
      * @return the demoGroups
      */
+    @ViewLifecycleRestriction
     public List<Group> getDemoGroups() {
         return demoGroups;
     }
@@ -148,6 +135,7 @@ public class ComponentExhibit extends ContentElementBase {
      * TODO not yet used
      * @return the FieldGroup that contains documentation links
      */
+    @ViewLifecycleRestriction
     public FieldGroup getDocLinkFields() {
         return docLinkFields;
     }

@@ -23,7 +23,7 @@
   <!-- CollectionInactiveFilter demo -->
   <bean id="Demo-CollectionInactiveFilterView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoCollectionInactiveFilter.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroup"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.CollectionGroupBase"/>
     <property name="docBookAnchor" value="d7339e8535"/>
     <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">

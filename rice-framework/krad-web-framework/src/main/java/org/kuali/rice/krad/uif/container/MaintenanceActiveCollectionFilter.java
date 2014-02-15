@@ -121,7 +121,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
 
     /**
      * @see Copyable#copy()
-     * @see CloneUtils#copy(Copyable)
+     * @see CopyUtils#copy(Copyable)
      */
     public final <T> T copy() {
         return CopyUtils.copy(this);
@@ -145,4 +145,13 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
 
         maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.oldBindingObjectPath);
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
+    }
+
 }

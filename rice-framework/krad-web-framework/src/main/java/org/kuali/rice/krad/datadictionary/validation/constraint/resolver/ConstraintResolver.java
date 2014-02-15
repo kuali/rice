@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint.resolver;
 
+import java.util.List;
+
 import org.kuali.rice.krad.datadictionary.validation.capability.Constrainable;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
-
-import java.util.List;
+import org.kuali.rice.krad.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider;
 
 /**
  * ConstraintResolver provides a lookup of constraints for a specific constrainable attribute definition
@@ -26,9 +27,9 @@ import java.util.List;
  * <p>Implemented by constraint
  * providers as a mechanism to store functional lookups in a map, keyed by constraint type, for example.</p>
  *
- * {@see AttributeDefinitionConstraintProvider} for a number of examples.
+ * {@link AttributeDefinitionConstraintProvider} for a number of examples.
  *
- * @param <T>
+ * @param <T> constrainable type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */

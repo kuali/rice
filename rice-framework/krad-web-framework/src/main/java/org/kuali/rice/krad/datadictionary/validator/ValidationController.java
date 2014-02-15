@@ -74,9 +74,10 @@ public class ValidationController {
     /**
      * Validates a collection of Spring Beans with no output
      *
-     * @param xmlFiles - The collection of xml files used to load the provided beans
-     * @param beans - Collection of preloaded beans
-     * @param failOnWarning - Whether detecting a warning should cause the validation to fail
+     * @param xmlFiles The collection of xml files used to load the provided beans
+     * @param loader resource loader
+     * @param beans Collection of preloaded beans
+     * @param failOnWarning Whether detecting a warning should cause the validation to fail
      * @return Returns true if the beans past validation
      */
     public boolean validate(String[] xmlFiles, ResourceLoader loader, DefaultListableBeanFactory beans,

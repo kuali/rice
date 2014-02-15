@@ -27,9 +27,11 @@ import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.KeyMessage;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -481,8 +483,10 @@ public class RichMessageTest extends KRADTestCase {
 
         radioGroupControl.setOptions(options);
         performSimulatedLifecycle(radioGroupControl);
-        for (Component component : radioGroupControl.getComponentsForLifecycle()) {
-            performSimulatedLifecycle(component);
+        for (LifecycleElement component : ViewLifecycleUtils.getElementsForLifecycle(radioGroupControl).values()) {
+            if (component instanceof Component) {
+                performSimulatedLifecycle((Component) component);
+            }
         }
 
         List<KeyMessage> richOptions = radioGroupControl.getRichOptions();

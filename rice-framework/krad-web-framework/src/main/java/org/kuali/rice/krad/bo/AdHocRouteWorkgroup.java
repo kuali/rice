@@ -22,7 +22,7 @@ import javax.persistence.UniqueConstraint;
 
 
 /**
- * Ad Hoc Route Workgroup Business Object
+ * Ad Hoc Route Workgroup Business Object.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -39,6 +39,9 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     @Transient
     private String recipientName;
 
+    /**
+     * Sets type to {@link #WORKGROUP_TYPE}.
+     */
     public AdHocRouteWorkgroup() {
         setType(WORKGROUP_TYPE);
     }
@@ -56,18 +59,37 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
         return "";
     }
 
+    /**
+     * Gets recipient namespace code.
+     * @return namespace code
+     */
     public String getRecipientNamespaceCode() {
         return this.recipientNamespaceCode;
     }
 
+    /**
+     * Gets recipient name.
+     *
+     * @return recipient name
+     */
     public String getRecipientName() {
         return this.recipientName;
     }
 
+    /**
+     * Setter for {@link #getRecipientNamespaceCode()}.
+     *
+     * @param recipientNamespaceCode recipient namespace code
+     */
     public void setRecipientNamespaceCode(String recipientNamespaceCode) {
         this.recipientNamespaceCode = recipientNamespaceCode;
     }
 
+    /**
+     * Setter for {@link #recipientName}.
+     *
+     * @param recipientName recipient name
+     */
     public void setRecipientName(String recipientName) {
         this.recipientName = recipientName;
     }

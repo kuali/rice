@@ -38,7 +38,7 @@ public interface ScriptEventSupport {
     /**
      * Script that should be executed when the component's onLoad event is fired
      *
-     * @return String JavaScript code
+     * @param onLoadScript JavaScript code
      */
     public void setOnLoadScript(String onLoadScript);
 
@@ -96,7 +96,7 @@ public interface ScriptEventSupport {
     /**
      * Script that should be executed when the component's onBlur event is fired
      *
-     * @return String JavaScript code
+     * @param onBlurScript JavaScript code
      */
     public void setOnBlurScript(String onBlurScript);
 

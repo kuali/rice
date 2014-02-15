@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import java.beans.PropertyEditor;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,11 +25,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ViewCleaner;
 
 /**
@@ -39,6 +41,8 @@ import org.kuali.rice.krad.uif.util.ViewCleaner;
  */
 public class ViewIndex implements Serializable {
     private static final long serialVersionUID = 4700818801272201371L;
+    
+    private static final Logger LOG = Logger.getLogger(ViewIndex.class);
 
     protected Map<String, Component> index;
     protected Map<String, DataField> dataFieldIndex;
@@ -46,6 +50,7 @@ public class ViewIndex implements Serializable {
     protected Map<String, CollectionGroup> collectionsIndex;
 
     protected Map<String, Component> initialComponentStates;
+    protected Map<String, Component> unmodifiableInitialComponentStates;
 
     protected Map<String, PropertyEditor> fieldPropertyEditors;
     protected Map<String, PropertyEditor> secureFieldPropertyEditors;
@@ -66,6 +71,7 @@ public class ViewIndex implements Serializable {
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
+        unmodifiableInitialComponentStates = Collections.unmodifiableMap(initialComponentStates);
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
         componentExpressionGraphs = new HashMap<String, Map<String, String>>();
@@ -76,27 +82,14 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Walks through the View tree and indexes all components found. All components are indexed by
-     * their IDs with the special indexing done for certain components
-     * 
-     * <p>
-     * <code>DataField</code> instances are indexed by the attribute path. This is useful for
-     * retrieving the InputField based on the incoming request parameter
-     * </p>
-     * 
-     * <p>
-     * <code>CollectionGroup</code> instances are indexed by the collection path. This is useful for
-     * retrieving the CollectionGroup based on the incoming request parameter
-     * </p>
+     * Clears view indexes, for reinitializing indexes at the start of each phase.
      */
-    protected void index(View view) {
+    protected void clearIndex(View view) {
         index = new HashMap<String, Component>();
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         fieldPropertyEditors = new HashMap<String, PropertyEditor>();
         secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
-
-        indexComponent(view);
     }
 
     /**
@@ -110,10 +103,15 @@ public class ViewIndex implements Serializable {
      * </p>
      * 
      * <p>
-     * Special processing is done for DataField instances to register their property editor which
-     * will be used for form binding
+     * <code>DataField</code> instances are indexed by the attribute path. This is useful for
+     * retrieving the InputField based on the incoming request parameter
      * </p>
      * 
+     * <p>
+     * <code>CollectionGroup</code> instances are indexed by the collection path. This is useful for
+     * retrieving the CollectionGroup based on the incoming request parameter
+     * </p>
+
      * @param component component instance to index
      */
     public void indexComponent(Component component) {
@@ -149,10 +147,6 @@ public class ViewIndex implements Serializable {
             synchronized (collectionsIndex) {
                 collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
             }
-        }
-
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            indexComponent(nestedComponent);
         }
     }
 
@@ -355,7 +349,7 @@ public class ViewIndex implements Serializable {
      *         instance
      */
     public Map<String, Component> getInitialComponentStates() {
-        return initialComponentStates;
+        return unmodifiableInitialComponentStates;
     }
 
     /**
@@ -370,21 +364,39 @@ public class ViewIndex implements Serializable {
      * @param component component instance to add
      */
     public void addInitialComponentStateIfNeeded(Component component) {
-        if (StringUtils.isBlank(component.getBaseId())) {
-            component.setBaseId(component.getId());
+        String compId = component.getId();
+        
+        if (StringUtils.isBlank(component.getBaseId())) {   
+            component.setBaseId(compId);
+        }
+
+        if (!initialComponentStates.containsKey(compId)) {
+            String viewStatus = component.getViewStatus();
+            if (viewStatus != null && !viewStatus.equals(UifConstants.ViewStatus.CACHED)) {
+                component = component.copy();
+            }
+
             synchronized (initialComponentStates) {
-                initialComponentStates.put(component.getBaseId(), ComponentUtils.copy(component));
+                initialComponentStates.put(compId, component);
             }
         }
     }
 
     /**
-     * Setter for the map holding initial component states
+     * Updates the initial state of a component.
      * 
-     * @param initialComponentStates
+     * @param component component instance to add
      */
-    public void setInitialComponentStates(Map<String, Component> initialComponentStates) {
-        this.initialComponentStates = initialComponentStates;
+    public void updateInitialComponentState(Component component) {
+        String compId = component.getBaseId();
+        if (StringUtils.isBlank(compId)) {
+            compId = component.getId();
+            component.setBaseId(compId);
+        }
+
+        synchronized (initialComponentStates) {
+            initialComponentStates.put(compId, component);
+        }
     }
 
     /**
@@ -527,7 +539,11 @@ public class ViewIndex implements Serializable {
         if (this.index != null) {
             Map<String, Component> indexCopy = new HashMap<String, Component>();
             for (Map.Entry<String, Component> indexEntry : this.index.entrySet()) {
-                indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                if (indexEntry.getValue() instanceof View) {
+                    LOG.warn("view reference at " + indexEntry);
+                } else {
+                    indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                }
             }
 
             viewIndexCopy.index = indexCopy;
@@ -554,10 +570,15 @@ public class ViewIndex implements Serializable {
         if (this.initialComponentStates != null) {
             Map<String, Component> initialComponentStatesCopy = new HashMap<String, Component>();
             for (Map.Entry<String, Component> indexEntry : this.initialComponentStates.entrySet()) {
-                initialComponentStatesCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                Component initialState = indexEntry.getValue();
+                if (!UifConstants.ViewStatus.CACHED.equals(initialState.getViewStatus())) {
+                    initialState = initialState.copy();
+                }
+                initialComponentStatesCopy.put(indexEntry.getKey(), initialState);
             }
 
             viewIndexCopy.initialComponentStates = initialComponentStatesCopy;
+            viewIndexCopy.unmodifiableInitialComponentStates = Collections.unmodifiableMap(initialComponentStatesCopy);
         }
 
         if (this.fieldPropertyEditors != null) {

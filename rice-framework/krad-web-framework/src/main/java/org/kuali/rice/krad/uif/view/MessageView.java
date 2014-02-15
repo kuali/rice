@@ -55,18 +55,6 @@ public class MessageView extends FormView {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(message);
-
-        return components;
-    }
-
-    /**
      * Message component that will be used to display the message (used for styling and so on)
      *
      * @return Message component instance

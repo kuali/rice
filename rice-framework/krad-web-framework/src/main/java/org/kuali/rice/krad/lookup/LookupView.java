@@ -27,6 +27,7 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
@@ -40,8 +41,11 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -147,7 +151,7 @@ public class LookupView extends FormView {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         LookupForm lookupForm = (LookupForm) model;
 
         if (!renderCriteriaActions) {
@@ -207,12 +211,12 @@ public class LookupView extends FormView {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         LookupForm lookupForm = (LookupForm) model;
 
-        List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(criteriaGroup, InputField.class);
+        List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(criteriaGroup, InputField.class);
         for (InputField field : fields) {
             field.setForceSessionPersistence(true);
         }
@@ -391,22 +395,9 @@ public class LookupView extends FormView {
         fieldGroupItems.add(toDate);
         rangeFieldGroup.setItems(fieldGroupItems);
 
-        getViewIndex().getInitialComponentStates().put(rangeFieldGroup.getBaseId(), rangeFieldGroup);
+        getViewIndex().updateInitialComponentState(rangeFieldGroup);
 
         return rangeFieldGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        components.add(rangeFieldGroupPrototype);
-        components.add(rangedToMessage);
-
-        return components;
     }
 
     /**
@@ -537,6 +528,7 @@ public class LookupView extends FormView {
      *
      * @return List of components to render as the lookup criteria
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "criteriaFields", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getCriteriaFields() {
         return this.criteriaFields;
@@ -567,6 +559,7 @@ public class LookupView extends FormView {
      *
      * @return group instance that will hold the search criteria fields
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "criteriaGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getCriteriaGroup() {
         return this.criteriaGroup;
@@ -597,6 +590,7 @@ public class LookupView extends FormView {
      *
      * @return List of components to render in the results group
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "resultFields", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getResultFields() {
         return this.resultFields;
@@ -627,6 +621,7 @@ public class LookupView extends FormView {
      *
      * @return collection group instance to render for the lookup results
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "resultsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroup getResultsGroup() {
         return this.resultsGroup;
@@ -774,6 +769,7 @@ public class LookupView extends FormView {
      *
      * @return field group instance to use for creating range field groups
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     public FieldGroup getRangeFieldGroupPrototype() {
         return rangeFieldGroupPrototype;
     }
@@ -791,6 +787,7 @@ public class LookupView extends FormView {
      *
      * @return message instance for range field group
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     public Message getRangedToMessage() {
         return rangedToMessage;
     }

@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -71,7 +70,7 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
      * e.g. 'uif_grid'
      * </p>
      *
-     * @return
+     * @return template name
      */
     public String getTemplateName();
 
@@ -89,32 +88,6 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	 * @return Class<? extends Container> container class supported
 	 */
 	public Class<? extends Container> getSupportedContainer();
-
-	/**
-	 * List of components that are contained within the layout manager that should be sent through the lifecycle
-     *
-	 * <p>
-	 * Used by <code>ViewHelperService</code> for the various lifecycle
-	 * callbacks
-     * </p>
-	 *
-	 * @return List<Component> child components
-	 */
-	public List<Component> getComponentsForLifecycle();
-
-    /**
-     * List of components that are maintained by the layout manager as prototypes for creating other component
-     * instances
-     *
-     * <p>
-     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
-     * are the fields in a collection group that are created for each collection record. They only participate in the
-     * initialize phase.
-     * </p>
-     *
-     * @return List<Component> child component prototypes
-     */
-    public List<Component> getComponentPrototypes();
 
 	/**
 	 * CSS style string to be applied to the area (div) the layout manager
@@ -220,24 +193,6 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	 * @param context
 	 */
 	public void setContext(Map<String, Object> context);
-
-	/**
-	 * Places the given object into the context Map for the layout manager
-	 * with the given name
-	 *
-	 * @see org.kuali.rice.krad.uif.component.Component#pushObjectToContext(String,
-	 *      Object)
-	 */
-	public void pushObjectToContext(String objectName, Object object);
-
-    /**
-     * Places all entries from a map into the context Map for the layout manager.
-     *
-     * @param sourceContext The map to push entries from.
-     * @see org.kuali.rice.krad.uif.component.Component#pushToContext(Map,
-     *      Object)
-     */
-    public void pushAllToContext(Map<String, Object> sourceContext);
 
 	/**
 	 * List of <code>PropertyReplacer</code> instances that will be

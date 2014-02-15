@@ -98,6 +98,14 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
      * {@inheritDoc}
      */
     @Override
+    public ExpressionEvaluator getExpressionEvaluator() {
+        return this.expressionEvaluator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ViewLifecyclePhase getActivePhase() {
         return activePhase;
     }
@@ -137,7 +145,8 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     public void performPhase(ViewLifecyclePhase initialPhase) {
         offerPendingPhase(initialPhase);
         while (!pendingPhases.isEmpty()) {
-            pendingPhases.poll().run();
+            ViewLifecyclePhase pendingPhase = pendingPhases.poll();
+            pendingPhase.run();
         }
     }
 

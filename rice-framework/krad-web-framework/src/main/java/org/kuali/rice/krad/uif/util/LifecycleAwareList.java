@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 
 /**
  * List implementation for internal use by a lifecycle element.
@@ -31,8 +32,9 @@ import org.kuali.rice.krad.datadictionary.Copyable;
  * <p>Mutability of the list will follow the semantics for the lifecycle element.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @param <T> list item type
  */
-public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, Serializable {
+public class LifecycleAwareList<T> implements List<T>, Copyable, UifCloneable, Serializable {
 
     private static final long serialVersionUID = -8971217230511446882L;
 
@@ -41,9 +43,9 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
      *
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    private class ListIter implements ListIterator<E> {
+    private class ListIter implements ListIterator<T> {
 
-        private final ListIterator<E> delegate;
+        private final ListIterator<T> delegate;
 
         /**
          * @see LifecycleAwareList#listIterator()
@@ -65,7 +67,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         }
 
         @Override
-        public E next() {
+        public T next() {
             return this.delegate.next();
         }
 
@@ -75,7 +77,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         }
 
         @Override
-        public E previous() {
+        public T previous() {
             return this.delegate.previous();
         }
 
@@ -96,13 +98,13 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         }
 
         @Override
-        public void set(E e) {
+        public void set(T e) {
             lifecycleElement.checkMutable(true);
             this.delegate.set(e);
         }
 
         @Override
-        public void add(E e) {
+        public void add(T e) {
             lifecycleElement.checkMutable(true);
             this.delegate.add(e);
         }
@@ -114,9 +116,9 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
      *
      * @author Kuali Rice Team (rice.collab@kuali.org)
      */
-    private class Iter implements Iterator<E> {
+    private class Iter implements Iterator<T> {
 
-        private final Iterator<E> delegate;
+        private final Iterator<T> delegate;
 
         /**
          * @see LifecycleAwareList#iterator()
@@ -131,7 +133,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         }
 
         @Override
-        public E next() {
+        public T next() {
             return this.delegate.next();
         }
 
@@ -150,7 +152,8 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     /**
      * Delegating list implementation.
      */
-    private List<E> delegate;
+    @DelayedCopy(inherit = true)
+    private List<T> delegate;
 
     /**
      * Create a new list instance.
@@ -168,12 +171,12 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
      * @param lifecycleElement The lifecycle element to use for mutability checks.
      * @param delegate The list to wrap.
      */
-    public LifecycleAwareList(LifecycleElement lifecycleElement, List<E> delegate) {
+    public LifecycleAwareList(LifecycleElement lifecycleElement, List<T> delegate) {
         this.lifecycleElement = lifecycleElement;
         
-        List<E> wrapped = delegate;
+        List<T> wrapped = delegate;
         while (wrapped instanceof LifecycleAwareList) {
-            wrapped = ((LifecycleAwareList<E>) wrapped).delegate;
+            wrapped = ((LifecycleAwareList<T>) wrapped).delegate;
         }
         
         this.delegate = delegate;
@@ -186,7 +189,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
         lifecycleElement.checkMutable(true);
 
         if (delegate == Collections.EMPTY_LIST) {
-            delegate = new ArrayList<E>();
+            delegate = new ArrayList<T>();
         }
     }
 
@@ -206,7 +209,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     }
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<T> iterator() {
         return new Iter();
     }
 
@@ -221,7 +224,7 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     }
 
     @Override
-    public boolean add(E e) {
+    public boolean add(T e) {
         ensureMutable();
         return this.delegate.add(e);
     }
@@ -238,13 +241,13 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends T> c) {
         ensureMutable();
         return this.delegate.addAll(c);
     }
 
     @Override
-    public boolean addAll(int index, Collection<? extends E> c) {
+    public boolean addAll(int index, Collection<? extends T> c) {
         ensureMutable();
         return this.delegate.addAll(index, c);
     }
@@ -279,24 +282,24 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     }
 
     @Override
-    public E get(int index) {
+    public T get(int index) {
         return this.delegate.get(index);
     }
 
     @Override
-    public E set(int index, E element) {
+    public T set(int index, T element) {
         lifecycleElement.checkMutable(true);
         return this.delegate.set(index, element);
     }
 
     @Override
-    public void add(int index, E element) {
+    public void add(int index, T element) {
         ensureMutable();
         this.delegate.add(index, element);
     }
 
     @Override
-    public E remove(int index) {
+    public T remove(int index) {
         lifecycleElement.checkMutable(true);
         return this.delegate.remove(index);
     }
@@ -312,20 +315,20 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     }
 
     @Override
-    public ListIterator<E> listIterator() {
+    public ListIterator<T> listIterator() {
         ensureMutable();
         return new ListIter();
     }
 
     @Override
-    public ListIterator<E> listIterator(int index) {
+    public ListIterator<T> listIterator(int index) {
         ensureMutable();
         return new ListIter(index);
     }
 
     @Override
-    public List<E> subList(int fromIndex, int toIndex) {
-        return new LifecycleAwareList<E>(lifecycleElement, this.delegate.subList(fromIndex, toIndex));
+    public List<T> subList(int fromIndex, int toIndex) {
+        return new LifecycleAwareList<T>(lifecycleElement, this.delegate.subList(fromIndex, toIndex));
     }
 
     /**
@@ -355,6 +358,14 @@ public class LifecycleAwareList<E> implements List<E>, Copyable, UifCloneable, S
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Copyable unwrap() {
+        return this;
     }
 
 }

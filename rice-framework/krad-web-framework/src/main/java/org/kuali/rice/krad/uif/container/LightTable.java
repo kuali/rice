@@ -45,7 +45,9 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -82,7 +84,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 @BeanTags({@BeanTag(name = "lightTableGroup-bean", parent = "Uif-LightTableGroup"),
         @BeanTag(name = "lightTableSection-bean", parent = "Uif-LightTableSection"),
         @BeanTag(name = "lightTableSubSection-bean", parent = "Uif-LightTableSubSection")})
-public class LightTable extends Group implements DataBinding {
+public class LightTable extends GroupBase implements DataBinding {
     private static final long serialVersionUID = -8930885219866835711L;
 
     private static final String VALUE_TOKEN = "@v@";
@@ -176,7 +178,7 @@ public class LightTable extends Group implements DataBinding {
             ((Group) item).getLayoutManager().setId(ID_TOKEN + ((Group) item).getLayoutManager().getId() + ID_TOKEN);
         }
 
-        expressionMap = addChildExpressions(item.getComponentsForLifecycle(), expressionMap);
+        expressionMap = addChildExpressions(ViewLifecycleUtils.getElementsForLifecycle(item).values(), expressionMap);
 
         for (String name : toRemove) {
             item.getExpressionGraph().remove(name);
@@ -243,9 +245,9 @@ public class LightTable extends Group implements DataBinding {
      * @param expressionMap the map to add expressions to
      * @return the map with child component expressions added
      */
-    protected Map<String, String> addChildExpressions(List<? extends Component> components,
+    protected Map<String, String> addChildExpressions(Collection<? extends LifecycleElement> components,
             Map<String, String> expressionMap) {
-        for (Component comp : components) {
+        for (LifecycleElement comp : components) {
             if (comp != null && (comp instanceof Action
                     || comp instanceof Image
                     || comp instanceof Message
@@ -257,7 +259,7 @@ public class LightTable extends Group implements DataBinding {
                     || comp instanceof CheckboxControl
                     || comp instanceof TextControl
                     || comp instanceof SelectControl)) {
-                expressionMap = buildExpressionMap(comp, expressionMap);
+                expressionMap = buildExpressionMap((Component) comp, expressionMap);
             }
         }
 
@@ -268,7 +270,7 @@ public class LightTable extends Group implements DataBinding {
      * performFinalize override corrects the binding path for the DataFields and turns off rendering on some components
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         headerLabels = new ArrayList<Label>();
@@ -301,24 +303,12 @@ public class LightTable extends Group implements DataBinding {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richTable);
-        return components;
-    }
-
-    /**
      * Build the rows from the rowTemplate passed in.  This method uses regex to locate pieces of the row that need
      * to be replaced with row specific content per row.
      *
      * @param view the view instance the table is being built within
      * @param rowTemplate the first row of the collection in html generated from the ftl
      * @param model the model
-     * @return the full set of rows for the table in html(String) to be used by the calling ftl
      */
     public void buildRows(View view, String rowTemplate, UifFormBase model) {
         if (StringUtils.isBlank(rowTemplate)) {

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 
 /**
@@ -68,7 +69,7 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
         @BeanTag(name = "true-false-dialogGroup-bean", parent = "Uif-True-False-DialogGroup"),
         @BeanTag(name = "checkbox-dialogGroup-bean", parent = "Uif-Checkbox-DialogGroup"),
         @BeanTag(name = "radioButton-dialogGroup-bean", parent = "Uif-RadioButton-DialogGroup")})
-public class DialogGroup extends Group {
+public class DialogGroup extends GroupBase {
     private static final long serialVersionUID = 1L;
 
     private String promptText;
@@ -141,7 +142,7 @@ public class DialogGroup extends Group {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         // set the messageTest to the promptText
@@ -175,12 +176,11 @@ public class DialogGroup extends Group {
      * </ul>
      * </p>
      *
-     * @param view view instance that should be finalized for rendering
      * @param model top level object containing the data
      * @param parent parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (responseInputField != null) {

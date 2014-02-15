@@ -17,15 +17,20 @@ package org.kuali.rice.krad.uif.modifier;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
  * For a given <code>Component</code> instance converts all component properties
@@ -80,23 +85,36 @@ public class ComponentConvertModifier extends ComponentModifierBase {
             return;
         }
 
-        // check all component properties for the type to replace
-        List<String> componentProperties = ComponentUtils.getComponentPropertyNames(component.getClass());
-        for (String propertyPath : componentProperties) {
-            Object propValue = ObjectPropertyUtils.getPropertyValue(component, propertyPath);
+        @SuppressWarnings("unchecked")
+        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        elementQueue.offer(component);
+        
+        while (elementQueue.isEmpty()) {
+            LifecycleElement element = elementQueue.poll();
 
-            if (propValue != null) {
-                if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
-                    // types match, convert the component
-                    performConversion(component, propertyPath, idSuffix++);
+            elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(element).values());
+            
+            if (!(element instanceof Component)) {
+                continue;
+            }
+            
+            // check all component properties for the type to replace
+            Set<String> componentProperties =
+                    ObjectPropertyUtils.getReadablePropertyNames(component.getClass());
+            for (String propertyPath : componentProperties) {
+                Object propValue = ObjectPropertyUtils.getPropertyValue(component, propertyPath);
+
+                if (propValue != null) {
+                    if (getComponentTypeToReplace().isAssignableFrom(propValue.getClass())) {
+                        // types match, convert the component
+                        performConversion(component, propertyPath, idSuffix++);
+                    }
                 }
             }
         }
-
-        // recursively update components
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            convertToReplacement(nestedComponent, idSuffix);
-        }
+        
+        elementQueue.clear();
+        RecycleUtils.recycle(elementQueue);
     }
 
     /**

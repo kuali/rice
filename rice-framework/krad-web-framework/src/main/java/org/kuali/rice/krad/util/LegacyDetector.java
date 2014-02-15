@@ -123,6 +123,8 @@ class LegacyDetector {
 
     /**
      * A type is considered krad-data managed if it is included in the metadata repository.
+     * @param type data type
+     * @return true if the type is krad-data managed
      */
     public boolean isKradDataManaged(Class<?> type) {
         return metadataRepository.contains(type);

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -31,12 +30,12 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
@@ -58,6 +57,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private int defaultItemPosition;
 
 	private Help help;
+	
 	private LayoutManager layoutManager;
 
 	private Header header;
@@ -74,13 +74,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public ContainerBase() {
 		defaultItemPosition = 1;
 	}
-	
+
 	/**
-	 * Determine if remote field holders should be processed for this container.
-	 * 
-	 * @return True if remote field holders should be processed for this container.
+	 * {@inheritDoc}
 	 */
-	protected boolean isProcessRemoteFieldHolders() {
+	@Override
+	public boolean isProcessRemoteFieldHolders() {
 	    return true;
 	}
 
@@ -100,8 +99,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void performInitialization(Object model) {
 		super.performInitialization(model);
 
-        sortItems(model);
-
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
                 instructionalMessage == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
@@ -117,7 +114,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@SuppressWarnings("deprecation")
     @Override
-	public void performApplyModel(Object model, Component parent) {
+	public void performApplyModel(Object model, LifecycleElement parent) {
 		super.performApplyModel(model, parent);
 
 		// setup summary message field if necessary
@@ -143,7 +140,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 */
 	@SuppressWarnings("deprecation")
     @Override
-	public void performFinalize(Object model, Component parent) {
+	public void performFinalize(Object model, LifecycleElement parent) {
 		super.performFinalize(model, parent);
 
         if(header != null){
@@ -168,7 +165,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * {@inheritDoc}
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
         super.initializePendingTasks(phase, pendingTasks);
         
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
@@ -186,44 +183,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-	 * {@inheritDoc}
-	 */
-    @NoLifecycle
-	@Override
-	public List<Component> getComponentsForLifecycle() {
-		List<Component> components = super.getComponentsForLifecycle();
-
-		components.add(header);
-		components.add(footer);
-		components.add(help);
-		components.add(instructionalMessage);
-
-		for (Component component : getItems()) {
-			components.add(component);
-		}
-
-		if (layoutManager != null) {
-			components.addAll(layoutManager.getComponentsForLifecycle());
-		}
-
-		return components;
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentPrototypes() {
-        List<Component> components = super.getComponentPrototypes();
-
-        if (layoutManager != null) {
-            components.addAll(layoutManager.getComponentPrototypes());
-        }
-
-        return components;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -232,10 +191,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
         if (layoutManager != null) {
             if (additionalTemplates.isEmpty()) {
-                return Collections.singletonList(layoutManager.getTemplate());
-            } else {
-                additionalTemplates.add(layoutManager.getTemplate());
+                additionalTemplates = new ArrayList<String>();
             }
+            additionalTemplates.add(layoutManager.getTemplate());
         }
         
         return additionalTemplates;
@@ -243,11 +201,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
     /**
      * Performs sorting of the container items based on the order property
-     *
-     * @param view view instance containing the container
-     * @param model model object containing the view data
      */
-    protected void sortItems(Object model) {
+    @Override
+    public void sortItems() {
         // sort items list by the order property
         List<? extends Component> sortedItems = ComponentUtils.sort(getItems(), defaultItemPosition);
         setItems(sortedItems);

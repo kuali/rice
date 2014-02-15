@@ -79,8 +79,8 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     /**
      * Converts a date format supplied to the appropriate date format regex equivalent
      *
-     * @param format
-     * @return
+     * @param format date format
+     * @return regex for validating the date format
      */
     private String convertDateFormatToRegex(String format) {
         format = format.replace("\\", "\\\\").replace(".", "\\.").replace("-", "\\-").replace("+", "\\+").replace("(",
@@ -112,8 +112,8 @@ public class DatePatternConstraint extends ValidDataPatternConstraint {
     /**
      * The dateTime config vars are ';' seperated.
      *
-     * @param configValue
-     * @return
+     * @param configValue configuration value
+     * @return list of tokens in the config value, split on ';'
      */
     private List<String> parseConfigValues(String configValue) {
         if (configValue == null || "".equals(configValue)) {

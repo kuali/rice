@@ -15,15 +15,17 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
  * Perform default initialization defined for the component.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase {
+public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Create a task to assign component IDs during the initialize phase.
@@ -31,7 +33,7 @@ public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for the component.
      */
     public ComponentDefaultInitializeTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -41,7 +43,7 @@ public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase {
     @Override
     protected void performLifecycleTask() {
         // invoke component to initialize itself after properties have been set
-        getPhase().getComponent().performInitialization(getPhase().getModel());
+        getElementState().getElement().performInitialization(ViewLifecycle.getModel());
     }
 
 }

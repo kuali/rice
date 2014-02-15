@@ -39,7 +39,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
+public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -47,7 +47,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
      * @param phase The apply model phase for the component.
      */
     public ApplyAuthAndPresentationLogicTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -68,8 +68,8 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        ViewModel model = (ViewModel) getPhase().getModel();
-        Component component = getPhase().getComponent();
+        ViewModel model = (ViewModel) ((ViewLifecyclePhase) getElementState()).getModel();
+        Component component = (Component) getElementState().getElement();
         View view = ViewLifecycle.getView();
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();

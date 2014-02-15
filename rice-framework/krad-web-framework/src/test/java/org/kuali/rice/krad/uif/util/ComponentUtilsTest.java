@@ -34,11 +34,13 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.CollectionGroupBase;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.DataFieldBase;
 import org.kuali.rice.krad.uif.field.FieldBase;
-import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.InputFieldBase;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
@@ -52,7 +54,7 @@ public class ComponentUtilsTest {
 
     @Before
     public void setup() {
-        component = new InputField();
+        component = new InputFieldBase();
         componentId = "field1";
         component.setId(componentId);
         component.setBaseId(componentId);
@@ -60,8 +62,8 @@ public class ComponentUtilsTest {
 
     // Initialization methods
     private CollectionGroup initializeCollectionGroup() {
-        CollectionGroup collectionGroup = new CollectionGroup();
-        collectionGroup = (CollectionGroup) initializeComponentBase(collectionGroup);
+        CollectionGroupBase collectionGroup = new CollectionGroupBase();
+        collectionGroup = (CollectionGroupBase) initializeComponentBase(collectionGroup);
 
         DataField field1 = initializeDataField();
         DataField field2 = initializeDataField();
@@ -96,8 +98,8 @@ public class ComponentUtilsTest {
     }
 
     private DataField initializeDataField() {
-        DataField dataField = new DataField();
-        dataField = (DataField) initializeComponentBase(dataField);
+        DataFieldBase dataField = new DataFieldBase();
+        dataField = (DataFieldBase) initializeComponentBase(dataField);
         dataField.setAddHiddenWhenReadOnly(true);
 
         List<String> additionalHiddenPropertyNames = new ArrayList<String>();

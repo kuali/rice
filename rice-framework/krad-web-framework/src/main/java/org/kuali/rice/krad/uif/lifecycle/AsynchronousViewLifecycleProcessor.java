@@ -32,9 +32,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
@@ -65,8 +65,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     private static final ThreadLocal<AsynchronousLifecyclePhase> ACTIVE_PHASE =
             new ThreadLocal<AsynchronousLifecyclePhase>();
     
-    private static final Map<Component, AsynchronousLifecyclePhase> BUSY_COMPONENTS =
-            new IdentityHashMap<Component, AsynchronousLifecyclePhase>();
+    private static final Map<LifecycleElement, AsynchronousLifecyclePhase> BUSY_ELEMENTS =
+            new IdentityHashMap<LifecycleElement, AsynchronousLifecyclePhase>();
 
     private static Integer minThreads;
     private static Integer maxThreads;
@@ -234,7 +234,7 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         // Get a reusable rendering context from a pool private to the current lifecycle. 
         renderContext = renderingContextPool.poll();
         if (renderContext == null) {
-            // Create a new rendering context is a pooled instance is not available.
+            // Create a new rendering context if a pooled instance is not available.
             ViewLifecycle lifecycle = getLifecycle();
             renderContext = new LifecycleRenderingContext(
                     lifecycle.model, lifecycle.request, lifecycle.response);
@@ -308,9 +308,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     @Override
     public void pushPendingPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase aphase = getAsynchronousPhase(phase);
-        if (phase.getStartViewStatus().equals(phase.getComponent().getViewStatus())) {
-            synchronized (BUSY_COMPONENTS) {
-                BUSY_COMPONENTS.put(phase.getComponent(), aphase);
+        if (phase.getStartViewStatus().equals(phase.getElement().getViewStatus())) {
+            synchronized (BUSY_ELEMENTS) {
+                BUSY_ELEMENTS.put(phase.getElement(), aphase);
             }
         }
 
@@ -328,9 +328,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
     @Override
     public void offerPendingPhase(ViewLifecyclePhase phase) {
         AsynchronousLifecyclePhase aphase = getAsynchronousPhase(phase);
-        if (phase.getStartViewStatus().equals(phase.getComponent().getViewStatus())) {
-            synchronized (BUSY_COMPONENTS) {
-                BUSY_COMPONENTS.put(phase.getComponent(), aphase);
+        if (phase.getStartViewStatus().equals(phase.getElement().getViewStatus())) {
+            synchronized (BUSY_ELEMENTS) {
+                BUSY_ELEMENTS.put(phase.getElement(), aphase);
             }
         }
 
@@ -485,8 +485,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                     continue;
                 }
 
-                Component comp = phase.getComponent();
-                AsynchronousLifecyclePhase busyPhase = BUSY_COMPONENTS.get(comp);
+                LifecycleElement element = phase.getElement();
+                AsynchronousLifecyclePhase busyPhase = BUSY_ELEMENTS.get(element);
                 if (busyPhase != null && busyPhase != aphase) {
                     // Another phase is already active on this component, requeue
                     synchronized (PENDING_PHASE_QUEUE) {
@@ -523,8 +523,14 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                         aphase.processor.renderingContextPool.offer(renderingContext);
                     }
 
-                    synchronized (BUSY_COMPONENTS) {
-                        BUSY_COMPONENTS.remove(comp);
+                    ExpressionEvaluator expressionEvaluator = aphase.expressionEvaluator;
+                    aphase.expressionEvaluator = null;
+                    if (expressionEvaluator != null && aphase.processor != null) {
+                        aphase.processor.expressionEvaluatorPool.offer(expressionEvaluator);
+                    }
+
+                    synchronized (BUSY_ELEMENTS) {
+                        BUSY_ELEMENTS.remove(element);
                     }
                     GlobalVariables.popGlobalVariables();
                     ViewLifecycle.setProcessor(null);

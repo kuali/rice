@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -24,17 +23,18 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Accordion;
 
 /**
- * Accordion group class used to stack groups by there header titles in an accordion layout
+ * Accordion group class used to stack groups by there header titles in an accordion layout.
  */
 @BeanTags({@BeanTag(name = "accordionGroup-bean", parent = "Uif-AccordionGroup"),
         @BeanTag(name = "accordionSection-bean", parent = "Uif-AccordionSection"),
         @BeanTag(name = "accordionSubSection-bean", parent = "Uif-AccordionSubSection"),
         @BeanTag(name = "disclosure-accordionSection-bean", parent = "Uif-Disclosure-AccordionSection"),
         @BeanTag(name = "disclosure-accordionSubSection-bean", parent = "Uif-Disclosure-AccordionSubSection")})
-public class AccordionGroup extends Group {
+public class AccordionGroup extends GroupBase {
 
     private static final long serialVersionUID = 7230145606607506418L;
 
@@ -44,19 +44,7 @@ public class AccordionGroup extends Group {
      * {@inheritDoc}
      */
     @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(accordionWidget);
-
-        return components;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
         this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Uif-AccordionGroup");
     }
@@ -76,7 +64,7 @@ public class AccordionGroup extends Group {
 
     /**
      * Gets the widget which contains any configuration for the accordion widget component used to render
-     * this AccordionGroup
+     * this AccordionGroup.
      *
      * @return the accordionWidget
      */
@@ -86,9 +74,9 @@ public class AccordionGroup extends Group {
     }
 
     /**
-     * Set the accordionWidget
+     * Set the accordionWidget.
      *
-     * @param the accordionWidget to set
+     * @param accordionWidget the accordionWidget to set
      */
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;

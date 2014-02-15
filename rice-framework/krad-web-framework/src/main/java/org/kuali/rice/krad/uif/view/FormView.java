@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.web.form.UifFormBase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Provides configuration for {@link View} instances that render an HTML form.
@@ -102,9 +102,8 @@ public class FormView extends View {
      *
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         UifFormBase form = (UifFormBase) model;

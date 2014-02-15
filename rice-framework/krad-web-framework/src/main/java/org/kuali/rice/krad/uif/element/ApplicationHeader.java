@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-
-import java.util.List;
 
 /**
  * Component that renders a standard application header including a logo, navigation, and toolbar.
@@ -34,19 +31,6 @@ public class ApplicationHeader extends Header {
 
     public ApplicationHeader() {
         super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(applicationNavigation);
-        components.add(applicationToolbar);
-
-        return components;
     }
 
     /**

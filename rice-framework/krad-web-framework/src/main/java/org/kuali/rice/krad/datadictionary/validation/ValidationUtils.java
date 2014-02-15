@@ -80,13 +80,13 @@ public class ValidationUtils {
     /**
      * compares the value provided by the user and the one specified by the {@code WhenConstraint}
      *
-     * @param fieldValue - the value found in the field specified by a {@code CaseConstraint}'s {@code propertyName}
-     * @param whenValue - the value specified by a {@code WhenConstraint}
-     * @param dataType - the data type of the field which caseConstraint's propertyName refers to
-     * @param operator - the relationship to check between the {@code fieldValue} and the {@code whenValue}
-     * @param isCaseSensitive - whether string comparison will be carried out in a case sensitive fashion
-     * @param dateTimeService - used to convert strings to dates
-     * @return
+     * @param fieldValue the value found in the field specified by a {@code CaseConstraint}'s {@code propertyName}
+     * @param whenValue the value specified by a {@code WhenConstraint}
+     * @param dataType the data type of the field which caseConstraint's propertyName refers to
+     * @param operator the relationship to check between the {@code fieldValue} and the {@code whenValue}
+     * @param isCaseSensitive whether string comparison will be carried out in a case sensitive fashion
+     * @param dateTimeService used to convert strings to dates
+     * @return true if the value matches the constraint
      */
     public static boolean compareValues(Object fieldValue, Object whenValue, DataType dataType, String operator,
             boolean isCaseSensitive, DateTimeService dateTimeService) {

@@ -19,7 +19,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 /**
- * Accordion widget class used to create an accordion based layout
+ * Accordion widget class used to create an accordion based layout.
  */
 @BeanTag(name = "accordion-bean", parent = "Uif-Accordion")
 public class Accordion extends WidgetBase {
@@ -39,9 +39,9 @@ public class Accordion extends WidgetBase {
     }
 
     /**
-     * Set the accordion item open by default (zero-based index), "false" if no item should be open
+     * Set the accordion item open by default (zero-based index), "false" if no item should be open.
      *
-     * @param active
+     * @param active true if the accoridion item should be open by default
      */
     public void setActive(String active) {
         this.active = active;

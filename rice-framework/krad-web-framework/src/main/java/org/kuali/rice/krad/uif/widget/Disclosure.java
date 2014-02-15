@@ -19,6 +19,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Decorates a group with collapse/expand functionality
@@ -53,11 +54,11 @@ public class Disclosure extends WidgetBase {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
-        super.performFinalize(model, parent);
+    public void performApplyModel(Object model, LifecycleElement parent) {
+        super.performApplyModel(model, parent);
 
-        if (ajaxRetrievalWhenOpened) {
-            parent.setForceSessionPersistence(true);
+        if (parent instanceof Component && ajaxRetrievalWhenOpened) {
+            ((Component) parent).setForceSessionPersistence(true);
         }
     }
 
@@ -73,7 +74,9 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#getCollapsedIconClass()
+     * Setter for {@link Disclosure#getCollapsedIconClass()}.
+     * 
+     * @param collapsedIconClass property value
      */
     public void setCollapsedIconClass(String collapsedIconClass) {
         this.collapsedIconClass = collapsedIconClass;
@@ -91,7 +94,9 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#getExpandedIconClass()
+     * Setter for {@link Disclosure#getExpandedIconClass()}.
+     * 
+     * @param expandedIconClass property value
      */
     public void setExpandedIconClass(String expandedIconClass) {
         this.expandedIconClass = expandedIconClass;
@@ -107,9 +112,12 @@ public class Disclosure extends WidgetBase {
     }
 
     /**
-     * @see Disclosure#isRenderIcon()
+     * Setter for {@link #isRenderIcon()}.
+     * 
+     * @param renderIcon property value
      */
     public void setRenderIcon(boolean renderIcon) {
+        
         this.renderIcon = renderIcon;
     }
 

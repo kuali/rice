@@ -35,9 +35,7 @@ public class PrerequisiteConstraintProcessor extends BasePrerequisiteConstraintP
     private static final String FALLBACK_KEY = "prerequisiteFallback";
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.validation.processor.ConstraintProcessor#process(DictionaryValidationResult,
-     *      Object, org.kuali.rice.krad.datadictionary.validation.capability.Validatable,
-     *      org.kuali.rice.krad.datadictionary.validation.AttributeValueReader)
+     * {@inheritDoc}
      */
     @Override
     public ProcessorResult process(DictionaryValidationResult result, Object value, PrerequisiteConstraint constraint,

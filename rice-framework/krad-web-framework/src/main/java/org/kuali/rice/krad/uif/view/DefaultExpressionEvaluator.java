@@ -591,9 +591,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         // replace line path binding prefix with the actual line path
         if (adjustedExpression.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX) && (object instanceof Component)) {
             String linePath = getLinePathPrefixValue((Component) object);
-
+            
             adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
-                    linePath + ".");
+                    (StringUtils.isEmpty(linePath) ? linePath : linePath + "."));
         }
 
         // replace node path binding prefix with the actual node path
@@ -732,16 +732,16 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      * @return String line binding path or empty string if path not found
      */
     protected static String getLinePathPrefixValue(Component component) {
-        String linePath = "";
-
         Map<String, Object> componentContext = component.getContext();
         CollectionGroup collectionGroup = componentContext == null ? null : (CollectionGroup) (componentContext.get(
                 UifConstants.ContextVariableNames.COLLECTION_GROUP));
         if (collectionGroup == null) {
             LOG.warn("collection group not found for " + component + "," + component.getId() + ", " + component
                     .getComponentTypeName());
-            return linePath;
+            return "";
         }
+
+        String linePath = "";
 
         Object indexObj = componentContext == null ? null : componentContext
                 .get(UifConstants.ContextVariableNames.INDEX);

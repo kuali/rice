@@ -15,16 +15,19 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Add the component's initial state to the view index.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
+public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
@@ -32,7 +35,7 @@ public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
      * @param phase The initialize phase for the component.
      */
     public AddComponentStateToViewIndexTask(ViewLifecyclePhase phase) {
-        super(phase);
+        super(phase, Component.class);
     }
 
     /**
@@ -40,7 +43,12 @@ public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase {
      */
     @Override
     protected void performLifecycleTask() {
-        ViewLifecycle.getView().getViewIndex().addInitialComponentStateIfNeeded(getPhase().getComponent());
+        LifecycleElementState elementState = getElementState();
+        View view = ViewLifecycle.getView();
+        if (!(elementState.getElement() instanceof View)) {
+            view.getViewIndex().addInitialComponentStateIfNeeded(
+                    (Component) elementState.getElement());
+        }
     }
 
 }

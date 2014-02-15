@@ -39,7 +39,7 @@ import java.util.Set;
 @BeanTags({@BeanTag(name = "navigationGroup-bean", parent = "Uif-NavigationGroupBase"),
         @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup"),
         @BeanTag(name = "tabNavigationGroup-bean", parent = "Uif-TabNavigationGroup")})
-public class NavigationGroup extends Group {
+public class NavigationGroup extends GroupBase {
     private static final long serialVersionUID = -7263923392768546340L;
 
     private String navigationType;

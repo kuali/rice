@@ -27,11 +27,12 @@ public interface Copyable extends Cloneable {
     /**
      * Return a copy of the class.
      * 
+     * @param <T> copyable type
      * @return the copy
-     * @see CopyUtils#copy(Object)
+     * @see CopyUtils#copy(Copyable)
      */
     <T> T copy();
-    
+
     /**
      * Indicated that a given instance may not be modified until copied, if supported.
      */
@@ -39,6 +40,9 @@ public interface Copyable extends Cloneable {
 
     /**
      * Override {@link Object#clone()} to assign the public modifier.
+     * @return {@link Object#clone()}
+     * @throws CloneNotSupportedException If {@link Cloneable} is not implemented. This should not
+     *         be possible when using this interface.
      * 
      * @see CopyUtils#isUseClone() When cloning is enabled, {@link #clone} is used for shallow copy
      *      operations.
@@ -46,5 +50,12 @@ public interface Copyable extends Cloneable {
      * @see Object#clone()
      */
     Object clone() throws CloneNotSupportedException;
+    
+    /**
+     * Get the innermost copyable instance, if wrapped by a proxy.  When not wrapped, return this.
+     * 
+     * @return wrapped instance
+     */
+    Copyable unwrap();
 
 }

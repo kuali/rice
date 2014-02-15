@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Layout manager that organizes components in a single row (horizontal) or
@@ -69,7 +70,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component container) {
+    public void performFinalize(Object model, LifecycleElement container) {
         super.performFinalize(model, container);
 
         if (StringUtils.isBlank(itemStyle)) {
@@ -92,7 +93,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
                 if (orientation.equals(Orientation.HORIZONTAL)) {
                     c.addStyleClass("uif-boxLayoutHorizontalItem");
 
-                    container.addStyleClass("clearfix");
+                    ((Component) container).addStyleClass("clearfix");
                     
                     for (String styleClass : this.getItemStyleClasses()) {
                         c.addStyleClass(styleClass);

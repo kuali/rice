@@ -24,7 +24,7 @@
   <bean id="Demo-GroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoGroup.xml"/>
     <property name="javaFullClassPath"
-              value="org.kuali.rice.krad.uif.container.Group"/>
+              value="org.kuali.rice.krad.uif.container.GroupBase"/>
     <property name="docBookAnchor" value="d7339e4811"/>
     <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">

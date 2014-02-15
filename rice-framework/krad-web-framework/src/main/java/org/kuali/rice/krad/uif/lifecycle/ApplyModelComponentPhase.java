@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewTheme;
+import org.springframework.util.StringUtils;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -62,7 +64,18 @@ import org.kuali.rice.krad.uif.view.ViewTheme;
  */
 public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
 
+    /**
+     * Set of IDs that have been visited during the view's apply model phase.
+     * 
+     * <p>
+     * This reference is typically shared by all component apply model phases.
+     * </p>
+     */
     private Set<String> visitedIds;
+    
+    /**
+     * Mapping of context variables inherited from the view.
+     */
     private Map<String, Object> commonContext;
 
     /**
@@ -76,18 +89,18 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * Create a new lifecycle phase processing task for applying the model to a component.
+     * Create a new lifecycle phase processing task for applying the model to a element.
      * 
-     * @param component The component instance the model should be applied to
+     * @param element The element the model should be applied to
      * @param model Top level object containing the data
-     * @param index The position of this phase within the predecessor phase's successor queue.
-     * @param parent The parent component.
+     * @param path The path to the element relative to the parent element.
+     * @param parent The parent element.
      * @param nextPhase The phase to queue directly upon completion of this phase, if applicable.
      * @param visitedIds Tracks components ids that have been seen for adjusting duplicates.
      */
-    protected void prepare(Component component, Object model, int index,
-            Component parent, ViewLifecyclePhase nextPhase, Set<String> visitedIds) {
-        super.prepare(component, model, index, parent, nextPhase);
+    protected void prepare(LifecycleElement element, Object model, String path,
+            Component parent, ViewLifecyclePhaseBase nextPhase, Set<String> visitedIds) {
+        super.prepare(element, model, path, parent, nextPhase);
         this.visitedIds = visitedIds;
 
         Map<String, Object> commonContext = new HashMap<String, Object>();
@@ -103,7 +116,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
             commonContext.put(UifConstants.ContextVariableNames.THEME_IMAGES, view.getTheme().getImageDirectory());
         }
         
-        commonContext.put(UifConstants.ContextVariableNames.COMPONENT, getComponent());
+        commonContext.put(UifConstants.ContextVariableNames.COMPONENT, element instanceof Component ? element : parent);
 
         this.commonContext = Collections.unmodifiableMap(commonContext);
     }
@@ -144,7 +157,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * Gets global objects for the context map and pushes them to the context for the component
      * 
      * @return The common context elements to use while applying model elements to the view.
-     * @see #prepare(Component, Object, int, Component, ViewLifecyclePhase, Set)
+     * @see #prepare(LifecycleElement, Object, String, Component, ViewLifecyclePhaseBase, Set)
      */
     public Map<String, Object> getCommonContext() {
         return commonContext;
@@ -179,17 +192,16 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask> tasks) {
+    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        String viewPhase = this.getViewPhase();
         tasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultApplyModelTask.class, this));
+        getElement().initializePendingTasks(this, tasks);
+        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomApplyModelTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
-
-        getComponent().initializePendingTasks(this, tasks);
-        
         tasks.add(LifecycleTaskFactory.getTask(SetReadOnlyOnDataBindingTask.class, this));
     }
 
@@ -200,17 +212,41 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        Component component = getComponent();
+        LifecycleElement element = getElement();
         Object model = getModel();
 
-        // initialize nested components
-        int index = 0;
-        for (Component nestedComponent : component.getComponentsForLifecycle()) {
-            if (nestedComponent != null) {
-                successors.offer(LifecyclePhaseFactory
-                        .applyModel(nestedComponent, model, index++, component, null, visitedIds));
+        String nestedPathPrefix;
+        Component nestedParent;
+        if (element instanceof Component) {
+            nestedParent = (Component) element;
+            nestedPathPrefix = "";
+        } else {
+            nestedParent = getParent();
+            nestedPathPrefix = getParentPath() + ".";
+        }
+
+        Map<String, LifecycleElement> nestedElements =
+                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase());
+        for (Entry<String, LifecycleElement> nestedElementEntry : nestedElements.entrySet()) {
+            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
+            LifecycleElement nestedElement = nestedElementEntry.getValue();
+
+            if (nestedElement != null && !nestedElement.isModelApplied()) {
+                ApplyModelComponentPhase nestedApplyModelPhase = LifecyclePhaseFactory
+                        .applyModel(nestedElement, model, nestedPath, nestedParent,
+                                null, visitedIds);
+                if (nestedElement.isInitialized()) {
+                    successors.add(nestedApplyModelPhase);
+                    continue;
+                }
+                
+                InitializeComponentPhase nestedInitializePhase = LifecyclePhaseFactory
+                        .initialize(nestedElement, model, nestedPath, nestedParent,
+                                nestedApplyModelPhase);
+                successors.add(nestedInitializePhase);
             }
         }
+        ViewLifecycleUtils.recycleElementMap(nestedElements);
     }
 
 }

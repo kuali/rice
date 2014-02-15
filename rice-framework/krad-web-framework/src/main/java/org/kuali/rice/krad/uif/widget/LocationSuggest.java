@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -46,7 +47,7 @@ public class LocationSuggest extends Suggest {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (requestParameterPropertyNames == null) {
@@ -182,7 +183,7 @@ public class LocationSuggest extends Suggest {
      * construction).
      * </p>
      *
-     * @return
+     * @return mapping of additional request parameters
      */
     @BeanTagAttribute(name = "additionalRequestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getAdditionalRequestParameters() {

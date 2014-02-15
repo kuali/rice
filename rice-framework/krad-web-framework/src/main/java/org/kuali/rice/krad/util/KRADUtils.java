@@ -288,6 +288,8 @@ public final class KRADUtils {
      * TODO this method will probably need to be exposed in a public KRADUtils class as it is used
      * by several different modules.  That will have to wait until ModuleService and KualiModuleService are moved
      * to core though.
+     * @param clazz class to get a namespace code for
+     * @return namespace code
      */
     public static String getNamespaceCode(Class<? extends Object> clazz) {
         ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
@@ -803,6 +805,8 @@ public final class KRADUtils {
      * In some cases (different threads) the UserSession cannot be retrieved
      * from GlobalVariables but can still be accessed via the session object
      * </p>
+     * @param request servlet request
+     * @return user session found in the request's servlet session
      */
     public static final UserSession getUserSessionFromRequest(HttpServletRequest request) {
         return (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
@@ -955,6 +959,7 @@ public final class KRADUtils {
      * @param inputStream the content of the attachment
      * @param fileName the file name of the attachment
      * @param fileSize the size of the attachment
+     * @throws IOException if attachment to the results fails due to an IO error
      */
     public static void addAttachmentToResponse(HttpServletResponse response,
             InputStream inputStream, String contentType, String fileName, long fileSize) throws IOException {
@@ -1327,7 +1332,7 @@ public final class KRADUtils {
      *
      * @param object An instance of the Class of which we're trying to get the property Class.
      * @param propertyName The name of the property.
-     * @return
+     * @return property type
      * @throws IllegalAccessException
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
@@ -1343,6 +1348,12 @@ public final class KRADUtils {
     /**
      * Sets the property of an object with the given value. Converts using the formatter of the type for the property.
      * Note: propertyType does not need passed, is found by util method.
+     * @param bo business object
+     * @param propertyName property name
+     * @param propertyValue propery value
+     * @throws IllegalAccessException 
+     * @throws InvocationTargetException 
+     * @throws NoSuchMethodException 
      */
     public static void setObjectProperty(Object bo, String propertyName,
             Object propertyValue)

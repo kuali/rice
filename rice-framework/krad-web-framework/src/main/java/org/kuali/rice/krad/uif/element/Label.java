@@ -25,9 +25,10 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -64,7 +65,7 @@ public class Label extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (richLabelMessage == null && labelText != null &&
@@ -74,8 +75,6 @@ public class Label extends ContentElementBase {
             message.setMessageText(labelText);
             message.setInlineComponents(inlineComponents);
             message.setRenderWrapperTag(false);
-
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
 
             this.setRichLabelMessage(message);
         }
@@ -91,7 +90,7 @@ public class Label extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (StringUtils.isBlank(getLabelText())) {
@@ -107,18 +106,6 @@ public class Label extends ContentElementBase {
         else if (requiredIndicator == null) {
             requiredIndicator = defaultRequiredIndicator;
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richLabelMessage);
-
-        return components;
     }
 
     /**
@@ -259,6 +246,7 @@ public class Label extends ContentElementBase {
      *
      * @return the Label's inlineComponents
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Component> getInlineComponents() {
         return inlineComponents;

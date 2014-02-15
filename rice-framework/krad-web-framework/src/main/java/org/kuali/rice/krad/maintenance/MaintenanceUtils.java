@@ -131,8 +131,7 @@ public class MaintenanceUtils {
      * probably should use Authorization instead? See KULNRVSYS-948
      *
      * @param lockedDocument
-     * @return
-     * @throws org.kuali.rice.kew.api.exception.WorkflowException
+     * @return true if the document lock can be ignored
      *
      */
     private static boolean lockCanBeIgnored(WorkflowDocument lockedDocument) {

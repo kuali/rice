@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.widget;
 
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -26,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -38,6 +36,7 @@ import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -92,7 +91,7 @@ public class Inquiry extends WidgetBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (!isRender()) {
@@ -103,7 +102,9 @@ public class Inquiry extends WidgetBase {
         setRender(false);
 
         // used to determine whether a normal or direct inquiry should be enabled
-        setParentReadOnly(parent.isReadOnly());
+        if (parent instanceof Component) {
+            setParentReadOnly(((Component) parent).isReadOnly());
+        }
 
         // Do checks for inquiry when read only
         if (isParentReadOnly()) {
@@ -173,7 +174,6 @@ public class Inquiry extends WidgetBase {
      * by DirectInquiry.
      * </p>
      *
-     * @param view Container View
      * @param model model
      * @param field The parent Attribute field
      */
@@ -380,19 +380,6 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(getInquiryLink());
-        components.add(getDirectInquiryAction());
-
-        return components;
-    }
-
-    /**
      * Returns the URL for the inquiry for which parameters will be added
      *
      * <p>
@@ -453,6 +440,7 @@ public class Inquiry extends WidgetBase {
      * be sent with the data object class for the request. Note the view id can be alternatively used to uniquely
      * identify the inquiry view
      * </p>
+     * @return view name
      */
     @BeanTagAttribute(name = "viewName")
     public String getViewName() {

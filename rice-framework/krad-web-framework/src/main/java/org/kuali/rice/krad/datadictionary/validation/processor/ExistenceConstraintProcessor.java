@@ -91,7 +91,7 @@ public class ExistenceConstraintProcessor extends OptionalElementConstraintProce
      * attribute and the complex attribute is not required.
      *
      * @param attributeValueReader
-     * @return
+     * @return true if the constraint should be skipped
      */
     private boolean skipConstraint(AttributeValueReader attributeValueReader) {
         boolean skipConstraint = false;

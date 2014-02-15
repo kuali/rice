@@ -65,6 +65,8 @@ public class ValidationTrace {
 
     /**
      * Constructor for an empty token to start a trace
+     * @param files files to load
+     * @param loader resource loader
      */
     public ValidationTrace(String[] files, ResourceLoader loader) {
         beanIds = new ArrayList<String>();

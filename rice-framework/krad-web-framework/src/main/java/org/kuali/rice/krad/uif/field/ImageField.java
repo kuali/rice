@@ -22,9 +22,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Image;
 import org.kuali.rice.krad.uif.element.Message;
-import org.kuali.rice.krad.uif.view.View;
-
-import java.util.List;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that wraps an image content element.
@@ -50,30 +48,17 @@ public class ImageField extends FieldBase {
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
      * content
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present
         if (this.getFieldLabel() != null && this.getImage() != null && StringUtils.isNotBlank(this.getImage().getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getImage().getId());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(image);
-
-        return components;
     }
 
     /**

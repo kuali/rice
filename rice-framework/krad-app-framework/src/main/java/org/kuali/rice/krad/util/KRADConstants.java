@@ -708,6 +708,7 @@ public final class KRADConstants {
         public static final String KRAD_VIEW_LIFECYCLE_MAXTHREADS = "rice.krad.lifecycle.asynchronous.maxThreads";
         public static final String KRAD_VIEW_LIFECYCLE_TIMEOUT = "rice.krad.lifecycle.asynchronous.timeout";
         public static final String KRAD_USE_CLONE = "rice.krad.copyable.useClone";
+        public static final String KRAD_COPY_DELAY = "rice.krad.copyable.delay";
         public static final String KRAD_INCLUDE_LESS = "rice.krad.include.less";
     }
 }

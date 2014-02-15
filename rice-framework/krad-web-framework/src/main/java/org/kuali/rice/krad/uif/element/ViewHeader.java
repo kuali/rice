@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -24,6 +22,7 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -50,10 +49,10 @@ public class ViewHeader extends Header {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        View view = ViewLifecycle.getActiveLifecycle().getView();
+        View view = ViewLifecycle.getView();
         if (supportTitleMessage != null &&
                 view.getCurrentPage() != null && view.getCurrentPage().getHeader() != null &&
                 view.isUnifiedHeader()) {
@@ -84,20 +83,6 @@ public class ViewHeader extends Header {
                 this.addDataAttribute(UifConstants.DataAttributes.STICKY, "true");
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(areaTitleMessage);
-        components.add(supportTitleMessage);
-        components.add(metadataMessage);
-
-        return components;
     }
 
     /**

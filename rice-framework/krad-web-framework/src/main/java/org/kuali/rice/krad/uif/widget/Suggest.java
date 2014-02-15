@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -69,8 +70,10 @@ public class Suggest extends WidgetBase {
      * <ul>
      * <li>Invoke expression evaluation on the suggestQuery</li>
      * </ul>
+     * 
+     * {@inheritDoc}
      */
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (suggestQuery != null) {
@@ -90,7 +93,7 @@ public class Suggest extends WidgetBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         // check for necessary configuration

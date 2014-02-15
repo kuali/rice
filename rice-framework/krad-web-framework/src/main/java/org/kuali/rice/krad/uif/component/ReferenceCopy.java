@@ -42,4 +42,12 @@ public @interface ReferenceCopy {
 	 */
 	public boolean newCollectionInstance() default false;
 
+    /**
+     * Indicates that a field should be omitted from copying.
+     * 
+     * @return true if the field should be omitted from copying, false to follow
+     *         {@link #newCollectionInstance()} semantics.
+     */
+    public boolean referenceTransient() default false;
+
 }

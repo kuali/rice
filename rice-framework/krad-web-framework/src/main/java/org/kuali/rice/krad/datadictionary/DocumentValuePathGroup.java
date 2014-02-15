@@ -49,7 +49,7 @@ public class DocumentValuePathGroup extends DataDictionaryDefinitionBase {
     }
 
     /**
-     * @param documentValues the documentValues to set
+     * @param paths the documentValues to set
      */
     public void setDocumentValues(List<String> paths) {
         this.paths = paths;

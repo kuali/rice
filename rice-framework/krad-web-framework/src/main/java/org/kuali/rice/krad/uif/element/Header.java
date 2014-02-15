@@ -28,11 +28,12 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -88,12 +89,32 @@ public class Header extends ContentElementBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
+        
+        if (isReadOnly()) {
+            if (upperGroup != null) {
+                upperGroup.setReadOnly(true);
+            }
+            if (lowerGroup != null) {
+                lowerGroup.setReadOnly(true);
+            }
+            if (rightGroup != null) {
+                rightGroup.setReadOnly(true);
+            }
+        }
+    }
+
+    /**
      * Sets up rich message content for the label, if any exists
      *
      * {@inheritDoc}
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         if (richHeaderMessage == null && headerText != null && headerText.contains(
@@ -104,8 +125,6 @@ public class Header extends ContentElementBase {
             message.setInlineComponents(inlineComponents);
             message.setRenderWrapperTag(false);
             
-            ViewLifecycle.spawnSubLifecyle(model, message, this);
-
             this.setRichHeaderMessage(message);
         }
     }
@@ -120,7 +139,7 @@ public class Header extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         // don't render header groups if no items were configured
@@ -154,21 +173,6 @@ public class Header extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(richHeaderMessage);
-        components.add(upperGroup);
-        components.add(rightGroup);
-        components.add(lowerGroup);
-
-        return components;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<String> getAdditionalTemplates() {
         List<String> additionalTemplates = super.getAdditionalTemplates();
 
@@ -184,10 +188,9 @@ public class Header extends ContentElementBase {
         if (help != null) {
             String helpTemplate = help.getTemplate();
             if (additionalTemplates.isEmpty()) {
-                return Collections.singletonList(helpTemplate);
-            } else {
-                additionalTemplates.add(helpTemplate);
+                additionalTemplates = new ArrayList<String>();
             }
+            additionalTemplates.add(helpTemplate);
         }
         
         return additionalTemplates;
@@ -386,6 +389,7 @@ public class Header extends ContentElementBase {
      *
      * @return List<? extends Component> items
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (lowerGroup != null) {

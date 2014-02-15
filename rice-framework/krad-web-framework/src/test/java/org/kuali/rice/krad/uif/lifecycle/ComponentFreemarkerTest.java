@@ -63,6 +63,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
     public void testMessage() throws Throwable {
         Message m = ComponentFactory.getMessage();
         m.setMessageText("foobar");
+        m.setWrapperTag("span");
+        m.setId("_span");
 
         FreeMarkerViewResolver viewResolver = (FreeMarkerViewResolver)
                 UifUnitTestUtils.getWebApplicationContext().getBean("viewResolver");
@@ -102,7 +104,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
         visit.invoke(env, macro, args, null, null, null);
 
         assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
-                "foobar    </span>", out.toString().trim());
+                "foobar  </span>", out.toString().trim());
     }
 
     @Test
@@ -115,16 +117,18 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();
                 msg.setMessageText("foobar");
+                msg.setId("_naps");
+                msg.setWrapperTag("pans");
 //                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
-                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, 0);
+                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, "");
                 
                 ViewLifecycle.getProcessor().performPhase(renderPhase);
 
                 assertTrue(msg.isSelfRendered());
-                assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
-                        "foobar    </span>", msg.getRenderedHtmlOutput().trim());
+                assertEquals("<pans id=\"_naps\" class=\"uif-message\"   >\r\n" +
+                        "foobar  </pans>", msg.getRenderedHtmlOutput().trim());
             }
         });
     }

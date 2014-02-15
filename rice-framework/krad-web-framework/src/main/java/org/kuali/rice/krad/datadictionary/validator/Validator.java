@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.datadictionary.validator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,19 +27,17 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.View;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A validator for Rice Dictionaries that stores the information found during its validation.
@@ -155,8 +158,6 @@ public class Validator {
             object.completeValidation(tracer.getCopy());
 
             runValidationsOnLifecycle(object, tracer.getCopy());
-
-            runValidationsOnPrototype(object, tracer.getCopy());
         }
 
         compileFinalReport();
@@ -177,8 +178,9 @@ public class Validator {
 
     /**
      * Validates the beans in a collection of xml files
-     *
+     * @param xmlFiles files to validate
      * @param failOnWarning - Whether detecting a warning should cause the validation to fail
+     * 
      * @return Returns true if the beans past validation
      */
     public boolean validate(String[] xmlFiles, boolean failOnWarning) {
@@ -229,76 +231,49 @@ public class Validator {
         try {
             runValidationsOnLifecycle(component, tracer.getCopy());
         } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentsForLifecycle().size() + "",
+            String value[] = {component.getId(),
+                    ViewLifecycleUtils.getElementsForLifecycle(component).size() + "",
                     "Exception " + e.getMessage()};
             tracerTemp.createError("Error Validating Bean Lifecycle", value);
-        }
-
-        try {
-            runValidationsOnPrototype(component, tracer.getCopy());
-        } catch (Exception e) {
-            String value[] = {component.getId(), component.getComponentPrototypes().size() + "",
-                    "Exceptions : " + e.getLocalizedMessage()};
-            tracerTemp.createError("Error Validating Bean Prototypes", value);
         }
     }
 
     /**
      * Runs the validations on a components lifecycle items
      *
-     * @param component - The component whose lifecycle items are being checked
+     * @param element - The component whose lifecycle items are being checked
      * @param tracer - The current bean trace for the validation line
      */
-    private void runValidationsOnLifecycle(Component component, ValidationTrace tracer) {
-        List<Component> nestedComponents = component.getComponentsForLifecycle();
+    private void runValidationsOnLifecycle(LifecycleElement element, ValidationTrace tracer) {
+        Map<String, LifecycleElement> nestedComponents =
+                ViewLifecycleUtils.getElementsForLifecycle(element, UifConstants.ViewPhases.INITIALIZE);
         if (nestedComponents == null) {
             return;
         }
-        if (!doValidationOnUIFBean(component)) {
-            return;
+
+        Component component = null;
+        if (element instanceof Component) {
+            component = (Component) element;
+            if (!doValidationOnUIFBean(component)) {
+                return;
+            }
+            tracer.addBean(component);
         }
-        tracer.addBean(component);
-        for (Component temp : nestedComponents) {
-            if (temp == null) {
+        
+        for (LifecycleElement temp : nestedComponents.values()) {
+            if (!(temp instanceof Component)) {
                 continue;
             }
             if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(temp, false);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph((Component) temp, false);
             }
-            if (temp.isRender()) {
-                temp.completeValidation(tracer.getCopy());
+            if (((Component) temp).isRender()) {
+                ((DataDictionaryEntry) temp).completeValidation(tracer.getCopy());
                 runValidationsOnLifecycle(temp, tracer.getCopy());
             }
         }
-    }
-
-    /**
-     * Runs the validations on a components prototypes
-     *
-     * @param component - The component whose prototypes are being checked
-     * @param tracer - The current bean trace for the validation line
-     */
-    private void runValidationsOnPrototype(Component component, ValidationTrace tracer) {
-        List<Component> componentPrototypes = component.getComponentPrototypes();
-        if (componentPrototypes == null) {
-            return;
-        }
-        if (!doValidationOnUIFBean(component)) {
-            return;
-        }
-        tracer.addBean(component);
-        for (Component temp : componentPrototypes) {
-            if (temp == null) {
-                continue;
-            }
-            if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(temp, false);
-            }
-            if (temp.isRender()) {
-                temp.completeValidation(tracer.getCopy());
-                runValidationsOnPrototype(temp, tracer.getCopy());
-            }
-        }
+        
+        ViewLifecycleUtils.recycleElementMap(nestedComponents);
     }
 
     /**

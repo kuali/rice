@@ -96,16 +96,14 @@ public interface DictionaryValidationService {
             boolean doOptionalProcessing);
 
     /**
-     * Same as {@link DictionaryValidationService#validate(Object, String, String, boolean) except that it provides an
-     * explicit
-     * data dictionary
-     * entry to use for the purpose of validation.
-     *
+     * Same as {@link DictionaryValidationService#validate(Object, String, String, boolean)} except
+     * that it provides an explicit data dictionary entry to use for the purpose of validation.
+     * 
      * @param object - an object to validate
      * @param entryName - the dictionary entry name to use in association with error look ups
      * @param entry - the dictionary entry to use for validation
-     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to check if empty values
-     * are required or not), false otherwise
+     * @param doOptionalProcessing true if the validation should do optional validation (e.g. to
+     *        check if empty values are required or not), false otherwise
      * @return the dictionary validation result object associated with this validation
      * @since 1.1
      */
@@ -151,28 +149,24 @@ public interface DictionaryValidationService {
             String validationState, StateMapping stateMapping);
 
     /**
-     * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to
-     * check the
-     * ErrorMap.Validates the business object primitive attributes against the data dictionary. Adds errors to the map
-     * as they are
-     * encountered.<br/>
+     * Encapsulates {@link #validateBusinessObject(BusinessObject)} and returns boolean so one
+     * doesn't need to check the ErrorMap.Validates the business object primitive attributes against
+     * the data dictionary. Adds errors to the map as they are encountered.<br/>
      * <br/>
      * Makes no error path adjustments
-     *
+     * 
      * @param businessObject - business object to validate
      * @return boolean validOrNot
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject);
 
     /**
-     * Encapsulates <code>{@link #validateBusinessObject(BusinessObject) and returns boolean so one doesn't need to
-     * check the
-     * ErrorMap.Validates the business object primitive attributes against the data dictionary. Adds errors to the map
-     * as they are
-     * encountered.<br/>
+     * Encapsulates {@link #validateBusinessObject(BusinessObject)} and returns boolean so one
+     * doesn't need to check the ErrorMap.Validates the business object primitive attributes against
+     * the data dictionary. Adds errors to the map as they are encountered.<br/>
      * <br/>
      * Makes no error path adjustments
-     *
+     * 
      * @param businessObject - business object to validate
      * @param prefix - error prefix
      * @return boolean valid or not
@@ -265,7 +259,7 @@ public interface DictionaryValidationService {
      *
      * @param dataObject
      * @param reference
-     * @return
+     * @return true if the reference is active
      */
     public boolean validateReferenceIsActive(Object dataObject, ReferenceDefinition reference);
 
@@ -286,7 +280,7 @@ public interface DictionaryValidationService {
      *
      * @param dataObject
      * @param referenceName
-     * @return
+     * @return true if the reference is active
      */
     public boolean validateReferenceIsActive(Object dataObject, String referenceName);
 

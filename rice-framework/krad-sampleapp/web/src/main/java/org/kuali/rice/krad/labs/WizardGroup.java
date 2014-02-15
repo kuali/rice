@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.web.form.UifFormBase;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class WizardGroup extends Group {
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.GroupBase;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+public class WizardGroup extends GroupBase {
 
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         UifFormBase form = (UifFormBase) model;
 
         String stepStr = form.getActionParameters().get(this.getId()+".step");

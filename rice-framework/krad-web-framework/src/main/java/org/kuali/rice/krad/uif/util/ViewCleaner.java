@@ -98,6 +98,7 @@ public class ViewCleaner {
      * Cleans a component instance removing properties not needed for posting
      *
      * @param component instance to clean
+     * @param viewIndex view index to clean
      */
     public static void cleanComponent(Component component, ViewIndex viewIndex) {
         if (component == null) {
@@ -105,6 +106,10 @@ public class ViewCleaner {
         }
 
         if (component.isForceSessionPersistence()) {
+            return;
+        }
+        
+        if (DelayedCopyableHandler.isPendingDelayedCopy(component)) {
             return;
         }
 
@@ -186,6 +191,7 @@ public class ViewCleaner {
      * General purpose method to clean any container, removes all nested components except the items list
      *
      * @param container container instance to clean
+     * @param viewIndex view index to clean
      */
     protected static void cleanContainer(Container container, ViewIndex viewIndex) {
         container.setHeader(null);
@@ -224,6 +230,7 @@ public class ViewCleaner {
      * are keep around to support the add line action)
      *
      * @param collectionGroup collection group instance to clean
+     * @param viewIndex view index to clean
      */
     protected static void cleanCollectionGroup(CollectionGroup collectionGroup, ViewIndex viewIndex) {
         collectionGroup.setAddLineLabel(null);

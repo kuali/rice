@@ -501,7 +501,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewRequestParameters()
+     * {@inheritDoc}
      */
     @Override
     public Map<String, String> getViewRequestParameters() {
@@ -509,7 +509,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewRequestParameters(java.util.Map<String,String>)
+     * {@inheritDoc}
      */
     @Override
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
@@ -517,7 +517,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getReadOnlyFieldsList()
+     * {@inheritDoc}
      */
     @Override
     public List<String> getReadOnlyFieldsList() {
@@ -525,7 +525,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setReadOnlyFieldsList(java.util.List<String>)
+     * {@inheritDoc}
      */
     @Override
     public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
@@ -541,7 +541,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setNewCollectionLines(java.util.Map<String,Object>)
+     * {@inheritDoc}
      */
     @Override
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
@@ -566,7 +566,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setActionParameters(java.util.Map<String,String>)
+     * {@inheritDoc}
      */
     @Override
     public void setActionParameters(Map<String, String> actionParameters) {
@@ -634,7 +634,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setSelectedCollectionLines(java.util.Map<String,java.util.Set<String>>)
+     * {@inheritDoc}
      */
     @Override
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
@@ -646,6 +646,8 @@ public class UifFormBase implements ViewModel {
      * across multiple pages.
      * The value in the cache is preserved in the session across multiple requests. This allows for the
      * server side paging of results to retain the user choices as they move through the pages.
+     * 
+     * @return set of identifiers
      */
     public Set<String> getSelectedLookupResultsCache() {
         return selectedLookupResultsCache;
@@ -1195,7 +1197,7 @@ public class UifFormBase implements ViewModel {
      * The DialogManager tracks modal dialog interactions with the user
      * </p>
      *
-     * @return
+     * @return dialog manager
      */
     public DialogManager getDialogManager() {
         return dialogManager;
@@ -1219,7 +1221,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setExtensionData(java.util.Map<String,Object>)
+     * {@inheritDoc}
      */
     @Override
     public void setExtensionData(Map<String, Object> extensionData) {

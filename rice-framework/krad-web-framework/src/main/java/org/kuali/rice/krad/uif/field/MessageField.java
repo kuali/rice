@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field wrapper for a Message
@@ -49,26 +50,13 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(message);
-
-        return components;
-    }
-
-    /**
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's content
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present

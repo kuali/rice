@@ -50,12 +50,12 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -553,7 +553,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * {@inheritDoc}
      */
     @Override
-    public void performCustomFinalize(Component component, Object model, Component parent) {
+    public void performCustomFinalize(LifecycleElement element, Object model, LifecycleElement parent) {
         if (!(model instanceof MaintenanceDocumentForm)) {
             return;
         }
@@ -567,12 +567,12 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(form.getMaintenanceAction())) {
             View view = ViewLifecycle.getView();
 
-            if (component instanceof DataField) {
-                DataField field = (DataField) component;
+            if (element instanceof DataField) {
+                DataField field = (DataField) element;
 
                 clearUnauthorizedField(view, form, field);
-            } else if (component instanceof CollectionGroup) {
-                CollectionGroup group = (CollectionGroup) component;
+            } else if (element instanceof CollectionGroup) {
+                CollectionGroup group = (CollectionGroup) element;
 
                 clearUnauthorizedLine(view, form, group);
             }

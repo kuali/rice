@@ -37,6 +37,8 @@ import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
  * separates
  * the two functions.</p>
  *
+ * @param <T> constrainable data type
+ * @param <C> constraint type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ConstraintProcessor<T, C extends Constraint> {

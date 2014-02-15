@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary.validation.processor;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 
 /**
+ * @param <C> constraint type
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class OptionalElementConstraintProcessor<C extends Constraint> implements ConstraintProcessor<Object, C> {

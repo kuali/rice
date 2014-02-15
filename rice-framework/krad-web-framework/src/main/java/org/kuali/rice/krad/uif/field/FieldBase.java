@@ -28,8 +28,10 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -80,7 +82,7 @@ public class FieldBase extends ComponentBase implements Field {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (fieldLabel != null) {
@@ -131,20 +133,6 @@ public class FieldBase extends ComponentBase implements Field {
     @Override
     public final String getComponentTypeName() {
         return "field";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        if (!isLabelRendered()) {
-            components.add(fieldLabel);
-        }
-
-        return components;
     }
 
     /**
@@ -257,9 +245,17 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name="fieldLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getFieldLabel() {
         return this.fieldLabel;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.field.Field#getLabel
+     */
+    public Label getFieldLabelIfNotRendered() {
+        return isLabelRendered() ? null : this.fieldLabel;
     }
 
     /**

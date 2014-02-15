@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.field;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,9 +25,10 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Image;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Field that encloses an @{link org.kuali.rice.krad.uif.element.Action} element
@@ -42,20 +42,22 @@ public class ActionField extends FieldBase {
 
     private Action action;
 
+    /**
+     * Initializes wrapped action instance.
+     */
     public ActionField() {
         action = new Action();
     }
 
     /**
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
-     * content
+     * content.
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         //determine what id to use for the for attribute of the label, if present
@@ -66,19 +68,7 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = super.getComponentsForLifecycle();
-
-        components.add(action);
-
-        return components;
-    }
-
-    /**
-     * Nested action component
+     * Nested action component.
      *
      * @return Action instance
      */
@@ -88,15 +78,18 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * Setter for the nested action component
+     * Setter for the nested action component.
      *
-     * @param action
+     * @param action property value
      */
     public void setAction(Action action) {
         this.action = action;
     }
 
     /**
+     * Delegates {@code methodToCall} property reference to the action.
+     * 
+     * @return method to call
      * @see org.kuali.rice.krad.uif.element.Action#getMethodToCall()
      */
     @BeanTagAttribute(name = "methodToCall")
@@ -105,6 +98,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code methodToCall} property reference to the action.
+     * 
+     * @param methodToCall method to call
      * @see org.kuali.rice.krad.uif.element.Action#setMethodToCall(java.lang.String)
      */
     public void setMethodToCall(String methodToCall) {
@@ -112,6 +108,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionLabel} property reference to the action.
+     * 
+     * @return action label
      * @see org.kuali.rice.krad.uif.element.Action#getActionLabel()
      */
     @BeanTagAttribute(name = "actionLabel")
@@ -120,6 +119,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionLabel} property reference to the action.
+     * 
+     * @param actionLabel action label
      * @see org.kuali.rice.krad.uif.element.Action#setActionLabel(java.lang.String)
      */
     public void setActionLabel(String actionLabel) {
@@ -127,14 +129,21 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Delegates {@code actionImage} property reference to the action.
+     * 
+     * @return action image
      * @see org.kuali.rice.krad.uif.element.Action#getActionImage()
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Image getActionImage() {
         return action.getActionImage();
     }
 
     /**
+     * Delegates {@code actionImage} property reference to the action.
+     * 
+     * @param actionImage action image
      * @see org.kuali.rice.krad.uif.element.Action#setActionImage(org.kuali.rice.krad.uif.element.Image)
      */
     public void setActionImage(Image actionImage) {
@@ -142,7 +151,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getNavigateToPageId()
+     * Delegates to {@link org.kuali.rice.krad.uif.element.Action#getNavigateToPageId()}.
+     *
+     * @return page ID to navigate to
      */
     @BeanTagAttribute(name = "navigateToPageId")
     public String getNavigateToPageId() {
@@ -150,14 +161,18 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setNavigateToPageId(java.lang.String)
+     * Setter for {@link Action#setNavigateToPageId(java.lang.String)}.
+     *
+     * @param navigateToPageId property value
      */
     public void setNavigateToPageId(String navigateToPageId) {
         action.setNavigateToPageId(navigateToPageId);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#getActionEvent()
+     * Delegates to {@link org.kuali.rice.krad.uif.element.Action#getActionEvent()}.
+     *
+     * @return action event
      */
     @BeanTagAttribute(name = "actionEvent")
     public String getActionEvent() {
@@ -165,7 +180,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionEvent(java.lang.String)
+     * Setter for {@link org.kuali.rice.krad.uif.element.Action#setActionEvent(java.lang.String)}.
+     *
+     * @param actionEvent property value
      */
     public void setActionEvent(String actionEvent) {
         action.setActionEvent(actionEvent);
@@ -180,7 +197,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
+     * Setter for {@link #getActionParameters()}
+     * 
+     * @param actionParameters action parameters
      */
     public void setActionParameters(Map<String, String> actionParameters) {
         action.setActionParameters(actionParameters);
@@ -195,7 +214,9 @@ public class ActionField extends FieldBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.Action#setAdditionalSubmitData(java.util.Map<java.lang.String,java.lang.String>)
+     * Setter for {@link #getAdditionalSubmitData()}
+     *
+     * @param additionalSubmitData property value
      */
     public void setAdditionalSubmitData(Map<String, String> additionalSubmitData) {
         action.setAdditionalSubmitData(additionalSubmitData);

@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
@@ -49,9 +50,9 @@ import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.MetaTag;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
-import org.kuali.rice.krad.uif.lifecycle.NoLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
@@ -64,6 +65,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ParentLocation;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
@@ -198,7 +200,9 @@ public class View extends ContainerBase {
 
     private String preLoadScript;
 
-    private List<Group> items;
+    @DelayedCopy
+    private List<? extends Component> items;
+    
     private List<String> viewTemplates;
     
     private Class<? extends ViewHelperService> viewHelperServiceClass;
@@ -319,7 +323,7 @@ public class View extends ContainerBase {
      * </ul>
      */
     @Override
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         View view = ViewLifecycle.getView();
@@ -346,11 +350,11 @@ public class View extends ContainerBase {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
         
         assert this == ViewLifecycle.getView();
-
+        
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
             preLoadScript = this.getPreLoadScript();
@@ -447,12 +451,8 @@ public class View extends ContainerBase {
      * {@inheritDoc}
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask> pendingTasks) {
+    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
         super.initializePendingTasks(phase, pendingTasks);
-        
-        if (UifConstants.ViewPhases.FINALIZE.equals(phase.getViewPhase())) {
-            pendingTasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, phase));
-        }
     }
 
     /**
@@ -464,6 +464,8 @@ public class View extends ContainerBase {
 
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
             // initialize the expression evaluator impl
+            // TODO: This may be superfluous here - consider handling this initialization
+            // in SynchronousViewLifecycleProcessor
             ViewLifecycle.getExpressionEvaluator().initializeEvaluationContext(phase.getModel());
 
             // get the list of dialogs from the view and then set the refreshedByAction on the
@@ -476,64 +478,9 @@ public class View extends ContainerBase {
             }
         }
 
-        if (!isRendered()) {
-            // do indexing                               
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("processing indexing for view: " + getId() + " after phase " + phase);
-            }
-            index();
-        }
-        
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
             ViewLifecycle.getHelper().performCustomViewFinalize(phase.getModel());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @NoLifecycle
-    @Override
-    public List<Component> getComponentsForLifecycle() {
-        List<Component> components = new ArrayList<Component>();
-
-        components.add(applicationHeader);
-        components.add(applicationFooter);
-        components.add(topGroup);
-        components.add(navigation);
-        components.add(breadcrumbs);
-        components.add(growls);
-        components.addAll(dialogs);
-        components.add(viewMenuLink);
-        components.add(navigationBlockUI);
-        components.add(refreshBlockUI);
-        components.add(breadcrumbItem);
-
-        if (parentLocation != null) {
-            components.add(parentLocation.getPageBreadcrumbItem());
-            components.add(parentLocation.getViewBreadcrumbItem());
-            for (BreadcrumbItem item : parentLocation.getResolvedBreadcrumbItems()) {
-                if (!components.contains(item)) {
-                    components.add(item);
-                }
-            }
-        }
-
-        // Note super items should be added after navigation and other view components so
-        // conflicting ids between nav and page do not occur on page navigation via ajax
-        components.addAll(super.getComponentsForLifecycle());
-
-        // remove all pages that are not the current page
-        if (!singlePageView && (this.getItems() != null)) {
-            for (Group group : this.getItems()) {
-                if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components
-                        .contains(group)) {
-                    components.remove(group);
-                }
-            }
-        }
-
-        return components;
     }
 
     /**
@@ -584,8 +531,8 @@ public class View extends ContainerBase {
      * @return Page instance
      */
     public PageGroup getCurrentPage() {
-        for (Group pageGroup : this.getItems()) {
-            if (StringUtils.equals(pageGroup.getId(), getCurrentPageId()) && pageGroup instanceof PageGroup) {
+        for (Component pageGroup : this.getItems()) {
+            if (pageGroup instanceof PageGroup && StringUtils.equals(pageGroup.getId(), getCurrentPageId())) {
                 return (PageGroup) pageGroup;
             }
         }
@@ -598,9 +545,9 @@ public class View extends ContainerBase {
      * will get pushed into the configured page and sorted through the page
      */
     @Override
-    protected void sortItems(Object model) {
+    public void sortItems() {
         if (!singlePageView) {
-            super.sortItems(model);
+            super.sortItems();
         }
     }
 
@@ -952,17 +899,15 @@ public class View extends ContainerBase {
      * @return id of the page that should be displayed
      */
     public String getCurrentPageId() {
-        if (!isFinal()) {
-            checkMutable(true);
-        }
-        
         // default current page if not set
         if (StringUtils.isBlank(currentPageId)) {
             if (StringUtils.isNotBlank(entryPageId)) {
                 currentPageId = entryPageId;
             } else if ((getItems() != null) && !getItems().isEmpty()) {
-                Group firstPageGroup = getItems().get(0);
-                currentPageId = firstPageGroup.getId();
+                Component firstPageGroup = getItems().get(0);
+                if (firstPageGroup instanceof PageGroup) {
+                    currentPageId = firstPageGroup.getId();
+                }
             }
         }
 
@@ -1363,11 +1308,11 @@ public class View extends ContainerBase {
     /**
      * Invoked to produce a ViewIndex of the current view's components
      */
-    public void index() {
+    public void clearIndex() {
         if (this.viewIndex == null) {
             this.viewIndex = new ViewIndex();
         }
-        this.viewIndex.index(this);
+        this.viewIndex.clearIndex(this);
     }
 
     /**
@@ -1696,6 +1641,7 @@ public class View extends ContainerBase {
      *
      * @return page group for single page views
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "page", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PageGroup getPage() {
         return this.page;
@@ -1715,11 +1661,11 @@ public class View extends ContainerBase {
      * {@inheritDoc}
      */
     @Override
-    @NoLifecycle
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public List<? extends Group> getItems() {
+    public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
-            items = new LifecycleAwareList<Group>(this);
+            items = new LifecycleAwareList<Component>(this);
         }
         
         return items;
@@ -1736,10 +1682,10 @@ public class View extends ContainerBase {
         checkMutable(true);
         
         if (items == null) {
-            items = Collections.emptyList();
+            this.items = Collections.emptyList();
         } else {
             // TODO: Fix this unchecked condition.
-            this.items = new LifecycleAwareList<Group>(this, (List<Group>) items);
+            this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
         }
     }
 
@@ -1750,6 +1696,10 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "dialogs", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getDialogs() {
+        if (dialogs == Collections.EMPTY_LIST && isMutable(true)) {
+            dialogs = new LifecycleAwareList<Group>(this);
+        }
+
         return dialogs;
     }
 
@@ -1760,7 +1710,12 @@ public class View extends ContainerBase {
      */
     public void setDialogs(List<Group> dialogs) {
         checkMutable(true);
-        this.dialogs = Collections.unmodifiableList(dialogs);
+
+        if (dialogs == null) {
+            this.dialogs = Collections.emptyList();
+        } else {
+            this.dialogs = new LifecycleAwareList<Group>(this, dialogs);
+        }
     }
 
     /**
@@ -2226,7 +2181,6 @@ public class View extends ContainerBase {
      * Returns the general context that is available before the apply model phase (during the
      * initialize phase)
      * 
-     * @param view view instance for context
      * @return context map
      */
     public Map<String, Object> getPreModelContext() {
@@ -2248,7 +2202,21 @@ public class View extends ContainerBase {
     }
 
     /**
-     * {@inheritDoc}
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     */
+    @Override
+    public View clone() throws CloneNotSupportedException {
+        View viewCopy = (View) super.clone();
+        if (this.viewIndex != null) {
+            viewCopy.viewIndex = this.viewIndex.copy();
+        }
+        return viewCopy;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     protected <T> void copyProperties(T component) {

@@ -46,8 +46,7 @@ public class BreadcrumbItem extends ContentElementBase {
      * <li>Evaluate expressions on url object</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performApplyModel(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, Component parent) {
@@ -70,7 +69,7 @@ public class BreadcrumbItem extends ContentElementBase {
     /**
      * Adds siblingBreadcrumbComponent to the components for the lifecycle
      *
-     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getComponentsForLifecycle() {

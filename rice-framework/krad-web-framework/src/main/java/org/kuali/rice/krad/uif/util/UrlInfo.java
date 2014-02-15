@@ -368,7 +368,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     protected <T> void copyProperties(T dictionaryBaseBean) {

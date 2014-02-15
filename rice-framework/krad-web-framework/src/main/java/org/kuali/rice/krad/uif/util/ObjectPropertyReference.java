@@ -93,9 +93,6 @@ public class ObjectPropertyReference {
          * Transition from one path entry to the next while parsing a bean property expression.
          * 
          * {@inheritDoc}
-         * 
-         * @see org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry#parse(java.lang.Object,
-         *      java.lang.String, boolean)
          */
         @Override
         public Object parse(String parentPath, Object node, String next) {

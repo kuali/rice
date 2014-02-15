@@ -45,7 +45,7 @@ public class BooleanMap extends HashMap<String, Boolean> {
      * Overrides the get method to return Boolean false if the key does not
      * exist in the Map
      *
-     * @see java.util.HashMap#get(java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public Boolean get(Object key) {

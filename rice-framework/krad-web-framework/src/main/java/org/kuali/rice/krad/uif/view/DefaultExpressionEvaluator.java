@@ -101,7 +101,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see ExpressionEvaluator#populatePropertyExpressionsFromGraph(org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, boolean)
+     * {@inheritDoc}
      */
     @Override
     public void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable, boolean buildRefreshGraphs) {
@@ -184,7 +184,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see ExpressionEvaluator#parseExpression(String, java.util.List, java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public String parseExpression(String exp, List<String> controlNames, Map<String, Object> context) {
@@ -307,7 +307,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see ExpressionEvaluator#findControlNamesInExpression(String)
+     * {@inheritDoc}
      */
     @Override
     public List<String> findControlNamesInExpression(String exp) {
@@ -397,9 +397,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * org.kuali.rice.krad.uif.view.ExpressionEvaluator#initializeEvaluationContext(java.lang.Object
-     * )
+     * {@inheritDoc}
      */
+    @Override
     public void initializeEvaluationContext(Object contextObject) {
         evaluationContext = new StandardEvaluationContext(contextObject);
 
@@ -407,10 +407,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpressionsOnConfigurable(
-     * org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean,
-     * java.util.Map<java.lang.String,java.lang.Object>)
+     * {@inheritDoc}
      */
+    @Override
     public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable,
             Map<String, Object> evaluationParameters) {
         if ((expressionConfigurable instanceof Component) || (expressionConfigurable instanceof LayoutManager)) {
@@ -420,9 +419,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpression(java.util.Map,
-     *      String)
+     * {@inheritDoc}
      */
+    @Override
     public Object evaluateExpression(Map<String, Object> evaluationParameters, String expressionStr) {
         Object result = null;
 
@@ -450,9 +449,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluateExpressionTemplate(java.util.Map,
-     *      String)
+     * {@inheritDoc}
      */
+    @Override
     public String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate) {
         String result = null;
 
@@ -473,10 +472,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#evaluatePropertyExpression(View,
-     *      java.util.Map, org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean, String,
-     *      boolean)
+     * {@inheritDoc}
      */
+    @Override
     public void evaluatePropertyExpression(View view, Map<String, Object> evaluationParameters,
             UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression) {
 
@@ -532,8 +530,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#containsElPlaceholder(String)
+     * {@inheritDoc}
      */
+    @Override
     public boolean containsElPlaceholder(String value) {
         boolean containsElPlaceholder = false;
 
@@ -549,9 +548,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator#replaceBindingPrefixes(View, Object,
-     *      String)
+     * {@inheritDoc}
      */
+    @Override
     public String replaceBindingPrefixes(View view, Object object, String expression) {
         String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
 

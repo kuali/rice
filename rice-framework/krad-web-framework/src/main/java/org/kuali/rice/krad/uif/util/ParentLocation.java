@@ -500,7 +500,7 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     protected <T> void copyProperties(T parentLocation) {
         super.copyProperties(parentLocation);

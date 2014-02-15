@@ -32,8 +32,7 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
     }
 
     /**
-     * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization(java.lang.Object,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -49,8 +48,7 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
      * during the view lifecycle
      * </p>
      *
-     * @see org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization(java.lang.Object,
-     *      java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {

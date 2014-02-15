@@ -194,6 +194,7 @@ JavascriptKradVariables.prototype = {
     EVENT_NAMESPACE: "uif",
     EVENTS: {
         ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
+        ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
         SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE

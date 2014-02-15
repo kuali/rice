@@ -2462,7 +2462,6 @@ function initStickyFooterContent() {
 
     //calculate bottom offset in reverse order (bottom up)
     jQuery(stickyFooterContent.get().reverse()).each(function () {
-        var height = jQuery(this).outerHeight();
         jQuery(this).addClass("uif-stickyFooter");
 
         //special style for footers that are not the application footer
@@ -2471,6 +2470,7 @@ function initStickyFooterContent() {
         }
 
         jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
+        var height = jQuery(this).outerHeight();
         bottomOffset = bottomOffset + height;
     });
     currentFooterHeight = bottomOffset;

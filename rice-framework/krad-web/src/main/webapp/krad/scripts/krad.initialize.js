@@ -722,10 +722,12 @@ function setupPage(validate) {
     setupImages();
 
     //reinitialize sticky footer content because page footer can be sticky
-    stickyFooterContent = jQuery("[data-sticky_footer='true']");
-    initStickyFooterContent();
-    handleStickyFooterContent();
-    initStickyContent();
+    jQuery("[data-role='Page']").on(kradVariables.EVENTS.ADJUST_STICKY, function(){
+        stickyFooterContent = jQuery("[data-sticky_footer='true']");
+        initStickyFooterContent();
+        handleStickyFooterContent();
+        initStickyContent();
+    });
 
     // Initialize global validation defaults
     if (groupValidationDefaults == undefined || fieldValidationDefaults == undefined) {

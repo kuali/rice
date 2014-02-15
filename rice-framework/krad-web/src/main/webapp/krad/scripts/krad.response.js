@@ -80,10 +80,14 @@ KradResponse.prototype = {
 
         markActiveMenuLink();
 
+
+
         viewContent.trigger(kradVariables.EVENTS.ADJUST_PAGE_MARGIN);
         $pageInLayout.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         $pageInLayout.show();
+
+        $pageInLayout.trigger(kradVariables.EVENTS.ADJUST_STICKY);
     },
 
 

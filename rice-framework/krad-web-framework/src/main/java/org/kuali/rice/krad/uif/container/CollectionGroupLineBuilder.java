@@ -129,10 +129,6 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         applyOnChangeForSave(lineFields);
 
-        //        if (bindToForm) {
-        //            ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
-        //        }
-
         // remove fields from the line that have render false
         lineFields = removeNonRenderLineFields(lineFields);
 
@@ -206,18 +202,10 @@ public class CollectionGroupLineBuilder implements Serializable {
         ComponentUtils.bindAndIdFieldList(lineFields, lineBuilderContext.getBindingPath(),
                 lineBuilderContext.getIdSuffix());
 
-        // ff the fields contain any collections themselves (details case) adjust their binding path
         for (Field field : lineFields) {
             List<CollectionGroup> components = ViewLifecycleUtils.getElementsOfTypeDeep(field, CollectionGroup.class);
             for (CollectionGroup fieldCollectionGroup : components) {
-                ComponentUtils.prefixBindingPath(fieldCollectionGroup, lineBuilderContext.getBindingPath());
                 fieldCollectionGroup.setSubCollectionSuffix(lineBuilderContext.getIdSuffix());
-            }
-
-            // or LightTables in details...
-            List<LightTable> lightTables = ViewLifecycleUtils.getElementsOfTypeDeep(field, LightTable.class);
-            for (LightTable lightTable : lightTables) {
-                ComponentUtils.prefixBindingPath(lightTable, lineBuilderContext.getBindingPath());
             }
         }
     }

@@ -245,7 +245,6 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
     public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-
         final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
         final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
 

@@ -1468,14 +1468,14 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * {@inheritDoc}
      */
     @Override
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
     }
 
     /**
-     * {@inheritDoc}
+     * @see TableLayoutManagerBase#getRowDetailsGroup()
      */
     @Override
     public void setRowDetailsGroup(Group rowDetailsGroup) {

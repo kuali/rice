@@ -286,9 +286,6 @@ public class LookupView extends FormView {
             }
         }
 
-        // TODO: Confirm unneeded and remove since we don't have these as prototypes need to assign ids here
-        //        ComponentUtils.assignIds(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
-
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }

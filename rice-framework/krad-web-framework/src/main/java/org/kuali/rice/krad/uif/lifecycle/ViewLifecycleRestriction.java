@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.kuali.rice.krad.uif.util.LifecycleElement;
-
 /**
  * Annotation for {@link org.kuali.rice.krad.uif.util.LifecycleElement} bean properties to restrict which view
  * lifecycle phases for which the property will be considered while initializing the successor phase queue.
@@ -41,10 +39,9 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public @interface ViewLifecycleRestriction {
 
     /**
-     * Array of view lifecycle phases at which to include the annotated bean property. By default
-     * the property will be excluded from all phases.
+     * Lifecycle phase (including preceding phases) at which to include the annotated bean property.
      * 
-     * @return lifecycle phases at which to include the annotated property
+     * @return lifecycle phase at which to include the annotated property
      * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
      */
     String[] value() default {};

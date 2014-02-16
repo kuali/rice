@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -92,21 +93,9 @@ public class ComponentUtils {
         return new ArrayList<T>();
     }
 
-    @SuppressWarnings("unchecked")
-    protected static <T extends Object> T getNewInstance(T object) {
-        T copy = null;
-        try {
-            copy = (T) object.getClass().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to create new instance of class: " + object.getClass());
-        }
-
-        return copy;
-    }
-
     /**
-     * Equivalent to {@link #copyFieldList(java.util.List, String, String)} but does not copy the given list of fields
-     * first.
+     * Adjusts the ids to contain the given suffix and adds the giving binding prefix for the list of fields.
+     *
      * @param <T> component type
      * @param fields list of fields to bind and id
      * @param addBindingPrefix prefix to add to the binding path
@@ -115,29 +104,6 @@ public class ComponentUtils {
     public static <T extends Field> void bindAndIdFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
         updateIdsWithSuffixNested(fields, idSuffix);
         prefixBindingPath(fields, addBindingPrefix);
-    }
-
-    public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix, String idSuffix) {
-        List<T> copiedFieldList = copyFieldList(fields, idSuffix);
-
-        prefixBindingPath(copiedFieldList, addBindingPrefix);
-
-        return copiedFieldList;
-    }
-
-    public static <T extends Field> List<T> copyFieldList(List<T> fields, String idSuffix) {
-        if (fields == null || fields.isEmpty()) {
-            return Collections.emptyList();
-        }
-        
-        List<T> copiedFieldList = new ArrayList<T>(fields.size());
-
-        for (T field : fields) {
-            T copiedField = copy(field, idSuffix);
-            copiedFieldList.add(copiedField);
-        }
-
-        return copiedFieldList;
     }
 
     public static <T extends Component> T copyComponent(T component, String addBindingPrefix, String idSuffix) {
@@ -281,14 +247,21 @@ public class ComponentUtils {
         return null;
     }
 
-    public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
-        for (Field field : fields) {
-            if (field instanceof DataBinding) {
-                prefixBindingPath((DataBinding) field, addBindingPrefix);
-            } else if ((field instanceof FieldGroup) && (((FieldGroup) field).getItems() != null)) {
-                List<Field> groupFields = ViewLifecycleUtils
-                        .getElementsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
-                prefixBindingPath(groupFields, addBindingPrefix);
+    public static void prefixBindingPath(List<? extends Component> components, String addBindingPrefix) {
+        for (Component component : components) {
+            if (component instanceof DataBinding) {
+                prefixBindingPath((DataBinding) component, addBindingPrefix);
+            } else if ((component instanceof FieldGroup) && (((FieldGroup) component).getItems() != null)) {
+                List<? extends Component> fieldGroupItems = ((FieldGroup) component).getItems();
+                prefixBindingPath(fieldGroupItems, addBindingPrefix);
+
+                //                List<Field> groupFields = ViewLifecycleUtils
+                //                        .getElementsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
+                //                prefixBindingPath(groupFields, addBindingPrefix);
+            } else if ((component instanceof Group) && (((Group) component).getItems() != null) &&
+                    !(component instanceof CollectionGroup)) {
+                List<? extends Component> groupItems = ((Group) component).getItems();
+                prefixBindingPath(groupItems, addBindingPrefix);
             }
         }
     }
@@ -565,11 +538,11 @@ public class ComponentUtils {
     public static boolean canBeRefreshed(Component component) {
         boolean hasRefreshCondition = StringUtils.isNotBlank(component.getProgressiveRender()) ||
                 StringUtils.isNotBlank(component.getConditionalRefresh()) || (component.getRefreshTimer() > 0) ||
-                (component.getRefreshWhenChangedPropertyNames() != null && !component
-                        .getRefreshWhenChangedPropertyNames().isEmpty());
+                (component.getRefreshWhenChangedPropertyNames() != null &&
+                        !component.getRefreshWhenChangedPropertyNames().isEmpty());
 
-        return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() || component
-                .isRetrieveViaAjax();
+        return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() ||
+                component.isRetrieveViaAjax();
     }
 
     /**

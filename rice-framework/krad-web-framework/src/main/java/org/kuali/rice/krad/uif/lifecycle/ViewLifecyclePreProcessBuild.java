@@ -31,6 +31,7 @@ public class ViewLifecyclePreProcessBuild implements Runnable {
     @Override
     public void run() {
         View view = ViewLifecycle.getView();
+
         ProcessLogger.trace("pre-view-lifecycle:" + view.getId());
         ViewLifecycle.getProcessor().performPhase(LifecyclePhaseFactory.preProcess(view, ""));
     }

@@ -363,27 +363,10 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.Group#getWrapperTag()
+     * @see org.kuali.rice.krad.uif.container.GroupBase#getWrapperTag()
      */
     public void setWrapperTag(String wrapperTag) {
         this.wrapperTag = wrapperTag;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean skipLifecycle() {
-
-        if (this.skipLifecycle == null) {
-            if (ViewLifecycle.getModel() instanceof ViewModel) {
-                this.skipLifecycle = false;
-            }
-
-            this.skipLifecycle = this.isRetrieveViaAjax() && !ViewLifecycle.isRefreshLifecycle();
-        }
-
-        return this.skipLifecycle;
     }
 
     /**

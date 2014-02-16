@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +31,18 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.datadictionary.validator.ValidationController;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.freemarker.LifecycleRenderingContext;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DefaultExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
@@ -45,14 +51,12 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Lifecycle object created during the view processing to hold event registrations.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see LifecycleEventListener
  */
 public class ViewLifecycle implements Serializable {
-
     private static Logger LOG = Logger.getLogger(ViewLifecycle.class);
-
     private static final long serialVersionUID = -4767600614111642241L;
 
     private static final ThreadLocal<ViewLifecycleProcessor> PROCESSOR = new ThreadLocal<ViewLifecycleProcessor>();
@@ -60,242 +64,6 @@ public class ViewLifecycle implements Serializable {
     private static Boolean strict;
     private static Boolean renderInLifecycle;
     private static Boolean trace;
-
-    /**
-     * Enumerates potential lifecycle events.
-     */
-    public static enum LifecycleEvent {
-        
-        /**
-         * Indicates that the finalize phase processing has been completed on the component.
-         */
-        LIFECYCLE_COMPLETE
-    }
-
-    /**
-     * Registration of an event.
-     */
-    protected class EventRegistration implements Serializable {
-
-        private static final long serialVersionUID = -5077429381388641016L;
-
-        /**
-         * The event to listen for.
-         */
-        private LifecycleEvent event;
-
-        /**
-         * The component to notify when the event passes.
-         */
-        private Component eventComponent;
-
-        /**
-         * The event listener.
-         */
-        private LifecycleEventListener eventListener;
-
-        /**
-         * Private constructor.
-         * 
-         * @param event The event to listen for.
-         * @param eventComponent The component to notify.
-         * @param eventListener The event listener.
-         */
-        private EventRegistration(LifecycleEvent event, Component eventComponent,
-                LifecycleEventListener eventListener) {
-            this.event = event;
-            this.eventComponent = eventComponent;
-            this.eventListener = eventListener;
-        }
-
-        /**
-         * Event the registration is for.
-         * 
-         * @return The event this registration is for.
-         * @see LifecycleEvent
-         */
-        public LifecycleEvent getEvent() {
-            return event;
-        }
-
-        /**
-         * Component instance the event should occur for/on.
-         * 
-         * @return Component instance for event
-         */
-        public Component getEventComponent() {
-            return eventComponent;
-        }
-
-        /**
-         * Listener class that should be invoked when the event occurs.
-         * 
-         * @return LifecycleEventListener instance
-         */
-        public LifecycleEventListener getEventListener() {
-            return eventListener;
-        }
-
-        /**
-         * Sets the registered Event.
-         * 
-         * @param event The registered event.
-         * @see EventRegistration#getEvent()
-         */
-        public void setEvent(LifecycleEvent event) {
-            this.event = event;
-        }
-
-        /**
-         * Sets the component.
-         * 
-         * @param eventComponent The component.
-         * @see EventRegistration#getEventComponent()
-         */
-        public void setEventComponent(Component eventComponent) {
-            this.eventComponent = eventComponent;
-        }
-
-        /**
-         * Sets the event listener.
-         * 
-         * @param eventListener The event listener.
-         * @see EventRegistration#getEventListener()
-         */
-        public void setEventListener(LifecycleEventListener eventListener) {
-            this.eventListener = eventListener;
-        }
-    }
-
-    /**
-     * Determines whether or not the lifecycle is operating in strict mode.
-     * 
-     * <p>
-     * {@link Component#getViewStatus()} is checked at the beginning and end of each lifecycle
-     * phase. When operating in strict mode, when a component is in the wrong status for the current
-     * phase {@link IllegalStateException} will be thrown. When not in strict mode, warning messages
-     * are logged on the console.
-     * </p>
-     * 
-     * <p>
-     * This value is controlled by the configuration parameter
-     * &quot;krad.uif.lifecycle.strict&quot;. In Rice 2.4, the view lifecycle is *not* strict by
-     * default.
-     * </p>
-     * 
-     * @return true for strict operation, false to treat lifecycle violations as warnings 
-     */
-    public static boolean isStrict() {
-        if (strict == null) {
-            strict = ConfigContext.getCurrentContextConfig().getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_STRICT_LIFECYCLE, false);
-        }
-
-        return strict;
-    }
-
-    /**
-     * Determines whether or not to enable rendering within the lifecycle.
-     * 
-     * <p>
-     * This value is controlled by the configuration parameter
-     * &quot;krad.uif.lifecycle.render&quot;.
-     * </p>
-     * 
-     * @return true for rendering within the lifecycle, false if all rendering should be deferred
-     *         for Spring view processing
-     */
-    public static boolean isRenderInLifecycle() {
-        if (renderInLifecycle == null) {
-            renderInLifecycle = ConfigContext.getCurrentContextConfig().getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_RENDER_IN_LIFECYCLE, false);
-        }
-
-        return renderInLifecycle;
-    }
-
-    /**
-     * Determines whether or not to processing view lifecycle phases asynchronously.
-     * 
-     * <p>
-     * This value is controlled by the configuration parameter
-     * &quot;krad.uif.lifecycle.asynchronous&quot;.
-     * </p>
-     * 
-     * @return true if view lifecycle phases should be performed asynchronously, false for
-     *         synchronous operation
-     */
-    public static boolean isAsynchronousLifecycle() {
-        Config config = ConfigContext.getCurrentContextConfig();
-        return config != null && config.getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
-    }
-
-    /**
-     * Determines whether or not to log trace details for troubleshooting lifecycle phases.
-     * 
-     * <p>
-     * View lifecycle tracing is very verbose. This feature should only be enabled for
-     * troubleshooting purposes.
-     * </p>
-     * 
-     * <p>
-     * This value is controlled by the configuration parameter &quot;krad.uif.lifecycle.trace&quot;.
-     * </p>
-     * 
-     * @return true if view lifecycle phase processing information should be logged
-     */
-    public static boolean isTrace() {
-        if (trace == null) {
-            Config config = ConfigContext.getCurrentContextConfig();
-            if (config == null) {
-                return false;
-            }
-
-            trace = config.getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
-        }
-
-        return trace;
-    }
-
-    /**
-     * Report an illegal state in the view lifecycle.
-     * 
-     * <p>
-     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
-     * Otherwise, a warning will be logged.
-     * </p>
-     * 
-     * @param message The message describing the illegal state.
-     * @throws IllegalStateException If strict mode is enabled.
-     */
-    public static void reportIllegalState(String message) {
-        reportIllegalState(message, null);
-    }
-
-    /**
-     * Report an illegal state in the view lifecycle.
-     * 
-     * <p>
-     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
-     * Otherwise, a warning will be logged.
-     * </p>
-     * 
-     * @param message The message describing the illegal state.
-     * @param cause The (potential) cause of the illegal state.
-     * @throws IllegalStateException If strict mode is enabled.
-     */
-    public static void reportIllegalState(String message, Throwable cause) {
-        IllegalStateException illegalState = new IllegalStateException(
-                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
-
-        if (ViewLifecycle.isStrict()) {
-            throw illegalState;
-        } else {
-            LOG.warn(illegalState.getMessage(), illegalState);
-        }
-    }
 
     /**
      * List of event registrations.
@@ -311,7 +79,7 @@ public class ViewLifecycle implements Serializable {
      * The view being processed by this lifecycle.
      */
     private final View view;
-    
+
     /**
      * The model involved in the current view lifecycle.
      */
@@ -327,17 +95,20 @@ public class ViewLifecycle implements Serializable {
      */
     final HttpServletResponse response;
 
+    private ViewPostMetadata viewPostMetadata;
+
+    private Map<String, Tree<String, String>> refreshPathMappings;
+
     /**
      * Private constructor, for spawning a lifecycle context.
-     * 
+     *
      * @param view The view to process with the lifecycle.
      * @param model The model to use in processing the lifecycle.
      * @param request The active servlet request.
-     * @param response The active servlet response. 
+     * @param response The active servlet response.
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
-    private ViewLifecycle(View view, Object model,
-            HttpServletRequest request, HttpServletResponse response) {
+    private ViewLifecycle(View view, Object model, HttpServletRequest request, HttpServletResponse response) {
         this.view = view;
         this.model = model;
         this.request = request;
@@ -347,8 +118,169 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
+     * Encapsulate a new view lifecycle process on the current thread.
+     *
+     * @param view The view to perform lifecycle processing on.
+     * @param model The model associated with the view.
+     * @param request The active servlet request.
+     * @param response The active servlet response.
+     * @param lifecycleProcess The lifecycle process to encapsulate.
+     */
+    public static void encapsulateLifecycle(View view, Object model, HttpServletRequest request,
+            HttpServletResponse response, Runnable lifecycleProcess) {
+        encapsulateLifecycle(view, model, null, null, request, response, lifecycleProcess);
+    }
+
+    /**
+     * Encapsulate a new view lifecycle process on the current thread.
+     *
+     * @param lifecycleProcess The lifecycle process to encapsulate.
+     */
+    public static void encapsulateLifecycle(View view, Object model, ViewPostMetadata viewPostMetadata,
+            Map<String, Tree<String, String>> refreshPathMappings, HttpServletRequest request,
+            HttpServletResponse response, Runnable lifecycleProcess) {
+        ViewLifecycleProcessor processor = PROCESSOR.get();
+        if (processor != null) {
+            throw new IllegalStateException("Another lifecycle is already active on this thread");
+        }
+
+        try {
+            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, request, response);
+            processor = isAsynchronousLifecycle() ? new AsynchronousViewLifecycleProcessor(viewLifecycle) :
+                    new SynchronousViewLifecycleProcessor(viewLifecycle);
+            PROCESSOR.set(processor);
+
+            if (viewPostMetadata != null) {
+                viewLifecycle.viewPostMetadata = viewPostMetadata;
+            }
+
+            viewLifecycle.refreshPathMappings = refreshPathMappings;
+
+            lifecycleProcess.run();
+
+        } finally {
+            PROCESSOR.remove();
+        }
+    }
+
+    /**
+     * Executes the view lifecycle on the given <code>View</code> instance which will prepare it for
+     * rendering
+     *
+     * <p>
+     * Any configuration sent through the options Map is used to initialize the View. This map
+     * contains present options the view is aware of and will typically come from request
+     * parameters. e.g. For maintenance Views there is the maintenance type option (new, edit, copy)
+     * </p>
+     *
+     * <p>
+     * After view retrieval, applies updates to the view based on the model data which Performs
+     * dynamic generation of fields (such as collection rows), conditional logic, and state updating
+     * (conditional hidden, read-only, required).
+     * </p>
+     *
+     * @param view view instance that should be built
+     * @param model object instance containing the view data
+     * @param request The active servlet request.
+     * @param response The active servlet response.
+     * @param parameters - Map of key values pairs that provide configuration for the
+     * <code>View</code>, this is generally comes from the request and can be the request
+     * parameter Map itself. Any parameters not valid for the View will be filtered out
+     */
+    public static ViewPostMetadata buildView(View view, Object model, HttpServletRequest request,
+            HttpServletResponse response, final Map<String, String> parameters) {
+        ViewPostMetadata postMetadata = new ViewPostMetadata(view.getId());
+
+        ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, request, response,
+                new ViewLifecycleFullBuild(parameters, null));
+
+        // Validation of the page's beans
+        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
+                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
+            ValidationController validator = new ValidationController(true, true, true, true, false);
+            Log tempLogger = LogFactory.getLog(ViewLifecycle.class);
+            validator.validate(view, tempLogger, false);
+        }
+
+        return postMetadata;
+    }
+
+    /**
+     * Performs a lifecycle process to rebuild the component given by the update id.
+     *
+     * @param view view instance the component belongs to
+     * @param model object containing the full view data
+     * @param request The active servlet request.
+     * @param response The active servlet response.
+     * @param viewPostMetadata post metadata for the view
+     * @param componentId id of the component within the view, used to pull the current component from the view
+     * @return component instance the lifecycle has been run on
+     */
+    public static Component performComponentLifecycle(View view, Object model, HttpServletRequest request,
+            HttpServletResponse response, ViewPostMetadata viewPostMetadata, String componentId) {
+        ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
+        if (componentPostMetadata == null) {
+            componentPostMetadata = setupStandaloneComponentForRefresh(view, componentId);
+        }
+
+        Map<String, Tree<String, String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
+
+        encapsulateLifecycle(view, model, viewPostMetadata, refreshPathMappings, request, response,
+                new ViewLifecycleFullBuild(null, refreshPathMappings));
+
+        // regenerate server message content for page
+        PageGroup page = view.getCurrentPage();
+        page.getValidationMessages().generateMessages(view, model, page);
+
+        return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
+    }
+
+    /**
+     * Before running the lifecycle on a component that is not attached to a view, we need to retrieve the component,
+     * add it to the dialogs list, and setup its refresh paths.
+     *
+     * @param view view instance the component should be attached to
+     * @param componentId id for the component the lifecycle should be run on
+     * @return instance of component post metadata configured for the component
+     */
+    protected static ComponentPostMetadata setupStandaloneComponentForRefresh(View view, String componentId) {
+        Component refreshComponent = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
+                componentId);
+
+        if ((refreshComponent == null) || !(refreshComponent instanceof Group)) {
+            throw new RuntimeException("Refresh component was null or not a group instance");
+        }
+
+        List<Group> dialogs = new ArrayList<Group>();
+        if ((view.getDialogs() != null) && !view.getDialogs().isEmpty()) {
+            dialogs.addAll(view.getDialogs());
+        }
+
+        dialogs.add((Group) refreshComponent);
+        view.setDialogs(dialogs);
+
+        ComponentPostMetadata componentPostMetadata = new ComponentPostMetadata(componentId);
+
+        String refreshPath = UifPropertyPaths.DIALOGS + "[" + (view.getDialogs().size() - 1) + "]";
+        componentPostMetadata.setPath(refreshPath);
+
+        Map<String, Tree<String, String>> refreshPathMappings = new HashMap<String, Tree<String, String>>();
+
+        refreshPathMappings.put(UifConstants.ViewPhases.INITIALIZE,
+                LifecycleRefreshPathBuilder.initializeNewViewPathTree(refreshPath));
+        refreshPathMappings.put(UifConstants.ViewPhases.APPLY_MODEL,
+                LifecycleRefreshPathBuilder.initializeNewViewPathTree(refreshPath));
+        refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, LifecycleRefreshPathBuilder.initializeNewViewPathTree(
+                refreshPath));
+
+        componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
+
+        return componentPostMetadata;
+    }
+
+    /**
      * Invoked when an event occurs to invoke registered listeners.
-     * 
+     *
      * @param event event that has occurred
      * @param view view instance the lifecycle is being executed for
      * @param model object containing the model data
@@ -366,14 +298,14 @@ public class ViewLifecycle implements Serializable {
     /**
      * Registers the given component as a listener for the lifecycle complete event for the given
      * event component.
-     * 
+     *
      * <p>
      * The {@link LifecycleEvent#LIFECYCLE_COMPLETE} is thrown immediately after the finalize phase
      * has been completed for a component. This can be useful if a component needs to set state
      * after the lifecycle has been completed on another component (for example, it might depend on
      * properties of that component that are set during the finalize phase of that component)
      * </p>
-     * 
+     *
      * @param eventComponent component the event will occur for
      * @param listenerComponent component to invoke when the event is thrown
      * @see LifecycleEvent
@@ -387,38 +319,137 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
-     * Encapsulate a new view lifecycle process on the current thread.
-     * 
-     * @param view The view to perform lifecycle processing on.
-     * @param model The model associated with the view.
-     * @param request The active servlet request.
-     * @param response The active servlet response.
-     * @param lifecycleProcess The lifecycle process to encapsulate.
+     * Determines whether or not the lifecycle is operating in strict mode.
+     *
+     * <p>
+     * {@link Component#getViewStatus()} is checked at the beginning and end of each lifecycle
+     * phase. When operating in strict mode, when a component is in the wrong status for the current
+     * phase {@link IllegalStateException} will be thrown. When not in strict mode, warning messages
+     * are logged on the console.
+     * </p>
+     *
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.strict&quot;. In Rice 2.4, the view lifecycle is *not* strict by
+     * default.
+     * </p>
+     *
+     * @return true for strict operation, false to treat lifecycle violations as warnings
      */
-    public static void encapsulateLifecycle(View view, Object model,
-            HttpServletRequest request, HttpServletResponse response, Runnable lifecycleProcess) {
-        ViewLifecycleProcessor processor = PROCESSOR.get();
-        if (processor != null) {
-            throw new IllegalStateException("Another lifecycle is already active on this thread");
+    public static boolean isStrict() {
+        if (strict == null) {
+            strict = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_STRICT_LIFECYCLE, false);
         }
 
-        try {
-            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, request, response);
-            processor = isAsynchronousLifecycle()
-                    ? new AsynchronousViewLifecycleProcessor(viewLifecycle)
-                    : new SynchronousViewLifecycleProcessor(viewLifecycle);
-            PROCESSOR.set(processor);
+        return strict;
+    }
 
-            lifecycleProcess.run();
+    /**
+     * Determines whether or not to enable rendering within the lifecycle.
+     *
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.render&quot;.
+     * </p>
+     *
+     * @return true for rendering within the lifecycle, false if all rendering should be deferred
+     * for Spring view processing
+     */
+    public static boolean isRenderInLifecycle() {
+        if (renderInLifecycle == null) {
+            renderInLifecycle = ConfigContext.getCurrentContextConfig().getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_RENDER_IN_LIFECYCLE, false);
+        }
 
-        } finally {
-            PROCESSOR.remove();
+        return renderInLifecycle;
+    }
+
+    /**
+     * Determines whether or not to processing view lifecycle phases asynchronously.
+     *
+     * <p>
+     * This value is controlled by the configuration parameter
+     * &quot;krad.uif.lifecycle.asynchronous&quot;.
+     * </p>
+     *
+     * @return true if view lifecycle phases should be performed asynchronously, false for
+     * synchronous operation
+     */
+    public static boolean isAsynchronousLifecycle() {
+        Config config = ConfigContext.getCurrentContextConfig();
+        return config != null && config.getBooleanProperty(
+                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, false);
+    }
+
+    /**
+     * Determines whether or not to log trace details for troubleshooting lifecycle phases.
+     *
+     * <p>
+     * View lifecycle tracing is very verbose. This feature should only be enabled for
+     * troubleshooting purposes.
+     * </p>
+     *
+     * <p>
+     * This value is controlled by the configuration parameter &quot;krad.uif.lifecycle.trace&quot;.
+     * </p>
+     *
+     * @return true if view lifecycle phase processing information should be logged
+     */
+    public static boolean isTrace() {
+        if (trace == null) {
+            Config config = ConfigContext.getCurrentContextConfig();
+            if (config == null) {
+                return false;
+            }
+
+            trace = config.getBooleanProperty(KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
+        }
+
+        return trace;
+    }
+
+    /**
+     * Report an illegal state in the view lifecycle.
+     *
+     * <p>
+     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
+     * Otherwise, a warning will be logged.
+     * </p>
+     *
+     * @param message The message describing the illegal state.
+     * @throws IllegalStateException If strict mode is enabled.
+     */
+    public static void reportIllegalState(String message) {
+        reportIllegalState(message, null);
+    }
+
+    /**
+     * Report an illegal state in the view lifecycle.
+     *
+     * <p>
+     * When {@link #isStrict()} returns true, {@link IllegalStateException} will be thrown.
+     * Otherwise, a warning will be logged.
+     * </p>
+     *
+     * @param message The message describing the illegal state.
+     * @param cause The (potential) cause of the illegal state.
+     * @throws IllegalStateException If strict mode is enabled.
+     */
+    public static void reportIllegalState(String message, Throwable cause) {
+        IllegalStateException illegalState = new IllegalStateException(
+                message + "\nPhase: " + ViewLifecycle.getPhase(), cause);
+
+        if (ViewLifecycle.isStrict()) {
+            throw illegalState;
+        } else {
+            LOG.warn(illegalState.getMessage(), illegalState);
         }
     }
 
     /**
      * Gets the helper active within a lifecycle on the current thread.
-     * 
+     *
      * @return helper active on the current thread
      */
     public static ViewHelperService getHelper() {
@@ -433,7 +464,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the view active within a lifecycle on the current thread.
-     * 
+     *
      * @return view active on the current thread
      */
     public static View getView() {
@@ -469,13 +500,13 @@ public class ViewLifecycle implements Serializable {
                 return factory.createExpressionEvaluator();
             }
         }
-        
+
         return processor.getExpressionEvaluator();
     }
 
     /**
      * Gets the model related to the view active within this context.
-     * 
+     *
      * @return model related to the view active within this context
      */
     public static Object getModel() {
@@ -486,6 +517,16 @@ public class ViewLifecycle implements Serializable {
         }
 
         return active.model;
+    }
+
+    public static ViewPostMetadata getViewPostMetadata() {
+        ViewLifecycle active = getActiveLifecycle();
+
+        if (active.model == null) {
+            throw new IllegalStateException("Post Metadata is not available");
+        }
+
+        return active.viewPostMetadata;
     }
 
     /**
@@ -525,7 +566,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the lifecycle processor active on the current thread.
-     * 
+     *
      * @return lifecycle processor active on the current thread
      */
     public static ViewLifecycleProcessor getProcessor() {
@@ -540,14 +581,14 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Note a processor as active on the current thread.
-     * 
+     *
      * <p>
      * This method is intended only for use by {@link AsynchronousViewLifecycleProcessor} in setting
      * the context for worker threads. Use
      * {@link #encapsulateLifecycle(View, Object, HttpServletRequest, HttpServletResponse, Runnable)}
      * to populate an appropriate processor for for web request and other transaction threads.
      * </p>
-     * 
+     *
      * @param processor The processor to activate on the current thread.
      */
     static void setProcessor(ViewLifecycleProcessor processor) {
@@ -566,7 +607,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Gets the view context active on the current thread.
-     * 
+     *
      * @return view context active on the current thread
      */
     public static ViewLifecycle getActiveLifecycle() {
@@ -575,7 +616,7 @@ public class ViewLifecycle implements Serializable {
 
     /**
      * Determine if a lifecycle processor is active on the current thread.
-     * 
+     *
      * @return True if a lifecycle processor is active on the current thread.
      */
     public static boolean isActive() {
@@ -598,71 +639,100 @@ public class ViewLifecycle implements Serializable {
     }
     
     /**
-     * Executes the view lifecycle on the given <code>View</code> instance which will prepare it for
-     * rendering
-     * 
-     * <p>
-     * Any configuration sent through the options Map is used to initialize the View. This map
-     * contains present options the view is aware of and will typically come from request
-     * parameters. e.g. For maintenance Views there is the maintenance type option (new, edit, copy)
-     * </p>
-     * 
-     * <p>
-     * After view retrieval, applies updates to the view based on the model data which Performs
-     * dynamic generation of fields (such as collection rows), conditional logic, and state updating
-     * (conditional hidden, read-only, required).
-     * </p>
-     * 
-     * @param view - view instance that should be built
-     * @param model - object instance containing the view data
-     * @param request The active servlet request.
-     * @param response The active servlet response.
-     * @param parameters - Map of key values pairs that provide configuration for the
-     *        <code>View</code>, this is generally comes from the request and can be the request
-     *        parameter Map itself. Any parameters not valid for the View will be filtered out
+     * Enumerates potential lifecycle events.
      */
-    public static void buildView(View view, Object model,
-            HttpServletRequest request, HttpServletResponse response,
-            final Map<String, String> parameters) {
-        ViewLifecycle.encapsulateLifecycle(
-                view, model, request, response, new ViewLifecycleFullBuild(parameters));
+    public static enum LifecycleEvent {
 
-        // Validation of the page's beans
-        if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
-                UifConstants.VALIDATE_VIEWS_ONBUILD)) {
-            ValidationController validator = new ValidationController(true, true, true, true, false);
-            Log tempLogger = LogFactory.getLog(ViewLifecycle.class);
-            validator.validate(view, tempLogger, false);
-        }
+        // Indicates that the finalize phase processing has been completed on the component.
+        LIFECYCLE_COMPLETE
     }
 
     /**
-     * Performs the complete component lifecycle on the component passed in for use during a refresh process.
-     *
-     * <p>
-     * Performs the complete component lifecycle on the component passed in, in this order:
-     * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
-     * </p>
-     * 
-     * <p>
-     * Some adjustments are made to account for the
-     * component being processed without its parent. The component within the view (contained on the form) is
-     * retrieved to obtain the context to use (such as parent). The created components id is then updated to match
-     * the current id within the view.
-     * </p>
-     *
-     * @param view view instance the component belongs to
-     * @param model object containing the full view data
-     * @param request The active servlet request.
-     * @param response The active servlet response.
-     * @param component component instance to perform lifecycle for
-     * @param origId id of the component within the view, used to pull the current component from the view
+     * Registration of an event.
      */
-    public static void performComponentLifecycle(View view, Object model,
-            HttpServletRequest request, HttpServletResponse response, final Component component,
-            final String origId) {
-        encapsulateLifecycle(
-                view, model, request, response, new ViewLifecycleComponentBuild(origId, component));
+    protected class EventRegistration implements Serializable {
+        private static final long serialVersionUID = -5077429381388641016L;
+
+        // the event to listen for.
+        private LifecycleEvent event;
+
+        // the component to notify when the event passes.
+        private Component eventComponent;
+
+        // the event listener.
+        private LifecycleEventListener eventListener;
+
+        /**
+         * Private constructor.
+         *
+         * @param event The event to listen for.
+         * @param eventComponent The component to notify.
+         * @param eventListener The event listener.
+         */
+        private EventRegistration(LifecycleEvent event, Component eventComponent,
+                LifecycleEventListener eventListener) {
+            this.event = event;
+            this.eventComponent = eventComponent;
+            this.eventListener = eventListener;
+        }
+
+        /**
+         * Event the registration is for.
+         *
+         * @return The event this registration is for.
+         * @see LifecycleEvent
+         */
+        public LifecycleEvent getEvent() {
+            return event;
+        }
+
+        /**
+         * Component instance the event should occur for/on.
+         *
+         * @return Component instance for event
+         */
+        public Component getEventComponent() {
+            return eventComponent;
+        }
+
+        /**
+         * Listener class that should be invoked when the event occurs.
+         *
+         * @return LifecycleEventListener instance
+         */
+        public LifecycleEventListener getEventListener() {
+            return eventListener;
+        }
+
+        /**
+         * Sets the registered Event.
+         *
+         * @param event The registered event.
+         * @see EventRegistration#getEvent()
+         */
+        public void setEvent(LifecycleEvent event) {
+            this.event = event;
+        }
+
+        /**
+         * Sets the component.
+         *
+         * @param eventComponent The component.
+         * @see EventRegistration#getEventComponent()
+         */
+        public void setEventComponent(Component eventComponent) {
+            this.eventComponent = eventComponent;
+        }
+
+        /**
+         * Sets the event listener.
+         *
+         * @param eventListener The event listener.
+         * @see EventRegistration#getEventListener()
+         */
+        public void setEventListener(LifecycleEventListener eventListener) {
+            this.eventListener = eventListener;
+        }
     }
 
 }

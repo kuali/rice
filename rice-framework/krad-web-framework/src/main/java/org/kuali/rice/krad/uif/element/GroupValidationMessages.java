@@ -64,8 +64,8 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @see krad.validate.js
      */
-    public void generateMessages(boolean reset, View view, Object model, Component parent) {
-        super.generateMessages(reset, view, model, parent);
+    public void generateMessages(View view, Object model, Component parent) {
+        super.generateMessages(view, model, parent);
 
         Map<String, Object> parentContext = parent.getContext();
         Object parentContainer = parentContext == null ? null : parentContext
@@ -123,7 +123,7 @@ public class GroupValidationMessages extends ValidationMessages {
         HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
 
         Map<String, String> dataDefaults =
-                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                         "Uif-GroupValidationMessages-DataDefaults"));
 
         //add necessary data attributes to map

@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -59,9 +50,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -252,18 +249,21 @@ public abstract class UifControllerBase {
     public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionAddLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath);
-            }});
+                ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -280,21 +280,24 @@ public abstract class UifControllerBase {
      * @return the  ModelAndView object
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addBlankLine")
-    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addBlankLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, HttpServletRequest request,
+            HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionAddBlankLine(ViewLifecycle.getView(), uifForm,
+                ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
                         selectedCollectionPath);
-            }});
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -307,7 +310,9 @@ public abstract class UifControllerBase {
     public ModelAndView saveLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for add line action, cannot add new line");
         }
@@ -324,13 +329,14 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionSaveLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
-            }});
+                ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath, selectedLineIndex);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -345,7 +351,9 @@ public abstract class UifControllerBase {
     public ModelAndView deleteLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELLECTED_COLLECTION_PATH);
+        final String selectedCollectionPath = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        final String selectedCollectionId = uifForm.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
+
         if (StringUtils.isBlank(selectedCollectionPath)) {
             throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
         }
@@ -357,18 +365,19 @@ public abstract class UifControllerBase {
         } else {
             selectedLineIndex = -1;
         }
-        
+
         if (selectedLineIndex == -1) {
             throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
         }
 
-        ViewLifecycle.encapsulateLifecycle(
-                uifForm.getPostedView(), uifForm, request, response, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                response, new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionDeleteLine(
-                        ViewLifecycle.getView(), uifForm, selectedCollectionPath, selectedLineIndex);
-            }});
+                ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
+                        selectedCollectionPath, selectedLineIndex);
+            }
+        });
 
         return getUIFModelAndView(uifForm);
     }
@@ -498,8 +507,8 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ViewLifecycle.encapsulateLifecycle(
-                form.getPostedView(), form, request, response, new ViewLifecycleRefreshBuild());
+        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request, response,
+                new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
     }
@@ -527,8 +536,8 @@ public abstract class UifControllerBase {
         if (lookupParameterString != null) {
             Map<String, String> lookupParameterFields = KRADUtils.getMapFromParameterString(lookupParameterString);
             for (Entry<String, String> lookupParameter : lookupParameterFields.entrySet()) {
-                String lookupParameterValue = LookupUtils.retrieveLookupParameterValue(form, request,
-                        lookupObjectClass, lookupParameter.getValue(), lookupParameter.getKey());
+                String lookupParameterValue = LookupUtils.retrieveLookupParameterValue(form, request, lookupObjectClass,
+                        lookupParameter.getValue(), lookupParameter.getKey());
 
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
                     lookupParameters.put(UifPropertyPaths.LOOKUP_CRITERIA + "['" + lookupParameter.getValue() + "']",
@@ -574,7 +583,7 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=checkForm")
     public ModelAndView checkForm(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form.getPostedView(), form);
+        KRADServiceLocatorWeb.getViewValidationService().validateViewSimulation(form);
 
         return getUIFModelAndView(form);
     }
@@ -619,7 +628,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldSuggestQuery(
-                form.getPostedView(), queryFieldId, queryTerm, queryParameters);
+                form.getViewPostMetadata(), queryFieldId, queryTerm, queryParameters);
 
         return queryResult;
     }
@@ -669,7 +678,7 @@ public abstract class UifControllerBase {
 
         // invoke attribute query service to perform the query
         AttributeQueryResult queryResult = KRADServiceLocatorWeb.getAttributeQueryService().performFieldQuery(
-                view, queryFieldId, queryParameters);
+                form.getViewPostMetadata(), queryFieldId, queryParameters);
 
         return queryResult;
     }
@@ -700,7 +709,7 @@ public abstract class UifControllerBase {
      * Sets the status of the dialog tracking record to indicate that this dialog
      * has not yet been asked or answered
      *
-     * @param dialogId  - the id of the dialog
+     * @param dialogId - the id of the dialog
      * @param form - form instance containing the request data
      */
     protected void resetDialogStatus(String dialogId, UifFormBase form) {
@@ -1079,16 +1088,10 @@ public abstract class UifControllerBase {
 
         UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
 
-        View view;
-        if (currentForm.getPostedView() != null) {
-            view = currentForm.getPostedView();
-        } else {
-            view = currentForm.getView();
-        }
+        View view = currentForm.getView();
 
         LOG.debug("identifying table from model and form");
-        tableData = view.getViewHelperService()
-                .buildExportTableData(view, currentForm, tableId, formatType);
+        tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
 
         // if table data to be returned, format response appropriately
         setAttachmentResponseHeader(response, "export." + formatType, contentType);
@@ -1131,36 +1134,6 @@ public abstract class UifControllerBase {
 
         CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
         pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
-
-        return getUIFModelAndView(form);
-    }
-
-    /**
-     * Retrieves the original component as it exists in postedView without attempting to refresh it; fast and
-     * consistent when this is all that is needed
-     *
-     * <p>By passing in the "changeProperties" parameter to this controller method, properties can be changed on
-     * the retrieved component.  However, keep in mind that since this method does not call the lifecycle on
-     * the returned component, properties which require a lifecycle to be run to affect the output of a component
-     * should not be set.  Main use case is to affect attributes which are only used by the ftl.  The
-     * "changeProperties" parameter must be in JSON in string from, ie "{\"propertyPath\": true}"; note the use
-     * of escaping, as this is required.  The propertyPath defines the property on the component that needs to be
-     * changed during this retrieval.  This call must be using the "update-component" return type.</p>
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
-     */
-    @RequestMapping(params = "methodToCall=retrieveOriginalComponent")
-    public ModelAndView retrieveOriginalComponent(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String componentId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
-        form.setOriginalComponentRequest(true);
 
         return getUIFModelAndView(form);
     }

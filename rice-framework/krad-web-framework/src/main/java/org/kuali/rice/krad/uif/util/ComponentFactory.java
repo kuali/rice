@@ -78,8 +78,8 @@ import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.InquiryView;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -188,40 +188,28 @@ public class ComponentFactory {
      * Gets a fresh copy of the component by the id passed in which used to look up the component in
      * the view index, then retrieve a new instance with initial state configured using the factory id
      *
-     * @param view view enclosing the original component
      * @param id id for the component in the view index
      * @return Component new instance
      */
-    public static Component getNewInstanceForRefresh(final View view, final String id) {
-        final Component origComponent = view.getViewIndex().getComponentById(id);
-
-        if (origComponent == null) {
+    public static Component getNewInstanceForRefresh(ViewPostMetadata viewPostMetadata, String id) {
+        String baseId = (String) viewPostMetadata.getComponentPostMetadata(id)
+                .getData(UifConstants.PostMetadata.BASE_ID);
+        if (baseId == null) {
             throw new RuntimeException(
-                    id + " not found in view index try setting p:forceSessionPersistence=\"true\" in xml");
+                    "Cannot create new instance for refresh. Base id not found for component id: " + id);
         }
 
-        Component component = null;
-        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getBaseId())) {
-            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '" + id + "' was found in initialStates");
-        } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
-                    origComponent.getBaseId());
-            LOG.debug("getNewInstanceForRefresh: id '"
-                    + id
-                    + "' was NOT found in initialStates. New one fetched from DD");
-        }
+        Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(baseId);
 
         if (component != null) {
             component = ComponentUtils.copy(component);
-            component.setId(origComponent.getBaseId());
         }
 
         return component;
     }
 
     /**
-     * Returns a new <code>Component</code> instance for the given bean id from the spring factory
+     * Returns a new {@link Component} instance for the given bean id from the spring factory.
      *
      * @param beanId id of the bean definition
      * @return new component instance or null if no such component definition was found
@@ -232,11 +220,11 @@ public class ComponentFactory {
         if (cache.containsKey(beanId)) {
             component = cache.get(beanId);
         } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(beanId);
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
+                    .getDictionaryBean(beanId);
 
             // clear id before returning so duplicates do not occur
             component.setId(null);
-            component.setBaseId(null);
 
             // populate property expressions from expression graph
             ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(component, true);
@@ -250,6 +238,7 @@ public class ComponentFactory {
         }
 
         component = ComponentUtils.copy(component);
+
         return component;
     }
 

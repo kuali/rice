@@ -49,11 +49,13 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.util.ComponentBeanPostProcessor;
+import org.kuali.rice.krad.datadictionary.uif.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.UifBeanFactoryPostProcessor;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -233,12 +235,9 @@ public class DataDictionary {
         ddIndex.run();
         timer.stop();
 
-        // The UIF defaulting must be done before the UIF indexing but after
-        // the main DD data object indexing
+        // the UIF defaulting must be done before the UIF indexing but after the main DD data object indexing
         timer.start("UIF Defaulting");
-        // Check if there are inquiry definitions for data objects
         generateMissingInquiryDefinitions();
-        // Check if there are lookup definitions for data objects
         generateMissingLookupDefinitions();
         timer.stop();
 
@@ -278,6 +277,7 @@ public class DataDictionary {
 
             InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);
             inquiryView.setId(inquiryBeanName);
+            inquiryView.setBaseId(inquiryBeanName);
             inquiryView.setViewName(UifConstants.DEFAULT_VIEW_NAME);
 
             ChildBeanDefinition inquiryBean = new ChildBeanDefinition("Uif-InquiryView");
@@ -319,6 +319,7 @@ public class DataDictionary {
 
             LookupView lookupView = KRADServiceLocatorWeb.getUifDefaultingService().deriveLookupViewFromMetadata(entry);
             lookupView.setId(lookupBeanName);
+            lookupView.setBaseId(lookupBeanName);
             lookupView.setViewName(UifConstants.DEFAULT_VIEW_NAME);
 
             ChildBeanDefinition lookupBean = new ChildBeanDefinition(ComponentFactory.LOOKUP_VIEW);
@@ -689,21 +690,58 @@ public class DataDictionary {
     /**
      * Returns an object from the dictionary by its spring bean name
      *
-     * @param beanName - id or name for the bean definition
+     * @param beanName id or name for the bean definition
      * @return Object object instance created or the singleton being maintained
      */
-    public Object getDictionaryObject(final String beanName) {
+    public Object getDictionaryBean(final String beanName) {
         return ddBeans.getBean(beanName);
     }
 
     /**
      * Indicates whether the data dictionary contains a bean with the given id
      *
-     * @param id - id of the bean to check for
+     * @param id id of the bean to check for
      * @return boolean true if dictionary contains bean, false otherwise
      */
-    public boolean containsDictionaryObject(String id) {
+    public boolean containsDictionaryBean(String id) {
         return ddBeans.containsBean(id);
+    }
+
+    /**
+     * Returns a property value for the bean with the given name from the dictionary.
+     *
+     * @param beanName id or name for the bean definition
+     * @param propertyName name of the property to retrieve, must be a valid property configured on
+     * the bean definition
+     * @return Object property value for property
+     */
+    public Object getDictionaryBeanProperty(String beanName, String propertyName) {
+        Object bean = ddBeans.getSingleton(beanName);
+        if (bean != null) {
+            return ObjectPropertyUtils.getPropertyValue(bean, propertyName);
+        }
+
+        BeanDefinition beanDefinition = ddBeans.getMergedBeanDefinition(beanName);
+
+        if (beanDefinition == null) {
+            throw new RuntimeException("Unable to get bean for bean name: " + beanName);
+        }
+
+        PropertyValues pvs = beanDefinition.getPropertyValues();
+        if (pvs.contains(propertyName)) {
+            PropertyValue propertyValue = pvs.getPropertyValue(propertyName);
+
+            Object value;
+            if (propertyValue.isConverted()) {
+                value = propertyValue.getConvertedValue();
+            } else {
+                value = propertyValue.getValue();
+            }
+
+            return value;
+        }
+
+        return null;
     }
 
     /**

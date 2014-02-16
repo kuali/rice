@@ -152,7 +152,7 @@ public abstract class KRADTestCase extends BaselineTestCase {
      */
     protected Object getTestDictionaryObject(String id) {
         if (dd != null) {
-            return dd.getDictionaryObject(id);
+            return dd.getDictionaryBean(id);
         }
 
         return null;

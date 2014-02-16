@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
  * @param <T> Top level element type for this task
  */
 public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
-
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
     /**

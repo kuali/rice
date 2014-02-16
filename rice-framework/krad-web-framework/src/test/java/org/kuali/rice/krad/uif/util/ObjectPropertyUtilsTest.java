@@ -583,4 +583,33 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         }
     }
 
+    @Test
+    public void testPropertySplitPath() {
+        String path = "foo.foo1.foo2";
+        String[] splitPaths = ObjectPropertyUtils.splitPropertyPath(path);
+
+        assertEquals(3, splitPaths.length);
+        assertEquals("foo", splitPaths[0]);
+        assertEquals("foo1", splitPaths[1]);
+        assertEquals("foo2", splitPaths[2]);
+
+        path = "foo.foo1['key.nested'].foo2";
+        splitPaths = ObjectPropertyUtils.splitPropertyPath(path);
+
+        assertEquals(3, splitPaths.length);
+        assertEquals("foo", splitPaths[0]);
+        assertEquals("foo1['key.nested']", splitPaths[1]);
+        assertEquals("foo2", splitPaths[2]);
+
+        path = "foo.foo1['key.nested'].foo2.foo3['key.nest.nest'].foo4";
+        splitPaths = ObjectPropertyUtils.splitPropertyPath(path);
+
+        assertEquals(5, splitPaths.length);
+        assertEquals("foo", splitPaths[0]);
+        assertEquals("foo1['key.nested']", splitPaths[1]);
+        assertEquals("foo2", splitPaths[2]);
+        assertEquals("foo3['key.nest.nest']", splitPaths[3]);
+        assertEquals("foo4", splitPaths[4]);
+    }
+
 }

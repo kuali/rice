@@ -109,7 +109,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ObjectPropertyUtils.getPropertyValue(dummyLogin,
                         "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
 
-        ViewCleaner.cleanView(dummyLogin);
+//        ViewCleaner.cleanView(dummyLogin);
     }
 
     private UifFormBase testFormView(String viewName, String initialStateId) throws Throwable {
@@ -127,11 +127,8 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
         view = form.getView();
-        if (initialStateId != null) {
-            assertNotNull(initialStateId, view.getViewIndex().getInitialComponentStates().get(initialStateId));
-        }
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
-        ViewCleaner.cleanView(view);
+//        ViewCleaner.cleanView(view);
         return form;
     }
 
@@ -180,7 +177,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getHelper().performCustomViewInitialization(tform);
 
                 ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
-                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, ""));
+                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, "", null));
 
                 ProcessLogger.trace("end-init");
             }
@@ -202,7 +199,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         UifFormBase form = testFormView("Lab-PerformanceMedium", "u1c5ay4e");
 
         View view = form.getView();
-        form.setPostedView(view);
         form.setView(null);
 
         String tableId = ((PageGroup) view.getItems().get(0)).getItems().get(1).getId();

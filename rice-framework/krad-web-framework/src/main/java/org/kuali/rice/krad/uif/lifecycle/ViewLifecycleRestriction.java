@@ -24,8 +24,8 @@ import java.lang.annotation.Target;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
- * Annotation for {@link LifecycleElement} bean properties to restrict which view lifecycle phases
- * for which the property will be considered while initializing the successor phase queue.
+ * Annotation for {@link org.kuali.rice.krad.uif.util.LifecycleElement} bean properties to restrict which view
+ * lifecycle phases for which the property will be considered while initializing the successor phase queue.
  * 
  * <p>
  * This annotation should be placed on the read method for any properties on the component that

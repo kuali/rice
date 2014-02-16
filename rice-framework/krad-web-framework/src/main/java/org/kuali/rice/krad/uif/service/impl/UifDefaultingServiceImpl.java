@@ -219,7 +219,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // First - see if one was defined in the metadata (provided by krad-data module annotations)
         if (attrDef.getDataObjectAttribute() != null) {
             if (StringUtils.isNotBlank(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName())) {
-                Object consObj = dataDictionaryService.getDictionaryObject(attrDef.getDataObjectAttribute()
+                Object consObj = dataDictionaryService.getDictionaryBean(attrDef.getDataObjectAttribute()
                         .getValidCharactersConstraintBeanName());
                 if (consObj != null && consObj instanceof ValidCharactersConstraint) {
                     validCharactersConstraint = (ValidCharactersConstraint) consObj;
@@ -231,17 +231,17 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             if (attrDef.getDataType() != null) {
                 if (attrDef.getDataType() == DataType.CURRENCY) {
                     validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
-                            .getDictionaryObject(CURRENCY_PATTERN_CONSTRAINT);
+                            .getDictionaryBean(CURRENCY_PATTERN_CONSTRAINT);
                 } else if (attrDef.getDataType().isNumeric()) {
                     validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
-                            .getDictionaryObject(FLOATING_POINT_PATTERN_CONSTRAINT);
+                            .getDictionaryBean(FLOATING_POINT_PATTERN_CONSTRAINT);
                 } else if (attrDef.getDataType().isTemporal()) {
                     if (attrDef.getDataType() == DataType.DATE) {
                         validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
-                                .getDictionaryObject(DATE_PATTERN_CONSTRAINT);
+                                .getDictionaryBean(DATE_PATTERN_CONSTRAINT);
                     } else if (attrDef.getDataType() == DataType.TIMESTAMP) {
                         validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
-                                .getDictionaryObject(TIMESTAMP_PATTERN_CONSTRAINT);
+                                .getDictionaryBean(TIMESTAMP_PATTERN_CONSTRAINT);
                     }
                 }
             }
@@ -249,7 +249,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         // default to UTF8
         if (validCharactersConstraint == null) {
             validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
-                    .getDictionaryObject(ANY_CHARACTER_PATTERN_CONSTRAINT);
+                    .getDictionaryBean(ANY_CHARACTER_PATTERN_CONSTRAINT);
         }
 
         return validCharactersConstraint;

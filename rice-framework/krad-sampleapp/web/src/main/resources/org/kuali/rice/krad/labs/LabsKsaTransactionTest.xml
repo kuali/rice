@@ -44,7 +44,6 @@
                   </list>
                 </property>
               </bean>
-
             </list>
           </property>
         </bean>

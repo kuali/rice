@@ -28,17 +28,21 @@ import java.util.Map;
 public interface Inquirable {
 
     /**
-     * Sets the class for the data object the inquirable should retrieve
+     * Class for the data object the inquirable should retrieve
      *
      * <p>
      * Must be set before invoking any other operations on the <code>Inquirable</code>,
      * including the retrieveDataObject method
      * </p>
      *
-     * @param dataObjectClass the class of the dataObject that this inquirable should
-     * retrieve
+     * @return inquiry data object class
      */
-    public void setDataObjectClass(Class<?> dataObjectClass);
+    Class<?> getDataObjectClass();
+
+    /**
+     * @see Inquirable#getDataObjectClass()
+     */
+    void setDataObjectClass(Class<?> dataObjectClass);
 
     /**
      * Responsible for retrieving the data object from its data source
@@ -54,7 +58,7 @@ public interface Inquirable {
      * @param fieldValues - a map of string field names and values
      * @return the data object or null if not found
      */
-    public Object retrieveDataObject(Map<String, String> fieldValues);
+    Object retrieveDataObject(Map<String, String> fieldValues);
 
     /**
      * Invoked by the <code>ViewHelperService</code> to build a link to the
@@ -74,5 +78,5 @@ public interface Inquirable {
      * @param propertyName - name of the property the inquiry is being built for
      * @param inquiry - instance of the inquiry widget being built for the property
      */
-    public void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry);
+    void buildInquirableLink(Object dataObject, String propertyName, Inquiry inquiry);
 }

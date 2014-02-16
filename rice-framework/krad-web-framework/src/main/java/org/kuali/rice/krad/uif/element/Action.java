@@ -308,15 +308,6 @@ public class Action extends ContentElementBase {
 
         if (refreshComponent != null) {
             refreshComponent.setRefreshedByAction(true);
-
-            // update initial state
-            Component initialComponent = view.getViewIndex().getInitialComponentStates().get(
-                    refreshComponent.getBaseId());
-            if (initialComponent != null) {
-                initialComponent = initialComponent.copy();
-                initialComponent.setRefreshedByAction(true);
-                view.getViewIndex().updateInitialComponentState(initialComponent);
-            }
         }
     }
 
@@ -337,7 +328,7 @@ public class Action extends ContentElementBase {
         HashMap<String, String> actionDataAttributes = new HashMap<String, String>();
 
         Map<String, String> dataDefaults =
-                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                         UifConstants.ACTION_DEFAULTS_MAP_ID));
 
         // map properties to data attributes

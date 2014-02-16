@@ -163,10 +163,9 @@ public class FreeMarkerInlineRenderUtils {
 
         String s;
         Writer out = env.getOut();
-        if ((component.isRender() && (!component.isRetrieveViaAjax() || componentUpdate))
-                ||
-                (component.getProgressiveRender() != null && !component.getProgressiveRender().equals("")
-                        && !component.isProgressiveRenderViaAJAX() && !component.isProgressiveRenderAndRefresh())) {
+        if ((component.isRender() && (!component.isRetrieveViaAjax() || componentUpdate)) || (component
+                .getProgressiveRender() != null && !component.getProgressiveRender().equals("") && !component
+                .isProgressiveRenderViaAJAX() && !component.isProgressiveRenderAndRefresh())) {
 
             if (StringUtils.hasText(s = component.getPreRenderContent())) {
                 out.write(StringEscapeUtils.escapeHtml(s));
@@ -183,7 +182,15 @@ public class FreeMarkerInlineRenderUtils {
                         (Macro) env.getMainNamespace().get(component.getTemplateName());
 
                 if (fmMacro == null) {
-                    throw new TemplateException("No macro found using " + component.getTemplateName(), env);
+                    // force inclusion of the source to see if we can get the macro
+                    env.include(component.getTemplate(), env.getTemplate().getEncoding(), true);
+                    fmMacro = component.getTemplateName() == null ? null :
+                                            (Macro) env.getCurrentNamespace().get(component.getTemplateName());
+
+                    // if still missing throw an exception
+                    if (fmMacro == null) {
+                        throw new TemplateException("No macro found using " + component.getTemplateName(), env);
+                    }
                 }
 
                 Map<String, Object> args = new java.util.HashMap<String, Object>();
@@ -225,14 +232,15 @@ public class FreeMarkerInlineRenderUtils {
             methodToCallOnRefresh = "";
         }
 
-        if (StringUtils.hasText(s = component.getProgressiveRender())) {
-            if (!component.isRender()
-                    && (component.isProgressiveRenderViaAJAX() || component.isProgressiveRenderAndRefresh())) {
-                out.write("<span id=\"");
-                out.write(component.getId());
-                out.write("\" data-role=\"placeholder\" class=\"uif-placeholder\"></span>");
-            }
+        if ((!component.isRender() && (component.isProgressiveRenderViaAJAX() || component
+                .isProgressiveRenderAndRefresh() || component.isDisclosedByAction() || component.isRefreshedByAction()))
+                || component.isRetrieveViaAjax()) {
+            out.write("<span id=\"");
+            out.write(component.getId());
+            out.write("\" data-role=\"placeholder\" class=\"uif-placeholder\"></span>");
+        }
 
+        if (StringUtils.hasText(component.getProgressiveRender())) {
             for (String cName : component.getProgressiveDisclosureControlNames()) {
                 templateJsScripts +=
                         "var condition = function(){return ("
@@ -244,14 +252,6 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             templateJsScripts += "hiddenInputValidationToggle('" + component.getId() + "');";
-        }
-
-        if ((component.isProgressiveRenderViaAJAX() && !StringUtils.hasLength(component.getProgressiveRender())) ||
-                (!component.isRender() && (component.isDisclosedByAction() || component.isRefreshedByAction())) ||
-                component.isRetrieveViaAjax()) {
-            out.write("<span id=\"");
-            out.write(component.getId());
-            out.write("\" data-role=\"placeholder\" class=\"uif-placeholder\"></span>");
         }
 
         if (StringUtils.hasText(component.getConditionalRefresh())) {

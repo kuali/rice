@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.uif.component.Component;
@@ -25,6 +26,7 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
 /**
@@ -88,7 +90,7 @@ public interface ViewHelperService {
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
      */
-    void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+    void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the new collection line after it has been added to the
@@ -100,7 +102,7 @@ public interface ViewHelperService {
      * @param addLine the new line that was added
      * @param isValidLine indicates if the line is valid
      */
-    void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+    void processAfterAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath,
             boolean isValidLine);
 
     /**
@@ -111,7 +113,7 @@ public interface ViewHelperService {
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
      */
-    void processBeforeSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+    void processBeforeSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the save collection line after it has been validated
@@ -121,7 +123,7 @@ public interface ViewHelperService {
      * @param model object instance that contains the views data
      * @param addLine the new line that was added
      */
-    void processAfterSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine);
+    void processAfterSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the collection line after it has been deleted
@@ -131,7 +133,7 @@ public interface ViewHelperService {
      * @param model object instance that contains the views data
      * @param lineIndex index of the line that was deleted
      */
-    void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex);
+    void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
 
     /**
      * Hook for creating new components with code and adding them to a container
@@ -149,7 +151,7 @@ public interface ViewHelperService {
      * @param model object containing the view data
      * @param container container instance to add components to
      */
-    void addCustomContainerComponents(Object model, Container container);
+    void addCustomContainerComponents(ViewModel model, Container container);
 
     /**
      * Invoked when the add line action is chosen for a collection. The
@@ -164,7 +166,7 @@ public interface ViewHelperService {
      * collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    public void processCollectionAddLine(View view, Object model, String collectionPath);
+    public void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Adds a blank line to the collection
@@ -177,7 +179,7 @@ public interface ViewHelperService {
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionPath full path to the collection on the model
      */
-    public void processCollectionAddBlankLine(View view, Object model, String collectionPath);
+    public void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
@@ -188,7 +190,7 @@ public interface ViewHelperService {
      * @param collectionPath full path to the collection on the model
      * @param selectedLineIndex The index within the collection of the line to save.
      */
-    public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex);
+    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the delete line action is chosen for a collection. The
@@ -203,7 +205,7 @@ public interface ViewHelperService {
      * @param collectionPath full path to the collection on the model
      * @param lineIndex index of the collection line that was selected for removal
      */
-    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex);
+    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
 
     /**
      * Process the results returned from a multi-value lookup populating the lines for the collection given
@@ -214,7 +216,8 @@ public interface ViewHelperService {
      * @param collectionPath binding path to the collection to populated
      * @param lookupResultValues String containing the selected line values
      */
-    public void processMultipleValueLookupResults(View view, Object model, String collectionPath, String lookupResultValues);
+    public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
+            String lookupResultValues);
 
     /**
      * Generates table formatted data based on data collected from the table model
@@ -380,5 +383,9 @@ public interface ViewHelperService {
      * @return expression evaluator factory
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
+
+    String getCollectionLabel(CollectionGroup collectionGroup);
+
+    String getDuplicateLineLabelString(CollectionGroup collectionGroup, List<String> duplicateLinePropertyNames);
 
 }

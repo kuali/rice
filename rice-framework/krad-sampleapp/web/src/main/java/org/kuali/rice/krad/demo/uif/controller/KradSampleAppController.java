@@ -15,8 +15,14 @@
  */
 package org.kuali.rice.krad.demo.uif.controller;
 
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -27,11 +33,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.beans.PropertyEditor;
-import java.util.Map;
 
 /**
  * Basic controller for the KRAD sample application
@@ -49,8 +50,8 @@ public class KradSampleAppController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
         //TODO tbd
         return super.start(form, request, response);
     }
@@ -72,8 +73,8 @@ public class KradSampleAppController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addGrowl")
     public ModelAndView addGrowl(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        String extraInfo = (String)request.getParameter("extraInfo");
-        if(extraInfo == null){
+        String extraInfo = (String) request.getParameter("extraInfo");
+        if (extraInfo == null) {
             extraInfo = "none";
         }
         GlobalVariables.getMessageMap().addGrowlMessage("Growl Message", "demo.fakeGrowl", extraInfo);
@@ -83,10 +84,9 @@ public class KradSampleAppController extends UifControllerBase {
     private void changeTheme(UifFormBase form) {
         String theme = ((KradSampleAppForm) form).getThemeName();
         if (theme != null) {
-            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                     theme));
             if (newTheme != null) {
-                form.getPostedView().setTheme(newTheme);
                 form.getView().setTheme(newTheme);
             }
         }
@@ -115,12 +115,15 @@ public class KradSampleAppController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addStandardSectionsErrors")
     public ModelAndView addStandardSectionsErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-            GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section1", "errorSectionTest");
-            GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section2", "errorSectionTest");
+        GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section1", "errorSectionTest");
+        GlobalVariables.getMessageMap().putError("Demo-ValidationMessages-Section2", "errorSectionTest");
 
-        Map<String, PropertyEditor> propertyEditors = form.getPostedView().getViewIndex().getFieldPropertyEditors();
-        for (String key : propertyEditors.keySet()) {
-            GlobalVariables.getMessageMap().putError(key, "error1Test");
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        for (String id : inputFieldIds) {
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH);
+                GlobalVariables.getMessageMap().putError(key, "error1Test");
+            }
         }
 
         return getUIFModelAndView(form);
@@ -136,13 +139,14 @@ public class KradSampleAppController extends UifControllerBase {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
-    public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifFormBase form,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
         return getUIFModelAndView(form);
     }
 
     /**
      * Refresh and set server messages
+     *
      * @param form
      * @param result
      * @param request
@@ -150,8 +154,8 @@ public class KradSampleAppController extends UifControllerBase {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshWithServerMessages")
-    public ModelAndView refreshWithServerMessages(@ModelAttribute("KualiForm") UifFormBase form,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView refreshWithServerMessages(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
         GlobalVariables.getMessageMap().putError("inputField4", "serverTestError");
         GlobalVariables.getMessageMap().putWarning("inputField4", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("inputField4", "serverTestInfo");
@@ -160,8 +164,8 @@ public class KradSampleAppController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customRefresh")
-    public ModelAndView customRefresh(@ModelAttribute("KualiForm") UifFormBase form,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView customRefresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
         GlobalVariables.getMessageMap().addGrowlMessage("Test", "serverTestInfo");
 
         return getUIFModelAndView(form);

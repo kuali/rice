@@ -105,34 +105,16 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         UifFormBase uifForm = (UifFormBase) request.getAttribute(UifConstants.REQUEST_FORM);
 
-        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getPostedView() == null)) {
+        if ((uifForm == null) || (uifForm.getView() == null && uifForm.getViewPostMetadata() == null)) {
             return;
         }
 
         // perform form session handling
-        boolean persistFormToSession = uifForm.getView() != null ? uifForm.getView().isPersistFormToSession() :
-                uifForm.getPostedView().isPersistFormToSession();
+        boolean persistFormToSession = uifForm.getViewPostMetadata().isPersistFormToSession();
 
-        // cleaning of view structure
-        if (uifForm.isRequestRedirected() || uifForm.isUpdateNoneRequest()) {
-            // view wasn't rendered, just set to null and leave previous posted view
-            uifForm.setView(null);
-        } else if (uifForm.isBuildViewRequest()) {
-            // full view render, clean view and back up
-            View view = uifForm.getView();
-            if (view != null) {
-                ViewCleaner.cleanView(view);
-            }
-
-            uifForm.setPostedView(view);
-            uifForm.setView(null);
-        } else {
-            // partial refresh on posted view
-            View postedView = uifForm.getPostedView();
-            if (postedView != null) {
-                ViewCleaner.cleanView(postedView);
-            }
-        }
+        // Discard transient view instance
+        // TODO: Can @SessionTransient be trusted to handle this?
+        uifForm.setView(null);
 
         // remove the session transient variables from the request form before adding it to the list of
         // Uif session forms

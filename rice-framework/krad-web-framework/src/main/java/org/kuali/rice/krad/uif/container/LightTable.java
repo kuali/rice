@@ -514,21 +514,20 @@ public class LightTable extends GroupBase implements DataBinding {
         }
 
         //for readOnly DataFields replace the value marked with the value on the current object
+        // TODO: this needs to go through registered property editors
         row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue.toString());
         currentColumnValue = currentValue.toString();
 
-        if (((DataField) item).getInquiry() != null
-                && ((DataField) item).getInquiry().getInquiryParameters() != null
-                && ((DataField) item).getInquiry().getInquiryLink() != null) {
+        Inquiry dataFieldInquiry = ((DataField) item).getInquiry();
+        if (dataFieldInquiry != null && dataFieldInquiry.getInquiryParameters() != null
+                && dataFieldInquiry.getInquiryLink() != null) {
 
-            String inquiryLinkId = ((DataField) item).getInquiry().getInquiryLink().getBaseId().replace(ID_TOKEN, "")
-                    + UifConstants.IdSuffixes.LINE
-                    + index;
+            String inquiryLinkId = dataFieldInquiry.getInquiryLink().getId().replace(ID_TOKEN, "")
+                    + UifConstants.IdSuffixes.LINE + index;
 
-            //process each Inquiry link parameter by replacing each in the inquiry url with their
-            //current value
-            for (String key : ((DataField) item).getInquiry().getInquiryParameters().keySet()) {
-                String name = ((DataField) item).getInquiry().getInquiryParameters().get(key);
+            // process each Inquiry link parameter by replacing each in the inquiry url with their current value
+            for (String key : dataFieldInquiry.getInquiryParameters().keySet()) {
+                String name = dataFieldInquiry.getInquiryParameters().get(key);
 
                 //omit the binding prefix fromt he key to get the path relative to the current object
                 key = key.replace(((DataField) item).getBindingInfo().getBindByNamePrefix() + ".", "");
@@ -538,7 +537,6 @@ public class LightTable extends GroupBase implements DataBinding {
                     row = row.replaceFirst("(" + inquiryLinkId + "(.|\\s)*?" + name + ")=.*?([&|\"])",
                             "$1=" + value + "$3");
                 }
-
             }
         }
 

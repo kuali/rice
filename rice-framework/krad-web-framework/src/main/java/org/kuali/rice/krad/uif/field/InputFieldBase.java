@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -64,6 +61,9 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.KRADUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Field that encapsulates data input/output captured by an attribute within the
  * application
@@ -109,7 +109,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
     // display props
     private Control control;
-    
+
     private KeyValuesFinder optionsFinder;
 
     private boolean uppercaseValue;
@@ -188,12 +188,14 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         // Done in apply model so we have the message text for additional rich message processing in Message
         // Sets message
-        if (StringUtils.isNotBlank(instructionalText) && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(instructionalText) && instructionalMessage != null && StringUtils.isBlank(
+                instructionalMessage.getMessageText())) {
             instructionalMessage.setMessageText(instructionalText);
         }
 
         // Sets constraints
-        if (StringUtils.isNotBlank(constraintText) && StringUtils.isBlank(constraintMessage.getMessageText())) {
+        if (StringUtils.isNotBlank(constraintText) && constraintMessage != null && StringUtils.isBlank(
+                constraintMessage.getMessageText())) {
             constraintMessage.setMessageText(constraintText);
         }
 
@@ -322,7 +324,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         setupFieldQuery();
-        
+
         View view = ViewLifecycle.getView();
 
         // special requiredness indicator handling, if this was previously not required reset its required
@@ -336,7 +338,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             stateObject = model;
         }
         StateMapping stateMapping = view.getStateMapping();
-        String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+        String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                         UifConstants.REQUIRED_NEXT_STATE_INDICATOR_ID);
 
         if (stateMapping != null) {
@@ -359,8 +361,65 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         // Generate validation messages
         if (validationMessages != null) {
-            validationMessages.generateMessages(true, view, model, this);
+            validationMessages.generateMessages(view, model, this);
         }
+
+        ViewLifecycle.getViewPostMetadata().getInputFieldIds().add(this.getId());
+
+        if (this.getLabel() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.LABEL,
+                    this.getLabel());
+        }
+
+        if (this.getName() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PATH,
+                    this.getName());
+        }
+
+        if (this.getSimpleConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
+                    this.getSimpleConstraint());
+        }
+
+        if (this.getValidCharactersConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT, this.getValidCharactersConstraint());
+        }
+
+        if (this.getCaseConstraint() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
+                    this.getCaseConstraint());
+        }
+
+        if (this.getMustOccurConstraints() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS, this.getMustOccurConstraints());
+        }
+
+        if (this.getPrerequisiteConstraints() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS, this.getPrerequisiteConstraints());
+        }
+
+        if (this.getAttributeQuery() != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY, attributeQuery);
+        }
+
+        Suggest suggest = getSuggest();
+        if (suggest != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.INPUT_FIELD_SUGGEST, suggest);
+
+            AttributeQuery suggestQuery = suggest.getSuggestQuery();
+            if (suggestQuery != null) {
+                ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                        UifConstants.PostMetadata.INPUT_FIELD_SUGGEST_QUERY, suggestQuery);
+            }
+        }
+
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE, isUppercaseValue());
     }
 
     /**
@@ -588,7 +647,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             if (constraintMessage == null) {
                 constraintMessage = ComponentFactory.getConstraintMessage();
             }
-            
+
             getConstraintMessage().setMessageText(attributeDefinition.getConstraintText());
         }
 

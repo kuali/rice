@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,42 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.lifecycle.initialize;
+package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
- * Add the component's initial state to the view index.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddComponentStateToViewIndexTask extends ViewLifecycleTaskBase<Component> {
+public class RefreshStateModifyTask extends ViewLifecycleTaskBase<Component> {
 
     /**
      * Constructor.
-     * 
-     * @param phase The initialize phase for the component.
+     *
+     * @param phase The apply model phase for the component.
      */
-    public AddComponentStateToViewIndexTask(ViewLifecyclePhase phase) {
+    public RefreshStateModifyTask(ViewLifecyclePhase phase) {
         super(phase, Component.class);
     }
 
     /**
-     * {@inheritDoc}
+     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
      */
     @Override
     protected void performLifecycleTask() {
-        LifecycleElementState elementState = getElementState();
-        View view = ViewLifecycle.getView();
-        if (!(elementState.getElement() instanceof View)) {
-            view.getViewIndex().addInitialComponentStateIfNeeded(
-                    (Component) elementState.getElement());
-        }
+        Component component = (Component) getElementState().getElement();
+
+        // force the component to render on a refresh
+        component.setRender(true);
     }
 
 }

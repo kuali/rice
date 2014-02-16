@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.Set;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,6 +31,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
@@ -57,7 +43,6 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -70,7 +55,7 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
-import org.kuali.rice.krad.uif.view.ViewIndex;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -83,18 +68,30 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.PropertyAccessorUtils;
 
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
+
 /**
  * Default Implementation of {@code ViewHelperService}
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@SuppressWarnings("deprecation")
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
-    
     private static final long serialVersionUID = 1772618197133239852L;
-    
     private static final Logger LOG = Logger.getLogger(ViewHelperServiceImpl.class);
-    
+
     private transient ConfigurationService configurationService;
     private transient DataDictionaryService dataDictionaryService;
     private transient LegacyDataAdapter legacyDataAdapter;
@@ -104,7 +101,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Helper function to determine whether if column should be displayed. Used to help extract
      * columns used in screen format such as action or select that is not needed for export.
-     * 
+     *
      * @param layoutManager The layout manager.
      * @param collectionGroup The collection group.
      * @return Index numbers for all columns that should be ignored.
@@ -143,28 +140,28 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Hook for creating new components with code and adding them to a container
-     * 
+     *
      * <p>
      * Subclasses can override this method to check for one or more containers by id and then adding
      * components created in code. This is invoked before the initialize method on the container
      * component, so the full lifecycle will be run on the components returned.
      * </p>
-     * 
+     *
      * <p>
      * New components instances can be retrieved using {@link ComponentFactory}
      * </p>
-     * 
+     *
      * @param model object containing the view data
      * @param container container instance to add components to
      */
     @Override
-    public void addCustomContainerComponents(Object model, Container container) {
+    public void addCustomContainerComponents(ViewModel model, Container container) {
 
     }
 
     /**
      * Generates formatted table data based on the posted view results and format type
-     * 
+     *
      * @param view view instance where the table is located
      * @param model top level object containing the data
      * @param tableId id of the table being generated
@@ -221,9 +218,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Finds the <code>Inquirable</code> configured for the given data object class and delegates to
      * it for building the inquiry URL
-     * 
+     *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
-     *      java.lang.String, org.kuali.rice.krad.uif.widget.Inquiry)
+     * java.lang.String, org.kuali.rice.krad.uif.widget.Inquiry)
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
         Inquirable inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(), inquiry.getViewName());
@@ -239,62 +236,62 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Hook for service overrides to perform custom apply model logic on the component
-     * 
+     *
      * @param element element to apply model to
      * @param model Top level object containing the data (could be the model or a top level business
-     *        object, dto)
+     * object, dto)
      */
     @Override
     public void performCustomApplyModel(LifecycleElement element, Object model) {
-        
+
     }
 
     /**
      * Hook for service overrides to perform custom finalization
-     * 
+     *
      * @param element element instance to update
      * @param model Top level object containing the data
      * @param parent Parent component for the component being finalized
      */
     @Override
     public void performCustomFinalize(LifecycleElement element, Object model, LifecycleElement parent) {
-        
+
     }
 
     /**
      * Hook for service overrides to perform custom initialization on the element
-     * 
+     *
      * @param element element to initialize
      */
     @Override
     public void performCustomInitialization(LifecycleElement element) {
-        
+
     }
 
     /**
      * Hook for service overrides to perform custom component finalization.
-     * 
+     *
      * @param model Top level object containing the data
      */
     @Override
     public void performCustomViewFinalize(Object model) {
-        
+
     }
 
     /**
      * Hook for service overrides to perform custom initialization prior to view initialization.
-     * 
+     *
      * @param model The model.
      */
     @Override
     public void performCustomViewInitialization(Object model) {
-        
+
     }
 
     /**
      * Hook for service overrides to process the new collection line after it has been added to the
      * collection
-     * 
+     *
      * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection the line that was added
      * @param model object instance that contain's the views data
@@ -302,76 +299,81 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param isValidLine indicates if the line is valid
      */
     @Override
-    public void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+    public void processAfterAddLine(ViewModel model, Object lineObject, String collectionId, String collectionPath,
             boolean isValidLine) {
-        
+
     }
 
     /**
      * Hook for service overrides to process the collection line after it has been deleted
-     * 
+     *
      * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection the line that was added
      * @param model object instance that contains the views data
      * @param lineIndex index of the line that was deleted
      */
     @Override
-    public void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
+    public void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
 
     }
 
     /**
      * Hook for service overrides to process the save collection line after it has been validated
-     * 
+     *
      * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection
      * @param model object instance that contains the views data
      * @param addLine the new line that was added
      */
     @Override
-    public void processAfterSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processAfterSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
 
     }
 
     /**
      * Hook for service overrides to process the new collection line before it is added to the
      * collection
-     * 
+     *
      * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection the line will be added
-     *        to
+     * to
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
      */
     @Override
-    public void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath) {
 
     }
 
     /**
      * Hook for service overrides to process the save collection line before it is validated
-     * 
+     *
      * @param view view instance that is being presented (the action was taken on)
      * @param collectionGroup collection group component for the collection
      * @param model object instance that contain's the views data
      * @param addLine the new line instance to be processed
      */
     @Override
-    public void processBeforeSaveLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processBeforeSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
 
     }
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddBlankLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String)
+     * java.lang.Object, java.lang.String)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void processCollectionAddBlankLine(View view, Object model, String collectionPath) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+    public void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath) {
+        if (!(model instanceof ViewModel)) {
+            return;
+        }
+
+        ViewModel viewModel = (ViewModel) model;
+
+        if (collectionId == null) {
+            logAndThrowRuntime(
+                    "Unable to get collection group component for Id: " + collectionPath + " path: " + collectionPath);
         }
 
         // get the collection instance for adding the new line
@@ -380,70 +382,90 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
         }
 
-        Object newLine = KRADUtils.createNewObjectFromClass(collectionGroup.getCollectionObjectClass());
-        applyDefaultValuesForCollectionLine(collectionGroup, newLine);
-        addLine(collection, newLine, collectionGroup.getAddLinePlacement().equals("TOP"));
+        Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
+        Object newLine = KRADUtils.createNewObjectFromClass(collectionObjectClass);
 
-        ((UifFormBase) model).getAddedCollectionItems().add(newLine);
+        List<Object> lineDataObjects = new ArrayList<Object>();
+        lineDataObjects.add(newLine);
+        viewModel.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
+        processAndAddLineObject(viewModel, newLine, collectionId, collectionPath);
     }
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String)
+     * java.lang.Object, java.lang.String)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void processCollectionAddLine(View view, Object model, String collectionPath) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+    public void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath) {
+        if (!(model instanceof ViewModel)) {
+            return;
         }
 
+        ViewModel viewModel = (ViewModel) model;
+
+        if (collectionId == null) {
+            logAndThrowRuntime(
+                    "Unable to get collection group component for Id: " + collectionPath + " path: " + collectionPath);
+        }
+
+        // now get the new line we need to add
+        BindingInfo addLineBindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(
+                collectionId, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO);
+        Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingInfo.getBindingPath());
+        if (addLine == null) {
+            logAndThrowRuntime("Add line instance not found for path: " + addLineBindingInfo.getBindingPath());
+        }
+
+        // Adding an empty list because this item does not need to be further processed, but needs to init
+        // a new add line
+        List<Object> lineDataObjects = new ArrayList<Object>();
+        viewModel.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
+
+        processAndAddLineObject(viewModel, addLine, collectionId, collectionPath);
+
+    }
+
+    /**
+     * Do all processing related to adding a line: calls processBeforeAddLine, performAddLineValidation, addLine,
+     * processAfterAddLine
+     *
+     * @param viewModel
+     * @param newLine
+     * @param collectionId
+     * @param collectionPath
+     */
+    protected void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
+            String collectionPath) {
+        String addLinePlacement = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                UifConstants.PostMetadata.ADD_LINE_PLACEMENT);
+
         // get the collection instance for adding the new line
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
         if (collection == null) {
             logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
         }
 
-        // now get the new line we need to add
-        String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-        Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
-        if (addLine == null) {
-            logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
-        }
+        processBeforeAddLine(viewModel, newLine, collectionId, collectionPath);
 
-        processBeforeAddLine(view, collectionGroup, model, addLine);
-
-        // validate the line to make sure it is ok to add
-        boolean isValidLine = performAddLineValidation(view, collectionGroup, model, addLine);
+        boolean isValidLine = performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
         if (isValidLine) {
-            // TODO: should check to see if there is an add line method on the
-            // collection parent and if so call that instead of just adding to
-            // the collection (so that sequence can be set)
-            addLine(collection, addLine, collectionGroup.getAddLinePlacement().equals(
-                    UifConstants.Position.TOP.name()));
+            addLine(collection, newLine, addLinePlacement.equals("TOP"));
 
-            // make a new instance for the add line
-            collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
+            if (viewModel instanceof UifFormBase) {
+                ((UifFormBase) viewModel).getAddedCollectionItems().add(newLine);
+            }
         }
 
-        ((UifFormBase) model).getAddedCollectionItems().add(addLine);
-
-        processAfterAddLine(view, collectionGroup, model, addLine, isValidLine);
+        processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
     }
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String, int)
+     * java.lang.Object, java.lang.String, int)
      */
-    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
-
+    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
@@ -456,10 +478,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             Object deleteLine = ((List<Object>) collection).get(lineIndex);
 
             // validate the delete action is allowed for this line
-            boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
+            boolean isValid = performDeleteLineValidation(model, collectionId, collectionPath, deleteLine);
             if (isValid) {
                 ((List<Object>) collection).remove(lineIndex);
-                processAfterDeleteLine(view, collectionGroup, model, lineIndex);
+                processAfterDeleteLine(model, collectionId, collectionPath, lineIndex);
             }
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
@@ -468,16 +490,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionSaveLine(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, java.lang.String, int)
+     * java.lang.Object, java.lang.String, int)
      */
     @Override
-    public void processCollectionSaveLine(View view, Object model, String collectionPath, int selectedLineIndex) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
-
+    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex) {
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
@@ -489,11 +505,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (collection instanceof List) {
             Object saveLine = ((List<Object>) collection).get(selectedLineIndex);
 
-            processBeforeSaveLine(view, collectionGroup, model, saveLine);
+            processBeforeSaveLine(model, saveLine, collectionId, collectionPath);
 
             ((UifFormBase) model).getAddedCollectionItems().remove(saveLine);
 
-            processAfterSaveLine(view, collectionGroup, model, saveLine);
+            processAfterSaveLine(model, saveLine, collectionId, collectionPath);
 
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
@@ -505,30 +521,33 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processMultipleValueLookupResults
      */
     @SuppressWarnings("unchecked")
-    public void processMultipleValueLookupResults(View view, Object model, String collectionPath,
+    public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
             String lookupResultValues) {
         // if no line values returned, no population is needed
-        if (StringUtils.isBlank(lookupResultValues)) {
+        if (StringUtils.isBlank(lookupResultValues) || !(model instanceof ViewModel)) {
             return;
         }
 
+        ViewModel viewModel = (ViewModel) model;
+
+        if (StringUtils.isBlank(collectionId)) {
+            throw new RuntimeException(
+                    "Id is not set for this collection lookup: " + collectionId + ", " + "path: " + collectionPath);
+        }
+
         // retrieve the collection group so we can get the collection class and collection lookup
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            throw new RuntimeException("Unable to find collection group for path: " + collectionPath);
-        }
-
-        Class<?> collectionObjectClass = collectionGroup.getCollectionObjectClass();
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model,
-                collectionGroup.getBindingInfo().getBindingPath());
+        Class<?> collectionObjectClass = (Class<?>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
-            Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model,
-                    collectionGroup.getBindingInfo().getBindingPath());
+            Class<?> collectionClass = ObjectPropertyUtils.getPropertyType(model, collectionPath);
             collection = (Collection<Object>) KRADUtils.createNewObjectFromClass(collectionClass);
-            ObjectPropertyUtils.setPropertyValue(model, collectionGroup.getBindingInfo().getBindingPath(), collection);
+            ObjectPropertyUtils.setPropertyValue(model, collectionPath, collection);
         }
 
-        Map<String, String> fieldConversions = collectionGroup.getCollectionLookup().getFieldConversions();
+        Map<String, String> fieldConversions =
+                (Map<String, String>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                        UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS);
         List<String> toFieldNamesColl = new ArrayList<String>(fieldConversions.values());
         Collections.sort(toFieldNamesColl);
         String[] toFieldNames = new String[toFieldNamesColl.size()];
@@ -537,6 +556,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // first split to get the line value sets
         String[] lineValues = StringUtils.split(lookupResultValues, ",");
 
+        List<Object> lineDataObjects = new ArrayList<Object>();
         // for each returned set create a new instance of collection class and populate with returned line values
         for (String lineValue : lineValues) {
             Object lineDataObject = null;
@@ -551,9 +571,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 lineDataObject = KRADUtils.createNewObjectFromClass(collectionObjectClass);
             }
 
-            // apply default values to new line
-            applyDefaultValuesForCollectionLine(collectionGroup, lineDataObject);
-
             String[] fieldValues = StringUtils.splitByWholeSeparatorPreserveAllTokens(lineValue, ":");
             if (fieldValues.length != toFieldNames.length) {
                 throw new RuntimeException(
@@ -566,16 +583,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 ObjectPropertyUtils.setPropertyValue(lineDataObject, fieldName, fieldValues[i]);
             }
 
-            // TODO: duplicate identifier check
-
-            collection.add(lineDataObject);
+            lineDataObjects.add(lineDataObject);
+            processAndAddLineObject(viewModel, lineDataObject, collectionId, collectionPath);
         }
+
+        viewModel.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
     }
 
     /**
      * Add addLine to collection while giving derived classes an opportunity to override for things
      * like sorting.
-     * 
+     *
      * @param collection the Collection to add the given addLine to
      * @param addLine the line to add to the given collection
      * @param insertFirst indicates if the item should be inserted as the first item
@@ -590,12 +608,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Helper method used to build formatted table row data for export
-     * 
+     *
      * @param columnData Formatted column data.
      * @param tableFormatOptions Format options: startRow and endRow are added to the row,
-     *        startColumn and endColumn are added to each column.
+     * startColumn and endColumn are added to each column.
      * @param ignoredColumns Index numbers of columns to ignore.
-     * 
      * @return Formatted table data for one row.
      */
     protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
@@ -624,7 +641,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Identify table formatting elements based on formatType. Defaults to txt format if not found
-     * 
+     *
      * @param formatType The format type: csv, xls, or xml.
      * @return The format options for to use with the indicated format type.
      */
@@ -681,27 +698,43 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Performs validation on the new collection line before it is added to the corresponding collection.
-     * 
+     *
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param addLine new line instance to validate
      * @param model object instance that contains the views data
-     *
      * @return true if the line is valid and it should be added to the collection, false if it was not valid and should
-     *         not be added to the collection
+     * not be added to the collection
      */
-    protected boolean performAddLineValidation(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    protected boolean performAddLineValidation(ViewModel viewModel, Object newLine, String collectionId,
+            String collectionPath) {
         boolean isValid = true;
 
-        Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(model,
-                collectionGroup.getBindingInfo().getBindingPath());
-        List<String> duplicateLinePropertyNames = collectionGroup.getDuplicateLinePropertyNames();
+        Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
 
-        if (containsDuplicateLine(addLine, collectionItems, duplicateLinePropertyNames)) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES) == null) {
+            return isValid;
+        }
+
+        List<String> duplicateLinePropertyNames = (List<String>) viewModel.getViewPostMetadata().getComponentPostData(
+                collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES);
+
+        String collectionLabel = null;
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.COLL_LABEL) != null) {
+            collectionLabel = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                    UifConstants.PostMetadata.COLL_LABEL);
+        }
+
+        String duplicateLineLabelString = null;
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) == null) {
+            duplicateLineLabelString = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING);
+        }
+
+        if (containsDuplicateLine(newLine, collectionItems, duplicateLinePropertyNames)) {
             isValid = false;
-            GlobalVariables.getMessageMap().putErrorForSectionId(collectionGroup.getId(),
-                    RiceKeyConstants.ERROR_DUPLICATE_ELEMENT, getCollectionLabel(collectionGroup),
-                    getDuplicateLineLabelString(collectionGroup, duplicateLinePropertyNames));
+            GlobalVariables.getMessageMap().putErrorForSectionId(collectionId, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT,
+                    collectionLabel, duplicateLineLabelString);
         }
 
         return isValid;
@@ -714,10 +747,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param addLine new line instance to validate
      * @param collectionItems items in the collection
      * @param duplicateLinePropertyNames property names to check for duplicates
-     *
      * @return true if there is a duplicate line, false otherwise
      */
-    private boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems, List<String> duplicateLinePropertyNames) {
+    private boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems,
+            List<String> duplicateLinePropertyNames) {
         if (collectionItems.isEmpty() || duplicateLinePropertyNames.isEmpty()) {
             return false;
         }
@@ -738,7 +771,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param addLine new line instance to validate
      * @param collectionItem existing instance to validate
      * @param duplicateLinePropertyNames the property names to check for duplicates
-     *
      * @return true if {@code addLine} is a duplicate of {@code collectionItem}, false otherwise
      */
     private boolean isDuplicateLine(Object addLine, Object collectionItem, List<String> duplicateLinePropertyNames) {
@@ -748,7 +780,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         for (String duplicateLinePropertyName : duplicateLinePropertyNames) {
             Object addLinePropertyValue = ObjectPropertyUtils.getPropertyValue(addLine, duplicateLinePropertyName);
-            Object duplicateLinePropertyValue = ObjectPropertyUtils.getPropertyValue(collectionItem, duplicateLinePropertyName);
+            Object duplicateLinePropertyValue = ObjectPropertyUtils.getPropertyValue(collectionItem,
+                    duplicateLinePropertyName);
 
             if (!ObjectUtils.equals(addLinePropertyValue, duplicateLinePropertyValue)) {
                 return false;
@@ -762,15 +795,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Gets the label for the collection in a human-friendly format.
      *
      * @param collectionGroup collection group component for the collection
-     *
      * @return a human-friendly collection label
      */
-    private String getCollectionLabel(CollectionGroup collectionGroup) {
+    public String getCollectionLabel(CollectionGroup collectionGroup) {
         String collectionLabel = collectionGroup.getHeaderText();
 
         if (StringUtils.isBlank(collectionLabel)) {
             String propertyName = collectionGroup.getPropertyName();
-            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(propertyName);
+            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(
+                    propertyName);
         }
 
         return collectionLabel;
@@ -781,10 +814,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param collectionGroup collection group component for the collection
      * @param duplicateLinePropertyNames the property names to check for duplicates
-     *
      * @return a comma-separated list of labels
      */
-    private String getDuplicateLineLabelString(CollectionGroup collectionGroup, List<String> duplicateLinePropertyNames) {
+    public String getDuplicateLineLabelString(CollectionGroup collectionGroup,
+            List<String> duplicateLinePropertyNames) {
         List<String> duplicateLineLabels = new ArrayList<String>();
 
         for (Component addLineItem : collectionGroup.getAddLineItems()) {
@@ -805,20 +838,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Performs validation on the collection line before it is removed from the corresponding collection.
-     * 
+     *
      * @param view view instance that the action was taken on
      * @param collectionGroup collection group component for the collection
      * @param deleteLine line that will be removed
-     *
      * @return true if the action is allowed and the line should be removed, false if the line should not be removed
      */
-    protected boolean performDeleteLineValidation(View view, CollectionGroup collectionGroup, Object deleteLine) {
-       return true;
+    protected boolean performDeleteLineValidation(ViewModel model, String collectionId,
+            String collectionPath, Object deleteLine) {
+        return true;
     }
 
     /**
      * Populate default values the model backing a line in a collection group.
-     * 
+     *
      * @param collectionGroup The collection group.
      * @param line The model object backing the line.
      */
@@ -841,7 +874,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Iterates through the view components picking up data fields and applying an default value
      * configured
-     * 
+     *
      * @param component component that should be checked for default values
      */
     @Override
@@ -853,11 +886,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         View view = ViewLifecycle.getView();
         Object model = ViewLifecycle.getModel();
 
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         try {
             LifecycleElement currentElement = elementQueue.poll();
-            
+
             // if component is a data field apply default value
             if (currentElement instanceof DataField) {
                 DataField dataField = ((DataField) currentElement);
@@ -879,7 +912,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Uses reflection to find all fields defined on the <code>View</code> instance that have the
      * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
      * request).
-     * 
+     *
      * <p>
      * The <code>View</code> instance is inspected for fields that have the
      * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
@@ -888,14 +921,14 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
      * parameter key/value pairs to the returned map if necessary.
      * </p>
-     * 
+     *
      * <p>
      * For each field found, if there is a corresponding key/value pair in the request parameters,
      * the value is used to populate the field. In addition, any conditional properties of
      * <code>PropertyReplacers</code> configured for the field are cleared so that the request
      * parameter value does not get overridden by the dictionary conditional logic
      * </p>
-     * 
+     *
      * @param parameters The request parameters that apply to the view.
      * @see org.kuali.rice.krad.uif.component.RequestParameter
      */
@@ -966,17 +999,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Builds JS script that will invoke the show growl method to display a growl message when the
      * page is rendered
-     * 
+     *
      * <p>
      * A growl call will be created for any explicit growl messages added to the message map.
      * </p>
-     * 
+     *
      * <p>
      * Growls are only generated if @{link
      * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
      * messages are set as info messages for the page
      * </p>
-     * 
+     *
      * @return JS script string for generated growl messages
      */
     @Override
@@ -1026,15 +1059,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * Applies the default value configured for the given field (if any) to the line given object
      * property that is determined by the given binding path
-     * 
+     *
      * @param object object that should be populated
      * @param dataField field to check for configured default value
      * @param bindingPath path to the property on the object that should be populated
      */
     @Override
     public void populateDefaultValueForField(Object object, DataField dataField, String bindingPath) {
-        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath)
-                || !ObjectPropertyUtils.isWritableProperty(object, bindingPath)) {
+        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath) || !ObjectPropertyUtils.isWritableProperty(
+                object, bindingPath)) {
             return;
         }
 
@@ -1052,10 +1085,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Retrieves the default value that is configured for the given data field
-     * 
+     *
      * <p>
      * The field's default value is determined in the following order:
-     * 
+     *
      * <ol>
      * <li>If default value on field is non-blank</li>
      * <li>If expression is found for default value</li>
@@ -1064,7 +1097,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * <li>If default values on field is not null</li>
      * </ol>
      * </p>
-     * 
+     *
      * @param object object that should be populated
      * @param dataField field to retrieve default value for
      * @return Object default value for field or null if value was not found
@@ -1075,8 +1108,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         Object defaultValue = null;
 
         // if dataField.defaultValue is not null and not empty empty string use it
-        if (dataField.getDefaultValue()!= null &&
-           !(dataField.getDefaultValue() instanceof String && StringUtils.isBlank((String)dataField.getDefaultValue()))) {
+        if (dataField.getDefaultValue() != null && !(dataField.getDefaultValue() instanceof String && StringUtils
+                .isBlank((String) dataField.getDefaultValue()))) {
             defaultValue = dataField.getDefaultValue();
         } else if ((dataField.getExpressionGraph() != null) && dataField.getExpressionGraph().containsKey(
                 UifConstants.ComponentProperties.DEFAULT_VALUE)) {
@@ -1094,8 +1127,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
-        if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator
-                .containsElPlaceholder((String) defaultValue)) {
+        if ((defaultValue != null) && (defaultValue instanceof String) && expressionEvaluator.containsElPlaceholder(
+                (String) defaultValue)) {
             Map<String, Object> context = new HashMap<String, Object>(view.getPreModelContext());
             context.putAll(dataField.getContext());
 
@@ -1108,11 +1141,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Perform a database or data dictionary based refresh of a specific property object
-     * 
+     *
      * <p>
      * The object needs to be of type PersistableBusinessObject.
      * </p>
-     * 
+     *
      * @param parentObject parent object that references the object to be refreshed
      * @param referenceObjectName property name of the parent object to be refreshed
      */
@@ -1127,8 +1160,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
         DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 
-        if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName)
-                || legacyDataAdapter.hasCollection(parentObject.getClass(), referenceObjectName)) {
+        if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName) || legacyDataAdapter
+                .hasCollection(parentObject.getClass(), referenceObjectName)) {
             // refresh via database mapping
             legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
         } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
@@ -1164,12 +1197,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Update the reference objects listed in referencesToRefresh of the model
-     * 
+     *
      * <p>
      * The the individual references in the referencesToRefresh string are separated by
      * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
      * </p>
-     * 
+     *
      * @param referencesToRefresh list of references to refresh (
      */
     @Override
@@ -1199,7 +1232,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
         }
     }
-
 
     /**
      * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
@@ -1240,15 +1272,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // evaluate view expressions for further context
         for (Entry<String, String> variableExpression : view.getExpressionVariables().entrySet()) {
             String variableName = variableExpression.getKey();
-            Object value = ViewLifecycle.getExpressionEvaluator().evaluateExpression(
-                    view.getContext(), variableExpression.getValue());
+            Object value = ViewLifecycle.getExpressionEvaluator().evaluateExpression(view.getContext(),
+                    variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
         }
     }
 
     /**
      * Gets the configuration service
-     * 
+     *
      * @return configuration service
      */
     protected ConfigurationService getConfigurationService() {
@@ -1260,7 +1292,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the configuration service
-     * 
+     *
      * @param configurationService The configuration service.
      */
     public void setConfigurationService(ConfigurationService configurationService) {
@@ -1269,7 +1301,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the data dictionary service
-     * 
+     *
      * @return data dictionary service
      */
     protected DataDictionaryService getDataDictionaryService() {
@@ -1282,7 +1314,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the data dictionary service
-     * 
+     *
      * @param dataDictionaryService The dictionary service.
      */
     public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
@@ -1291,7 +1323,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Gets the view dictionary service
-     * 
+     *
      * @return view dictionary service
      */
     protected ViewDictionaryService getViewDictionaryService() {
@@ -1303,7 +1335,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Sets the view dictionary service
-     * 
+     *
      * @param viewDictionaryService The view dictionary service.
      */
     public void setViewDictionaryService(ViewDictionaryService viewDictionaryService) {
@@ -1333,7 +1365,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Get the legacy data adapter.
-     * 
+     *
      * @return The legacy data adapter.
      */
     protected LegacyDataAdapter getLegacyDataAdapter() {
@@ -1345,7 +1377,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Set the legacy data adapter.
-     * 
+     *
      * @param legacyDataAdapter The legacy data adapter.
      */
     public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
@@ -1354,7 +1386,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Log an error message using log4j, then throw a runtime exception with the provided message.
-     * 
+     *
      * @param message The error message.
      */
     protected void logAndThrowRuntime(String message) {

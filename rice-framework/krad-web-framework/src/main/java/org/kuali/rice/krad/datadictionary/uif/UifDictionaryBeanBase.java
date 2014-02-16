@@ -59,22 +59,6 @@ public class UifDictionaryBeanBase extends DictionaryBeanBase implements UifDict
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, String> getRefreshExpressionGraph() {
-        return refreshExpressionGraph;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setRefreshExpressionGraph(Map<String, String> refreshExpressionGraph) {
-        this.refreshExpressionGraph = refreshExpressionGraph;
-    }
-
-    /**
      * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions
      */
     public Map<String, String> getPropertyExpressions() {
@@ -110,11 +94,6 @@ public class UifDictionaryBeanBase extends DictionaryBeanBase implements UifDict
 
         if (expressionGraph != null) {
             uifDictionaryBeanBaseCopy.setExpressionGraph(new HashMap<String, String>(this.expressionGraph));
-        }
-
-        if (refreshExpressionGraph != null) {
-            uifDictionaryBeanBaseCopy.setRefreshExpressionGraph(new HashMap<String, String>(
-                    this.refreshExpressionGraph));
         }
 
         if (propertyExpressions != null) {

@@ -74,11 +74,10 @@ public class ServerPagingTestController extends UifControllerBase {
     private void changeTheme(UifFormBase form) {
         String theme = ((KradSampleAppForm) form).getThemeName();
         if (theme != null) {
-            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+            ViewTheme newTheme = (ViewTheme) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                     theme));
 
             if (newTheme != null) {
-                form.getPostedView().setTheme(newTheme);
                 form.getView().setTheme(newTheme);
             }
         }

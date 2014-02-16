@@ -96,8 +96,12 @@
         </bean>
 
         <!-- refresh everytime the field is disclosed -->
-        <bean parent="Uif-InputField" p:progressiveRenderAndRefresh="true"
-              p:progressiveRender="@{#dp.booleanField3}" p:propertyName="inputField5"/>
+        <bean id="refreshBooleanField3" parent="Uif-InputField-LabelTop" p:progressiveRenderAndRefresh="true"
+              p:progressiveRender="@{#dp.booleanField3}" p:propertyName="inputField5">
+                <property name="control">
+                  <bean parent="Uif-MediumTextControl" p:onBlurScript="alert('focus');"/>
+                </property>
+        </bean>
         <!-- ex:Demo-ProgressiveDisclosure-Example3 end-->
       </list>
     </property>

@@ -229,9 +229,9 @@ public class RichTable extends WidgetBase {
             templateOptions.put(UifConstants.TableToolsKeys.SERVER_PARAMS,pushLookupSelect);
 
             // store col defs so columns can be built on paging request
-            ViewLifecycle.getActiveLifecycle().getView().getViewIndex()
-                .addPostContextEntry(parent.getId(), UifConstants.TableToolsKeys.AO_COLUMN_DEFS,
-                    templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(parent.getId(),
+                    UifConstants.TableToolsKeys.AO_COLUMN_DEFS, templateOptions.get(
+                    UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
         //build sAjaxSource url to call

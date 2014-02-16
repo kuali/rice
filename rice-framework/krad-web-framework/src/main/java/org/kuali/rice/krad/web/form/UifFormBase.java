@@ -15,23 +15,6 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.SessionTransient;
-import org.kuali.rice.krad.uif.view.DialogManager;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +24,28 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.util.SessionTransient;
+import org.kuali.rice.krad.uif.view.DialogManager;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Base form class for views within the KRAD User Interface Framework
@@ -102,8 +107,9 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String lightboxScript;
 
+    @SessionTransient
     protected View view;
-    protected View postedView;
+    protected ViewPostMetadata viewPostMetadata;
 
     protected Map<String, String> viewRequestParameters;
     protected List<String> readOnlyFieldsList;
@@ -116,7 +122,6 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Set<String>> selectedCollectionLines;
 
     protected Set<String> selectedLookupResultsCache;
-
 
     protected List<Object> addedCollectionItems;
 
@@ -145,8 +150,11 @@ public class UifFormBase implements ViewModel {
 
     @SessionTransient
     protected boolean requestRedirected;
+
     @SessionTransient
     protected String updateComponentId;
+    @SessionTransient
+    private Component updateComponent;
 
     protected Map<String, Object> extensionData;
 
@@ -200,19 +208,19 @@ public class UifFormBase implements ViewModel {
 
         // get any sent client view state and parse into map
         if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
-            String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
-            if (StringUtils.isNotBlank(clientStateJSON)) {
-                // change single quotes to double quotes (necessary because the reverse was done for sending)
-                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
+                    String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
+                    if (StringUtils.isNotBlank(clientStateJSON)) {
+                        // change single quotes to double quotes (necessary because the reverse was done for sending)
+                        clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
 
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
-                } catch (IOException e) {
-                    throw new RuntimeException("Unable to decode client side state JSON", e);
+                        ObjectMapper mapper = new ObjectMapper();
+                        try {
+                            clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
+                        } catch (IOException e) {
+                            throw new RuntimeException("Unable to decode client side state JSON", e);
+                        }
+                    }
                 }
-            }
-        }
 
         // populate read only fields list
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
@@ -774,6 +782,20 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getUpdateComponent()
+     */
+    public Component getUpdateComponent() {
+        return updateComponent;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setUpdateComponent(org.kuali.rice.krad.uif.component.Component)
+     */
+    public void setUpdateComponent(Component updateComponent) {
+        this.updateComponent = updateComponent;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getView()
      */
     @Override
@@ -790,19 +812,70 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * Returns an instance of the view's configured view helper service.
+     *
+     * <p>First checks if there is an initialized view containing a view helper instance. If not, and there is
+     * a view id on the form, a call is made to retrieve the view helper instance or class configuration.</p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewHelperService getViewHelperService() {
+        if ((getView() != null) && (getView().getViewHelperService() != null)) {
+            return getView().getViewHelperService();
+        }
+
+        String viewId = getViewId();
+        if (StringUtils.isBlank(viewId) && (getView() != null)) {
+            viewId = getView().getId();
+        }
+
+        if (StringUtils.isBlank(viewId)) {
+            return null;
+        }
+
+        ViewHelperService viewHelperService =
+                (ViewHelperService) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBeanProperty(viewId,
+                        UifPropertyPaths.VIEW_HELPER_SERVICE);
+        if (viewHelperService == null) {
+            Class<?> viewHelperServiceClass =
+                    (Class<?>) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBeanProperty(viewId,
+                            UifPropertyPaths.VIEW_HELPER_SERVICE_CLASS);
+
+            if (viewHelperServiceClass != null) {
+                try {
+                    viewHelperService = (ViewHelperService) viewHelperServiceClass.newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to instantiate view helper class: " + viewHelperServiceClass, e);
+                }
+            }
+        }
+
+        return viewHelperService;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#getPostedView()
      */
     @Override
     public View getPostedView() {
-        return this.postedView;
+        throw new UnsupportedOperationException("TODO: REMOVE");
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setPostedView(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewPostMetadata()
      */
     @Override
-    public void setPostedView(View postedView) {
-        this.postedView = postedView;
+    public ViewPostMetadata getViewPostMetadata() {
+        return viewPostMetadata;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewPostMetadata(org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata)
+     */
+    @Override
+    public void setViewPostMetadata(ViewPostMetadata viewPostMetadata) {
+        this.viewPostMetadata = viewPostMetadata;
     }
 
     /**
@@ -812,9 +885,9 @@ public class UifFormBase implements ViewModel {
      * @return view instance to use for post operations
      */
     public View getActiveView() {
-        if (ajaxRequest || isUpdateNoneRequest()) {
-            return this.postedView;
-        }
+//        if (ajaxRequest || isUpdateNoneRequest()) {
+//            return this.postedView;
+//        }
 
         return this.view;
     }
@@ -1124,25 +1197,6 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
-    }
-
-    /**
-     * True if the current request is attempting to retrieve the originally generated component; the request
-     * must be an update-component request for this to be taken into account
-     *
-     * @return true if retrieving the original component
-     */
-    public boolean isOriginalComponentRequest() {
-        return originalComponentRequest;
-    }
-
-    /**
-     * Set the originalComponentRequest flag
-     *
-     * @param originalComponentRequest
-     */
-    public void setOriginalComponentRequest(boolean originalComponentRequest) {
-        this.originalComponentRequest = originalComponentRequest;
     }
 
     /**

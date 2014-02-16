@@ -19,7 +19,6 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.Ordered;
 import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 import org.kuali.rice.krad.uif.util.UifCloneable;
 
 import java.io.Serializable;

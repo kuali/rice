@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.krad.uif.view.ViewIndex;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Class is a top level BeanWrapper for a UIF View Model
+ * Class is a top level BeanWrapper for a UIF View Model.
  *
  * <p>
  * Registers custom property editors configured on the field associated with the property name for which
@@ -77,27 +77,20 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
-        // when rendering the page, we will use the view that was just built, for post
-        // we need to use the posted view (not the newly initialized view)
-        ViewIndex viewIndex = null;
-        if (model.getView() != null) {
-            viewIndex = model.getView().getViewIndex();
-        } else if (model.getPostedView() != null) {
-            viewIndex = model.getPostedView().getViewIndex();
-        }
-
-        // if view index instance not established we cannot determine property editors
-        if (viewIndex == null) {
+        ViewPostMetadata viewPostMetadata = model.getViewPostMetadata();
+        if (viewPostMetadata == null) {
             return;
         }
 
         PropertyEditor propertyEditor = null;
         boolean requiresEncryption = false;
 
-        if (viewIndex.getFieldPropertyEditors().containsKey(propertyName)) {
-            propertyEditor = viewIndex.getFieldPropertyEditors().get(propertyName);
-        } else if (viewIndex.getSecureFieldPropertyEditors().containsKey(propertyName)) {
-            propertyEditor = viewIndex.getSecureFieldPropertyEditors().get(propertyName);
+        if ((viewPostMetadata.getFieldPropertyEditors() != null) && viewPostMetadata.getFieldPropertyEditors()
+                .containsKey(propertyName)) {
+            propertyEditor = viewPostMetadata.getFieldPropertyEditors().get(propertyName);
+        } else if ((viewPostMetadata.getSecureFieldPropertyEditors() != null) && viewPostMetadata
+                .getSecureFieldPropertyEditors().containsKey(propertyName)) {
+            propertyEditor = viewPostMetadata.getSecureFieldPropertyEditors().get(propertyName);
             requiresEncryption = true;
         }
 

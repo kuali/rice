@@ -58,7 +58,6 @@ public class ViewCleaner {
      * @param view view instance to clean
      */
     public static void cleanView(final View view) {
-        view.setViewStatus(UifConstants.ViewStatus.CREATED);
         view.setApplicationHeader(null);
         view.setApplicationFooter(null);
         view.setBreadcrumbs(null);
@@ -113,7 +112,6 @@ public class ViewCleaner {
             return;
         }
 
-        component.setViewStatus(UifConstants.ViewStatus.CREATED);
         component.setTemplate(null);
         component.setTemplateName(null);
         component.setTitle(null);

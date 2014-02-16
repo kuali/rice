@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -25,21 +33,13 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
-import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.LocationSuggest;
 import org.kuali.rice.krad.uif.widget.Suggest;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of <code>AttributeQueryService</code> that prepares the attribute queries and
@@ -58,22 +58,22 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * {@inheritDoc}
      */
     @Override
-    public AttributeQueryResult performFieldSuggestQuery(View view, String fieldId, String fieldTerm,
-            Map<String, String> queryParameters) {
+    public AttributeQueryResult performFieldSuggestQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, String fieldTerm, Map<String, String> queryParameters) {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
-        // retrieve attribute field from view index
-        InputField inputField = (InputField) view.getViewIndex().getComponentById(fieldId);
-        if (inputField == null) {
+        ComponentPostMetadata inputFieldMetaData = viewPostMetadata.getComponentPostMetadata(fieldId);
+        if (inputFieldMetaData == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        Suggest fieldSuggest = inputField.getSuggest();
+        Suggest fieldSuggest = (Suggest) inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_SUGGEST);
         AttributeQuery suggestQuery = fieldSuggest.getSuggestQuery();
 
         // add term as a like criteria
         Map<String, String> additionalCriteria = new HashMap<String, String>();
-        if (inputField.isUppercaseValue()) {
+        boolean isUppercase = Boolean.TRUE.equals(inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE));
+        if (isUppercase) {
             additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm.toUpperCase() + "*");
         } else {
             additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm + "*");
@@ -82,7 +82,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute suggest query
         Collection<?> results = null;
         if (suggestQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(view, suggestQuery, queryParameters, true,
+            Object queryMethodResult = executeAttributeQueryMethod(viewPostMetadata, suggestQuery, queryParameters, true,
                     fieldTerm);
             if ((queryMethodResult != null) && (queryMethodResult instanceof Collection<?>)) {
                 results = (Collection<?>) queryMethodResult;
@@ -252,16 +252,18 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * {@inheritDoc}
      */
     @Override
-    public AttributeQueryResult performFieldQuery(View view, String fieldId, Map<String, String> queryParameters) {
+    public AttributeQueryResult performFieldQuery(ViewPostMetadata viewPostMetadata,
+            String fieldId, Map<String, String> queryParameters) {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
         // retrieve attribute field from view index
-        InputField inputField = (InputField) view.getViewIndex().getComponentById(fieldId);
-        if (inputField == null) {
+        ComponentPostMetadata inputFieldMetaData = viewPostMetadata.getComponentPostMetadata(fieldId);
+        if (inputFieldMetaData == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        AttributeQuery fieldQuery = inputField.getAttributeQuery();
+        AttributeQuery fieldQuery = (AttributeQuery) inputFieldMetaData
+                .getData(UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY);
         if (fieldQuery == null) {
             throw new RuntimeException("Field query not defined for field instance with id: " + fieldId);
         }
@@ -269,7 +271,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute query and get result
         Object resultObject = null;
         if (fieldQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(view, fieldQuery, queryParameters, false, null);
+            Object queryMethodResult = executeAttributeQueryMethod(viewPostMetadata, fieldQuery, queryParameters, false, null);
             if (queryMethodResult != null) {
                 // if method returned the result then no further processing needed
                 if (queryMethodResult instanceof AttributeQueryResult) {
@@ -322,7 +324,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             if (fieldQuery.isRenderNotFoundMessage()) {
                 String messageTemplate = getConfigurationService().getPropertyValueAsString(
                         UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
-                String message = MessageFormat.format(messageTemplate, inputField.getLabel());
+                String message = MessageFormat.format(messageTemplate, 
+                        inputFieldMetaData.getData(UifConstants.PostMetadata.LABEL));
                 fieldQuery.setReturnMessageText(message.toLowerCase());
             }
         }
@@ -337,7 +340,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Prepares the method configured on the attribute query then performs the method invocation
      *
-     * @param view view instance the field is contained within
+     * @param viewPostMetadata view instance the field is contained within
      * @param attributeQuery attribute query instance to execute
      * @param queryParameters map of query parameters that provide values for the method arguments
      * @param isSuggestQuery indicates whether the query is for forming suggest options
@@ -345,7 +348,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @return type depends on method being invoked, could be AttributeQueryResult in which
      *         case the method has prepared the return result, or an Object that needs to be parsed for the result
      */
-    protected Object executeAttributeQueryMethod(View view, AttributeQuery attributeQuery,
+    protected Object executeAttributeQueryMethod(ViewPostMetadata viewPostMetadata, AttributeQuery attributeQuery,
             Map<String, String> queryParameters, boolean isSuggestQuery, String queryTerm) {
         String queryMethodToCall = attributeQuery.getQueryMethodToCall();
         MethodInvokerConfig queryMethodInvoker = attributeQuery.getQueryMethodInvokerConfig();
@@ -362,7 +365,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // if target class or object not set, use view helper service
         if ((queryMethodInvoker.getTargetClass() == null) && (queryMethodInvoker.getTargetObject() == null)) {
-            queryMethodInvoker.setTargetObject(view.getViewHelperService());
+            // TODO: FIX ME
+//            queryMethodInvoker.setTargetObject(viewPostMetadata.getViewHelperService());
         }
 
         // setup query method arguments
@@ -375,7 +379,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 numQueryMethodArguments += 1;
             }
 
-            Class[] argumentTypes = queryMethodInvoker.getArgumentTypes();
+            Class<?>[] argumentTypes = queryMethodInvoker.getArgumentTypes();
             if ((argumentTypes == null) || (argumentTypes.length != numQueryMethodArguments)) {
                 throw new RuntimeException(
                         "Query method argument field list size does not match found number of method arguments");

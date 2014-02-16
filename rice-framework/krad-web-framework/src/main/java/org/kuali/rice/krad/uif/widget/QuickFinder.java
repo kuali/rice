@@ -61,6 +61,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     private String readOnlyLookupFields;
     private String referencesToRefresh;
     private String lookupCollectionName;
+    private String lookupCollectionId;
 
     private Map<String, String> fieldConversions;
     private Map<String, String> lookupParameters;
@@ -332,6 +333,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         if (isRender() && StringUtils.isBlank(getLookupCollectionName())) {
             setLookupCollectionName(collectionGroup.getBindingInfo().getBindingPath());
         }
+
+        if (isRender() && StringUtils.isBlank(getLookupCollectionId())) {
+            setLookupCollectionId(collectionGroup.getId());
+        }
     }
 
     /**
@@ -377,6 +382,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         addActionParameterIfNotNull(UifParameters.RENDER_MAINTENANCE_LINKS, renderMaintenanceLinks);
         addActionParameterIfNotNull(UifParameters.MULTIPLE_VALUES_SELECT, multipleValuesSelect);
         addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_NAME, lookupCollectionName);
+        addActionParameterIfNotNull(UifParameters.LOOKUP_COLLECTION_ID, lookupCollectionId);
         addActionParameterIfNotNull(UifParameters.QUICKFINDER_ID, getId());
 
         //insert additional lookup parameters.
@@ -413,10 +419,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         Action finalQuickfinderAction = (Action) eventComponent;
 
         // add post metadata for focus point when the associated lookup returns
-        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID,
-                finalQuickfinderAction.getFocusOnIdAfterSubmit());
-        view.getViewIndex().addPostContextEntry(getId(), UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID,
-                finalQuickfinderAction.getJumpToIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
     }
 
     /**
@@ -819,6 +825,14 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         this.lookupCollectionName = lookupCollectionName;
     }
 
+    public String getLookupCollectionId() {
+        return lookupCollectionId;
+    }
+
+    public void setLookupCollectionId(String lookupCollectionId) {
+        this.lookupCollectionId = lookupCollectionId;
+    }
+
     /**
      * @see QuickFinder#getAdditionalLookupParameters()
      */
@@ -870,6 +884,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         quickFinderCopy.setRenderMaintenanceLinks(this.renderMaintenanceLinks);
         quickFinderCopy.setMultipleValuesSelect(this.multipleValuesSelect);
         quickFinderCopy.setLookupCollectionName(this.lookupCollectionName);
+        quickFinderCopy.setLookupCollectionId(this.lookupCollectionId);
 
         if (lightBox != null) {
             quickFinderCopy.setLightBox((LightBox) this.lightBox.copy());

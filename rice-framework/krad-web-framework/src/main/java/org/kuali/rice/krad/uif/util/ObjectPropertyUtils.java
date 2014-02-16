@@ -37,7 +37,10 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -556,6 +559,37 @@ public final class ObjectPropertyUtils {
         
         throw new IllegalStateException(targetClass + " is assignable from " + sourceClass
                 + " but could not be found in the generic type hierarchy");
+    }
+
+    /**
+     * Splits the given property path into a string of property names that make up the path.
+     *
+     * @param path property path to split
+     * @return string array of names, starting from the top parent
+     */
+    public static String[] splitPropertyPath(String path) {
+        // we must escape dots within map keys before doing the split
+        Pattern pattern = Pattern.compile("(\\[(?:\"|')?)((?:\\w+\\.)+)(\\w+(?:\"|')?\\])");
+        Matcher matcher = pattern.matcher(path);
+
+        // replace dots in map keys with *, since that is not a valid character for paths
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(0) + StringUtils.replace(matcher.group(1), ".", "*") + matcher
+                    .group(2));
+        }
+        matcher.appendTail(sb);
+
+        String escapedPath = sb.toString();
+
+        String[] paths = StringUtils.split(escapedPath, ".");
+
+        // put back dots within maps keys
+        for (int i = 0; i < paths.length; i++) {
+            paths[i] = StringUtils.replace(paths[i], "*", ".");
+        }
+
+        return paths;
     }
     
     /**

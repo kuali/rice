@@ -64,25 +64,6 @@ public interface UifDictionaryBean extends DictionaryBean {
     public void setExpressionGraph(Map<String, String> expressionGraph);
 
     /**
-     * Map of expressions that should apply when the component is refresh
-     *
-     * <p>
-     * Expressions may exist on a parent component that impact the component state when it is being refreshed. These
-     * expressions are pulled out and placed into this map for evaluation during the refresh process
-     * </p>
-     *
-     * @return Map<String, String> key is property name to set and value is the expression to evaluate
-     */
-    public Map<String, String> getRefreshExpressionGraph();
-
-    /**
-     * Setter for the component's refresh expression graph
-     *
-     * @param refreshExpressionGraph
-     */
-    public void setRefreshExpressionGraph(Map<String, String> refreshExpressionGraph);
-
-    /**
      * Map of expressions that should be evaluated to conditionally set a property on the component
      *
      * <p>

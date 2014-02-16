@@ -76,7 +76,6 @@ public class ViewIndexTest {
         //add to view index
         for (Component component : components) {
             viewIndex.indexComponent(component);
-            viewIndex.addInitialComponentStateIfNeeded(component);
         }
 
         // verify initial view index state
@@ -88,7 +87,6 @@ public class ViewIndexTest {
         // confirm that the index still has the components
         for (Component component : components) {
             assertNotNull(viewIndex.getComponentById(component.getId()));
-            assertTrue(viewIndex.getInitialComponentStates().containsKey(component.getId()));
         }
     }
 }

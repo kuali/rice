@@ -15,24 +15,20 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AddComponentStateToViewIndexTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulatePathTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PrepareForCacheTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.SortContainerTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.springframework.util.StringUtils;
 
 /**
- * Lifecycle phase implementation representing the pre-process phase. 
- * 
+ * Lifecycle phase implementation representing the pre-process phase.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
@@ -78,50 +74,19 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
         tasks.offer(LifecycleTaskFactory.getTask(PopulatePathTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(SortContainerTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(PrepareForCacheTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(AddComponentStateToViewIndexTask.class, this));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        LifecycleElement element = getElement();
-
-        String nestedPathPrefix;
-        Component nestedParent;
-        if (element instanceof Component) {
-            nestedParent = (Component) element;
-            nestedPathPrefix = "";
-        } else {
-            nestedParent = getParent();
-            nestedPathPrefix = getParentPath() + ".";
+    protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
+            Component nestedParent) {
+        if (nestedElement != null && !UifConstants.ViewStatus.CACHED.equals(nestedElement.getViewStatus())) {
+            return LifecyclePhaseFactory.preProcess(nestedElement, nestedPath, nestedParent);
         }
 
-        Map<String, LifecycleElement> nestedElements =
-                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase()); 
-        for (Entry<String, LifecycleElement> nestedElementEntry : nestedElements.entrySet()) {
-            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
-            LifecycleElement nestedElement = nestedElementEntry.getValue();
-
-            if (nestedElement != null &&
-                    !UifConstants.ViewStatus.CACHED.equals(nestedElement.getViewStatus())) {
-                successors.offer(LifecyclePhaseFactory.preProcess(
-                        nestedElement, nestedPath, nestedParent));
-            }
-        }
-        ViewLifecycleUtils.recycleElementMap(nestedElements);
-    }
-
-    /**
-     * Prepares the phase for recycled use.
-     * 
-     * @param element lifecycle element
-     * @param path path to the element relative to the parent component
-     * @param parent the parent component
-     */
-    public void prepare(LifecycleElement element, String path, Component parent) {
-        super.prepare(element, null, path, parent, null);
+        return null;
     }
 
 }

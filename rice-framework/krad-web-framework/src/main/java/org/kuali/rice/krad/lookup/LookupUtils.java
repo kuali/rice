@@ -27,8 +27,11 @@ import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -38,6 +41,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.PropertyAccessorUtils;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -652,14 +656,14 @@ public class LookupUtils {
         int displayLength = 0;
 
         // avoid blowing the stack if the session expired
-        if (form.getPostedView() != null) {
+        ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
+        if (viewPostMetadata != null) {
 
             // only one concurrent request per view please
-            synchronized (form.getPostedView()) {
-                CollectionGroup oldCollectionGroup = (CollectionGroup) form.getPostedView().getViewIndex().getComponentById("uLookupResults");
-
-               displayStart = oldCollectionGroup.getDisplayStart();
-               displayLength = oldCollectionGroup.getDisplayLength();
+            synchronized (viewPostMetadata) {
+                ComponentPostMetadata oldCollectionGroup = viewPostMetadata.getComponentPostMetadata("uLookupResults");
+                displayStart = (Integer) oldCollectionGroup.getData(UifConstants.PostMetadata.COLL_DISPLAY_START);
+                displayLength = (Integer) oldCollectionGroup.getData(UifConstants.PostMetadata.COLL_DISPLAY_LENGTH);
             }
         }
 

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.Queue;
 
+import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
@@ -25,7 +26,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Lifecycle phase processing task for rendering a component.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see ViewLifecycle#isRenderInLifecycle()
  */
@@ -46,23 +47,25 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Create a new lifecycle phase processing task for finalizing a component.
-     * 
+     *
      * @param element the component instance that should be updated
      * @param model top level object containing the data
      * @param path Path to the component relative to its parent component.
      * @param renderParent The parent component.
      * @param pendingChildren The number of child rendering phases to expect to be queued for
-     *        processing before this phase.
+     * processing before this phase.
      */
-    protected void prepare(LifecycleElement element, Object model, String path,
+    protected void prepare(LifecycleElement element, Object model, String path, Tree<String, String> refreshPaths,
             Component parentComponent, RenderComponentPhase renderParent, int pendingChildren) {
-        super.prepare(element, model, path, parentComponent, null);
+        super.prepare(element, model, path, refreshPaths, parentComponent, null);
+
         this.renderParent = renderParent;
         this.pendingChildren = pendingChildren;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @return UifConstants.ViewPhases.RENDER
      */
     @Override
@@ -72,6 +75,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * {@inheritDoc}
+     *
      * @return UifConstants.ViewStatus.FINAL
      */
     @Override
@@ -81,6 +85,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * {@inheritDoc}
+     *
      * @return UifConstants.ViewStatus.RENDERED
      */
     @Override
@@ -98,7 +103,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * Perform rendering on the given component.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -106,7 +111,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
         if (!(getElement() instanceof Component)) {
             return;
         }
-        
+
         Component component = (Component) getElement();
         if (!component.isRender() || component.getTemplate() == null) {
             return;
@@ -126,12 +131,20 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
         synchronized (renderParent) {
             // InitializeSuccessors is invoked right after processing.
-            // Once the last sibling is processed, then queue the parent phase
-            // as a successor.
+            // Once the last sibling is processed, then queue the parent phase as a successor.
             if (--renderParent.pendingChildren == 0) {
                 successors.add(renderParent);
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
+            Component parent) {
+        return null;
     }
 
 }

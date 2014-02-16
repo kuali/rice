@@ -166,21 +166,6 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
             configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
         }
-
-        // set the refreshExpressionGraph property on each expressionConfigurable an expression was found for
-        if (buildRefreshGraphs) {
-            for (String configurablePath : refreshExpressionGraphs.keySet()) {
-                Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
-                // note if nested object is not a expressionConfigurable, then it can't be refresh and we can safely ignore
-                if ((nestedObject != null) && (nestedObject instanceof UifDictionaryBean)) {
-                    ((UifDictionaryBean) nestedObject).setRefreshExpressionGraph(refreshExpressionGraphs.get(
-                            configurablePath));
-                }
-            }
-
-            // the expression graph for the passed in expressionConfigurable will be its refresh graph as well
-            expressionConfigurable.setRefreshExpressionGraph(expressionGraph);
-        }
     }
 
     /**

@@ -35,15 +35,16 @@ public class FieldValidationMessages extends ValidationMessages {
     private boolean useTooltip;
     private boolean showIcons;
 
-    @Override
     /**
      * Calls super and add dataAttributes that are appropriate for field level validationMessages
      * data.  This data is used by the validation framework clientside.
      *
      * @see krad.validate.js
      */
-    public void generateMessages(boolean reset, View view, Object model, Component parent) {
-        super.generateMessages(reset, view, model, parent);
+    @Override
+    public void generateMessages(View view, Object model, Component parent) {
+        super.generateMessages(view, model, parent);
+
         boolean hasMessages = false;
         if (!this.getErrors().isEmpty() || !this.getWarnings().isEmpty() || !this.getInfos().isEmpty()) {
             hasMessages = true;
@@ -51,7 +52,7 @@ public class FieldValidationMessages extends ValidationMessages {
         HashMap<String, Object> validationMessagesDataAttributes = new HashMap<String, Object>();
 
         Map<String, String> dataDefaults =
-                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(
+                (Map<String, String>) (KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                         "Uif-FieldValidationMessages-DataDefaults"));
 
         //display

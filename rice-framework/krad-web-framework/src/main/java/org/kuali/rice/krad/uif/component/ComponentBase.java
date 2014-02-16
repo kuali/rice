@@ -69,6 +69,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String id;
     private String baseId;
     private String viewPath;
+    private Map<String, String> phasePathMapping;
+
     private String template;
     private String templateName;
 
@@ -199,6 +201,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         disableSessionPersistence = false;
         forceSessionPersistence = false;
 
+        phasePathMapping = new HashMap<String, String>();
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
         scriptDataAttributes = Collections.emptyMap();
@@ -612,6 +615,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setViewPath(String viewPath) {
         checkMutable(true);
         this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getPhasePathMapping() {
+        return phasePathMapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPhasePathMapping(Map<String, String> phasePathMapping) {
+        this.phasePathMapping = phasePathMapping;
     }
 
     /**
@@ -2393,6 +2412,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         componentCopy.setId(this.id);
         componentCopy.setBaseId(this.baseId);
+
+        if (this.phasePathMapping != null) {
+            componentCopy.setPhasePathMapping(new HashMap<String, String>(this.phasePathMapping));
+        }
 
         // Copy initialized status, but reset to created for others.
         // This allows prototypes to bypass repeating the initialized phase.

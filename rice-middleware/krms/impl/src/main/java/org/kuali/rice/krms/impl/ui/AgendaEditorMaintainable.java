@@ -31,6 +31,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
@@ -536,12 +537,12 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     @Override
-    public void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
+    public void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath) {
         AgendaEditor agendaEditor = getAgendaEditor(model);
         if (addLine instanceof ActionBo) {
             ((ActionBo) addLine).setNamespace(agendaEditor.getAgendaItemLine().getRule().getNamespace());
         }
 
-        super.processBeforeAddLine(view, collectionGroup, model, addLine);
+        super.processBeforeAddLine(model, addLine, collectionId, collectionPath);
     }
 }

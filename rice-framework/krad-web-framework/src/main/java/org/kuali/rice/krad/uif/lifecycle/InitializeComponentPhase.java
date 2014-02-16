@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.kuali.rice.krad.uif.UifConstants;
@@ -25,38 +23,38 @@ import org.kuali.rice.krad.uif.container.InitializeContainerFromHelperTask;
 import org.kuali.rice.krad.uif.container.ProcessRemoteFieldsHolderTask;
 import org.kuali.rice.krad.uif.field.InitializeDataFieldFromDictionaryTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AddComponentStateToViewIndexTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.HelperCustomInitializeTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
+import org.kuali.rice.krad.uif.lifecycle.initialize.PopulatePathTask;
 import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Lifecycle phase processing task for initializing a component.
- * 
+ *
  * <p>
  * During the initialize phase each component of the tree is invoked to setup state based on the
  * configuration and request options.
  * </p>
- * 
+ *
  * <p>
  * The initialize phase is only called once per <code>View</code> lifecycle
  * </p>
- * 
+ *
  * <p>
  * Note the <code>View</code> instance also contains the context Map that was created based on the
  * parameters sent to the view service
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
-    
+
     /**
      * {@inheritDoc}
+     *
      * @return UifConstants.ViewPhases.INITIALIZE
      */
     @Override
@@ -75,6 +73,7 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
 
     /**
      * {@inheritDoc}
+     *
      * @return UifConstants.ViewStatus.INITIALIZED
      */
     @Override
@@ -97,17 +96,10 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
         tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
-        if (!(getElement() instanceof View)) {
-            tasks.offer(LifecycleTaskFactory
-                    .getTask(AddComponentStateToViewIndexTask.class, this));
-        }
-
-        tasks.offer(LifecycleTaskFactory
-                .getTask(PopulateComponentFromExpressionGraphTask.class, this));
-        tasks.offer(LifecycleTaskFactory
-                .getTask(ComponentDefaultInitializeTask.class, this));
-        tasks.offer(LifecycleTaskFactory
-                .getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(PopulatePathTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(PopulateComponentFromExpressionGraphTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(ComponentDefaultInitializeTask.class, this));
+        tasks.offer(LifecycleTaskFactory.getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(InitializeContainerFromHelperTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, this));
         tasks.offer(LifecycleTaskFactory.getTask(InitializeDataFieldFromDictionaryTask.class, this));
@@ -117,36 +109,12 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * Define all nested lifecycle components, and component prototypes, as successors.
      * {@inheritDoc}
      */
     @Override
-    protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        LifecycleElement element = getElement();
-        Object model = getModel();
-
-        String nestedPathPrefix;
-        Component nestedParent;
-        if (element instanceof Component) {
-            nestedParent = (Component) element;
-            nestedPathPrefix = "";
-        } else {
-            nestedParent = getParent();
-            nestedPathPrefix = getParentPath() + ".";
-        }
-        
-        Map<String, LifecycleElement> nestedElements =
-                ViewLifecycleUtils.getElementsForLifecycle(element, getViewPhase());
-        for (Entry<String, LifecycleElement> nestedElementEntry : nestedElements.entrySet()) {
-            String nestedPath = nestedPathPrefix + nestedElementEntry.getKey();
-            LifecycleElement nestedElement = nestedElementEntry.getValue();
-
-            if (nestedElement != null && !nestedElement.isInitialized()) {
-                successors.offer(LifecyclePhaseFactory.initialize(
-                        nestedElement, model, nestedPath, nestedParent, null));
-            }
-        }
-        ViewLifecycleUtils.recycleElementMap(nestedElements);
-   }
+    protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
+            Component parent) {
+        return LifecyclePhaseFactory.initialize(nestedElement, getModel(), nestedPath, getRefreshPaths(), parent, null);
+    }
 
 }

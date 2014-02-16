@@ -118,11 +118,11 @@ KradResponse.prototype = {
     // and a displayWith marker span has a matching id, that span will be replaced with the label content
     // and removed from the component.  This allows for label and component content separation on fields
     updateComponentHandler: function (content, dataAttr) {
-        var id = dataAttr.updatecomponentid;
+        var id = dataAttr.id;
 
-        var $newComponent = jQuery("#" + id);
+        var $componentInDom = jQuery("#" + id);
 
-        hideBubblePopups($newComponent);
+        hideBubblePopups($componentInDom);
 
         var component = jQuery("#" + id + "_update", content);
 
@@ -145,11 +145,13 @@ KradResponse.prototype = {
         });
 
         // replace component
-        if ($newComponent.length) {
-            $newComponent.replaceWith(component.html());
+        if ($componentInDom.length) {
+            $componentInDom.replaceWith(component.html());
 
-            if ($newComponent.parent().is("td")) {
-                $newComponent.parent().show();
+            $componentInDom = jQuery("#" + id);
+
+            if ($componentInDom.parent().is("td")) {
+                $componentInDom.parent().show();
             }
 
             var displayWithLabel = jQuery(".displayWith-" + id);
@@ -159,10 +161,10 @@ KradResponse.prototype = {
             }
 
             // assume this content is open if being refreshed
-            var open = $newComponent.attr("data-open");
-            if (open != undefined && open == "false") {
-                $newComponent.attr("data-open", "true");
-                $newComponent.show();
+            var open = $componentInDom.attr("data-open");
+            if (open !== undefined && open === "false") {
+                $componentInDom.attr("data-open", "true");
+                $componentInDom.show();
             }
 
             // runs scripts on the span or div with id
@@ -174,14 +176,14 @@ KradResponse.prototype = {
                 openDataTablePage(id, currentPage);
             }
 
-            $newComponent.unblock({onUnblock: function () {
-                jQuery(component).find("#" + id).addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
-                $newComponent.animate({backgroundColor: "transparent"}, 6000);
-                jQuery(component).find("#" + id).animate({backgroundColor: "transparent"}, 6000);
+            $componentInDom.unblock({onUnblock: function () {
+                $componentInDom.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
+                $componentInDom.animate({backgroundColor: "transparent"}, 6000);
+               // jQuery(component).find("#" + id).animate({backgroundColor: "transparent"}, 6000);
             }
             });
 
-            $newComponent.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
+            $componentInDom.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
         }
     },
 

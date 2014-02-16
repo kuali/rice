@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ViewValidationService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -43,33 +44,40 @@ public class ViewValidationServiceImpl implements ViewValidationService {
      */
     @Override
     public DictionaryValidationResult validateView(ViewModel model) {
-        return validateView(model.getPostedView(), model);
+        return validateView(model, null);
     }
 
     /**
-     * @see ViewValidationService#validateView(View, ViewModel)
+     * @see ViewValidationService#validateViewSimulation(ViewModel)
      */
     @Override
-    public DictionaryValidationResult validateView(View view, ViewModel model) {
-        return validateView(view, model, null);
+    public void validateViewSimulation(ViewModel model) {
+        validateViewSimulation(model, null);
     }
 
     /**
-     * @see ViewValidationService#validateViewSimulation(View, ViewModel)
+     * @see ViewValidationService#validateViewSimulation(ViewModel, String)
      */
     @Override
-    public void validateViewSimulation(View view, ViewModel model) {
-        validateViewSimulation(view, model, null);
-    }
+    public void validateViewSimulation(ViewModel model, String untilState) {
+        // Get state mapping for view from post data
+        Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
 
-    /**
-     * @see ViewValidationService#validateViewSimulation(View, ViewModel, String)
-     */
-    @Override
-    public void validateViewSimulation(View view, ViewModel model, String untilState) {
-        StateMapping stateMapping = view.getStateMapping();
+        StateMapping stateMapping = null;
+        if (stateMappingObject != null) {
+             stateMapping = (StateMapping) stateMappingObject;
+        }
 
-        String path = view.getStateObjectBindingPath();
+        // Get state object path from post data
+        Object statePathObject = model.getViewPostMetadata().getComponentPostData(
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
+
+        String path = null;
+        if (statePathObject != null) {
+             path = (String) statePathObject;
+        }
+
         Object object;
         if (StringUtils.isNotBlank(path)) {
             object = ObjectPropertyUtils.getPropertyValue(model, path);
@@ -87,7 +95,7 @@ public class ViewValidationServiceImpl implements ViewValidationService {
             for (int i = startIndex; i < stateMapping.getStates().size(); i++) {
                 String state = stateMapping.getStates().get(i);
 
-                validateView(view, model, state);
+                validateView(model, state);
                 GlobalVariables.getMessageMap().merge(GlobalVariables.getMessageMap().getErrorMessages(),
                         GlobalVariables.getMessageMap().getWarningMessages());
                 GlobalVariables.getMessageMap().clearErrorMessages();
@@ -96,19 +104,27 @@ public class ViewValidationServiceImpl implements ViewValidationService {
                     break;
                 }
             }
-            validateView(view, model, stateMapping.getCurrentState(object));
+            validateView(model, stateMapping.getCurrentState(object));
         } else {
-            validateView(view, model, null);
+            validateView(model, null);
         }
 
     }
 
     /**
-     * @see ViewValidationService#validateView(View, ViewModel, String)
+     * @see ViewValidationService#validateView(ViewModel, String)
      */
     @Override
-    public DictionaryValidationResult validateView(View view, ViewModel model, String forcedValidationState) {
-        String path = view.getStateObjectBindingPath();
+    public DictionaryValidationResult validateView(ViewModel model, String forcedValidationState) {
+        // Get state object path from post data
+        Object statePathObject = model.getViewPostMetadata().getComponentPostData(model.getViewPostMetadata().getId(),
+                UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
+
+        String path = null;
+        if (statePathObject != null) {
+             path = (String) statePathObject;
+        }
+
         Object object;
 
         if (StringUtils.isNotBlank(path)) {
@@ -118,7 +134,16 @@ public class ViewValidationServiceImpl implements ViewValidationService {
         }
 
         String validationState = null;
-        StateMapping stateMapping = view.getStateMapping();
+
+        // Get state mapping for view from post data
+        Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
+
+        StateMapping stateMapping = null;
+        if (stateMappingObject != null) {
+             stateMapping = (StateMapping) stateMappingObject;
+        }
+
         if (StringUtils.isNotBlank(forcedValidationState)) {
             //use forced selected state if passed in
             validationState = forcedValidationState;
@@ -128,16 +153,24 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         }
 
-        return getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true,
+        return getDictionaryValidationService().validate(new ViewAttributeValueReader(model), true,
                 validationState, stateMapping);
     }
 
     /**
-     * @see ViewValidationService#validateViewAgainstNextState(View, ViewModel)
+     * @see ViewValidationService#validateViewAgainstNextState(ViewModel)
      */
     @Override
-    public DictionaryValidationResult validateViewAgainstNextState(View view, ViewModel model) {
-        String path = view.getStateObjectBindingPath();
+    public DictionaryValidationResult validateViewAgainstNextState(ViewModel model) {
+        // Get state object path from post data
+        Object statePathObject = model.getViewPostMetadata().getComponentPostData(model.getViewPostMetadata().getId(),
+                UifConstants.PostMetadata.STATE_OBJECT_BINDING_PATH);
+
+        String path = null;
+        if (statePathObject != null) {
+             path = (String) statePathObject;
+        }
+
         Object object;
 
         if (StringUtils.isNotBlank(path)) {
@@ -148,13 +181,20 @@ public class ViewValidationServiceImpl implements ViewValidationService {
 
         String validationState = null;
 
-        StateMapping stateMapping = view.getStateMapping();
+        // Get state mapping for view from post data
+        Object stateMappingObject = model.getViewPostMetadata().getComponentPostData(
+                model.getViewPostMetadata().getId(), UifConstants.PostMetadata.STATE_MAPPING);
+
+        StateMapping stateMapping = null;
+        if (stateMappingObject != null) {
+             stateMapping = (StateMapping) stateMappingObject;
+        }
 
         if (stateMapping != null) {
             //validation state is the next state for this call
             validationState = stateMapping.getNextState(object);
         }
-        return getDictionaryValidationService().validate(new ViewAttributeValueReader(view, model), true,
+        return getDictionaryValidationService().validate(new ViewAttributeValueReader(model), true,
                 validationState, stateMapping);
     }
 

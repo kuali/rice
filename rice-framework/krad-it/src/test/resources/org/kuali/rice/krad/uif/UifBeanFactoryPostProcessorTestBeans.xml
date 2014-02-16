@@ -201,4 +201,24 @@
       </list>
     </property>
   </bean>
+
+
+  <bean id="testBaseId" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField"/>
+        <bean id="InputField-BaseId" parent="Uif-InputField"/>
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Foo Header"/>
+        <bean id="Group-BaseId" parent="Uif-VerticalBoxSection"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="testBaseId2" parent="testBaseId">
+    <property name="items">
+      <list>
+        <bean parent="testBaseId"/>
+      </list>
+    </property>
+  </bean>
 </beans>

@@ -55,6 +55,7 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase<Lifecycl
     protected void performLifecycleTask() {
         LifecycleElement element = getElementState().getElement();
         LifecycleElement parent = getElementState().getParent();
+       
         Map<String, Object> commonContext = getElementState().getCommonContext();
         
         if (parent != null) {

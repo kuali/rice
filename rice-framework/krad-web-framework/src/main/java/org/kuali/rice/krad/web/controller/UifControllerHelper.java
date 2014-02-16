@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,38 +22,32 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Provides helper methods that will be used during the request lifecycle
+ * Provides helper methods that will be used during the request lifecycle.
  *
- * <p>
- * Created to avoid duplication of the methods used by the UifHandlerExceptionResolver
- * </p>
+ * <p>Created to avoid duplication of the methods used by the UifHandlerExceptionResolver</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifControllerHelper {
     private static final Logger LOG = Logger.getLogger(UifControllerHelper.class);
+
+    private UifControllerHelper() {}
 
     /**
      * Attempts to resolve a view id from the given request
@@ -86,15 +78,14 @@ public class UifControllerHelper {
             }
 
             if (viewType != null) {
-                @SuppressWarnings("unchecked")
-                Map<String, String> parameterMap =
+                @SuppressWarnings("unchecked") Map<String, String> parameterMap =
                         KRADUtils.translateRequestParameterMap(request.getParameterMap());
                 viewId = getViewService().getViewIdForViewType(viewType, parameterMap);
             }
         }
 
         if (StringUtils.isNotBlank(viewId)) {
-           request.setAttribute(UifParameters.VIEW_ID, viewId);
+            request.setAttribute(UifParameters.VIEW_ID, viewId);
         }
 
         return viewId;
@@ -125,11 +116,12 @@ public class UifControllerHelper {
     /**
      * After the controller logic is executed, the form is placed into session
      * and the corresponding view is prepared for rendering
+     *
      * @param request servlet request
      * @param response servlet response
      * @param handler handler instance
      * @param modelAndView model and view
-     * @throws Exception 
+     * @throws Exception
      */
     public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
@@ -144,42 +136,8 @@ public class UifControllerHelper {
 
         UifFormBase form = (UifFormBase) model;
 
-        // handle view building if not a redirect
-        if (!form.isRequestRedirected()) {
-            if (!form.isJsonRequest() && !form.isOriginalComponentRequest()) {
-                prepareViewForRendering(request, response, form);
-            }
-
-            // export the component to the request model if an update id has been set
-            Component component = null;
-            if (StringUtils.isNotBlank(form.getUpdateComponentId())) {
-                component = form.getPostedView().getViewIndex().getComponentById(form.getUpdateComponentId());
-            } else if (form.isUpdatePageRequest()) {
-                component = form.getView().getCurrentPage();
-            }
-
-            if (form.isOriginalComponentRequest()) {
-                // This needs to be done because scenarios where the templates are not present
-                updateViewTemplates(component, form);
-            }
-
-            String changeProperties = request.getParameter(UifParameters.CHANGE_PROPERTIES);
-
-            // Change properties on the the final component
-            if (StringUtils.isNotBlank(changeProperties) && component != null){
-                @SuppressWarnings("unchecked")
-                HashMap<String, Object> changePropertiesMap =
-                        new ObjectMapper().readValue(changeProperties, HashMap.class);
-
-                for (String changePropertyPath : changePropertiesMap.keySet()){
-                    Object value = changePropertiesMap.get(changePropertyPath);
-                    ObjectPropertyUtils.setPropertyValue(component, changePropertyPath, value);
-                }
-            }
-
-            if (component != null) {
-                modelAndView.addObject(UifConstants.COMPONENT_MODEL_NAME, component);
-            }
+        if (!form.isRequestRedirected() && !form.isJsonRequest()) {
+            prepareViewForRendering(request, response, form);
         }
 
         // expose additional objects to the templates
@@ -194,98 +152,40 @@ public class UifControllerHelper {
     }
 
     /**
-     * Update the view templates with the ones necessary to render the currentComponent passed in
-     *
-     * @param currentComponent the component to use to update the templates
-     * @param form the current form
-     */
-    protected static void updateViewTemplates(Component currentComponent, UifFormBase form){
-        List<Component> components = ComponentUtils.getAllNestedComponents(currentComponent);
-        components.add(currentComponent);
-        for (Component component : components){
-            // add the components template to the views list of components
-            if (!component.isSelfRendered() && StringUtils.isNotBlank(component.getTemplate()) &&
-                    !form.getPostedView().getViewTemplates().contains(component.getTemplate())) {
-                form.getPostedView().getViewTemplates().add(component.getTemplate());
-            }
-
-            if (component instanceof Container) {
-                LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-                if ((layoutManager != null)
-                        && !form.getPostedView().getViewTemplates().contains(layoutManager.getTemplate())) {
-                    form.getPostedView().getViewTemplates().add(layoutManager.getTemplate());
-                }
-            }
-        }
-    }
-
-    /**
-     * Prepares the <code>View</code> instance contained on the form for rendering
+     * Prepares the {@link org.kuali.rice.krad.uif.view.View} instance contained on the form for rendering.
      *
      * @param request servlet request
      * @param response servlet response
      * @param form - form instance containing the data and view instance
      */
-    public static void prepareViewForRendering(
-            HttpServletRequest request, HttpServletResponse response, final UifFormBase form) {
+    public static void prepareViewForRendering(HttpServletRequest request, HttpServletResponse response,
+            UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
         if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
             String refreshComponentId = form.getUpdateComponentId();
 
-            View postedView = form.getPostedView();
-
-            // get a new instance of the component
-            Component component =
-                    ComponentFactory.getNewInstanceForRefresh(form.getPostedView(), refreshComponentId);
-
-            // run lifecycle and update in view
-            ViewLifecycle.performComponentLifecycle(
-                    postedView, form, request, response, component, refreshComponentId);
-
+            Component updateComponent = ViewLifecycle.performComponentLifecycle(form.getView(), form, request, response,
+                    form.getViewPostMetadata(), refreshComponentId);
+            form.setUpdateComponent(updateComponent);
         } else {
             // full view build
-            final View view = form.getView();
-            if ( view != null ) {
-
-                @SuppressWarnings("unchecked")
-                Map<String, String> parameterMap =
-                    KRADUtils.translateRequestParameterMap(request.getParameterMap());
+            View view = form.getView();
+            if (view != null) {
+                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
                 parameterMap.putAll(form.getViewRequestParameters());
 
                 // build view which will prepare for rendering
-                ViewLifecycle.buildView(view, form, request, response, parameterMap);
-                
+                ViewPostMetadata postMetadata = ViewLifecycle.buildView(view, form, request, response, parameterMap);
+                form.setViewPostMetadata(postMetadata);
+
+                if (form.isUpdatePageRequest()) {
+                    Component updateComponent = form.getView().getCurrentPage();
+                    form.setUpdateComponent(updateComponent);
+                }
             } else {
-                LOG.warn( "View in form was null: " + form);
+                LOG.warn("View in form was null: " + form);
             }
         }
-    }
-
-    /**
-     * Remove unused forms from breadcrumb history
-     *
-     * <p>
-     * When going back in the breadcrumb history some forms become unused in the breadcrumb history.  Here the unused
-     * forms are being determine and removed from the server to free memory.
-     * </p>
-     *
-     * @param uifFormManager
-     * @param formKey of the current form
-     * @param lastFormKey of the last form
-     */
-    public static void removeUnusedBreadcrumbs(UifFormManager uifFormManager, String formKey, String lastFormKey) {
-        if (StringUtils.isBlank(formKey) || StringUtils.isBlank(lastFormKey) || StringUtils.equals(formKey,
-                lastFormKey)) {
-            return;
-        }
-
-        UifFormBase previousForm = uifFormManager.getSessionForm(lastFormKey);
-        if (previousForm == null) {
-            return;
-        }
-
-        uifFormManager.removeSessionFormByKey(lastFormKey);
     }
 
     protected static ViewService getViewService() {

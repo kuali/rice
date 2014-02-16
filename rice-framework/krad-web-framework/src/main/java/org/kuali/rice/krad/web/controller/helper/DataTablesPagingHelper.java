@@ -32,7 +32,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ColumnSort;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.MultiColumnComparator;
@@ -56,9 +58,9 @@ public class DataTablesPagingHelper {
         // Set property to trigger special JSON rendering logic in uifRender.ftl
         form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
         
-        View view = form.getPostedView();
+        ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
 
-        if (view != null) { // avoid blowing the stack if the session expired
+        if (viewPostMetadata != null) { // avoid blowing the stack if the session expired
             // don't set the component to update unless we have a postedView, otherwise we'll get an NPE later
             form.setUpdateComponentId(tableId);
 
@@ -70,20 +72,20 @@ public class DataTablesPagingHelper {
             List<Object> modelCollection = null;
             List<ColumnSort> newColumnSorts = null;
 
-            synchronized (view) { // only one concurrent request per view please
+            synchronized (viewPostMetadata) { // only one concurrent request per view please
 
-                CollectionGroup oldCollectionGroup = (CollectionGroup) view.getViewIndex().getComponentById(tableId);
-                newColumnSorts = buildColumnSorts(view, dataTablesInputs, oldCollectionGroup);
+                newColumnSorts = buildColumnSorts(form, dataTablesInputs, tableId);
 
                 // get the collection for this group from the model
                 modelCollection = ObjectPropertyUtils.getPropertyValue(form,
-                        oldCollectionGroup.getBindingInfo().getBindingPath());
+                        (String) viewPostMetadata.getComponentPostMetadata(tableId)
+                        .getData(UifConstants.PostMetadata.BINDING_PATH));
 
-                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, oldCollectionGroup, view);
+                applyTableJsonSort(modelCollection, oldColumnSorts, newColumnSorts, tableId);
 
                 // get a new instance of the collection group component that we'll run the lifecycle on
-                newCollectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(form.getPostedView(),
-                        tableId);
+                newCollectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(
+                        form.getViewPostMetadata(), tableId);
 
                 // set up the collection group properties related to paging in the collection group to set the bounds for
                 // what needs to be rendered
@@ -92,8 +94,8 @@ public class DataTablesPagingHelper {
                 newCollectionGroup.setDisplayLength(dataTablesInputs.iDisplayLength);
 
                 // run lifecycle on the table component and update in view
-                ViewLifecycle.performComponentLifecycle(view, form, request, response,
-                                newCollectionGroup, oldCollectionGroup.getId());
+//                ViewLifecycle.performComponentLifecycle(view, form, form.getViewPostMetadata(), request, response,
+//                                newCollectionGroup, oldCollectionGroup.getId());
             }
 
             this.tableLayoutManager = (TableLayoutManager) newCollectionGroup.getLayoutManager();
@@ -109,20 +111,21 @@ public class DataTablesPagingHelper {
     /**
      * Extract the sorting information from the DataTablesInputs into a more generic form.
      *
+     * @param form object containing the view's data
      * @param view posted view containing the collection
      * @param dataTablesInputs the parsed request data from dataTables
      * @return the List of ColumnSort elements representing the requested sort columns, types, and directions
      */
-    private List<ColumnSort> buildColumnSorts(View view, DataTablesInputs dataTablesInputs, CollectionGroup collectionGroup) {
+    private List<ColumnSort> buildColumnSorts(UifFormBase form, DataTablesInputs dataTablesInputs, String collectionGroupId) {
         int[] sortCols = dataTablesInputs.iSortCol_; // cols being sorted on (for multi-col sort)
         boolean[] sortable = dataTablesInputs.bSortable_; // which columns are sortable
         String[] sortDir = dataTablesInputs.sSortDir_; // direction to sort
 
         // parse table options to gather the sort types
-        String aoColumnDefsValue = (String) view.getViewIndex().getPostContextEntry(collectionGroup.getId(),
+        String aoColumnDefsValue = (String) form.getViewPostMetadata().getComponentPostData(collectionGroupId,
                 UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
-        JsonArray jsonColumnDefs = null;
 
+        JsonArray jsonColumnDefs = null;
         if (!StringUtils.isEmpty(aoColumnDefsValue)) { // we'll parse this using a JSON library to make things simpler
             // function definitions are not allowed in JSON
             aoColumnDefsValue = aoColumnDefsValue.replaceAll("function\\([^)]*\\)\\s*\\{[^}]*\\}", "\"REDACTED\"");
@@ -203,11 +206,10 @@ public class DataTablesPagingHelper {
      * @param modelCollection the collection to sort
      * @param oldColumnSorts the sorting that reflects the current state of the collection
      * @param newColumnSorts the sorting to apply to the collection
-     * @param collectionGroup the CollectionGroup that is being rendered
-     * @param view the view
+     * @param tableId id of the table being refreshed
      */
     protected void applyTableJsonSort(final List<Object> modelCollection, List<ColumnSort> oldColumnSorts,
-            final List<ColumnSort> newColumnSorts, final CollectionGroup collectionGroup, final View view) {
+            final List<ColumnSort> newColumnSorts, String tableId) {
 
         boolean isCollectionEmpty = CollectionUtils.isEmpty(modelCollection);
         boolean isSortingSpecified = !CollectionUtils.isEmpty(newColumnSorts);
@@ -220,7 +222,7 @@ public class DataTablesPagingHelper {
             }
 
             MultiColumnComparator comparator =
-                    new MultiColumnComparator(modelCollection, collectionGroup, newColumnSorts, view);
+                    new MultiColumnComparator(modelCollection, tableId, newColumnSorts);
             Arrays.sort(sortIndices, comparator);
 
             // apply the sort to the modelCollection

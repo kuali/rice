@@ -25,10 +25,12 @@ import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
@@ -142,18 +144,21 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
      *      java.lang.Object)
      */
-    protected void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine, String collectionPath) {
+    @Override
+    public void processAfterAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath,
+                boolean isValidLine) {
         // Check for maintenance documents in edit but exclude notes
         if (model instanceof MaintenanceDocumentForm
                 && KRADConstants.MAINTENANCE_EDIT_ACTION.equals(((MaintenanceDocumentForm)model).getMaintenanceAction()) && !(addLine instanceof Note)) {
-//            MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) model;
-//            MaintenanceDocument document = maintenanceForm.getDocument();
+
+            Class<?> collectionObjectClass = (Class<?>) model.getViewPostMetadata().getComponentPostData(collectionId,
+                    UifConstants.PostMetadata.COLL_OBJECT_CLASS);
 
             // get the old object's collection
             String oldCollectionPath = collectionPath.replace("newMaintainableObject","oldMaintainableObject");
             Collection<Object> oldCollection = ObjectPropertyUtils.getPropertyValue(model, oldCollectionPath );
             try {
-                Object blankLine = collectionGroup.getCollectionObjectClass().newInstance();
+                Object blankLine = collectionObjectClass.newInstance();
                 oldCollection.add(blankLine);
             } catch (Exception e) {
                 throw new RuntimeException("Unable to create new line instance for old maintenance object", e);
@@ -170,12 +175,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      *      java.lang.Object, java.lang.String, int)
      */
     @Override
-    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
-        // get the collection group from the view
-        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
-        if (collectionGroup == null) {
-            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
-        }
+    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
 
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
@@ -189,10 +189,10 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             Object deleteLine = ((List<Object>) collection).get(lineIndex);
 
             // validate the delete action is allowed for this line
-            boolean isValid = performDeleteLineValidation(view, collectionGroup, deleteLine);
+            boolean isValid = performDeleteLineValidation(model, collectionId, collectionPath, deleteLine);
             if (isValid) {
                 ((List<Object>) collection).remove(lineIndex);
-                processAfterDeleteLine(view, collectionPath, model, lineIndex);
+                processAfterDeleteLine(model, collectionId, collectionPath, lineIndex);
             }
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
@@ -211,7 +211,8 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(View,
      *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
      */
-    protected void processAfterDeleteLine(View view, String collectionPath, Object model, int lineIndex) {
+    @Override
+    public void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
 
         // Check for maintenance documents in edit
         if (model instanceof MaintenanceDocumentForm

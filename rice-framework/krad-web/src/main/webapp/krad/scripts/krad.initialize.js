@@ -620,13 +620,8 @@ function setupDisclosureHandler() {
                         showLoading("Loading...", disclosureContent, true);
                         disclosureContent.show();
 
-                        // Add change to defaultOpen in change properties data
-                        var data = {};
-                        data[kradVariables.CHANGE_COMPONENT_PROPERTIES] = "{\"disclosure.defaultOpen\": true}";
-
                         // This a specialized methodToCall passed in for retrieving the originally generated component
-                        retrieveComponent(linkId.replace("_toggle", ""),
-                                kradVariables.RETRIEVE_ORIGINAL_COMPONENT_METHOD_TO_CALL, null, data, true);
+                        retrieveComponent(linkId.replace("_toggle", ""));
                     }
                     else{
                         // If no ajax retrieval, slide down animationg

@@ -557,7 +557,23 @@ public class ComponentUtils {
     }
 
     /**
-     * places a key, value pair in each context map of a list of lifecycle elements
+     * Indicates if the given component has configuration that it allows it to be refreshed.
+     *
+     * @param component instance to check
+     * @return true if component can be refreshed, false if not
+     */
+    public static boolean canBeRefreshed(Component component) {
+        boolean hasRefreshCondition = StringUtils.isNotBlank(component.getProgressiveRender()) ||
+                StringUtils.isNotBlank(component.getConditionalRefresh()) || (component.getRefreshTimer() > 0) ||
+                (component.getRefreshWhenChangedPropertyNames() != null && !component
+                        .getRefreshWhenChangedPropertyNames().isEmpty());
+
+        return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() || component
+                .isRetrieveViaAjax();
+    }
+
+    /**
+     * places a key, value pair in each context map of a list of components
      *
      * @param elements the list of elements
      * @param contextName a value to be used as a key to retrieve the object
@@ -662,20 +678,20 @@ public class ComponentUtils {
     }
 
     /**
-     * update the contexts of the given components
+     * Update the contexts of the given components.
      *
-     * <p>calls {@link #updateContextForLine(org.kuali.rice.krad.uif.component.Component, Object, int, String)}
-     * for each component</p>
+     * <p>Calls {@link ComponentUtils#updateContextForLine} for each component</p>
      *
      * @param components the components whose components to update
+     * @param collectionGroup collection group the components are associated with
      * @param collectionLine an instance of the data object for the line
      * @param lineIndex the line index
      * @param lineSuffix id suffix for components in the line to make them unique
      */
-    public static void updateContextsForLine(List<? extends Component> components, Object collectionLine, int lineIndex,
-            String lineSuffix) {
+    public static void updateContextsForLine(List<? extends Component> components, CollectionGroup collectionGroup,
+            Object collectionLine, int lineIndex, String lineSuffix) {
         for (Component component : components) {
-            updateContextForLine(component, collectionLine, lineIndex, lineSuffix);
+            updateContextForLine(component, collectionGroup, collectionLine, lineIndex, lineSuffix);
         }
     }
 
@@ -686,13 +702,15 @@ public class ComponentUtils {
      * are set to {@code collectionLine} and {@code lineIndex} respectively.</p>
      *
      * @param component the component whose context is to be updated
+     * @param collectionGroup collection group the component is associated with
      * @param collectionLine an instance of the data object for the line
      * @param lineIndex the line index
      * @param lineSuffix id suffix for components in the line to make them unique
      */
-    public static void updateContextForLine(Component component, Object collectionLine, int lineIndex,
-            String lineSuffix) {
-        Map<String, Object> toUpdate = new HashMap<String,Object>(4);
+    public static void updateContextForLine(Component component, CollectionGroup collectionGroup, Object collectionLine,
+            int lineIndex, String lineSuffix) {
+        Map<String, Object> toUpdate = new HashMap<String, Object>(5);
+        toUpdate.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         toUpdate.put(UifConstants.ContextVariableNames.LINE, collectionLine);
         toUpdate.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
         toUpdate.put(UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);

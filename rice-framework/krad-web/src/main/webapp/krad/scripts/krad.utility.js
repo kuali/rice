@@ -445,7 +445,8 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("[data-open='false']").length) {
+    if (jqueryObj.attr("name") === undefined || (jqueryObj.closest("div[data-open]").length &&
+            jqueryObj.closest("div[data-open]").attr("data-open") === "false")) {
         return;
     }
 

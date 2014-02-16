@@ -37,6 +37,8 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
@@ -61,7 +63,7 @@ import org.kuali.rice.krad.util.MessageMap;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "validationMessages-bean", parent = "Uif-ValidationMessagesBase")
-public class ValidationMessages extends UifDictionaryBeanBase {
+public class ValidationMessages extends UifDictionaryBeanBase implements LifecycleEventListener {
     private static final long serialVersionUID = 780940788435330077L;
 
     private List<String> additionalKeysToMatch;
@@ -76,17 +78,14 @@ public class ValidationMessages extends UifDictionaryBeanBase {
     /**
      * Generates the messages based on the content in the messageMap
      *
-     * @param reset true to reset the errors, warnings, and info lists
      * @param view the current View
      * @param model the current model
      * @param parent the parent of this ValidationMessages
      */
-    public void generateMessages(boolean reset, View view, Object model, Component parent) {
-        if (reset) {
-            errors = new ArrayList<String>();
-            warnings = new ArrayList<String>();
-            infos = new ArrayList<String>();
-        }
+    public void generateMessages(View view, Object model, Component parent) {
+        errors = new ArrayList<String>();
+        warnings = new ArrayList<String>();
+        infos = new ArrayList<String>();
 
         List<String> masterKeyList = getKeys(parent);
         MessageMap messageMap = GlobalVariables.getMessageMap();
@@ -130,30 +129,9 @@ public class ValidationMessages extends UifDictionaryBeanBase {
             masterKeyList.add(parentContainerId);
         }
 
-        //Check for message keys that are not matched anywhere on the page - these unmatched messages must still be
-        //displayed at the page level
         if (parent instanceof PageGroup) {
-            Map<String, PropertyEditor> propertyEditors = view.getViewIndex().getFieldPropertyEditors();
-            Map<String, PropertyEditor> securePropertyEditors = view.getViewIndex().getSecureFieldPropertyEditors();
-            List<String> allPossibleKeys = new ArrayList<String>(propertyEditors.keySet());
-            allPossibleKeys.addAll(securePropertyEditors.keySet());
-
-            this.addNestedGroupKeys(allPossibleKeys, parent);
-            if (additionalKeysToMatch != null) {
-                allPossibleKeys.addAll(additionalKeysToMatch);
-            }
-            if (StringUtils.isNotBlank(parent.getId())) {
-                allPossibleKeys.add(parent.getId());
-            }
-
-            Set<String> messageKeys = new HashSet<String>();
-            messageKeys.addAll(messageMap.getAllPropertiesWithErrors());
-            messageKeys.addAll(messageMap.getAllPropertiesWithWarnings());
-            messageKeys.addAll(messageMap.getAllPropertiesWithInfo());
-
-            messageKeys.removeAll(allPossibleKeys);
-
-            masterKeyList.addAll(messageKeys);
+            //ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+            //viewLifecycle.registerLifecycleCompleteListener(view, this);
         }
 
         for (String key : masterKeyList) {
@@ -190,6 +168,42 @@ public class ValidationMessages extends UifDictionaryBeanBase {
         }
 
         return result;
+    }
+
+    /**
+     * Check for message keys that are not matched anywhere on the page, these unmatched messages must still be
+     * displayed at the page level.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void processEvent(ViewLifecycle.LifecycleEvent lifecycleEvent, View view, Object model,
+            LifecycleElement eventComponent) {
+        Map<String, PropertyEditor> propertyEditors = ViewLifecycle.getViewPostMetadata().getFieldPropertyEditors();
+        Map<String, PropertyEditor> securePropertyEditors =
+                ViewLifecycle.getViewPostMetadata().getSecureFieldPropertyEditors();
+
+        List<String> masterKeyList = new ArrayList<String>();
+
+//        List<String> allPossibleKeys = new ArrayList<String>(propertyEditors.keySet());
+//        allPossibleKeys.addAll(securePropertyEditors.keySet());
+//
+//        this.addNestedGroupKeys(allPossibleKeys, parent);
+//        if (additionalKeysToMatch != null) {
+//            allPossibleKeys.addAll(additionalKeysToMatch);
+//        }
+//        if (StringUtils.isNotBlank(parent.getId())) {
+//            allPossibleKeys.add(parent.getId());
+//        }
+//
+//        Set<String> messageKeys = new HashSet<String>();
+//        messageKeys.addAll(messageMap.getAllPropertiesWithErrors());
+//        messageKeys.addAll(messageMap.getAllPropertiesWithWarnings());
+//        messageKeys.addAll(messageMap.getAllPropertiesWithInfo());
+//
+//        messageKeys.removeAll(allPossibleKeys);
+//
+//        masterKeyList.addAll(messageKeys);
     }
 
     /**

@@ -103,7 +103,7 @@ public class CollectionGroupBuilder implements Serializable {
 
         // get the collection for this group from the model
         List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
-                ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
+                collectionGroup.getBindingInfo().getBindingPath());
 
         if (modelCollection != null) {
             // filter inactive model
@@ -341,7 +341,7 @@ public class CollectionGroupBuilder implements Serializable {
         boolean canEditLine = !collectionGroup.isReadOnly();
 
         // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex, lineSuffix);
+        ComponentUtils.updateContextsForLine(lineFields, collectionGroup, currentLine, lineIndex, lineSuffix);
 
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
         for (Action action : actions) {
@@ -443,7 +443,7 @@ public class CollectionGroupBuilder implements Serializable {
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex,
+                ComponentUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup, currentLine, lineIndex,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 ComponentUtils.pushObjectToContext(subCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
                         currentLine);
@@ -799,7 +799,7 @@ public class CollectionGroupBuilder implements Serializable {
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         initializeActions(actions, collectionGroup, lineIndex);
 
-        ComponentUtils.updateContextsForLine(actionComponents, collectionLine, lineIndex, lineSuffix);
+        ComponentUtils.updateContextsForLine(actionComponents, collectionGroup, collectionLine, lineIndex, lineSuffix);
 
         return actionComponents;
     }
@@ -817,16 +817,22 @@ public class CollectionGroupBuilder implements Serializable {
             if (ComponentUtils.containsPropertyExpression(action, UifPropertyPaths.ACTION_PARAMETERS, true)) {
                 // need to update the actions expressions so our settings do not get overridden
                 action.getPropertyExpressions().put(
-                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELLECTED_COLLECTION_PATH + "']",
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_COLLECTION_PATH + "']",
                         UifConstants.EL_PLACEHOLDER_PREFIX + "'" + collectionGroup.getBindingInfo().getBindingPath() +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_COLLECTION_ID + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + collectionGroup.getId() +
                                 "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
                 action.getPropertyExpressions().put(
                         UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_LINE_INDEX + "']",
                         UifConstants.EL_PLACEHOLDER_PREFIX + "'" + Integer.toString(lineIndex) +
                                 "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
             } else {
-                action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+                action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
                         collectionGroup.getBindingInfo().getBindingPath());
+                action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID,
+                                        collectionGroup.getId());
                 action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             }
 
@@ -879,8 +885,10 @@ public class CollectionGroupBuilder implements Serializable {
         List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(), lineSuffix);
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineActionComponents, Action.class);
         for (Action action : actions) {
-            action.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
+            action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
+            action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID,
+                                collectionGroup.getId());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
             action.setRefreshId(collectionGroup.getId());
@@ -913,7 +921,7 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActionComponents, addLine, -1, lineSuffix);
+        ComponentUtils.updateContextsForLine(lineActionComponents, collectionGroup, addLine, -1, lineSuffix);
 
         return lineActionComponents;
     }

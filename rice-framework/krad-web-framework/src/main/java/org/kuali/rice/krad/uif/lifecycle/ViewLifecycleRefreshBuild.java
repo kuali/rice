@@ -59,6 +59,11 @@ public class ViewLifecycleRefreshBuild implements Runnable {
                 lookupCollectionName = request.getParameter(UifParameters.LOOKUP_COLLECTION_NAME);
             }
 
+            String lookupCollectionId = "";
+            if (request.getParameterMap().containsKey(UifParameters.LOOKUP_COLLECTION_ID)) {
+                lookupCollectionId = request.getParameter(UifParameters.LOOKUP_COLLECTION_ID);
+            }
+
             if (StringUtils.isBlank(lookupCollectionName)) {
                 throw new RuntimeException(
                         "Lookup collection name is required for processing multi-value lookup results");
@@ -73,7 +78,7 @@ public class ViewLifecycleRefreshBuild implements Runnable {
             }
 
             // invoked view helper to populate the collection from lookup results
-            ViewLifecycle.getHelper().processMultipleValueLookupResults(form.getPostedView(), form,
+            ViewLifecycle.getHelper().processMultipleValueLookupResults(form, lookupCollectionId,
                     lookupCollectionName, selectedLineValues);
         }
 
@@ -88,14 +93,14 @@ public class ViewLifecycleRefreshBuild implements Runnable {
         if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
             String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
 
-            String focusId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
+            String focusId = (String) form.getViewPostMetadata().getComponentPostData(quickfinderId,
+                                UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID);
             if (StringUtils.isNotBlank(focusId)) {
                 form.setFocusId(focusId);
             }
 
-            String jumpToId = (String) view.getViewIndex().getPostContextEntry(quickfinderId,
-                    UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
+            String jumpToId = (String) form.getViewPostMetadata().getComponentPostData(quickfinderId,
+                                UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID);
             if (StringUtils.isNotBlank(jumpToId)) {
                 form.setJumpToId(jumpToId);
             }

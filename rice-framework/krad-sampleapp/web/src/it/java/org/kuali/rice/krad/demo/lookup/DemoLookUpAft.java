@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.lookup;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 import org.junit.Test;
 
 /**
@@ -61,9 +62,18 @@ public class DemoLookUpAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a6')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
+        waitForElementPresentByXpath("//a[contains(text(), 'a6')]");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
+        waitForElementNotPresent(By.xpath("//a[contains(text(), 'a2')]"));
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]","02/01/2014");
+        waitAndTypeByName("lookupCriteria[createDate]","02/13/2014");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextPresent("No values match this search.");
     }
 
     protected void testLookUpFancy() throws InterruptedException {

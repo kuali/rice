@@ -1568,15 +1568,15 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return rowDetailsGroup component
      */
+    @Override
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
     }
 
     /**
-     * Set the row details info group
-     *
-     * @param rowDetailsGroup row details group
+     * @see TableLayoutManagerBase#getRowDetailsGroup()
      */
     public void setRowDetailsGroup(Group rowDetailsGroup) {
         this.rowDetailsGroup = rowDetailsGroup;

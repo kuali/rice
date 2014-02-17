@@ -16,14 +16,12 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.lang.reflect.Array;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -413,86 +412,86 @@ public final class ViewLifecycleUtils {
 
     /**
      * Stores metadata related to a lifecycle element class, for reducing overhead.
-     *
-     * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static class ElementMetadata {
 
-        /**
-         * Set of all view phases, to use as keys for {@link #lifecycleRestrictedProperties}.
-         */
-        private static final Set<String> VIEW_PHASES;
-
-        /**
-         * Initializes the {@link #VIEW_PHASES} set with all constants defined in
-         * {@link UifConstants.ViewPhases}.
-         */
-        static {
-            Set<String> viewPhases = new LinkedHashSet<String>();
-            for (java.lang.reflect.Field phaseConstantField : UifConstants.ViewPhases.class.getFields()) {
-                int mod = phaseConstantField.getModifiers();
-                if (phaseConstantField.getType().equals(String.class) &&
-                        Modifier.isStatic(mod) && Modifier.isFinal(mod)) {
-                    try {
-                        viewPhases.add((String) phaseConstantField.get(null));
-                    } catch (IllegalAccessException e) {
-                        throw new ExceptionInInitializerError(e);
-                    }
-                }
-            }
-            VIEW_PHASES = Collections.unmodifiableSet(viewPhases);
-        }
-
-        /**
-         * Set of all restricted properties on the element class, keyed by view phase.
-         */
+        // set of all restricted properties on the element class, keyed by view phase
         private final Map<String, Set<String>> lifecycleRestrictedProperties;
 
         /**
          * Creates a new metadata wrapper for a bean class.
-         * 
+         *
          * @param elementClass The element class.
          */
         private ElementMetadata(Class<?> elementClass) {
             Set<String> restrictedPropertyNames = ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(
                     elementClass, ViewLifecycleRestriction.class);
+
             if (restrictedPropertyNames.isEmpty()) {
                 lifecycleRestrictedProperties = Collections.emptyMap();
 
                 return;
             }
 
-            Map<String, Set<String>> mutableLifecycleRestrictedProperties = new HashMap<String, Set<String>>(
-                    restrictedPropertyNames.size());
+            Map<String, Set<String>> mutableLifecycleRestrictedProperties = new HashMap<String, Set<String>>();
 
+            mutableLifecycleRestrictedProperties.put(UifConstants.ViewPhases.FINALIZE, new HashSet<String>(
+                    restrictedPropertyNames));
+            mutableLifecycleRestrictedProperties.put(UifConstants.ViewPhases.APPLY_MODEL, new HashSet<String>(
+                    restrictedPropertyNames));
+            mutableLifecycleRestrictedProperties.put(UifConstants.ViewPhases.INITIALIZE, new HashSet<String>(
+                    restrictedPropertyNames));
+            mutableLifecycleRestrictedProperties.put(UifConstants.ViewPhases.PRE_PROCESS, new HashSet<String>(
+                    restrictedPropertyNames));
+
+            // remove properties that should be included for certain phases
             for (String restrictedPropertyName : restrictedPropertyNames) {
                 ViewLifecycleRestriction restriction = ObjectPropertyUtils.getReadMethod(elementClass,
                         restrictedPropertyName).getAnnotation(ViewLifecycleRestriction.class);
-                for (String phase : restriction.value()) {
-                    Set<String> restrictedByPhase = mutableLifecycleRestrictedProperties.get(phase);
 
-                    if (restrictedByPhase == null) {
-                        restrictedByPhase = new HashSet<String>(restrictedPropertyNames);
-                        mutableLifecycleRestrictedProperties.put(phase, restrictedByPhase);
-                    }
-
-                    restrictedByPhase.remove(restrictedPropertyName);
-                    break;
-                }
-            }
-
-            Set<String> immutableRestrictedPropertyNames = Collections.unmodifiableSet(restrictedPropertyNames);
-            for (String phase : VIEW_PHASES) {
-                Set<String> restrictedByPhase = mutableLifecycleRestrictedProperties.get(phase);
-
-                if (restrictedByPhase == null) {
-                    mutableLifecycleRestrictedProperties.put(phase, immutableRestrictedPropertyNames);
-                } else {
-                    mutableLifecycleRestrictedProperties.put(phase, Collections.unmodifiableSet(restrictedByPhase));
+                if (restriction.value().length > 0) {
+                    removedRestrictionsForPrecedingPhases(mutableLifecycleRestrictedProperties, restrictedPropertyName,
+                            restriction.value()[0]);
                 }
             }
 
             lifecycleRestrictedProperties = Collections.unmodifiableMap(mutableLifecycleRestrictedProperties);
+        }
+
+        private void removedRestrictionsForPrecedingPhases(
+                Map<String, Set<String>> mutableLifecycleRestrictedProperties, String propertyName, String phase) {
+            if (phase.equals(UifConstants.ViewPhases.FINALIZE)) {
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.FINALIZE);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.APPLY_MODEL);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.INITIALIZE);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.PRE_PROCESS);
+            } else if (phase.equals(UifConstants.ViewPhases.APPLY_MODEL)) {
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.APPLY_MODEL);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.INITIALIZE);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.PRE_PROCESS);
+            } else if (phase.equals(UifConstants.ViewPhases.INITIALIZE)) {
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.INITIALIZE);
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.PRE_PROCESS);
+            } else if (phase.equals(UifConstants.ViewPhases.PRE_PROCESS)) {
+                removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, propertyName,
+                        UifConstants.ViewPhases.PRE_PROCESS);
+            }
+        }
+
+        private void removedRestrictionsForPhase(Map<String, Set<String>> mutableLifecycleRestrictedProperties,
+                String propertyName, String phase) {
+            Set<String> restrictedProperties = mutableLifecycleRestrictedProperties.get(phase);
+
+            restrictedProperties.remove(propertyName);
         }
     }
 

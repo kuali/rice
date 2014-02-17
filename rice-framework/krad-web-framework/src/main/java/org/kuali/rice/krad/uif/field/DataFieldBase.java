@@ -196,11 +196,10 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
         this.propertyNamesForAdditionalDisplay = informationalPropertyPaths;
 
-        //Special processing for List<?> readOnly
+        // special processing for List<?> readOnly
         String bindingPath = getBindingInfo().getBindingPath();
-        Class<?> type = StringUtils.isNotEmpty(bindingPath)
-                ? ObjectPropertyUtils.getPropertyType(model, bindingPath)
-                : null;
+        Class<?> type = StringUtils.isNotEmpty(bindingPath) ? ObjectPropertyUtils.getPropertyType(model, bindingPath) :
+                null;
         if (this.isReadOnly() && type != null && List.class.isAssignableFrom(type) && StringUtils.isBlank(
                 getReadOnlyDisplayReplacement()) && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())) {
             //get the list

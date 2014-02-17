@@ -181,8 +181,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String preRenderContent;
     private String postRenderContent;
 
-    protected Boolean skipLifecycle;
-
     public ComponentBase() {
         super();
 
@@ -2389,11 +2387,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public boolean skipLifecycle() {
-        if (this.skipLifecycle == null) {
-            this.skipLifecycle = this.isRetrieveViaAjax() && !ViewLifecycle.isRefreshLifecycle();
-        }
-
-        return this.skipLifecycle;
+            return this.isRetrieveViaAjax();
     }
 
     /**

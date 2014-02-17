@@ -132,10 +132,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
             validateBeforeProcessing();
 
-            boolean skipTasks = false;
-            if (this.getModel() != null) {
-                skipTasks = element.skipLifecycle();
-            }
+            boolean skipLifecycle = shouldSkipLifecycle();
 
             try {
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
@@ -164,8 +161,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                             ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
                         }
                     } else {
-                        LifecycleElement referredElement = (LifecycleElement) ObjectPropertyUtils.getPropertyValue(view,
-                                viewPath);
+                        LifecycleElement referredElement = ObjectPropertyUtils.getPropertyValue(view, viewPath);
                         if (referredElement != null) {
                             referredElement = (LifecycleElement) referredElement.unwrap();
                             if (element != referredElement) {
@@ -183,7 +179,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());
 
-                if(!skipTasks) {
+                if (!skipLifecycle) {
                     Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                     initializePendingTasks(pendingTasks);
 
@@ -208,14 +204,16 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 }
             }
 
-            //if (!skipTasks) {
+            if (skipLifecycle) {
+                notifyCompleted();
+            } else {
                 assert pendingSuccessors == -1 : this;
 
                 Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
 
                 initializeSuccessors(successors);
                 processSuccessors(successors);
-            //}
+            }
         } catch (Throwable t) {
             trace("error");
             LOG.warn("Error in lifecycle phase " + this, t);
@@ -228,6 +226,39 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 throw new IllegalStateException("Unexpected error in lifecycle phase " + this, t);
             }
         }
+    }
+
+    /**
+     * Indicates whether the lifecycle should be skipped for the current component.
+     *
+     * <p>Elements are always processed in the pre process phase, or in the case of the element or one
+     * of its childs being refreshed. If these conditions are false, the element method
+     * {@link org.kuali.rice.krad.uif.util.LifecycleElement#skipLifecycle()} is invoked to determine if
+     * the lifecycle can be skipped.</p>
+     *
+     * @return boolean true if the lifecycle should be skipped, false if not
+     * @see org.kuali.rice.krad.uif.util.LifecycleElement#skipLifecycle()
+     */
+    protected boolean shouldSkipLifecycle() {
+        // we always want to run the preprocess phase so ids are assigned
+        boolean isPreProcessPhase = getViewPhase().equals(UifConstants.ViewPhases.PRE_PROCESS);
+
+        // if the component is being refreshed its lifecycle should not be skipped
+        boolean isRefreshComponent = isRefreshComponent();
+
+        // if a child of this component is being refresh its lifecycle should not be skipped
+        boolean includesRefreshComponent = false;
+        if (StringUtils.isNotBlank(getRefreshComponentPhasePath())) {
+            includesRefreshComponent = getRefreshComponentPhasePath().startsWith(getViewPath());
+        }
+
+        boolean skipLifecycle = false;
+        if (!(isPreProcessPhase || isRefreshComponent || includesRefreshComponent)) {
+            // delegate to the component to determine whether skipping lifecycle is ok
+            skipLifecycle = element.skipLifecycle();
+        }
+
+        return skipLifecycle;
     }
 
     /**
@@ -275,7 +306,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     successorBase.trace("succ-pend");
                 }
 
-                ViewLifecycle.getProcessor().pushPendingPhase(successor);
+                ViewLifecycle.getProcessor().offerPendingPhase(successor);
             }
         }
     }
@@ -304,13 +335,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         if (ViewLifecycle.isRefreshLifecycle() && (refreshPaths != null)) {
             String currentPath = getViewPath();
 
-            boolean withinRefreshElementPath = currentPath.startsWith(ViewLifecycle.getRefreshElementPath());
-            if (!withinRefreshElementPath) {
+            boolean withinRefreshComponent = currentPath.startsWith(getRefreshComponentPhasePath());
+            if (withinRefreshComponent) {
+                initializeAllLifecycleSuccessors(successors);
+            } else if (refreshPaths.contains(currentPath) || StringUtils.isBlank(currentPath)) {
                 initializeRefreshPathSuccessors(successors);
-
-                return;
             }
 
+            return;
         }
 
         initializeAllLifecycleSuccessors(successors);
@@ -430,6 +462,50 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
+
+    /**
+     * Indicates if the component the phase is being run on is a component being refreshed (if this is a full
+     * lifecycle this method will always return false).
+     *
+     * @return boolean true if the component is being refreshed, false if not
+     */
+    protected boolean isRefreshComponent() {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return false;
+        }
+
+        return StringUtils.equals(getRefreshComponentPhasePath(), getViewPath());
+    }
+
+    /**
+     * When a refresh lifecycle is being processed, returns the phase path (path at the current phase) for
+     * the component being refreshed.
+     *
+     * @return path for refresh component at this phase, or null if this is not a refresh lifecycle
+     */
+    protected String getRefreshComponentPhasePath() {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return null;
+        }
+
+        ComponentPostMetadata refreshComponentPostMetadata = ViewLifecycle.getRefreshComponentPostMetadata();
+        if (refreshComponentPostMetadata == null) {
+            return null;
+        }
+
+        String refreshPath = refreshComponentPostMetadata.getPath();
+        if (refreshComponentPostMetadata.getPhasePathMapping() != null) {
+            Map<String, String> phasePathMapping = refreshComponentPostMetadata.getPhasePathMapping();
+
+            // find the path for the element at this phase (if it was the same as the final path it will not be
+            // in the phase path mapping
+            if (phasePathMapping.containsKey(getViewPhase())) {
+                refreshPath = phasePathMapping.get(getViewPhase());
+            }
+        }
+
+        return refreshPath;
+    }
 
     /**
      * Notifies predecessors that this task has completed.

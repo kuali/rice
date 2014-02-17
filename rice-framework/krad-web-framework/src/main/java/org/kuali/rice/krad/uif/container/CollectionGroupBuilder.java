@@ -267,12 +267,6 @@ public class CollectionGroupBuilder implements Serializable {
         // initialize new line if one does not already exist
         initializeNewCollectionLine(view, model, collectionGroup, false);
 
-        // determine whether the add line binds to the generic form map or a
-        // specified property
-        //        if (StringUtils.isBlank(collectionGroup.getAddLinePropertyName())) {
-        //            addLineBindsToForm = true;
-        //        }
-
         String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         List<? extends Component> actionComponents = getAddLineActionComponents(view, model, collectionGroup);
 

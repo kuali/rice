@@ -64,9 +64,8 @@ public class LifecycleRefreshPathBuilder {
         }
 
         Component component = (Component) element;
-        if (ComponentUtils.canBeRefreshed(component)
-                || (component instanceof CollectionGroup)
-                || component.isForceSessionPersistence()) {
+        if (ComponentUtils.canBeRefreshed(component) || (component instanceof CollectionGroup) ||
+                component.isForceSessionPersistence()) {
             ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
 
             ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(component.getId());
@@ -77,6 +76,8 @@ public class LifecycleRefreshPathBuilder {
             componentPostMetadata.setPath(component.getViewPath());
 
             buildRefreshPathMappings(component, componentPostMetadata);
+
+            storePhasePathMapping(component, componentPostMetadata);
         }
     }
 
@@ -105,6 +106,30 @@ public class LifecycleRefreshPathBuilder {
         refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, finalizePaths);
 
         componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
+    }
+
+    /**
+     * Store phase path mapping for component if there are any paths different from the final path.
+     *
+     * @param lifecycleElement lifecycle element to store phase mapping for
+     * @param componentPostMetadata post metadata instance to hold mapping
+     */
+    protected static void storePhasePathMapping(LifecycleElement lifecycleElement,
+            ComponentPostMetadata componentPostMetadata) {
+        Map<String, String> storedPhasePathMapping = new HashMap<String, String>();
+
+        String refreshElementPath = lifecycleElement.getViewPath();
+
+        Map<String, String> phasePathMapping = lifecycleElement.getPhasePathMapping();
+        for (Map.Entry<String, String> phasePathEntry : phasePathMapping.entrySet()) {
+            if (!StringUtils.equals(phasePathEntry.getValue(), refreshElementPath)) {
+                storedPhasePathMapping.put(phasePathEntry.getKey(), phasePathEntry.getValue());
+            }
+        }
+
+        if (!storedPhasePathMapping.isEmpty()) {
+            componentPostMetadata.setPhasePathMapping(storedPhasePathMapping);
+        }
     }
 
     /**

@@ -33,6 +33,7 @@ public class ComponentPostMetadata implements Serializable {
     private String id;
     private String path;
 
+    private Map<String, String> phasePathMapping;
     private Map<String, List<String>> refreshPathMappings;
     private Map<String, Object> unmodifiableData;
     private Map<String, Object> data;
@@ -80,6 +81,25 @@ public class ComponentPostMetadata implements Serializable {
      */
     public void setPath(String path) {
         this.path = path;
+    }
+
+    /**
+     * Map containing the path for the component at each lifecycle phase.
+     *
+     * <p>Note this is only stored if the path of the component is different from the {@link #getPath()}
+     * at any of the phases</p>
+     *
+     * @return map where key is the phase name and the value is the component's path
+     */
+    public Map<String, String> getPhasePathMapping() {
+        return phasePathMapping;
+    }
+
+    /**
+     * @see ComponentPostMetadata#getPhasePathMapping()
+     */
+    public void setPhasePathMapping(Map<String, String> phasePathMapping) {
+        this.phasePathMapping = phasePathMapping;
     }
 
     /**

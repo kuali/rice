@@ -37,6 +37,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -386,6 +387,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * @return add line group instance
      * @see #getAddLineGroup()
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return this.addLineGroup;
@@ -407,6 +409,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      *
      * @return Group instance to use as prototype
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
@@ -424,6 +427,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
@@ -452,6 +456,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      *
      * @return select field prototype instance
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
@@ -518,6 +523,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      *
      * @return collection groups
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getStackedGroups() {
         return this.stackedGroups;

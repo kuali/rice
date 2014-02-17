@@ -722,7 +722,11 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      */
     protected static String getLinePathPrefixValue(Component component) {
         Map<String, Object> componentContext = component.getContext();
-        CollectionGroup collectionGroup = componentContext == null ? null : (CollectionGroup) (componentContext.get(
+        if (componentContext == null) {
+            return "";
+        }
+
+        CollectionGroup collectionGroup = (CollectionGroup) (componentContext.get(
                 UifConstants.ContextVariableNames.COLLECTION_GROUP));
         if (collectionGroup == null) {
             LOG.warn("collection group not found for " + component + "," + component.getId() + ", " + component
@@ -732,16 +736,15 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
         String linePath = "";
 
-        Object indexObj = componentContext == null ? null : componentContext
-                .get(UifConstants.ContextVariableNames.INDEX);
+        Integer indexObj = (Integer) componentContext.get(UifConstants.ContextVariableNames.INDEX);
         if (indexObj != null) {
-            int index = (Integer) indexObj;
+            int index = indexObj.intValue();
+
             boolean addLine = false;
-            Object addLineObj = componentContext == null ? null : componentContext
-                    .get(UifConstants.ContextVariableNames.IS_ADD_LINE);
+            Boolean addLineObj = (Boolean) componentContext.get(UifConstants.ContextVariableNames.IS_ADD_LINE);
 
             if (addLineObj != null) {
-                addLine = (Boolean) addLineObj;
+                addLine = addLineObj.booleanValue();
             }
 
             if (addLine) {

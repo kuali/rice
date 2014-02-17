@@ -152,10 +152,8 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
 
             renderPhase = LifecyclePhaseFactory.render(this, getRefreshPaths(), parentRenderPhase, successors.size());
             trace("create-render " + successors.size());
-        }
 
-        if (successors.isEmpty() && renderPhase != null) {
-            successors.add(renderPhase);
+            successors.offer(renderPhase);
         }
     }
 

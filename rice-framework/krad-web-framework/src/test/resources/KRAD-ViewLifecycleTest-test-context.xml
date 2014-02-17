@@ -33,6 +33,10 @@
 		<property name="dataDictionary" ref="dataDictionary" />
 	</bean>
 
+  <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+  </bean>
+
 	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService">
 		<property name="resourceBundleNames">
 			<map>

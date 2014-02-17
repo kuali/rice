@@ -557,6 +557,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getLineActions() {
         return this.lineActions;
@@ -667,6 +668,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;
@@ -682,6 +684,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineActions() {
         return this.addLineActions;
@@ -819,6 +822,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      *
      * @return sub collections
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
         return this.subCollections;

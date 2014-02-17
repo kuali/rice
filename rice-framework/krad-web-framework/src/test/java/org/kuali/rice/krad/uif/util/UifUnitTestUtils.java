@@ -52,7 +52,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class UifUnitTestUtils {
-
     private final static Logger LOG = Logger.getLogger(UifUnitTestUtils.class);
 
     private final static ThreadLocal<Properties> TL_CONFIG_PROPERTIES = new ThreadLocal<Properties>();

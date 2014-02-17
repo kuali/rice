@@ -1154,6 +1154,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return Label instance to serve as prototype
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getHeaderLabelPrototype() {
         return this.headerLabelPrototype;
@@ -1252,6 +1253,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return Attribute field instance
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSequenceFieldPrototype() {
         return this.sequenceFieldPrototype;
@@ -1276,6 +1278,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return GroupField instance
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getActionFieldPrototype() {
         return this.actionFieldPrototype;
@@ -1293,6 +1296,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
@@ -1323,6 +1327,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return select field prototype instance
      */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
@@ -1407,6 +1412,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      *
      * @return list of field instances
      */
+    @ViewLifecycleRestriction
     public List<Field> getFirstRowFields() {
         return firstRowFields;
     }

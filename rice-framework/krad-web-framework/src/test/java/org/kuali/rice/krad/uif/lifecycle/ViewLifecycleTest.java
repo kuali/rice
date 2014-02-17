@@ -57,7 +57,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecycleTest extends ProcessLoggingUnitTest {
-
     private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTest.class);
 
     @Override

@@ -116,9 +116,6 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
                 adjustIdIfNecessary(layoutManager);
             }
         }
-
-        // TODO: is this needed?
-        // adjustIdIfNecessary(component);
     }
 
 }

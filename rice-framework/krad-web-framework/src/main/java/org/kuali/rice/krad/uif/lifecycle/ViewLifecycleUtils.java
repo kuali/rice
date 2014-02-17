@@ -44,7 +44,6 @@ import org.kuali.rice.krad.uif.util.RecycleUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ViewLifecycleUtils {
-
     private static final Logger LOG = Logger.getLogger(ViewLifecycleUtils.class);
 
     /**

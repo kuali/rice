@@ -48,22 +48,16 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * Base form class for views within the KRAD User Interface Framework
+ * Base form class for views within the KRAD User Interface Framework.
  *
- * <p>
- * Holds properties necessary to determine the {@code View} instance that
- * will be used to render the UI
- * </p>
+ * <p>Holds properties necessary to determine the {@link org.kuali.rice.krad.uif.view.View} instance that
+ * will be used to render the user interface</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
-    // logger
-    private static final Log LOG = LogFactory.getLog(UifFormBase.class);
-
-    // current view
     protected String viewId;
     protected String viewName;
     protected ViewType viewTypeName;
@@ -139,7 +133,7 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     private String requestJsonTemplate;
     @SessionTransient
-    private boolean originalComponentRequest;
+    private boolean collectionPagingRequest;
 
     // dialog fields
     @SessionTransient
@@ -171,7 +165,7 @@ public class UifFormBase implements ViewModel {
         clientStateForSyncing = new HashMap<String, Object>();
         selectedCollectionLines = new HashMap<String, Set<String>>();
         selectedLookupResultsCache = new HashSet<String>();
-        addedCollectionItems = new ArrayList();
+        addedCollectionItems = new ArrayList<Object>();
         dialogManager = new DialogManager();
         extensionData = new HashMap<String, Object>();
     }
@@ -855,15 +849,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getPostedView()
-     */
-    @Override
-    public View getPostedView() {
-        throw new UnsupportedOperationException("TODO: REMOVE");
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewPostMetadata()
+     * {@inheritDoc}
      */
     @Override
     public ViewPostMetadata getViewPostMetadata() {
@@ -871,7 +857,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewPostMetadata(org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata)
+     * @see UifFormBase#getViewPostMetadata()
      */
     @Override
     public void setViewPostMetadata(ViewPostMetadata viewPostMetadata) {
@@ -1156,26 +1142,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#isBuildViewRequest()
-     */
-    @Override
-    public boolean isBuildViewRequest() {
-        return !isAjaxRequest() || (StringUtils.isNotBlank(getAjaxReturnType()) && (getAjaxReturnType().equals(
-                UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey()) || isUpdatePageRequest()));
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#isUpdateViewRequest()
-     */
-    @Override
-    public boolean isUpdateViewRequest() {
-        return isAjaxRequest() &&
-                StringUtils.isNotBlank(getAjaxReturnType()) &&
-                (isUpdateComponentRequest() || getAjaxReturnType().equals(
-                        UifConstants.AjaxReturnTypes.DISPLAYLIGHTBOX.getKey()));
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isJsonRequest()
      */
     @Override
@@ -1197,6 +1163,22 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setRequestJsonTemplate(String requestJsonTemplate) {
         this.requestJsonTemplate = requestJsonTemplate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCollectionPagingRequest() {
+        return collectionPagingRequest;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCollectionPagingRequest(boolean collectionPagingRequest) {
+        this.collectionPagingRequest = collectionPagingRequest;
     }
 
     /**

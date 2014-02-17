@@ -136,17 +136,6 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
     public void preventModification() {}
 
    /**
-     * Copies the properties over for the copy method.
-     *
-     * @param maintenanceActiveCollectionFilter MaintenanceActiveCollectionFilter instance to copy properties to
-     */
-    protected <T> void copyProperties(T maintenanceActiveCollectionFilter) {
-        MaintenanceActiveCollectionFilter maintenanceActiveCollectionFilterCopy = (MaintenanceActiveCollectionFilter) maintenanceActiveCollectionFilter;
-
-        maintenanceActiveCollectionFilterCopy.setOldBindingObjectPath(this.oldBindingObjectPath);
-    }
-    
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -48,14 +48,4 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
     public String getComponentTypeName() {
         return "widget";
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        WidgetBase WidgetBaseCopy = (WidgetBase) component;
-    }
 }

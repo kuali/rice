@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -29,18 +30,20 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -135,17 +138,13 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     @Override
     public void performFinalize(Object model, LifecycleElement element) {
         super.performFinalize(model, element);
-        
-        Component parent = ViewLifecycle.getPhase().getParent();
 
-        // Calculate the number of pages for the pager widget if we are using server paging
-        if (parent instanceof CollectionGroup
-                && ((CollectionGroup) parent).isUseServerPaging()
-                && this.getPagerWidget() != null) {
-            CollectionGroup collectionGroup = (CollectionGroup) parent;
+        boolean serverPagingEnabled =
+                (element instanceof CollectionGroup) && ((CollectionGroup) element).isUseServerPaging();
 
-            // Set the appropriate page, total pages, and link script into the Pager
-            CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
+        // set the appropriate page, total pages, and link script into the Pager
+        if (serverPagingEnabled && this.getPagerWidget() != null) {
+            CollectionLayoutUtils.setupPagerWidget(pagerWidget, (CollectionGroup) element, model);
         }
     }
 
@@ -162,14 +161,18 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      *      java.util.List, java.util.List, String, java.util.List,
      *      String, Object, int)
      */
-    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
-            Object currentLine, int lineIndex) {
-        boolean isAddLine = lineIndex == -1;
+    public void buildLine(LineBuilderContext lineBuilderContext) {
+        List<Field> lineFields = lineBuilderContext.getLineFields();
+        CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
+        int lineIndex = lineBuilderContext.getLineIndex();
+        String idSuffix = lineBuilderContext.getIdSuffix();
+        Object currentLine = lineBuilderContext.getCurrentLine();
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
+        String bindingPath = lineBuilderContext.getBindingPath();
 
         // construct new group
         Group lineGroup = null;
-        if (isAddLine) {
+        if (lineBuilderContext.isAddLine()) {
             stackedGroups = new ArrayList<Group>();
 
             if (addLineGroup == null) {
@@ -191,7 +194,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
         }
 
-        if (((UifFormBase) model).isAddedCollectionItem(currentLine)) {
+        if (((UifFormBase) lineBuilderContext.getModel()).isAddedCollectionItem(currentLine)) {
             lineGroup.addStyleClass(collectionGroup.getNewItemsCssClass());
         }
 
@@ -206,14 +209,14 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         ComponentUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
 
         // build header for the group
-        if (isAddLine) {
+        if (lineBuilderContext.isAddLine()) {
             if (lineGroup.getHeader() != null) {
                 Message headerMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel());
                 lineGroup.getHeader().setRichHeaderMessage(headerMessage);
             }
         } else {
             // get the collection for this group from the model
-            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
+            List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(lineBuilderContext.getModel(),
                     ((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
             String headerText = buildLineHeaderText(modelCollection.get(lineIndex), lineGroup);
@@ -227,7 +230,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         // stack all fields (including sub-collections) for the group
         List<Component> groupFields = new ArrayList<Component>();
         groupFields.addAll(lineFields);
-        groupFields.addAll(subCollectionFields);
+
+        if (lineBuilderContext.getSubCollectionFields() != null) {
+            groupFields.addAll(lineBuilderContext.getSubCollectionFields());
+        }
 
         // set line actions on group footer
         if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
@@ -241,6 +247,12 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         }
 
         lineGroup.setItems(groupFields);
+        
+        // Must evaluate the client-side state on the lineGroup's disclosure for PlaceholderDisclosureGroup processing
+        if (lineBuilderContext.getModel() instanceof ViewModel){
+            KRADUtils.syncClientSideStateForComponent(lineGroup.getDisclosure(),
+                    ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
+        }
 
         stackedGroups.add(lineGroup);
     }
@@ -292,6 +304,20 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         }
 
         return headerText;
+    }
+
+    /**
+     * Invokes {@link org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper} to carry out the
+     * paging request.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
+        String pageNumber = ViewLifecycle.getRequest().getParameter(UifConstants.PageRequest.PAGE_NUMBER);
+
+        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
+        pagingHelper.processPagingRequest(ViewLifecycle.getView(), collectionGroup, (UifFormBase) model, pageNumber);
     }
 
     /**
@@ -360,7 +386,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * @return add line group instance
      * @see #getAddLineGroup()
      */
-    @ViewLifecyclePrototype
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return this.addLineGroup;
@@ -382,7 +407,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      *
      * @return Group instance to use as prototype
      */
-    @ViewLifecyclePrototype
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
@@ -524,54 +548,5 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     public void setActionsInLineGroup(boolean actionsInLineGroup) {
         this.actionsInLineGroup = actionsInLineGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T layoutManager) {
-        super.copyProperties(layoutManager);
-
-        StackedLayoutManager stackedLayoutManagerCopy = (StackedLayoutManager) layoutManager;
-
-        stackedLayoutManagerCopy.setSummaryTitle(this.summaryTitle);
-
-        if (summaryFields != null) {
-            stackedLayoutManagerCopy.setSummaryFields(new ArrayList<String>(summaryFields));
-        }
-
-        if (this.addLineGroup != null) {
-            stackedLayoutManagerCopy.setAddLineGroup((Group) this.addLineGroup.copy());
-        }
-
-        if (this.lineGroupPrototype != null) {
-            stackedLayoutManagerCopy.setLineGroupPrototype((Group) this.lineGroupPrototype.copy());
-        }
-
-        if (this.wrapperGroup != null) {
-            stackedLayoutManagerCopy.setWrapperGroup((Group) this.wrapperGroup.copy());
-        }
-
-        if (this.subCollectionFieldGroupPrototype != null) {
-            stackedLayoutManagerCopy.setSubCollectionFieldGroupPrototype(
-                    (FieldGroup) this.subCollectionFieldGroupPrototype.copy());
-        }
-
-        if (this.selectFieldPrototype != null) {
-            stackedLayoutManagerCopy.setSelectFieldPrototype((Field) this.selectFieldPrototype.copy());
-        }
-
-        if (this.stackedGroups != null) {
-            List<Group> stackedGroupsCopy = ComponentUtils.copy(stackedGroups);
-            stackedLayoutManagerCopy.setStackedGroups(stackedGroupsCopy);
-        }
-
-        Pager pager = this.getPagerWidget();
-        if (pager != null) {
-            stackedLayoutManagerCopy.setPagerWidget(pager.<Pager> copy());
-        }
-
-        stackedLayoutManagerCopy.setActionsInLineGroup(this.isActionsInLineGroup());
     }
 }

@@ -136,7 +136,7 @@ public class UifControllerHelper {
 
         UifFormBase form = (UifFormBase) model;
 
-        if (!form.isRequestRedirected() && !form.isJsonRequest()) {
+        if (!form.isRequestRedirected()) {
             prepareViewForRendering(request, response, form);
         }
 
@@ -156,12 +156,13 @@ public class UifControllerHelper {
      *
      * @param request servlet request
      * @param response servlet response
-     * @param form - form instance containing the data and view instance
+     * @param form form instance containing the data and view instance
      */
     public static void prepareViewForRendering(HttpServletRequest request, HttpServletResponse response,
             UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
-        if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest()) {
+        if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest() || (form.isJsonRequest() && StringUtils
+                .isNotBlank(form.getUpdateComponentId()))) {
             String refreshComponentId = form.getUpdateComponentId();
 
             Component updateComponent = ViewLifecycle.performComponentLifecycle(form.getView(), form, request, response,
@@ -182,6 +183,9 @@ public class UifControllerHelper {
                     Component updateComponent = form.getView().getCurrentPage();
                     form.setUpdateComponent(updateComponent);
                 }
+
+                // update the page on the form to reflect the current page of the view
+                form.setPageId(view.getCurrentPageId());
             } else {
                 LOG.warn("View in form was null: " + form);
             }

@@ -245,18 +245,4 @@ public class LookupInputField extends InputFieldBase {
     public void setRanged(boolean ranged) {
         this.ranged = ranged;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        LookupInputField lookupInputFieldCopy = (LookupInputField) component;
-
-        lookupInputFieldCopy.setDisableWildcardsAndOperators(this.disableWildcardsAndOperators);
-        lookupInputFieldCopy.setAddControlSelectAllOption(this.addControlSelectAllOption);
-        lookupInputFieldCopy.setRanged(this.ranged);
-    }
 }

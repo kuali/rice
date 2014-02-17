@@ -15,15 +15,17 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.core.api.util.tree.Tree;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
+ * Holds data about a component that might be needed to handle a post request.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see ViewPostMetadata
  */
 public class ComponentPostMetadata implements Serializable {
     private static final long serialVersionUID = -6090575873840392956L;
@@ -31,38 +33,86 @@ public class ComponentPostMetadata implements Serializable {
     private String id;
     private String path;
 
-    private Map<String, Tree<String, String>> refreshPathMappings;
+    private Map<String, List<String>> refreshPathMappings;
     private Map<String, Object> unmodifiableData;
     private Map<String, Object> data;
 
+    /**
+     * Constructor taking the id for the component to store metadata for.
+     *
+     * @param id component id
+     */
     public ComponentPostMetadata(String id) {
         this.id = id;
     }
 
+    /**
+     * Id for the component the post metadata is associated with.
+     *
+     * <p>The id can be used to retrieve the component post metadata from the view post metadata</p>
+     *
+     * @return component id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @see ComponentPostMetadata#getId()
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Path of the component within the view structure (tree).
+     *
+     * <p>This is set during the lifecycle process and used to retrieve the component for refresh calls</p>
+     *
+     * @return path from view
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * @see ComponentPostMetadata#getPath()
+     */
     public void setPath(String path) {
         this.path = path;
     }
 
-    public Map<String, Tree<String, String>> getRefreshPathMappings() {
+    /**
+     * Map of property paths whose lifecycle will be run when the component is refreshed.
+     *
+     * <p>Each map entry contains a tree of paths to process for each of the lifecycle phases. This is so parents
+     * of the component (in each phase) are picked up during the refresh process</p>
+     *
+     * @return map of refresh paths
+     */
+    public Map<String, List<String>> getRefreshPathMappings() {
         return refreshPathMappings;
     }
 
-    public void setRefreshPathMappings(Map<String, Tree<String, String>> refreshPathMappings) {
+    /**
+     * @see ComponentPostMetadata#getRefreshPathMappings()
+     */
+    public void setRefreshPathMappings(Map<String, List<String>> refreshPathMappings) {
         this.refreshPathMappings = refreshPathMappings;
     }
 
+    /**
+     * General post data that has been stored for the component.
+     *
+     * <p>Holds the general post data for a component. Any piece of data can be added to this map and then
+     * retrieved on a post call (for example in a controller method)</p>
+     *
+     * <p>Note map returned is unmodifiable. Use {@link ComponentPostMetadata#addData(java.lang.String,
+     * java.lang.Object)}
+     * to add new data entries</p>
+     *
+     * @return unmodifiable map of data
+     */
     public Map<String, Object> getData() {
         if (unmodifiableData == null) {
             if (data == null) {
@@ -71,15 +121,25 @@ public class ComponentPostMetadata implements Serializable {
                 unmodifiableData = Collections.unmodifiableMap(data);
             }
         }
-        
+
         return unmodifiableData;
     }
 
+    /**
+     * @see ComponentPostMetadata#getData()
+     */
     public void setData(Map<String, Object> data) {
         this.unmodifiableData = null;
         this.data = data;
     }
 
+    /**
+     * Adds a new data entry to the components post data.
+     *
+     * @param key key for data, which is used to retrieve the data
+     * @param value data value
+     * @see ComponentPostMetadata#getData()
+     */
     public void addData(String key, Object value) {
         if (this.data == null) {
             setData(new HashMap<String, Object>());
@@ -92,6 +152,13 @@ public class ComponentPostMetadata implements Serializable {
         }
     }
 
+    /**
+     * Retrieves a post data value for the component.
+     *
+     * @param key key for the data value to retrieve
+     * @return data value, or null if data does not exist
+     * @see ComponentPostMetadata#getData()
+     */
     public Object getData(String key) {
         if (this.data != null) {
             return this.data.get(key);

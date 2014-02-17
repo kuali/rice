@@ -140,19 +140,4 @@ public class LightBox extends WidgetBase {
     public void setLookupReturnByScript(boolean lookupReturnByScript) {
         this.lookupReturnByScript = lookupReturnByScript;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        LightBox lightBoxCopy = (LightBox) component;
-
-        lightBoxCopy.setHeight(this.height);
-        lightBoxCopy.setWidth(this.width);
-        lightBoxCopy.setAddAppParms(this.addAppParms);
-        lightBoxCopy.setLookupReturnByScript(this.lookupReturnByScript);
-    }
 }

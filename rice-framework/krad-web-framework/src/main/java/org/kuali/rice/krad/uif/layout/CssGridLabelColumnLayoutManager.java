@@ -214,18 +214,4 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
         this.numberOfLabelColumns = numberOfLabelColumns;
     }
 
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CssGridLabelColumnLayoutManager cssGridLayoutManagerCopy = (CssGridLabelColumnLayoutManager) component;
-
-        cssGridLayoutManagerCopy.setNumberOfLabelColumns(this.numberOfLabelColumns);
-        cssGridLayoutManagerCopy.setLabelColumnCssClass(this.labelColumnCssClass);
-
-    }
-
 }

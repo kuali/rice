@@ -79,16 +79,4 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
         this.multiple = multiple;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        SelectControl selectControlCopy = (SelectControl) component;
-
-        selectControlCopy.setSize(this.size);
-        selectControlCopy.setMultiple(this.multiple);
-    }
 }

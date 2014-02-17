@@ -35,6 +35,10 @@ JavascriptKradVariables.prototype = {
     CACHE_KEY: "cacheKey",
     CHANGED_HEADER_ICON_CLASS: "uif-changedHeaderIcon",
     CHANGE_COMPONENT_PROPERTIES: "changeProperties",
+    CLASSES: {
+        PLACEHOLDER: "uif-placeholder"
+    },
+
     CLEAR_FORM_METHOD_TO_CALL: "clearForm",
     CLIENT_MESSAGE_ITEMS_CLASS: "uif-clientMessageItems",
     CLIENT_WARNING_DIV_CLASS: "uif-clientWarningDiv",
@@ -190,6 +194,7 @@ JavascriptKradVariables.prototype = {
     EVENT_NAMESPACE: "uif",
     EVENTS: {
         ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
+        ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
         SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE

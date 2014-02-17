@@ -355,26 +355,4 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
     public void setRowCssClasses(List<String> rowCssClasses) {
         this.rowCssClasses = rowCssClasses;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T layoutManager) {
-        super.copyProperties(layoutManager);
-
-        GridLayoutManager gridLayoutManagerCopy = (GridLayoutManager) layoutManager;
-
-        gridLayoutManagerCopy.setNumberOfColumns(this.numberOfColumns);
-        gridLayoutManagerCopy.setSuppressLineWrapping(this.suppressLineWrapping);
-        gridLayoutManagerCopy.setApplyAlternatingRowStyles(this.applyAlternatingRowStyles);
-        gridLayoutManagerCopy.setApplyDefaultCellWidths(this.applyDefaultCellWidths);
-        gridLayoutManagerCopy.setRenderFirstRowHeader(this.renderFirstRowHeader);
-        gridLayoutManagerCopy.setRenderAlternatingHeaderColumns(this.renderAlternatingHeaderColumns);
-        gridLayoutManagerCopy.setRenderRowFirstCellHeader(this.renderRowFirstCellHeader);
-
-        if (rowCssClasses != null) {
-            gridLayoutManagerCopy.setRowCssClasses(new ArrayList<String>(rowCssClasses));
-        }
-    }
 }

@@ -91,18 +91,5 @@ public class MetaTag extends ContentElementBase  {
     }
 
 
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        MetaTag MetaTagCopy = (MetaTag) component;
-
-        MetaTagCopy.setName(this.name);
-        MetaTagCopy.setContent(this.content);
-        MetaTagCopy.setHttp_equiv(this.http_equiv);
-
-    }
-
-
 
 }

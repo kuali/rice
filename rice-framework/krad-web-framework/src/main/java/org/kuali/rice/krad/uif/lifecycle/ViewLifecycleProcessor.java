@@ -26,27 +26,6 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 public interface ViewLifecycleProcessor {
 
     /**
-     * Gets the phase actively being processing on the current thread.
-     * 
-     * @return lifecycle phase active on the current thread
-     */
-    ViewLifecyclePhase getActivePhase();
-
-    /**
-     * Gets the lifecycle associated with this processor.
-     * 
-     * @return lifecycle associated with this processor
-     */
-    ViewLifecycle getLifecycle();
-
-    /**
-     * Gets a thread-local rending context for invoking FreeMarker operations on the current thread.
-     * 
-     * @return rending context for invoking FreeMarker operations on the current thread
-     */
-    LifecycleRenderingContext getRenderingContext();
-
-    /**
      * Performs a lifecycle phase according to this processor's semantics, blocking until the phase
      * has been completely processed. Once the initial phase has been completely processed, this
      * method will return.
@@ -58,10 +37,8 @@ public interface ViewLifecycleProcessor {
     /**
      * Pushes lifecycle phases to be processed within the lifecycle associated with this processor.
      * 
-     * <p>
-     * A phase submitted using this method will be added to the front of the queue, to be processed
-     * by the next available processor.
-     * </p>
+     * <p>A phase submitted using this method will be added to the front of the queue, to be processed
+     * by the next available processor.</p>
      * 
      * @param phase The phase to be processed within the lifecycle associated with this processor.
      */
@@ -70,24 +47,41 @@ public interface ViewLifecycleProcessor {
     /**
      * Queues a lifecycle phase to be processed within the lifecycle associated with this processor.
      * 
-     * <p>
-     * A phase submitted using this method will be added to the end of the queue, to be processed
-     * after all other phases currently in the queue have been submitted.
-     * </p>
+     * <p>A phase submitted using this method will be added to the end of the queue, to be processed
+     * after all other phases currently in the queue have been submitted.</p>
      * 
      * @param phase The phase to be processed within the lifecycle associated with this processor.
      */
     void offerPendingPhase(ViewLifecyclePhase phase);
 
     /**
+     * Gets the phase actively being processing on the current thread.
+     *
+     * @return lifecycle phase active on the current thread
+     */
+    ViewLifecyclePhase getActivePhase();
+
+    /**
+     * Gets the lifecycle associated with this processor.
+     *
+     * @return lifecycle associated with this processor
+     */
+    ViewLifecycle getLifecycle();
+
+    /**
+     * Gets a thread-local rending context for invoking FreeMarker operations on the current thread.
+     *
+     * @return rending context for invoking FreeMarker operations on the current thread
+     */
+    LifecycleRenderingContext getRenderingContext();
+
+    /**
      * Returns an instance of {@link org.kuali.rice.krad.uif.view.ExpressionEvaluator} that can be
-     * used for evaluating expressions contained on the view
+     * used for evaluating expressions contained on the view.
      * 
-     * <p>
-     * A ExpressionEvaluator must be initialized with a model for expression evaluation. One
+     * <p>A ExpressionEvaluator must be initialized with a model for expression evaluation. One
      * instance is constructed for the view lifecycle and made available to all components/helpers
-     * through this method
-     * </p>
+     * through this method</p>
      * 
      * @return instance of ExpressionEvaluator
      */

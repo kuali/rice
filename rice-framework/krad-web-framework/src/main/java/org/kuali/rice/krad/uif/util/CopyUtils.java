@@ -269,7 +269,7 @@ public final class CopyUtils {
         if (metadata.copyPropertiesMethod != null) {
             doCopyProperties(obj, copy, metadata.copyPropertiesMethod);
         } else {
-            LOG.warn(copyClass + "does not define a public or protected copyProperties(T) method");
+            LOG.warn(copyClass + " does not define a public or protected copyProperties(T) method");
         }
 
         return copy;

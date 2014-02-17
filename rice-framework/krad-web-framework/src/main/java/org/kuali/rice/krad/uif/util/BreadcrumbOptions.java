@@ -313,34 +313,4 @@ public class BreadcrumbOptions implements Serializable, Copyable {
     public Copyable unwrap() {
         return this;
     }
-
-    /**
-     * Copies the properties over for the copy method.
-     * @param <T> copyable type
-     *
-     * @param breadcrumbOptions The BreadcrumbOptions to copy
-     */
-    protected <T> void copyProperties(T breadcrumbOptions) {
-        BreadcrumbOptions breadcrumbOptionsCopy = (BreadcrumbOptions) breadcrumbOptions;
-
-        if (breadcrumbOverrides != null) {
-            List<BreadcrumbItem> breadcrumbOverridesCopy = ComponentUtils.copy(breadcrumbOverrides);
-            breadcrumbOptionsCopy.setBreadcrumbOverrides(breadcrumbOverridesCopy);
-        }
-
-        if (homewardPathBreadcrumbs != null) {
-            List<BreadcrumbItem> homewardPathBreadcrumbsCopy = ComponentUtils.copy(homewardPathBreadcrumbs);
-            breadcrumbOptionsCopy.setHomewardPathBreadcrumbs(homewardPathBreadcrumbsCopy);
-        }
-
-        if (prePageBreadcrumbs != null) {
-            List<BreadcrumbItem> prePageBreadcrumbsCopy = ComponentUtils.copy(prePageBreadcrumbs);
-            breadcrumbOptionsCopy.setPrePageBreadcrumbs(prePageBreadcrumbsCopy);
-        }
-
-        if (preViewBreadcrumbs != null) {
-            List<BreadcrumbItem> preViewBreadcrumbsCopy = ComponentUtils.copy(preViewBreadcrumbs);
-            breadcrumbOptionsCopy.setPreViewBreadcrumbs(preViewBreadcrumbsCopy);
-        }
-    }
 }

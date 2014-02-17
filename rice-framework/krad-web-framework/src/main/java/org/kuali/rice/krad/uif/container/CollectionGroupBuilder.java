@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
@@ -58,10 +59,9 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
- * Builds out the {@code Field} instances for a collection group with a
- * series of steps that interact with the configured
- * {@code CollectionLayoutManager} to assemble the fields as necessary for
- * the layout
+ * Builds out the {@link org.kuali.rice.krad.uif.field.Field} instances for a collection group with a
+ * series of steps that interact with the configured {@link org.kuali.rice.krad.uif.layout.CollectionLayoutManager}
+ * to assemble the fields as necessary for the layout.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -70,17 +70,15 @@ public class CollectionGroupBuilder implements Serializable {
     private static Log LOG = LogFactory.getLog(CollectionGroupBuilder.class);
 
     /**
-     * Creates the {@code Field} instances that make up the table
+     * Invoked within the lifecycle to carry out the collection build process.
      *
-     * <p>
-     * The corresponding collection is retrieved from the model and iterated
+     * <p>The corresponding collection is retrieved from the model and iterated
      * over to create the necessary fields. The binding path for fields that
      * implement {@code DataBinding} is adjusted to point to the collection
      * line it is apart of. For example, field 'number' of collection 'accounts'
      * for line 1 will be set to 'accounts[0].number', and for line 2
      * 'accounts[1].number'. Finally parameters are set on the line's action
-     * fields to indicate what collection and line they apply to.
-     * </p>
+     * fields to indicate what collection and line they apply to.</p>
      *
      * <p>Only the lines that are to be rendered (as specified by the displayStart
      * and displayLength properties of the CollectionGroup) will be built.</p>
@@ -105,34 +103,37 @@ public class CollectionGroupBuilder implements Serializable {
         List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model,
                 collectionGroup.getBindingInfo().getBindingPath());
 
-        if (modelCollection != null) {
-            // filter inactive model
-            List<Integer> showIndexes = performCollectionFiltering(view, model, collectionGroup, modelCollection);
+        if (modelCollection == null) {
+            return;
+        }
 
-            if (collectionGroup.getDisplayCollectionSize() != -1 && showIndexes.size() > collectionGroup
-                    .getDisplayCollectionSize()) {
-                // remove all indexes in showIndexes beyond the collection's size limitation
-                List<Integer> newShowIndexes = new ArrayList<Integer>();
-                Integer counter = 0;
+        // filter inactive model
+        List<Integer> showIndexes = performCollectionFiltering(view, model, collectionGroup, modelCollection);
 
-                for (int index = 0; index < showIndexes.size(); index++) {
-                    newShowIndexes.add(showIndexes.get(index));
+        if (collectionGroup.getDisplayCollectionSize() != -1 && showIndexes.size() > collectionGroup
+                .getDisplayCollectionSize()) {
+            // remove all indexes in showIndexes beyond the collection's size limitation
+            List<Integer> newShowIndexes = new ArrayList<Integer>();
+            Integer counter = 0;
 
-                    counter++;
+            for (int index = 0; index < showIndexes.size(); index++) {
+                newShowIndexes.add(showIndexes.get(index));
 
-                    if (counter == collectionGroup.getDisplayCollectionSize()) {
-                        break;
-                    }
+                counter++;
+
+                if (counter == collectionGroup.getDisplayCollectionSize()) {
+                    break;
                 }
-
-                showIndexes = newShowIndexes;
             }
 
-            List<IndexedElement> filteredIndexedElements = buildFilteredIndexedCollection(showIndexes, modelCollection);
-            // DataTables needs to know the number of filtered elements for rendering purposes
-            collectionGroup.setFilteredCollectionSize(filteredIndexedElements.size());
-            buildLinesForDisplayedRows(filteredIndexedElements, view, model, collectionGroup);
+            showIndexes = newShowIndexes;
         }
+
+        // dataTables needs to know the number of filtered elements for rendering purposes
+        List<IndexedElement> filteredIndexedElements = buildFilteredIndexedCollection(showIndexes, modelCollection);
+        collectionGroup.setFilteredCollectionSize(filteredIndexedElements.size());
+
+        buildLinesForDisplayedRows(filteredIndexedElements, view, model, collectionGroup);
     }
 
     /**
@@ -151,11 +152,14 @@ public class CollectionGroupBuilder implements Serializable {
      * @see IndexedElement
      */
     private List<IndexedElement> buildFilteredIndexedCollection(List<Integer> showIndexes,
-            List<Object> modelCollection) {// apply the filtering in a way that preserves the original indices for binding path use
+            List<Object> modelCollection) {
+        // apply the filtering in a way that preserves the original indices for binding path use
         List<IndexedElement> filteredIndexedElements = new ArrayList<IndexedElement>(modelCollection.size());
+
         for (Integer showIndex : showIndexes) {
             filteredIndexedElements.add(new IndexedElement(showIndex, modelCollection.get(showIndex)));
         }
+
         return filteredIndexedElements;
     }
 
@@ -176,24 +180,24 @@ public class CollectionGroupBuilder implements Serializable {
             collectionGroup.setDisplayLength(1);
         }
 
-        final int displayStart = (collectionGroup.getDisplayStart() != -1 && collectionGroup.isUseServerPaging()) ?
+        int displayStart = (collectionGroup.getDisplayStart() != -1 && collectionGroup.isUseServerPaging()) ?
                 collectionGroup.getDisplayStart() : 0;
 
-        final int displayLength = (collectionGroup.getDisplayLength() != -1 && collectionGroup.isUseServerPaging()) ?
+        int displayLength = (collectionGroup.getDisplayLength() != -1 && collectionGroup.isUseServerPaging()) ?
                 collectionGroup.getDisplayLength() : filteredIndexedElements.size() - displayStart;
 
         // make sure we don't exceed the size of our collection
-        final int displayEndExclusive =
+        int displayEndExclusive =
                 (displayStart + displayLength > filteredIndexedElements.size()) ? filteredIndexedElements.size() :
                         displayStart + displayLength;
 
         // get a view of the elements that will be displayed on the page (if paging is enabled)
-        final List<IndexedElement> renderedIndexedElements = filteredIndexedElements.subList(displayStart,
+        List<IndexedElement> renderedIndexedElements = filteredIndexedElements.subList(displayStart,
                 displayEndExclusive);
 
         // for each unfiltered collection row to be rendered, build the line fields
         for (IndexedElement indexedElement : renderedIndexedElements) {
-            final Object currentLine = indexedElement.element;
+            Object currentLine = indexedElement.element;
 
             String bindingPathPrefix =
                     collectionGroup.getBindingInfo().getBindingName() + "[" + indexedElement.index + "]";
@@ -205,20 +209,20 @@ public class CollectionGroupBuilder implements Serializable {
             List<? extends Component> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
                     collectionGroup, currentLine, indexedElement.index);
 
-            buildLine(view, model, collectionGroup, bindingPathPrefix, lineActions, false, currentLine,
-                    indexedElement.index);
+            LineBuilderContext lineBuilderContext = new LineBuilderContext(indexedElement.index, currentLine,
+                    bindingPathPrefix, (ViewModel) model, collectionGroup, lineActions);
+
+            getCollectionGroupLineBuilder(lineBuilderContext).buildLine();
         }
     }
 
     /**
-     * Performs any filtering necessary on the collection before building the collection fields
+     * Performs any filtering necessary on the collection before building the collection fields.
      *
-     * <p>
-     * If showInactive is set to false and the collection line type implements {@code Inactivatable},
+     * <p>If showInactive is set to false and the collection line type implements {@code Inactivatable},
      * invokes the active collection filter. Then any {@link CollectionFilter} instances configured for the collection
      * group are invoked to filter the collection. Collections lines must pass all filters in order to be
-     * displayed
-     * </p>
+     * displayed</p>
      *
      * @param view view instance that contains the collection
      * @param model object containing the views data
@@ -251,8 +255,8 @@ public class CollectionGroupBuilder implements Serializable {
     }
 
     /**
-     * Builds the fields for holding the collection add line and if necessary
-     * makes call to setup the new line instance
+     * Builds the fields for holding the collection add line and if necessary makes call to setup
+     * the new line instance.
      *
      * @param view view instance the collection belongs to
      * @param collectionGroup collection group the layout manager applies to
@@ -260,520 +264,28 @@ public class CollectionGroupBuilder implements Serializable {
      * if using framework managed new lines
      */
     protected void buildAddLine(View view, Object model, CollectionGroup collectionGroup) {
-        boolean addLineBindsToForm = false;
-
         // initialize new line if one does not already exist
         initializeNewCollectionLine(view, model, collectionGroup, false);
 
         // determine whether the add line binds to the generic form map or a
         // specified property
-        if (StringUtils.isBlank(collectionGroup.getAddLinePropertyName())) {
-            addLineBindsToForm = true;
-        }
+        //        if (StringUtils.isBlank(collectionGroup.getAddLinePropertyName())) {
+        //            addLineBindsToForm = true;
+        //        }
 
         String addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         List<? extends Component> actionComponents = getAddLineActionComponents(view, model, collectionGroup);
 
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
-        buildLine(view, model, collectionGroup, addLineBindingPath, actionComponents, addLineBindsToForm, addLine, -1);
+
+        LineBuilderContext lineBuilderContext = new LineBuilderContext(-1, addLine, addLineBindingPath,
+                (ViewModel) model, collectionGroup, actionComponents);
+
+        getCollectionGroupLineBuilder(lineBuilderContext).buildLine();
     }
 
     /**
-     * Builds the field instances for the collection line. A copy of the
-     * configured items on the {@code CollectionGroup} is made and adjusted
-     * for the line (id and binding). Then a call is made to the
-     * {@code CollectionLayoutManager} to assemble the line as necessary
-     * for the layout
-     *
-     * @param view view instance the collection belongs to
-     * @param model top level object containing the data
-     * @param collectionGroup collection group component for the collection
-     * @param bindingPath binding path for the line fields (if DataBinding)
-     * @param actionList List of actions to set in the lines action column
-     * @param bindToForm whether the bindToForm property on the items bindingInfo
-     * should be set to true (needed for add line)
-     * @param currentLine object instance for the current line, or null if add line
-     * @param lineIndex index of the line in the collection, or -1 if we are
-     * building the add line
-     */
-    protected void buildLine(View view, Object model, CollectionGroup collectionGroup, String bindingPath,
-            List<? extends Component> actionList, boolean bindToForm, Object currentLine, int lineIndex) {
-        CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
-
-        // copy group items for new line
-        List<? extends Component> lineItems = null;
-        String lineSuffix = null;
-        if (lineIndex == -1) {
-            lineItems = ComponentUtils.copyComponentList(collectionGroup.getAddLineItems(), null);
-            lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
-        } else {
-            lineItems = ComponentUtils.copyComponentList(collectionGroup.getItems(), null);
-            lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
-        }
-
-        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
-        }
-
-        // check for remote fields holder
-        List<Field> lineFields = processAnyRemoteFieldsHolder(collectionGroup, lineItems);
-
-        // adjust binding path and id to match collection line path
-        ComponentUtils.bindAndIdFieldList(lineFields, bindingPath, lineSuffix);
-
-        // If the fields contain any collections themselves (details case) adjust their binding path
-        // TODO: does the copyFieldList method above not take care of this?
-        for (Field field : lineFields) {
-            List<CollectionGroup> components = ViewLifecycleUtils.getElementsOfTypeDeep(field, CollectionGroup.class);
-            for (CollectionGroup fieldCollectionGroup : components) {
-                ComponentUtils.prefixBindingPath(fieldCollectionGroup, bindingPath);
-                fieldCollectionGroup.setSubCollectionSuffix(lineSuffix);
-            }
-
-            // OR LightTables in details...
-            List<LightTable> lightTables = ViewLifecycleUtils.getElementsOfTypeDeep(field, LightTable.class);
-            for (LightTable lightTable : lightTables) {
-                ComponentUtils.prefixBindingPath(lightTable, bindingPath);
-            }
-        }
-
-        boolean canViewLine = !collectionGroup.isHidden();
-        boolean canEditLine = !collectionGroup.isReadOnly();
-
-        // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, collectionGroup, currentLine, lineIndex, lineSuffix);
-
-        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
-        for (Action action : actions) {
-            if (action != null && StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
-                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString()) &&
-                    (lineFields.size() > 0)) {
-                action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
-            }
-        }
-
-        // add special css styles to identify the add line client side
-        if (lineIndex == -1) {
-            // do nothing
-        } else {
-            // check view line authorization if collection is hidden
-            if (canViewLine) {
-                canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
-                        currentLine);
-            }
-
-            // Add binding info for any hidden lines and return without creating the line
-            if (!canViewLine) {
-                addUnauthorizedBindingInfo(view, model, collectionGroup, bindingPath);
-
-                return;
-            }
-
-            // check edit line authorization if collection is not read only
-            if (canEditLine) {
-                canEditLine = checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
-                        currentLine);
-
-                // Add script to fields to activate save button on any change
-                if (canEditLine && !((UifFormBase) model).isAddedCollectionItem(currentLine) &&
-                        collectionGroup.isRenderSaveLineActions()) {
-                    for (Field f : lineFields) {
-                        if (f instanceof InputField && f.isRender()) {
-                            ControlBase control = (ControlBase) ((InputField) f).getControl();
-                            control.setOnChangeScript(control.getOnChangeScript() == null ?
-                                    ";collectionLineChanged(this, 'uif-newCollectionItem');" :
-                                    control.getOnChangeScript()
-                                            + ";collectionLineChanged(this, 'uif-newCollectionItem');");
-                        }
-                    }
-                }
-            }
-
-            // Add binding info for any read only lines
-            if (!canEditLine) {
-                addUnauthorizedBindingInfo(view, model, collectionGroup, bindingPath);
-            }
-
-            ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,
-                    !canEditLine);
-            ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE,
-                    !canEditLine);
-        }
-
-        // check authorization for line fields
-        applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,
-                !canEditLine, lineFields, actions);
-
-        if (bindToForm) {
-            ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
-        }
-
-        // remove fields from the line that have render false
-        lineFields = removeNonRenderLineFields(view, model, collectionGroup, lineFields, currentLine, lineIndex);
-
-        // if not add line build sub-collection field groups
-        List<FieldGroup> subCollectionFields = new ArrayList<FieldGroup>();
-        if ((lineIndex != -1) && (collectionGroup.getSubCollections() != null)) {
-            for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
-                CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
-                CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype, lineSuffix);
-
-                // verify the sub-collection should be rendered
-                boolean renderSubCollection = checkSubCollectionRender(view, model, collectionGroup,
-                        subCollectionGroup);
-                if (!renderSubCollection) {
-                    continue;
-                }
-
-                subCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPath);
-                if (subCollectionGroup.isRenderAddLine()) {
-                    subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(bindingPath);
-                }
-
-                // set sub-collection suffix on group so it can be used for generated groups
-                String subCollectionSuffix = lineSuffix;
-                if (StringUtils.isNotBlank(subCollectionGroup.getSubCollectionSuffix())) {
-                    subCollectionSuffix = subCollectionGroup.getSubCollectionSuffix() + lineSuffix;
-                }
-                subCollectionGroup.setSubCollectionSuffix(subCollectionSuffix);
-
-                FieldGroup fieldGroupPrototype = layoutManager.getSubCollectionFieldGroupPrototype();
-
-                FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
-                        lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
-                subCollectionFieldGroup.setGroup(subCollectionGroup);
-
-                ComponentUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup, currentLine, lineIndex,
-                        lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
-                ComponentUtils.pushObjectToContext(subCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
-                        currentLine);
-
-                subCollectionFields.add(subCollectionFieldGroup);
-            }
-            ComponentUtils.pushObjectToContext(subCollectionFields, UifConstants.ContextVariableNames.PARENT_LINE,
-                    currentLine);
-        }
-
-        // update action parameters for any actions that were added in the line items (as opposed to the line actions)
-        List<Action> lineFieldActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineFields, Action.class);
-        if (lineFieldActions != null) {
-            collectionGroup.getCollectionGroupBuilder().initializeActions(lineFieldActions, collectionGroup, lineIndex);
-        }
-
-        // invoke layout manager to build the complete line
-        layoutManager.buildLine(model, collectionGroup, lineFields, subCollectionFields, bindingPath, actionList,
-                lineSuffix, currentLine, lineIndex);
-
-        //add additional information to the group and fields to allow for correct add control selection
-        String selector = "";
-        if (lineIndex == -1) {
-            for (Field f : lineFields) {
-                if (f instanceof InputField) {
-                    // sets up - skipping these fields in add area during standard form validation calls
-                    // custom addLineToCollection js call will validate these fields manually on an add
-                    Control control = ((InputField) f).getControl();
-                    if (control != null) {
-                        control.addStyleClass("ignoreValid");
-                        selector = selector + ",#" + f.getId() + UifConstants.IdSuffixes.CONTROL;
-                    }
-                } else if (f instanceof FieldGroup) {
-                    List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(((FieldGroup) f).getGroup(),
-                            InputField.class);
-                    for (InputField nestedField : fields) {
-                        Control control = nestedField.getControl();
-                        if (control != null) {
-                            control.addStyleClass("ignoreValid");
-                            selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
-                        }
-                    }
-                }
-            }
-            collectionGroup.addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS, selector.replaceFirst(",", ""));
-        }
-    }
-
-    /**
-     * Iterates through the given items checking for {@code RemotableFieldsHolder}, if found
-     * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
-     * is then inserted into the returned list at the position of the holder
-     *
-     * @param group collection group instance to check for any remotable fields holder
-     * @param items list of items to process
-     */
-    protected List<Field> processAnyRemoteFieldsHolder(CollectionGroup group,
-            List<? extends Component> items) {
-        List<Field> processedItems = new ArrayList<Field>();
-
-        // check for holders and invoke to retrieve the remotable fields and translate
-        // translated fields are placed into the processed items list at the position of the holder
-        for (Component item : items) {
-            if (item instanceof RemoteFieldsHolder) {
-                List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(group);
-                processedItems.addAll(translatedFields);
-            } else {
-                processedItems.add((Field) item);
-            }
-        }
-
-        return processedItems;
-    }
-
-    protected void addUnauthorizedBindingInfo(View view, Object model, CollectionGroup collectionGroup,
-            String bindingPath) {
-        if (collectionGroup.getUnauthorizedLineBindingInfos() == null) {
-            collectionGroup.setUnauthorizedLineBindingInfos(new ArrayList<BindingInfo>());
-        }
-
-        BindingInfo bindingInfo = new BindingInfo();
-        bindingInfo.setDefaults(view, bindingPath);
-        collectionGroup.getUnauthorizedLineBindingInfos().add(bindingInfo);
-    }
-
-    /**
-     * Evaluates the render property for the given list of {@code Field}
-     * instances for the line and removes any fields from the returned list that
-     * have render false. The conditional render string is also taken into
-     * account. This needs to be done here as opposed to during the normal
-     * condition evaluation so the the fields are not used while building the
-     * collection lines
-     *
-     * @param view view instance the collection group belongs to
-     * @param model object containing the view data
-     * @param collectionGroup collection group for the line fields
-     * @param lineFields list of fields configured for the line
-     * @param currentLine object containing the line data
-     * @param lineIndex index of the line in the collection
-     * @return list of field instances that should be rendered
-     */
-    protected List<Field> removeNonRenderLineFields(View view, Object model, CollectionGroup collectionGroup,
-            List<Field> lineFields, Object currentLine, int lineIndex) {
-        List<Field> fields = new ArrayList<Field>();
-
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
-
-        for (Field lineField : lineFields) {
-            String conditionalRender = lineField.getPropertyExpression("render");
-
-            // evaluate conditional render string if set
-            if (StringUtils.isNotBlank(conditionalRender)) {
-                Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
-
-                // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
-                // executed after the collection is built.
-                conditionalRender = expressionEvaluator.replaceBindingPrefixes(view, lineField, conditionalRender);
-
-                Boolean render = (Boolean) expressionEvaluator.evaluateExpression(context, conditionalRender);
-                lineField.setRender(render);
-            }
-
-            // only add line field if set to render or if it is hidden by progressive render
-            if (lineField.isRender() || StringUtils.isNotBlank(lineField.getProgressiveRender())) {
-                fields.add(lineField);
-            }
-        }
-
-        return fields;
-    }
-
-    /**
-     * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
-     * to view the line (if a permission has been established)
-     *
-     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
-     * be pulled
-     * @param model object containing the view's data
-     * @param collectionGroup collection group containing the line
-     * @param line object containing the lines data
-     * @return true if the user can view the line, false if not
-     */
-    protected boolean checkViewLineAuthorizationAndPresentationLogic(View view, ViewModel model,
-            CollectionGroup collectionGroup, Object line) {
-        ViewPresentationController presentationController = view.getPresentationController();
-        ViewAuthorizer authorizer = view.getAuthorizer();
-
-        Person user = GlobalVariables.getUserSession().getPerson();
-
-        // check view line auth
-        boolean canViewLine = authorizer.canViewLine(view, model, collectionGroup, collectionGroup.getPropertyName(),
-                line, user);
-        if (canViewLine) {
-            canViewLine = presentationController.canViewLine(view, model, collectionGroup,
-                    collectionGroup.getPropertyName(), line);
-        }
-
-        return canViewLine;
-    }
-
-    /**
-     * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
-     * to edit the line (if a permission has been established)
-     *
-     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
-     * be pulled
-     * @param model object containing the view's data
-     * @param collectionGroup collection group containing the line
-     * @param line object containing the lines data
-     * @return true if the user can edit the line, false if not
-     */
-    protected boolean checkEditLineAuthorizationAndPresentationLogic(View view, ViewModel model,
-            CollectionGroup collectionGroup, Object line) {
-        ViewPresentationController presentationController = view.getPresentationController();
-        ViewAuthorizer authorizer = view.getAuthorizer();
-
-        Person user = GlobalVariables.getUserSession().getPerson();
-
-        // check edit line auth
-        boolean canEditLine = authorizer.canEditLine(view, model, collectionGroup, collectionGroup.getPropertyName(),
-                line, user);
-        if (canEditLine) {
-            canEditLine = presentationController.canEditLine(view, model, collectionGroup,
-                    collectionGroup.getPropertyName(), line);
-        }
-
-        return canEditLine;
-    }
-
-    /**
-     * Iterates through the line fields and checks the view field authorization using the view's configured authorizer
-     * and presentation controller. If the field is viewable, then sets the edit field authorization. Finally iterates
-     * through the line actions invoking the authorizer and presentation controller to authorizer the action
-     *
-     * @param view view instance the collection belongs to and from which the authorizer/presentation controller will
-     * be pulled
-     * @param model object containing the view's data
-     * @param collectionGroup collection group containing the line
-     * @param line object containing the lines data
-     * @param readOnlyLine flag indicating whether the line has been marked as read only (which will force the fields
-     * to be read only)
-     * @param lineFields list of fields instances for the line
-     * @param actionList list of action field instances for the line
-     */
-    protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
-            CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
-            List<? extends Component> actionList) {
-        ViewPresentationController presentationController = view.getPresentationController();
-        ViewAuthorizer authorizer = view.getAuthorizer();
-
-        Person user = GlobalVariables.getUserSession().getPerson();
-
-        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
-
-        for (Field lineField : lineFields) {
-            String propertyName = null;
-            if (lineField instanceof DataBinding) {
-                propertyName = ((DataBinding) lineField).getPropertyName();
-            }
-
-            // evaluate expression on fields component security (since apply model phase has not been invoked on
-            // them yet
-            ComponentSecurity componentSecurity = lineField.getComponentSecurity();
-
-            Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
-            expressionEvaluator.evaluateExpressionsOnConfigurable(view, componentSecurity, context);
-
-            // check view field auth
-            if (lineField.isRender() && !lineField.isHidden()) {
-                boolean canViewField = authorizer.canViewLineField(view, model, collectionGroup,
-                        collectionGroup.getPropertyName(), line, lineField, propertyName, user);
-                if (canViewField) {
-                    canViewField = presentationController.canViewLineField(view, model, collectionGroup,
-                            collectionGroup.getPropertyName(), line, lineField, propertyName);
-                }
-
-                if (!canViewField) {
-                    // since removing can impact layout, set to hidden
-                    // TODO: check into encryption setting
-                    lineField.setHidden(true);
-
-                    if (lineField.getPropertyExpressions().containsKey("hidden")) {
-                        lineField.getPropertyExpressions().remove("hidden");
-                    }
-
-                    continue;
-                }
-
-                // check edit field auth
-                boolean canEditField = !readOnlyLine;
-                if (!readOnlyLine) {
-                    canEditField = authorizer.canEditLineField(view, model, collectionGroup,
-                            collectionGroup.getPropertyName(), line, lineField, propertyName, user);
-                    if (canEditField) {
-                        canEditField = presentationController.canEditLineField(view, model, collectionGroup,
-                                collectionGroup.getPropertyName(), line, lineField, propertyName);
-                    }
-                }
-
-                if (readOnlyLine || !canEditField) {
-                    lineField.setReadOnly(true);
-
-                    if (lineField.getPropertyExpressions().containsKey("readOnly")) {
-                        lineField.getPropertyExpressions().remove("readOnly");
-                    }
-                }
-            }
-        }
-
-        // check auth on line actions
-        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionList, Action.class);
-        for (Action action : actions) {
-            if (action.isRender()) {
-                boolean canPerformAction = authorizer.canPerformLineAction(view, model, collectionGroup,
-                        collectionGroup.getPropertyName(), line, action, action.getActionEvent(), action.getId(), user);
-                if (canPerformAction) {
-                    canPerformAction = presentationController.canPerformLineAction(view, model, collectionGroup,
-                            collectionGroup.getPropertyName(), line, action, action.getActionEvent(), action.getId());
-                }
-
-                if (!canPerformAction) {
-                    action.setRender(false);
-
-                    if (action.getPropertyExpressions().containsKey("render")) {
-                        action.getPropertyExpressions().remove("render");
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Checks whether the given sub-collection should be rendered, any
-     * conditional render string is evaluated
-     *
-     * @param view view instance the sub collection belongs to
-     * @param model object containing the view data
-     * @param collectionGroup collection group the sub collection belongs to
-     * @param subCollectionGroup sub collection group to check render status for
-     * @return true if sub collection should be rendered, false if it
-     *         should not be rendered
-     */
-    protected boolean checkSubCollectionRender(View view, Object model, CollectionGroup collectionGroup,
-            CollectionGroup subCollectionGroup) {
-        String conditionalRender = subCollectionGroup.getPropertyExpression("render");
-
-        // TODO: check authorizer
-
-        // evaluate conditional render string if set
-        if (StringUtils.isNotBlank(conditionalRender)) {
-            Map<String, Object> context = new HashMap<String, Object>();
-            Map<String, Object> viewContext = view.getContext();
-            
-            if (viewContext != null) {
-                context.putAll(viewContext);
-            }
-            
-            context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
-            context.put(UifConstants.ContextVariableNames.COMPONENT, subCollectionGroup);
-
-            Boolean render = (Boolean) ViewLifecycle.getExpressionEvaluator().evaluateExpression(context,
-                    conditionalRender);
-            subCollectionGroup.setRender(render);
-        }
-
-        return subCollectionGroup.isRender();
-    }
-
-    /**
-     * Creates new {@code Action} instances for the line
+     * Creates new {@code Action} instances for the line.
      *
      * <p>
      * Adds context to the action fields for the given line so that the line the
@@ -877,12 +389,14 @@ public class CollectionGroupBuilder implements Serializable {
      * @param model top level object containing the data
      * @param collectionGroup collection group component for the collection
      */
-    protected List<? extends Component> getAddLineActionComponents(View view, Object model, CollectionGroup collectionGroup) {
+    protected List<? extends Component> getAddLineActionComponents(View view, Object model,
+            CollectionGroup collectionGroup) {
         String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
-        List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(collectionGroup.getAddLineActions(), lineSuffix);
+        List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(
+                collectionGroup.getAddLineActions(), lineSuffix);
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineActionComponents, Action.class);
         for (Action action : actions) {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
@@ -927,51 +441,14 @@ public class CollectionGroupBuilder implements Serializable {
     }
 
     /**
-     * Helper method to build the context for a field (needed because the apply model phase for line fields has
-     * not been applied yet and their full context not set)
+     * Initializes a new instance of the collection data object class for the add line.
      *
-     * @param view view instance the field belongs to
-     * @param collectionGroup collection group instance the field belongs to
-     * @param field field instance to build context for
-     * @return Map<String, Object> context for field
-     */
-    protected Map<String, Object> getContextForField(View view, CollectionGroup collectionGroup, Field field) {
-        Map<String, Object> context = new HashMap<String, Object>();
-        
-        Map<String, Object> viewContext = view.getContext();
-        if (viewContext != null) {
-            context.putAll(viewContext);
-        }
-        
-        Map<String, Object> fieldContext = field.getContext();
-        if (fieldContext != null) {
-            context.putAll(fieldContext);
-        }
-
-        context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
-        context.put(UifConstants.ContextVariableNames.COMPONENT, field);
-
-        return context;
-    }
-
-    /**
-     * Initializes a new instance of the collection class
+     * <p>If the add line property was not specified for the collection group the new lines will be
+     * added to the generic map on the {@code UifFormBase}, else it will be added to the property given by
+     * the addLineBindingInfo</p>
      *
-     * <p>
-     * If the add line property was not specified for the collection group the
-     * new lines will be added to the generic map on the
-     * {@code UifFormBase}, else it will be added to the property given by
-     * the addLineBindingInfo
-     * </p>
-     *
-     * <p>
-     * New line will only be created if the current line property is null or
-     * clearExistingLine is true. In the case of a new line default values are
-     * also applied
-     * </p>
-     *
-     * @see CollectionGroup#
-     *      initializeNewCollectionLine(View, Object, CollectionGroup, boolean)
+     * <p>New line will only be created if the current line property is null or clearExistingLine is true.
+     * In the case of a new line default values are also applied</p>
      */
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             boolean clearExistingLine) {
@@ -1023,6 +500,16 @@ public class CollectionGroupBuilder implements Serializable {
         if (newLine != null) {
             ViewLifecycle.getHelper().applyDefaultValuesForCollectionLine(collectionGroup, newLine);
         }
+    }
+
+    /**
+     * Returns an instance of {@link CollectionGroupLineBuilder} for building the line.
+     *
+     * @param lineBuilderContext context of line for initializing line builder
+     * @return CollectionGroupLineBuilder instance
+     */
+    public CollectionGroupLineBuilder getCollectionGroupLineBuilder(LineBuilderContext lineBuilderContext) {
+        return new CollectionGroupLineBuilder(lineBuilderContext);
     }
 
     /**

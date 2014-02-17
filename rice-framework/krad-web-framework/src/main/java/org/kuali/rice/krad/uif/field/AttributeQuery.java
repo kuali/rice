@@ -472,50 +472,6 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T attributeQuery) {
-        super.copyProperties(attributeQuery);
-
-        AttributeQuery attributeQueryCopy = (AttributeQuery) attributeQuery;
-
-        if (this.additionalCriteria != null) {
-            attributeQueryCopy.setAdditionalCriteria(new HashMap<String, String>(this.additionalCriteria));
-        }
-
-        attributeQueryCopy.setDataObjectClassName(this.dataObjectClassName);
-
-        if (this.queryFieldMapping != null) {
-            attributeQueryCopy.setQueryFieldMapping(new HashMap<String, String>(this.queryFieldMapping));
-        }
-
-        if (this.queryMethodArgumentFieldList != null) {
-            attributeQueryCopy.setQueryMethodArgumentFieldList(new ArrayList<String>(
-                    this.queryMethodArgumentFieldList));
-        }
-
-        attributeQueryCopy.setQueryMethodToCall(this.queryMethodToCall);
-        attributeQueryCopy.setRenderNotFoundMessage(this.renderNotFoundMessage);
-
-        if (this.returnFieldMapping != null) {
-            attributeQueryCopy.setReturnFieldMapping(new HashMap<String, String>(this.returnFieldMapping));
-        }
-
-        attributeQueryCopy.setReturnMessageStyleClasses(this.returnMessageStyleClasses);
-        attributeQueryCopy.setReturnMessageText(this.returnMessageText);
-
-        if (this.sortPropertyNames != null) {
-            attributeQueryCopy.setSortPropertyNames(new ArrayList<String>(this.sortPropertyNames));
-        }
-
-        if (this.queryMethodInvokerConfig != null) {
-            ((AttributeQuery) attributeQuery).setQueryMethodInvokerConfig(CloneUtils.deepClone(
-                    this.queryMethodInvokerConfig));
-        }
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     public void completeValidation(ValidationTrace tracer) {

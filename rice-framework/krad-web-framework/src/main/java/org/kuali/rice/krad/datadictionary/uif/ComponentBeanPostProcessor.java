@@ -16,14 +16,13 @@
 package org.kuali.rice.krad.datadictionary.uif;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
 /**
  * Spring <code>BeanPostProcessor</code> that processes configured <code>Component</code>
- * instances in the dictionary
+ * instances in the dictionary.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -43,7 +42,7 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
 
     /**
      * Sets the unique Id for a <code>Component</code> if bean name given (not generated) and the id property was
-     * not set for the view
+     * not set for the view.
      *
      * <p>
      * The ID will only be set here if an id is given for the Spring bean. For inner beans, the ID will be generated
@@ -59,8 +58,7 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
             Component component = (Component) bean;
 
             if (StringUtils.isBlank(component.getId())) {
-                if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#") && !beanName
-                        .startsWith(UifConstants.BASE_ID_PREFIX)) {
+                if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#")) {
                     component.setId(beanName);
                 }
             }

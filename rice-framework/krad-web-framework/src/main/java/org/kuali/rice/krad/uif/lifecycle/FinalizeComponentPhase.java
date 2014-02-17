@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
 
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -69,10 +69,11 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      *
      * @param element The component instance the model should be applied to
      * @param model Top level object containing the data
-     * @param path The path to the element relative to its parent.
-     * @param parent The parent component.
+     * @param path The path to the element relative to its parent
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
+     * @param parent The parent component
      */
-    protected void prepare(LifecycleElement element, Object model, String path, Tree<String, String> refreshPaths,
+    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
             Component parent) {
         super.prepare(element, model, path, refreshPaths, parent, null);
     }

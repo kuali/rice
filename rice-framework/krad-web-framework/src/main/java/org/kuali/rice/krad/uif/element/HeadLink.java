@@ -136,18 +136,4 @@ public class HeadLink extends ContentElementBase  {
         this.includeCondition = includeCondition;
     }
 
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        HeadLink headLinkCopy = (HeadLink) component;
-
-        headLinkCopy.setMedia(this.media);
-        headLinkCopy.setHref(this.href);
-        headLinkCopy.setRelation(this.relation);
-        headLinkCopy.setType(this.type);
-        headLinkCopy.setIncludeCondition(this.includeCondition);
-
-    }
-
 }

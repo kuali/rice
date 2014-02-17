@@ -221,6 +221,10 @@ public class DataFieldBase extends FieldBase implements DataField {
         if (this.getFieldLabel() != null && StringUtils.isNotBlank(this.getId())) {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
+
+        if (isRender()) {
+            ViewLifecycle.getViewPostMetadata().addRenderedPropertyPath(getBindingInfo().getBindingPath());
+        }
     }
 
     /**
@@ -1259,57 +1263,6 @@ public class DataFieldBase extends FieldBase implements DataField {
                 && help.isRender()
                 && help.getHelpAction() != null
                 && help.getHelpAction().isRender());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        DataField dataFieldCopy = (DataField) component;
-
-        dataFieldCopy.setAddHiddenWhenReadOnly(this.addHiddenWhenReadOnly);
-        dataFieldCopy.setAdditionalHiddenPropertyNames(new ArrayList<String>(this.additionalHiddenPropertyNames));
-        dataFieldCopy.setApplyMask(this.applyMask);
-        dataFieldCopy.setMaskFormatter(this.maskFormatter);
-
-        if (this.bindingInfo != null) {
-            dataFieldCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
-        }
-
-        dataFieldCopy.setDefaultValue(this.defaultValue);
-        dataFieldCopy.setDefaultValues(this.defaultValues);
-        dataFieldCopy.setDictionaryAttributeName(this.dictionaryAttributeName);
-        dataFieldCopy.setDictionaryObjectEntry(this.dictionaryObjectEntry);
-        dataFieldCopy.setEnableAutoInquiry(this.enableAutoInquiry);
-        dataFieldCopy.setEscapeHtmlInPropertyValue(this.escapeHtmlInPropertyValue);
-        dataFieldCopy.setForcedValue(this.forcedValue);
-        dataFieldCopy.setMultiLineReadOnlyDisplay(this.multiLineReadOnlyDisplay);
-        dataFieldCopy.setPropertyEditor(this.propertyEditor);
-        dataFieldCopy.setPropertyName(this.propertyName);
-
-        if (this.propertyNamesForAdditionalDisplay != null) {
-            dataFieldCopy.setPropertyNamesForAdditionalDisplay(new ArrayList<String>(
-                    this.propertyNamesForAdditionalDisplay));
-        }
-
-        dataFieldCopy.setReadOnlyDisplayReplacement(this.readOnlyDisplayReplacement);
-        dataFieldCopy.setReadOnlyDisplayReplacementPropertyName(this.readOnlyDisplayReplacementPropertyName);
-        dataFieldCopy.setReadOnlyDisplaySuffix(this.readOnlyDisplaySuffix);
-        dataFieldCopy.setReadOnlyDisplaySuffixPropertyName(this.readOnlyDisplaySuffixPropertyName);
-        dataFieldCopy.setReadOnlyListDelimiter(this.readOnlyListDelimiter);
-        dataFieldCopy.setReadOnlyListDisplayType(this.readOnlyListDisplayType);
-        dataFieldCopy.setDefaultValueFinderClass(this.defaultValueFinderClass);
-
-        if (this.help != null) {
-            dataFieldCopy.setHelp((Help) this.help.copy());
-        }
-
-        if (this.inquiry != null) {
-            dataFieldCopy.setInquiry((Inquiry) this.inquiry.copy());
-        }
     }
 
     /**

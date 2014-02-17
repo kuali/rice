@@ -236,28 +236,6 @@ public class PageGroupBase extends GroupBase implements PageGroup {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        PageGroup pageGroupCopy = (PageGroup) component;
-
-        pageGroupCopy.setAutoFocus(this.autoFocus);
-        pageGroupCopy.setStickyFooter(this.stickyFooter);
-        pageGroupCopy.setFormPostUrl(formPostUrl);
-
-        if (breadcrumbOptions != null) {
-            pageGroupCopy.setBreadcrumbOptions((PageBreadcrumbOptions) this.breadcrumbOptions.copy());
-        }
-
-        if (breadcrumbItem != null) {
-            pageGroupCopy.setBreadcrumbItem((BreadcrumbItem) this.breadcrumbItem.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 

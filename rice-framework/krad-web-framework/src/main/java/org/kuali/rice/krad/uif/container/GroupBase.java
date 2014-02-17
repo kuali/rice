@@ -28,16 +28,22 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
+import org.kuali.rice.krad.util.KRADUtils;
 
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
@@ -157,6 +163,11 @@ public class GroupBase extends ContainerBase implements Group {
      */
     @Override
     public void performInitialization(Object model) {
+        if (isAjaxDisclosureGroup()) {
+            this.setItems(new ArrayList<Component>());
+            this.setFooter(null);
+        }
+
         super.performInitialization(model);
 
         for (Component component : getItems()) {
@@ -222,11 +233,10 @@ public class GroupBase extends ContainerBase implements Group {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        if (StringUtils.isBlank(wrapperTag) && StringUtils.isNotBlank(this.getHeaderText())
-                && this.getHeader().isRender()) {
+        if (StringUtils.isBlank(wrapperTag) && StringUtils.isNotBlank(this.getHeaderText()) && this.getHeader()
+                .isRender()) {
             wrapperTag = UifConstants.WrapperTags.SECTION;
-        }
-        else if (StringUtils.isBlank(wrapperTag)){
+        } else if (StringUtils.isBlank(wrapperTag)) {
             wrapperTag = UifConstants.WrapperTags.DIV;
         }
     }
@@ -375,10 +385,10 @@ public class GroupBase extends ContainerBase implements Group {
             this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
         }
     }
-    
+
     /**
-     * Defines the html tag that will wrap this group, if left blank, this will automatically be set by the framework
-     * to the appropriate tag (in most cases section or div)
+     * Defines the html tag that will wrap this group, if left blank, this will automatically be set
+     * by the framework to the appropriate tag (in most cases section or div)
      *
      * @return the html tag used to wrap this group
      */
@@ -398,27 +408,51 @@ public class GroupBase extends ContainerBase implements Group {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
+    public boolean skipLifecycle() {
 
-        GroupBase groupCopy = (GroupBase) component;
+        if (this.skipLifecycle == null) {
+            if (ViewLifecycle.getModel() instanceof ViewModel) {
+                this.skipLifecycle = false;
+            }
 
-        groupCopy.setFieldBindByNamePrefix(this.fieldBindByNamePrefix);
-        groupCopy.setFieldBindingObjectPath(this.fieldBindingObjectPath);
-        groupCopy.setWrapperTag(this.wrapperTag);
-
-        if (this.disclosure != null) {
-            groupCopy.setDisclosure((Disclosure) this.disclosure.copy());
+            this.skipLifecycle = this.isRetrieveViaAjax() && !ViewLifecycle.isRefreshLifecycle();
         }
 
-        if (this.scrollpane != null) {
-            groupCopy.setScrollpane((Scrollpane) this.scrollpane.copy());
+        return this.skipLifecycle;
+    }
+
+    /**
+     * Returns true if this group has a Disclosure widget that is currently closed and using ajax disclosure
+     *
+     * @return true if this group has a Disclosure widget that is currently closed and using ajax disclosure
+     */
+    protected boolean isAjaxDisclosureGroup() {
+        ViewModel model = (ViewModel) ViewLifecycle.getModel();
+        View view = ViewLifecycle.getView();
+
+        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(this, false);
+        // Evaluate the disclosure.defaultOpen expression early so that ajax disclosure mechanisms
+        // can take its state into account when replacing items with Placeholders in ContainerBase#performInitialization
+        if (this.getDisclosure() != null && StringUtils.isNotBlank(this.getDisclosure().getPropertyExpression(
+                UifPropertyPaths.DEFAULT_OPEN))){
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
+
+            String expression = this.getDisclosure().getPropertyExpression(UifPropertyPaths.DEFAULT_OPEN);
+            expression = expressionEvaluator.replaceBindingPrefixes(view, this, expression);
+
+            expression = expressionEvaluator.evaluateExpressionTemplate(this.getDisclosure().getContext(), expression);
+            ObjectPropertyUtils.setPropertyValue(this.getDisclosure(), UifPropertyPaths.DEFAULT_OPEN, expression);
         }
 
-        if (this.items != null) {
-            List<Component> itemsCopy = ComponentUtils.copy(new ArrayList<Component>(items));
-            groupCopy.setItems(itemsCopy);
+        // Ensure that the disclosure has the correct state before evaluate ajax-based placeholder replacement
+        if (this.getDisclosure() != null) {
+            KRADUtils.syncClientSideStateForComponent(this.getDisclosure(), model.getClientStateForSyncing());
         }
+
+        // This this will be replaced with a PlaceholderDisclosure group if it is not opened and the
+        // ajaxRetrievalWhenOpened option is set
+        return !this.isRetrieveViaAjax() && this.getDisclosure() != null && this.getDisclosure()
+                        .isAjaxRetrievalWhenOpened() && !this.getDisclosure().isDefaultOpen();
     }
 
     /**

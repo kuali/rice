@@ -132,15 +132,4 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
         return this;
     }
 
-    /**
-     * Copies the properties over for the copy method.
-     *
-     * @param eLCollectionFilter ELCollectionFilter instance to copy properties to
-     */
-    protected <T> void copyProperties(T eLCollectionFilter) {
-        ELCollectionFilter eLCollectionFilterCopy = (ELCollectionFilter) eLCollectionFilter;
-
-        eLCollectionFilterCopy.setExpression(this.getExpression());
-    }
-
 }

@@ -542,6 +542,14 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         this.propertyReplacers = propertyReplacers;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean skipLifecycle() {
+        return false;
+    }
+
     @Override
     public LayoutManagerBase clone() throws CloneNotSupportedException {
         LayoutManagerBase copy = (LayoutManagerBase) super.clone();
@@ -599,53 +607,5 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public boolean isFinal() {
         return StringUtils.equals(viewStatus, ViewStatus.FINAL);
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T layoutManager) {
-        super.copyProperties(layoutManager);
 
-        LayoutManagerBase layoutManagerBaseCopy = (LayoutManagerBase) layoutManager;
-
-        // Copy initialized status, but reset to created for others.
-        // This allows prototypes to bypass repeating the initialized phase.
-        if (UifConstants.ViewStatus.INITIALIZED.equals(viewStatus)) {
-            layoutManagerBaseCopy.viewStatus = UifConstants.ViewStatus.INITIALIZED;
-        } else {
-            layoutManagerBaseCopy.viewStatus = UifConstants.ViewStatus.CREATED;
-        }
-
-        layoutManagerBaseCopy.setId(this.id);
-
-        if (this.phasePathMapping != null) {
-            layoutManagerBaseCopy.setPhasePathMapping(new HashMap<String, String>(this.phasePathMapping));
-        }
-
-        layoutManagerBaseCopy.setTemplate(this.template);
-        layoutManagerBaseCopy.setTemplateName(this.templateName);
-        layoutManagerBaseCopy.setStyle(this.style);
-
-        if (libraryCssClasses != null) {
-            layoutManagerBaseCopy.setLibraryCssClasses(new ArrayList<String>(libraryCssClasses));
-        }
-
-        if (cssClasses != null) {
-            layoutManagerBaseCopy.setCssClasses(new ArrayList<String>(cssClasses));
-        }
-
-        if (additionalCssClasses != null) {
-            layoutManagerBaseCopy.setAdditionalCssClasses(new ArrayList<String>(additionalCssClasses));
-        }
-
-        if (getPropertyReplacers() != null) {
-            List<PropertyReplacer> propertyReplacersCopy = new ArrayList<PropertyReplacer>();
-            for (PropertyReplacer propertyReplacer : propertyReplacers) {
-                propertyReplacersCopy.add((PropertyReplacer) propertyReplacer.copy());
-            }
-
-            layoutManagerBaseCopy.setPropertyReplacers(propertyReplacersCopy);
-        }
-    }
 }

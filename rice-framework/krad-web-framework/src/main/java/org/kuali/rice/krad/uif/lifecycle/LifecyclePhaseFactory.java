@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
@@ -68,10 +68,11 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(Component component, Object model, String path,
-            Tree<String, String> refreshPaths) {
+            List<String> refreshPaths) {
         return initialize(component, model, path, refreshPaths, null, null);
     }
 
@@ -82,12 +83,13 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The parent element.
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      * initialize phase.
      * @return lifecycle processing task for processing the initialize phase on the component
      */
     public static InitializeComponentPhase initialize(LifecycleElement element, Object model, String path,
-            Tree<String, String> refreshPaths, Component parent, ApplyModelComponentPhase nextPhase) {
+            List<String> refreshPaths, Component parent, ApplyModelComponentPhase nextPhase) {
         InitializeComponentPhase initializePhase = RecycleUtils.getInstance(InitializeComponentPhase.class);
         initializePhase.prepare(element, model, path, refreshPaths, parent, nextPhase);
 
@@ -100,10 +102,11 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, String path,
-            Tree<String, String> refreshPaths) {
+            List<String> refreshPaths) {
         return applyModel(component, model, path, refreshPaths, null, null, new HashSet<String>());
     }
 
@@ -114,10 +117,11 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The component.
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(Component component, Object model, Component parent, String path,
-            Tree<String, String> refreshPaths) {
+            List<String> refreshPaths) {
         return applyModel(component, model, path, refreshPaths, parent, null, new HashSet<String>());
     }
 
@@ -128,13 +132,14 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The parent component.
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @param nextPhase The applyModel phase to spawn after the successful completion of the
      * initialize phase.
      * @param visitedIds The set of visited IDs to track while applying model.
      * @return lifecycle processing task for processing the apply model phase on the component
      */
     public static ApplyModelComponentPhase applyModel(LifecycleElement element, Object model, String path,
-            Tree<String, String> refreshPaths, Component parent, FinalizeComponentPhase nextPhase,
+            List<String> refreshPaths, Component parent, FinalizeComponentPhase nextPhase,
             Set<String> visitedIds) {
         ApplyModelComponentPhase applyModelPhase = RecycleUtils.getInstance(ApplyModelComponentPhase.class);
         applyModelPhase.prepare(element, model, path, refreshPaths, parent, nextPhase, visitedIds);
@@ -148,10 +153,11 @@ public final class LifecyclePhaseFactory {
      * @param component The component.
      * @param model The model
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(Component component, Object model, String path,
-            Tree<String, String> refreshPaths) {
+            List<String> refreshPaths) {
         return finalize(component, model, path, refreshPaths, null);
     }
 
@@ -162,10 +168,11 @@ public final class LifecyclePhaseFactory {
      * @param model The model
      * @param parent The parent component.
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the finalize phase on the component
      */
     public static FinalizeComponentPhase finalize(LifecycleElement element, Object model, String path,
-            Tree<String, String> refreshPaths, Component parent) {
+            List<String> refreshPaths, Component parent) {
         FinalizeComponentPhase finalizePhase = RecycleUtils.getInstance(FinalizeComponentPhase.class);
         finalizePhase.prepare(element, model, path, refreshPaths, parent);
 
@@ -178,10 +185,11 @@ public final class LifecyclePhaseFactory {
      * @param component The component to render.
      * @param model The model associated with the component.
      * @param path Path to the component relative to its parent component.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(Component component, Object model, String path,
-            Tree<String, String> refreshPaths) {
+            List<String> refreshPaths) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
         renderPhase.prepare(component, model, path, refreshPaths, null, null, 0);
         return renderPhase;
@@ -191,13 +199,14 @@ public final class LifecyclePhaseFactory {
      * Creates a new lifecycle phase processing task for rendering a component.
      *
      * @param finalizePhase The finalize component phase associated with this rendering phase.
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @param renderParent The rendering phase for the parent of the component associated with this phase.
      * @param pendingChildren The number of child phases to expect to be queued with this phase as
      * their rendering parent.
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(FinalizeComponentPhase finalizePhase,
-            Tree<String, String> refreshPaths, RenderComponentPhase renderParent, int pendingChildren) {
+            List<String> refreshPaths, RenderComponentPhase renderParent, int pendingChildren) {
         LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
         renderPhase.prepare(element, finalizePhase.getModel(), finalizePhase.getParentPath(), refreshPaths,

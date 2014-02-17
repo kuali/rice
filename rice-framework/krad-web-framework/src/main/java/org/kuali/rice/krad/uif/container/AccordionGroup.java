@@ -81,18 +81,4 @@ public class AccordionGroup extends GroupBase {
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        AccordionGroup accordionGroupCopy = (AccordionGroup) component;
-
-        if (this.accordionWidget != null) {
-            accordionGroupCopy.setAccordionWidget((Accordion) this.accordionWidget.copy());
-        }
-    }
 }

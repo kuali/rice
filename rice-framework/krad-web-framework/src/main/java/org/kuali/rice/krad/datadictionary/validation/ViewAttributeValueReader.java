@@ -61,6 +61,7 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
 
         ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
 
+        // Copying information stored about InputField in the post metadata to info objects for use by this reader
         for (String id : viewPostMetadata.getInputFieldIds()) {
             InputFieldConstrainableInfo info = new InputFieldConstrainableInfo();
 
@@ -249,6 +250,12 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         return clone;
     }
 
+    /**
+     * This is a simple object used to contain information about InputFields that are being evaluated and used by
+     * this ViewAttributeValueReader.
+     *
+     * <p>For full documentation refer to the {@link org.kuali.rice.krad.uif.field.InputField} class.</p>
+     */
     public class InputFieldConstrainableInfo implements SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
 
         private String label;
@@ -259,58 +266,108 @@ public class ViewAttributeValueReader extends BaseAttributeValueReader {
         private List<MustOccurConstraint> mustOccurConstraints;
         private SimpleConstraint simpleConstraint;
 
+        /**
+         * Get the field's label
+         *
+         * @return the label
+         */
         public String getLabel() {
             return label;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getLabel()
+         */
         public void setLabel(String label) {
             this.label = label;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public String getName() {
             return name;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getName()
+         */
         public void setName(String name) {
             this.name = name;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public ValidCharactersConstraint getValidCharactersConstraint() {
             return validCharactersConstraint;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getValidCharactersConstraint()
+         */
         public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
             this.validCharactersConstraint = validCharactersConstraint;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public CaseConstraint getCaseConstraint() {
             return caseConstraint;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getCaseConstraint()
+         */
         public void setCaseConstraint(CaseConstraint caseConstraint) {
             this.caseConstraint = caseConstraint;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
             return prerequisiteConstraints;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getPrerequisiteConstraints()
+         */
         public void setPrerequisiteConstraints(List<PrerequisiteConstraint> prerequisiteConstraints) {
             this.prerequisiteConstraints = prerequisiteConstraints;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public List<MustOccurConstraint> getMustOccurConstraints() {
             return mustOccurConstraints;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getMustOccurConstraints()
+         */
         public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
             this.mustOccurConstraints = mustOccurConstraints;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
         public SimpleConstraint getSimpleConstraint() {
             return simpleConstraint;
         }
 
+        /**
+         * @see org.kuali.rice.krad.datadictionary.validation.ViewAttributeValueReader.InputFieldConstrainableInfo#getSimpleConstraint()
+         */
         public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
             this.simpleConstraint = simpleConstraint;
         }

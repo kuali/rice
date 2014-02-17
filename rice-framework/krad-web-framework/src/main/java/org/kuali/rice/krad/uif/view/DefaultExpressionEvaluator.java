@@ -703,6 +703,10 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         }
 
         Map<String, String> propertyExpressions = expressionConfigurable.getPropertyExpressions();
+        if (propertyExpressions == null){
+            return;
+        }
+
         for (String propertyName : propertyExpressions.keySet()) {
             evaluatePropertyExpression(view, evaluationParameters, expressionConfigurable, propertyName, false);
         }

@@ -199,16 +199,4 @@ public class ComponentConvertModifier extends ComponentModifierBase {
         this.componentReplacementPrototype = componentReplacementPrototype;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T componentModifier) {
-        super.copyProperties(componentModifier);
-
-        ComponentConvertModifier componentConvertModifierCopy = (ComponentConvertModifier) componentModifier;
-
-        componentConvertModifierCopy.setComponentReplacementPrototype((Component)this.componentReplacementPrototype.copy());
-        componentConvertModifierCopy.setComponentTypeToReplace(this.componentTypeToReplace);
-    }
 }

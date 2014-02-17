@@ -122,18 +122,4 @@ public class Growls extends WidgetBase {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Growls growlsCopy = (Growls) component;
-
-        growlsCopy.setSticky(this.sticky);
-        growlsCopy.setTimeShown(this.timeShown);
-        growlsCopy.setPosition(this.position);
-    }
 }

@@ -103,24 +103,4 @@ public class NavigationBar extends ContentElementBase {
             this.navigationBarGroup.setItems(items);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        NavigationBar navbarCopy = (NavigationBar) component;
-
-        navbarCopy.setBrandText(this.brandText);
-
-        if (this.brandImage != null) {
-            navbarCopy.setBrandImage((Image) this.brandImage.copy());
-        }
-
-        if (this.navigationBarGroup != null) {
-            navbarCopy.setNavigationBarGroup((Group) this.navigationBarGroup.copy());
-        }
-    }
 }

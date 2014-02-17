@@ -129,23 +129,6 @@ public class AttributeSecurity extends UifDictionaryBeanBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        AttributeSecurity attributeSecurityCopy = ((AttributeSecurity)component);
-
-        attributeSecurityCopy.setHide(this.hide);
-        attributeSecurityCopy.setMask(this.mask);
-        attributeSecurityCopy.setPartialMask(this.partialMask);
-        attributeSecurityCopy.setReadOnly(this.readOnly);
-        attributeSecurityCopy.setMaskFormatter(this.maskFormatter);
-        attributeSecurityCopy.setPartialMaskFormatter(this.partialMaskFormatter);
-    }
-
-    /**
      * This overridden method ...
      *
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class,

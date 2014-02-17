@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -37,8 +46,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.controller.helper.CollectionPagingHelper;
-import org.kuali.rice.krad.web.controller.helper.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -51,14 +58,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -93,8 +92,6 @@ public abstract class UifControllerBase {
      */
     @ModelAttribute(value = "KualiForm")
     public UifFormBase initForm(HttpServletRequest request, HttpServletResponse response) {
-        UifFormBase requestForm = null;
-
         // get Uif form manager from session if exists or setup a new one for the session
         UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
         if (uifFormManager == null) {
@@ -106,7 +103,7 @@ public abstract class UifControllerBase {
         GlobalVariables.setUifFormManager(uifFormManager);
 
         // create a new form for every request
-        requestForm = createInitialForm(request);
+        UifFormBase requestForm = createInitialForm(request);
 
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
@@ -156,7 +153,7 @@ public abstract class UifControllerBase {
         String flowKey = request.getParameter(UifConstants.HistoryFlow.FLOW);
 
         //add history manager and current flowKey to the form
-        if (requestForm != null && historyManager != null && historyManager instanceof HistoryManager) {
+        if (historyManager != null && historyManager instanceof HistoryManager) {
             requestForm.setHistoryManager((HistoryManager) historyManager);
             requestForm.setFlowKey(flowKey);
         }
@@ -226,8 +223,8 @@ public abstract class UifControllerBase {
         boolean canOpenView = form.getView().getAuthorizer().canOpenView(form.getView(), form, user);
         if (!canOpenView) {
             throw new AuthorizationException(user.getPrincipalName(), "open", form.getView().getId(),
-                    "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " + form.getView()
-                            .getId(), null);
+                    "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " +
+                            form.getView().getId(), null);
         }
     }
 
@@ -241,9 +238,10 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Called by the add line action for a new collection line. Method
-     * determines which collection the add action was selected for and invokes
-     * the view helper service to add the line
+     * Called by the add line action for a new collection line.
+     *
+     * <p>Method determines which collection the add action was selected for and invokes the view helper
+     * service to add the line</p>
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
     public ModelAndView addLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
@@ -421,10 +419,8 @@ public abstract class UifControllerBase {
             returnToStart = request.getParameter(UifConstants.HistoryFlow.RETURN_TO_START);
         }
 
-        if (StringUtils.isNotBlank(returnToStart)
-                && Boolean.parseBoolean(returnToStart)
-                && historyFlow != null
-                && StringUtils.isNotBlank(historyFlow.getFlowStartPoint())) {
+        if (StringUtils.isNotBlank(returnToStart) && Boolean.parseBoolean(returnToStart) && historyFlow != null &&
+                StringUtils.isNotBlank(historyFlow.getFlowStartPoint())) {
             returnUrl = historyFlow.getFlowStartPoint();
         }
 
@@ -614,16 +610,17 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
-                    + UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
         }
 
         // get the field term to match
         String queryTerm = request.getParameter(UifParameters.QUERY_TERM);
         if (StringUtils.isBlank(queryTerm)) {
             throw new RuntimeException(
-                    "Unable to find id for query term value for attribute query on under request parameter name: "
-                            + UifParameters.QUERY_TERM);
+                    "Unable to find id for query term value for attribute query on under request parameter name: " +
+                            UifParameters.QUERY_TERM);
         }
 
         // invoke attribute query service to perform the query
@@ -646,18 +643,6 @@ public abstract class UifControllerBase {
     AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-        String formKey = request.getParameter(UifParameters.FORM_KEY);
-
-        UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
-
-        View view;
-        if (currentForm.getPostedView() != null) {
-            view = currentForm.getPostedView();
-        } else {
-            view = currentForm.getView();
-        }
-
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
@@ -672,8 +657,9 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
-                    + UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException(
+                    "Unable to find id for field to perform query on under request parameter name: " +
+                            UifParameters.QUERY_FIELD_ID);
         }
 
         // invoke attribute query service to perform the query
@@ -751,8 +737,8 @@ public abstract class UifControllerBase {
             // ToDo: It would be nice if showDialog could be called here and avoid this exception.
             //       This would also remove the need of having to call showDialog explicitly.
 
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                    + "Check that hasDialogBeenAnswered(id) returns true.");
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
+                    "Check that hasDialogBeenAnswered(id) returns true.");
         }
 
         return dm.wasDialogAnswerAffirmative(dialogId);
@@ -793,8 +779,8 @@ public abstract class UifControllerBase {
             // ToDo: It would be nice if showDialog could be called here and avoid this exception.
             //       This would also remove the need of having to call showDialog explicitly.
 
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. "
-                    + "Check that hasDialogBeenAnswered(id) returns true.");
+            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
+                    "Check that hasDialogBeenAnswered(id) returns true.");
         }
 
         return dm.getDialogAnswer(dialogId);
@@ -946,6 +932,34 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Retrieve a page defined by the page number parameter for a collection group.
+     */
+    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
+    public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        form.setCollectionPagingRequest(true);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Get method for getting aaData for jquery datatables which are using sAjaxSource option.
+     *
+     * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
+     * request parameters.</p>
+     */
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
+    public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        form.setCollectionPagingRequest(true);
+
+        // set property to trigger special JSON rendering logic
+        form.setRequestJsonTemplate(UifConstants.TableToolsValues.JSON_TEMPLATE);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Configures the <code>ModelAndView</code> instance containing the form
      * data and pointing to the UIF generic spring view
      *
@@ -1009,200 +1023,13 @@ public abstract class UifControllerBase {
         return modelAndView;
     }
 
+    /**
+     * Convenience method for getting an instance of the view service.
+     *
+     * @return view service implementation
+     */
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
     }
 
-    /**
-     * Generates exportable table data as CSV based on the rich table selected
-     *
-     * @param form - current form
-     * @param result - binding result
-     * @param request - http request
-     * @param response - http response
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_CSV,
-            produces = {"text/csv"})
-    @ResponseBody
-    public String tableCsvRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        LOG.debug("processing csv table data request");
-
-        return retrieveTableData(form, result, request, response);
-    }
-
-    /**
-     * Generates exportable table data in xsl based on the rich table selected
-     *
-     * @param form - current form
-     * @param result - binding result
-     * @param request - http request
-     * @param response - http response
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XLS,
-            produces = {"application/vnd.ms-excel"})
-    @ResponseBody
-    public String tableXlsRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        LOG.debug("processing xls table data request");
-
-        return retrieveTableData(form, result, request, response);
-    }
-
-    /**
-     * Generates exportable table data based on the rich table selected
-     *
-     * @param form - current form
-     * @param result - binding result
-     * @param request - http request
-     * @param response - http response
-     * @return
-     */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XML,
-            produces = {"application/xml"})
-    @ResponseBody
-    public String tableXmlRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        LOG.debug("processing xml table data request");
-
-        return retrieveTableData(form, result, request, response);
-    }
-
-    /**
-     * Generates exportable table data based on the rich table selected
-     */
-    protected String retrieveTableData(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        LOG.debug("processing table data request");
-
-        String tableData = "";
-        String formatType = getValidatedFormatType(request.getParameter("formatType"));
-        String contentType = getContentType(formatType);
-
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-
-        String formKey = request.getParameter(UifParameters.FORM_KEY);
-        String tableId = request.getParameter(UifParameters.TABLE_ID);
-
-        UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
-
-        View view = currentForm.getView();
-
-        LOG.debug("identifying table from model and form");
-        tableData = view.getViewHelperService().buildExportTableData(view, currentForm, tableId, formatType);
-
-        // if table data to be returned, format response appropriately
-        setAttachmentResponseHeader(response, "export." + formatType, contentType);
-
-        return tableData;
-    }
-
-    /**
-     * Creates consistent setup of attachment response header
-     *
-     * @param response
-     * @param filename
-     * @param contentType
-     */
-    protected void setAttachmentResponseHeader(HttpServletResponse response, String filename, String contentType) {
-        response.setContentType(contentType);
-        response.setHeader("Content-disposition", "attachment; filename=\"" + filename + "\"");
-        response.setHeader("Expires", "0");
-        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
-        response.setHeader("Pragma", "public");
-    }
-
-    /**
-     * Retrieve a page defined by the page number parameter for a collection
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
-     */
-    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
-    public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
-        String pageNumber = request.getParameter(UifConstants.PageRequest.PAGE_NUMBER);
-
-        CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
-        pagingHelper.processPagingRequest(form.getPostedView(), collectionId, form, pageNumber);
-
-        return getUIFModelAndView(form);
-    }
-
-    /**
-     * Reviews and returns a valid format type, defaults to csv
-     *
-     * @param formatType
-     * @return
-     */
-    protected String getValidatedFormatType(String formatType) {
-        if ("xls".equals(formatType) || "xml".equals(formatType) || "csv".equals(formatType)) {
-            return formatType;
-        }
-        return "csv";
-    }
-
-    /**
-     * Reviews and returns a valid content type, defaults to text/csv
-     *
-     * @param formatType
-     * @return
-     */
-    private String getContentType(String formatType) {
-        if ("csv".equals(formatType)) {
-            return "text/csv";
-        } else if ("xls".equals(formatType)) {
-            return "application/vnd.ms-excel";
-        } else if ("xml".equals(formatType)) {
-            return "application/xml";
-        }
-        return "text/csv";
-    }
-
-    /**
-     * Get method for getting aaData for jquery datatables which are using sAjaxSource option.
-     *
-     * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
-     * request parameters.</p>
-     */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
-    public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        String tableId = request.getParameter(UifParameters.TABLE_ID);
-
-        DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(request);
-
-        DataTablesPagingHelper pagingHelper = createDataTablesPagingHelperInstance(form, request);
-        pagingHelper.processPagingRequest(tableId, form, request, response, dataTablesInputs);
-
-        Map<String, Object> additionalViewAttributes = new HashMap<String, Object>();
-        additionalViewAttributes.put(UifParameters.DATA_TABLES_PAGING_HELPER, pagingHelper);
-
-        return getUIFModelAndView(form, additionalViewAttributes);
-    }
-
-    /**
-     * Creates a DataTablesPagingHelper which is used within {@link #tableJsonRetrieval(org.kuali.rice.krad.web.form.UifFormBase,
-     * org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse)}
-     * for rendering pages of data in JSON form.
-     *
-     * <p>This template method can be overridden to supply a custom extension of DataTablesPagingHelper e.g. for paging
-     * and sorting at the data layer.</p>
-     *
-     * @return the DataTablesPagingHelper instance
-     */
-    protected DataTablesPagingHelper createDataTablesPagingHelperInstance(UifFormBase form,
-            HttpServletRequest request) {
-        return new DataTablesPagingHelper();
-    }
 }

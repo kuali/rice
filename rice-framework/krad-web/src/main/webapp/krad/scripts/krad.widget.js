@@ -930,6 +930,10 @@ function openDetails(oTable, row, actionComponent, animate) {
             kradRequest.methodToCall = kradVariables.REFRESH_METHOD_TO_CALL;
         }
 
+        kradRequest.successCallback = function(){
+            jQuery("#" + detailsId).show();
+        };
+
         kradRequest.ajaxReturnType = kradVariables.RETURN_TYPE_UPDATE_COMPONENT;
         kradRequest.refreshId = detailsId;
 
@@ -1021,7 +1025,6 @@ function hasVisibleElementsInColumn(tableId, columnId) {
 /**
  * Checks for visible elements in the action column and toggle its
  * display accordingly.
- *
  *
  * @param tableId
  * @param columnId

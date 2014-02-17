@@ -15,79 +15,49 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.List;
-
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.Field;
 
 /**
- * Layout manager implementations that work with a collection (such as a table
- * layout) should implement this interface for building the collection
- * <code>Component</code> instances
+ * Layout manager implementations that work with a collection (such as a table layout) should implement
+ * this interface for building the collection component instances.
  *
- * <p>
- * Unlike other <code>Group</code> instances, <code>CollectionGroup</code>
- * instances need to generate new instances of the configured components for
- * each line of the collection. The <code>Field</code> instances for each line
- * are wrapped differently depending on what <code>LayoutManager</code> is being
- * applied. Therefore as the collection lines are being built (during the
- * applyModel phase) this method will be invoked on the manager so that it may
- * setup the line as needed.
- * </p>
+ * <p>Unlike other group instances, collection group instances need to generate new instances of the
+ * configured components for each line of the collection. The field instances for each line
+ * are wrapped differently depending on what layout manager is being applied. Therefore as the collection lines
+ * are being built (during the applyModel phase) this method will be invoked on the manager so that it may
+ * setup the line as needed.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.container.CollectionGroupBuilder
  */
 public interface CollectionLayoutManager extends LayoutManager {
 
-	/**
-	 * Call to the layout manager to build the components necessary for the
-	 * given collection line, within an active view lifecycle.
-	 *
-	 * <p>
-	 * As the collection is being iterated over by the
-	 * <code>CollectionGroupBuilder</code> this method is invoked for each line.
-	 * The builder will create copies of the configured fields and actions for
-	 * the line and pass into the layout manager so they can be assembled
-	 * </p>
-	 *
-	 * @param model
-	 *            - object containing the data
-	 * @param collectionGroup
-	 *            - collection group the layout manager applies to
-	 * @param lineFields
-	 *            - the field instances for the collection line which were
-	 *            copied from the collection groups items, id and binding
-	 *            already updated
-	 * @param subCollectionFields
-	 *            - group field instances for each sub collection of the current
-	 *            line
-	 * @param bindingPath
-	 *            - binding path for the groups items (if DataBinding)
-	 * @param actions
-	 *            - list of action instances for the collection line, with id
-	 *            and binding updated
-	 * @param idSuffix
-	 *            - suffix to use for any generated items
-	 * @param currentLine
-	 *            - object instance for the current line, or null if add line
-	 * @param lineIndex
-	 *            - index of the collection line being iterated over, or -1 if
-	 *            the add line
-	 */
-	public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-			List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions, String idSuffix,
-			Object currentLine, int lineIndex);
+    /**
+     * Call to the layout manager to build the components necessary for the given collection line,
+     * within an active view lifecycle.
+     *
+     * <p>As the collection is being iterated over by the {@link org.kuali.rice.krad.uif.container.CollectionGroupLineBuilder}
+     * this method is invoked for each line. The builder will create copies of the configured fields and actions for
+     * the line and pass into the layout manager so they can be assembled</p>
+     *
+     * @param lineBuilderContext context for the line to be built
+     */
+    void buildLine(LineBuilderContext lineBuilderContext);
 
-	/**
-	 * Field group instance that is used as a prototype for creating the
-	 * sub-collection field groups. For each sub-collection a copy of the
-	 * prototype is made and the list will be passed to the layout manager
-	 * buildLine method
-	 *
-	 * @return GroupField instance to use as prototype
-	 */
-	public FieldGroup getSubCollectionFieldGroupPrototype();
+    /**
+     * Field group instance that is used as a prototype for creating the sub-collection field groups.
+     *
+     * @return GroupField instance to use as prototype
+     */
+    FieldGroup getSubCollectionFieldGroupPrototype();
+
+    /**
+     * Invoked when a paging request occurs to carry out the paging request.
+     *
+     * @param model object containing the view's data
+     * @param collectionGroup collection group the request was made for
+     */
+    void processPagingRequest(Object model, CollectionGroup collectionGroup);
 }

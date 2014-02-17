@@ -20,6 +20,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Represents a HTML password text control, rendered as a input field of type
@@ -51,7 +52,7 @@ public class PasswordControl extends ControlBase implements SizedControl {
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (parent instanceof InputField) {
@@ -152,20 +153,5 @@ public class PasswordControl extends ControlBase implements SizedControl {
         }
 
         this.watermarkText = watermarkText;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        PasswordControl passwordControlCopy = (PasswordControl) component;
-
-        passwordControlCopy.setSize(this.size);
-        passwordControlCopy.setMaxLength(this.maxLength);
-        passwordControlCopy.setMinLength(this.minLength);
-        passwordControlCopy.setWatermarkText(this.watermarkText);
     }
 }

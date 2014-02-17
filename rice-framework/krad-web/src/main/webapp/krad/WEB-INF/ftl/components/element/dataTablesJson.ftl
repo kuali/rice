@@ -22,9 +22,10 @@
 <#if KualiForm.updateComponentId??>
 
     <#assign tableId=KualiForm.updateComponentId/>
-    <#assign manager=DataTablesPagingHelper.tableLayoutManager/>
-    <#assign filteredCollectionSize=DataTablesPagingHelper.filteredCollectionSize/>
-    <#assign totalCollectionSize=DataTablesPagingHelper.totalCollectionSize/>
+    <#assign collectionGroup=KualiForm.updateComponent/>
+    <#assign manager=collectionGroup.layoutManager/>
+    <#assign filteredCollectionSize=collectionGroup.filteredCollectionSize/>
+    <#assign totalCollectionSize=collectionGroup.totalCollectionSize/>
 
     <#-- Make the custom directive for escaping quotes available in our template -->
     <#assign jsonEscape = "org.kuali.rice.krad.uif.freemarker.JsonStringEscapeDirective"?new()>

@@ -165,17 +165,4 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
 
         return filteredSearchCriteria;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        GroupControl groupControlCopy = (GroupControl) component;
-
-        groupControlCopy.setNamespaceCodePropertyName(this.namespaceCodePropertyName);
-        groupControlCopy.setGroupIdPropertyName(this.groupIdPropertyName);
-    }
 }

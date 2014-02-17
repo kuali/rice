@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -32,8 +33,8 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePrototype;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -44,7 +45,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -169,6 +169,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private int displayStart = -1;
     private int displayLength = -1;
     private int filteredCollectionSize = -1;
+    private int totalCollectionSize = -1;
 
     private List<String> totalColumns;
 
@@ -294,14 +295,33 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
+        ViewModel viewModel = (ViewModel) model;
         View view = ViewLifecycle.getView();
 
+        // if server paging is enabled get the display start from post data so we build the correct page
+        if (this.isUseServerPaging()) {
+            Object displayStart = ViewLifecycle.getViewPostMetadata().getComponentPostData(this.getId(),
+                    UifConstants.PostMetadata.COLL_DISPLAY_START);
+            if (displayStart != null) {
+                this.setDisplayStart(((Integer) displayStart).intValue());
+            }
+
+            Object displayLength = ViewLifecycle.getViewPostMetadata().getComponentPostData(this.getId(),
+                    UifConstants.PostMetadata.COLL_DISPLAY_LENGTH);
+            if (displayLength != null) {
+                this.setDisplayLength(((Integer) displayLength).intValue());
+            }
+        }
+
+        // if we are processing a paging request, invoke the layout managers to carry out the paging,
+        if (viewModel.isCollectionPagingRequest()) {
+            ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
+        }
+
         if (StringUtils.isNotBlank(this.getId())
-                && model instanceof ViewModel
-                && ((ViewModel) model).getViewPostMetadata() != null
-                && ((ViewModel) model).getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
-            List<Object> newLines = ((ViewModel) model).getViewPostMetadata().getAddedCollectionObjects().get(
-                    this.getId());
+                && viewModel.getViewPostMetadata() != null
+                && viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
+            List<Object> newLines = viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId());
 
             // if newLines is empty this means its an addLine case (no additional processing) so init collection line
             if (newLines.isEmpty()) {
@@ -310,17 +330,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
             for (Object newLine : newLines) {
                 ViewLifecycle.getHelper().applyDefaultValuesForCollectionLine(this, newLine);
-            }
-        }
-
-        // If we are using server paging, determine if a displayStart value has been set for this collection
-        // and used that value as the displayStart
-        if (model instanceof UifFormBase && this.isUseServerPaging()) {
-            Object displayStart = ((UifFormBase) model).getExtensionData().get(
-                    this.getId() + UifConstants.PageRequest.DISPLAY_START_PROP);
-
-            if (displayStart != null) {
-                this.setDisplayStart(((Integer) displayStart).intValue());
             }
         }
 
@@ -357,59 +366,64 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
+        addCollectionPostMetadata();
+    }
+
+    /**
+     * Add the metadata about this collection to the ViewPostMetadata
+     * that is to be kept in memory between posts for use by other methods
+     */
+    protected void addCollectionPostMetadata() {
         if (this.getCollectionLookup() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS,
                     this.getCollectionLookup().getFieldConversions());
         }
 
-        if (this.getCollectionObjectClass() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS,
-                    this.getCollectionObjectClass());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_OBJECT_CLASS,
+                this.getCollectionObjectClass());
 
-        if (this.getBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_INFO,
-                    this.getBindingInfo());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_INFO,
+                this.getBindingInfo());
 
-        if (this.getAddLineBindingInfo() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO,
-                    this.getAddLineBindingInfo());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO,
+                this.getAddLineBindingInfo());
 
-        if (StringUtils.isNotBlank(this.getAddLinePlacement())) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_PLACEMENT,
-                    this.getAddLinePlacement());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.ADD_LINE_PLACEMENT,
+                this.getAddLinePlacement());
 
         if (this.getHeader() != null) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_LABEL,
-                    ViewLifecycle.getHelper().getCollectionLabel(this));
+                    this.getCollectionLabel());
         }
 
         if (this.getDuplicateLinePropertyNames() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES,
-                    this.getDuplicateLinePropertyNames());
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING,
-                    ViewLifecycle.getHelper().getDuplicateLineLabelString(this, this.getDuplicateLinePropertyNames()));
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES, this.getDuplicateLinePropertyNames());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING, this.getDuplicateLineLabelString(
+                    this.getDuplicateLinePropertyNames()));
         }
 
         boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
         if (hasBindingPath) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                    this, UifConstants.PostMetadata.BINDING_PATH, getBindingInfo().getBindingPath());
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.BINDING_PATH,
+                    getBindingInfo().getBindingPath());
         }
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                this, UifConstants.PostMetadata.COLL_DISPLAY_START, getDisplayStart());
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(
-                this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH, getDisplayLength());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_DISPLAY_START,
+                getDisplayStart());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.COLL_DISPLAY_LENGTH,
+                getDisplayLength());
     }
-    
+
     /**
      * Sets a reference in the context map for all nested components to the collection group
      * instance, and sets name as parameter for an action fields in the group
@@ -423,6 +437,48 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH, this.getBindingInfo().getBindingPath());
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID, this.getId());
         }
+    }
+
+    /**
+     * Gets the label for the collection in a human-friendly format.
+     *
+     * @return a human-friendly collection label
+     */
+    protected String getCollectionLabel() {
+        String collectionLabel = this.getHeaderText();
+
+        if (StringUtils.isBlank(collectionLabel)) {
+            String propertyName = this.getPropertyName();
+            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(
+                    propertyName);
+        }
+
+        return collectionLabel;
+    }
+
+    /**
+     * Gets a comma-separated list of the data field labels that are keyed a duplicates.
+     *
+     * @param duplicateLinePropertyNames the property names to check for duplicates
+     * @return a comma-separated list of labels
+     */
+    protected String getDuplicateLineLabelString(List<String> duplicateLinePropertyNames) {
+        List<String> duplicateLineLabels = new ArrayList<String>();
+
+        for (Component addLineItem : this.getAddLineItems()) {
+            if (addLineItem instanceof DataField) {
+                DataField addLineField = (DataField) addLineItem;
+
+                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
+                    String label = addLineField.getLabel();
+                    String shortLabel = addLineField.getShortLabel();
+                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                }
+            }
+
+        }
+
+        return StringUtils.join(duplicateLineLabels, ", ");
     }
 
     /**
@@ -448,7 +504,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @ViewLifecyclePrototype
     public List<? extends Component> getItems() {
         return super.getItems();
     }
@@ -1129,6 +1184,14 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         this.filteredCollectionSize = filteredCollectionSize;
     }
 
+    public int getTotalCollectionSize() {
+        return totalCollectionSize;
+    }
+
+    public void setTotalCollectionSize(int totalCollectionSize) {
+        this.totalCollectionSize = totalCollectionSize;
+    }
+
     /**
      * @return list of total columns
      */
@@ -1144,116 +1207,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     protected void setTotalColumns(List<String> totalColumns) {
         this.totalColumns = totalColumns;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CollectionGroupBase collectionGroupCopy = (CollectionGroupBase) component;
-
-        collectionGroupCopy.setDisplayCollectionSize(this.displayCollectionSize);
-        collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
-
-        if (this.addBlankLineAction != null) {
-            collectionGroupCopy.setAddBlankLineAction((Action) this.addBlankLineAction.copy());
-        }
-
-        collectionGroupCopy.setAddItemCssClass(this.addItemCssClass);
-
-        if (addLineItems != null && !addLineItems.isEmpty()) {
-            List<Component> addLineItemsCopy = ComponentUtils.copy(new ArrayList<Component>(addLineItems));
-            collectionGroupCopy.setAddLineItems(addLineItemsCopy);
-        }
-
-        if (addLineActions != null && !addLineActions.isEmpty()) {
-            List<? extends Component> addLineActionsCopy = ComponentUtils.copy(addLineActions);
-            collectionGroupCopy.setAddLineActions(addLineActionsCopy);
-        }
-
-        if (this.addLineBindingInfo != null) {
-            collectionGroupCopy.setAddLineBindingInfo((BindingInfo) this.addLineBindingInfo.copy());
-        }
-
-        if (this.addLineLabel != null) {
-            collectionGroupCopy.setAddLineLabel((Message) this.addLineLabel.copy());
-        }
-
-        collectionGroupCopy.setAddLinePlacement(this.addLinePlacement);
-        collectionGroupCopy.setAddLinePropertyName(this.addLinePropertyName);
-        collectionGroupCopy.setAddViaLightBox(this.addViaLightBox);
-
-        if (this.addViaLightBoxAction != null) {
-            collectionGroupCopy.setAddViaLightBoxAction((Action) this.addViaLightBoxAction.copy());
-        }
-
-        if (this.bindingInfo != null) {
-            collectionGroupCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
-        }
-
-        if (this.collectionLookup != null) {
-            collectionGroupCopy.setCollectionLookup((QuickFinder) this.collectionLookup.copy());
-        }
-
-        collectionGroupCopy.setCollectionObjectClass(this.collectionObjectClass);
-
-        if (this.filters != null && !this.filters.isEmpty()) {
-            collectionGroupCopy.setFilters(new ArrayList<CollectionFilter>(this.filters));
-        }
-
-        if (this.duplicateLinePropertyNames != null && !this.duplicateLinePropertyNames.isEmpty()) {
-            collectionGroupCopy.setDuplicateLinePropertyNames(new ArrayList<String>(this.duplicateLinePropertyNames));
-        }
-
-        collectionGroupCopy.setHighlightAddItem(this.highlightAddItem);
-        collectionGroupCopy.setHighlightNewItems(this.highlightNewItems);
-        collectionGroupCopy.setIncludeLineSelectionField(this.includeLineSelectionField);
-        collectionGroupCopy.setUseServerPaging(this.useServerPaging);
-        collectionGroupCopy.setPageSize(this.pageSize);
-        collectionGroupCopy.setDisplayStart(this.displayStart);
-        collectionGroupCopy.setDisplayLength(this.displayLength);
-
-        if (lineActions != null && !lineActions.isEmpty()) {
-            List<? extends Component> lineActionsCopy = ComponentUtils.copy(lineActions);
-            collectionGroupCopy.setLineActions(lineActionsCopy);
-        }
-
-        collectionGroupCopy.setLineSelectPropertyName(this.lineSelectPropertyName);
-        collectionGroupCopy.setNewItemsCssClass(this.newItemsCssClass);
-        collectionGroupCopy.setPropertyName(this.propertyName);
-        collectionGroupCopy.setRenderAddBlankLineButton(this.renderAddBlankLineButton);
-        collectionGroupCopy.setRenderAddLine(this.renderAddLine);
-        collectionGroupCopy.setRenderInactiveToggleButton(this.renderInactiveToggleButton);
-        collectionGroupCopy.setActiveCollectionFilter(this.activeCollectionFilter);
-        collectionGroupCopy.setFilters(this.filters);
-        collectionGroupCopy.setDuplicateLinePropertyNames(this.duplicateLinePropertyNames);
-
-        collectionGroupCopy.setRenderLineActions(this.renderLineActions);
-        collectionGroupCopy.setRenderSaveLineActions(this.renderSaveLineActions);
-        collectionGroupCopy.setShowInactiveLines(this.showInactiveLines);
-
-        if (this.unauthorizedLineBindingInfos != null && !this.unauthorizedLineBindingInfos.isEmpty()) {
-            List<BindingInfo> unauthorizedLineBindingInfosCopy = new ArrayList<BindingInfo>();
-
-            for (BindingInfo bindingInfo : this.unauthorizedLineBindingInfos) {
-                unauthorizedLineBindingInfosCopy.add((BindingInfo) bindingInfo.copy());
-            }
-
-            collectionGroupCopy.setUnauthorizedLineBindingInfos(unauthorizedLineBindingInfosCopy);
-        }
-
-        if (subCollections != null && !subCollections.isEmpty()) {
-            List<CollectionGroup> subCollectionsCopy = ComponentUtils.copy(subCollections);
-            collectionGroupCopy.setSubCollections(subCollectionsCopy);
-        }
-        collectionGroupCopy.setSubCollectionSuffix(this.subCollectionSuffix);
-
-        if (this.totalColumns != null) {
-            collectionGroupCopy.setTotalColumns(new ArrayList<String>(this.totalColumns));
-        }
     }
 
     /**

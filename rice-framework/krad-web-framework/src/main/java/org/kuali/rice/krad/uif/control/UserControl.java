@@ -243,18 +243,4 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     public void setPersonObjectPropertyName(String personObjectPropertyName) {
         this.personObjectPropertyName = personObjectPropertyName;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        UserControl userControlCopy = (UserControl) component;
-
-        userControlCopy.setPrincipalIdPropertyName(this.principalIdPropertyName);
-        userControlCopy.setPersonNamePropertyName(this.personNamePropertyName);
-        userControlCopy.setPersonObjectPropertyName(this.personObjectPropertyName);
-    }
 }

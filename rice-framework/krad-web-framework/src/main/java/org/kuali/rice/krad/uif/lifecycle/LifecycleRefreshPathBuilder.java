@@ -15,24 +15,34 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.core.api.util.tree.Node;
-import org.kuali.rice.core.api.util.tree.Tree;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
+ * For components that can be refreshed, builds out the various paths the lifecycle needs to be run on when
+ * the component refresh process is run.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LifecycleRefreshPathBuilder {
 
+    /**
+     * Iterates through each {@link org.kuali.rice.krad.uif.util.LifecycleElement} that has been collected in
+     * the view index and invokes refresh path processing.
+     */
     public static void processLifecycleElements() {
         ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
 
@@ -42,13 +52,21 @@ public class LifecycleRefreshPathBuilder {
         }
     }
 
+    /**
+     * Determines whether the given lifecycle element is capable of being refreshed, and if so invokes
+     * {@link LifecycleRefreshPathBuilder#buildRefreshPathMappings} to build the refresh paths.
+     *
+     * @param element lifecycle element to build refresh paths for (if necessary)
+     */
     protected static void processLifecycleElement(LifecycleElement element) {
         if ((element == null) || !(element instanceof Component)) {
             return;
         }
 
         Component component = (Component) element;
-        if (ComponentUtils.canBeRefreshed(component) || component.isForceSessionPersistence()) {
+        if (ComponentUtils.canBeRefreshed(component)
+                || (component instanceof CollectionGroup)
+                || component.isForceSessionPersistence()) {
             ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
 
             ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(component.getId());
@@ -62,109 +80,117 @@ public class LifecycleRefreshPathBuilder {
         }
     }
 
+    /**
+     * Builds the refresh paths for the given lifecycle element and sets onto the post metadata for storage.
+     *
+     * <p>For each lifecycle phase, a list of paths that the refresh lifecycle for the given should process
+     * is built. These are then stored on the component post metadata for retrieval on the refresh call</p>
+     *
+     * @param lifecycleElement lifecycle element to build paths for
+     * @param componentPostMetadata post metadata instance to store the paths
+     */
     protected static void buildRefreshPathMappings(LifecycleElement lifecycleElement,
             ComponentPostMetadata componentPostMetadata) {
-        ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
+        List<String> initializePaths = new ArrayList<String>();
+        List<String> applyModelPaths = new ArrayList<String>();
+        List<String> finalizePaths = new ArrayList<String>();
 
-        Map<String, String> elementPhasePathMapping = lifecycleElement.getPhasePathMapping();
+        String refreshElementPath = lifecycleElement.getViewPath();
+        processElementPath(refreshElementPath, initializePaths, applyModelPaths, finalizePaths, new HashSet<String>());
 
-        Tree<String, String> initializePhasePaths = initializeNewViewPathTree(elementPhasePathMapping.get(
-                UifConstants.ViewPhases.INITIALIZE));
-        Tree<String, String> applyModelPhasePaths = initializeNewViewPathTree(elementPhasePathMapping.get(
-                UifConstants.ViewPhases.APPLY_MODEL));
-        Tree<String, String> finalizePhasePaths = initializeNewViewPathTree(elementPhasePathMapping.get(
-                UifConstants.ViewPhases.FINALIZE));
+        Map<String, List<String>> refreshPathMappings = new HashMap<String, List<String>>();
 
-        String finalPath = lifecycleElement.getViewPath();
-
-        String[] parentProperties = ObjectPropertyUtils.splitPropertyPath(finalPath);
-
-        String previousPath = null;
-        for (int i = 0; i < parentProperties.length - 1; i++) {
-            String path = parentProperties[i];
-            if (previousPath != null) {
-                path = previousPath + "." + path;
-            }
-
-            LifecycleElement parentLifecycleElement = viewIndex.getLifecycleElementByPath(path);
-            addElementPaths(parentLifecycleElement, initializePhasePaths, applyModelPhasePaths, finalizePhasePaths);
-
-            previousPath = path;
-        }
-
-        Map<String, Tree<String, String>> refreshPathMappings = new HashMap<String, Tree<String, String>>();
-
-        refreshPathMappings.put(UifConstants.ViewPhases.INITIALIZE, initializePhasePaths);
-        refreshPathMappings.put(UifConstants.ViewPhases.APPLY_MODEL, applyModelPhasePaths);
-        refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, finalizePhasePaths);
+        refreshPathMappings.put(UifConstants.ViewPhases.INITIALIZE, initializePaths);
+        refreshPathMappings.put(UifConstants.ViewPhases.APPLY_MODEL, applyModelPaths);
+        refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, finalizePaths);
 
         componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
     }
 
-    public static Tree<String, String> initializeNewViewPathTree(String elementPath) {
-        Tree<String, String> viewPathTree = new Tree<String, String>();
+    /**
+     * Processes the element at the given path, and all its parents (given by properties within the path) adding
+     * their refresh paths to the lists being built.
+     *
+     * @param path path of the element to process
+     * @param initializePaths list of refresh paths for the intialize phase
+     * @param applyModelPaths list of refresh paths for the apply model phase
+     * @param finalizePaths list of refresh paths for the finalize phase
+     * @param visitedPaths list of paths that have already been processed
+     */
+    protected static void processElementPath(String path, List<String> initializePaths, List<String> applyModelPaths,
+            List<String> finalizePaths, Set<String> visitedPaths) {
+        String[] parentProperties = ObjectPropertyUtils.splitPropertyPath(path);
 
-        Node<String, String> viewNode = new Node<String, String>("view");
-        viewPathTree.setRootElement(viewNode);
-
-        if (elementPath != null) {
-            Node<String, String> nextNode = viewNode;
-
-            String[] parentProperties = ObjectPropertyUtils.splitPropertyPath(elementPath);
-            for (int i = 0; i < parentProperties.length; i++) {
-                String path = parentProperties[i];
-
-                nextNode = addNodeForPath(path, nextNode);
+        String previousPath = null;
+        for (int i = 0; i < parentProperties.length; i++) {
+            String parentPath = parentProperties[i];
+            if (previousPath != null) {
+                parentPath = previousPath + "." + parentPath;
             }
 
-            nextNode.setNodeLabel(UifConstants.REFRESH_ELEMENT_NODE_LABEL);
-        }
+            if (!visitedPaths.contains(parentPath)) {
+                visitedPaths.add(parentPath);
 
-        return viewPathTree;
+                addElementRefreshPaths(parentPath, initializePaths, applyModelPaths, finalizePaths, visitedPaths);
+            }
+
+            previousPath = parentPath;
+        }
     }
 
-    protected static void addElementPaths(LifecycleElement lifecycleElement, Tree<String, String> initializePhasePaths,
-            Tree<String, String> applyModelPhasePaths, Tree<String, String> finalizePhasePaths) {
+    /**
+     * Retrieves the lifecycle element from the view index that has the given path, then adds its refresh
+     * paths to the given lists.
+     *
+     * <p>If the lifecycle element had a different path in one the phases, a call is made back to
+     * {@link #processElementPath} to process any new parents.</p>
+     *
+     * @param elementPath path of the element to add paths for
+     * @param initializePaths list of refresh paths for the intialize phase
+     * @param applyModelPaths list of refresh paths for the apply model phase
+     * @param finalizePaths list of refresh paths for the finalize phase
+     * @param visitedPaths list of paths that have already been processed
+     */
+    protected static void addElementRefreshPaths(String elementPath, List<String> initializePaths,
+            List<String> applyModelPaths, List<String> finalizePaths, Set<String> visitedPaths) {
+        LifecycleElement lifecycleElement = ViewLifecycle.getView().getViewIndex().getLifecycleElementByPath(
+                elementPath);
+        if (lifecycleElement == null) {
+            return;
+        }
+
         Map<String, String> phasePathMapping = lifecycleElement.getPhasePathMapping();
         for (Map.Entry<String, String> phasePathEntry : phasePathMapping.entrySet()) {
-            if (UifConstants.ViewPhases.INITIALIZE.equals(phasePathEntry.getKey())) {
-                addElementPathForPhase(phasePathEntry.getValue(), initializePhasePaths);
-            } else if (UifConstants.ViewPhases.APPLY_MODEL.equals(phasePathEntry.getKey())) {
-                addElementPathForPhase(phasePathEntry.getValue(), applyModelPhasePaths);
-            } else if (UifConstants.ViewPhases.FINALIZE.equals(phasePathEntry.getKey())) {
-                addElementPathForPhase(phasePathEntry.getValue(), finalizePhasePaths);
+            String refreshPath = phasePathEntry.getValue();
+
+            if (StringUtils.equals(elementPath, refreshPath)) {
+                addElementRefreshPath(refreshPath, phasePathEntry.getKey(), initializePaths, applyModelPaths,
+                        finalizePaths);
+            } else {
+                // process this as a new path (process its parents)
+                processElementPath(refreshPath, initializePaths, applyModelPaths, finalizePaths, visitedPaths);
             }
         }
     }
 
-    protected static void addElementPathForPhase(String path, Tree<String, String> phasePaths) {
-        String[] pathParents = ObjectPropertyUtils.splitPropertyPath(path);
-
-        Node<String, String> nextNode = phasePaths.getRootElement();
-
-        for (int i = 0; i < pathParents.length; i++) {
-            String parent = pathParents[i];
-
-            nextNode = addNodeForPath(parent, nextNode);
+    /**
+     * Adds the given path to the refresh path list for the given phase.
+     *
+     * @param path path to add
+     * @param phase phase for the list the path should be added to
+     * @param initializePaths list of refresh paths for the intialize phase
+     * @param applyModelPaths list of refresh paths for the apply model phase
+     * @param finalizePaths list of refresh paths for the finalize phase
+     */
+    protected static void addElementRefreshPath(String path, String phase, List<String> initializePaths,
+            List<String> applyModelPaths, List<String> finalizePaths) {
+        if (UifConstants.ViewPhases.INITIALIZE.equals(phase)) {
+            initializePaths.add(path);
+        } else if (UifConstants.ViewPhases.APPLY_MODEL.equals(phase)) {
+            applyModelPaths.add(path);
+        } else if (UifConstants.ViewPhases.FINALIZE.equals(phase)) {
+            finalizePaths.add(path);
         }
-    }
-
-    protected static Node<String, String> addNodeForPath(String path, Node<String, String> parentNode) {
-        Node<String, String> pathNode = null;
-
-        List<Node<String, String>> nodes = parentNode.getChildren();
-        for (Node<String, String> node : nodes) {
-            if (node.getData().equals(path)) {
-                pathNode = node;
-            }
-        }
-
-        if (pathNode == null) {
-            pathNode = new Node<String, String>(path);
-            parentNode.addChild(pathNode);
-        }
-
-        return pathNode;
     }
 
 }

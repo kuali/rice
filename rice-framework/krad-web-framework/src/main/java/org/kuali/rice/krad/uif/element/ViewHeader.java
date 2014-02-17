@@ -227,28 +227,4 @@ public class ViewHeader extends Header {
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ViewHeader viewHeaderCopy = (ViewHeader) component;
-
-        if (this.areaTitleMessage != null) {
-            viewHeaderCopy.setAreaTitleMessage((Message) this.areaTitleMessage.copy());
-        }
-
-        if (this.supportTitleMessage != null) {
-            viewHeaderCopy.setSupportTitleMessage((Message) this.supportTitleMessage.copy());
-        }
-
-        if (this.metadataMessage != null) {
-            viewHeaderCopy.setMetadataMessage((Message) this.metadataMessage.copy());
-        }
-
-        viewHeaderCopy.setSticky(this.sticky);
-    }
 }

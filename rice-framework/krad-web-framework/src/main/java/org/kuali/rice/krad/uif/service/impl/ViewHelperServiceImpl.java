@@ -37,10 +37,7 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -99,60 +96,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
     /**
-     * Helper function to determine whether if column should be displayed. Used to help extract
-     * columns used in screen format such as action or select that is not needed for export.
-     *
-     * @param layoutManager The layout manager.
-     * @param collectionGroup The collection group.
-     * @return Index numbers for all columns that should be ignored.
-     */
-    private List<Integer> findIgnoredColumns(TableLayoutManager layoutManager, CollectionGroup collectionGroup) {
-        List<Integer> ignoreColumns = new ArrayList<Integer>();
-        int actionColumnIndex = layoutManager.getActionColumnIndex();
-        int numberOfColumns = layoutManager.getNumberOfColumns();
-        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
-        boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
-        boolean renderSequenceField = layoutManager.isRenderSequenceField();
-
-        if (renderActions || renderSelectField || renderSequenceField) {
-            int shiftColumn = 0;
-
-            if (renderSelectField) {
-                ignoreColumns.add(shiftColumn);
-                shiftColumn++;
-            }
-            if (renderSequenceField) {
-                ignoreColumns.add(shiftColumn);
-                shiftColumn++;
-            }
-            if (renderActions) {
-                if (actionColumnIndex == 1) {
-                    ignoreColumns.add(shiftColumn);
-                } else if (actionColumnIndex == -1) {
-                    ignoreColumns.add(numberOfColumns - 1);
-                } else if (actionColumnIndex > 1) {
-                    ignoreColumns.add(actionColumnIndex);
-                }
-            }
-        }
-        return ignoreColumns;
-    }
-
-    /**
-     * Hook for creating new components with code and adding them to a container
-     *
-     * <p>
-     * Subclasses can override this method to check for one or more containers by id and then adding
-     * components created in code. This is invoked before the initialize method on the container
-     * component, so the full lifecycle will be run on the components returned.
-     * </p>
-     *
-     * <p>
-     * New components instances can be retrieved using {@link ComponentFactory}
-     * </p>
-     *
-     * @param model object containing the view data
-     * @param container container instance to add components to
+     * {@inheritDoc}
      */
     @Override
     public void addCustomContainerComponents(ViewModel model, Container container) {
@@ -160,67 +104,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Generates formatted table data based on the posted view results and format type
-     *
-     * @param view view instance where the table is located
-     * @param model top level object containing the data
-     * @param tableId id of the table being generated
-     * @param formatType format which the table should be generated in
-     * @return The generated table data.
-     */
-    @Override
-    public String buildExportTableData(View view, Object model, String tableId, String formatType) {
-        // load table format elements used for generated particular style
-        Map<String, String> exportTableFormatOptions = getExportTableFormatOptions(formatType);
-        String startTable = exportTableFormatOptions.get("startTable");
-        String endTable = exportTableFormatOptions.get("endTable");
-
-        Component component = view.getViewIndex().getComponentById(tableId);
-        StringBuilder tableRows = new StringBuilder("");
-
-        // table layout manager is needed for header and gathering field data
-        if (component instanceof CollectionGroup && ((CollectionGroup) component)
-                .getLayoutManager() instanceof TableLayoutManager) {
-
-            CollectionGroup collectionGroup = (CollectionGroup) component;
-            TableLayoutManager layoutManager = (TableLayoutManager) collectionGroup.getLayoutManager();
-            List<Label> headerLabels = layoutManager.getHeaderLabels();
-            List<Field> rowFields = layoutManager.getAllRowFields();
-            int numberOfColumns = layoutManager.getNumberOfColumns();
-            List<Integer> ignoredColumns = findIgnoredColumns(layoutManager, collectionGroup);
-
-            // append table header data as first row
-            if (headerLabels.size() > 0) {
-                List<String> labels = new ArrayList<String>();
-                for (Label label : headerLabels) {
-                    labels.add(label.getLabelText());
-                }
-
-                tableRows.append(buildExportTableRow(labels, exportTableFormatOptions, ignoredColumns));
-            }
-
-            // load all subsequent rows to the table
-            if (rowFields.size() > 0) {
-                List<String> columnData = new ArrayList<String>();
-                for (Field field : rowFields) {
-                    columnData.add(KRADUtils.getSimpleFieldValue(model, field));
-                    if (columnData.size() >= numberOfColumns) {
-                        tableRows.append(buildExportTableRow(columnData, exportTableFormatOptions, ignoredColumns));
-                        columnData.clear();
-                    }
-                }
-            }
-        }
-
-        return startTable + tableRows.toString() + endTable;
-    }
-
-    /**
      * Finds the <code>Inquirable</code> configured for the given data object class and delegates to
      * it for building the inquiry URL
      *
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#buildInquiryLink(java.lang.Object,
-     * java.lang.String, org.kuali.rice.krad.uif.widget.Inquiry)
+     * {@inheritDoc}
      */
     public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry) {
         Inquirable inquirable = getViewDictionaryService().getInquirable(dataObject.getClass(), inquiry.getViewName());
@@ -235,11 +122,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom apply model logic on the component
-     *
-     * @param element element to apply model to
-     * @param model Top level object containing the data (could be the model or a top level business
-     * object, dto)
+     * {@inheritDoc}
      */
     @Override
     public void performCustomApplyModel(LifecycleElement element, Object model) {
@@ -247,11 +130,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom finalization
-     *
-     * @param element element instance to update
-     * @param model Top level object containing the data
-     * @param parent Parent component for the component being finalized
+     * {@inheritDoc}
      */
     @Override
     public void performCustomFinalize(LifecycleElement element, Object model, LifecycleElement parent) {
@@ -259,9 +138,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom initialization on the element
-     *
-     * @param element element to initialize
+     * {@inheritDoc}
      */
     @Override
     public void performCustomInitialization(LifecycleElement element) {
@@ -269,9 +146,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom component finalization.
-     *
-     * @param model Top level object containing the data
+     * {@inheritDoc}
      */
     @Override
     public void performCustomViewFinalize(Object model) {
@@ -279,9 +154,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to perform custom initialization prior to view initialization.
-     *
-     * @param model The model.
+     * {@inheritDoc}
      */
     @Override
     public void performCustomViewInitialization(Object model) {
@@ -289,14 +162,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the new collection line after it has been added to the
-     * collection
-     *
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line that was added
-     * @param model object instance that contain's the views data
-     * @param addLine the new line that was added
-     * @param isValidLine indicates if the line is valid
+     * {@inheritDoc}
      */
     @Override
     public void processAfterAddLine(ViewModel model, Object lineObject, String collectionId, String collectionPath,
@@ -305,12 +171,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the collection line after it has been deleted
-     *
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line that was added
-     * @param model object instance that contains the views data
-     * @param lineIndex index of the line that was deleted
+     * {@inheritDoc}
      */
     @Override
     public void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
@@ -318,12 +179,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the save collection line after it has been validated
-     *
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection
-     * @param model object instance that contains the views data
-     * @param addLine the new line that was added
+     * {@inheritDoc}
      */
     @Override
     public void processAfterSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
@@ -331,14 +187,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the new collection line before it is added to the
-     * collection
-     *
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line will be added
-     * to
-     * @param model object instance that contain's the views data
-     * @param addLine the new line instance to be processed
+     * {@inheritDoc}
      */
     @Override
     public void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath) {
@@ -346,12 +195,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the save collection line before it is validated
-     *
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection
-     * @param model object instance that contain's the views data
-     * @param addLine the new line instance to be processed
+     * {@inheritDoc}
      */
     @Override
     public void processBeforeSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
@@ -359,8 +203,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddBlankLine(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, java.lang.String)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -393,8 +236,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionAddLine(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, java.lang.String)
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -431,10 +273,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Do all processing related to adding a line: calls processBeforeAddLine, performAddLineValidation, addLine,
      * processAfterAddLine
      *
-     * @param viewModel
-     * @param newLine
-     * @param collectionId
-     * @param collectionPath
+     * @param viewModel object instance that contain's the view's data
+     * @param newLine the new line instance to be processed
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
     protected void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
             String collectionPath) {
@@ -462,10 +304,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionDeleteLine(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, java.lang.String, int)
+     * {@inheritDoc}
      */
-    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
+    @Override
+    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath,
+            int lineIndex) {
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
@@ -489,11 +332,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#processCollectionSaveLine(org.kuali.rice.krad.uif.view.View,
-     * java.lang.Object, java.lang.String, int)
+     * {@inheritDoc}
      */
     @Override
-    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex) {
+    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath,
+            int selectedLineIndex) {
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
@@ -518,7 +361,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processMultipleValueLookupResults
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
@@ -607,104 +450,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Helper method used to build formatted table row data for export
-     *
-     * @param columnData Formatted column data.
-     * @param tableFormatOptions Format options: startRow and endRow are added to the row,
-     * startColumn and endColumn are added to each column.
-     * @param ignoredColumns Index numbers of columns to ignore.
-     * @return Formatted table data for one row.
-     */
-    protected String buildExportTableRow(List<String> columnData, Map<String, String> tableFormatOptions,
-            List<Integer> ignoredColumns) {
-        String startRow = tableFormatOptions.get("startRow");
-        String endRow = tableFormatOptions.get("endRow");
-        String startColumn = tableFormatOptions.get("startColumn");
-        String endColumn = tableFormatOptions.get("endColumn");
-        boolean appendLastColumn = Boolean.valueOf(tableFormatOptions.get("appendLastColumn"));
-        int columnIndex = 0;
-
-        StringBuilder builder = new StringBuilder();
-        for (String columnItem : columnData) {
-            boolean displayColumn = !ignoredColumns.contains(columnIndex);
-            if (displayColumn) {
-                builder.append(startColumn + columnItem + endColumn);
-            }
-            if (columnIndex >= columnData.size() - 1 && !appendLastColumn) {
-                builder.delete(builder.length() - endColumn.length(), builder.length());
-            }
-            columnIndex++;
-        }
-
-        return startRow + builder.toString() + endRow;
-    }
-
-    /**
-     * Identify table formatting elements based on formatType. Defaults to txt format if not found
-     *
-     * @param formatType The format type: csv, xls, or xml.
-     * @return The format options for to use with the indicated format type.
-     */
-    protected Map<String, String> getExportTableFormatOptions(String formatType) {
-        HashMap<String, String> map = new HashMap<String, String>();
-
-        map.put("contentType", "text/plain");
-        map.put("formatType", "txt");
-        map.put("startTable", "");
-        map.put("endTable", "");
-        map.put("startRow", "");
-        map.put("endRow", "\n");
-        map.put("startColumn", "");
-        map.put("endColumn", ", ");
-        map.put("appendLastColumn", "false");
-
-        if ("csv".equals(formatType)) {
-            map.put("contentType", "text/csv");
-            map.put("formatType", "csv");
-            map.put("startTable", "");
-            map.put("endTable", "");
-            map.put("startRow", "");
-            map.put("endRow", "\n");
-            map.put("startColumn", "");
-            map.put("endColumn", ", ");
-            map.put("appendLastColumn", "false");
-
-        } else if ("xls".equals(formatType)) {
-            map.put("contentType", "application/vnd.ms-excel");
-            map.put("formatType", "xls");
-            map.put("startTable", "");
-            map.put("endTable", "");
-            map.put("startRow", "");
-            map.put("endRow", "\n");
-            map.put("startColumn", "\"");
-            map.put("endColumn", "\"\t");
-            map.put("appendLastColumn", "true");
-
-        } else if ("xml".equals(formatType)) {
-            map.put("contentType", "application/xml");
-            map.put("formatType", "xml");
-            map.put("startTable", "<table>\n");
-            map.put("endTable", "</table>\n");
-            map.put("startRow", "  <row>\n");
-            map.put("endRow", "  </row>\n");
-            map.put("startColumn", "    <column>");
-            map.put("endColumn", "</column>\n");
-            map.put("appendLastColumn", "true");
-
-        }
-
-        return map;
-    }
-
-    /**
      * Performs validation on the new collection line before it is added to the corresponding collection.
      *
-     * @param view view instance that the action was taken on
-     * @param collectionGroup collection group component for the collection
-     * @param addLine new line instance to validate
-     * @param model object instance that contains the views data
-     * @return true if the line is valid and it should be added to the collection, false if it was not valid and should
-     * not be added to the collection
+     * @param viewModel object instance that contain's the view's data
+     * @param newLine the new line instance to be processed
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
     protected boolean performAddLineValidation(ViewModel viewModel, Object newLine, String collectionId,
             String collectionPath) {
@@ -712,7 +463,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Collection<Object> collectionItems = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
 
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES) == null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES) == null) {
             return isValid;
         }
 
@@ -720,13 +472,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES);
 
         String collectionLabel = null;
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.COLL_LABEL) != null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.COLL_LABEL)
+                != null) {
             collectionLabel = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                     UifConstants.PostMetadata.COLL_LABEL);
         }
 
         String duplicateLineLabelString = null;
-        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) == null) {
+        if (viewModel.getViewPostMetadata().getComponentPostData(collectionId,
+                UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) == null) {
             duplicateLineLabelString = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                     UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING);
         }
@@ -792,68 +546,21 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Gets the label for the collection in a human-friendly format.
-     *
-     * @param collectionGroup collection group component for the collection
-     * @return a human-friendly collection label
-     */
-    public String getCollectionLabel(CollectionGroup collectionGroup) {
-        String collectionLabel = collectionGroup.getHeaderText();
-
-        if (StringUtils.isBlank(collectionLabel)) {
-            String propertyName = collectionGroup.getPropertyName();
-            collectionLabel = KRADServiceLocatorWeb.getUifDefaultingService().deriveHumanFriendlyNameFromPropertyName(
-                    propertyName);
-        }
-
-        return collectionLabel;
-    }
-
-    /**
-     * Gets a comma-separated list of the data field labels that are keyed a duplicates.
-     *
-     * @param collectionGroup collection group component for the collection
-     * @param duplicateLinePropertyNames the property names to check for duplicates
-     * @return a comma-separated list of labels
-     */
-    public String getDuplicateLineLabelString(CollectionGroup collectionGroup,
-            List<String> duplicateLinePropertyNames) {
-        List<String> duplicateLineLabels = new ArrayList<String>();
-
-        for (Component addLineItem : collectionGroup.getAddLineItems()) {
-            if (addLineItem instanceof DataField) {
-                DataField addLineField = (DataField) addLineItem;
-
-                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
-                    String label = addLineField.getLabel();
-                    String shortLabel = addLineField.getShortLabel();
-                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
-                }
-            }
-
-        }
-
-        return StringUtils.join(duplicateLineLabels, ", ");
-    }
-
-    /**
      * Performs validation on the collection line before it is removed from the corresponding collection.
      *
-     * @param view view instance that the action was taken on
-     * @param collectionGroup collection group component for the collection
+     * @param model object instance that contain's the view's data
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param deleteLine line that will be removed
      * @return true if the action is allowed and the line should be removed, false if the line should not be removed
      */
-    protected boolean performDeleteLineValidation(ViewModel model, String collectionId,
-            String collectionPath, Object deleteLine) {
+    protected boolean performDeleteLineValidation(ViewModel model, String collectionId, String collectionPath,
+            Object deleteLine) {
         return true;
     }
 
     /**
-     * Populate default values the model backing a line in a collection group.
-     *
-     * @param collectionGroup The collection group.
-     * @param line The model object backing the line.
+     * {@inheritDoc}
      */
     @Override
     public void applyDefaultValuesForCollectionLine(CollectionGroup collectionGroup, Object line) {
@@ -872,10 +579,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Iterates through the view components picking up data fields and applying an default value
-     * configured
-     *
-     * @param component component that should be checked for default values
+     * {@inheritDoc}
      */
     @Override
     public void applyDefaultValues(Component component) {
@@ -909,28 +613,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
-     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
-     * request).
-     *
-     * <p>
-     * The <code>View</code> instance is inspected for fields that have the
-     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
-     * request parameter map, the request value is used to set the view property. The Map of
-     * parameter name/values that match are placed in the view so they can be later retrieved to
-     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
-     * parameter key/value pairs to the returned map if necessary.
-     * </p>
-     *
-     * <p>
-     * For each field found, if there is a corresponding key/value pair in the request parameters,
-     * the value is used to populate the field. In addition, any conditional properties of
-     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
-     * parameter value does not get overridden by the dictionary conditional logic
-     * </p>
-     *
-     * @param parameters The request parameters that apply to the view.
-     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     * {@inheritDoc}
      */
     @Override
     public void populateViewFromRequestParameters(Map<String, String> parameters) {
@@ -997,20 +680,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Builds JS script that will invoke the show growl method to display a growl message when the
-     * page is rendered
-     *
-     * <p>
-     * A growl call will be created for any explicit growl messages added to the message map.
-     * </p>
-     *
-     * <p>
-     * Growls are only generated if @{link
-     * org.kuali.rice.krad.uif.view.View#isGrowlMessagingEnabled()} is enabled. If not, the growl
-     * messages are set as info messages for the page
-     * </p>
-     *
-     * @return JS script string for generated growl messages
+     * {@inheritDoc}
      */
     @Override
     public String buildGrowlScript() {
@@ -1057,12 +727,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Applies the default value configured for the given field (if any) to the line given object
-     * property that is determined by the given binding path
-     *
-     * @param object object that should be populated
-     * @param dataField field to check for configured default value
-     * @param bindingPath path to the property on the object that should be populated
+     * {@inheritDoc}
      */
     @Override
     public void populateDefaultValueForField(Object object, DataField dataField, String bindingPath) {
@@ -1084,23 +749,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Retrieves the default value that is configured for the given data field
-     *
-     * <p>
-     * The field's default value is determined in the following order:
-     *
-     * <ol>
-     * <li>If default value on field is non-blank</li>
-     * <li>If expression is found for default value</li>
-     * <li>If default value finder class is configured for field</li>
-     * <li>If an expression is found for default values</li>
-     * <li>If default values on field is not null</li>
-     * </ol>
-     * </p>
-     *
-     * @param object object that should be populated
-     * @param dataField field to retrieve default value for
-     * @return Object default value for field or null if value was not found
+     * {@inheritDoc}
      */
     @Override
     public Object getDefaultValueForField(Object object, DataField dataField) {
@@ -1140,14 +789,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Perform a database or data dictionary based refresh of a specific property object
-     *
-     * <p>
-     * The object needs to be of type PersistableBusinessObject.
-     * </p>
-     *
-     * @param parentObject parent object that references the object to be refreshed
-     * @param referenceObjectName property name of the parent object to be refreshed
+     * {@inheritDoc}
      */
     @Override
     public void refreshReference(Object parentObject, String referenceObjectName) {
@@ -1166,7 +808,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
         } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
             // refresh via data dictionary mapping
-            Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(referenceObjectName);
+            Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(
+                    referenceObjectName);
             if (!(referenceObject instanceof PersistableBusinessObject)) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ". Class not of type PersistableBusinessObject");
@@ -1196,14 +839,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Update the reference objects listed in referencesToRefresh of the model
-     *
-     * <p>
-     * The the individual references in the referencesToRefresh string are separated by
-     * KRADConstants.REFERENCES_TO_REFRESH_SEPARATOR).
-     * </p>
-     *
-     * @param referencesToRefresh list of references to refresh (
+     * {@inheritDoc}
      */
     @Override
     public void refreshReferences(String referencesToRefresh) {
@@ -1234,9 +870,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
-     * the view to get the exported action flags and edit modes that can be used in conditional
-     * logic
+     * {@inheritDoc}
      */
     @Override
     public void retrieveEditModesAndActionFlags() {
@@ -1261,8 +895,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Sets up the view context which will be available to other components through their context
-     * for conditional logic evaluation.
+     * {@inheritDoc}
      */
     @Override
     public void setViewContext() {

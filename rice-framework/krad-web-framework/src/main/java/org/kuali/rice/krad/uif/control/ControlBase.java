@@ -31,10 +31,9 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
- * Base class for all <code>Control</code> implementations
+ * Base class for all {@link Control} implementations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @see org.kuali.rice.krad.uif.control.Control
  */
 @BeanTag(name = "controlBase-bean", parent = "Uif-ControlBase")
 public abstract class ControlBase extends ContentElementBase implements Control {
@@ -89,7 +88,8 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      * @param model top level object containing the data
      * @param parent parent component
      */
-    public void performFinalize(Object model, Component parent) {
+    @Override
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
@@ -272,37 +272,6 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      */
     protected void setDisabledConditionControlNames(List<String> disabledConditionControlNames) {
         this.disabledConditionControlNames = disabledConditionControlNames;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ControlBase controlBaseCopy = (ControlBase) component;
-
-        controlBaseCopy.setTabIndex(this.tabIndex);
-        controlBaseCopy.setDisabled(this.disabled);
-        controlBaseCopy.setDisabledExpression(this.disabledExpression);
-        controlBaseCopy.setDisabledReason(this.disabledReason);
-        controlBaseCopy.setEvaluateDisabledOnKeyUp(this.evaluateDisabledOnKeyUp);
-        controlBaseCopy.setDisabledConditionJs(this.disabledConditionJs);
-
-        if (disabledConditionControlNames != null) {
-            controlBaseCopy.setDisabledConditionControlNames(new ArrayList<String>(this.disabledConditionControlNames));
-        }
-
-        if (disabledWhenChangedPropertyNames != null) {
-            controlBaseCopy.setDisabledWhenChangedPropertyNames(new ArrayList<String>(
-                    this.disabledWhenChangedPropertyNames));
-        }
-
-        if (enabledWhenChangedPropertyNames != null) {
-            controlBaseCopy.setEnabledWhenChangedPropertyNames(new ArrayList<String>(
-                    this.enabledWhenChangedPropertyNames));
-        }
     }
 
     /**

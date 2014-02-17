@@ -762,48 +762,4 @@ public class LightTable extends GroupBase implements DataBinding {
     protected void setCurrentColumnValue(String currentColumnValue) {
         this.currentColumnValue = currentColumnValue;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        LightTable lightTableCopy = (LightTable) component;
-
-        lightTableCopy.setPropertyName(this.propertyName);
-
-        if (this.bindingInfo != null) {
-            lightTableCopy.setBindingInfo((BindingInfo) this.bindingInfo.copy());
-        }
-
-        if (headerLabels != null) {
-            List<Label> headerLabelsCopy = ComponentUtils.copy(headerLabels);
-            lightTableCopy.setHeaderLabels(headerLabelsCopy);
-        }
-
-        if (this.richTable != null) {
-            lightTableCopy.setRichTable((RichTable) this.richTable.copy());
-        }
-
-        if (expressionConversionMap != null) {
-            lightTableCopy.setExpressionConversionMap(new HashMap<String, String>(expressionConversionMap));
-        }
-
-        if (renderIdExpressionMap != null) {
-            lightTableCopy.setRenderIdExpressionMap(new HashMap<String, String>(renderIdExpressionMap));
-        }
-
-        if (initialComponentIds != null) {
-            lightTableCopy.setInitialComponentIds(new ArrayList<String>(initialComponentIds));
-        }
-
-        if (this.conditionalRowCssClasses != null) {
-            lightTableCopy.setConditionalRowCssClasses(new HashMap<String, String>(this.conditionalRowCssClasses));
-        }
-
-        lightTableCopy.setEmptyTable(this.emptyTable);
-        lightTableCopy.setCurrentColumnValue(this.currentColumnValue);
-    }
 }

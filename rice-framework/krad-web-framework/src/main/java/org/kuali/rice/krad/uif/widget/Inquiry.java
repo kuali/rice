@@ -596,38 +596,4 @@ public class Inquiry extends WidgetBase {
     protected void setFieldBindingInfo(BindingInfo fieldBindingInfo) {
         this.fieldBindingInfo = fieldBindingInfo;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Inquiry inquiryCopy = (Inquiry) component;
-
-        inquiryCopy.setBaseInquiryUrl(this.baseInquiryUrl);
-        inquiryCopy.setDataObjectClassName(this.dataObjectClassName);
-        inquiryCopy.setViewName(this.viewName);
-
-        if (this.inquiryLink != null) {
-            inquiryCopy.setInquiryLink((Link) this.inquiryLink.copy());
-        }
-
-        if (this.directInquiryAction != null) {
-            inquiryCopy.setDirectInquiryAction((Action) this.directInquiryAction.copy());
-        }
-
-        inquiryCopy.setEnableDirectInquiry(this.enableDirectInquiry);
-        inquiryCopy.setAdjustInquiryParameters(this.adjustInquiryParameters);
-        inquiryCopy.setParentReadOnly(this.parentReadOnly);
-
-        if (inquiryParameters != null) {
-            inquiryCopy.setInquiryParameters(new HashMap<String, String>(this.inquiryParameters));
-        }
-
-        if (fieldBindingInfo != null) {
-            inquiryCopy.setFieldBindingInfo((BindingInfo) fieldBindingInfo.copy());
-        }
-    }
 }

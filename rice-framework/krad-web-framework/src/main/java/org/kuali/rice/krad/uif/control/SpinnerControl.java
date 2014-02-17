@@ -53,18 +53,4 @@ public class SpinnerControl extends TextControlBase {
     public void setSpinner(Spinner spinner) {
         this.spinner = spinner;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        SpinnerControl spinnerControlCopy = (SpinnerControl) component;
-
-        if(this.spinner != null) {
-            spinnerControlCopy.setSpinner((Spinner)this.spinner.copy());
-        }
-    }
 }

@@ -134,20 +134,6 @@ public class MessageField extends FieldBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        MessageField messageFieldCopy = (MessageField) component;
-
-        if (this.message != null) {
-            messageFieldCopy.setMessage((Message)this.message.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 

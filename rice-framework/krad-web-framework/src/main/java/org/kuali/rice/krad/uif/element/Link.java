@@ -243,29 +243,6 @@ public class Link extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Link linkCopy = (Link) component;
-
-        linkCopy.setIconClass(this.iconClass);
-
-        linkCopy.setHref(this.href);
-
-        if (this.lightBox != null) {
-            linkCopy.setLightBox((LightBox)this.lightBox.copy());
-        }
-
-        linkCopy.setLinkText(this.linkText);
-        linkCopy.setOpenInLightbox(this.openInLightbox);
-        linkCopy.setTarget(this.target);
-        linkCopy.setLinkIconPlacement(this.linkIconPlacement);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         ArrayList<ErrorReport> reports=new ArrayList<ErrorReport>();
         tracer.addBean(this);

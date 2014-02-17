@@ -132,18 +132,4 @@ public class DataTable extends ContentElementBase {
             richTable.setSortableColumns(sortableColumns);
         }
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        DataTable dataTableCopy = (DataTable) component;
-
-        if (this.richTable != null) {
-            dataTableCopy.setRichTable((RichTable) this.richTable.copy());
-        }
-    }
 }

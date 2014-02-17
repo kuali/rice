@@ -277,7 +277,6 @@ public class DataDictionary {
 
             InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);
             inquiryView.setId(inquiryBeanName);
-            inquiryView.setBaseId(inquiryBeanName);
             inquiryView.setViewName(UifConstants.DEFAULT_VIEW_NAME);
 
             ChildBeanDefinition inquiryBean = new ChildBeanDefinition("Uif-InquiryView");
@@ -319,7 +318,6 @@ public class DataDictionary {
 
             LookupView lookupView = KRADServiceLocatorWeb.getUifDefaultingService().deriveLookupViewFromMetadata(entry);
             lookupView.setId(lookupBeanName);
-            lookupView.setBaseId(lookupBeanName);
             lookupView.setViewName(UifConstants.DEFAULT_VIEW_NAME);
 
             ChildBeanDefinition lookupBean = new ChildBeanDefinition(ComponentFactory.LOOKUP_VIEW);

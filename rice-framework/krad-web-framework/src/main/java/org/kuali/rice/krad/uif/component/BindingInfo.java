@@ -378,22 +378,4 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
     public void setBindToMap(boolean bindToMap) {
         this.bindToMap = bindToMap;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T bindingInfo) {
-        super.copyProperties(bindingInfo);
-
-        BindingInfo bindingInfoCopy = (BindingInfo) bindingInfo;
-
-        bindingInfoCopy.setBindByNamePrefix(this.bindByNamePrefix);
-        bindingInfoCopy.setBindingName(this.bindingName);
-        bindingInfoCopy.setBindingObjectPath(this.bindingObjectPath);
-        bindingInfoCopy.setBindingPath(this.bindingPath);
-        bindingInfoCopy.setBindToForm(this.bindToForm);
-        bindingInfoCopy.setBindToMap(this.bindToMap);
-        bindingInfoCopy.setCollectionPath(this.collectionPath);
-    }
 }

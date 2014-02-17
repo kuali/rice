@@ -21,6 +21,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 /**
@@ -60,7 +61,7 @@ public class TextControlBase extends ControlBase implements TextControl, SizedCo
      * {@inheritDoc}
      */
     @Override
-    public void performFinalize(Object model, Component parent) {
+    public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
         if (parent instanceof InputField) {
@@ -207,24 +208,4 @@ public class TextControlBase extends ControlBase implements TextControl, SizedCo
         this.textExpand = textExpand;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        TextControlBase textControlCopy = (TextControlBase) component;
-
-        textControlCopy.setSize(this.size);
-        textControlCopy.setMaxLength(this.maxLength);
-        textControlCopy.setMinLength(this.minLength);
-
-        if(datePicker != null) {
-            textControlCopy.setDatePicker((DatePicker)this.datePicker.copy());
-        }
-
-        textControlCopy.setWatermarkText(this.watermarkText);
-        textControlCopy.setTextExpand(this.textExpand);
-    }
 }

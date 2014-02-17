@@ -208,20 +208,4 @@ public class DocumentView extends FormView {
 	public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
 		this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
 	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        DocumentView documentViewCopy = (DocumentView) component;
-
-        documentViewCopy.setDocumentClass(this.documentClass);
-        documentViewCopy.setAttachmentTypesValuesFinderClass(this.attachmentTypesValuesFinderClass);
-        documentViewCopy.setAllowsNoteAttachments(this.allowsNoteAttachments);
-        documentViewCopy.setAllowsNoteFYI(this.allowsNoteFYI);
-        documentViewCopy.setDisplayTopicFieldInNotes(this.displayTopicFieldInNotes);
-    }
 }

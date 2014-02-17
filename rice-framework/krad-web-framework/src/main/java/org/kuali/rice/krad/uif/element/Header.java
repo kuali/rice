@@ -464,47 +464,6 @@ public class Header extends ContentElementBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Header headerCopy = (Header) component;
-
-        headerCopy.setHeaderLevel(this.headerLevel);
-
-        if (this.headerTagCssClasses != null) {
-            headerCopy.setHeaderTagCssClasses(new ArrayList<String>(this.headerTagCssClasses));
-        }
-
-        headerCopy.setHeaderTagStyle(this.headerTagStyle);
-        headerCopy.setHeaderText(this.headerText);
-        headerCopy.setHeaderTagOnly(this.headerTagOnly);
-
-        if(inlineComponents != null) {
-            List<Component> inlineComponentsCopy = ComponentUtils.copy(inlineComponents);
-            headerCopy.setInlineComponents(inlineComponentsCopy);
-        }
-
-        if (this.lowerGroup != null) {
-            headerCopy.setLowerGroup((Group)this.lowerGroup.copy());
-        }
-
-        if (this.rightGroup != null) {
-            headerCopy.setRightGroup((Group)this.rightGroup.copy());
-        }
-
-        if (this.upperGroup != null) {
-            headerCopy.setUpperGroup((Group)this.upperGroup.copy());
-        }
-
-        if (this.richHeaderMessage != null) {
-            headerCopy.setRichHeaderMessage((Message)this.richHeaderMessage.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 

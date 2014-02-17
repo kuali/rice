@@ -1365,9 +1365,9 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
     var onePage = iStart == 0 && iEnd == aaData.length;
 
     if (onePage) {
-        footerRow.find("div[data-role='pageTotal'], label[data-role='pageTotal']").hide();
+        footerRow.find("[data-role='pageTotal'], label[data-role='pageTotal']").hide();
     } else {
-        footerRow.find("div[data-role='pageTotal'], label[data-role='pageTotal']").show();
+        footerRow.find("[data-role='pageTotal'], label[data-role='pageTotal']").show();
     }
 
     var groupTotalRows = dataTable.find("tr[data-groupvalue]");
@@ -1376,9 +1376,9 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
     //Only calculate totals if no grouping or when there is grouping, wait for those rows to become
     //generated - avoids unnecessary totalling
     if (!hasGroups || (hasGroups && groupTotalRows.length)) {
-        var nCells = footerRow.find("th").has("div[data-role='totalsBlock']");
+        var nCells = footerRow.find("th").has("[data-role='totalsBlock']");
 
-        var groupLabel = footerRow.find("th:first span[data-role='groupTotalLabel']");
+        var groupLabel = footerRow.find("th:first [data-role='groupTotalLabel']");
         var hasTotalsInFooter = false;
 
         // Total each column in the columns list
@@ -1387,8 +1387,8 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
             var index = cell.index();
 
             //find the totalsBlocks in the column footer cell, and calculate the appropriate totals
-            jQuery("div[data-role='totalsBlock']", cell).each(function () {
-                var totalDiv = jQuery(this).find("div[data-role='total']");
+            jQuery("[data-role='totalsBlock']", cell).each(function () {
+                var totalDiv = jQuery(this).find("[data-role='total']");
                 var skipTotal = totalDiv.data(kradVariables.SKIP_TOTAL);
 
                 if (!skipTotal && totalDiv.length) {
@@ -1399,14 +1399,14 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                     hasTotalsInFooter = true;
                 }
 
-                var pageTotalDiv = jQuery(this).find("div[data-role='pageTotal']");
+                var pageTotalDiv = jQuery(this).find("[data-role='pageTotal']");
                 if (!onePage && pageTotalDiv.length) {
                     calculateTotal(pageTotalDiv, iStart, iEnd, columns[c], aaData, aiDisplay);
                     hasTotalsInFooter = true;
                 }
 
                 if (groupTotalRows.length) {
-                    var groupTotalDiv = jQuery(this).find("div[data-role='groupTotal']");
+                    var groupTotalDiv = jQuery(this).find("[data-role='groupTotal']");
                     var rowIndex = 0;
                     //for each group total row calculate the group total for the column we are totalling
                     groupTotalRows.each(function () {
@@ -1476,6 +1476,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
         //Hide the footer row if no footer totals or page totals exist
         if (hasTotalsInFooter) {
             footerRow.show();
+            footerRow.find("th:hidden").addClass("show-footer");
         }
         else {
             footerRow.hide();
@@ -1555,7 +1556,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
         total = "N/A";
     }
 
-    var groupTotalDisplay = totalTd.find("div[data-role='groupTotal'][data-function='" + functionName + "']");
+    var groupTotalDisplay = totalTd.find("[data-role='groupTotal'][data-function='" + functionName + "']");
     //clone and append, if no place to display the total has been generated yet
     if (groupTotalDisplay.length == 0) {
         groupTotalDisplay = groupTotalDiv.clone();
@@ -1568,7 +1569,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
         groupTotalDisplay.show();
     }
 
-    var totalValueSpan = groupTotalDisplay.find("span[data-role='totalValue']");
+    var totalValueSpan = groupTotalDisplay.find("[data-role='totalValue']");
 
     if (totalValueSpan.length) {
         totalValueSpan.html(total);
@@ -1662,7 +1663,7 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
             total = "N/A";
         }
 
-        var totalValueSpan = totalDiv.find("span[data-role='totalValue']");
+        var totalValueSpan = totalDiv.find("[data-role='totalValue']");
 
         if (totalValueSpan.length) {
             totalValueSpan.html(total);
@@ -1805,10 +1806,9 @@ function coerceTableCellValue(element) {
         inputFieldValue = inputField.val();
     } else {
         // This might be after sorting or just read only
-        inputField = tdObject.find('span');
-        if (inputField.length > 0) {
+        if (tdObject.is("div[data-role='InputField']")) {
             // readonly fields
-            inputFieldValue = inputField.text().replace(/\s+/g, "");
+            inputFieldValue = getImmediateChildText(tdObject[0]).trim();
         } else {
             // after sorting
             inputFieldValue = element;
@@ -1828,6 +1828,17 @@ function coerceTableCellValue(element) {
     } else {
         return inputFieldValue;
     }
+}
+
+function getImmediateChildText(node) {
+  var text = "";
+  for (var child = node.firstChild; !!child; child = child.nextSibling) {
+    // nodeType 3 is a text node
+    if (child.nodeType === 3) {
+      text += child.nodeValue + " ";
+    }
+  }
+  return text;
 }
 
 /**
@@ -2452,7 +2463,6 @@ function initStickyFooterContent() {
 
     //calculate bottom offset in reverse order (bottom up)
     jQuery(stickyFooterContent.get().reverse()).each(function () {
-        var height = jQuery(this).outerHeight();
         jQuery(this).addClass("uif-stickyFooter");
 
         //special style for footers that are not the application footer
@@ -2461,6 +2471,7 @@ function initStickyFooterContent() {
         }
 
         jQuery(this).attr("style", "position:fixed; left: 0; bottom: " + bottomOffset + "px;");
+        var height = jQuery(this).outerHeight();
         bottomOffset = bottomOffset + height;
     });
     currentFooterHeight = bottomOffset;

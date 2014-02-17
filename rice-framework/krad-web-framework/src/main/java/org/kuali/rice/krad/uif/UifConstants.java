@@ -27,9 +27,7 @@ public class UifConstants {
     public static final String COMPONENT_MODEL_NAME = "Component";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String COMPONENT_ID_PREFIX = "u";
-    public static final String BASE_ID_PREFIX = "b";
     public static final String SUFFIX_SEPARATOR = "_";
-    public static final String REFRESH_ELEMENT_NODE_LABEL = "REFRESH_ELEMENT";
 
     public static final String DEFAULT_THEMES_DIRECTORY = "/themes";
     public static final String DEFAULT_IMAGES_DIRECTORY = "images";
@@ -139,6 +137,9 @@ public class UifConstants {
         _blank, _self, _parent, _top
     }
 
+    public static class ControllerMappings {
+        public static final String EXPORT = "export";
+    }
 
     public static class MethodToCallNames {
         public static final String NAVIGATE = "navigate";
@@ -242,6 +243,8 @@ public class UifConstants {
         public static final String DUPLICATE_LINE_LABEL_STRING = "duplicateLineLabelString";
         public static final String STATE_MAPPING = "stateMapping";
         public static final String STATE_OBJECT_BINDING_PATH = "stateObjectBindingPath";
+        public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
+        public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
     }
 
     public static class ContextVariableNames {
@@ -312,7 +315,7 @@ public class UifConstants {
         public static final String TRUE = "true";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
-        public static final String JSON_TEMPLATE = "dataTablesJson.ftl";
+        public static final String JSON_TEMPLATE = "components/element/dataTablesJson.ftl";
     }
 
     public static class TableLayoutValues {
@@ -326,7 +329,6 @@ public class UifConstants {
         public static final String FIRST = "first";
         public static final String LAST = "last";
         public static final String PAGE_NUMBER = "pageNumber";
-        public static final String DISPLAY_START_PROP = "#displayStart";
     }
 
     public static class TabOptionKeys {
@@ -481,6 +483,7 @@ public class UifConstants {
     }
 
     public static final class JsFunctions {
+        public static final String COLLECTION_LINE_CHANGED = "collectionLineChanged";
         public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
@@ -510,11 +513,6 @@ public class UifConstants {
         public static final String JS = ".js";
         public static final String MIN = ".min";
         public static final String LESS = ".less";
-    }
-
-    public static final class PostContextKeys {
-        public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
-        public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
     }
 
     public static final class WrapperTags {

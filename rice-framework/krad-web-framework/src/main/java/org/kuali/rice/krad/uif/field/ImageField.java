@@ -259,18 +259,4 @@ public class ImageField extends FieldBase {
     public void setCaptionHeaderAboveImage(boolean captionHeaderAboveImage) {
         image.setCaptionHeaderPlacementAboveImage(captionHeaderAboveImage);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ImageField imageFieldCopy = (ImageField) component;
-
-        if (this.image != null) {
-            imageFieldCopy.setImage((Image) this.image.copy());
-        }
-    }
 }

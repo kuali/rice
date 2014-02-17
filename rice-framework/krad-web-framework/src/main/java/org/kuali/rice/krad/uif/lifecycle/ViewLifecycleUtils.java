@@ -38,7 +38,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Utilities for working with {@link LifecycleElement} instances.
@@ -65,16 +64,6 @@ public final class ViewLifecycleUtils {
         } else {
             return restrictedPropertyNames;
         }
-    }
-
-    /**
-     * Gets property names of the lifecycle element that are annotated as lifecycle prototypes.
-     *
-     * @param element lifecycle element to find prototype properties for
-     * @return Set of property names or empty set if none exist
-     */
-    public static Set<String> getLifecyclePrototypeProperties(LifecycleElement element) {
-        return getMetadata(element.getClass()).lifecyclePrototypeProperties;
     }
 
     /**
@@ -169,35 +158,6 @@ public final class ViewLifecycleUtils {
 
         returnMap.put(propertyName, (LifecycleElement) nestedElement.unwrap());
         return returnMap;
-    }
-
-    public static Map<String, LifecycleElement> getPrototypeElementsForRefreshLifecycle(LifecycleElement element) {
-        if (element == null) {
-            return Collections.emptyMap();
-        }
-
-        Map<String, LifecycleElement> elements = Collections.emptyMap();
-
-        Set<String> prototypePropertyNames = getLifecyclePrototypeProperties(element);
-        for (String propertyName : prototypePropertyNames) {
-            Object nestedElement = ObjectPropertyUtils.getPropertyValue(element, propertyName);
-
-            if (nestedElement instanceof List) {
-                for (int i = 0; i < ((List<?>) nestedElement).size(); i++) {
-                    elements = addElementToLifecycleMap(elements, propertyName + "[" + i + "]",
-                            (LifecycleElement) ((List<?>) nestedElement).get(i));
-                }
-            } else if (nestedElement instanceof Map) {
-                for (Entry<?, ?> entry : ((Map<?, ?>) nestedElement).entrySet()) {
-                    elements = addElementToLifecycleMap(elements, propertyName + "[" + entry.getKey() + "]",
-                            (LifecycleElement) entry.getValue());
-                }
-            } else {
-                elements = addElementToLifecycleMap(elements, propertyName, (LifecycleElement) nestedElement);
-            }
-        }
-
-        return elements == Collections.EMPTY_MAP ? elements : Collections.unmodifiableMap(elements);
     }
 
     /**
@@ -488,23 +448,12 @@ public final class ViewLifecycleUtils {
          */
         private final Map<String, Set<String>> lifecycleRestrictedProperties;
 
-        // set of all properties on the element class that are annotated as prototypes
-        private final Set<String> lifecyclePrototypeProperties;
-
         /**
          * Creates a new metadata wrapper for a bean class.
          * 
          * @param elementClass The element class.
          */
         private ElementMetadata(Class<?> elementClass) {
-            Set<String> prototypeProperties = ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(elementClass,
-                    ViewLifecyclePrototype.class);
-            if (prototypeProperties.isEmpty()) {
-                lifecyclePrototypeProperties = Collections.emptySet();
-            } else {
-                lifecyclePrototypeProperties = Collections.unmodifiableSet(prototypeProperties);
-            }
-
             Set<String> restrictedPropertyNames = ObjectPropertyUtils.getReadablePropertyNamesByAnnotationType(
                     elementClass, ViewLifecycleRestriction.class);
             if (restrictedPropertyNames.isEmpty()) {

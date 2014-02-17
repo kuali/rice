@@ -30,7 +30,8 @@ import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 
 /**
- * Layout manager interface for table collections. 
+ * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
+ * Table.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

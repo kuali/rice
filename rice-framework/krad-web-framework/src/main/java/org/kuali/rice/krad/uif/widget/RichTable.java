@@ -190,29 +190,15 @@ public class RichTable extends WidgetBase {
             templateOptions.put(UifConstants.TableToolsKeys.BPROCESSING, "true");
             templateOptions.put(UifConstants.TableToolsKeys.BSERVER_SIDE, "true");
 
-            //build sAjaxSource url to call
-            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE, kradUrl
-                    + ((UifFormBase) model).getControllerMapping()
-                    + "?"
-                    + UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME
-                    + "="
-                    + UifConstants.MethodToCallNames.TABLE_JSON
-                    + "&"
-                    + UifParameters.TABLE_ID
-                    + "="
-                    + parent.getId()
-                    + "&"
-                    + UifParameters.FORM_KEY
-                    + "="
-                    + ((UifFormBase) model).getFormKey()
-                    + "&"
-                    + UifParameters.AJAX_RETURN_TYPE
-                    + "="
-                    + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
-                    + "&"
-                    + UifParameters.AJAX_REQUEST
-                    + "="
-                    + "true");
+            // build sAjaxSource url to call
+            templateOptions.put(UifConstants.TableToolsKeys.SAJAX_SOURCE,
+                    kradUrl + ((UifFormBase) model).getControllerMapping() + "?" +
+                            UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME + "=" +
+                            UifConstants.MethodToCallNames.TABLE_JSON + "&" + UifParameters.UPDATE_COMPONENT_ID + "=" +
+                            parent.getId() + "&" + UifParameters.FORM_KEY + "=" + ((UifFormBase) model).getFormKey() +
+                            "&" + UifParameters.AJAX_RETURN_TYPE + "=" +
+                            UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey() + "&" + UifParameters.AJAX_REQUEST +
+                            "=" + "true");
 
 
             //TODO: Figure out where to move this script file constant?
@@ -234,25 +220,12 @@ public class RichTable extends WidgetBase {
                     UifConstants.TableToolsKeys.AO_COLUMN_DEFS));
         }
 
-        //build sAjaxSource url to call
-        templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE, kradUrl
-                + ((UifFormBase) model).getControllerMapping()
-                + "?"
-                + UifParameters.TABLE_ID
-                + "="
-                + parent.getId()
-                + "&"
-                + UifParameters.FORM_KEY
-                + "="
-                + ((UifFormBase) model).getFormKey()
-                + "&"
-                + UifParameters.AJAX_RETURN_TYPE
-                + "="
-                + UifConstants.AjaxReturnTypes.UPDATENONE.getKey()
-                + "&"
-                + UifParameters.AJAX_REQUEST
-                + "="
-                + "true");
+        // build export url to call
+        templateOptions.put(UifConstants.TableToolsKeys.SDOWNLOAD_SOURCE,
+                kradUrl + "/" + UifConstants.ControllerMappings.EXPORT + "?" + UifParameters.UPDATE_COMPONENT_ID + "=" +
+                        parent.getId() + "&" + UifParameters.FORM_KEY + "=" + ((UifFormBase) model).getFormKey() + "&" +
+                        UifParameters.AJAX_RETURN_TYPE + "=" + UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey() +
+                        "&" + UifParameters.AJAX_REQUEST + "=" + "true");
     }
 
     /**
@@ -1106,40 +1079,5 @@ public class RichTable extends WidgetBase {
 
     protected ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        RichTable richTableCopy = (RichTable) component;
-
-        richTableCopy.setEmptyTableMessage(this.emptyTableMessage);
-        richTableCopy.setDisableTableSort(this.disableTableSort);
-        richTableCopy.setForceAoColumnDefsOverride(this.forceAoColumnDefsOverride);
-        richTableCopy.setForceLocalJsonData(this.forceLocalJsonData);
-        richTableCopy.setNestedLevel(this.nestedLevel);
-        richTableCopy.setAaData(this.aaData);
-
-        if (hiddenColumns != null) {
-            richTableCopy.setHiddenColumns(new HashSet<String>(hiddenColumns));
-        }
-
-        if (sortableColumns != null) {
-            richTableCopy.setSortableColumns(new HashSet<String>(sortableColumns));
-        }
-
-        if (cellCssClasses != null) {
-            richTableCopy.setCssClasses(new ArrayList<String>(this.cellCssClasses));
-        }
-
-        richTableCopy.setAjaxSource(this.ajaxSource);
-        richTableCopy.setShowSearchAndExportOptions(this.showSearchAndExportOptions);
-        richTableCopy.setShowSearchOption(this.showSearchOption);
-        richTableCopy.setShowExportOption(this.showExportOption);
-        richTableCopy.setGroupingOptionsJSString(this.groupingOptionsJSString);
     }
 }

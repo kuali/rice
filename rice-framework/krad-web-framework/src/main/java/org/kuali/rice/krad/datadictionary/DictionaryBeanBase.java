@@ -100,18 +100,6 @@ public abstract class DictionaryBeanBase implements DictionaryBean, Copyable {
         return this;
     }
 
-    /**
-     * Copies properties for copy()
-     *
-     * @param dictionaryBeanBase base bean
-     */
-    protected <T> void copyProperties(T dictionaryBeanBase) {
-        DictionaryBeanBase dictionaryBeanBaseCopy = (DictionaryBeanBase) dictionaryBeanBase;
-
-        dictionaryBeanBaseCopy.setComponentCode(this.componentCode);
-        dictionaryBeanBaseCopy.setNamespaceCode(this.namespaceCode);
-    }
-
     @Override
     public void dataDictionaryPostProcessing() {
         // Do nothing here - will be implemented by subclasses

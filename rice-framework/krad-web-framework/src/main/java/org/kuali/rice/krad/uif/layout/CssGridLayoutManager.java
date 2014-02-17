@@ -158,15 +158,4 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
         this.defaultItemColSpan = defaultItemColSpan;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        CssGridLayoutManager cssGridLayoutManagerCopy = (CssGridLayoutManager) component;
-
-        cssGridLayoutManagerCopy.setDefaultItemColSpan(this.defaultItemColSpan);
-    }
 }

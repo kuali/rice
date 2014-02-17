@@ -91,5 +91,7 @@ public class CssConstants {
         public static final String SELECT_FIELD_STYLE_CLASS = "uif-select-line";
         public static final String ACTION_COLUMN_STYLE_CLASS = "uif-collection-column-action";
         public static final String HAS_HELPER = "has-helper";
+        public static final String IGNORE_VALID = "ignoreValid";
+        public static final String NEW_COLLECTION_ITEM = "uif-newCollectionItem";
     }
 }

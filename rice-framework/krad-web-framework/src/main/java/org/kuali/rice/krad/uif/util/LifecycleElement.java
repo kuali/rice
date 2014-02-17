@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Interface to be implemented by objects that participates in the view lifecycle.
@@ -65,9 +66,18 @@ public interface LifecycleElement extends Serializable, Copyable {
      * @param viewPath The property path.
      */
     void setViewPath(String viewPath);
-    
+
+    /**
+     * Map of paths for this component that will be used to process a refresh (if necessary).
+     *
+     * @return map of refresh paths, key represents the lifecycle phase and the value is the path for
+     * the component at that phase
+     */
     Map<String, String> getPhasePathMapping();
 
+    /**
+     * @see LifecycleElement#getPhasePathMapping()
+     */
     void setPhasePathMapping(Map<String, String> phasePathMapping);
     
     /**
@@ -236,5 +246,12 @@ public interface LifecycleElement extends Serializable, Copyable {
      */
     @Deprecated
     void performFinalize(Object model, LifecycleElement parent);
+
+    /**
+     * Return true if the lifecycle should be skipped for this component
+     *
+     * @return true if lifecycle should be skipped for this component
+     */
+    boolean skipLifecycle();
 
 }

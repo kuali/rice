@@ -217,21 +217,4 @@ public class BoxLayoutManager extends LayoutManagerBase {
         return "";
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T layout) {
-        super.copyProperties(layout);
-
-        BoxLayoutManager boxLayoutManagerCopy = (BoxLayoutManager) layout;
-
-        boxLayoutManagerCopy.setPadding(this.padding);
-        boxLayoutManagerCopy.setItemStyle(this.itemStyle);
-        boxLayoutManagerCopy.setOrientation(this.orientation);
-
-        if (itemStyleClasses != null) {
-            boxLayoutManagerCopy.setItemStyleClasses(new ArrayList<String>(itemStyleClasses));
-        }
-    }
 }

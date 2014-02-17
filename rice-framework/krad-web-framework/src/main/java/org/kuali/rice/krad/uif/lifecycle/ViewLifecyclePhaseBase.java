@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.tree.Node;
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -46,7 +46,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private String viewPath;
     private String path;
 
-    private Tree<String, String> refreshPaths;
+    private List<String> refreshPaths;
 
     private ViewLifecyclePhaseBase predecessor;
     private ViewLifecyclePhaseBase nextPhase;
@@ -78,25 +78,23 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     /**
      * Prepares this phase for reuse.
      *
-     * @param element The element to be processed by this phase.
-     * @param model The model associated with the lifecycle at this phase.
-     * @param path Path to the component relative to the active view.
+     * @param element The element to be processed by this phase
+     * @param model The model associated with the lifecycle at this phase
+     * @param path Path to the component relative to the active view
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
      * @param parent The parent element. For top-down phases, this component will be associated
      * with the predecessor phase. For bottom-up phases (rendering), this element will be
-     * associated with a successor phases.
+     * associated with a successor phases
      * @param nextPhase The lifecycle phase to queue directly upon completion of this phase, if
-     * applicable.
+     * applicable
      * @see LifecyclePhaseFactory
      */
-    protected void prepare(LifecycleElement element, Object model, String path, Tree<String, String> refreshPaths,
+    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
             Component parent, ViewLifecyclePhaseBase nextPhase) {
         if (element.getViewStatus().equals(getEndViewStatus())) {
-            ViewLifecycle.reportIllegalState("Component is already in the expected end status "
-                    + getEndViewStatus()
-                    + " before this phase "
-                    + element.getClass()
-                    + " "
-                    + element.getId());
+            ViewLifecycle.reportIllegalState(
+                    "Component is already in the expected end status " + getEndViewStatus() + " before this phase " +
+                            element.getClass() + " " + element.getId());
         }
 
         this.model = model;
@@ -118,54 +116,179 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     }
 
     /**
-     * Initializes queue of pending tasks phases.
+     * Executes the lifecycle phase.
      *
      * <p>
-     * This method will be called before during processing to determine which tasks to perform at
-     * this phase.
+     * This method performs state validation and updates component view status. Use
+     * {@link #initializePendingTasks(Queue)} to provide phase-specific behavior.
      * </p>
+     *
+     * @see java.lang.Runnable#run()
+     */
+    @Override
+    public final void run() {
+        try {
+            ViewLifecycleProcessorBase processor = (ViewLifecycleProcessorBase) ViewLifecycle.getProcessor();
+
+            validateBeforeProcessing();
+
+            boolean skipTasks = false;
+            if (this.getModel() != null) {
+                skipTasks = element.skipLifecycle();
+            }
+
+            try {
+                if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
+                    ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":",
+                            ":" + getElement().getClass().getSimpleName(), 1000);
+                    ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
+                }
+
+                processor.setActivePhase(this);
+
+                String viewStatus = element.getViewStatus();
+                if (viewStatus != null &&
+                        !viewStatus.equals(getStartViewStatus()) &&
+                        !viewStatus.equals(getEndViewStatus())) {
+                    ViewLifecycle.reportIllegalState("Component is not in the expected status " + getStartViewStatus() +
+                            " at the start of this phase, found " + element.getClass() + " " + element.getId() + " " +
+                            viewStatus + "\nThis phase: " + this);
+                }
+
+                trace("path-update " + element.getViewPath());
+                View view = ViewLifecycle.getView();
+
+                if (ViewLifecycle.isStrict()) {
+                    if (element == view) {
+                        if (!StringUtils.isEmpty(viewPath)) {
+                            ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
+                        }
+                    } else {
+                        LifecycleElement referredElement = (LifecycleElement) ObjectPropertyUtils.getPropertyValue(view,
+                                viewPath);
+                        if (referredElement != null) {
+                            referredElement = (LifecycleElement) referredElement.unwrap();
+                            if (element != referredElement) {
+                                ViewLifecycle.reportIllegalState(
+                                        "View path " + viewPath + " refers to an element other than " +
+                                                element.getClass() + " " + element.getId() + " " +
+                                                element.getViewPath() + (referredElement == null ? "" :
+                                                " " + referredElement.getClass() + " " + referredElement.getId() + " " +
+                                                        referredElement.getViewPath()));
+                            }
+                        }
+                    }
+                }
+
+                element.setViewPath(getViewPath());
+                element.getPhasePathMapping().put(getViewPhase(), getViewPath());
+
+                if(!skipTasks) {
+                    Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
+                    initializePendingTasks(pendingTasks);
+
+                    while (!pendingTasks.isEmpty()) {
+                        ViewLifecycleTask<?> task = pendingTasks.poll();
+
+                        currentTask = task;
+                        task.run();
+                        currentTask = null;
+                    }
+                }
+
+                element.setViewStatus(this);
+                processed = true;
+
+            } finally {
+                processor.setActivePhase(null);
+
+                if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
+                    ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(),
+                            getElement().getClass() + " " + getElement().getId());
+                }
+            }
+
+            //if (!skipTasks) {
+                assert pendingSuccessors == -1 : this;
+
+                Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
+
+                initializeSuccessors(successors);
+                processSuccessors(successors);
+            //}
+        } catch (Throwable t) {
+            trace("error");
+            LOG.warn("Error in lifecycle phase " + this, t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else if (t instanceof Error) {
+                throw (Error) t;
+            } else {
+                throw new IllegalStateException("Unexpected error in lifecycle phase " + this, t);
+            }
+        }
+    }
+
+    /**
+     * Validates this phase and thread state before processing and logs activity.
+     *
+     * @see #run()
+     */
+    protected void validateBeforeProcessing() {
+        if (processed) {
+            throw new IllegalStateException("Lifecycle phase has already been processed " + this);
+        }
+
+        if (predecessor != null && !predecessor.isProcessed()) {
+            throw new IllegalStateException("Predecessor phase has not completely processed " + this);
+        }
+
+        if (!ViewLifecycle.isActive()) {
+            throw new IllegalStateException("No view lifecyle is not active on the current thread");
+        }
+
+        if (LOG.isDebugEnabled()) {
+            trace("ready " + getStartViewStatus() + " -> " + getEndViewStatus());
+        }
+    }
+
+    /**
+     * Adds phases added as successors to the processor, or if there are no pending successors invokes
+     * the complete notification step.
+     *
+     * @param successors phases to process
+     */
+    protected void processSuccessors(Queue<ViewLifecyclePhase> successors) {
+        pendingSuccessors = successors.size();
+        trace("processed " + pendingSuccessors);
+
+        if (pendingSuccessors == 0) {
+            notifyCompleted();
+        } else {
+            for (ViewLifecyclePhase successor : successors) {
+                if (successor instanceof ViewLifecyclePhaseBase) {
+                    ViewLifecyclePhaseBase successorBase = (ViewLifecyclePhaseBase) successor;
+                    assert successorBase.predecessor == null : this + " " + successorBase;
+
+                    successorBase.predecessor = this;
+                    successorBase.trace("succ-pend");
+                }
+
+                ViewLifecycle.getProcessor().pushPendingPhase(successor);
+            }
+        }
+    }
+
+    /**
+     * Initializes queue of pending tasks phases.
+     *
+     * <p>This method will be called before during processing to determine which tasks to perform at
+     * this phase.</p>
      *
      * @param tasks The queue of tasks to perform.
      */
     protected abstract void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks);
-
-    protected Node<String, String> getRefreshNodeForCurrentPath() {
-        if (getRefreshPaths() == null) {
-            return null;
-        }
-
-        if (StringUtils.isBlank(getViewPath())) {
-            return getRefreshPaths().getRootElement();
-        }
-
-        Node<String, String> pathNode = null;
-
-        Node<String, String> nextNode = getRefreshPaths().getRootElement();
-
-        String[] pathNodes = ObjectPropertyUtils.splitPropertyPath(getViewPath());
-        for (int i = 0; i < pathNodes.length; i++) {
-            String path = pathNodes[i];
-
-            if (nextNode.getChildren() == null) {
-                break;
-            }
-
-            for (Node<String, String> nodeChild : nextNode.getChildren()) {
-                if (nodeChild.getData().equals(path)) {
-                    nextNode = nodeChild;
-                    break;
-                }
-            }
-
-            if (nextNode == null) {
-                break;
-            } else if (i == (pathNodes.length - 1)) {
-                pathNode = nextNode;
-            }
-        }
-
-        return pathNode;
-    }
 
     /**
      * Initializes queue of successor phases.
@@ -178,19 +301,27 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * @param successors The queue of successor phases
      */
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        if (refreshPaths != null) {
-            initializeRefreshSuccessors(successors);
-        } else {
-            initializeAllLifecycleSuccessors(successors);
+        if (ViewLifecycle.isRefreshLifecycle() && (refreshPaths != null)) {
+            String currentPath = getViewPath();
+
+            boolean withinRefreshElementPath = currentPath.startsWith(ViewLifecycle.getRefreshElementPath());
+            if (!withinRefreshElementPath) {
+                initializeRefreshPathSuccessors(successors);
+
+                return;
+            }
+
         }
+
+        initializeAllLifecycleSuccessors(successors);
     }
 
     /**
-     * Initializes only the lifecycle successors applicable to a refresh operation.
-     * 
-     * @param successors The successor queue.
+     * Initializes only the lifecycle successors referenced by paths within {@link #getRefreshPaths()}.
+     *
+     * @param successors the successor queue
      */
-    protected void initializeRefreshSuccessors(Queue<ViewLifecyclePhase> successors) {
+    protected void initializeRefreshPathSuccessors(Queue<ViewLifecyclePhase> successors) {
         LifecycleElement element = getElement();
 
         String nestedPathPrefix;
@@ -203,37 +334,65 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             nestedPathPrefix = getParentPath() + ".";
         }
 
-        Node<String, String> currentPathNode = getRefreshNodeForCurrentPath();
-        if (currentPathNode == null) {
-            // throw exception?
-            return;
-        }
+        List<String> nestedProperties = getNestedPropertiesForRefreshPath();
 
-        //                if (getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE))  {
-        //                    initializePrototypeSuccessors(successors)
-        //                }
+        for (String nestedProperty : nestedProperties) {
+            String nestedPath = nestedPathPrefix + nestedProperty;
 
-        if (UifConstants.REFRESH_ELEMENT_NODE_LABEL.equals(currentPathNode.getNodeLabel())) {
-            refreshPaths = null;
-
-            initializeAllLifecycleSuccessors(successors);
-        } else if (currentPathNode.getChildren() != null) {
-            for (Node<String, String> nodeChild : currentPathNode.getChildren()) {
-                String nestedProperty = nodeChild.getData();
-                String nestedPath = nestedPathPrefix + nestedProperty;
-
-                LifecycleElement nestedElement = ObjectPropertyUtils.getPropertyValue(element, nestedProperty);
-                if (nestedElement != null) {
-                    ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, nestedParent);
-                    successors.add(nestedPhase);
-                }
+            LifecycleElement nestedElement = ObjectPropertyUtils.getPropertyValue(element, nestedProperty);
+            if (nestedElement != null) {
+                ViewLifecyclePhase nestedPhase = initializeSuccessor(nestedElement, nestedPath, nestedParent);
+                successors.add(nestedPhase);
             }
         }
     }
 
     /**
+     * Determines the list of child properties for the current phase component that are in the refresh
+     * paths and should be processed next.
+     *
+     * @return list of property names relative to the component the phase is currently processing
+     */
+    protected List<String> getNestedPropertiesForRefreshPath() {
+        List<String> nestedProperties = new ArrayList<String>();
+
+        String currentPath = getViewPath();
+        if (currentPath == null) {
+            currentPath = "";
+        }
+
+        if (StringUtils.isNotBlank(currentPath)) {
+            currentPath += ".";
+        }
+
+        // to get the list of children, the refresh path must start with the path of the component being
+        // processed. If the child path is nested, we get the top most property first
+        for (String refreshPath : refreshPaths) {
+            if (!refreshPath.startsWith(currentPath)) {
+                continue;
+            }
+
+            String nestedProperty = StringUtils.substringAfter(refreshPath, currentPath);
+
+            if (StringUtils.isBlank(nestedProperty)) {
+                continue;
+            }
+
+            if (StringUtils.contains(nestedProperty, ".")) {
+                nestedProperty = StringUtils.substringBefore(nestedProperty, ".");
+            }
+
+            if (!nestedProperties.contains(nestedProperty)) {
+                nestedProperties.add(nestedProperty);
+            }
+        }
+
+        return nestedProperties;
+    }
+
+    /**
      * Initializes all lifecycle phase successors.
-     * 
+     *
      * @param successors The successor queue.
      */
     protected void initializeAllLifecycleSuccessors(Queue<ViewLifecyclePhase> successors) {
@@ -263,270 +422,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
     /**
      * Initializes a successor of this phase for a given nested element.
-     * 
+     *
      * @param nestedElement The lifecycle element.
      * @param nestedPath The path, relative to the parent element.
      * @param nestedParent The parent component of the nested element.
-     * 
      * @return successor phase
      */
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final LifecycleElement getElement() {
-        return element;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final Object getModel() {
-        return model;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final Component getParent() {
-        return this.parent;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getParentPath() {
-        return this.path;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isRefreshComponent() {
-        boolean isRefresh = false;
-
-        Node<String, String> componentNode = getRefreshNodeForCurrentPath();
-
-        if ((componentNode != null) && UifConstants.REFRESH_ELEMENT_NODE_LABEL.equals(componentNode.getNodeLabel())) {
-            isRefresh = true;
-        }
-
-        return isRefresh;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Tree<String, String> getRefreshPaths() {
-        return refreshPaths;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getViewPath() {
-        return this.viewPath;
-    }
-
-    /**
-     * @param viewPath the viewPath to set
-     */
-    public void setViewPath(String viewPath) {
-        this.viewPath = viewPath;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean isProcessed() {
-        return processed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean isComplete() {
-        return completed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecyclePhase getPredecessor() {
-        return predecessor;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecycleTask<?> getCurrentTask() {
-        return this.currentTask;
-    }
-
-    /**
-     * Validates this phase and thread state before processing and logs activity.
-     *
-     * @see #run()
-     */
-    private void validateBeforeProcessing() {
-        if (processed) {
-            throw new IllegalStateException("Lifecycle phase has already been processed " + this);
-        }
-
-        if (predecessor != null && !predecessor.isProcessed()) {
-            throw new IllegalStateException("Predecessor phase has not completely processed " + this);
-        }
-
-        if (!ViewLifecycle.isActive()) {
-            throw new IllegalStateException("No view lifecyle is not active on the current thread");
-        }
-
-        if (LOG.isDebugEnabled()) {
-            trace("ready " + getStartViewStatus() + " -> " + getEndViewStatus());
-        }
-    }
-
-    /**
-     * Executes the lifecycle phase.
-     *
-     * <p>
-     * This method performs state validation and updates component view status. Use
-     * {@link #initializePendingTasks(Queue)} to provide phase-specific behavior.
-     * </p>
-     *
-     * @see java.lang.Runnable#run()
-     */
-    @Override
-    public final void run() {
-        try {
-            ViewLifecycleProcessorBase processor = (ViewLifecycleProcessorBase) ViewLifecycle.getProcessor();
-
-            validateBeforeProcessing();
-
-            try {
-                if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
-                    ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":",
-                            ":" + getElement().getClass().getSimpleName(), 1000);
-                    ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
-                }
-
-                processor.setActivePhase(this);
-
-                String viewStatus = element.getViewStatus();
-                if (viewStatus == null || !viewStatus.equals(getStartViewStatus())) {
-                    trace("skip-" + viewStatus + " " + getStartViewStatus());
-                } else {
-                    // TODO: REMOVE?
-                                      View view = ViewLifecycle.getView();
-                    
-                                        if (ViewLifecycle.isStrict()) {
-                                            if (element == view) {
-                                                if (!StringUtils.isEmpty(viewPath)) {
-                                                    ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
-                                                }
-                                            } else {
-                                                LifecycleElement referredElement = (LifecycleElement)
-                                                        ObjectPropertyUtils.getPropertyValue(view, viewPath);
-                                                if (referredElement != null) {
-                                                    referredElement = (LifecycleElement) referredElement.unwrap();
-                                                    if (element != referredElement) {
-                                                        ViewLifecycle.reportIllegalState("View path "
-                                                                + viewPath
-                                                                + " refers to an element other than "
-                                                                + element.getClass()
-                                                                + " "
-                                                                + element.getId()
-                                                                + " "
-                                                                + element.getViewPath()
-                                                                + (referredElement == null ? "" : " " + referredElement.getClass()
-                                                                        + " " + referredElement.getId() + " "
-                                                                        + referredElement.getViewPath()));
-                                                    }
-                                                }
-                                            }
-                                        }
-                    
-                    trace("path-update " + viewPath);
-                    element.setViewPath(viewPath);
-
-                    Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
-                    initializePendingTasks(pendingTasks);
-
-                    while (!pendingTasks.isEmpty()) {
-                        ViewLifecycleTask<?> task = pendingTasks.poll();
-                        currentTask = task;
-                        task.run();
-                        currentTask = null;
-                    }
-
-                		element.getPhasePathMapping().put(getViewPhase(), getViewPath());
-
-                }
-
-                processed = true;
-                
-            } finally {
-                processor.setActivePhase(null);
-
-                if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
-                    ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(),
-                            getElement().getClass() + " " + getElement().getId());
-                }
-            }
-
-            assert pendingSuccessors == -1 : this;
-
-            Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
-
-            initializeSuccessors(successors);
-            processSuccessors(successors);
-        } catch (Throwable t) {
-            trace("error");
-            LOG.warn("Error in lifecycle phase " + this, t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else if (t instanceof Error) {
-                throw (Error) t;
-            } else {
-                throw new IllegalStateException("Unexpected error in lifecycle phase " + this, t);
-            }
-        }
-    }
-
-    protected void processSuccessors(Queue<ViewLifecyclePhase> successors) {
-        pendingSuccessors = successors.size();
-        trace("processed " + pendingSuccessors);
-
-        if (pendingSuccessors == 0) {
-            notifyCompleted();
-        } else {
-            for (ViewLifecyclePhase successor : successors) {
-                if (successor instanceof ViewLifecyclePhaseBase) {
-                    ViewLifecyclePhaseBase successorBase = (ViewLifecyclePhaseBase) successor;
-                    assert successorBase.predecessor == null : this + " " + successorBase;
-
-                    successorBase.predecessor = this;
-                    successorBase.trace("succ-pend");
-                }
-
-                ViewLifecycle.getProcessor().offerPendingPhase(successor);
-            }
-        }
-    }
 
     /**
      * Notifies predecessors that this task has completed.
@@ -579,6 +482,93 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 notifyAll();
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final LifecycleElement getElement() {
+        return element;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Object getModel() {
+        return model;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final Component getParent() {
+        return this.parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParentPath() {
+        return this.path;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getRefreshPaths() {
+        return refreshPaths;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getViewPath() {
+        return this.viewPath;
+    }
+
+    /**
+     * @param viewPath the viewPath to set
+     */
+    public void setViewPath(String viewPath) {
+        this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isProcessed() {
+        return processed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isComplete() {
+        return completed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewLifecyclePhase getPredecessor() {
+        return predecessor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewLifecycleTask<?> getCurrentTask() {
+        return this.currentTask;
     }
 
     /**

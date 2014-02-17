@@ -468,20 +468,6 @@ public class ActionField extends FieldBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ActionField actionFieldCopy = (ActionField) component;
-
-        if (this.action != null) {
-            actionFieldCopy.setAction((Action)this.action.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer) {
         ArrayList<ErrorReport> reports = new ArrayList<ErrorReport>();
         tracer.addBean(this);

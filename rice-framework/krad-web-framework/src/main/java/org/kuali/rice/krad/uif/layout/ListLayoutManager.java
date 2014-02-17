@@ -76,15 +76,4 @@ public class ListLayoutManager extends LayoutManagerBase {
         this.orderedList = orderedList;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T listLayoutManager) {
-        super.copyProperties(listLayoutManager);
-
-        ListLayoutManager listLayoutManagerCopy = (ListLayoutManager) listLayoutManager;
-
-        listLayoutManagerCopy.setOrderedList(this.orderedList);
-    }
 }

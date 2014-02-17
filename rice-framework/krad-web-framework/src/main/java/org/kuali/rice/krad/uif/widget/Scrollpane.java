@@ -82,16 +82,4 @@ public class Scrollpane  extends WidgetBase {
         this.height = height;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        Scrollpane scrollpaneCopy = (Scrollpane) component;
-
-        scrollpaneCopy.setHeight(this.height);
-    }
-
 }

@@ -181,20 +181,6 @@ public class LinkField extends FieldBase {
      * {@inheritDoc}
      */
     @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        LinkField linkFieldCopy = (LinkField) component;
-
-        if (this.link != null) {
-            linkFieldCopy.setLink((Link)this.link.copy());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void completeValidation(ValidationTrace tracer){
         tracer.addBean(this);
 

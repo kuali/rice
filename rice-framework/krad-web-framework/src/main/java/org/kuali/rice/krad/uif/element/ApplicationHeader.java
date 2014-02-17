@@ -81,22 +81,4 @@ public class ApplicationHeader extends Header {
     public void setApplicationToolbar(Group applicationToolbar) {
         this.applicationToolbar = applicationToolbar;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ApplicationHeader appHeaderCopy = (ApplicationHeader) component;
-
-        if (this.applicationNavigation != null) {
-            appHeaderCopy.setApplicationNavigation((NavigationBar) this.applicationNavigation.copy());
-        }
-
-        if (this.applicationToolbar != null) {
-            appHeaderCopy.setApplicationToolbar((Group) this.applicationToolbar.copy());
-        }
-    }
 }

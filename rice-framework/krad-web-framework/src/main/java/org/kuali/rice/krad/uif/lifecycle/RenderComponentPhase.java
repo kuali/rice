@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.List;
 import java.util.Queue;
 
-import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
@@ -50,12 +50,13 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      *
      * @param element the component instance that should be updated
      * @param model top level object containing the data
-     * @param path Path to the component relative to its parent component.
-     * @param renderParent The parent component.
+     * @param path Path to the component relative to its parent component
+     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
+     * @param renderParent The parent component
      * @param pendingChildren The number of child rendering phases to expect to be queued for
-     * processing before this phase.
+     * processing before this phase
      */
-    protected void prepare(LifecycleElement element, Object model, String path, Tree<String, String> refreshPaths,
+    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
             Component parentComponent, RenderComponentPhase renderParent, int pendingChildren) {
         super.prepare(element, model, path, refreshPaths, parentComponent, null);
 

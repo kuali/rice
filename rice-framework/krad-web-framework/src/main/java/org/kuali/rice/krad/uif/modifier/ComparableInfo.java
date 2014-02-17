@@ -235,21 +235,4 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
         this.highlightValueChange = highlightValueChange;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T comparableInfo) {
-        super.copyProperties(comparableInfo);
-
-        ComparableInfo comparableInfoCopy = (ComparableInfo) comparableInfo;
-
-        comparableInfoCopy.setBindingObjectPath(this.bindingObjectPath);
-        comparableInfoCopy.setCompareToForValueChange(this.compareToForValueChange);
-        comparableInfoCopy.setHeaderText(this.headerText);
-        comparableInfoCopy.setHighlightValueChange(this.highlightValueChange);
-        comparableInfoCopy.setIdSuffix(this.idSuffix);
-        comparableInfoCopy.setOrder(this.order);
-        comparableInfoCopy.setReadOnly(this.readOnly);
-    }
 }

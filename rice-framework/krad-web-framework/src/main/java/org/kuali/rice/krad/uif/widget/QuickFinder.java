@@ -420,9 +420,9 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
         // add post metadata for focus point when the associated lookup returns
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostContextKeys.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
+                UifConstants.PostMetadata.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostContextKeys.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
+                UifConstants.PostMetadata.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
     }
 
     /**
@@ -845,53 +845,5 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      */
     public void setAdditionalLookupParameters(Map<String, String> additionalLookupParameters) {
         this.additionalLookupParameters = additionalLookupParameters;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        QuickFinder quickFinderCopy = (QuickFinder) component;
-
-        quickFinderCopy.setBaseLookupUrl(this.baseLookupUrl);
-        quickFinderCopy.setDataObjectClassName(this.dataObjectClassName);
-        quickFinderCopy.setViewName(this.viewName);
-        quickFinderCopy.setReferencesToRefresh(this.referencesToRefresh);
-
-        if (fieldConversions != null) {
-            quickFinderCopy.setFieldConversions(new HashMap<String, String>(this.fieldConversions));
-        }
-
-        if (lookupParameters != null) {
-            quickFinderCopy.setLookupParameters(new HashMap<String, String>(this.lookupParameters));
-        }
-
-        if (additionalLookupParameters != null) {
-            quickFinderCopy.setAdditionalLookupParameters(new HashMap<String, String>(this.additionalLookupParameters));
-        }
-
-        quickFinderCopy.setReturnByScript(this.returnByScript);
-        quickFinderCopy.setReadOnlyLookupFields(this.readOnlyLookupFields);
-        quickFinderCopy.setRenderReturnLink(this.renderReturnLink);
-        quickFinderCopy.setRenderResultActions(this.renderResultActions);
-        quickFinderCopy.setAutoSearch(this.autoSearch);
-        quickFinderCopy.setRenderLookupCriteria(this.renderLookupCriteria);
-        quickFinderCopy.setRenderCriteriaActions(this.renderCriteriaActions);
-        quickFinderCopy.setHideCriteriaOnSearch(this.hideCriteriaOnSearch);
-        quickFinderCopy.setRenderMaintenanceLinks(this.renderMaintenanceLinks);
-        quickFinderCopy.setMultipleValuesSelect(this.multipleValuesSelect);
-        quickFinderCopy.setLookupCollectionName(this.lookupCollectionName);
-        quickFinderCopy.setLookupCollectionId(this.lookupCollectionId);
-
-        if (lightBox != null) {
-            quickFinderCopy.setLightBox((LightBox) this.lightBox.copy());
-        }
-
-        if (this.quickfinderAction != null) {
-            quickFinderCopy.setQuickfinderAction((Action) this.quickfinderAction.copy());
-        }
     }
 }

@@ -25,7 +25,6 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
@@ -83,23 +82,22 @@ public interface ViewHelperService {
     /**
      * Hook for service overrides to process the new collection line before it is added to the
      * collection
-     * 
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line will be added
-     *        to
-     * @param model object instance that contain's the views data
+     *
+     * @param model object instance that contain's the view's data
      * @param addLine the new line instance to be processed
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
     void processBeforeAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the new collection line after it has been added to the
      * collection
-     * 
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line that was added
+     *
      * @param model object instance that contain's the views data
      * @param addLine the new line that was added
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param isValidLine indicates if the line is valid
      */
     void processAfterAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath,
@@ -107,30 +105,30 @@ public interface ViewHelperService {
 
     /**
      * Hook for service overrides to process the save collection line before it is validated
-     * 
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection
+     *
      * @param model object instance that contain's the views data
-     * @param addLine the new line instance to be processed
+     * @param lineObject the line instance to be processed
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
     void processBeforeSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the save collection line after it has been validated
-     * 
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection
+     *
      * @param model object instance that contains the views data
-     * @param addLine the new line that was added
+     * @param lineObject the line instance to be processed
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
     void processAfterSaveLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
 
     /**
      * Hook for service overrides to process the collection line after it has been deleted
-     * 
-     * @param view view instance that is being presented (the action was taken on)
-     * @param collectionGroup collection group component for the collection the line that was added
+     *
      * @param model object instance that contains the views data
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param lineIndex index of the line that was deleted
      */
     void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
@@ -161,12 +159,12 @@ public interface ViewHelperService {
      * the line should be added to the collection, otherwise errors should be
      * added to the global <code>MessageMap</code>
      *
-     * @param view view instance that is being presented (the action was taken on)
      * @param model Top level object containing the view data including the
      * collection and new line
-     * @param collectionPath full path to the collection on the model
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
-    public void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
+    void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Adds a blank line to the collection
@@ -175,22 +173,22 @@ public interface ViewHelperService {
      * Adds a new collection item to the collection and applies any default values.
      * </p>
      *
-     * @param view view instance that is being presented (the action was taken on)
      * @param model Top level object containing the view data including the collection and new line
-     * @param collectionPath full path to the collection on the model
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      */
-    public void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
+    void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by
      * default but creates hook for client applications to add additional logic like persisting data.
      *
-     * @param view view instance that is being presented (the action was taken on)
      * @param model Top level object containing the view data including the collection and new line
-     * @param collectionPath full path to the collection on the model
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param selectedLineIndex The index within the collection of the line to save.
      */
-    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
+    void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the delete line action is chosen for a collection. The
@@ -200,35 +198,24 @@ public interface ViewHelperService {
      * collection, otherwise errors should be added to the global
      * <code>MessageMap</code>
      *
-     * @param view view instance that is being presented (the action was taken on)
      * @param model Top level object containing the view data including the collection
-     * @param collectionPath full path to the collection on the model
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param lineIndex index of the collection line that was selected for removal
      */
-    public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
+    void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex);
 
     /**
      * Process the results returned from a multi-value lookup populating the lines for the collection given
      * by the path
      *
-     * @param view view instance the collection belongs to
      * @param model object containing the view data
-     * @param collectionPath binding path to the collection to populated
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
      * @param lookupResultValues String containing the selected line values
      */
-    public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
+    void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
             String lookupResultValues);
-
-    /**
-     * Generates table formatted data based on data collected from the table model
-     *
-     * @param view view instance where the table is located
-     * @param model top level object containing the data
-     * @param tableId id of the table being generated
-     * @param formatType format which the table should be generated in
-     * @return The generated table data.
-     */
-    public String buildExportTableData(View view, Object model, String tableId, String formatType);
 
     /**
      * Invoked by the <code>Inquiry</code> widget to build the inquiry link
@@ -247,7 +234,7 @@ public interface ViewHelperService {
      * @param propertyName name of the property the inquiry is being built for
      * @param inquiry instance of the inquiry widget being built for the property
      */
-    public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
+    void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
 
     /**
      * Sets up the view context which will be available to other components through their context
@@ -383,9 +370,5 @@ public interface ViewHelperService {
      * @return expression evaluator factory
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
-
-    String getCollectionLabel(CollectionGroup collectionGroup);
-
-    String getDuplicateLineLabelString(CollectionGroup collectionGroup, List<String> duplicateLinePropertyNames);
 
 }

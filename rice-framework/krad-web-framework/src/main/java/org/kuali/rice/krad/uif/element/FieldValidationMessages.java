@@ -27,7 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ValidationMessages for logic and options specific to groups
+ * ValidationMessages for logic and options specific to fields.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "fieldValidationMessages-bean", parent = "Uif-FieldValidationMessages")
 public class FieldValidationMessages extends ValidationMessages {
@@ -123,18 +125,5 @@ public class FieldValidationMessages extends ValidationMessages {
      */
     public void setShowIcons(boolean showIcons) {
         this.showIcons = showIcons;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        FieldValidationMessages fieldValidationMessagesCopy = (FieldValidationMessages) component;
-
-        fieldValidationMessagesCopy.setUseTooltip(this.useTooltip);
-        fieldValidationMessagesCopy.setShowIcons(this.showIcons);
     }
 }

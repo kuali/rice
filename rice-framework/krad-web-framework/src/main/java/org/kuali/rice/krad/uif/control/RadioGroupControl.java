@@ -94,20 +94,4 @@ public class RadioGroupControl extends MultiValueControlBase {
 
         return "";
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        RadioGroupControl radioGroupControlCopy = (RadioGroupControl) component;
-
-        if(fieldsetClasses != null) {
-            radioGroupControlCopy.setFieldsetClasses(new ArrayList<String>(fieldsetClasses));
-        }
-
-        radioGroupControlCopy.setDelimiter(this.delimiter);
-    }
 }

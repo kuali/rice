@@ -30,6 +30,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -37,6 +38,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
@@ -45,6 +47,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
@@ -53,21 +56,22 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
- * Layout manager that works with {@code CollectionGroup} components and renders the collection as a
- * Table
+ * Implementation of table layout manager.
  *
- * <p>
- * Based on the fields defined, the {@code TableLayoutManager} will dynamically create instances of
+ * <p>Based on the fields defined, the {@code TableLayoutManager} will dynamically create instances of
  * the fields for each collection row. In addition, the manager can create standard fields like the
  * action and sequence fields for each row. The manager supports options inherited from the
- * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width settings.
- * </p>
+ * {@code GridLayoutManager} such as rowSpan, colSpan, and cell width settings.</p>
+ *
+ * {@inheritDoc}
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -271,24 +275,23 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
-
     }
 
     /**
      * Sets up the grouping MessageField to be used in the first column of the table layout for
-     * grouping collection content into groups based on values of the line's fields
+     * grouping collection content into groups based on values of the line's fields.
      *
      * @param model The model for the active lifecycle
      * @param collectionGroup collection group for this layout
      */
-    private void setupGrouping(Object model, CollectionGroup collectionGroup) {
-        //Grouping setup
+    protected void setupGrouping(Object model, CollectionGroup collectionGroup) {
         String groupingTitleExpression = "";
+
         if (StringUtils.isNotBlank(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE))) {
             groupingTitleExpression = this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE);
+
             this.setGroupingTitle(this.getPropertyExpression(UifPropertyPaths.GROUPING_TITLE));
         } else if (this.getGroupingPropertyNames() != null) {
-
             for (String propertyName : this.getGroupingPropertyNames()) {
                 groupingTitleExpression = groupingTitleExpression + ", " + propertyName;
             }
@@ -302,6 +305,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         if (StringUtils.isNotBlank(groupingTitleExpression)) {
             MessageField groupingMessageField = ComponentFactory.getColGroupingField();
+
             groupingMessageField.getMessage().getPropertyExpressions().put(UifPropertyPaths.MESSAGE_TEXT,
                     groupingTitleExpression);
 
@@ -502,19 +506,26 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Assembles the field instances for the collection line. The given sequence field prototype is
-     * copied for the line sequence field. Likewise a copy of the actionFieldPrototype is made and
-     * the given actions are set as the items for the action field. Finally the generated items are
-     * assembled together into the allRowFields list with the given lineFields.
+     * Assembles the field instances for the collection line.
+     *
+     * <p>The given sequence field prototype is copied for the line sequence field. Likewise a copy of
+     * the actionFieldPrototype is made and the given actions are set as the items for the action field.
+     * Finally the generated items are assembled together into the allRowFields list with the given
+     * lineFields.</p>
      *
      * {@inheritDoc}
      */
     @Override
-    public void buildLine(Object model, CollectionGroup collectionGroup, List<Field> lineFields,
-            List<FieldGroup> subCollectionFields, String bindingPath, List<? extends Component> actions,
-            String idSuffix, Object currentLine, int lineIndex) {
-
+    public void buildLine(LineBuilderContext lineBuilderContext) {
         View view = ViewLifecycle.getView();
+
+        List<Field> lineFields = lineBuilderContext.getLineFields();
+        CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
+        int lineIndex = lineBuilderContext.getLineIndex();
+        String idSuffix = lineBuilderContext.getIdSuffix();
+        Object currentLine = lineBuilderContext.getCurrentLine();
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
+        String bindingPath = lineBuilderContext.getBindingPath();
 
         // since expressions are not evaluated on child components yet, we need to evaluate any properties
         // we are going to read for building the table
@@ -564,7 +575,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         boolean addLineInTable =
                 collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() && !isSeparateAddLine();
 
-        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) model).isAddedCollectionItem(currentLine)) {
+        if (collectionGroup.isHighlightNewItems() && ((UifFormBase) lineBuilderContext.getModel())
+                .isAddedCollectionItem(currentLine)) {
             rowCss = collectionGroup.getNewItemsCssClass();
         } else if (isAddLine && addLineInTable) {
             rowCss = collectionGroup.getAddItemCssClass();
@@ -649,7 +661,12 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
 
         int rowCount = calculateNumberOfRows(lineFields);
-        int rowSpan = rowCount + subCollectionFields.size();
+        int rowSpan = rowCount;
+
+        List<FieldGroup> subCollectionFields = lineBuilderContext.getSubCollectionFields();
+        if (subCollectionFields != null) {
+            rowSpan += subCollectionFields.size();
+        }
 
         if (actionColumnIndex == 1 && renderActions) {
             addActionColumn(collectionGroup, idSuffix, currentLine, lineIndex, rowSpan, actions);
@@ -798,12 +815,14 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
 
         // update colspan on sub-collection fields
-        for (FieldGroup subCollectionField : subCollectionFields) {
-            subCollectionField.setColSpan(numberOfDataColumns);
-        }
+        if (subCollectionFields != null) {
+            for (FieldGroup subCollectionField : subCollectionFields) {
+                subCollectionField.setColSpan(numberOfDataColumns);
+            }
 
-        // add sub-collection fields to end of data fields
-        allRowFields.addAll(subCollectionFields);
+            // add sub-collection fields to end of data fields
+            allRowFields.addAll(subCollectionFields);
+        }
     }
 
     /**
@@ -817,7 +836,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * @param rowSpan number of rows the action field should span
      * @param actions action components that should be to the field group
      */
-    private void addActionColumn(CollectionGroup collectionGroup, String idSuffix, Object currentLine, int lineIndex,
+    protected void addActionColumn(CollectionGroup collectionGroup, String idSuffix, Object currentLine, int lineIndex,
             int rowSpan, List<? extends Component> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
@@ -1032,6 +1051,34 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             rowCount = items.size() / getNumberOfDataColumns();
         }
         return rowCount;
+    }
+
+    /**
+     * Invokes instance of {@link org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper} to carry out
+     * the paging request using data tables API.
+     *
+     * <p>There are two types of paging supported in the table layout, one that uses data tables paging API, and one
+     * that handles basic table paging.</p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void processPagingRequest(Object model, CollectionGroup collectionGroup) {
+        boolean richTableEnabled = ((getRichTable() != null) && (getRichTable().isRender()));
+
+        if (richTableEnabled) {
+            DataTablesPagingHelper.DataTablesInputs dataTablesInputs = new DataTablesPagingHelper.DataTablesInputs(
+                    ViewLifecycle.getRequest());
+
+            DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(), (ViewModel) model, collectionGroup,
+                    dataTablesInputs);
+        } else {
+            String pageNumber = ViewLifecycle.getRequest().getParameter(UifConstants.PageRequest.PAGE_NUMBER);
+
+            CollectionPagingHelper pagingHelper = new CollectionPagingHelper();
+            pagingHelper.processPagingRequest(ViewLifecycle.getView(), collectionGroup, (UifFormBase) model,
+                    pageNumber);
+        }
     }
 
     /**
@@ -1572,16 +1619,16 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         dataAttributes.put("open", Boolean.toString(this.rowDetailsOpen));
         this.getRowDetailsGroup().setDataAttributes(dataAttributes);
 
-        if (ajaxDetailsRetrieval) {
-            this.getRowDetailsGroup().setRender(false);
-            this.getRowDetailsGroup().setDisclosedByAction(true);
-        } else {
-            this.getRowDetailsGroup().setHidden(true);
-        }
-
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
+        this.getRowDetailsGroup().setHidden(true);
+
+        if (ajaxDetailsRetrieval) {
+            this.getRowDetailsGroup().setRetrieveViaAjax(true);
+        }
+        
+        detailsFieldGroup.setReadOnly(collectionGroup.isReadOnly());
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);
@@ -2093,142 +2140,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      */
     public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
         this.conditionalRowCssClasses = conditionalRowCssClasses;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T layoutManager) {
-        super.copyProperties(layoutManager);
-
-        TableLayoutManagerBase tableLayoutManagerCopy = (TableLayoutManagerBase) layoutManager;
-
-        tableLayoutManagerCopy.setUseShortLabels(this.useShortLabels);
-        tableLayoutManagerCopy.setRepeatHeader(this.repeatHeader);
-
-        if (this.headerLabelPrototype != null) {
-            tableLayoutManagerCopy.setHeaderLabelPrototype((Label) this.headerLabelPrototype.copy());
-        }
-
-        tableLayoutManagerCopy.setRenderSequenceField(this.renderSequenceField);
-        tableLayoutManagerCopy.setGenerateAutoSequence(this.generateAutoSequence);
-
-        if (this.sequenceFieldPrototype != null) {
-            tableLayoutManagerCopy.setSequenceFieldPrototype((Field) this.sequenceFieldPrototype.copy());
-        }
-
-        if (this.actionFieldPrototype != null) {
-            tableLayoutManagerCopy.setActionFieldPrototype((FieldGroup) this.actionFieldPrototype.copy());
-        }
-
-        if (this.subCollectionFieldGroupPrototype != null) {
-            tableLayoutManagerCopy.setSubCollectionFieldGroupPrototype(
-                    (FieldGroup) this.subCollectionFieldGroupPrototype.copy());
-        }
-
-        if (this.selectFieldPrototype != null) {
-            tableLayoutManagerCopy.setSelectFieldPrototype((Field) this.selectFieldPrototype.copy());
-        }
-
-        tableLayoutManagerCopy.setSeparateAddLine(this.separateAddLine);
-
-        if (this.addLineGroup != null) {
-            tableLayoutManagerCopy.setAddLineGroup((Group) this.addLineGroup.copy());
-        }
-
-        tableLayoutManagerCopy.setNumberOfDataColumns(this.numberOfDataColumns);
-
-        if (this.headerLabels != null) {
-            List<Label> headerLabelsCopy = ComponentUtils.copy(headerLabels);
-            tableLayoutManagerCopy.setHeaderLabels(headerLabelsCopy);
-        }
-
-        if (this.allRowFields != null) {
-            List<Field> allRowFieldsCopy = ComponentUtils.copy(allRowFields);
-            tableLayoutManagerCopy.setAllRowFields(allRowFieldsCopy);
-        }
-
-        if (this.firstRowFields != null) {
-            List<Field> firstRowFieldsCopy = ComponentUtils.copy(firstRowFields);
-            tableLayoutManagerCopy.setFirstRowFields(firstRowFieldsCopy);
-        }
-
-        if (this.pagerWidget != null) {
-            tableLayoutManagerCopy.setPagerWidget((Pager) this.pagerWidget.copy());
-        }
-
-        if (this.richTable != null) {
-            tableLayoutManagerCopy.setRichTable((RichTable) this.richTable.copy());
-        }
-
-        tableLayoutManagerCopy.setHeaderAdded(this.headerAdded);
-        tableLayoutManagerCopy.setActionColumnIndex(this.actionColumnIndex);
-
-        if (this.rowDetailsGroup != null) {
-            tableLayoutManagerCopy.setRowDetailsGroup((Group) this.rowDetailsGroup.copy());
-        }
-
-        tableLayoutManagerCopy.setRowDetailsOpen(this.rowDetailsOpen);
-        tableLayoutManagerCopy.setShowToggleAllDetails(this.showToggleAllDetails);
-
-        if (this.toggleAllDetailsAction != null) {
-            tableLayoutManagerCopy.setToggleAllDetailsAction((Action) this.toggleAllDetailsAction.copy());
-        }
-
-        tableLayoutManagerCopy.setAjaxDetailsRetrieval(this.ajaxDetailsRetrieval);
-
-        if (this.expandDetailsActionPrototype != null) {
-            tableLayoutManagerCopy.setExpandDetailsActionPrototype((Action) this.expandDetailsActionPrototype.copy());
-        }
-
-        tableLayoutManagerCopy.setGroupingTitle(this.groupingTitle);
-        tableLayoutManagerCopy.setGroupingPrefix(this.groupingPrefix);
-        tableLayoutManagerCopy.setGroupingColumnIndex(this.groupingColumnIndex);
-
-        if (this.groupingPropertyNames != null) {
-            tableLayoutManagerCopy.setGroupingPropertyNames(new ArrayList<String>(groupingPropertyNames));
-        }
-
-        tableLayoutManagerCopy.setRenderOnlyLeftTotalLabels(this.renderOnlyLeftTotalLabels);
-        tableLayoutManagerCopy.setShowTotal(this.showTotal);
-        tableLayoutManagerCopy.setShowPageTotal(this.showPageTotal);
-        tableLayoutManagerCopy.setShowGroupTotal(this.showGroupTotal);
-        tableLayoutManagerCopy.setGenerateGroupTotalRows(this.generateGroupTotalRows);
-
-        if (this.totalLabel != null) {
-            tableLayoutManagerCopy.setTotalLabel((Label) this.totalLabel.copy());
-        }
-
-        if (this.pageTotalLabel != null) {
-            tableLayoutManagerCopy.setPageTotalLabel((Label) this.pageTotalLabel.copy());
-        }
-
-        if (this.groupTotalLabelPrototype != null) {
-            tableLayoutManagerCopy.setGroupTotalLabelPrototype((Label) this.groupTotalLabelPrototype.copy());
-        }
-
-        if (this.columnsToCalculate != null) {
-            tableLayoutManagerCopy.setColumnsToCalculate(new ArrayList<String>(columnsToCalculate));
-        }
-
-        if (this.columnCalculations != null) {
-            List<ColumnCalculationInfo> columnCalculationsCopy = new ArrayList<ColumnCalculationInfo>();
-            for (ColumnCalculationInfo columnCalculation : columnCalculations) {
-                columnCalculationsCopy.add((ColumnCalculationInfo) columnCalculation.copy());
-            }
-            tableLayoutManagerCopy.setColumnCalculations(columnCalculationsCopy);
-        }
-
-        if (this.footerCalculationComponents != null) {
-            List<Component> footerCalculationComponentsCopy = ComponentUtils.copy(footerCalculationComponents);
-            tableLayoutManagerCopy.setFooterCalculationComponents(footerCalculationComponentsCopy);
-        }
-
-        if (this.conditionalRowCssClasses != null) {
-            tableLayoutManagerCopy.setConditionalRowCssClasses(new HashMap<String, String>(
-                    this.conditionalRowCssClasses));
-        }
     }
 
     /**

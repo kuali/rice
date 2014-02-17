@@ -104,7 +104,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
         }
 
-		if (layoutManager != null) {
+		if (layoutManager != null && !this.getItems().isEmpty()) {
 			layoutManager.performInitialization(model);
 		}
 	}
@@ -122,9 +122,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 			instructionalMessage.setMessageText(instructionalText);
 		}
 
-		if (layoutManager != null) {
-			layoutManager.performApplyModel(model, this);
-		}
+        if (layoutManager != null && !this.getItems().isEmpty()) {
+            layoutManager.performApplyModel(model, this);
+        }
 	}
 
 	/**
@@ -147,9 +147,9 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             header.addDataAttribute(UifConstants.DataAttributes.HEADER_FOR, this.getId());
         }
 
-		if (layoutManager != null) {
-			layoutManager.performFinalize(model, this);
-		}
+        if (layoutManager != null && !this.getItems().isEmpty()) {
+            layoutManager.performFinalize(model, this);
+        }
 
         // Generate validation messages
         if (validationMessages != null) {
@@ -462,49 +462,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void setInstructionalMessage(Message instructionalMessage) {
 		this.instructionalMessage = instructionalMessage;
 	}
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T component) {
-        super.copyProperties(component);
-
-        ContainerBase containerBaseCopy = (ContainerBase) component;
-
-        containerBaseCopy.setDefaultItemPosition(this.defaultItemPosition);
-
-        if (this.footer != null) {
-            containerBaseCopy.setFooter((Group) this.footer.copy());
-        }
-
-        if (this.header != null) {
-            containerBaseCopy.setHeader((Header) this.header.copy());
-        }
-
-        if (this.help != null) {
-            containerBaseCopy.setHelp((Help) this.help.copy());
-        }
-
-        if (this.instructionalMessage != null) {
-            containerBaseCopy.setInstructionalMessage((Message) this.instructionalMessage.copy());
-        }
-
-        containerBaseCopy.setInstructionalText(this.instructionalText);
-
-        if (this.layoutManager != null) {
-            containerBaseCopy.setLayoutManager((LayoutManager) this.layoutManager.copy());
-        }
-
-        if (getItems() != null) {
-            List<Component> itemsCopy = ComponentUtils.copy(new ArrayList<Component>(getItems()));
-            containerBaseCopy.setItems(itemsCopy);
-        }
-
-        if (this.validationMessages != null) {
-            containerBaseCopy.setValidationMessages((ValidationMessages) this.validationMessages.copy());
-        }
-    }
 
     /**
      * {@inheritDoc}

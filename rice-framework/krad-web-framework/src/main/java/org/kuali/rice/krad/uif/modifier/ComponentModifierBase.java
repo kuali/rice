@@ -116,17 +116,4 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
         this.order = order;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected <T> void copyProperties(T componentModifier) {
-        super.copyProperties(componentModifier);
-
-        ComponentModifierBase componentModifierBase = (ComponentModifierBase) componentModifier;
-
-        componentModifierBase.setOrder(this.order);
-        componentModifierBase.setRunCondition(this.runCondition);
-        componentModifierBase.setRunPhase(this.runPhase);
-    }
 }

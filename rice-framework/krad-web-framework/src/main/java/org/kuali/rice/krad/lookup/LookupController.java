@@ -17,7 +17,6 @@ package org.kuali.rice.krad.lookup;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +30,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.krad.bo.Exporter;
-import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.DataObjectEntry;
-import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -46,7 +41,6 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -130,9 +124,6 @@ public class LookupController extends UifControllerBase {
     /**
      * Performs the search action using the given lookup criteria and sets the results onto the lookup form, then
      * renders the same lookup view.
-     * @param lookupForm lookup form
-     * 
-     * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
@@ -179,9 +170,6 @@ public class LookupController extends UifControllerBase {
 
     /**
      * Resets values in the lookup criteria group to their initial default values.
-     * @param lookupForm lookup form
-     * 
-     * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=clearValues")
     public ModelAndView clearValues(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
@@ -197,54 +185,6 @@ public class LookupController extends UifControllerBase {
         lookupForm.setLookupCriteria(resetLookupCriteria);
 
         return getUIFModelAndView(lookupForm);
-    }
-
-    /**
-     * Handles exporting lookup results as xml using a custom xml exporter.
-     */
-    @Override
-    protected String retrieveTableData(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        LookupForm lookupForm = (LookupForm) form;
-
-        String formatType = getValidatedFormatType(request.getParameter(UifParameters.FORMAT_TYPE));
-
-        // locate session form and its data object entry
-//        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-//        String formKey = request.getParameter(UifParameters.FORM_KEY);
-//        LookupForm currentForm = (LookupForm) uifFormManager.getSessionForm(formKey);
-
-        // if it has a valid custom exporter, use the lookup results and the custom exporter
-        DataDictionaryService dictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        DataDictionary dictionary = dictionaryService.getDataDictionary();
-
-        String dataObjectClassName = lookupForm.getDataObjectClassName();
-        DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClassName);
-
-        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
-
-        // checks for custom xml formatting before using standard approach
-        if (exporterClass != null && KRADConstants.XML_FORMAT.equals(formatType)) {
-            try {
-                List<? extends Object> displayList = (List<? extends Object>) lookupForm.getLookupResults();
-
-                setAttachmentResponseHeader(response, UifConstants.EXPORT_FILE_NAME, KRADConstants.XML_MIME_TYPE);
-
-                Exporter exporter = exporterClass.newInstance();
-                exporter.export(dataObjectEntry.getDataObjectClass(), displayList, KRADConstants.XML_FORMAT,
-                        response.getOutputStream());
-            } catch (Exception e) {
-                LOG.error("Unable to process xml export", e);
-                throw new RuntimeException("Unable to process xml export", e);
-            }
-
-        } else {
-            // otherwise use standard export
-            return super.retrieveTableData(form, result, request, response);
-        }
-
-        // return null as custom export writes to response output stream
-        return null;
     }
 
     /**
@@ -302,37 +242,26 @@ public class LookupController extends UifControllerBase {
 
 
     /**
-     * Retrieve a page defined by the page number parameter for a collection
-     *
-     * @param form -  Holds properties necessary to determine the <code>View</code> instance that will be used to
-     * render
-     * the UI
-     * @param result -   represents binding results
-     * @param request - http servlet request data
-     * @param response - http servlet response object
-     * @return the  ModelAndView object
-     * @throws Exception
+     * {@inheritDoc}
      */
     @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     @Override
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-
         LookupUtils.refreshLookupResultSelections((LookupForm) form);
+
         return super.retrieveCollectionPage(form,result,request,response);
     }
 
-
     /**
-     * Get method for getting aaData for jquery datatables which are using sAjaxSource option.
-     *
-     * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
-     * request parameters.</p>
+     * {@inheritDoc}
      */
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
+    @Override
     public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupUtils.refreshLookupResultSelections((LookupForm) form);
+
         return super.tableJsonRetrieval(form, result, request, response);
     }
 
@@ -343,7 +272,6 @@ public class LookupController extends UifControllerBase {
      * @param lookupForm lookup form instance containing the selected results and lookup configuration
      * @param request servlet request
      * @param redirectAttributes redirect attributes instance
-     * 
      * @return redirect URL for the return location
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=returnSelected")

@@ -82,22 +82,4 @@ public class UifDictionaryBeanBase extends DictionaryBeanBase implements UifDict
 
         return null;
     }
-
-    /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
-     */
-    @Override
-    protected <T> void copyProperties(T dictionaryBaseBean) {
-        super.copyProperties(dictionaryBaseBean);
-
-        UifDictionaryBeanBase uifDictionaryBeanBaseCopy = (UifDictionaryBeanBase) dictionaryBaseBean;
-
-        if (expressionGraph != null) {
-            uifDictionaryBeanBaseCopy.setExpressionGraph(new HashMap<String, String>(this.expressionGraph));
-        }
-
-        if (propertyExpressions != null) {
-            uifDictionaryBeanBaseCopy.setPropertyExpressions(new HashMap<String, String>(this.propertyExpressions));
-        }
-    }
 }

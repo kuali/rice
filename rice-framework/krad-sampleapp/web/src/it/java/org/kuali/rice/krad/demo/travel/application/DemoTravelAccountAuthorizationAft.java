@@ -100,7 +100,16 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountAuthorization() throws Exception {
     	waitAndTypeByName(DESCRIPTION_NAME,"Travel Authorization Description");
+    	waitAndTypeByName("document.documentHeader.organizationDocumentNumber","1");
+    	waitAndTypeByName("document.documentHeader.explanation","This is and explaination for Travel Authorization !'");
+    	waitAndClickByXpath("//a[@id='travelerQuickfinder_quickfinder_act']");
+    	waitAndGetReturnValue();
     	waitAndTypeByName(CONTACT_NUMBER_NAME,"918000884215");
+    	waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/span/a");
+    	waitAndGetReturnValue();
+    	selectByName("document.travelTypeCode","In State");
+    	waitAndTypeByName("document.tripBegin","02/01/2014");
+    	waitAndTypeByName("document.tripEnd","02/04/2014");
         jGrowl("Traveler Lookup Quickfinder");
     	waitAndClickByXpath("//a[@id='travelerQuickfinder_quickfinder_act']");
     	waitAndGetReturnValue();
@@ -110,6 +119,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/span/a");
     	waitAndGetReturnValue();
         String primaryDestinationId = waitAndGetAttributeByName("document.tripDestinationId", "value");
+    	waitAndTypeByName("document.expenseLimit","1000");
 
     	//Actual Expense
         waitAndTypeByName("newCollectionLines['document.actualExpenseItems'].travelCompanyName", "Kuali");

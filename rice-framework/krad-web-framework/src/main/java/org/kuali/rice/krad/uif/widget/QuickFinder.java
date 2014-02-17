@@ -834,7 +834,9 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     }
 
     /**
-     * @see QuickFinder#getAdditionalLookupParameters()
+     * The additional parameters that were passed to the quickFinder.
+     *
+     * @return additionalLookupParameters - map of additional lookup parameters
      */
     public Map<String, String> getAdditionalLookupParameters() {
         return additionalLookupParameters;

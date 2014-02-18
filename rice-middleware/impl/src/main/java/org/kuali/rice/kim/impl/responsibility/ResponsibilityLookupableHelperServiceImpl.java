@@ -28,6 +28,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.lookup.RoleMemberLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
@@ -188,12 +189,11 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	}
 
 	private void populateAssignedToRoles(UberResponsibilityBo responsibility){
-		Map<String, String> criteria = new HashMap<String, String>();
 		if ( responsibility.getAssignedToRoles().isEmpty() ) {
 			for(RoleResponsibilityBo roleResponsibility: responsibility.getRoleResponsibilities()){
-				criteria.put(KimConstants.PrimaryKeyConstants.ID, roleResponsibility.getRoleId());
-				responsibility.getAssignedToRoles().add(getBusinessObjectService().findByPrimaryKey(RoleBo.class, criteria));
-			}
+				responsibility.getAssignedToRoles().add(KradDataServiceLocator.getDataObjectService().find(RoleBo.class,
+                        roleResponsibility.getRoleId()));
+            }
 		}
 	}
 

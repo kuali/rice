@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -40,16 +45,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Group that holds a collection of objects and configuration for presenting the
@@ -494,6 +493,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * @param clearExistingLine boolean that indicates whether the line should be set to a
      * new instance if it already exists
      */
+    @Override
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             boolean clearExistingLine) {
         getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
@@ -520,6 +520,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCollectionObjectClass(Class<?> collectionObjectClass) {
         this.collectionObjectClass = collectionObjectClass;
     }
@@ -527,6 +528,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return this.propertyName;
@@ -535,6 +537,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
@@ -542,6 +545,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
@@ -550,6 +554,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setBindingInfo(BindingInfo bindingInfo) {
         this.bindingInfo = bindingInfo;
     }
@@ -557,6 +562,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getLineActions() {
@@ -566,6 +572,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLineActions(List<? extends Component> lineActions) {
         this.lineActions = lineActions;
     }
@@ -573,6 +580,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderLineActions")
     public boolean isRenderLineActions() {
         return this.renderLineActions;
@@ -581,6 +589,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderLineActions(boolean renderLineActions) {
         this.renderLineActions = renderLineActions;
     }
@@ -588,6 +597,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderAddLine")
     public boolean isRenderAddLine() {
         return this.renderAddLine;
@@ -596,6 +606,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderAddLine(boolean renderAddLine) {
         this.renderAddLine = renderAddLine;
     }
@@ -603,6 +614,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getAddLabel() {
         if (getAddLineLabel() != null) {
             return getAddLineLabel().getMessageText();
@@ -614,6 +626,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLabel(String addLabelText) {
         if (getAddLineLabel() != null) {
             getAddLineLabel().setMessageText(addLabelText);
@@ -623,6 +636,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addLineLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getAddLineLabel() {
         return this.addLineLabel;
@@ -631,6 +645,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLineLabel(Message addLineLabel) {
         this.addLineLabel = addLineLabel;
     }
@@ -638,6 +653,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addLinePropertyName")
     public String getAddLinePropertyName() {
         return this.addLinePropertyName;
@@ -646,6 +662,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLinePropertyName(String addLinePropertyName) {
         this.addLinePropertyName = addLinePropertyName;
     }
@@ -653,6 +670,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addLineBindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getAddLineBindingInfo() {
         return this.addLineBindingInfo;
@@ -661,6 +679,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLineBindingInfo(BindingInfo addLineBindingInfo) {
         this.addLineBindingInfo = addLineBindingInfo;
     }
@@ -668,6 +687,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
@@ -677,6 +697,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLineItems(List<? extends Component> addLineItems) {
         this.addLineItems = addLineItems;
     }
@@ -684,7 +705,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
-    @ViewLifecycleRestriction
+    @Override
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineActions", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineActions() {
         return this.addLineActions;
@@ -693,6 +715,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLineActions(List<? extends Component> addLineActions) {
         this.addLineActions = addLineActions;
     }
@@ -700,6 +723,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "includeLineSelectionField")
     public boolean isIncludeLineSelectionField() {
         return includeLineSelectionField;
@@ -708,6 +732,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setIncludeLineSelectionField(boolean includeLineSelectionField) {
         this.includeLineSelectionField = includeLineSelectionField;
     }
@@ -715,6 +740,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "lineSelectPropertyName")
     public String getLineSelectPropertyName() {
         return lineSelectPropertyName;
@@ -723,6 +749,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLineSelectPropertyName(String lineSelectPropertyName) {
         this.lineSelectPropertyName = lineSelectPropertyName;
     }
@@ -730,6 +757,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "collectionLookup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getCollectionLookup() {
         return collectionLookup;
@@ -738,6 +766,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCollectionLookup(QuickFinder collectionLookup) {
         this.collectionLookup = collectionLookup;
     }
@@ -745,6 +774,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "showInactiveLines")
     public boolean isShowInactiveLines() {
         return showInactiveLines;
@@ -753,6 +783,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setShowInactiveLines(boolean showInactiveLines) {
         this.showInactiveLines = showInactiveLines;
     }
@@ -760,6 +791,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "activeCollectionFilter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionFilter getActiveCollectionFilter() {
         return activeCollectionFilter;
@@ -768,6 +800,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
         this.activeCollectionFilter = activeCollectionFilter;
     }
@@ -775,6 +808,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "filters", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionFilter> getFilters() {
         return filters;
@@ -783,6 +817,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFilters(List<CollectionFilter> filters) {
         this.filters = filters;
     }
@@ -790,6 +825,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "duplicateLinePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getDuplicateLinePropertyNames() {
         return this.duplicateLinePropertyNames;
@@ -803,8 +839,9 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
+     *  {@inheritDoc}
      */
+    @Override
     public List<BindingInfo> getUnauthorizedLineBindingInfos() {
         return this.unauthorizedLineBindingInfos;
     }
@@ -812,6 +849,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUnauthorizedLineBindingInfos(List<BindingInfo> unauthorizedLineBindingInfos) {
         this.unauthorizedLineBindingInfos = unauthorizedLineBindingInfos;
     }
@@ -822,6 +860,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      *
      * @return sub collections
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollections", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<CollectionGroup> getSubCollections() {
@@ -833,6 +872,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      *
      * @param subCollections
      */
+    @Override
     public void setSubCollections(List<CollectionGroup> subCollections) {
         this.subCollections = subCollections;
     }
@@ -840,6 +880,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getSubCollectionSuffix() {
         return subCollectionSuffix;
     }
@@ -847,6 +888,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSubCollectionSuffix(String subCollectionSuffix) {
         this.subCollectionSuffix = subCollectionSuffix;
     }
@@ -854,6 +896,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public CollectionGroupSecurity getCollectionGroupSecurity() {
         return (CollectionGroupSecurity) super.getComponentSecurity();
     }
@@ -884,6 +927,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isEditLineAuthz() {
         initializeComponentSecurity();
 
@@ -893,6 +937,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setEditLineAuthz(boolean editLineAuthz) {
         initializeComponentSecurity();
 
@@ -902,6 +947,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isViewLineAuthz() {
         initializeComponentSecurity();
 
@@ -911,6 +957,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setViewLineAuthz(boolean viewLineAuthz) {
         initializeComponentSecurity();
 
@@ -920,6 +967,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "collectionGroupBuilder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CollectionGroupBuilder getCollectionGroupBuilder() {
         if (this.collectionGroupBuilder == null) {
@@ -931,6 +979,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {
         this.collectionGroupBuilder = collectionGroupBuilder;
     }
@@ -938,6 +987,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderInactiveToggleButton(boolean renderInactiveToggleButton) {
         this.renderInactiveToggleButton = renderInactiveToggleButton;
     }
@@ -945,6 +995,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderInactiveToggleButton")
     public boolean isRenderInactiveToggleButton() {
         return renderInactiveToggleButton;
@@ -953,6 +1004,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "displayCollectionSize")
     public int getDisplayCollectionSize() {
         return this.displayCollectionSize;
@@ -961,6 +1013,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDisplayCollectionSize(int displayCollectionSize) {
         this.displayCollectionSize = displayCollectionSize;
     }
@@ -968,6 +1021,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "highlightNewItems")
     public boolean isHighlightNewItems() {
         return highlightNewItems;
@@ -976,6 +1030,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setHighlightNewItems(boolean highlightNewItems) {
         this.highlightNewItems = highlightNewItems;
     }
@@ -983,6 +1038,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "newItemsCssClass")
     public String getNewItemsCssClass() {
         return newItemsCssClass;
@@ -991,6 +1047,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setNewItemsCssClass(String newItemsCssClass) {
         this.newItemsCssClass = newItemsCssClass;
     }
@@ -998,6 +1055,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addItemCssClass")
     public String getAddItemCssClass() {
         return addItemCssClass;
@@ -1006,6 +1064,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddItemCssClass(String addItemCssClass) {
         this.addItemCssClass = addItemCssClass;
     }
@@ -1013,6 +1072,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "highlightAddItem")
     public boolean isHighlightAddItem() {
         return highlightAddItem;
@@ -1021,6 +1081,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setHighlightAddItem(boolean highlightAddItem) {
         this.highlightAddItem = highlightAddItem;
     }
@@ -1028,6 +1089,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderAddBlankLineButton")
     public boolean isRenderAddBlankLineButton() {
         return renderAddBlankLineButton;
@@ -1036,6 +1098,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderAddBlankLineButton(boolean renderAddBlankLineButton) {
         this.renderAddBlankLineButton = renderAddBlankLineButton;
     }
@@ -1043,6 +1106,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addBlankLineAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddBlankLineAction() {
         return addBlankLineAction;
@@ -1051,6 +1115,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddBlankLineAction(Action addBlankLineAction) {
         this.addBlankLineAction = addBlankLineAction;
     }
@@ -1058,6 +1123,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addLinePlacement")
     public String getAddLinePlacement() {
         return addLinePlacement;
@@ -1066,6 +1132,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddLinePlacement(String addLinePlacement) {
         this.addLinePlacement = addLinePlacement;
     }
@@ -1073,6 +1140,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderSaveLineActions")
     public boolean isRenderSaveLineActions() {
         return renderSaveLineActions;
@@ -1081,6 +1149,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderSaveLineActions(boolean renderSaveLineActions) {
         this.renderSaveLineActions = renderSaveLineActions;
     }
@@ -1088,6 +1157,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addViaLightBox")
     public boolean isAddViaLightBox() {
         return addViaLightBox;
@@ -1096,6 +1166,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddViaLightBox(boolean addViaLightBox) {
         this.addViaLightBox = addViaLightBox;
     }
@@ -1103,6 +1174,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addViaLightBoxAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Action getAddViaLightBoxAction() {
         return addViaLightBoxAction;
@@ -1111,6 +1183,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
         this.addViaLightBoxAction = addViaLightBoxAction;
     }
@@ -1118,6 +1191,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "useServerPaging")
     public boolean isUseServerPaging() {
         return useServerPaging;
@@ -1126,6 +1200,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUseServerPaging(boolean useServerPaging) {
         this.useServerPaging = useServerPaging;
     }
@@ -1149,6 +1224,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDisplayStart() {
         return displayStart;
     }
@@ -1156,6 +1232,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDisplayStart(int displayStart) {
         this.displayStart = displayStart;
     }
@@ -1163,6 +1240,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getDisplayLength() {
         return displayLength;
     }
@@ -1170,6 +1248,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setDisplayLength(int displayLength) {
         this.displayLength = displayLength;
     }
@@ -1177,6 +1256,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getFilteredCollectionSize() {
         return filteredCollectionSize;
     }
@@ -1184,6 +1264,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setFilteredCollectionSize(int filteredCollectionSize) {
         this.filteredCollectionSize = filteredCollectionSize;
     }

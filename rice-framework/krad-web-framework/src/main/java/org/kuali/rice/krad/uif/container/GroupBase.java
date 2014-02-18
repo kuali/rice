@@ -273,6 +273,7 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @return String binding prefix to set
      */
+    @Override
     @BeanTagAttribute(name = "fieldBindByNamePrefix")
     public String getFieldBindByNamePrefix() {
         return this.fieldBindByNamePrefix;

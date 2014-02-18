@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -67,13 +68,16 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        Suggest fieldSuggest = (Suggest) inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_SUGGEST);
-        AttributeQuery suggestQuery = fieldSuggest.getSuggestQuery();
+        Suggest fieldSuggest = (Suggest)
+                inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_SUGGEST);
+        AttributeQuery suggestQuery = (AttributeQuery)
+                inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_SUGGEST_QUERY);
+        boolean isUppercaseValue = Boolean.TRUE.equals(
+                inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE));
 
         // add term as a like criteria
         Map<String, String> additionalCriteria = new HashMap<String, String>();
-        boolean isUppercase = Boolean.TRUE.equals(inputFieldMetaData.getData(UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE));
-        if (isUppercase) {
+        if (isUppercaseValue) {
             additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm.toUpperCase() + "*");
         } else {
             additionalCriteria.put(fieldSuggest.getValuePropertyName(), fieldTerm + "*");
@@ -82,7 +86,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute suggest query
         Collection<?> results = null;
         if (suggestQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(viewPostMetadata, suggestQuery, queryParameters, true,
+            Object queryMethodResult = executeAttributeQueryMethod(suggestQuery, queryParameters, true,
                     fieldTerm);
             if ((queryMethodResult != null) && (queryMethodResult instanceof Collection<?>)) {
                 results = (Collection<?>) queryMethodResult;
@@ -271,7 +275,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // execute query and get result
         Object resultObject = null;
         if (fieldQuery.hasConfiguredMethod()) {
-            Object queryMethodResult = executeAttributeQueryMethod(viewPostMetadata, fieldQuery, queryParameters, false, null);
+            Object queryMethodResult = executeAttributeQueryMethod(fieldQuery, queryParameters, false, null);
             if (queryMethodResult != null) {
                 // if method returned the result then no further processing needed
                 if (queryMethodResult instanceof AttributeQueryResult) {
@@ -340,7 +344,6 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Prepares the method configured on the attribute query then performs the method invocation
      *
-     * @param viewPostMetadata view instance the field is contained within
      * @param attributeQuery attribute query instance to execute
      * @param queryParameters map of query parameters that provide values for the method arguments
      * @param isSuggestQuery indicates whether the query is for forming suggest options
@@ -348,7 +351,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @return type depends on method being invoked, could be AttributeQueryResult in which
      *         case the method has prepared the return result, or an Object that needs to be parsed for the result
      */
-    protected Object executeAttributeQueryMethod(ViewPostMetadata viewPostMetadata, AttributeQuery attributeQuery,
+    protected Object executeAttributeQueryMethod(AttributeQuery attributeQuery,
             Map<String, String> queryParameters, boolean isSuggestQuery, String queryTerm) {
         String queryMethodToCall = attributeQuery.getQueryMethodToCall();
         MethodInvokerConfig queryMethodInvoker = attributeQuery.getQueryMethodInvokerConfig();
@@ -365,8 +368,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // if target class or object not set, use view helper service
         if ((queryMethodInvoker.getTargetClass() == null) && (queryMethodInvoker.getTargetObject() == null)) {
-            // TODO: FIX ME
-//            queryMethodInvoker.setTargetObject(viewPostMetadata.getViewHelperService());
+            queryMethodInvoker.setTargetObject(ViewLifecycle.getHelper());
         }
 
         // setup query method arguments

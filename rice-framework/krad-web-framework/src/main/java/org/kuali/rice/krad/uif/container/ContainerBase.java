@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -25,15 +24,13 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -67,6 +64,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private String instructionalText;
 	private Message instructionalMessage;
 
+	@DelayedCopy
     private ValidationMessages validationMessages;
 
 	/**
@@ -155,31 +153,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         // Generate validation messages
         if (validationMessages != null) {
             validationMessages.generateMessages(ViewLifecycle.getView(), model, this);
-        }
-
-        if (footer != null && footer.isRender() && StringUtils.isBlank(footer.getWrapperTag())) {
-            footer.setWrapperTag(UifConstants.WrapperTags.FOOTER);
-        }
-	}
-
-	/**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
-        super.initializePendingTasks(phase, pendingTasks);
-        
-        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
-            pendingTasks.add(LifecycleTaskFactory.getTask(InitializeContainerFromHelperTask.class, phase));
-        }
-        
-        if (layoutManager != null) {
-            layoutManager.initializePendingTasks(phase, pendingTasks);
-        }
-        
-        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)
-                && isProcessRemoteFieldHolders()) {
-            pendingTasks.add(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, phase));
         }
     }
 

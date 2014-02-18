@@ -62,6 +62,8 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "dataField-bean", parent = "Uif-DataField"),
+        @BeanTag(name = "dataField-labelTop-bean", parent = "Uif-DataField-LabelTop"),
+        @BeanTag(name = "dataField-labelRight-bean", parent = "Uif-DataField-LabelRight"),
         @BeanTag(name = "dataField-withoutLabel-bean", parent = "Uif-DataField-withoutLabel")})
 public class DataFieldBase extends FieldBase implements DataField {
     private static final long serialVersionUID = -4129678891948564724L;

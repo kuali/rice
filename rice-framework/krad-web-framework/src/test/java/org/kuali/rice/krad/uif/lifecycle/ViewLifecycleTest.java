@@ -27,6 +27,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -122,7 +123,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
         view = form.getView();
-        assertEquals(UifConstants.ViewStatus.FINAL, view.getViewStatus());
+        assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
 //        ViewCleaner.cleanView(view);
         return form;
     }
@@ -138,7 +139,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         form.setPageId("UifCompView-Page7");
         testFormView(form, "UifCompView", null);
     }
-
+    @Ignore
     @Test
     public void testTransactionView() throws Throwable {
         testFormView((UifFormBase) Class

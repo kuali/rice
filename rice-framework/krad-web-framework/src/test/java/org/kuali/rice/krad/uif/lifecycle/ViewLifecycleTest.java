@@ -28,6 +28,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -121,10 +122,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.prepareViewForRendering(request, response, form);
         view = form.getView();
-        assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
+        assertEquals(UifConstants.ViewStatus.FINAL, view.getViewStatus());
 //        ViewCleaner.cleanView(view);
         return form;
     }
+
 
     @Test
     public void testKitchenSinkView() throws Throwable {

@@ -71,7 +71,7 @@ import org.kuali.rice.test.data.UnitTestSql;
                         @UnitTestSql("delete from trv_acct_ext"),
                         @UnitTestSql("delete from trv_acct_type"),
 
-                        @UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', NULL, 'NULL_TYPE', 1)"),
+                        @UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('NULL_TYPE', 'NULL', 'NULL_TYPE', 1)"),
                         @UnitTestSql("INSERT INTO trv_acct_ext(ACCT_NUM, ACCT_TYPE, OBJ_ID, VER_NBR) VALUES('EX_TYPE', 'EAT', 'EX_TYPE', 1)")
                 },
                 sqlFiles = {
@@ -313,14 +313,13 @@ public class ReferenceLinkerTest extends KRADTestCase {
     public void existingParent_setChildKeyValueToNull() {
         AccountExtension acct = getExAccount();
 
-        acct.setAccountTypeCode(null);
-        //acct.setAccountType(null);
+        acct.setAccountTypeCode("NULL");
 
         // test what object getter does
         LOG.debug( "Account Type After setting FK to null: " + acct.getAccountType());
         enableJotmLogging();
         acct = getDOS().save(acct,PersistenceOption.FLUSH);
-        assertNull( "After saving, the acct type code should be null", acct.getAccountTypeCode());
+        assertEquals( "After saving, the acct type code should be 'NULL'", acct.getAccountTypeCode(), "NULL");
         assertNull( "After saving, the acct type object should not be available", acct.getAccountType());
         disableJotmLogging();
     }
@@ -678,10 +677,10 @@ public class ReferenceLinkerTest extends KRADTestCase {
 
     protected AccountExtension getNullAccount() {
         AccountExtension acct = getDOS().find(AccountExtension.class, "NULL_TYPE");
-        assertNotNull("unable to retrieve NULL_TYPE from database", acct);
-        assertNull( "Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode() );
 
-        assertNull( "the acct type object should not be available", acct.getAccountType());
+        assertNotNull("unable to retrieve NULL_TYPE from database", acct);
+        assertEquals("Incorrect acct type on NULL_TYPE database record.", acct.getAccountTypeCode(), "NULL");
+        assertNull("the acct type object should not be available", acct.getAccountType());
 
         return acct;
     }

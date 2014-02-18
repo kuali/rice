@@ -42,7 +42,7 @@ public final class KRADPropertyConstants {
 	public static final String ATTRIBUTE_SUMMARY = "attributeSummary";
 	public static final String ATTRIBUTE_VALIDATING_EXPRESSION = "attributeValidatingExpression";
 	public static final String CAMPUS = "campus";
-	public static final String CAMPUS_CODE = "code";
+	public static final String CAMPUS_CODE = "campusCode";
 	public static final String CAMPUS_NAME = "name";
 	public static final String CAMPUS_SHORT_NAME = "shortName";
 	public static final String CAMPUS_TYPE_CODE = "code";

@@ -33,9 +33,7 @@ import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -625,69 +623,61 @@ public final class KRADUtils {
     }
 
     /**
-     * Utility method to convert the search criteria which is a Map<String,String> into a Map<String,Object>.
-     *
-     * <p>
-     * This is done because OJB used to take strings and coerce them automatically into the right type but JPA does
-     * no such thing
-     * </p>
+     * This method converts request parameters coming in as String to native types in case of Boolean, Number or java.sql.Date.
+     * For boolean the conversion is performed only if an @Converter annotation is set on the JPA entity field.
      *
      * @param dataObjectClass - business object class
-     * @param searchCriteria - map of criteria currently set
-     * @param ddEntry - the business object dictionary entry for the passed in business object class
-     * @return Map <String,Object> containing all the converted values
+     * @param parameters - map of request parameters with field values as String for the fields in the dataObjectClass
+     * @return Map <String,Object> converted values
      */
-    public static Map<String, Object> getFilteredSearchCriteria(
-            Class<? extends ExternalizableBusinessObject> dataObjectClass, Map<String, String> searchCriteria,
-            BusinessObjectEntry ddEntry) {
+    public static Map<String, Object> hydrateRequestParametersForJPA (Class<?> dataObjectClass,
+            Map<String, String> parameters) {
         Map<String, Object> filteredFieldValues = new HashMap<String, Object>();
         List<java.lang.reflect.Field> allFields = ObjectPropertyUtils.getAllFields(
                 new ArrayList<java.lang.reflect.Field>(), dataObjectClass, Object.class);
 
-        //Check if there is a @Convert annotation on any of the fields
-        for (String fieldName : searchCriteria.keySet()) {
-            boolean convertAnnotationFound = false;
-            for (java.lang.reflect.Field f : allFields) {
-                if (f.getName().equalsIgnoreCase(fieldName)) {
-                    if (f.getAnnotation(javax.persistence.Convert.class) != null) {
-                        convertAnnotationFound = true;
-                    }
-                    break;
-                }
-            }
+        for (String fieldName : parameters.keySet()) {
+            Class<?> propertyType = ObjectPropertyUtils.getPropertyType(dataObjectClass, fieldName);
 
-            //Check for the propertyType of the field and based on that convert the fieldValues to the appropriate type
-            if (convertAnnotationFound && ddEntry.getAttributeNames().contains(fieldName)) {
-                Class<?> propertyType = ObjectPropertyUtils.getPropertyType(dataObjectClass, fieldName);
-                String strValue = searchCriteria.get(fieldName);
-                if (TypeUtils.isBooleanClass(propertyType)) {
-                    filteredFieldValues.put(fieldName, ("Y".equalsIgnoreCase(strValue)
-                            || "T".equalsIgnoreCase(strValue)
-                            || "1".equalsIgnoreCase(strValue)
-                            || "true".equalsIgnoreCase(strValue)));
-                } else if (TypeUtils.isDecimalClass(propertyType)) {
-                    try {
-                        filteredFieldValues.put(fieldName, new BigDecimal(strValue));
-                    } catch (NumberFormatException nfe) {
-                        GlobalVariables.getMessageMap().putError("searchCriteria[" + fieldName + "]",
+            String strValue = parameters.get(fieldName);
+            if (TypeUtils.isBooleanClass(propertyType)) {
+
+                //Check if there is a @Convert annotation on the field
+                boolean convertAnnotationFound = false;
+                for (java.lang.reflect.Field f : allFields) {
+                    if (f.getName().equalsIgnoreCase(fieldName)) {
+                        if (f.getAnnotation(javax.persistence.Convert.class) != null) {
+                                convertAnnotationFound = true;
+                        }
+                        break;
+                    }
+                }
+
+                if(convertAnnotationFound) {
+                    filteredFieldValues.put(fieldName, Truth.strToBooleanIgnoreCase(strValue));
+                }
+            } else if (TypeUtils.isDecimalClass(propertyType)) {
+                try {
+                    filteredFieldValues.put(fieldName, new BigDecimal(strValue));
+                } catch (NumberFormatException nfe) {
+                        GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
                                 RiceKeyConstants.ERROR_NUMBER, strValue);
-                        return new HashMap<String, Object>();
-                    }
-                } else if (TypeUtils.isTemporalClass(propertyType)) {
-                    try {
-                        filteredFieldValues.put(fieldName, CoreApiServiceLocator.getDateTimeService().convertToSqlDate(
-                                strValue));
-                    } catch (ParseException pe) {
-                        GlobalVariables.getMessageMap().putError("searchCriteria[" + fieldName + "]",
-                                RiceKeyConstants.ERROR_DATE_TIME, strValue);
-                        return new HashMap<String, Object>();
-                    }
+                        throw nfe;
+                }
+            } else if (TypeUtils.isTemporalClass(propertyType)) {
+                try {
+                    filteredFieldValues.put(fieldName, CoreApiServiceLocator.getDateTimeService().convertToSqlDate(
+                        strValue));
+                } catch (ParseException pe) {
+                    GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
+                        RiceKeyConstants.ERROR_DATE_TIME, strValue);
+                    throw new RuntimeException("Could not parse property value into java.sql.Date for " + fieldName );
                 }
             }
 
-            // If value not converted set the value from searchCriteria
+            // If value not converted set the value from parameters
             if (filteredFieldValues.get(fieldName) == null) {
-                filteredFieldValues.put(fieldName, searchCriteria.get(fieldName));
+                filteredFieldValues.put(fieldName, parameters.get(fieldName));
             }
 
         }

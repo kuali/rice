@@ -16,6 +16,10 @@
 package org.kuali.rice.krad;
 
 import org.junit.Test;
+import org.kuali.rice.krad.bo.DocumentAttachment;
+import org.kuali.rice.krad.document.DocumentBase;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
+import org.kuali.rice.krad.messages.Message;
 import org.reflections.Reflections;
 
 import javax.persistence.Embeddable;
@@ -45,7 +49,11 @@ public class StaticWeavingTest {
     @Test
     public void testStaticWeaving() {
         // first, scan for all files on the classpath with an @Entity or @MappedSuperClass annotation
-        Reflections reflections = new Reflections(getClass().getPackage().getName());
+        Reflections reflections = new Reflections(
+                DocumentAttachment.class.getPackage().getName(),
+                DocumentBase.class.getPackage().getName(),
+                MaintenanceLock.class.getPackage().getName(),
+                Message.class.getPackage().getName());
         Set<Class<?>> entityTypes = reflections.getTypesAnnotatedWith(Entity.class);
         Set<Class<?>> superTypes = reflections.getTypesAnnotatedWith(MappedSuperclass.class);
         Set<Class<?>> embeddableTypes = reflections.getTypesAnnotatedWith(Embeddable.class);

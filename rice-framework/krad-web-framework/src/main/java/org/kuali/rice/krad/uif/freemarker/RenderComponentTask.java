@@ -27,6 +27,7 @@ import freemarker.core.Environment;
 import freemarker.core.Macro;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Perform actual rendering on a component during the lifecycle.
@@ -58,7 +59,7 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
         for (String additionalTemplate : component.getAdditionalTemplates()) {
             renderingContext.importTemplate(additionalTemplate);
         }
-        
+
         try {
             Environment env = renderingContext.getEnvironment();
 

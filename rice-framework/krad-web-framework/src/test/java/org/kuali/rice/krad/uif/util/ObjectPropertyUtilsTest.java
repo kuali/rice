@@ -49,6 +49,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManagerBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
@@ -511,20 +512,20 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         // Below recreates the stack trace that ensued due to poorly escaped quotes,
         // and proves that the parser works around bad quoting in a manner similar to BeanWrapper 
 
-        CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
-        CollectionTestForm form = new CollectionTestForm();
+        final CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
+        final CollectionTestForm form = new CollectionTestForm();
         CollectionTestItem item = new CollectionTestItem();
         item.setFoobar("barfoo");
         ObjectPropertyUtils.setPropertyValue(form, "foo.baz['foo_bar_'badquotes'_.foobar']", item);
         assertEquals("barfoo", form.foo.baz.get("foo_bar_'badquotes'_.foobar").foobar);
 
-        FormView view = new FormView();
+        final FormView view = new FormView();
         view.setFormClass(CollectionTestForm.class);
         view.setViewHelperService(new ViewHelperServiceImpl());
         view.setPresentationController(new ViewPresentationControllerBase());
         view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
 
-        CollectionGroup collectionGroup = new CollectionGroupBase();
+        final CollectionGroup collectionGroup = new CollectionGroupBase();
         collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
         collectionGroup.setAddLinePropertyName("addLineFoo");
 
@@ -541,7 +542,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         collectionBindingInfo.setBindingPath("foo.bar");
         collectionGroup.setBindingInfo(collectionBindingInfo);
 
-        collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
+        ViewLifecycle.encapsulateLifecycle(view, form, null, null, new Runnable() {
+            @Override
+            public void run() {
+                collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
+            }});
     }
 
     @Test

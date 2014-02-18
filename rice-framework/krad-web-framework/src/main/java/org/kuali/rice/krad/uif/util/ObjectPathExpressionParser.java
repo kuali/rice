@@ -186,8 +186,6 @@ public final class ObjectPathExpressionParser {
 
                         // Move original path index forward
                         originalPathIndex += nextTokenIndex;
-                        parentPath = originalPath.substring(0, originalPathIndex);
-
                         return;
                 }
             }
@@ -211,6 +209,7 @@ public final class ObjectPathExpressionParser {
             if (nextTokenIndex == -1) {
                 // Only a symbolic reference, resolve it and return.
                 currentContinuation = pathEntry.parse(parentPath, currentContinuation, path);
+                parentPath = originalPath.substring(0, originalPathIndex);
                 return null;
             }
 
@@ -222,6 +221,7 @@ public final class ObjectPathExpressionParser {
                     // Approaching a collection reference.
                     currentContinuation = pathEntry.parse(parentPath, currentContinuation,
                             path.substring(0, nextTokenIndex));
+                    parentPath = originalPath.substring(0, originalPathIndex);
                     return path.substring(nextTokenIndex); // Keep the left parenthesis
 
                 case '.':
@@ -230,7 +230,7 @@ public final class ObjectPathExpressionParser {
                             path.substring(0, nextTokenIndex));
 
                     // Step past the period
-                    originalPathIndex++;
+                    parentPath = originalPath.substring(0, originalPathIndex++);
 
                     return path.substring(nextTokenIndex + 1);
 
@@ -324,7 +324,8 @@ public final class ObjectPathExpressionParser {
      *         path expression doesn't resolve to a valid property.
      * @see ObjectPropertyUtils#getPropertyValue(Object, String)
      */
-    public static Object parsePathExpression(Object root, String path, final PathEntry pathEntry) {
+    @SuppressWarnings("unchecked")
+    public static <T> T parsePathExpression(Object root, String path, final PathEntry pathEntry) {
 
         // NOTE: This iterative parser allows support for subexpressions
         // without recursion. When a subexpression start token '[' is
@@ -359,7 +360,7 @@ public final class ObjectPathExpressionParser {
                 parseState.scan(path);
                 path = parseState.step(path, pathEntry);
             }
-            return parseState.currentContinuation;
+            return (T) parseState.currentContinuation;
         } finally {
             assert !recycle || parseState == TL_EL_PARSE_STATE.get();
             parseState.reset();

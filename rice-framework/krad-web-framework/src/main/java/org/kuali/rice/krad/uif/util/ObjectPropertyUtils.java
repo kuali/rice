@@ -26,22 +26,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 
 /**
  * Utility methods to get/set property values and working with objects.
@@ -562,34 +561,85 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Split parse path entry for supporting {@link ObjectPropertyUtils#splitPropertyPath(String)}. 
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class SplitPropertyPathEntry implements PathEntry {
+
+        /**
+         * Invoked at each path separator on the path.
+         * 
+         * <p>
+         * Note that {@link ObjectPathExpressionParser} strips quotes and brackets then treats
+         * list/map references as property names. However
+         * {@link ObjectPropertyUtils#splitPropertyPath(String)} expects that a list/map reference
+         * will be part of the path expression, as a reference to a specific element in a list or
+         * map related to the bean. Therefore, this method needs to rejoin these list/map references
+         * before returning.
+         * </p>
+         * 
+         * @param parentPath The portion of the path leading up to the current node.
+         * @param node The list of property names in the path.
+         * @param next The next property name being parsed.
+         * 
+         * {@inheritDoc}
+         */
+        @Override
+        public List<String> parse(String parentPath, Object node, String next) {
+            if (next == null) {
+                return new ArrayList<String>();
+            }
+
+            @SuppressWarnings("unchecked")
+            List<String> rv = (List<String>) node;
+            // First node, or no path separator in parent path.
+            if (rv.isEmpty()) {
+                rv.add(next);
+                return rv;
+            }
+            
+            int lastIndex = rv.size() - 1;
+            String lastToken = rv.get(lastIndex);
+            String lastParentToken = parentPath.substring(parentPath.lastIndexOf('.') + 1);
+            
+            if (!lastToken.equals(lastParentToken) && lastIndex > 0) {
+
+                // read back one more token and "concatenate" by
+                // recreating the subexpression as a substring of
+                // the parent path
+                String prevToken = rv.get(--lastIndex);
+                
+                // parent path index of last prevToken.
+                int iopt = parentPath.lastIndexOf(prevToken, parentPath.lastIndexOf(lastToken));
+                
+                String fullToken = parentPath.substring(iopt);
+                rv.remove(lastIndex); // remove first entry
+                rv.set(lastIndex, fullToken); // replace send with concatenation
+            }
+            rv.add(next);
+
+            return rv;
+        }
+    }
+    
+    private static final SplitPropertyPathEntry SPLIT_PROPERTY_PATH_ENTRY = new SplitPropertyPathEntry();
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
      * Splits the given property path into a string of property names that make up the path.
      *
      * @param path property path to split
      * @return string array of names, starting from the top parent
+     * @see SplitPropertyPathEntry#parse(String, Object, String)
      */
     public static String[] splitPropertyPath(String path) {
-        // we must escape dots within map keys before doing the split
-        Pattern pattern = Pattern.compile("(\\[(?:\"|')?)((?:\\w+\\.)+)(\\w+(?:\"|')?\\])");
-        Matcher matcher = pattern.matcher(path);
-
-        // replace dots in map keys with *, since that is not a valid character for paths
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(0) + StringUtils.replace(matcher.group(1), ".", "*") + matcher
-                    .group(2));
-        }
-        matcher.appendTail(sb);
-
-        String escapedPath = sb.toString();
-
-        String[] paths = StringUtils.split(escapedPath, ".");
-
-        // put back dots within maps keys
-        for (int i = 0; i < paths.length; i++) {
-            paths[i] = StringUtils.replace(paths[i], "*", ".");
+        List<String> split = ObjectPathExpressionParser.parsePathExpression(null, path, SPLIT_PROPERTY_PATH_ENTRY);
+        if (split == null || split.isEmpty()) {
+            return EMPTY_STRING_ARRAY;
         }
 
-        return paths;
+        return split.toArray(new String[split.size()]);
     }
     
     /**

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 
 /**
@@ -35,6 +36,6 @@ public interface JpaMetadataProvider extends MetadataProvider {
 	 * @param extensionEntity
 	 *            The child/extension class which needs to be linked. It must also already be known to JPA.
 	 */
-	void addExtensionRelationship(Class<?> entityClass, String extensionPropertyName, Class<?> extensionEntity);
+	DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName, Class<?> extensionEntity);
 
 }

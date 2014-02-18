@@ -65,8 +65,7 @@
 
 	<bean
 		id="rice.ksb.message.metadataProviderAnnotation"
-		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-		p:jpaMetadataProvider-ref="rice.ksb.message.metadataProviderJpa" />
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
 	<bean
 		id="rice.ksb.message.metadataProvider"

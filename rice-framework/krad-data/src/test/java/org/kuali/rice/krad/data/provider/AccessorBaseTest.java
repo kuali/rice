@@ -22,6 +22,7 @@ import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.impl.DataObjectWrapperBase;
+import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -40,6 +41,7 @@ public class AccessorBaseTest {
 
     @Mock private DataObjectService dataObjectService;
     @Mock private DataObjectMetadata metadata;
+    @Mock private ReferenceLinker referenceLinker;
 
     private DataObject dataObject;
     private DataObject2 dataObject2;
@@ -50,7 +52,7 @@ public class AccessorBaseTest {
         this.dataObject = new DataObject("1","FieldOne",2);
         this.dataObject2 = new DataObject2("one", "two");
         this.dataObject.setDataObject2(this.dataObject2);
-        this.wrap = new DataObjectWrapperImpl<DataObject>(dataObject, metadata, dataObjectService);
+        this.wrap = new DataObjectWrapperImpl<DataObject>(dataObject, metadata, dataObjectService, referenceLinker);
 
         // stub out the metadata for our DataObject type
         when(metadata.getPrimaryKeyAttributeNames()).thenReturn(Collections.singletonList("id"));
@@ -62,14 +64,15 @@ public class AccessorBaseTest {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 DataObject object = (DataObject)invocation.getArguments()[0];
-                return new DataObjectWrapperImpl<DataObject>(object, metadata, dataObjectService);
+                return new DataObjectWrapperImpl<DataObject>(object, metadata, dataObjectService, referenceLinker);
             }
         });
     }
 
     static final class DataObjectWrapperImpl<T> extends DataObjectWrapperBase<T> {
-        private DataObjectWrapperImpl(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService) {
-            super(dataObject, metadata, dataObjectService);
+        private DataObjectWrapperImpl(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService,
+                ReferenceLinker referenceLinker) {
+            super(dataObject, metadata, dataObjectService, referenceLinker);
         }
     }
 
@@ -125,7 +128,8 @@ public class AccessorBaseTest {
     @Test
     public void testGetPropertyValueNullSafe() {
         DataObject dataObject = new DataObject("a", "b", 3);
-        DataObjectWrapper<DataObject> wrap = new DataObjectWrapperImpl<DataObject>(dataObject, metadata, dataObjectService);
+        DataObjectWrapper<DataObject> wrap = new DataObjectWrapperImpl<DataObject>(dataObject, metadata, dataObjectService,
+                referenceLinker);
         assertNull(wrap.getPropertyValue("dataObject2"));
 
         //wrap.setPropertyValue("dataObject2.dataObject3", new DataObject3());

@@ -58,7 +58,7 @@ public interface ExtensionRepositoryService {
     ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException;
 
     /**
-     * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given resourceDescriptor.
+     * Returns the {@link ExtensionDefinition} of the {@link RuleAttribute} for the given resourceDescriptor.
      * @param resourceDescriptor the resourceDescriptor to search by.
      * @return the extension definition found for the matching rule attribute service
      * @throws RiceIllegalArgumentException if resourceDescriptor is null or blank

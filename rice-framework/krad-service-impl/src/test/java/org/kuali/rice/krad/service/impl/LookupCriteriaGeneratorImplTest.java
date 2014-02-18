@@ -27,6 +27,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.impl.DataObjectWrapperBase;
+import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.mockito.InjectMocks;
@@ -55,6 +56,7 @@ public class LookupCriteriaGeneratorImplTest {
     @Mock DataDictionary dataDictionary;
     @Mock DataDictionaryService dataDictionaryService;
     @Mock DataObjectService dataObjectService;
+    @Mock ReferenceLinker referenceLinker;
 
     @InjectMocks private LookupCriteriaGeneratorImpl generator = new LookupCriteriaGeneratorImpl();
 
@@ -64,7 +66,8 @@ public class LookupCriteriaGeneratorImplTest {
         when(dataObjectService.wrap(any(TestClass.class))).thenAnswer(new Answer<DataObjectWrapper<TestClass>>() {
             @Override
             public DataObjectWrapper<TestClass> answer(InvocationOnMock invocation) throws Throwable {
-                return new DataObjectWrapperImpl<TestClass>((TestClass)invocation.getArguments()[0], mock(DataObjectMetadata.class), dataObjectService);
+                return new DataObjectWrapperImpl<TestClass>((TestClass)invocation.getArguments()[0],
+                        mock(DataObjectMetadata.class), dataObjectService, referenceLinker);
             }
         });
 
@@ -173,8 +176,9 @@ public class LookupCriteriaGeneratorImplTest {
     }
 
     private static final class DataObjectWrapperImpl<T> extends DataObjectWrapperBase<T> {
-        private DataObjectWrapperImpl(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService) {
-            super(dataObject, metadata, dataObjectService);
+        private DataObjectWrapperImpl(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService,
+                ReferenceLinker referenceLinker) {
+            super(dataObject, metadata, dataObjectService, referenceLinker);
         }
     }
 

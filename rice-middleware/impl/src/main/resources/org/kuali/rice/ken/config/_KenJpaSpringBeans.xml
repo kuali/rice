@@ -83,8 +83,7 @@
 
 	<bean
 		id="rice.ken.metadataProviderAnnotation"
-		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-		p:jpaMetadataProvider-ref="rice.ken.metadataProviderJpa" />
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
 	<bean
 		id="rice.ken.metadataProvider"

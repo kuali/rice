@@ -67,13 +67,12 @@ import java.util.concurrent.Callable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Transactional
-public class JpaPersistenceProvider implements PersistenceProvider, InitializingBean, BeanFactoryAware {
+public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryAware {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
 
     private EntityManager sharedEntityManager;
     private DataObjectService dataObjectService;
 
-    private ReferenceLinker referenceLinker;
     private PersistenceExceptionTranslator persistenceExceptionTranslator;
 
     /**
@@ -101,11 +100,6 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
      */
     public DataObjectService getDataObjectService() {
         return this.dataObjectService;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        this.referenceLinker = new ReferenceLinker(dataObjectService);
     }
 
     @Override
@@ -141,15 +135,18 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
 
 		        T mergedDataObject = sharedEntityManager.merge(dataObject);
 
-                if (optionSet.contains(PersistenceOption.LINK)) {
-                    referenceLinker.linkObjects(mergedDataObject);
-                }
-
-                if(optionSet.contains(PersistenceOption.FLUSH) || LazyConfigHolder.autoFlush){
+                // We must flush if they pass us a flush option, have auto flush turned on, or are synching keys
+                // after save. We are required to flush before synching because we may need to use generated values to
+                // perform synchronization and those won't be there until after a flush
+                //
+                // note that the actual synchronization of keys is handled automatically by the framework after the
+                // save has been completed
+                if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
+                        LazyConfigHolder.autoFlush){
 			        sharedEntityManager.flush();
                 }
 
-        		return mergedDataObject;
+                return mergedDataObject;
             }
         });
     }

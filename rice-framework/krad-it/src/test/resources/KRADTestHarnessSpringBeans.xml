@@ -208,6 +208,7 @@
     <!-- test jpa packages -->
     <value>org.kuali.rice.krad.test.document</value>
     <value>org.kuali.rice.krad.data.jpa.testbo</value>
+    <value>org.kuali.rice.krad.test.conference</value>
     <!-- sampleu jpa packages -->
     <value>edu.sampleu.travel.dataobject</value>
   </util:list>
@@ -260,8 +261,7 @@
         p:entityManager-ref="kradTestSharedEntityManager" />
 
   <bean id="kradTestMetadataProviderAnnotation"
-        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-        p:jpaMetadataProvider-ref="kradTestMetadataProviderJpa" />
+        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
   <bean id="kradTestMetadataProvider"
         class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">

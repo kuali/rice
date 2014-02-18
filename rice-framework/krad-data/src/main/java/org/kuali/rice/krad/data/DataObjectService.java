@@ -32,7 +32,7 @@ public interface DataObjectService {
     /**
      * Invoked to retrieve a data object instance by a single primary key field or id object. In the
      * case of a compound primary key consisting of multiple attributes on the data object, a
-     * CompoundKey can be passed in order to encapsulate these into a single argument.
+     * {@link CompoundKey} can be passed in order to encapsulate these into a single argument.
      *
      * @param type the type of the data object to find
      * @param id the id representing the primary key of the data object to find
@@ -43,6 +43,8 @@ public interface DataObjectService {
      * @throws IllegalArgumentException if {@code type} does not denote a data object type or {@code id} is not a valid
      * type for the data object's primary key or is null
      * @throws DataAccessException if data access fails
+     *
+     * @see CompoundKey
      */
     <T> T find(Class<T> type, Object id);
 

@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.krad.data.jpa.eclipselink;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.metamodel.Attribute.PersistentAttributeType;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.expressions.Expression;
@@ -34,6 +22,7 @@ import org.eclipse.persistence.internal.expressions.FunctionExpression;
 import org.eclipse.persistence.internal.helper.DatabaseField;
 import org.eclipse.persistence.internal.jpa.metamodel.EmbeddableTypeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.EntityTypeImpl;
+import org.eclipse.persistence.internal.jpa.metamodel.ManagedTypeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.PluralAttributeImpl;
 import org.eclipse.persistence.internal.jpa.metamodel.SingularAttributeImpl;
 import org.eclipse.persistence.jpa.JpaEntityManager;
@@ -42,6 +31,7 @@ import org.eclipse.persistence.mappings.CollectionMapping;
 import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.DirectToFieldMapping;
 import org.eclipse.persistence.mappings.ForeignReferenceMapping;
+import org.eclipse.persistence.mappings.ManyToOneMapping;
 import org.eclipse.persistence.mappings.OneToManyMapping;
 import org.eclipse.persistence.mappings.OneToOneMapping;
 import org.eclipse.persistence.mappings.converters.Converter;
@@ -50,6 +40,9 @@ import org.eclipse.persistence.queries.ObjectLevelReadQuery;
 import org.kuali.rice.krad.data.jpa.JpaMetadataProviderImpl;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollectionSortAttribute;
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.metadata.MetadataConfigurationException;
 import org.kuali.rice.krad.data.metadata.SortDirection;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeRelationshipImpl;
@@ -57,6 +50,19 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionSortAttributeImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
+import org.kuali.rice.krad.data.metadata.impl.MetadataChildBase;
+
+import javax.persistence.metamodel.Attribute.PersistentAttributeType;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.ManagedType;
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
@@ -77,6 +83,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		if (attr instanceof SingularAttributeImpl) {
 			DatabaseMapping mapping = ((SingularAttributeImpl<?, ?>) attr).getMapping();
 			if (mapping != null && mapping.getField() != null) {
+                attribute.setReadOnly(mapping.isReadOnly());
 				attribute.setBackingObjectName(mapping.getField().getName());
 				if (mapping.getField().getLength() != 0) {
 					attribute.setMaxLength((long) mapping.getField().getLength());
@@ -114,7 +121,6 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 	@Override
 	protected void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
 			PluralAttribute<?, ?, ?> cd) {
-		// TODO Auto-generated method stub
 		// OJB stores the related class object name. We need to go into the repository and grab the table name.
 		Class<?> collectionElementClass = cd.getElementType().getJavaType();
 		EntityType<?> elementEntityType = entityManager.getMetamodel().entity(collectionElementClass);
@@ -132,7 +138,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 
 			if (collectionMapping instanceof OneToManyMapping) {
 				OneToManyMapping otm = (OneToManyMapping) collectionMapping;
-
+                populateInverseRelationship(otm, collection);
 				Map<DatabaseField, DatabaseField> keyMap = otm.getSourceKeysToTargetForeignKeys();
 				List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
 				for (Map.Entry<DatabaseField, DatabaseField> keyRel : keyMap.entrySet()) {
@@ -229,6 +235,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 
 		if (rd instanceof SingularAttributeImpl) {
 			SingularAttributeImpl<?, ?> rel = (SingularAttributeImpl<?, ?>) rd;
+
 			OneToOneMapping relationshipMapping = (OneToOneMapping) rel.getMapping();
 			relationship.setReadOnly(relationshipMapping.isReadOnly());
 			relationship.setSavedWithParent(relationshipMapping.isCascadePersist());
@@ -262,6 +269,8 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			}
 			relationship.setAttributeRelationships(attributeRelationships);
 
+            populateInverseRelationship(relationshipMapping, relationship);
+
 		} else {
 			// get what we can based on JPA values (note that we just set some to have values here)
 			relationship.setReadOnly(persistentAttributeType == PersistentAttributeType.MANY_TO_ONE);
@@ -272,8 +281,78 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		}
 	}
 
+    protected void populateInverseRelationship(DatabaseMapping mapping, MetadataChildBase relationship) {
+        DatabaseMapping relationshipPartner = findRelationshipPartner(mapping);
+        if (relationshipPartner != null) {
+            Class<?> partnerType = relationshipPartner.getDescriptor().getJavaClass();
+            DataObjectMetadata partnerMetadata = masterMetadataMap.get(partnerType);
+            // if the target metadata is not null, it means that entity has already been processed,
+            // so we can go ahead and establish the inverse relationship
+            if (partnerMetadata != null) {
+                // first check if it's a relationship
+                MetadataChildBase relationshipPartnerMetadata =
+                        (MetadataChildBase)partnerMetadata.getRelationship(relationshipPartner.getAttributeName());
+                if (relationshipPartnerMetadata == null) {
+                    relationshipPartnerMetadata =
+                            (MetadataChildBase)partnerMetadata.getCollection(relationshipPartner.getAttributeName());
+                }
+                if (relationshipPartnerMetadata != null) {
+                    relationshipPartnerMetadata.setInverseRelationship(relationship);
+                    relationship.setInverseRelationship(relationshipPartnerMetadata);
+                }
+
+            }
+        }
+    }
+
+    protected DatabaseMapping findRelationshipPartner(DatabaseMapping databaseMapping) {
+        if (databaseMapping instanceof OneToManyMapping) {
+            OneToManyMapping mapping = (OneToManyMapping)databaseMapping;
+            if (mapping.getMappedBy() != null) {
+                Class<?> referenceClass = mapping.getReferenceClass();
+                ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
+                return referenceClassDescriptor.getMappingForAttributeName(mapping.getMappedBy());
+            }
+        } else if (databaseMapping instanceof ManyToOneMapping) {
+            // one odd thing just to note here, for ManyToOne mappings with an inverse OneToMany, for some reason the
+            // getMappedBy method still returns the mappedBy from the OneToMany side, so we can't use nullness of
+            // mappedBy to infer which side of the relationship we are on, oddly enough, that's not the way it works
+            // for OneToOne mappings (see below)...go figure
+            //
+            // I have to assume this is some sort of bug in EclipseLink metadata
+            ManyToOneMapping mapping = (ManyToOneMapping)databaseMapping;
+            Class<?> referenceClass = mapping.getReferenceClass();
+            ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
+            // find the OneToMany mapping which points back to this ManyToOne
+            for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
+                if (referenceMapping instanceof OneToManyMapping) {
+                    OneToManyMapping oneToManyMapping = (OneToManyMapping)referenceMapping;
+                    if (mapping.getAttributeName().equals(oneToManyMapping.getMappedBy())) {
+                        return oneToManyMapping;
+                    }
+                }
+            }
+        } else if (databaseMapping instanceof OneToOneMapping) {
+            OneToOneMapping mapping = (OneToOneMapping)databaseMapping;
+            // well for reasons I can't quite fathom, mappedBy is always null on OneToOne relationships,
+            // thankfully it's OneToOne so it's pretty easy to figure out the inverse
+            ClassDescriptor referenceClassDescriptor = getClassDescriptor(mapping.getReferenceClass());
+            // let's check if theres a OneToOne pointing back to us
+            for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
+                if (referenceMapping instanceof OneToOneMapping) {
+                    OneToOneMapping oneToOneMapping = (OneToOneMapping)referenceMapping;
+                    if (oneToOneMapping.getReferenceClass().equals(mapping.getDescriptor().getJavaClass())) {
+                        return oneToOneMapping;
+                    }
+                }
+            }
+        }
+        // TODO need to implement for bi-directional OneToOne and ManyToMany
+        return null;
+    }
+
 	@Override
-	public void addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
+	public DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
 			Class<?> extensionEntityClass) {
 		ClassDescriptor entityDescriptor = getClassDescriptor(entityClass);
 		ClassDescriptor extensionEntityDescriptor = getClassDescriptor(extensionEntityClass);
@@ -282,36 +361,65 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			LOG.debug("About to attempt to inject a 1:1 relationship on PKs between " + entityDescriptor + " and "
 					+ extensionEntityDescriptor);
 		}
-		// ((EntityTypeImpl<?>)entityType).
-		// TODO: verify that PK fields align
 		OneToOneMapping dm = (OneToOneMapping) entityDescriptor.newOneToOneMapping();
 		dm.setAttributeName(extensionPropertyName);
 		dm.setReferenceClass(extensionEntityClass);
 		dm.setDescriptor(entityDescriptor);
 		dm.setIsPrivateOwned(true);
-		dm.setCascadeRefresh(true);
 		dm.setJoinFetch(ForeignReferenceMapping.OUTER_JOIN);
 		dm.setCascadeAll(true);
 		dm.setIsLazy(false);
-		dm.setIsOptional(false);
 		dm.dontUseIndirection();
 		dm.setIsOneToOneRelationship(true);
-		dm.setIsOneToOnePrimaryKeyRelationship(true);
 		dm.setRequiresTransientWeavedFields(false);
 
-		List<String> extensionPkFields = extensionEntityDescriptor.getPrimaryKeyFieldNames();
-		int index = 0;
-		for (String pkFieldName : entityDescriptor.getPrimaryKeyFieldNames()) {
-			dm.addForeignKeyFieldName(pkFieldName, extensionPkFields.get(index));
-			index++;
-		}
-		dm.preInitialize(getEclipseLinkEntityManager().getDatabaseSession());
+        OneToOneMapping inverse = findExtensionInverse(extensionEntityDescriptor, entityClass);
+        dm.setMappedBy(inverse.getAttributeName());
+        for (DatabaseField sourceField : inverse.getSourceToTargetKeyFields().keySet()) {
+            DatabaseField targetField = inverse.getSourceToTargetKeyFields().get(sourceField);
+            // reverse them, pass the source from the inverse as our target and the target from the inverse as our source
+            dm.addTargetForeignKeyField(sourceField, targetField);
+        }
+
+        dm.preInitialize(getEclipseLinkEntityManager().getDatabaseSession());
 		dm.initialize(getEclipseLinkEntityManager().getDatabaseSession());
 		entityDescriptor.addMapping(dm);
 		entityDescriptor.getObjectBuilder().initialize(getEclipseLinkEntityManager().getDatabaseSession());
+
+        // build the data object relationship
+        ManagedTypeImpl<?> managedType = (ManagedTypeImpl<?>)getEntityManager().getMetamodel().managedType(entityClass);
+        SingularAttributeImpl<?, ?> singularAttribute = new SingularAttributeLocal(managedType, dm);
+        return getRelationshipMetadata(singularAttribute);
 	}
 
-	protected ClassDescriptor getClassDescriptor(Class<?> entityClass) {
+    class SingularAttributeLocal extends SingularAttributeImpl {
+        SingularAttributeLocal(ManagedTypeImpl managedType, DatabaseMapping mapping) {
+            super(managedType, mapping);
+        }
+    }
+
+    protected OneToOneMapping findExtensionInverse(ClassDescriptor extensionEntityDescriptor, Class<?> entityType) {
+        Collection<DatabaseMapping> derivedIdMappings = extensionEntityDescriptor.getDerivesIdMappinps();
+        String extensionInfo = "(" + extensionEntityDescriptor.getJavaClass().getName() + " -> " + entityType.getName()
+                + ")";
+        if (derivedIdMappings == null || derivedIdMappings.isEmpty()) {
+            throw new MetadataConfigurationException("Attempting to use extension framework, but extension "
+                    + extensionInfo + " does not have a valid inverse OneToOne Id mapping back to the extended data "
+                    + "object. Please ensure it is annotated property for use of the extension framework with JPA.");
+        } else if (derivedIdMappings.size() > 1) {
+            throw new MetadataConfigurationException("When attempting to determine the inverse relationship for use "
+                    + "with extension framework " + extensionInfo + " encountered more than one 'derived id' mapping, "
+                    + "there should be only one!");
+        }
+        DatabaseMapping inverseMapping = derivedIdMappings.iterator().next();
+        if (!(inverseMapping instanceof OneToOneMapping)) {
+            throw new MetadataConfigurationException("Identified an inverse derived id mapping for extension "
+                    + "relationship " + extensionInfo + " but it was not a one-to-one mapping: " + inverseMapping);
+        }
+        return (OneToOneMapping)inverseMapping;
+    }
+
+    protected ClassDescriptor getClassDescriptor(Class<?> entityClass) {
 		return getEclipseLinkEntityManager().getDatabaseSession().getDescriptor(entityClass);
 	}
 

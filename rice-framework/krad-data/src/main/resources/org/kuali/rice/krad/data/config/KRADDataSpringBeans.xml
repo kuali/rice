@@ -32,7 +32,8 @@
   <bean id="kd-dataObjectService"
         class="org.kuali.rice.krad.data.provider.impl.ProviderBasedDataObjectService"
         p:providerRegistry-ref="kd-providerRegistry"
-        p:metadataRepository-ref="kd-metadataRepository"/>
+        p:metadataRepository-ref="kd-metadataRepository"
+        p:referenceLinker-ref="kd-referenceLinker"/>
 
   <bean id="kd-providerRegistry"
         class="org.kuali.rice.krad.data.provider.impl.ProviderRegistryImpl"/>
@@ -40,5 +41,9 @@
   <bean id="kd-metadataRepository"
         class="org.kuali.rice.krad.data.metadata.impl.MetadataRepositoryImpl"
         p:providerRegistry-ref="kd-providerRegistry"/>
+
+  <bean id="kd-referenceLinker"
+        class="org.kuali.rice.krad.data.provider.util.ReferenceLinker"
+        p:dataObjectService-ref="kd-dataObjectService"/>
 
 </beans>

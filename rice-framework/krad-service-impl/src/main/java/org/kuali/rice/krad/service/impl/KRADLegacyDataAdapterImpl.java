@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -80,6 +68,18 @@ import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  *
  */
@@ -108,12 +108,12 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public <T> T linkAndSave(T dataObject) {
         // This method is only used from MaintainableImpl
-        return dataObjectService.save(dataObject, PersistenceOption.LINK);
+        return dataObjectService.save(dataObject, PersistenceOption.LINK_KEYS);
     }
 
     @Override
     public <T> T saveDocument(T document) {
-        return dataObjectService.save(document, PersistenceOption.LINK, PersistenceOption.FLUSH);
+        return dataObjectService.save(document, PersistenceOption.LINK_KEYS, PersistenceOption.FLUSH);
     }
 
     @Override

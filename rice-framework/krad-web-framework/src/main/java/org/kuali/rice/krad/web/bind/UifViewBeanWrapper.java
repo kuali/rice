@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
@@ -53,10 +54,13 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     // with the view so the service isn't called again
     private Set<String> processedProperties;
 
-    public UifViewBeanWrapper(ViewModel model) {
+    private final UifBeanPropertyBindingResult bindingResult;
+
+    public UifViewBeanWrapper(ViewModel model, UifBeanPropertyBindingResult bindingResult) {
         super(model);
 
         this.model = model;
+        this.bindingResult = bindingResult;
         this.processedProperties = new HashSet<String>();
     }
 
@@ -215,7 +219,34 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             pv = new PropertyValue(pv, null);
         }
 
+        // save off the original value if we are change tracking
+        boolean originalValueSaved = true;
+        Object originalValue = null;
+        if (bindingResult.isChangeTracking()) {
+            try {
+                originalValue = getPropertyValue(pv.getName());
+            } catch (Exception e) {
+                // be failsafe here, if an exception happens here then we can't make any assumptions about whether
+                // the property value changed or not
+                originalValueSaved = false;
+            }
+        }
+
+        // set the actual property value
         super.setPropertyValue(pv);
+
+        // if we are change tracking and we saved original value, check if it's modified
+        if (bindingResult.isChangeTracking() && originalValueSaved) {
+            try {
+                Object newValue = getPropertyValue(pv.getName());
+                if (ObjectUtils.notEqual(originalValue, newValue)) {
+                    // if they are not equal, it's been modified!
+                    bindingResult.addModifiedPath(pv.getName());
+                }
+            } catch (Exception e) {
+                // failsafe here as well
+            }
+        }
     }
 
     @Override
@@ -228,7 +259,33 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             value = null;
         }
 
+        // save off the original value
+        boolean originalValueSaved = true;
+        Object originalValue = null;
+        try {
+            originalValue = getPropertyValue(propertyName);
+        } catch (Exception e) {
+            // be failsafe here, if an exception happens here then we can't make any assumptions about whether
+            // the property value changed or not
+            originalValueSaved = false;
+        }
+
+        // set the actual property value
         super.setPropertyValue(propertyName, value);
+
+        // only check if it's modified if we were able to save the original value
+        if (originalValueSaved) {
+            try {
+                Object newValue = getPropertyValue(propertyName);
+                if (ObjectUtils.notEqual(originalValue, newValue)) {
+                    // if they are not equal, it's been modified!
+                    bindingResult.addModifiedPath(propertyName);
+                }
+            } catch (Exception e) {
+                // failsafe here as well
+            }
+        }
+
     }
 
     @Override

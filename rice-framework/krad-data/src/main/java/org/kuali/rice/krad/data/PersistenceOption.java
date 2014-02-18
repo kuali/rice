@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 public class PersistenceOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-    public static PersistenceOption LINK = new PersistenceOption("org.kuali.rice.krad.data.LINK");
+    public static PersistenceOption LINK_KEYS = new PersistenceOption("org.kuali.rice.krad.data.LINK_KEYS");
     public static PersistenceOption FLUSH = new PersistenceOption("org.kuali.rice.krad.data.FLUSH");
 
     private final String optionId;

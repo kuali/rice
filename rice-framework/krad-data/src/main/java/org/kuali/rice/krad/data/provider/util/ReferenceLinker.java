@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,277 +15,377 @@
  */
 package org.kuali.rice.krad.data.provider.util;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang.ObjectUtils;
+import com.google.common.collect.Sets;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.link.Link;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
-import org.kuali.rice.krad.data.metadata.MetadataRepository;
+import org.kuali.rice.krad.data.metadata.MetadataChild;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyAccessor;
+import org.springframework.beans.PropertyAccessorUtils;
+import org.springframework.core.annotation.AnnotationUtils;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Links parent-child object references
+ * The ReferenceLinker provides functionality that allows for ensuring that relationships and foreign key state are
+ * populated and kept in sync as changes are made to a data object.
+ *
+ * <p>This may include fetching relationships as keys are changed that would necessitate updating the object graph, and
+ * may also ensure that foreign key values are kept in sync in situations where a data object may have more than one
+ * field or object that stores the same foreign key.</p>
+ *
+ * <p>This class has a single method {@link #linkChanges(Object, java.util.Set)} which takes a data object and a list
+ * of property paths for fields which have been modified. It then uses this information determine how to link up
+ * relationships and foreign key fields, recursing through the object graph as needed.</p>
+ *
+ * <p>Linking occurs from the bottom up, such that this class will attempt to perform a post-order traversal to visit
+ * the modified objects furthest from the root first, and then backtracking and linking back to the root. The linking
+ * algorithm handles circular references as well to ensure that the linking process terminates successfully.</p>
+ *
+ * <p>The ReferenceLinker requires access to the {@link DataObjectService} so it must be injected using the
+ * provided {@link #setDataObjectService(org.kuali.rice.krad.data.DataObjectService)} method.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReferenceLinker {
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ReferenceLinker.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(ReferenceLinker.class);
 
     private DataObjectService dataObjectService;
 
-    public ReferenceLinker(DataObjectService dataObjectService) {
-        this.dataObjectService = dataObjectService;
-    }
-
-    protected DataObjectService getDataObjectService() {
+    /**
+     * Returns the DataObjectService used by this class
+     *
+     * @return the DataObjectService used by this class
+     */
+    public DataObjectService getDataObjectService() {
         return dataObjectService;
     }
 
-    protected MetadataRepository getMetadataRepository() {
-        return getDataObjectService().getMetadataRepository();
+    /**
+     * Specify the DataObjectService to be used during linking.
+     *
+     * <p>The linker will use the DataObjectService to fetch relationships and query metadata.</p>
+     *
+     * @param dataObjectService the DataObjectService to inject
+     */
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**
-     * For each reference object to the parent persistableObject, sets the key
-     * values for that object. First, if the reference object already has a
-     * value for the key, the value is left unchanged. Otherwise, for
-     * non-anonymous keys, the value is taken from the parent object. For
-     * anonymous keys, all other persistableObjects are checked until a value
-     * for the key is found.
+     * Performs linking of references and keys for the given root object based on the given set of changed property
+     * paths that should be considered during the linking process.
+     *
+     * <p>The root object should be non-null and also a valid data object (such that
+     * {@link DataObjectService#supports(Class)} returns true for it). If neither of these conditions is true, this
+     * method will return immediately.</p>
+     *
+     * <p>See class-level documentation for specifics on how the linking algorithm functions.</p>
+     *
+     * @param rootObject the root object from which to perform the linking
+     * @param changedPropertyPaths the set of property paths relative to the root object that should be considered
+     * modified by the linking algorithm
      */
-    public void linkObjects(Object persistableObject) {
-        linkObjectsWithCircularReferenceCheck(persistableObject, new HashSet<Object>());
+    public void linkChanges(Object rootObject, Set<String> changedPropertyPaths) {
+        if (rootObject == null || CollectionUtils.isEmpty(changedPropertyPaths)) {
+            return;
+        }
+        Class<?> type = rootObject.getClass();
+        if (!dataObjectService.supports(type)) {
+            LOG.info("Object supplied for linking is not a supported data object type: " + type);
+            return;
+        }
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Performing linking on instance of " + type + " with the following changed property paths: " +
+                    Arrays.toString(changedPropertyPaths.toArray()));
+        }
+        Map<String, Set<String>> decomposedPaths = decomposePropertyPaths(changedPropertyPaths);
+        linkChangesInternal(rootObject, decomposedPaths, new HashSet<Object>());
     }
 
-    protected void linkObjectsWithCircularReferenceCheck(Object persistableObject, Set<Object> referenceSet) {
-        if (persistableObject == null || referenceSet.contains(persistableObject)) {
+    /**
+     * Internal implementation of link changes which is implemented to support recursion through the object graph.
+     *
+     * @param object the object from which to link
+     * @param changedPropertyPaths a decomposed property path map where the key of the map is a direct property path
+     * relative to the given object and the values are the remainder of the path relative to the parent path, see
+     * {@link #decomposePropertyPaths(java.util.Set)}
+     * @param linked a set containing objects which have already been linked, used to prevent infinite recursion due to
+     * circular references
+     */
+    protected void linkChangesInternal(Object object, Map<String, Set<String>> changedPropertyPaths,
+            Set<Object> linked) {
+        if (object == null || linked.contains(object) || !dataObjectService.supports(object.getClass()) ||
+                changedPropertyPaths.isEmpty()) {
             return;
         }
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Attempting to link reference objects on " + persistableObject);
-		}
-        referenceSet.add(persistableObject);
-        DataObjectMetadata metadata = getMetadataRepository().getMetadata(persistableObject.getClass());
+        linked.add(object);
+        DataObjectWrapper<?> wrapped = dataObjectService.wrap(object);
 
-        if (metadata == null) {
-            LOG.warn("Unable to find metadata for "
-                    + persistableObject.getClass()
-                    + " when linking references, skipping");
-            return;
-        }
+        // execute the linking
+        linkRelationshipChanges(wrapped, changedPropertyPaths, linked);
+        linkCollectionChanges(wrapped, changedPropertyPaths, linked);
+        cascadeLinkingAnnotations(wrapped, changedPropertyPaths, linked);
+    }
 
-		linkRelationships(metadata, persistableObject, referenceSet);
-		linkCollections(metadata, persistableObject, referenceSet);
-	}
+    /**
+     * Link changes for relationships on the given wrapped data object.
+     *
+     * @param wrapped the wrapped data object
+     * @param decomposedPaths the decomposed map of changed property paths
+     * @param linked a set containing objects which have already been linked
+     */
+    protected void linkRelationshipChanges(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
+            Set<Object> linked) {
+        List<DataObjectRelationship> relationships = wrapped.getMetadata().getRelationships();
+        for (DataObjectRelationship relationship : relationships) {
+            String relationshipName = relationship.getName();
 
-	protected void linkRelationships(DataObjectMetadata metadata, Object persistableObject, Set<Object> referenceSet) {
-        // iterate through all object references for the persistableObject
-        List<DataObjectRelationship> objectReferences = metadata.getRelationships();
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Obtained relationships for linking: " + objectReferences);
-		}
-		DataObjectWrapper<?> parentWrap = getDataObjectService().wrap(persistableObject);
-        for (DataObjectRelationship referenceDescriptor : objectReferences) {
-            // get the actual reference object
-            String fieldName = referenceDescriptor.getName();
-			Object childObject = parentWrap.getPropertyValue(fieldName);
-			boolean updatableRelationship = referenceDescriptor.isSavedWithParent();
-			if (childObject == null) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Referenced object for field " + fieldName + " is null, skipping");
-				}
-				continue;
-			}
-
-            // recursively link object
-			linkObjectsWithCircularReferenceCheck(childObject, referenceSet);
-
-            // iterate through the keys for the reference object and set
-            // value
-			List<DataObjectAttributeRelationship> refAttrs = referenceDescriptor.getAttributeRelationships();
-            DataObjectMetadata refCld = getMetadataRepository().getMetadata(referenceDescriptor.getRelatedType());
-            if (refCld == null) {
-                LOG.warn("No metadata found in repository for referenced object: " + referenceDescriptor);
-                continue;
+            // let's get the current value and recurse down if it's a relationship that is cascaded on save
+            if (relationship.isSavedWithParent() && decomposedPaths.containsKey(relationshipName)) {
+                Object value = wrapped.getPropertyValue(relationshipName);
+                Map<String, Set<String>> nextPropertyPaths =
+                        decomposePropertyPaths(decomposedPaths.get(relationshipName));
+                linkChangesInternal(value, nextPropertyPaths, linked);
             }
-			// List<String> refPkNames = refCld.getPrimaryKeyAttributeNames();
 
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Linking Referenced fields with parent's FK fields:" + "\n***Refs: " + refAttrs);
-			}
-
-			// Two cases: Updatable Reference (owned child object) or non-updatable (reference data)
-			// In the former case, we always want to push our keys down into the child, since that
-			// is what will maintain the relationship.
-			// In the latter: We assume that the parent object's key fields are correct, only
-			// setting them from the embedded object *IF* they are null.
-			// (Since we can't effectively tell which one is the master.)
-
-			// Go through all the attribute relationships to copy the key fields as appropriate
-			DataObjectWrapper<?> childWrap = getDataObjectService().wrap(childObject);
-			if (updatableRelationship) {
-				linkUpdatableChild(parentWrap, childWrap, referenceDescriptor.getName(), refAttrs);
-			} else { // non-updatable (reference-only) relationship
-				linkNonUpdatableChild(parentWrap, childWrap, referenceDescriptor.getName(), refAttrs);
-			}
-		}
-	}
-
-	/**
-	 * Attempt to ensure that, for an updatable reference object that the FK fields and the reference object remain
-	 * consistent.
-	 * 
-	 * <ol>
-	 * <li>If the referenced key on the child object is not set and the matching key on the parent is set, set the key
-	 * field on the child object.</li>
-	 * <li></li>
-	 * </ol>
-	 * 
-	 * @param parentWrap
-	 * @param childWrap
-	 * @param refAttrs
-	 */
-	protected void linkUpdatableChild(DataObjectWrapper<?> parentWrap, DataObjectWrapper<?> childWrap,
-			String childObjectPropertyName, List<DataObjectAttributeRelationship> refAttrs) {
-		DataObjectMetadata referenceMetadata = childWrap.getMetadata();
-		List<String> childPkAttributes = referenceMetadata.getPrimaryKeyAttributeNames();
-		List<String> parentPkAttributes = parentWrap.getMetadata().getPrimaryKeyAttributeNames();
-		for (DataObjectAttributeRelationship attrRel : refAttrs) {
-			Object parentPropertyValue = parentWrap.getPropertyValue(attrRel.getParentAttributeName());
-			Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
-
-			// if fk is set in main object, take value from there
-			if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
-				// if the child's value is a PK field then we don't want to set it
-				// *unless* it's null, which we assume is an invalid situation
-				// and indicates that it has not been set yet
-				if (childPkAttributes.contains(attrRel.getChildAttributeName()) && childPropertyValue != null
-						&& StringUtils.isNotBlank(childPropertyValue.toString())) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Relationship is to PK value on updatable child object - it may not be changed.  Skipping: "
-								+ childWrap.getWrappedClass().getName() + "." + attrRel.getChildAttributeName());
-					}
-					continue;
-				}
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Parent Object Of Updateable Child has FK value set (" + attrRel.getParentAttributeName()
-							+ "="
-							+ parentPropertyValue + "): using that");
-				}
-				childWrap.setPropertyValue(attrRel.getChildAttributeName(), parentPropertyValue);
-			} else {
-				// The key field on the parent is blank, and so can not link to a child object
-				// Blank out the child reference object.
-				// parentWrap.setPropertyValue(childObjectPropertyName, null);
-
-				// The FK field on the parent is blank,
-				// but the child has key values - so set the parent so they link properly
-				if (childPropertyValue != null && StringUtils.isNotBlank(childPropertyValue.toString())) {
-					if (parentPkAttributes.contains(attrRel.getParentAttributeName())) {
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Relationship is to PK value on parent object - it may not be changed.  Skipping: "
-									+ parentWrap.getWrappedClass().getName() + "." + attrRel.getParentAttributeName());
-						}
-						continue;
-					}
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Updatable Child Object has FK value set (" + attrRel.getChildAttributeName() + "="
-								+ childPropertyValue + "): using that");
-					}
-					parentWrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
-				}
-			}
-		}
-	}
-
-	protected void linkNonUpdatableChild(DataObjectWrapper<?> parentWrap, DataObjectWrapper<?> childWrap,
-			String childObjectPropertyName, List<DataObjectAttributeRelationship> refAttrs) {
-		for (DataObjectAttributeRelationship attrRel : refAttrs) {
-			Object parentPropertyValue = parentWrap.getPropertyValueNullSafe(attrRel.getParentAttributeName());
-			Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
-			// if (parentPropertyValue != null && StringUtils.isNotBlank(parentPropertyValue.toString())) {
-			// // Skip this property, it has already been set on the parent object
-			// continue;
-			// }
-			if (ObjectUtils.notEqual(parentPropertyValue, childPropertyValue)) {
-				parentWrap.setPropertyValue(childObjectPropertyName, null);
-				break;
-				// we have nothing else to do - one of the parent properties
-				// was blank (or mismatched) so we can quit
-			}
-
-			// The key field on the parent is blank, and so can not link to a child object
-			// Blank out the child reference object.
-
-
-			// Object childPropertyValue = childWrap.getPropertyValueNullSafe(attrRel.getChildAttributeName());
-			// // don't bother setting parent if it's not set itself
-			// if (childPropertyValue == null || StringUtils.isBlank(childPropertyValue.toString())) {
-			// continue;
-			// }
-			// if (LOG.isDebugEnabled()) {
-			// LOG.debug("Non-Updatable Child Object has FK value set (" + attrRel.getChildAttributeName() + "="
-			// + childPropertyValue + "): using that");
-			// }
-			// parentWrap.setPropertyValue(attrRel.getParentAttributeName(), childPropertyValue);
-		}
-	}
-
-	protected void linkCollections(DataObjectMetadata metadata, Object persistableObject, Set<Object> referenceSet) {
-		List<DataObjectCollection> collections = metadata.getCollections();
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Obtained collections for linking: " + collections);
+            // once we have linked from the bottom up,
+            // let's check if any FK attribute modifications have occurred for this relationship
+            List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
+            boolean modifiedAttributeRelationship = false;
+            for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
+                if (decomposedPaths.containsKey(attributeRelationship.getParentAttributeName())) {
+                    modifiedAttributeRelationship = true;
+                    break;
+                }
+            }
+            if (modifiedAttributeRelationship) {
+                // use FK attributes and nullify dangling relationship
+                wrapped.fetchRelationship(relationshipName, true, true);
+            } else if (decomposedPaths.containsKey(relationshipName)) {
+                // check if any portion of the primary key has been modified
+                Class<?> targetType = relationship.getRelatedType();
+                DataObjectMetadata targetMetadata =
+                        dataObjectService.getMetadataRepository().getMetadata(targetType);
+                Set<String> modifiedPropertyPaths = decomposedPaths.get(relationshipName);
+                if (isPrimaryKeyModified(targetMetadata, modifiedPropertyPaths)) {
+                    // if the primary key is modified, fetch and replace the related object
+                    // this will also copy FK values back to the parent object if it has FK values
+                    wrapped.fetchRelationship(relationshipName, false, false);
+                } else {
+                    // otherwise, we still want to backward copy keys on the relationship, since this relationship has
+                    // been explicity included in the set of changes, we pass false for onlyLinkReadyOnly because we
+                    // don't care if the FK field is read only or not, we want to copy back the value regardless
+                    wrapped.linkForeignKeys(relationshipName, false);
+                }
+            }
         }
+    }
 
-		for (DataObjectCollection collectionMetadata : collections) {
-			// We only process collections if they are being saved with the parent
-			if (!collectionMetadata.isSavedWithParent()) {
-				continue;
-			}
-			// get the actual reference object
-			String fieldName = collectionMetadata.getName();
-			DataObjectWrapper<?> parentObjectWrapper = getDataObjectService().wrap(persistableObject);
-			Collection<?> collection = (Collection<?>) parentObjectWrapper.getPropertyValue(fieldName);
-			if (collection == null) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Referenced collection for field " + fieldName + " is null, skipping");
-				}
-				continue;
-			} else if (referenceSet.contains(collection)) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("We've previously linked the object assigned to " + fieldName + ", skipping");
-				}
-				continue;
-			}
-			List<DataObjectAttributeRelationship> collectionAttributeRelationships = collectionMetadata
-					.getAttributeRelationships();
-
-			// Need to iterate through the collection, setting FK values as needed and telling each child object to link
-			// itself
-			for (Object collectionItem : collection) {
-				// recursively link object
-				linkObjectsWithCircularReferenceCheck(collectionItem, referenceSet);
-
-				DataObjectWrapper<Object> collItemWrapper = getDataObjectService().wrap(collectionItem);
-				// Now - go through the keys relating the parent object to each child and set them so that they are
-				// linked properly
-				// This will also reset them to the parent's values in case they were changed.
-				// If this updates the PK fields of the collection objects, then the user is doing
-				// something they shouldn't (swapping Collection items between parent data objects)
-				// And it will blow up with an JPA exception anyway.
-				for (DataObjectAttributeRelationship rel : collectionAttributeRelationships) {
-                    if(rel.getChildAttributeName() != null && rel.getParentAttributeName() != null){
-					    collItemWrapper.setPropertyValue(rel.getChildAttributeName(),
-							parentObjectWrapper.getPropertyValueNullSafe(rel.getParentAttributeName()));
+    /**
+     * Link changes for collections on the given wrapped data object.
+     *
+     * @param wrapped the wrapped data object
+     * @param decomposedPaths the decomposed map of changed property paths
+     * @param linked a set containing objects which have already been linked
+     */
+    protected void linkCollectionChanges(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
+            Set<Object> linked) {
+        List<DataObjectCollection> collections = wrapped.getMetadata().getCollections();
+        for (DataObjectCollection collectionMetadata : collections) {
+            // We only process collections if they are being saved with the parent
+            if (collectionMetadata.isSavedWithParent()) {
+                Set<Integer> modifiedIndicies = extractModifiedIndicies(collectionMetadata, decomposedPaths);
+                if (!modifiedIndicies.isEmpty()) {
+                    Object collectionValue = wrapped.getPropertyValue(collectionMetadata.getName());
+                    if (collectionValue instanceof Iterable<?>) {
+                        int index = 0;
+                        // loop over all elements in the collection
+                        for (Object element : (Iterable<?>)collectionValue) {
+                            // check if index is modified, or we use MAX_VALUE to indicate a modification to the
+                            // collection itself
+                            if (modifiedIndicies.contains(Integer.valueOf(Integer.MAX_VALUE)) ||
+                                    modifiedIndicies.contains(Integer.valueOf(index))) {
+                                // recurse down and link the collection element
+                                String pathKey = collectionMetadata.getName() + "[" + index + "]";
+                                if (decomposedPaths.containsKey(pathKey)) {
+                                    Map<String, Set<String>> nextPropertyPaths =
+                                            decomposePropertyPaths(decomposedPaths.get(pathKey));
+                                    linkChangesInternal(element, nextPropertyPaths, linked);
+                                }
+                                if (dataObjectService.supports(element.getClass())) {
+                                    DataObjectWrapper<?> elementWrapper = dataObjectService.wrap(element);
+                                    linkBiDirectionalCollection(wrapped, elementWrapper, collectionMetadata);
+                                }
+                            }
+                            index++;
+                        }
                     }
-				}
-			}
-		}
+                }
+            }
+        }
+    }
+
+    /**
+     * Performs bi-directional collection linking, ensuring that for bi-directional collection relationships that both
+     * sides of the relationship are properly populated.
+     */
+    protected void linkBiDirectionalCollection(DataObjectWrapper<?> parentWrapper,
+            DataObjectWrapper<?> elementWrapper, DataObjectCollection collectionMetadata) {
+        MetadataChild inverseRelationship = collectionMetadata.getInverseRelationship();
+        if (inverseRelationship != null) {
+            // if there is an inverse relationship, make sure the element is the collection is pointing back to it's parent
+            elementWrapper.setPropertyValue(inverseRelationship.getName(), parentWrapper.getWrappedInstance());
+            // if there is a foreign key value to link, then link it, not that we pass false here, since we just set
+            // our reference to the relationship, we know that we want to copy the key back
+            elementWrapper.linkForeignKeys(inverseRelationship.getName(), false);
+        }
+    }
+
+    /**
+     * Returns a set of indexes which have been modified in the given collection. If the returned set contains
+     * {@link java.lang.Integer#MAX_VALUE} then it means that it should be treated as if all items in the collection
+     * have been modified.
+     */
+    private Set<Integer> extractModifiedIndicies(DataObjectCollection collectionMetadata,
+            Map<String, Set<String>> decomposedPaths) {
+        String relationshipName = collectionMetadata.getName();
+        Set<Integer> modifiedIndicies = Sets.newHashSet();
+        // if it contains *exactly* the collection relationship name, then indicate that all items modified
+        if (decomposedPaths.containsKey(relationshipName)) {
+            modifiedIndicies.add(Integer.valueOf(Integer.MAX_VALUE));
+        }
+        for (String propertyName : decomposedPaths.keySet()) {
+            if (relationshipName.equals(PropertyAccessorUtils.getPropertyName(relationshipName))) {
+                Integer index = extractIndex(propertyName);
+                if (index != null) {
+                    modifiedIndicies.add(index);
+                }
+            }
+        }
+        return modifiedIndicies;
+    }
+
+    private Integer extractIndex(String propertyName) {
+        int firstIndex = propertyName.indexOf(PropertyAccessor.PROPERTY_KEY_PREFIX_CHAR);
+        int lastIndex = propertyName.lastIndexOf(PropertyAccessor.PROPERTY_KEY_SUFFIX_CHAR);
+        if (firstIndex != -1 && lastIndex != -1) {
+            String indexValue = propertyName.substring(firstIndex + 1, lastIndex);
+            try {
+                int index = Integer.parseInt(indexValue);
+                return Integer.valueOf(index);
+            } catch (NumberFormatException e) {
+                // if we encounter this then it wasn't really an index, ignore
+            }
+        }
+        return null;
+    }
+
+    protected boolean isPrimaryKeyModified(DataObjectMetadata metadata, Set<String> modifiedPropertyPaths) {
+        Set<String> primaryKeyAttributeNames = new HashSet<String>(metadata.getPrimaryKeyAttributeNames());
+        for (String modifiedPropertyPath : modifiedPropertyPaths) {
+            if (primaryKeyAttributeNames.contains(modifiedPropertyPath)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void cascadeLinkingAnnotations(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
+            Set<Object> linked) {
+        Field[] fields = FieldUtils.getAllFields(wrapped.getWrappedClass());
+        Map<String, Field> modifiedFieldMap = new HashMap<String, Field>();
+        for (Field field : fields) {
+            if (decomposedPaths.containsKey(field.getName())) {
+                modifiedFieldMap.put(field.getName(), field);
+            }
+        }
+        for (String modifiedFieldName : modifiedFieldMap.keySet()) {
+            Field modifiedField = modifiedFieldMap.get(modifiedFieldName);
+            Link link = modifiedField.getAnnotation(Link.class);
+            if (link == null) {
+                // check if they have an @Link on the class itself
+                link = AnnotationUtils.findAnnotation(modifiedField.getType(), Link.class);
+            }
+            if (link != null && link.cascade()) {
+                List<String> linkingPaths = assembleLinkingPaths(link);
+                for (String linkingPath : linkingPaths) {
+                    Map<String, Set<String>> decomposedLinkingPath =
+                            decomposePropertyPaths(decomposedPaths.get(modifiedFieldName), linkingPath);
+                    String valuePath = modifiedFieldName;
+                    if (StringUtils.isNotBlank(linkingPath)) {
+                        valuePath = valuePath + "." + link.path();
+                    }
+                    Object linkRootObject = wrapped.getPropertyValueNullSafe(valuePath);
+                    linkChangesInternal(linkRootObject, decomposedLinkingPath, linked);
+                }
+            }
+        }
+    }
+
+    protected List<String> assembleLinkingPaths(Link link) {
+        List<String> linkingPaths = new ArrayList<String>();
+        if (ArrayUtils.isEmpty(link.path())) {
+            linkingPaths.add("");
+        } else {
+            for (String path : link.path()) {
+                linkingPaths.add(path);
+            }
+        }
+        return linkingPaths;
+    }
+
+    protected Map<String, Set<String>> decomposePropertyPaths(Set<String> changedPropertyPaths) {
+        return decomposePropertyPaths(changedPropertyPaths, "");
+    }
+
+    protected Map<String, Set<String>> decomposePropertyPaths(Set<String> changedPropertyPaths, String prefix) {
+        // strip the prefix off any changed properties
+        Set<String> processedProperties = new HashSet<String>();
+        if (StringUtils.isNotBlank(prefix) && changedPropertyPaths != null) {
+            for (String changedPropertyPath : changedPropertyPaths) {
+                if (changedPropertyPath.startsWith(prefix)) {
+                    processedProperties.add(changedPropertyPath.substring(prefix.length() + 1));
+                }
+            }
+        } else {
+            processedProperties = changedPropertyPaths;
+        }
+        Map<String, Set<String>> decomposedPropertyPaths = new HashMap<String, Set<String>>();
+        for (String changedPropertyPath : processedProperties) {
+            int index = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(changedPropertyPath);
+            if (index == -1) {
+                decomposedPropertyPaths.put(changedPropertyPath, new HashSet<String>());
+            } else {
+                String pathEntry = changedPropertyPath.substring(0, index);
+                Set<String> remainingPaths = decomposedPropertyPaths.get(pathEntry);
+                if (remainingPaths == null) {
+                    remainingPaths = new HashSet<String>();
+                    decomposedPropertyPaths.put(pathEntry, remainingPaths);
+                }
+                String remainingPath = changedPropertyPath.substring(index + 1);
+                remainingPaths.add(remainingPath);
+            }
+        }
+        return decomposedPropertyPaths;
     }
 
 }

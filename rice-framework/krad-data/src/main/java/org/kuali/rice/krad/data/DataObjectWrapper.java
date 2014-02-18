@@ -22,6 +22,7 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Wraps a data object and it's associated metadata. Provides additional utility methods to access portions of the data
@@ -185,6 +186,50 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
     Class<?> getPropertyTypeNullSafe(Class<?> objectType, String propertyName);
 
     /**
+     * Executes reference linking using the wrapped object as the root and the set of changed paths.
+     *
+     * <p>Executes reference linker as per the algorithm described on
+     * {@link org.kuali.rice.krad.data.provider.util.ReferenceLinker}</p>
+     *
+     * @param changedPropertyPaths the Set of changed property paths relative to the wrapped object
+     *
+     * @see org.kuali.rice.krad.data.provider.util.ReferenceLinker#linkChanges(Object, java.util.Set)
+     */
+    void linkChanges(Set<String> changedPropertyPaths);
+
+    /**
+     * Links foreign key values on the wrapped data object and then recurses through all child relationships and
+     * collections which are cascaded during persistence and does the same.
+     *
+     * <p>In this context, linking of foreign key values means that on data objects that have both a field (or fields)
+     * that represent a foreign key to a relationship as well as an actual reference object for that relationship, if
+     * that foreign key field(s) is read only, then it will copy the value of the primary key(s) on the reference object
+     * to the associated foreign key field(s).</p>
+     *
+     * <p>If onlyLinkReadOnly is true, this method will only link values into foreign keys that are "read-only"
+     * according to the metadata of the data object. This is to avoid situations where the foreign key field itself is
+     * the "master" value for the key. In those situations you do not want a read-only reference object to obliterate
+     * or corrupt the master key.</p>
+     *
+     * @param onlyLinkReadOnly indicates whether or not only read-only foreign keys should be linked
+     */
+    void linkForeignKeys(boolean onlyLinkReadOnly);
+
+    /**
+     * Links foreign keys non-recursively using the relationship with the given name on the wrapped data object.
+     *
+     * <p>If onlyLinkReadOnly is true then it will only perform linking for foreign key fields that are "read-only"
+     * according to the metadata for the data object. This is to avoid situations where the foreign key field itself is
+     * the "master" value for the key. In those situations you do not want a read-only reference object to obliterate
+     * or corrupt the master key.</p>
+     *
+     * @param relationshipName the name of the relationship on the wrapped data object for which to link foreign keys,
+     * must not be a nested path
+     * @param onlyLinkReadOnly indicates whether or not only read-only foreign keys should be linked
+     */
+    void linkForeignKeys(String relationshipName, boolean onlyLinkReadOnly);
+
+    /**
      * Fetches and populates the value for the relationship with the given name on the wrapped data object.
      *
      * <p>This is done by identifying the current foreign key attribute value for the relationship using the algorithm
@@ -194,11 +239,40 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
      * <p>If the foreign key value is null or the loading of the related object using the foreign key returns a null
      * value, this method will set the relationship value to null.</p>
      *
+     * <p>This method is equivalent to invoking {@link #fetchRelationship(String, boolean, boolean)} passing "true" for
+     * both {@code useForeignKeyAttribute} and {@code nullifyDanglingRelationship}.</p>
+     *
      * @param relationshipName the name of the relationship on the wrapped data object to refresh
+     *
      * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
      * data object
      * @throws DataAccessException if there is a data access problem when attempting to refresh the relationship
      */
     void fetchRelationship(String relationshipName);
+
+    /**
+     * Fetches and populates the value for the relationship with the given name on the wrapped object.
+     *
+     * <p>The value of {@code useForeignKeyAttribute} will be used to determine whether the foreign key attribute is
+     * used to fetch the relationship (if this parameter is "true"), or whether the primary key on the related object
+     * itself will be used (if it is false). In the case that the primary key is used, once the relationship has been
+     * fetched, the foreign key field value (if one exists) will also be updated to remain in sync with the
+     * reference object.</p>
+     *
+     * <p>If no related object is found when attempting to fetch by the key values, then the behavior of this method
+     * will depend upon the value passed for {@code nullifyDanglingRelationship}. If false, this method will not modify
+     * the wrapped object. If true, then the related object will be set to null.</p>
+     *
+     * @param relationshipName the name of the relationship on the wrapped data object to refresh
+     * @param useForeignKeyAttribute if true, use the foreign key attribute to fetch the relationship, otherwise use the
+     * primary key value on the related object
+     * @param nullifyDanglingRelationship if true and no relationship value is found for the given key then set the
+     * related object to null, otherwise leave the existing object state alone
+     *
+     * @throws IllegalArgumentException if the given relationshipName does not represent a valid relationship for this
+     * data object
+     * @throws DataAccessException if there is a data access problem when attempting to refresh the relationship
+     */
+    void fetchRelationship(String relationshipName, boolean useForeignKeyAttribute, boolean nullifyDanglingRelationship);
 
 }

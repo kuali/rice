@@ -33,11 +33,12 @@ import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
  * Adapter that supports "legacy" KNS/KRAD persistence, metadata, and object utility frameworks via runtime
  * argument inspection
  *
- * deprecated This class is deprecated by default, applications should *never*
+ * @deprecated This class is deprecated by default, applications should *never*
  * use this adapter directly
  *
  * @author Kuali Rice Team (rice.collab@kuali.org).
  */
+@Deprecated
 public interface LegacyDataAdapter {
 
     // BusinessObjectService

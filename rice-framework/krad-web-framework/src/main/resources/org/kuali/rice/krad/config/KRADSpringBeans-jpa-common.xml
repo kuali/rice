@@ -82,8 +82,7 @@
 
 	<bean
 		id="metadataProviderAnnotation"
-		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-		p:jpaMetadataProvider-ref="metadataProviderJpa" />
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
 	<util:list id="springMetadataParentBeanFiles">
 		<value>classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</value>

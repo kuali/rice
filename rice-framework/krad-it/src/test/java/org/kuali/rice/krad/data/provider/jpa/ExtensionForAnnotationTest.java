@@ -35,7 +35,7 @@ public class ExtensionForAnnotationTest extends KRADTestCase {
         dataObject.setStringProperty("aString");
 
         TestDataObjectExtension extension = new TestDataObjectExtension();
-        extension.setPrimaryKeyProperty(key);
+        extension.setPrimaryKeyProperty(dataObject);
         extension.setExtensionProperty("extraData");
         dataObject.setExtension(extension);
 

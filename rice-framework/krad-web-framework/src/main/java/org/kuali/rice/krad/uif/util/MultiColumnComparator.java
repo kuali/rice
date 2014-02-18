@@ -391,7 +391,7 @@ public class MultiColumnComparator implements Comparator<Integer> {
      * @return a List of prototype Fields representing a row in the table
      */
     protected List<Field> buildPrototypeRow() {
-        LineBuilderContext lineBuilderContext = new LineBuilderContext(0, modelCollection.get(0), null, form,
+        LineBuilderContext lineBuilderContext = new LineBuilderContext(0, modelCollection.get(0), null, false, form,
                 collectionGroup, collectionGroup.getLineActions());
 
         CollectionGroupLineBuilder collectionGroupLineBuilder =

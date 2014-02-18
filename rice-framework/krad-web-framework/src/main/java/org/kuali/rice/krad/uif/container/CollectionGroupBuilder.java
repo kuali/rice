@@ -210,7 +210,7 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup, currentLine, indexedElement.index);
 
             LineBuilderContext lineBuilderContext = new LineBuilderContext(indexedElement.index, currentLine,
-                    bindingPathPrefix, (ViewModel) model, collectionGroup, lineActions);
+                    bindingPathPrefix, false, (ViewModel) model, collectionGroup, lineActions);
 
             getCollectionGroupLineBuilder(lineBuilderContext).buildLine();
         }
@@ -272,7 +272,12 @@ public class CollectionGroupBuilder implements Serializable {
 
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingPath);
 
-        LineBuilderContext lineBuilderContext = new LineBuilderContext(-1, addLine, addLineBindingPath,
+        boolean bindToForm = false;
+        if (StringUtils.isBlank(collectionGroup.getAddLinePropertyName())) {
+            bindToForm = true;
+        }
+
+        LineBuilderContext lineBuilderContext = new LineBuilderContext(-1, addLine, addLineBindingPath, bindToForm,
                 (ViewModel) model, collectionGroup, actionComponents);
 
         getCollectionGroupLineBuilder(lineBuilderContext).buildLine();

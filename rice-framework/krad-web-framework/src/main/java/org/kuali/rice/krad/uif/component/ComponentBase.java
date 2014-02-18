@@ -2289,7 +2289,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     @Override
     public String getScriptDataAttributesJs() {
-
         String script = "";
 
         if (getScriptDataAttributes() == null || getScriptDataAttributes().isEmpty()) {

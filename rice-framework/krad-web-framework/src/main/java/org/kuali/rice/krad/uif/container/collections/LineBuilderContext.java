@@ -40,6 +40,7 @@ public class LineBuilderContext implements Serializable {
     private int lineIndex;
     private Object currentLine;
     private String bindingPath;
+    private boolean bindToForm;
 
     private ViewModel model;
     private CollectionGroup collectionGroup;
@@ -61,15 +62,17 @@ public class LineBuilderContext implements Serializable {
      * @param lineIndex index of line
      * @param currentLine object containing the line data
      * @param bindingPath path to the line in the model
+     * @param bindToForm indicates if the line fields bind to the form (not the default object path)
      * @param model object containing the views data
      * @param collectionGroup collection group instance the line is being built for
      * @param lineActions list of components for the lines action column
      */
-    public LineBuilderContext(int lineIndex, Object currentLine, String bindingPath, ViewModel model,
+    public LineBuilderContext(int lineIndex, Object currentLine, String bindingPath, boolean bindToForm, ViewModel model,
             CollectionGroup collectionGroup, List<? extends Component> lineActions) {
         this.lineIndex = lineIndex;
         this.currentLine = currentLine;
         this.bindingPath = bindingPath;
+        this.bindToForm = bindToForm;
         this.model = model;
         this.collectionGroup = collectionGroup;
         this.lineActions = lineActions;
@@ -165,6 +168,22 @@ public class LineBuilderContext implements Serializable {
      */
     public void setBindingPath(String bindingPath) {
         this.bindingPath = bindingPath;
+    }
+
+    /**
+     * Indicates if the line fields bind to the form (not the default object path).
+     *
+     * @return boolean true if line fields bindi to the form, false if not
+     */
+    public boolean isBindToForm() {
+        return bindToForm;
+    }
+
+    /**
+     * @see LineBuilderContext#isBindToForm()
+     */
+    public void setBindToForm(boolean bindToForm) {
+        this.bindToForm = bindToForm;
     }
 
     /**

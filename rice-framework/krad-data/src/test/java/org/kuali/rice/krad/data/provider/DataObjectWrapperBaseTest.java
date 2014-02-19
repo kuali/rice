@@ -29,7 +29,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.NullValueInNestedPathException;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -37,7 +39,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AccessorBaseTest {
+public class DataObjectWrapperBaseTest {
 
     @Mock private DataObjectService dataObjectService;
     @Mock private DataObjectMetadata metadata;
@@ -147,6 +149,31 @@ public class AccessorBaseTest {
 
     }
 
+    @Test
+    public void testGetPropertyType_Collection() {
+        // setup stuff
+        DataObject dataObject = new DataObject("a", "b", 3);
+        DataObject3 do3_1 = new DataObject3();
+        do3_1.setHello("hi");
+        do3_1.setWorld("Earth");
+        DataObject3 do3_2 = new DataObject3();
+        do3_2.setHello("howdy");
+        do3_2.setWorld("Westeros");
+        dataObject.getDataObject3s().add(do3_1);
+        dataObject.getDataObject3s().add(do3_2);
+
+        // now check through a collection
+        DataObjectWrapper<DataObject> wrap = new DataObjectWrapperImpl<DataObject>(dataObject, metadata, dataObjectService,
+                referenceLinker);
+        Class<?> type = wrap.getPropertyType("dataObject3s[0].hello");
+        assertEquals(String.class, type);
+        type = wrap.getPropertyType("dataObject3s[1].world");
+        assertEquals(String.class, type);
+        type = wrap.getPropertyType("dataObject3s[2].world");
+        // should be null because we have nothing at this index
+        assertNull(type);
+    }
+
 
     public static final class DataObject {
 
@@ -155,11 +182,14 @@ public class AccessorBaseTest {
         private Integer fieldTwo;
         private DataObject2 dataObject2;
 
+        private List<DataObject3> dataObject3s;
+
         DataObject(String id, String fieldOne, Integer fieldTwo) {
             this.id = id;
             this.fieldOne = fieldOne;
             this.fieldTwo = fieldTwo;
             this.dataObject2 = dataObject2;
+            this.dataObject3s = new ArrayList<DataObject3>();
         }
 
         public String getId() {
@@ -193,6 +223,15 @@ public class AccessorBaseTest {
         public void setDataObject2(DataObject2 dataObject2) {
             this.dataObject2 = dataObject2;
         }
+
+        public List<DataObject3> getDataObject3s() {
+            return dataObject3s;
+        }
+
+        public void setDataObject3s(List<DataObject3> dataObject3s) {
+            this.dataObject3s = dataObject3s;
+        }
+
     }
 
     public static final class DataObject2 {

@@ -207,14 +207,6 @@
     <property name="resultsGroup.layoutManager.actionFieldPrototype">
       <bean parent="Uif-VerticalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
     </property>
-    <property name="resultsGroup.lineActions">
-      <list>
-        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
-        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="20"/>
-
-      </list>
-    </property>
-
   </bean>
 
   <bean id="LookupSampleViewActionsHierarchy" parent="LookupSampleView">

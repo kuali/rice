@@ -98,12 +98,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Initializes the prototypes</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
@@ -114,12 +108,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>If wrapper group is specified, places the stacked groups into the wrapper</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
@@ -132,8 +120,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Calculates the values that must be pased into the pagerWidget if using paging
-     *
      * {@inheritDoc}
      */
     @Override
@@ -150,18 +136,9 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Builds a {@code Group} instance for a collection line. The group is
-     * built by first creating a copy of the configured prototype. Then the
-     * header for the group is created using the configured summary fields on
-     * the {@code CollectionGroup}. The line fields passed in are set as
-     * the items for the group, and finally the actions are placed into the
-     * group footer
-     *
-     * @see CollectionLayoutManager#buildLine(org.kuali.rice.krad.uif.view.View,
-     *      Object, org.kuali.rice.krad.uif.container.CollectionGroup,
-     *      java.util.List, java.util.List, String, java.util.List,
-     *      String, Object, int)
+     * {@inheritDoc}
      */
+    @Override
     public void buildLine(LineBuilderContext lineBuilderContext) {
         List<Field> lineFields = lineBuilderContext.getLineFields();
         CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
@@ -330,11 +307,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Text to appears in the header for each collection lines Group. Used in
-     * conjunction with {@link #getSummaryFields()} to build up the final header
-     * text
-     *
-     * @return summary title text
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "summaryTitle")
@@ -343,50 +316,34 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Setter for the summary title text
-     *
-     * @param summaryTitle
+     * {@inheritDoc}
      */
+    @Override
     public void setSummaryTitle(String summaryTitle) {
         this.summaryTitle = summaryTitle;
     }
 
     /**
-     * List of attribute names from the collection line class that should be
-     * used to build the line summary. To build the summary the value for each
-     * attribute is retrieved from the line instance. All the values are then
-     * placed together with a separator.
-     *
-     * @return summary field names
-     * @see #buildLineHeaderText(Object, org.kuali.rice.krad.uif.container.Group)
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "summaryFields", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSummaryFields() {
         return this.summaryFields;
     }
 
     /**
-     * Setter for the summary field name list
-     *
-     * @param summaryFields
+     * {@inheritDoc}
      */
+    @Override
     public void setSummaryFields(List<String> summaryFields) {
         this.summaryFields = summaryFields;
     }
 
     /**
-     * Group instance that will be used for the add line
-     *
-     * <p>
-     * Add line fields and actions configured on the
-     * {@code CollectionGroup} will be set onto the add line group (if add
-     * line is enabled). If the add line group is not configured, a new instance
-     * of the line group prototype will be used for the add line.
-     * </p>
-     *
-     * @return add line group instance
-     * @see #getAddLineGroup()
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
@@ -394,21 +351,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Setter for the add line group
-     *
-     * @param addLineGroup
+     * {@inheritDoc}
      */
+    @Override
     public void setAddLineGroup(Group addLineGroup) {
         this.addLineGroup = addLineGroup;
     }
 
     /**
-     * Group instance that is used as a prototype for creating the collection
-     * line groups. For each line a copy of the prototype is made and then
-     * adjusted as necessary
-     *
-     * @return Group instance to use as prototype
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
@@ -416,10 +369,9 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Setter for the line group prototype
-     *
-     * @param lineGroupPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setLineGroupPrototype(Group lineGroupPrototype) {
         this.lineGroupPrototype = lineGroupPrototype;
     }
@@ -427,6 +379,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     /**
      * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
@@ -434,28 +387,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Setter for the sub-collection field group prototype
-     *
-     * @param subCollectionFieldGroupPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
         this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
     }
 
     /**
-     * Field instance that serves as a prototype for creating the select field on each line when
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is true
-     *
-     * <p>
-     * This prototype can be used to set the control used for the select field (generally will be a checkbox control)
-     * in addition to styling and other setting. The binding path will be formed with using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if not set the
-     * framework
-     * will use {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
-     * </p>
-     *
-     * @return select field prototype instance
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
@@ -463,70 +405,62 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Setter for the prototype instance for select fields
-     *
-     * @param selectFieldPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
         this.selectFieldPrototype = selectFieldPrototype;
     }
 
     /**
-     * Group that will 'wrap' the generated collection lines so that they have a different layout from the general
-     * stacked layout
-     *
-     * <p>
-     * By default (when the wrapper group is null), each collection line will become a group and the groups are
-     * rendered one after another. If the wrapper group is configured, the generated groups will be inserted as the
-     * items for the wrapper group, and the layout manager configured for the wrapper group will determine how they
-     * are rendered. For example, the layout manager could be a grid layout configured for three columns, which would
-     * layout the first three lines horizontally then break to a new row.
-     * </p>
-     *
-     * @return Group instance whose items list should be populated with the generated groups, or null to use the
-     *         default layout
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "wrapperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getWrapperGroup() {
         return wrapperGroup;
     }
 
     /**
-     * Setter for the wrapper group that will receive the generated line groups
-     *
-     * @param wrapperGroup
+     * {@inheritDoc}
      */
+    @Override
     public void setWrapperGroup(Group wrapperGroup) {
         this.wrapperGroup = wrapperGroup;
     }
 
     /**
-     * The pagerWidget used for paging when the StackedLayout is using paging
-     *
-     * @return the pagerWidget
+     * {@inheritDoc}
      */
+    @Override
     public Pager getPagerWidget() {
         return pagerWidget;
     }
 
     /**
-     * Set the pagerWidget used for paging StackedLayouts
-     *
-     * @param pagerWidget
+     * {@inheritDoc}
      */
+    @Override
     public void setPagerWidget(Pager pagerWidget) {
         this.pagerWidget = pagerWidget;
     }
 
     /**
-     * Final {@code List} of Groups to render for the collection
-     *
-     * @return collection groups
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction
     @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<Group> getStackedGroups() {
         return this.stackedGroups;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Group> getStackedGroupsNoWrapper() {
+        return wrapperGroup != null ? null : this.stackedGroups;
     }
 
     /**
@@ -538,20 +472,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     }
 
     /**
-     * Flag that indicates whether actions will be added in the same group as the line items instead of in the
-     * footer of the line group
-     *
-     * @return boolean
+     * {@inheritDoc}
      */
+    @Override
     public boolean isActionsInLineGroup() {
         return actionsInLineGroup;
     }
 
     /**
-     * Set flag to add actions in the same group as the line items
-     *
-     * @param actionsInLineGroup
+     * {@inheritDoc}
      */
+    @Override
     public void setActionsInLineGroup(boolean actionsInLineGroup) {
         this.actionsInLineGroup = actionsInLineGroup;
     }

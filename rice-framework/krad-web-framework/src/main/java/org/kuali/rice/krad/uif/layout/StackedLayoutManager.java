@@ -176,6 +176,8 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      */
     List<Group> getStackedGroups();
 
+    List<Group> getStackedGroupsNoWrapper();
+
     /**
      * Setter for the collection groups
      *

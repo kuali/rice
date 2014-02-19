@@ -170,6 +170,11 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     public void performInitialization(Object model) {
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
 
+        if (collectionGroup.isReadOnly()) {
+            addLineGroup.setReadOnly(true);
+            actionFieldPrototype.setReadOnly(true);
+        }
+
         this.setupDetails(collectionGroup);
         this.setupGrouping(model, collectionGroup);
 
@@ -1120,40 +1125,34 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the use short label indicator
-     *
-     * @param useShortLabels
+     * {@inheritDoc}
      */
+    @Override
     public void setUseShortLabels(boolean useShortLabels) {
         this.useShortLabels = useShortLabels;
     }
 
     /**
-     * Indicates whether the header should be repeated before each collection row. If false the
-     * header is only rendered at the beginning of the table
-     *
-     * @return true if header should be repeated, false if it should only be rendered once
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "repeatHeader")
     public boolean isRepeatHeader() {
         return this.repeatHeader;
     }
 
     /**
-     * Setter for the repeat header indicator
-     *
-     * @param repeatHeader
+     * {@inheritDoc}
      */
+    @Override
     public void setRepeatHeader(boolean repeatHeader) {
         this.repeatHeader = repeatHeader;
     }
 
     /**
-     * {@code Label} instance to use as a prototype for creating the tables header fields. For each
-     * header field the prototype will be copied and adjusted as necessary
-     *
-     * @return Label instance to serve as prototype
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getHeaderLabelPrototype() {
@@ -1161,48 +1160,42 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the header field prototype
-     *
-     * @param headerLabelPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setHeaderLabelPrototype(Label headerLabelPrototype) {
         this.headerLabelPrototype = headerLabelPrototype;
     }
 
     /**
-     * List of {@code Label} instances that should be rendered to make up the tables header
-     *
-     * @return List of label field instances
+     * {@inheritDoc}
      */
+    @Override
     public List<Label> getHeaderLabels() {
         return this.headerLabels;
     }
 
     /**
-     * Indicates whether the sequence field should be rendered for the collection
-     *
-     * @return true if sequence field should be rendered, false if not
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderSequenceField")
     public boolean isRenderSequenceField() {
         return this.renderSequenceField;
     }
 
     /**
-     * Setter for the render sequence field indicator
-     *
-     * @param renderSequenceField
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderSequenceField(boolean renderSequenceField) {
         this.renderSequenceField = renderSequenceField;
     }
 
     /**
-     * Attribute name to use as sequence value. For each collection line the value of this field on
-     * the line will be retrieved and used as the sequence value
-     *
-     * @return sequence property name
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "sequencePropertyName")
     public String getSequencePropertyName() {
         if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
@@ -1213,10 +1206,9 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the sequence property name
-     *
-     * @param sequencePropertyName
+     * {@inheritDoc}
      */
+    @Override
     public void setSequencePropertyName(String sequencePropertyName) {
         if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
             ((DataField) getSequenceFieldPrototype()).setPropertyName(sequencePropertyName);
@@ -1224,35 +1216,26 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Indicates whether the sequence field should be generated with the current line number
-     *
-     * <p>
-     * If set to true the sequence field prototype will be changed to a message field (if not
-     * already a message field) and the text will be set to the current line number
-     * </p>
-     *
-     * @return true if the sequence field should be generated from the line number, false if not
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "generateAutoSequence")
     public boolean isGenerateAutoSequence() {
         return this.generateAutoSequence;
     }
 
     /**
-     * Setter for the generate auto sequence field
-     *
-     * @param generateAutoSequence
+     * {@inheritDoc}
      */
+    @Override
     public void setGenerateAutoSequence(boolean generateAutoSequence) {
         this.generateAutoSequence = generateAutoSequence;
     }
 
     /**
-     * {@code Field} instance to serve as a prototype for the sequence field. For each collection
-     * line this instance is copied and adjusted as necessary
-     *
-     * @return Attribute field instance
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSequenceFieldPrototype() {
@@ -1260,24 +1243,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the sequence field prototype
-     *
-     * @param sequenceFieldPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setSequenceFieldPrototype(Field sequenceFieldPrototype) {
         this.sequenceFieldPrototype = sequenceFieldPrototype;
     }
 
     /**
-     * {@code FieldGroup} instance to serve as a prototype for the actions column. For each
-     * collection line this instance is copied and adjusted as necessary. Note the actual actions
-     * for the group come from the collection groups actions List
-     * (org.kuali.rice.krad.uif.container.CollectionGroup.getActions()). The FieldGroup prototype is
-     * useful for setting styling of the actions column and for the layout of the action fields.
-     * Note also the label associated with the prototype is used for the action column header
-     *
-     * @return GroupField instance
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getActionFieldPrototype() {
@@ -1285,10 +1261,9 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the action field prototype
-     *
-     * @param actionFieldPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setActionFieldPrototype(FieldGroup actionFieldPrototype) {
         this.actionFieldPrototype = actionFieldPrototype;
     }
@@ -1296,6 +1271,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public FieldGroup getSubCollectionFieldGroupPrototype() {
@@ -1303,30 +1279,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the sub-collection field group prototype
-     *
-     * @param subCollectionFieldGroupPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
         this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
     }
 
     /**
-     * Field instance that serves as a prototype for creating the select field on each line when
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is
-     * true
-     *
-     * <p>
-     * This prototype can be used to set the control used for the select field (generally will be a
-     * checkbox control) in addition to styling and other setting. The binding path will be formed
-     * with using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if
-     * not set the framework will use
-     * {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
-     * </p>
-     *
-     * @return select field prototype instance
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Field getSelectFieldPrototype() {
@@ -1334,129 +1297,93 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Setter for the prototype instance for select fields
-     *
-     * @param selectFieldPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
         this.selectFieldPrototype = selectFieldPrototype;
     }
 
     /**
-     * Indicates whether the add line should be rendered in a separate group, or as part of the
-     * table (first line)
-     *
-     * <p>
-     * When separate add line is enabled, the fields for the add line will be placed in the
-     * {@link #getAddLineGroup()}. This group can be used to configure the add line presentation. In
-     * addition to the fields, the header on the group (unless already set) will be set to
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()} and the add line
-     * actions will be placed into the group's footer.
-     * </p>
-     *
-     * @return true if add line should be separated, false if it should be placed into the table
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "separateAddLine")
     public boolean isSeparateAddLine() {
         return separateAddLine;
     }
 
     /**
-     * Setter for the separate add line indicator
-     *
-     * @param separateAddLine
+     * {@inheritDoc}
      */
+    @Override
     public void setSeparateAddLine(boolean separateAddLine) {
         this.separateAddLine = separateAddLine;
     }
 
     /**
-     * When {@link #isSeparateAddLine()} is true, this group will be used to render the add line
-     *
-     * <p>
-     * This group can be used to configure how the add line will be rendered. For example the layout
-     * manager configured on the group will be used to rendered the add line fields. If the header
-     * (title) is not set on the group, it will be set from
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()}. In addition,
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()} will be added
-     * to the group footer items.
-     * </p>
-     *
-     * @return Group instance for the collection add line
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getAddLineGroup() {
         return addLineGroup;
     }
 
     /**
-     * Setter for the add line Group
-     *
-     * @param addLineGroup
+     * {@inheritDoc}
      */
+    @Override
     public void setAddLineGroup(Group addLineGroup) {
         this.addLineGroup = addLineGroup;
     }
 
     /**
-     * List of {@link Field} instances that make up all the table's rows of data
-     *
-     * @return table body fields
+     * {@inheritDoc}
      */
+    @Override
     public List<Field> getAllRowFields() {
         return this.allRowFields;
     }
 
     /**
-     * List of {@link Field} instances that make us the table's first row of data
-     *
-     * @return list of field instances
+     * {@inheritDoc}
      */
+    @Override
     @ViewLifecycleRestriction
     public List<Field> getFirstRowFields() {
         return firstRowFields;
     }
 
     /**
-     * The Pager widget for this TableLayoutManager which defines settings for paging
-     *
-     * <p>
-     * The settings in this widget are only used by TableLayoutManagers which DO NOT take advantage
-     * of the RichTable option (this has its own paging implementation). To turn off RichTable and
-     * use a basic table with server paging set richTable.render="false" and useServerPaging="true"
-     * on the CollectionGroup which uses this layout manager.
-     * </p>
-     *
-     * @return the Pager widget
+     * {@inheritDoc}
      */
+    @Override
     public Pager getPagerWidget() {
         return pagerWidget;
     }
 
     /**
-     * Set the Pager widget
-     *
-     * @param pagerWidget
+     * {@inheritDoc}
      */
+    @Override
     public void setPagerWidget(Pager pagerWidget) {
         this.pagerWidget = pagerWidget;
     }
 
     /**
-     * Widget associated with the table to add functionality such as sorting, paging, and export
-     *
-     * @return RichTable instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public RichTable getRichTable() {
         return this.richTable;
     }
 
     /**
-     * Setter for the rich table widget
-     *
-     * @param richTable
+     * {@inheritDoc}
      */
+    @Override
     public void setRichTable(RichTable richTable) {
         this.richTable = richTable;
     }
@@ -1464,6 +1391,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "numberOfDataColumns")
     public int getNumberOfDataColumns() {
         return this.numberOfDataColumns;
@@ -1472,6 +1400,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setNumberOfDataColumns(int numberOfDataColumns) {
         this.numberOfDataColumns = numberOfDataColumns;
     }
@@ -1479,6 +1408,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         if (richTable != null) {
@@ -1491,6 +1421,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setHiddenColumns(Set<String> hiddenColumns) {
         if (richTable != null) {
             richTable.setHiddenColumns(hiddenColumns);
@@ -1500,6 +1431,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         if (richTable != null) {
@@ -1512,6 +1444,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setSortableColumns(Set<String> sortableColumns) {
         if (richTable != null) {
             richTable.setSortableColumns(sortableColumns);
@@ -1521,32 +1454,25 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "actionColumnIndex")
     public int getActionColumnIndex() {
         return actionColumnIndex;
     }
 
     /**
-     * Indicates the actions column placement
-     *
-     * <p>
-     * Valid values are 'LEFT', 'RIGHT' or any valid number. The default is 'RIGHT' or '-1'. The
-     * column placement index takes all displayed columns, including sequence and selection columns,
-     * into account.
-     * </p>
-     *
-     * @return the action column placement
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "actionColumnPlacement")
     public String getActionColumnPlacement() {
         return actionColumnPlacement;
     }
 
     /**
-     * Setter for the action column placement
-     *
-     * @param actionColumnPlacement action column placement string
+     * {@inheritDoc}
      */
+    @Override
     public void setActionColumnPlacement(String actionColumnPlacement) {
         this.actionColumnPlacement = actionColumnPlacement;
 
@@ -1560,19 +1486,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * The row details info group to use when using a TableLayoutManager with the a richTable.
-     *
-     * <p>
-     * This group will be displayed when the user clicks the "Details" link/image on a row. This
-     * allows extra/long data to be hidden in table rows and then revealed during interaction with
-     * the table without the need to leave the page. Allows for any group content.
-     * </p>
-     *
-     * <p>
-     * Does not currently work with javascript required content.
-     * </p>
-     *
-     * @return rowDetailsGroup component
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
@@ -1584,6 +1498,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     /**
      * @see TableLayoutManagerBase#getRowDetailsGroup()
      */
+    @Override
     public void setRowDetailsGroup(Group rowDetailsGroup) {
         this.rowDetailsGroup = rowDetailsGroup;
     }
@@ -1644,207 +1559,151 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * A list of all the columns to be calculated
-     *
-     * <p>
-     * The list must contain valid column indexes. The indexes takes all displayed columns into
-     * account.
-     * </p>
-     *
-     * @return the total columns list
+     * {@inheritDoc}
      */
+    @Override
     public List<String> getColumnsToCalculate() {
         return columnsToCalculate;
     }
 
     /**
-     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not
-     * rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @return true if showing the total, false otherwise.
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "showTotal")
     public boolean isShowTotal() {
         return showTotal;
     }
 
     /**
-     * Sets showTotal. showTotal shows/calculates the total field when true, otherwise it is not
-     * rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @param showTotal
+     * {@inheritDoc}
      */
+    @Override
     public void setShowTotal(boolean showTotal) {
         this.showTotal = showTotal;
     }
 
     /**
-     * Gets showTotal. showTotal shows/calculates the total field when true, otherwise it is not
-     * rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @return true if showing the page total, false otherwise.
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "showPageTotal")
     public boolean isShowPageTotal() {
         return showPageTotal;
     }
 
     /**
-     * Sets showPageTotal. showPageTotal shows/calculates the total field for the page when true
-     * (and only when the table actually has pages), otherwise it is not rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @param showPageTotal
+     * {@inheritDoc}
      */
+    @Override
     public void setShowPageTotal(boolean showPageTotal) {
         this.showPageTotal = showPageTotal;
     }
 
     /**
-     * Gets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when
-     * true (and only when the table actually has grouping turned on), otherwise it is not rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @return true if showing the group total, false otherwise.
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "showGroupTotal")
     public boolean isShowGroupTotal() {
         return showGroupTotal;
     }
 
     /**
-     * Sets showGroupTotal. showGroupTotal shows/calculates the total field for each grouping when
-     * true (and only when the table actually has grouping turned on), otherwise it is not rendered. <br/>
-     * <b>Only used when renderOnlyLeftTotalLabels is TRUE, this overrides the
-     * ColumnConfigurationInfo setting. Otherwise, the ColumnConfigurationInfo setting takes
-     * precedence.</b>
-     *
-     * @param showGroupTotal
+     * {@inheritDoc}
      */
+    @Override
     public void setShowGroupTotal(boolean showGroupTotal) {
         this.showGroupTotal = showGroupTotal;
     }
 
     /**
-     * The total label to use when renderOnlyLeftTotalLabels is TRUE for total. This label will
-     * appear in the left most column.
-     *
-     * @return the totalLabel
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "totalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getTotalLabel() {
         return totalLabel;
     }
 
     /**
-     * Sets the total label to use when renderOnlyLeftTotalLabels is TRUE for total.
-     *
-     * @param totalLabel
+     * {@inheritDoc}
      */
+    @Override
     public void setTotalLabel(Label totalLabel) {
         this.totalLabel = totalLabel;
     }
 
     /**
-     * The pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total. This label will
-     * appear in the left most column.
-     *
-     * @return the totalLabel
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "pageTotalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getPageTotalLabel() {
         return pageTotalLabel;
     }
 
     /**
-     * Sets the pageTotal label to use when renderOnlyLeftTotalLabels is TRUE for total.
-     *
-     * @param pageTotalLabel
+     * {@inheritDoc}
      */
+    @Override
     public void setPageTotalLabel(Label pageTotalLabel) {
         this.pageTotalLabel = pageTotalLabel;
     }
 
     /**
-     * The groupTotal label to use when renderOnlyLeftTotalLabels is TRUE. This label will appear in
-     * the left most column.
-     *
-     * @return the totalLabel
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "groupTotalLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getGroupTotalLabelPrototype() {
         return groupTotalLabelPrototype;
     }
 
     /**
-     * Sets the groupTotal label to use when renderOnlyLeftTotalLabels is TRUE.
-     *
-     * @param groupTotalLabelPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setGroupTotalLabelPrototype(Label groupTotalLabelPrototype) {
         this.groupTotalLabelPrototype = groupTotalLabelPrototype;
     }
 
     /**
-     * Gets the column calculations. This is a list of ColumnCalcuationInfo that when set provides
-     * calculations to be performed on the columns they specify. These calculations appear in the
-     * table's footer. This feature is only available when using richTable functionality.
-     *
-     * @return the columnCalculations to use
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "columnCalculations", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<ColumnCalculationInfo> getColumnCalculations() {
         return columnCalculations;
     }
 
     /**
-     * Sets the columnCalculations.
-     *
-     * @param columnCalculations
+     * {@inheritDoc}
      */
+    @Override
     public void setColumnCalculations(List<ColumnCalculationInfo> columnCalculations) {
         this.columnCalculations = columnCalculations;
     }
 
     /**
-     * When true, labels for the totals fields will only appear in the left most column. Showing of
-     * the totals is controlled by the settings on the TableLayoutManager itself when this property
-     * is true.
-     *
-     * @return true when rendering totals footer labels in the left-most column, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderOnlyLeftTotalLabels")
     public boolean isRenderOnlyLeftTotalLabels() {
         return renderOnlyLeftTotalLabels;
     }
 
     /**
-     * Set the renderOnlyLeftTotalLabels flag for rendring total labels in the left-most column
-     *
-     * @param renderOnlyLeftTotalLabels
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderOnlyLeftTotalLabels(boolean renderOnlyLeftTotalLabels) {
         this.renderOnlyLeftTotalLabels = renderOnlyLeftTotalLabels;
     }
 
     /**
-     * Gets the footer calculation components to be used by the layout. These are set by the
-     * framework and cannot be set directly.
-     *
-     * @return the list of components for the footer
+     * {@inheritDoc}
      */
     @Override
     public List<Component> getFooterCalculationComponents() {
@@ -1852,53 +1711,35 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Gets the list of property names to use for grouping.
-     *
-     * <p>
-     * When this property is set, grouping for this collection will be enabled and the lines of the
-     * collection will be grouped by the propertyName(s) supplied. Supplying multiple property names
-     * will cause the grouping to be on multiple fields and ordered alphabetically on
-     * "propetyValue1, propertyValue2" (this is also how the group title will display for each
-     * group). The property names supplied must be relative to the line, so #lp SHOULD NOT be used
-     * (it is assumed automatically).
-     * </p>
-     *
-     * @return propertyNames to group on
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "groupingPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getGroupingPropertyNames() {
         return groupingPropertyNames;
     }
 
     /**
-     * Sets the list of property names to use for grouping.
-     *
-     * @param groupingPropertyNames
+     * {@inheritDoc}
      */
+    @Override
     public void setGroupingPropertyNames(List<String> groupingPropertyNames) {
         this.groupingPropertyNames = groupingPropertyNames;
     }
 
     /**
-     * Get the groupingTitle. The groupingTitle MUST contain a SpringEL expression to uniquely
-     * identify a group's line (ie it cannot be a static string because each group must be
-     * identified by some value). <b>This overrides groupingPropertyNames(if set) because it
-     * provides full control of grouping value used by the collection. SpringEL defined here must
-     * use #lp if referencing values of the line.</b>
-     *
-     * @return groupingTitle to be used
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "groupingTitle")
     public String getGroupingTitle() {
         return groupingTitle;
     }
 
     /**
-     * Set the groupingTitle. This will throw an exception if the title does not contain a SpringEL
-     * expression.
-     *
-     * @param groupingTitle
+     * {@inheritDoc}
      */
+    @Override
     public void setGroupingTitle(String groupingTitle) {
         if (groupingTitle != null && !groupingTitle.contains("@{")) {
             throw new RuntimeException("groupingTitle MUST contain a springEL expression to uniquely"
@@ -1910,112 +1751,88 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Get the groupingPrefix. The groupingPrefix is used to prefix the generated title (not used
-     * when groupingTitle is set directly) when using groupingPropertyNames.
-     *
-     * @return String
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "groupingPrefix")
     public String getGroupingPrefix() {
         return groupingPrefix;
     }
 
     /**
-     * Set the groupingPrefix. This is not used when groupingTitle is set directly.
-     *
-     * @param groupingPrefix
+     * {@inheritDoc}
      */
+    @Override
     public void setGroupingPrefix(String groupingPrefix) {
         this.groupingPrefix = groupingPrefix;
     }
 
     /**
-     * If true, all details will be opened by default when the table loads. Can only be used on
-     * tables that have row details setup.
-     *
-     * @return true if row details
+     * {@inheritDoc}
      */
+    @Override
     public boolean isRowDetailsOpen() {
         return rowDetailsOpen;
     }
 
     /**
-     * Set if row details should be open on table load
-     *
-     * @param rowDetailsOpen
+     * {@inheritDoc}
      */
+    @Override
     public void setRowDetailsOpen(boolean rowDetailsOpen) {
         this.rowDetailsOpen = rowDetailsOpen;
     }
 
     /**
-     * If true, the toggleAllDetailsAction will be shown. This button allows all details to be
-     * open/closed simultaneously.
-     *
-     * @return true if the action button to toggle all row details opened/closed
+     * {@inheritDoc}
      */
+    @Override
     public boolean isShowToggleAllDetails() {
         return showToggleAllDetails;
     }
 
     /**
-     * Set if the toggleAllDetailsAction should be shown
-     *
-     * @param showToggleAllDetails
+     * {@inheritDoc}
      */
+    @Override
     public void setShowToggleAllDetails(boolean showToggleAllDetails) {
         this.showToggleAllDetails = showToggleAllDetails;
     }
 
     /**
-     * The toggleAllDetailsAction action component used to toggle all row details open/closed. This
-     * property is set by the default configuration and should not be reset in most cases.
-     *
-     * @return Action component to use for the toggle action button
+     * {@inheritDoc}
      */
+    @Override
     public Action getToggleAllDetailsAction() {
         return toggleAllDetailsAction;
     }
 
     /**
-     * Set the toggleAllDetailsAction action component used to toggle all row details open/closed.
-     * This property is set by the default configuration and should not be reset in most cases.
-     *
-     * @param toggleAllDetailsAction
+     * {@inheritDoc}
      */
+    @Override
     public void setToggleAllDetailsAction(Action toggleAllDetailsAction) {
         this.toggleAllDetailsAction = toggleAllDetailsAction;
     }
 
     /**
-     * If true, when a row details open action is performed, it will get the details content from
-     * the server the first time it is opened. The methodToCall will be a component "refresh" call
-     * by default (this can be set on expandDetailsActionPrototype) and the additional action
-     * parameters sent to the server will be those set on the expandDetailsActionPrototype
-     * (lineIndex will be sent by default).
-     *
-     * @return true if ajax row details retrieval will be used
+     * {@inheritDoc}
      */
+    @Override
     public boolean isAjaxDetailsRetrieval() {
         return ajaxDetailsRetrieval;
     }
 
     /**
-     * Set if row details content should be retrieved fromt he server
-     *
-     * @param ajaxDetailsRetrieval
+     * {@inheritDoc}
      */
+    @Override
     public void setAjaxDetailsRetrieval(boolean ajaxDetailsRetrieval) {
         this.ajaxDetailsRetrieval = ajaxDetailsRetrieval;
     }
 
     /**
-     * The Action prototype used for the row details expand link. Should be set to
-     * "Uif-ExpandDetailsAction" or "Uif-ExpandDetailsImageAction". Properties can be configured to
-     * allow for different methodToCall and actionParameters to be set for ajax row details
-     * retrieval.
-     *
-     * @return the Action details link prototype
+     * {@inheritDoc}
      */
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @Override
@@ -2024,19 +1841,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * Gets the grouping column index
-     *
-     * @return the grouping column index
+     * {@inheritDoc}
      */
+    @Override
     public int getGroupingColumnIndex() {
         return groupingColumnIndex;
     }
 
     /**
-     * Set the expand details Action prototype link
-     *
-     * @param expandDetailsActionPrototype
+     * {@inheritDoc}
      */
+    @Override
     public void setExpandDetailsActionPrototype(Action expandDetailsActionPrototype) {
         this.expandDetailsActionPrototype = expandDetailsActionPrototype;
     }

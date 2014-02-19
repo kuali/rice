@@ -482,12 +482,13 @@ public class ViewLifecycle implements Serializable {
         ViewLifecycleProcessor processor = PROCESSOR.get();
 
         if (processor == null) {
-            ExpressionEvaluatorFactory factory = KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
+            ExpressionEvaluatorFactory expressionEvaluatorFactory =
+                    KRADServiceLocatorWeb.getExpressionEvaluatorFactory();
 
-            if (factory == null) {
+            if (expressionEvaluatorFactory == null) {
                 return new DefaultExpressionEvaluator();
             } else {
-                return factory.createExpressionEvaluator();
+                return expressionEvaluatorFactory.createExpressionEvaluator();
             }
         }
 

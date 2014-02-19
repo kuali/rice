@@ -49,8 +49,8 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     
     protected void testInputFields() throws InterruptedException {
     	//Label
-    	assertElementPresentByXpath("//label[@class='uif-label uif-labelBlock uif-tooltip' and contains(text(),'Field Label')]");
-    	assertElementPresentByXpath("//label[@class='uif-label uif-labelBlock' and contains(text(),'Field Label:')]");
+    	assertElementPresentByXpath("//label[@class='uif-label uif-tooltip' and contains(text(),'Field Label')]");
+    	assertElementPresentByXpath("//label[@class='uif-label' and contains(text(),'Field Label:')]");
     	assertElementPresentByXpath("//p[@class='uif-constraintMessage']");
     	
     	//TextBox

@@ -50,19 +50,40 @@ public class DemoTravelExpenseItemLookUpAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelExpenseItemLookUp() throws Exception {
-    	waitAndTypeByName("lookupCriteria[travelExpenseItemId]","1");
-    	waitAndTypeByName("lookupCriteria[travelAuthorizationDocumentId]","1");
-    	waitAndTypeByName("lookupCriteria[travelCompanyName]","a*");
+    	//Search with primary key
+    	waitAndTypeByName("lookupCriteria[travelExpenseItemId]","10000");
     	waitAndClickButtonByText(SEARCH);
-    	waitForTextPresent("No values match this search.");
+    	waitForTextPresent("One item retrieved.");
     	waitForTextPresent("You have entered the primary key for this table (Id) in the search criteria. Since these fields can be used to uniquely identify a row in this table, the other search criteria entered will be ignored.");
     	waitAndClickButtonByText(CLEAR_VALUES);
+    	
+    	//Search with document ID
+    	waitAndTypeByName("lookupCriteria[travelAuthorizationDocumentId]","10000");
+    	waitAndClickButtonByText(SEARCH);
+    	waitForTextPresent("One item retrieved.");
+    	waitAndClickButtonByText(CLEAR_VALUES);
+    	
+    	//Search with Company Name
+    	waitAndTypeByName("lookupCriteria[travelCompanyName]","Discount Travel");
+    	waitAndClickButtonByText(SEARCH);
+    	waitForTextPresent("Discount Travel");
+    	waitAndClickButtonByText(CLEAR_VALUES);
+    	
+    	//Search with Expense Type & Description
+    	waitAndTypeByName("lookupCriteria[travelExpenseTypeCd]","ME");
+    	waitAndTypeByName("lookupCriteria[expenseDesc]","Family Related");
+    	waitAndClickButtonByText(SEARCH);
+    	String assertResultForExpenseTypeAndDesc [] ={"ME","Family Related"};
+    	assertTextPresent(assertResultForExpenseTypeAndDesc);
+    	waitAndClickButtonByText(CLEAR_VALUES);
+    	
+    	//Search with Expense Amount Reimbursable and Taxable
+    	waitAndTypeByName("lookupCriteria[expenseAmount]","1,278.97");
     	waitAndClickByXpath("//input[@name='lookupCriteria[reimbursable]' and @value='Y']");
     	waitAndClickByXpath("//input[@name='lookupCriteria[taxable]' and @value='Y']");
-    	waitAndClickButtonByText(SEARCH);
-    	String activeResults [] ={"10000","10000","Discount Travel","ME","Family Related","1,278.97","true","true"};
-    	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
-    	assertTextPresent(activeResults);
+    	String assertResultForExpenseAmount [] ={"1,278.97","true","true"};
+    	assertTextPresent(assertResultForExpenseAmount);
+    	waitAndClickButtonByText(CLEAR_VALUES);
     }
 
     @Test

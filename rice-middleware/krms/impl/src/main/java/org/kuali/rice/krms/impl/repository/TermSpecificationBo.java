@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -75,13 +76,13 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
             inverseJoinColumns = { @JoinColumn(name = "CTGRY_ID", referencedColumnName = "CTGRY_ID") })
     private List<CategoryBo> categories = new ArrayList<CategoryBo>();
 
+    @OneToMany(orphanRemoval = true, mappedBy = "termSpecification")
+    private List<ContextValidTermBo> contextValidTerms = new ArrayList<ContextValidTermBo>();
+
     @Transient
     private List<String> contextIds = new ArrayList<String>();
 
-    @ManyToMany(cascade = { CascadeType.REFRESH })
-    @JoinTable(name = "KRMS_CNTXT_VLD_TERM_SPEC_T",
-            joinColumns = { @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "CNTXT_ID", referencedColumnName = "CNTXT_ID") })
+    @Transient
     private List<ContextBo> contexts = new ArrayList<ContextBo>();
 
     /**
@@ -210,5 +211,13 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
 
     public void setContexts(List<ContextBo> contexts) {
         this.contexts = contexts;
+    }
+
+    public List<ContextValidTermBo> getContextValidTerms() {
+        return contextValidTerms;
+    }
+
+    public void setContextValidTerms(List<ContextValidTermBo> contextValidTerms) {
+        this.contextValidTerms = contextValidTerms;
     }
 }

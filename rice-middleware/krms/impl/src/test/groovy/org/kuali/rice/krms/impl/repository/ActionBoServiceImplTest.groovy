@@ -99,7 +99,7 @@ class ActionBoServiceImplTest {
         // attributeBo1.setAction( ActionBo.from(builder.build()) )
 
 		attributeBo1.attributeDefinition = ADB1
-		Set<ActionAttributeBo> attrBos = [attributeBo1]
+		List<ActionAttributeBo> attrBos = [attributeBo1]
 		
 		
 		// Create ActionBo

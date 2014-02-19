@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -51,10 +51,8 @@ import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Table(name = "KRMS_RULE_T")
@@ -98,7 +96,8 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID", insertable = true, updatable = true)
     private PropositionBo proposition;
 
-    @OneToMany(mappedBy = "rule")
+    @OneToMany(mappedBy = "rule",
+            cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     private List<ActionBo> actions;
 
     @OneToMany(targetEntity = RuleAttributeBo.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
@@ -439,8 +438,8 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return newAttributes;
     }
 
-    public static Set<ActionAttributeBo> copyActionAttributes(ActionBo existing) {
-        Set<ActionAttributeBo> newAttributes = new HashSet<ActionAttributeBo>();
+    public static List<ActionAttributeBo> copyActionAttributes(ActionBo existing) {
+        List<ActionAttributeBo> newAttributes = new ArrayList<ActionAttributeBo>();
 
         for (ActionAttributeBo attr : existing.getAttributeBos()) {
             ActionAttributeBo newAttr = new ActionAttributeBo();

@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.engine.EngineResults;
@@ -44,6 +43,7 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.type.ValidationActionType;
@@ -90,10 +90,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
+import static org.junit.Assert.*;
 
 /**
  * Validation Integration Test
@@ -433,7 +430,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         action.setNamespace(actionBits.get(0).typeDef.getNamespace());
         action.setName(actionBits.get(0).typeDef.getName());
         action.setSequenceNumber(actionBits.get(0).typeAttribBuilder.getSequenceNumber());
-        Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
+        List<ActionAttributeBo> actionAttributes = new ArrayList<ActionAttributeBo>();
         action.setAttributeBos(actionAttributes);
 
         for (KrmsAttributeTypeDefinitionAndBuilders actionBit : actionBits) {

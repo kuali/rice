@@ -16,7 +16,6 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,11 +39,11 @@ public class ActionAttributeBo extends BaseAttributeBo implements Serializable {
     @Column(name = "ACTN_ATTR_DATA_ID")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACTN_ID")
     private ActionBo action;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "ATTR_DEFN_ID", referencedColumnName = "ATTR_DEFN_ID")
     private KrmsAttributeDefinitionBo attributeDefinition;
 

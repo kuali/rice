@@ -33,11 +33,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The Action Business Object is the Action mutable class.
@@ -82,10 +81,9 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
     @Version
     private Long versionNumber;
 
-    @OneToMany(targetEntity = ActionAttributeBo.class, orphanRemoval = true, mappedBy = "action",
-            cascade = { CascadeType.ALL })
-    @JoinColumn(name = "ACTN_ID", referencedColumnName = "ACTN_ID", insertable = true, updatable = true)
-    private Set<ActionAttributeBo> attributeBos;
+    @OneToMany(orphanRemoval = true, mappedBy = "action",
+            cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    private List<ActionAttributeBo> attributeBos;
 
     @Override
     public Map<String, String> getAttributes() {
@@ -106,7 +104,7 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
      * @param attributes to add to this Action
      */
     public void setAttributes(Map<String, String> attributes) {
-        this.attributeBos = new HashSet<ActionAttributeBo>();
+        this.attributeBos = new ArrayList<ActionAttributeBo>();
         if (!StringUtils.isBlank(this.typeId)) {
             List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(this.getTypeId());
             Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
@@ -169,8 +167,8 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
         bo.sequenceNumber = im.getSequenceNumber();
         bo.setVersionNumber(im.getVersionNumber());
 
-        // build the set of action attribute BOs 
-        Set<ActionAttributeBo> attrs = new HashSet<ActionAttributeBo>();
+        // build the list of action attribute BOs
+        List<ActionAttributeBo> attrs = new ArrayList<ActionAttributeBo>();
 
         // for each converted pair, build an ActionAttributeBo and add it to the set
         for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
@@ -259,11 +257,11 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
         this.versionNumber = versionNumber;
     }
 
-    public Set<ActionAttributeBo> getAttributeBos() {
+    public List<ActionAttributeBo> getAttributeBos() {
         return attributeBos;
     }
 
-    public void setAttributeBos(Set<ActionAttributeBo> attributeBos) {
+    public void setAttributeBos(List<ActionAttributeBo> attributeBos) {
         this.attributeBos = attributeBos;
     }
 }

@@ -22,7 +22,6 @@ import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,10 +30,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 public final class RuleBoServiceImpl implements RuleBoService {
 
@@ -96,18 +96,82 @@ public final class RuleBoServiceImpl implements RuleBoService {
             toUpdate = rule;
         }
 
-        // copy all updateable fields to bo
         RuleBo boToUpdate = RuleBo.from(toUpdate);
-        updateActionAttributes(boToUpdate.getActions());
-
-        // delete any old, existing attributes
-        Map<String,String> fields = new HashMap<String,String>(1);
-        fields.put(PropertyNames.Rule.RULE_ID, toUpdate.getId());
-        deleteMatching(dataObjectService, RuleAttributeBo.class, fields);
+        reconcileActionAttributes(boToUpdate.getActions(), existing.getActions());
 
         // update the rule and create new attributes
         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
+
+    /**
+     * Transfer any ActionAttributeBos that still apply from the existing actions, while updating their values.
+     *
+     * <p>This method is side effecting, it replaces elements in the passed in toUpdateActionBos collection. </p>
+     *
+     * @param toUpdateActionBos the new ActionBos which will (later) be persisted
+     * @param existingActionBos the ActionBos which have been fetched from the database
+     */
+    private void reconcileActionAttributes(List<ActionBo> toUpdateActionBos, List<ActionBo> existingActionBos) {
+        for (ActionBo toUpdateAction : toUpdateActionBos) {
+
+            ActionBo matchingExistingAction = findMatchingExistingAction(toUpdateAction, existingActionBos);
+
+            if (matchingExistingAction == null) { continue; }
+
+            ListIterator<ActionAttributeBo> toUpdateAttributesIter = toUpdateAction.getAttributeBos().listIterator();
+
+            while (toUpdateAttributesIter.hasNext()) {
+                ActionAttributeBo toUpdateAttribute = toUpdateAttributesIter.next();
+
+                ActionAttributeBo matchingExistingAttribute =
+                        findMatchingExistingAttribute(toUpdateAttribute, matchingExistingAction.getAttributeBos());
+
+                if (matchingExistingAttribute == null) { continue; }
+
+                // set the new value into the existing attribute, then replace the new attribute with the existing one
+                matchingExistingAttribute.setValue(toUpdateAttribute.getValue());
+                toUpdateAttributesIter.set(matchingExistingAttribute);
+            }
+        }
+    }
+
+    /**
+     * Returns the action in existingActionBos that has the same ID as existingAction, or null if none matches.
+     *
+     * @param toUpdateAction
+     * @param existingActionBos
+     * @return the matching action, or null if none match.
+     */
+    private ActionBo findMatchingExistingAction(ActionBo toUpdateAction, List<ActionBo> existingActionBos) {
+        for (ActionBo existingAction : existingActionBos) {
+            if (existingAction.getId().equals(toUpdateAction.getId())) {
+                return existingAction;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the attribute in existingAttributeBos that has the same attributeDefinitionId as toUpdateAttribute, or
+     * null if none matches.
+     *
+     * @param toUpdateAttribute
+     * @param existingAttributeBos
+     * @return the matching attribute, or null if none match.
+     */
+    private ActionAttributeBo findMatchingExistingAttribute(ActionAttributeBo toUpdateAttribute,
+            List<ActionAttributeBo> existingAttributeBos) {
+        for (ActionAttributeBo existingAttribute : existingAttributeBos) {
+            if (existingAttribute.getAttributeDefinitionId().equals(toUpdateAttribute.getAttributeDefinitionId())) {
+                return existingAttribute;
+            }
+        }
+
+        return null;
+    }
+
+
 
     @Override
     public void deleteRule(String ruleId) {
@@ -233,6 +297,7 @@ public final class RuleBoServiceImpl implements RuleBoService {
                 }
             }
         }
+
         return attributes;
     }
 
@@ -274,26 +339,8 @@ public final class RuleBoServiceImpl implements RuleBoService {
         for (ActionDefinition actionDefinition : im.getActions()) {
             actions.add(ActionBo.from(actionDefinition));
         }
-        updateActionAttributes(actions);
 
         return actions;
-    }
-
-    private void updateActionAttributes(List<ActionBo> actionBos) {
-        for (ActionBo action : actionBos) {
-            for (ActionAttributeBo aa : action.getAttributeBos()) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("action.id", action.getId());
-                Collection<ActionAttributeBo> aaBos = findMatching(dataObjectService, ActionAttributeBo.class, map);
-
-                for (ActionAttributeBo aaBo : aaBos) {
-                    if (StringUtils.equals(aaBo.getAttributeDefinitionId(), aa.getAttributeDefinitionId())) {
-                        aa.setId(aaBo.getId());
-                        aa.setVersionNumber(aaBo.getVersionNumber());
-                    }
-                }
-            }
-        }
     }
 
     /**

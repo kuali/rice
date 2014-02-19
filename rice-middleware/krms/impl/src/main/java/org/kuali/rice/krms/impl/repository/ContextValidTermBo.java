@@ -17,9 +17,9 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -43,14 +43,11 @@ public class ContextValidTermBo implements Serializable {
     @Column(name = "CNTXT_ID")
     private String contextId;
 
-    @Column(name = "TERM_SPEC_ID")
-    private String termSpecificationId;
-
     @Transient
     private Boolean prereq;
 
-    @ManyToOne(targetEntity = TermSpecificationBo.class, cascade = { CascadeType.REFRESH })
-    @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID")
     private TermSpecificationBo termSpecification;
 
     public String getId() {
@@ -70,11 +67,11 @@ public class ContextValidTermBo implements Serializable {
     }
 
     public String getTermSpecificationId() {
-        return termSpecificationId;
-    }
+        if (termSpecification != null) {
+            return termSpecification.getId();
+        }
 
-    public void setTermSpecificationId(String termSpecificationId) {
-        this.termSpecificationId = termSpecificationId;
+        return null;
     }
 
     public Boolean getPrereq() {

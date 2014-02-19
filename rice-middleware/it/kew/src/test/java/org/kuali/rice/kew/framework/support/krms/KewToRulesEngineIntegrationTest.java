@@ -172,7 +172,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setName("PeopleFlowApprovalAction");
         peopleFlowAction.setSequenceNumber(1);
         peopleFlowAction.setTypeId(actionType.getId());
-        Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
+        List<ActionAttributeBo> actionAttributes = new ArrayList<ActionAttributeBo>();
         peopleFlowAction.setAttributeBos(actionAttributes);
         peopleFlowAction.setRule(rule);
 
@@ -372,7 +372,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setName("PeopleFlowApprovalAction2");
         peopleFlowAction.setSequenceNumber(2);
         peopleFlowAction.setTypeId(approvalPeopleFlowActionType.getId());
-        Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
+        List<ActionAttributeBo> actionAttributes = new ArrayList<ActionAttributeBo>();
         peopleFlowAction.setAttributeBos(actionAttributes);
         peopleFlowAction.setRule(ruleBo);
         ActionAttributeBo actionAttribute = new ActionAttributeBo();

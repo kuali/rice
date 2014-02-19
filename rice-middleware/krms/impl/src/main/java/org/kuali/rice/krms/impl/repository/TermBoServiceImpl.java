@@ -68,7 +68,7 @@ public class TermBoServiceImpl implements TermBoService {
         if (termSpecificationBo != null) {
             List<ContextValidTermBo> contextValidTermBos =
                     findMatching(dataObjectService, ContextValidTermBo.class,
-                            Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
+                            Collections.singletonMap("termSpecification.id", termSpecificationBo.getId()));
 
             if (contextValidTermBos != null) for (ContextValidTermBo contextValidTerm : contextValidTermBos) {
                 termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
@@ -91,17 +91,18 @@ public class TermBoServiceImpl implements TermBoService {
 
         TermSpecificationBo termSpecBo = TermSpecificationBo.from(termSpec);
 
-        termSpecBo = dataObjectService.save(termSpecBo, PersistenceOption.FLUSH);
-
         // save relations to the contexts on the BO
         if (!CollectionUtils.isEmpty(termSpec.getContextIds())) {
             for (String contextId : termSpec.getContextIds()) {
                 ContextValidTermBo contextValidTerm = new ContextValidTermBo();
                 contextValidTerm.setContextId(contextId);
-                contextValidTerm.setTermSpecificationId(termSpecBo.getId());
-                contextValidTerm = dataObjectService.save(contextValidTerm, PersistenceOption.FLUSH);
+                contextValidTerm.setTermSpecification(termSpecBo);
+
+                termSpecBo.getContextValidTerms().add(contextValidTerm);
             }
         }
+
+        termSpecBo = dataObjectService.save(termSpecBo, PersistenceOption.FLUSH);
 
         return TermSpecificationBo.to(termSpecBo);
     }
@@ -133,10 +134,51 @@ public class TermBoServiceImpl implements TermBoService {
 
         // copy all updateable fields to bo
         TermSpecificationBo boToUpdate = TermSpecificationBo.from(toUpdate);
+        reconcileContextValidTerms(existing, boToUpdate);
 
         // update the rule and create new attributes
         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
 
+    }
+
+    /**
+     * Transfer any ContextValidTermBos that still apply from existing to boToUpdate, and create new ContextValidTermBos
+     * for any new context IDs that are found in boToUpdate.
+     *
+     * <p>This method is side effecting, it makes modifications to boToUpdate.contextValidTerms. </p>
+     *
+     * @param existing the TermSpecificationBo which has been fetched from the database
+     * @param boToUpdate the new TermSpecificationBo which will (later) be persisted
+     */
+    private void reconcileContextValidTerms(TermSpecificationBo existing,
+            TermSpecificationBo boToUpdate) {
+
+        // add all contextValidTerms that still apply
+        for (ContextValidTermBo contextValidTerm : existing.getContextValidTerms()) {
+            if (boToUpdate.getContextIds().contains(contextValidTerm.getContextId())) {
+                boToUpdate.getContextValidTerms().add(contextValidTerm);
+            }
+        }
+
+        // add new contextValidTerms for new context IDs
+        for (String contextId : boToUpdate.getContextIds()) {
+            boolean alreadyInContextValidTerms = false;
+
+            for (ContextValidTermBo contextValidTerm : boToUpdate.getContextValidTerms()) {
+                if (contextId.equals(contextValidTerm.getContextId())) {
+                    alreadyInContextValidTerms = true;
+                    break;
+                }
+            }
+
+            if (!alreadyInContextValidTerms) {
+                ContextValidTermBo contextValidTerm = new ContextValidTermBo();
+                contextValidTerm.setContextId(contextId);
+                contextValidTerm.setTermSpecification(boToUpdate);
+
+                boToUpdate.getContextValidTerms().add(contextValidTerm);
+            }
+        }
     }
 
     @Override

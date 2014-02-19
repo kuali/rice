@@ -20,26 +20,24 @@ import org.apache.cxf.common.util.CollectionUtils
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
-
 import org.junit.Test
 import org.kuali.rice.core.api.CoreConstants
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.core.api.resourceloader.ResourceLoader
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.action.ActionDefinition
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameter
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract
-import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition
-import org.kuali.rice.krad.data.DataObjectService
-import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo
+import org.kuali.rice.krms.api.repository.term.TermDefinition
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
 import javax.xml.namespace.QName
 
-import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.buildQueryResults;
 
 class RuleBoServiceImplTest {
 
@@ -117,7 +115,7 @@ class RuleBoServiceImplTest {
         // commenting out, this is causing some interference issues with other tests
         // attributeBo1.setAction( ActionBo.from(TEST_ACTION_DEF) )
 		attributeBo1.attributeDefinition = ADB1
-		Set<ActionAttributeBo> attrBos = [attributeBo1]
+		List<ActionAttributeBo> attrBos = [attributeBo1]
 				
 		// Create ActionBo
 		TEST_ACTION_BO = new ActionBo()
@@ -307,7 +305,6 @@ class RuleBoServiceImplTest {
 	@Test
 	void test_updateRule_success() {
 		mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_RULE_BO }
-		mockDataObjectService.demand.deleteMatching(1) { clazz, crit -> }
 		mockDataObjectService.demand.save { bo, opts -> bo }
 		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()

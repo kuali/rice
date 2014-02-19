@@ -18,9 +18,8 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -136,12 +135,12 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      * context is only added to a transient collection and the relationship will never be persisted.
      */
     @Override
-    public void processAfterAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine,
+    public void processAfterAddLine(ViewModel viewModel, Object addLine, String collectionId, String collectionPath,
             boolean isValidLine) {
-        super.processAfterAddLine(view, collectionGroup, model, addLine, isValidLine);
+        super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
 
         ContextBo addedContext = (ContextBo) addLine;
-        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)model).getDocument().getNewMaintainableObject().getDataObject();
+        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)viewModel).getDocument().getNewMaintainableObject().getDataObject();
 
         boolean alreadyHasContextValidTerm = false;
 
@@ -165,13 +164,14 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      * context is only removed from a transient collection and the severed relationship will never be persisted.
      */
     @Override
-    public void processCollectionDeleteLine(View view, Object model, String collectionPath, int lineIndex) {
-        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)model).getDocument().getNewMaintainableObject().getDataObject();
-        List<ContextBo> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+    public void processCollectionDeleteLine(ViewModel viewModel, String collectionId, String collectionPath,
+            int lineIndex) {
+        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)viewModel).getDocument().getNewMaintainableObject().getDataObject();
+        List<ContextBo> collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
 
         ContextBo context = collection.get(lineIndex);
 
-        super.processCollectionDeleteLine(view, model, collectionPath, lineIndex);
+        super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
 
         if (context == null) return;
 

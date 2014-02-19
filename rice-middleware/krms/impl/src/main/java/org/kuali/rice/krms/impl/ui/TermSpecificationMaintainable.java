@@ -131,16 +131,21 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     }
 
     /**
-     * Adds the given context to the persisted contextValidTerms collection on the data object.  Without this step, the
-     * context is only added to a transient collection and the relationship will never be persisted.
+     * For context addition, adds the item to the persisted contextValidTerms collection on the data object.
+     *
+     * <p>Without this step, the context is only added to a transient collection and the relationship will never be
+     * persisted. </p>
      */
     @Override
     public void processAfterAddLine(ViewModel viewModel, Object addLine, String collectionId, String collectionPath,
             boolean isValidLine) {
         super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
 
+        // we only want to do our custom processing if a context has been added
+        if (addLine == null || !(addLine instanceof ContextBo)) { return; }
+
         ContextBo addedContext = (ContextBo) addLine;
-        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)viewModel).getDocument().getNewMaintainableObject().getDataObject();
+        TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
 
         boolean alreadyHasContextValidTerm = false;
 
@@ -160,21 +165,26 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     }
 
     /**
-     * Removes the given context from the persisted contextValidTerms collection on the data object.  Without this step, the
-     * context is only removed from a transient collection and the severed relationship will never be persisted.
+     * For context removal, removes the given item from the persisted contextValidTerms collection on the data object.
+     *
+     * <p>Without this step, the context is only removed from a transient collection and the severed relationship will
+     * never be persisted. </p>
      */
     @Override
     public void processCollectionDeleteLine(ViewModel viewModel, String collectionId, String collectionPath,
             int lineIndex) {
-        TermSpecificationBo termSpec = (TermSpecificationBo)((MaintenanceDocumentForm)viewModel).getDocument().getNewMaintainableObject().getDataObject();
-        List<ContextBo> collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
-
-        ContextBo context = collection.get(lineIndex);
-
         super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
 
-        if (context == null) return;
+        List collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
+        Object deletedItem = collection.get(lineIndex);
 
+        // we only want to do our custom processing if a context has been deleted
+        if (deletedItem == null || !(deletedItem instanceof ContextBo)) { return; }
+
+        ContextBo context = (ContextBo) deletedItem;
+        TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
+
+        // find the context and remove it using the special powers of ListIterator
         ListIterator<ContextValidTermBo> contextValidTermListIter = termSpec.getContextValidTerms().listIterator();
         while (contextValidTermListIter.hasNext()) {
             ContextValidTermBo contextValidTerm = contextValidTermListIter.next();
@@ -184,6 +194,22 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
                 contextValidTermListIter.remove();
             }
         }
+    }
+
+    /**
+     * Pulls the data object out of the given form and returns it, casting it to the desired type.
+     *
+     * <p>Assumes that the form is actually a MaintenanceDocumentForm.  The
+     * form.document.newMaintainableObject.dataObject is returned.</p>
+     *
+     * @param form
+     * @param <T> the type of data object to return
+     * @return the data object
+     */
+    private static <T> T getDataObjectFromForm(ViewModel form) {
+        if (form == null) { return null; }
+
+        return (T) ((MaintenanceDocumentForm)form).getDocument().getNewMaintainableObject().getDataObject();
     }
 
     @Override

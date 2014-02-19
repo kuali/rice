@@ -19,7 +19,6 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.config.BasicModuleConfiguration;
 import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -60,7 +59,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ModuleConfiguration extends BasicModuleConfiguration implements InitializingBean, ApplicationContextAware {
+public class ModuleConfiguration implements InitializingBean, ApplicationContextAware {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ModuleConfiguration.class);
     /**
      * the module's namespace.
@@ -107,6 +106,8 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
      * the implementation of the data dictionary service to use for this module.
      */
 	protected DataDictionaryService dataDictionaryService;
+
+    protected List<Provider> providers = Collections.unmodifiableList(Collections.<Provider>emptyList());
 
     /**
      *  Constructor for a ModuleConfiguration.
@@ -365,6 +366,18 @@ public class ModuleConfiguration extends BasicModuleConfiguration implements Ini
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
+
+    /**
+     * Sets the list of providers for this module
+     * @param providers list of providers
+     */
+    public void setProviders(List<Provider> providers) {
+        this.providers = Collections.unmodifiableList(new ArrayList<Provider>(providers));
+    }
+
+    public List<Provider> getProviders() {
+        return providers;
+    }
 
 	/**
 	 * @return the dataDictionaryService

@@ -981,17 +981,6 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
  * @param columnId
  * @returns {boolean}
  */
-/**
- * Identifies if there are visible elements in data column.
- *
- * Currently determines visibility for action columns and uses
- * links, inputs, buttons or images as test. Should be expanded
- * later to include divs/spans with text.
- *
- * @param tableId
- * @param columnId
- * @returns {boolean}
- */
 function hasVisibleElementsInColumn(tableId, columnId) {
     var oTable = getDataTableHandle(tableId);
     var columns = jQuery(oTable).find('tbody td' + columnId);

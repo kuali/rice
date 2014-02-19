@@ -328,41 +328,41 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
      *
      */
     def transformIncludeMultipleLookupLineProperty(NodeBuilder builder, Node beanNode) {
+        String includeMultipleLookupLine = "";
         if(beanNode?.property?.findAll { "includeMultipleLookupLine".equals(it.@name) }?.size > 0) {
-            String includeMultipleLookupLine = beanNode?.property?.find  { "includeMultipleLookupLine".equals(it.@name) }.@value;
+            includeMultipleLookupLine = beanNode?.property?.find  { "includeMultipleLookupLine".equals(it.@name) }.@value;
+        }
+        if(includeMultipleLookupLine == null || !includeMultipleLookupLine.equalsIgnoreCase("false")) {
+            String dataObjectClassName = beanNode?.property?.find  { "sourceClassName".equals(it.@name) }?.@value;
 
-            if(includeMultipleLookupLine != null && includeMultipleLookupLine.equalsIgnoreCase("true")) {
-                String dataObjectClassName = beanNode?.property?.find  { "sourceClassName".equals(it.@name) }?.@value;
+            if(dataObjectClassName == null || dataObjectClassName.empty)   {
+                dataObjectClassName = beanNode?.property?.find  { "businessObjectClass".equals(it.@name) }.@value
+            }
+            def maintainableFieldsProperty = beanNode.property.find { "maintainableFields".equals(it.@name) };
+            String fieldConversion = "";
+            if (maintainableFieldsProperty) {
 
-                if(dataObjectClassName == null || dataObjectClassName.empty)   {
-                    dataObjectClassName = beanNode?.property?.find  { "businessObjectClass".equals(it.@name) }.@value
-                }
-                def maintainableFieldsProperty = beanNode.property.find { "maintainableFields".equals(it.@name) };
-                String fieldConversion = "";
-                if (maintainableFieldsProperty) {
-
-                    maintainableFieldsProperty.list.bean.each { fieldBean ->
-                        def attrPropMap = gatherPropertyTagsAndPropertyAttributes(fieldBean, ["*name":"name","*template":"template"]);
-                        String name = attrPropMap?.get("name");
-                        String template = attrPropMap?.get("template");
-                        if(template == null || name.equals(template))   {
-                            fieldConversion += name + ":" + name + ",";
-                        } else {
-                            fieldConversion += name + ":" + template + "," ;
-                        }
-                    }
-
-                    if(fieldConversion.length() > 1) {
-                        fieldConversion = fieldConversion.substring(0,fieldConversion.lastIndexOf(','))
+                maintainableFieldsProperty.list.bean.each { fieldBean ->
+                    def attrPropMap = gatherPropertyTagsAndPropertyAttributes(fieldBean, ["*name":"name","*template":"template"]);
+                    String name = attrPropMap?.get("name");
+                    String template = attrPropMap?.get("template");
+                    if(template == null || name.equals(template))   {
+                        fieldConversion += name + ":" + name + ",";
+                    } else {
+                        fieldConversion += name + ":" + template + "," ;
                     }
                 }
 
-                builder.property(name:"collectionLookup") {
-                    bean(parent:"Uif-CollectionQuickFinder") {
-                        property(name:"dataObjectClassName", value:dataObjectClassName )
-                        property(name:"fieldConversions", value:fieldConversion )
+                if(fieldConversion.length() > 1) {
+                    fieldConversion = fieldConversion.substring(0,fieldConversion.lastIndexOf(','))
+                }
+            }
 
-                    }
+            builder.property(name:"collectionLookup") {
+                bean(parent:"Uif-CollectionQuickFinder") {
+                    property(name:"dataObjectClassName", value:dataObjectClassName )
+                    property(name:"fieldConversions", value:fieldConversion )
+
                 }
             }
         }

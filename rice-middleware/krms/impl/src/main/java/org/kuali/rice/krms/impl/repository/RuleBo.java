@@ -148,7 +148,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
 
         for (RuleAttributeBo attr : attributeBos) {
             DataObjectService dataObjectService = KRADServiceLocator.getDataObjectService();
-            dataObjectService.wrap(attr).fetchRelationship("attributeDefinition");
+            dataObjectService.wrap(attr).fetchRelationship("attributeDefinition", false, true);
             attributes.put(attr.getAttributeDefinition().getName(), attr.getValue());
         }
 

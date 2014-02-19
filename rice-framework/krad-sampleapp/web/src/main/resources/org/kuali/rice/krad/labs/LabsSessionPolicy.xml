@@ -136,7 +136,7 @@
               <property name="items">
                 <list>
                   <bean parent="Uif-ActionLink" p:methodToCall="refresh" p:actionLabel="Post Missing Form"
-                        p:preSubmitCall="jQuery('#formKey').val('99999999');return true;"/>
+                        p:preSubmitCall="jQuery(&quot;input[name='formKey']&quot;).val('99999999');return true;"/>
                 </list>
               </property>
             </bean>

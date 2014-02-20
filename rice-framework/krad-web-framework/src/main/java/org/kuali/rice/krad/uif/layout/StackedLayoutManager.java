@@ -176,6 +176,13 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      */
     List<Group> getStackedGroups();
 
+    /**
+     * Used by reflection during the lifecycle to get groups for the lifecycle when not using a wrapper group
+     *
+     * <p>There are no references to this method in the code, this is intentional.  DO NOT REMOVE.</p>
+     *
+     * @return the stacked groups, if any
+     */
     List<Group> getStackedGroupsNoWrapper();
 
     /**

@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -197,6 +198,50 @@ public class ViewLifecycle implements Serializable {
         }
 
         return postMetadata;
+    }
+
+    /**
+     * Indicates if the component the phase is being run on is a component being refreshed (if this is a full
+     * lifecycle this method will always return false).
+     *
+     * @return boolean true if the component is being refreshed, false if not
+     */
+    public static boolean isRefreshComponent(String viewPhase, String viewPath) {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return false;
+        }
+
+        return StringUtils.equals(getRefreshComponentPhasePath(viewPhase), viewPath);
+    }
+
+    /**
+     * When a refresh lifecycle is being processed, returns the phase path (path at the current phase) for
+     * the component being refreshed.
+     *
+     * @return path for refresh component at this phase, or null if this is not a refresh lifecycle
+     */
+    public static String getRefreshComponentPhasePath(String viewPhase) {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return null;
+        }
+
+        ComponentPostMetadata refreshComponentPostMetadata = ViewLifecycle.getRefreshComponentPostMetadata();
+        if (refreshComponentPostMetadata == null) {
+            return null;
+        }
+
+        String refreshPath = refreshComponentPostMetadata.getPath();
+        if (refreshComponentPostMetadata.getPhasePathMapping() != null) {
+            Map<String, String> phasePathMapping = refreshComponentPostMetadata.getPhasePathMapping();
+
+            // find the path for the element at this phase (if it was the same as the final path it will not be
+            // in the phase path mapping
+            if (phasePathMapping.containsKey(viewPhase)) {
+                refreshPath = phasePathMapping.get(viewPhase);
+            }
+        }
+
+        return refreshPath;
     }
 
     /**

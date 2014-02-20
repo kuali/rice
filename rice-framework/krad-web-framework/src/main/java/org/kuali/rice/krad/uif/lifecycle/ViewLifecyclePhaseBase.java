@@ -244,12 +244,12 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         boolean isPreProcessPhase = getViewPhase().equals(UifConstants.ViewPhases.PRE_PROCESS);
 
         // if the component is being refreshed its lifecycle should not be skipped
-        boolean isRefreshComponent = isRefreshComponent();
+        boolean isRefreshComponent = ViewLifecycle.isRefreshComponent(getViewPhase(), getViewPath());
 
         // if a child of this component is being refresh its lifecycle should not be skipped
         boolean includesRefreshComponent = false;
-        if (StringUtils.isNotBlank(getRefreshComponentPhasePath())) {
-            includesRefreshComponent = getRefreshComponentPhasePath().startsWith(getViewPath());
+        if (StringUtils.isNotBlank(ViewLifecycle.getRefreshComponentPhasePath(getViewPhase()))) {
+            includesRefreshComponent = ViewLifecycle.getRefreshComponentPhasePath(getViewPhase()).startsWith(getViewPath());
         }
 
         boolean skipLifecycle = false;
@@ -335,7 +335,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         if (ViewLifecycle.isRefreshLifecycle() && (refreshPaths != null)) {
             String currentPath = getViewPath();
 
-            boolean withinRefreshComponent = currentPath.startsWith(getRefreshComponentPhasePath());
+            boolean withinRefreshComponent = currentPath.startsWith(ViewLifecycle.getRefreshComponentPhasePath(getViewPhase()));
             if (withinRefreshComponent) {
                 initializeAllLifecycleSuccessors(successors);
             } else if (refreshPaths.contains(currentPath) || StringUtils.isBlank(currentPath)) {
@@ -463,49 +463,9 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
 
-    /**
-     * Indicates if the component the phase is being run on is a component being refreshed (if this is a full
-     * lifecycle this method will always return false).
-     *
-     * @return boolean true if the component is being refreshed, false if not
-     */
-    protected boolean isRefreshComponent() {
-        if (!ViewLifecycle.isRefreshLifecycle()) {
-            return false;
-        }
 
-        return StringUtils.equals(getRefreshComponentPhasePath(), getViewPath());
-    }
 
-    /**
-     * When a refresh lifecycle is being processed, returns the phase path (path at the current phase) for
-     * the component being refreshed.
-     *
-     * @return path for refresh component at this phase, or null if this is not a refresh lifecycle
-     */
-    protected String getRefreshComponentPhasePath() {
-        if (!ViewLifecycle.isRefreshLifecycle()) {
-            return null;
-        }
 
-        ComponentPostMetadata refreshComponentPostMetadata = ViewLifecycle.getRefreshComponentPostMetadata();
-        if (refreshComponentPostMetadata == null) {
-            return null;
-        }
-
-        String refreshPath = refreshComponentPostMetadata.getPath();
-        if (refreshComponentPostMetadata.getPhasePathMapping() != null) {
-            Map<String, String> phasePathMapping = refreshComponentPostMetadata.getPhasePathMapping();
-
-            // find the path for the element at this phase (if it was the same as the final path it will not be
-            // in the phase path mapping
-            if (phasePathMapping.containsKey(getViewPhase())) {
-                refreshPath = phasePathMapping.get(getViewPhase());
-            }
-        }
-
-        return refreshPath;
-    }
 
     /**
      * Notifies predecessors that this task has completed.

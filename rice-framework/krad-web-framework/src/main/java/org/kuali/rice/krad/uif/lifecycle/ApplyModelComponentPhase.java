@@ -201,7 +201,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, this));
 
-        if (isRefreshComponent()) {
+        if (ViewLifecycle.isRefreshComponent(getViewPhase(), getViewPath())) {
             tasks.add(LifecycleTaskFactory.getTask(RefreshStateModifyTask.class, this));
         }
 

@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -35,6 +29,7 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -44,6 +39,12 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
@@ -163,7 +164,7 @@ public class GroupBase extends ContainerBase implements Group {
      */
     @Override
     public void performInitialization(Object model) {
-        if (isAjaxDisclosureGroup()) {
+        if (isClosedAjaxDisclosure()) {
             this.setItems(new ArrayList<Component>());
             this.setFooter(null);
         }
@@ -410,15 +411,19 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @return true if this group has a Disclosure widget that is currently closed and using ajax disclosure
      */
-    protected boolean isAjaxDisclosureGroup() {
+    protected boolean isClosedAjaxDisclosure() {
         ViewModel model = (ViewModel) ViewLifecycle.getModel();
         View view = ViewLifecycle.getView();
 
+        if (this.getDisclosure() == null) {
+            return false;
+        }
+
         ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(this, false);
         // Evaluate the disclosure.defaultOpen expression early so that ajax disclosure mechanisms
-        // can take its state into account when replacing items with Placeholders in ContainerBase#performInitialization
+        // can take its state into account
         if (this.getDisclosure() != null && StringUtils.isNotBlank(this.getDisclosure().getPropertyExpression(
-                UifPropertyPaths.DEFAULT_OPEN))){
+                UifPropertyPaths.DEFAULT_OPEN))) {
             ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
             String expression = this.getDisclosure().getPropertyExpression(UifPropertyPaths.DEFAULT_OPEN);
@@ -428,15 +433,26 @@ public class GroupBase extends ContainerBase implements Group {
             ObjectPropertyUtils.setPropertyValue(this.getDisclosure(), UifPropertyPaths.DEFAULT_OPEN, expression);
         }
 
+        if (disclosure.getId() == null) {
+            disclosure.setId(AssignIdsTask.generateId(disclosure, view));
+        }
+
         // Ensure that the disclosure has the correct state before evaluate ajax-based placeholder replacement
         if (this.getDisclosure() != null) {
             KRADUtils.syncClientSideStateForComponent(this.getDisclosure(), model.getClientStateForSyncing());
         }
 
-        // This this will be replaced with a PlaceholderDisclosure group if it is not opened and the
-        // ajaxRetrievalWhenOpened option is set
-        return !this.isRetrieveViaAjax() && this.getDisclosure() != null && this.getDisclosure()
-                        .isAjaxRetrievalWhenOpened() && !this.getDisclosure().isDefaultOpen();
+        boolean closed = !this.getDisclosure().isDefaultOpen();
+
+        boolean open = (closed && ViewLifecycle.isRefreshComponent(ViewLifecycle.getPhase().getViewPhase(),
+                this.getViewPath())) || !closed;
+
+        if (open) {
+            this.getDisclosure().setDefaultOpen(true);
+        }
+
+        // Considered closed when not a retrieveViaAjax group and not set to open in this phase
+        return !this.isRetrieveViaAjax() && this.getDisclosure().isAjaxRetrievalWhenOpened() && !open;
     }
 
     /**

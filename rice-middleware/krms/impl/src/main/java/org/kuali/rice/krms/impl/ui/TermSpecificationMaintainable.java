@@ -54,7 +54,7 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         if (!CollectionUtils.isEmpty(termSpecificationBo.getContextValidTerms())) {
             for (ContextValidTermBo contextValidTerm : termSpecificationBo.getContextValidTerms()) {
                 ContextDefinition context =
-                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getTermSpecificationId());
+                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getContextId());
 
                 if (context != null) {
                     termSpecificationBo.getContexts().add(ContextBo.from(context));

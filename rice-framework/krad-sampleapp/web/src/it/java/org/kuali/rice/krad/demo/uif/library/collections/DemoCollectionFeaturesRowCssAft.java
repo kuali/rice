@@ -42,8 +42,8 @@ public class DemoCollectionFeaturesRowCssAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollectionFeaturesRowCss() throws Exception {
-      assertElementPresentByXpath("//table/tbody/tr[@class='demo-odd demo-all odd']");
-      assertElementPresentByXpath("//table/tbody/tr[@class='demo-even demo-all even']");
+      assertElementPresentByXpath("//table/tbody/tr[@class='demo-all demo-odd odd']");
+      assertElementPresentByXpath("//table/tbody/tr[@class='demo-all demo-even even']");
     }
     
     @Test

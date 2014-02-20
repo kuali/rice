@@ -66,11 +66,11 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersCssGridLayoutRowCss() throws Exception {
         selectByName("exampleShown", "Row Css");
-        waitForElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField17']");
-        assertElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField18']");
-        assertElementPresentByXpath("//div[@class='row demo-odd demo-border']/div/div/input[@name='inputField19']");
-        assertElementPresentByXpath("//div[@class='row demo-even demo-border']/div/div/input[@name='inputField20']");
-        assertElementPresentByXpath("//div[@class='row demo-even demo-border']/div/div/input[@name='inputField21']");
+        waitForElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField17']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField18']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField19']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/div/input[@name='inputField20']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/div/input[@name='inputField21']");
      }
     
     protected void testLayoutManagersCssGridLayoutDefaultColspan() throws Exception {

@@ -1201,7 +1201,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         testLookUp();
         assertTextPresent("Notes and Attachments");
         waitAndClick(By.xpath(CANCEL2_XPATH));
-        passed();
     }
 
     //    protected void deleteSubCollectionLine() throws Exception {

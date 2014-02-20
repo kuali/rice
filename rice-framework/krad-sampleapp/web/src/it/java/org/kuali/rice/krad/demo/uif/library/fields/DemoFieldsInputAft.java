@@ -92,18 +92,18 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         WebElement field = findElement(By.cssSelector("div[data-label='InputField 3']"), exampleDiv);
 
         String fieldId = field.getAttribute("id");
-        String instructionalTextId = fieldId + UifConstants.IdSuffixes.INSTRUCTIONAL + UifConstants.IdSuffixes.SPAN;
+        String instructionalTextId = fieldId + UifConstants.IdSuffixes.INSTRUCTIONAL;
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
 
         assertIsVisible("#" + instructionalTextId);
         assertTextPresent("Instructions for this field", "#" + instructionalTextId, "InputField value not correct");
 
         // validate that the instructional text comes after the label
-        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + span[id='" + instructionalTextId + "']"),
+        findElement(By.cssSelector("label[data-label_for='" + fieldId + "'] + p[id='" + instructionalTextId + "']"),
                 exampleDiv);
 
         // validate that the value comes after the instructional text
-        findElement(By.cssSelector("span[id='" + instructionalTextId + "'] + input[id='" + controlId + "']"),
+        findElement(By.cssSelector("p[id='" + instructionalTextId + "'] + input[id='" + controlId + "']"),
                 exampleDiv);
     }
 
@@ -113,7 +113,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-        String constraintTextId = fieldId + UifConstants.IdSuffixes.CONSTRAINT + UifConstants.IdSuffixes.SPAN;
+        String constraintTextId = fieldId + UifConstants.IdSuffixes.CONSTRAINT;
 
         assertIsVisible("#" + constraintTextId);
         assertTextPresent("Text to tell users about constraints this field may have", "#" + constraintTextId,
@@ -124,7 +124,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
                 exampleDiv);
 
         // validate that the constraint text comes after the value
-        findElement(By.cssSelector("input[id='" + controlId + "'] ~ span[id='" + constraintTextId + "']"), exampleDiv);
+        findElement(By.cssSelector("input[id='" + controlId + "'] ~ p[id='" + constraintTextId + "']"), exampleDiv);
     }
 
     protected void testInputFieldLabelTop() throws Exception {
@@ -302,15 +302,15 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         testInputFieldAltControl();
         testInputFieldInstructionalText();
         testInputFieldConstraintText();
-        testInputFieldLabelTop();
-        testInputFieldLabelRight();
+//        testInputFieldLabelTop(); // removed from example
+//        testInputFieldLabelRight(); // removed from example
         testInputFieldQuickfinder();
         testInputFieldWidgetInputOnlyWithQuickFinder();
-        testInputFieldInquiry();
-        testInputFieldRequired();
         testInputFieldUppercase();
         testInputFieldDisableNativeAutocomplete();
         testInputFieldInputAddons();
+        testInputFieldRequired();
+        testInputFieldInquiry();
     }
 
     @Test

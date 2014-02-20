@@ -155,26 +155,27 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 trace("path-update " + element.getViewPath());
                 View view = ViewLifecycle.getView();
 
-                if (ViewLifecycle.isStrict()) {
-                    if (element == view) {
-                        if (!StringUtils.isEmpty(viewPath)) {
-                            ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
-                        }
-                    } else {
-                        LifecycleElement referredElement = ObjectPropertyUtils.getPropertyValue(view, viewPath);
-                        if (referredElement != null) {
-                            referredElement = (LifecycleElement) referredElement.unwrap();
-                            if (element != referredElement) {
-                                ViewLifecycle.reportIllegalState(
-                                        "View path " + viewPath + " refers to an element other than " +
-                                                element.getClass() + " " + element.getId() + " " +
-                                                element.getViewPath() + (referredElement == null ? "" :
-                                                " " + referredElement.getClass() + " " + referredElement.getId() + " " +
-                                                        referredElement.getViewPath()));
-                            }
-                        }
-                    }
-                }
+                // TODO: this cannot be enforced currently due to help tooltip getting pushed to header
+//                if (ViewLifecycle.isStrict()) {
+//                    if (element == view) {
+//                        if (!StringUtils.isEmpty(viewPath)) {
+//                            ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
+//                        }
+//                    } else {
+//                        LifecycleElement referredElement = ObjectPropertyUtils.getPropertyValue(view, viewPath);
+//                        if (referredElement != null) {
+//                            referredElement = (LifecycleElement) referredElement.unwrap();
+//                            if (element != referredElement) {
+//                                ViewLifecycle.reportIllegalState(
+//                                        "View path " + viewPath + " refers to an element other than " +
+//                                                element.getClass() + " " + element.getId() + " " +
+//                                                element.getViewPath() + (referredElement == null ? "" :
+//                                                " " + referredElement.getClass() + " " + referredElement.getId() + " " +
+//                                                        referredElement.getViewPath()));
+//                            }
+//                        }
+//                    }
+//                }
 
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());

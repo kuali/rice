@@ -35,6 +35,7 @@ import org.kuali.rice.krad.datadictionary.Copyable;
 public class DelayedCopyableHandler implements InvocationHandler {
 
     private static final String COPY = "copy";
+    private static final String GET_VIEW_STATUS = "getViewStatus";
     
     private final Copyable original;
     private Copyable copy;
@@ -54,6 +55,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
         Class<?> returnType = method.getReturnType();
         boolean atomic = copy == null && (COPY.equals(methodName) ||
                 ((methodName.startsWith("get") || methodName.startsWith("is"))
+                        && !GET_VIEW_STATUS.equals(methodName)
                         && !Copyable.class.isAssignableFrom(returnType)
                         && !List.class.isAssignableFrom(returnType)
                         && !Map.class.isAssignableFrom(returnType)

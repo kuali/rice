@@ -107,7 +107,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             this.viewPath = parentViewPath + "." + path;
         }
 
-        this.element = element;
+        this.element = (LifecycleElement) element.unwrap();
         this.refreshPaths = refreshPaths;
         this.parent = parent;
         this.nextPhase = nextPhase;

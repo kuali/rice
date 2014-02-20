@@ -578,7 +578,11 @@ public class RichMessageTest extends KRADTestCase {
      * @param component
      */
     private void performSimulatedLifecycle(final Component component) {
-        ViewLifecycle.encapsulateLifecycle(view, component, null, null, new Runnable(){
+        if (model == null) {
+            model = new SampleForm();
+        }
+
+        ViewLifecycle.encapsulateLifecycle(view, model, null, null, new Runnable(){
             @Override
             public void run() {
                 component.performInitialization(model);

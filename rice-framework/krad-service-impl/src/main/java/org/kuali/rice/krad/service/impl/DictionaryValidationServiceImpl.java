@@ -570,14 +570,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         int pos = 0;
         Iterator<?> iterator = referenceCollection.iterator();
         while (iterator.hasNext()) {
             String pathToAttribute = StringUtils.defaultString(pathToAttributeI)
-                    + collectionName
-                    + "["
-                    + (pos++)
-                    + "].";
+                    + collectionName + "[" + (pos++) + "].";
             // keep drilling down until we reach the nested collection we want
             if (intermediateCollections.length > 0) {
                 success &= validateCollectionReferenceExistsAndIsActive(iterator.next(), reference, displayFieldName,
@@ -613,27 +611,23 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     attributeToHighlightOnFail, displayFieldName);
         }
 
-        boolean referenceExistsAndActive = true;
-        // only bother if all the fk fields have values
-        if (validateFkFieldsPopulated(dataObject, referenceName)) {
-            // do the existence test
-            if (validateReferenceExists(dataObject, referenceName)) {
-                // do the active test, if appropriate
-                if (!(dataObject instanceof Inactivatable) || ((Inactivatable) dataObject).isActive()) {
-                    if (!validateReferenceIsActive(dataObject, referenceName)) {
-                        GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail,
-                                RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
-                        referenceExistsAndActive = false;
-                    }
-                }
-            } else {
-                GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE,
-                        displayFieldName);
-                referenceExistsAndActive = false;
-            }
+        boolean hasReferences = validateFkFieldsPopulated(dataObject, referenceName);
+        boolean referenceExists = hasReferences && validateReferenceExists(dataObject, referenceName);
+        boolean canIncludeActiveReference = referenceExists && (!(dataObject instanceof Inactivatable) ||
+                ((Inactivatable) dataObject).isActive());
+        boolean referenceActive = canIncludeActiveReference && validateReferenceIsActive(dataObject, referenceName);
+
+        if(hasReferences && !referenceExists) {
+            GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE,
+                    displayFieldName);
+            return false;
+        } else if(canIncludeActiveReference && !referenceActive) {
+            GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE,
+                    displayFieldName);
+            return false;
         }
 
-        return referenceExistsAndActive;
+        return true;
     }
 
     private boolean validateFkFieldsPopulated(Object dataObject, String referenceName) {

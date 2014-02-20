@@ -38,10 +38,7 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 
@@ -564,34 +561,102 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Split parse path entry for supporting {@link ObjectPropertyUtils#splitPropertyPath(String)}. 
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class SplitPropertyPathEntry implements PathEntry {
+
+        /**
+         * Invoked at each path separator on the path.
+         * 
+         * <p>
+         * Note that {@link ObjectPathExpressionParser} strips quotes and brackets then treats
+         * list/map references as property names. However
+         * {@link ObjectPropertyUtils#splitPropertyPath(String)} expects that a list/map reference
+         * will be part of the path expression, as a reference to a specific element in a list or
+         * map related to the bean. Therefore, this method needs to rejoin these list/map references
+         * before returning.
+         * </p>
+         * 
+         * @param parentPath The portion of the path leading up to the current node.
+         * @param node The list of property names in the path.
+         * @param next The next property name being parsed.
+         * 
+         * {@inheritDoc}
+         */
+        @Override
+        public List<String> parse(String parentPath, Object node, String next) {
+            if (next == null) {
+                return new ArrayList<String>();
+            }
+
+            @SuppressWarnings("unchecked")
+            List<String> rv = (List<String>) node;
+            // First node, or no path separator in parent path.
+            if (rv.isEmpty()) {
+                rv.add(next);
+                return rv;
+            }
+            
+            rejoinTrailingIndexReference(rv, parentPath);
+            rv.add(next);
+            
+            return rv;
+        }
+    }
+    
+    private static final SplitPropertyPathEntry SPLIT_PROPERTY_PATH_ENTRY = new SplitPropertyPathEntry();
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
+     * Helper method for splitting property paths with bracketed index references.
+     * 
+     * <p>
+     * Since the parser treats index references as separate tokens, they need to be rejoined in order
+     * to be maintained as a single indexed property reference.  This method handles that operation.
+     * </p>
+     * 
+     * @param tokenList The list of tokens being parsed.
+     * @param path The portion of the path expression represented by the token list.
+     */
+    private static void rejoinTrailingIndexReference(List<String> tokenList, String path) {
+        int lastIndex = tokenList.size() - 1;
+        String lastToken = tokenList.get(lastIndex);
+        String lastParentToken = path.substring(path.lastIndexOf('.') + 1);
+        
+        if (!lastToken.equals(lastParentToken) && lastIndex > 0) {
+
+            // read back one more token and "concatenate" by
+            // recreating the subexpression as a substring of
+            // the parent path
+            String prevToken = tokenList.get(--lastIndex);
+            
+            // parent path index of last prevToken.
+            int iopt = path.lastIndexOf(prevToken, path.lastIndexOf(lastToken));
+            
+            String fullToken = path.substring(iopt);
+            tokenList.remove(lastIndex); // remove first entry
+            tokenList.set(lastIndex, fullToken); // replace send with concatenation
+        }
+    }
+    
+    /**
      * Splits the given property path into a string of property names that make up the path.
      *
      * @param path property path to split
      * @return string array of names, starting from the top parent
+     * @see SplitPropertyPathEntry#parse(String, Object, String)
      */
     public static String[] splitPropertyPath(String path) {
-        // we must escape dots within map keys before doing the split
-        Pattern pattern = Pattern.compile("(\\[(?:\"|')?)((?:\\w+\\.)+)(\\w+(?:\"|')?\\])");
-        Matcher matcher = pattern.matcher(path);
-
-        // replace dots in map keys with *, since that is not a valid character for paths
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(0) + StringUtils.replace(matcher.group(1), ".", "*") + matcher
-                    .group(2));
+        List<String> split = ObjectPathExpressionParser.parsePathExpression(null, path, SPLIT_PROPERTY_PATH_ENTRY);
+        if (split == null || split.isEmpty()) {
+            return EMPTY_STRING_ARRAY;
         }
-        matcher.appendTail(sb);
+        
+        rejoinTrailingIndexReference(split, path);
 
-        String escapedPath = sb.toString();
-
-        String[] paths = StringUtils.split(escapedPath, ".");
-
-        // put back dots within maps keys
-        for (int i = 0; i < paths.length; i++) {
-            paths[i] = StringUtils.replace(paths[i], "*", ".");
-        }
-
-        return paths;
+        return split.toArray(new String[split.size()]);
     }
     
     /**

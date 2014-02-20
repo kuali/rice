@@ -598,6 +598,12 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         assertEquals("foo1", splitPaths[1]);
         assertEquals("foo2", splitPaths[2]);
 
+        path = "foo[1]";
+        splitPaths = ObjectPropertyUtils.splitPropertyPath(path);
+
+        assertEquals(1, splitPaths.length);
+        assertEquals("foo[1]", splitPaths[0]);
+
         path = "foo.foo1['key.nested'].foo2";
         splitPaths = ObjectPropertyUtils.splitPropertyPath(path);
 

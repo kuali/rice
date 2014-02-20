@@ -253,7 +253,7 @@
         DOC_TYP_NM="TravelAccountTypeMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Account Type MaintenanceDocument"
-        OBJ_ID="6d54a537-9d51-4544-b5af-080104ca052d" PARNT_ID="2681"
+        OBJ_ID="58b4b085-f108-4066-a503-df30e489cd9b" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

@@ -95,8 +95,10 @@ public class SpringResourceLoader extends BaseResourceLoader {
 
 	@Override
 	public void stop() throws Exception {
-		LOG.info("Stopping Spring context " + StringUtils.join(this.fileLocs, ","));
-		this.context.close();
+		if (this.context != null) {
+	        LOG.info("Stopping Spring context " + StringUtils.join(this.fileLocs, ","));
+		    this.context.close();
+		}
 		super.stop();
 	}
 

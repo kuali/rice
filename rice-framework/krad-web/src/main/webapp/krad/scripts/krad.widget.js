@@ -801,7 +801,11 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         initBubblePopups();
 
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
-        jQuery(oTable).on("dataTables.tableDraw", function () {
+        jQuery(oTable).on("dataTables.tableDraw", function (event) {
+            if (event.currentTarget != event.target) {
+                return;
+            }
+
             runHiddenScripts(tableId, false, true);
             jQuery("div[data-role='InputField'][data-has_messages='true']", "#" + tableId).each(function () {
                 var id = jQuery(this).attr('id');
@@ -816,6 +820,10 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         //handle row details related functionality setup
         if (detailsOpen != undefined) {
             jQuery(oTable).on("dataTables.tableDraw", function () {
+                if (event.currentTarget != event.target) {
+                    return;
+                }
+
                 if (table.data("open")) {
                     openAllDetails(tableId);
                 }

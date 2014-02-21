@@ -450,6 +450,9 @@ function evalHiddenScript(jqueryObj) {
         return;
     }
 
+    jqueryObj.removeAttr("name");
+    jqueryObj.attr("script", "first_run");
+
     var js = jqueryObj.val();
     try {
         eval(js);
@@ -464,10 +467,6 @@ function evalHiddenScript(jqueryObj) {
     // cleanup script for non-dev modes
     if (scriptCleanup) {
         jqueryObj.remove();
-    }
-    else {
-        jqueryObj.attr("script", "first_run");
-        jqueryObj.removeAttr("name");
     }
 }
 

@@ -119,29 +119,45 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
             return false;
         }   // catch
     }
+    
+    protected void testEditFiscalOfficer() throws Exception {
+    	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
+    	waitAndClickButtonByText("blanket approve");
+    	navigate();
+    	if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='eric']"))
+    	{
+    		jiraAwareFail("Fiscal Officer Not Changed");
+    	}
+    }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
+    }
+    
+    @Test
+    public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
+    	testEditFiscalOfficer();
     }
 
 }

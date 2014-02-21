@@ -730,7 +730,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
     jQuery(document).ready(function () {
         var table = jQuery("#" + tableId);
 
-        var detailsOpen = table.parent().data("detailsdefaultopen");
+        var detailsOpen = table.parent().data("details_default_open");
         table.data("open", detailsOpen);
 
         if (groupingOptions) {

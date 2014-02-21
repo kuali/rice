@@ -106,7 +106,6 @@
     <property name="layoutManager.renderSequenceField" value="true"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="readOnly" value="false"/>
-    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <!--Cant figure out how to get this to work at this time
        <property name="layoutManager.separateAddLine" value="true"/>
 <property name="layoutManager.addLineGroup.items">
@@ -235,7 +234,9 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list5"/>
-    <property name="readOnly" value="true"/>
+    <property name="readOnly"  value="true"/>
+    <property name="layoutManager.rowDetailsOpen" value="true"/>
+    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.expandDetailsActionPrototype">
       <bean parent="Uif-ExpandDetailsImageAction"/>
@@ -396,8 +397,6 @@
     <property name="propertyName" value="list1"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="readOnly" value="false"/>
-    <property name="layoutManager.rowDetailsOpen" value="true"/>
-    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">

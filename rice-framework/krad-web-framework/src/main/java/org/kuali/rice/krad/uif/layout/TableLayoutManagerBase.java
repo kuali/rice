@@ -280,6 +280,12 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
+
+        // Add toggle all details action data in applicable
+        if (toggleAllDetailsAction != null) {
+            toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
+            toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
+        }
     }
 
     /**
@@ -1519,9 +1525,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         collectionGroup.addDataAttribute(UifConstants.DataAttributes.DETAILS_DEFAULT_OPEN, Boolean.toString(
                 this.rowDetailsOpen));
 
-        toggleAllDetailsAction.addDataAttribute("open", Boolean.toString(this.rowDetailsOpen));
-        toggleAllDetailsAction.addDataAttribute("tableid", this.getId());
-
         FieldGroup detailsFieldGroup = ComponentFactory.getFieldGroup();
 
         TreeMap<String, String> dataAttributes = new TreeMap<String, String>();
@@ -1545,7 +1548,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
         this.getRowDetailsGroup().setHidden(true);
 
-        if (ajaxDetailsRetrieval) {
+        if (ajaxDetailsRetrieval && !this.rowDetailsOpen) {
             this.getRowDetailsGroup().setRetrieveViaAjax(true);
         }
         

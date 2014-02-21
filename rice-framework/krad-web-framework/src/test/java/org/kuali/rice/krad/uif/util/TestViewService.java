@@ -17,8 +17,10 @@ package org.kuali.rice.krad.uif.util;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
@@ -30,6 +32,8 @@ import org.kuali.rice.krad.uif.view.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestViewService implements ViewService, Lifecycle {
+    
+    private static final Logger LOG = Logger.getLogger(TestViewService.class);
 
     private boolean running;
     private DataDictionary dataDictionary;
@@ -53,7 +57,11 @@ public class TestViewService implements ViewService, Lifecycle {
      */
     @Override
     public void start() {
-        dataDictionary.parseDataDictionaryConfigurationFiles(false);
+        try {
+            dataDictionary.parseDataDictionaryConfigurationFiles(false);
+        } catch (DataDictionaryException e) {
+            LOG.error("Error initializing data dictionary", e);
+        }
         running = true;
     }
 

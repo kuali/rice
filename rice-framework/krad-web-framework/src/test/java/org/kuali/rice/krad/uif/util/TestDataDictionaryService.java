@@ -26,6 +26,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.junit.Assume;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -49,6 +51,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.view.View;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 /**
  * Data dictionary service for unit testing.
@@ -57,6 +60,8 @@ import org.kuali.rice.krad.uif.view.View;
  */
 public class TestDataDictionaryService implements DataDictionaryService {
 
+    private static final Logger LOG = Logger.getLogger(TestDataDictionaryService.class);
+    
     private DataDictionary dataDictionary;
 
     /**
@@ -911,7 +916,12 @@ public class TestDataDictionaryService implements DataDictionaryService {
      */
     @Override
     public Object getDictionaryBean(String id) {
-        return dataDictionary.getDictionaryBean(id);
+        try {
+            return dataDictionary.getDictionaryBean(id);
+        } catch (NoSuchBeanDefinitionException e) {
+            Assume.assumeNoException("Missing testing resources,  skipping", e);
+            return null;
+        }
     }
 
     /**

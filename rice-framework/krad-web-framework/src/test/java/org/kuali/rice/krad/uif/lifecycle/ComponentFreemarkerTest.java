@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -51,7 +52,12 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
     public static void setUpClass() throws Throwable {
-        UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
+        try {
+            UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
+            ComponentFactory.getMessage();
+        } catch (Throwable t) {
+            Assume.assumeNoException("Skipping tests, resource setup failed", t);
+        }
     }
 
     @AfterClass

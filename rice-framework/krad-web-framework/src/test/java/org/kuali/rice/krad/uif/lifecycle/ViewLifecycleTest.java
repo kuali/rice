@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -68,7 +69,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
 
     @BeforeClass
     public static void setUpClass() throws Throwable {
-        UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
+        try {
+            UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
+        } catch (Throwable t) {
+            Assume.assumeNoException("Skipping tests, resource setup failed", t);
+        }
     }
 
     @Before

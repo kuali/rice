@@ -198,7 +198,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         String className = newMaintainableObject.getDataObject().getClass().getName();
         String truncatedClassName = className.substring(className.lastIndexOf('.') + 1);
         if (isOldDataObjectInDocument()) {
-            documentTitle = "Edit ";
+            if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(oldMaintainableObject.getMaintenanceAction())) {
+                documentTitle = "Copy ";
+            } else {
+                documentTitle = "Edit ";
+            }
         } else {
             documentTitle = "New ";
         }

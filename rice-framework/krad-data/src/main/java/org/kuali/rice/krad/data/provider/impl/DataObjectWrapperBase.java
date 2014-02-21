@@ -27,7 +27,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataChild;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;

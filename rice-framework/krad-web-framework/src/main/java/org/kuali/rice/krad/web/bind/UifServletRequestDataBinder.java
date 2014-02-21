@@ -21,7 +21,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.link.Link;
+import org.kuali.rice.krad.data.util.Link;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;

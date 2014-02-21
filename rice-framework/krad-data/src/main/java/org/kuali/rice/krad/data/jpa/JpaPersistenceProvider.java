@@ -25,15 +25,12 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.ChainedPersistenceExceptionTranslator;
@@ -68,7 +65,16 @@ import java.util.concurrent.Callable;
  */
 @Transactional
 public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryAware {
+
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
+
+    /**
+     * Indicates if a JPA {@code EntityManager} flush should be automatically executed when calling
+     * {@link org.kuali.rice.krad.data.DataObjectService#save(Object, org.kuali.rice.krad.data.PersistenceOption...)}
+     * using a JPA provider. This is recommended for testing only since the change is global and would affect all
+     * persistence units.
+     */
+    public static final String AUTO_FLUSH = "rice.krad.data.jpa.autoFlush";
 
     private EntityManager sharedEntityManager;
     private DataObjectService dataObjectService;
@@ -79,7 +85,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * Initialization-on-demand holder idiom for thread-safe lazy loading of configuration.
      */
     private static final class LazyConfigHolder {
-        private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(ConfigConstants.JPA_AUTO_FLUSH, false);
+        private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(AUTO_FLUSH, false);
     }
 
     public EntityManager getSharedEntityManager() {

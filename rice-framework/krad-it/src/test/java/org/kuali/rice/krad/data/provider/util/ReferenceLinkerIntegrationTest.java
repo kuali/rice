@@ -20,6 +20,7 @@ import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.conference.ConferenceSession;
 import org.kuali.rice.krad.test.conference.PresenterInfo;

@@ -15,24 +15,7 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.persistence.Converter;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.sql.DataSource;
-
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -64,6 +47,21 @@ import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 import org.springframework.util.ClassUtils;
+
+import javax.persistence.Converter;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
+import javax.persistence.spi.PersistenceProvider;
+import javax.persistence.spi.PersistenceUnitInfo;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure a JPA
@@ -141,6 +139,27 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(KradEntityManagerFactoryBean.class);
+
+    /**
+     * Prefix for property names that are passed to the JPA persistence context as JPA properties.
+     *
+     * <p>To use this, concatenate this prefix with the persistence context name. The total prefix (including the
+     * persistence context) will then be stripped before being passed to the JPA entity manager factory when using
+     * the {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.</p>
+     *
+     * @see org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean
+     */
+    public static final String JPA_PROPERTY_PREFIX = "rice.krad.jpa.";
+
+    /**
+     * Prefix for property names that are passed to *all* JPA persistence contexts as JPA properties.
+     *
+     * <p>The total prefix will then be stripped before being passed to all JPA entity manager factories that use the
+     * {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.</p>
+     *
+     * @see org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean
+     */
+    public static final String GLOBAL_JPA_PROPERTY_PREFIX = JPA_PROPERTY_PREFIX + "global.";
 
     private static final boolean DEFAULT_EXCLUDE_UNLISTED_CLASSES = true;
     private static final String DEFAULT_CONVERTERS_PACKAGE = BooleanYNConverter.class.getPackage().getName();
@@ -240,7 +259,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     protected void loadGlobalJpaDefaults(Map<String, String> jpaProperties) {
-        jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(ConfigConstants.GLOBAL_JPA_PROPERTY_PREFIX,
+        jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(GLOBAL_JPA_PROPERTY_PREFIX,
                 true));
     }
 
@@ -250,7 +269,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     protected String constructPersistenceUnitJpaPropertyPrefix() {
-        return ConfigConstants.JPA_PROPERTY_PREFIX + getPersistenceUnitName() + ".";
+        return JPA_PROPERTY_PREFIX + getPersistenceUnitName() + ".";
     }
 
     protected PersistenceUnitPostProcessor[] assemblePersistenceUnitPostProcessors() {

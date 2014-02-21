@@ -17,7 +17,6 @@ package org.kuali.rice.krad.data.platform;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -56,6 +55,15 @@ import java.util.concurrent.ConcurrentMap;
 public final class MaxValueIncrementerFactory {
 
     private static final String ID_COLUMN_NAME = "ID";
+
+    /**
+     * Prefix for property names used to identify the classname for a
+     * {@link org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer} to use for a given platform.
+     * To construct a full property name, concatenate this prefix with the platform name.
+     *
+     * @see org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory
+     */
+    public static final String PLATFORM_INCREMENTER_PREFIX = "rice.krad.data.platform.incrementer.";
 
     private static final ConcurrentMap<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>> cache =
             new ConcurrentHashMap<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>>(8, 0.9f, 1);
@@ -151,7 +159,7 @@ public final class MaxValueIncrementerFactory {
             return null;
         }
         Map<String,String> incrementerPropToIncrementer = ConfigContext.getCurrentContextConfig().
-                                getPropertiesWithPrefix(ConfigConstants.PLATFORM_INCREMENTER_PREFIX, true);
+                                getPropertiesWithPrefix(PLATFORM_INCREMENTER_PREFIX, true);
         String platformNameVersion = platformInfo.getName().toLowerCase() + "." + platformInfo.getMajorVersion();
         String incrementerClassName = "";
 

@@ -13,31 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.config;
+package org.kuali.rice.krad.data.provider;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.provider.Provider;
-import org.kuali.rice.krad.data.provider.ProviderRegistry;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Provides method to register Providers outside of ModuleConfiguration
+ * Provides a mechanism for registering Providers in the {@link ProviderRegistry} using Spring.
+ *
+ * @see Provider
+ * @see ProviderRegistry
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ProviderRegistrationFactory implements InitializingBean{
-    private static final Logger LOG = Logger.getLogger(ProviderRegistrationFactory.class);
+public class ProviderRegistrar implements InitializingBean {
+
+    private static final Logger LOG = Logger.getLogger(ProviderRegistrar.class);
 
     protected ProviderRegistry providerRegistry;
 
-    @SuppressWarnings("unchecked")
-    protected List<Provider> providers = Collections.unmodifiableList(Collections.EMPTY_LIST);
+    protected List<Provider> providers = Collections.unmodifiableList(Collections.<Provider>emptyList());
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -75,4 +75,5 @@ public class ProviderRegistrationFactory implements InitializingBean{
     public void setProviderRegistry(ProviderRegistry providerRegistry) {
         this.providerRegistry = providerRegistry;
     }
+
 }

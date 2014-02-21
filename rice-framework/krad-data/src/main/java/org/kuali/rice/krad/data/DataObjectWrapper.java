@@ -189,11 +189,11 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
      * Executes reference linking using the wrapped object as the root and the set of changed paths.
      *
      * <p>Executes reference linker as per the algorithm described on
-     * {@link org.kuali.rice.krad.data.provider.util.ReferenceLinker}</p>
+     * {@link org.kuali.rice.krad.data.util.ReferenceLinker}</p>
      *
      * @param changedPropertyPaths the Set of changed property paths relative to the wrapped object
      *
-     * @see org.kuali.rice.krad.data.provider.util.ReferenceLinker#linkChanges(Object, java.util.Set)
+     * @see org.kuali.rice.krad.data.util.ReferenceLinker#linkChanges(Object, java.util.Set)
      */
     void linkChanges(Set<String> changedPropertyPaths);
 

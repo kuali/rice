@@ -43,7 +43,7 @@
         p:providerRegistry-ref="kd-providerRegistry"/>
 
   <bean id="kd-referenceLinker"
-        class="org.kuali.rice.krad.data.provider.util.ReferenceLinker"
+        class="org.kuali.rice.krad.data.util.ReferenceLinker"
         p:dataObjectService-ref="kd-dataObjectService"/>
 
 </beans>

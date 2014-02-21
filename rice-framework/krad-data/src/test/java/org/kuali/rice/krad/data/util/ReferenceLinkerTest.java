@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.provider.util;
+
+package org.kuali.rice.krad.data.util;
 
 import junit.framework.TestCase;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Unit test for {@link org.kuali.rice.krad.data.provider.util.ReferenceLinker}.
+ * Unit test for {@link org.kuali.rice.krad.data.util.ReferenceLinker}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -27,7 +27,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 

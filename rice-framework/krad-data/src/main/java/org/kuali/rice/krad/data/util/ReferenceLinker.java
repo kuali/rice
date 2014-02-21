@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.provider.util;
+package org.kuali.rice.krad.data.util;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
-import org.kuali.rice.krad.data.link.Link;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;

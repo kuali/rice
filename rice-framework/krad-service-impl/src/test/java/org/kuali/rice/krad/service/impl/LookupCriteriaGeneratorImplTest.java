@@ -27,7 +27,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.impl.DataObjectWrapperBase;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.mockito.InjectMocks;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.data.config;
+package org.kuali.rice.krad.data;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.BeanFactoryResourceLoader;
@@ -24,6 +24,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.xml.namespace.QName;
 
+/**
+ * A factory bean which load and/or acquires a reference to the data framework.
+ *
+ * <p>Will lazy-initialize the framework if it's not already been initialized. The factory bean will return a reference
+ * the {@link DataObjectService} which is the main API entry point into the data framework.</p>
+ *
+ * @see DataObjectService
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class KradDataFactoryBean implements FactoryBean<DataObjectService> {
 
     private static final String SPRING_FILE = "classpath:org/kuali/rice/krad/data/config/KRADDataSpringBeans.xml";

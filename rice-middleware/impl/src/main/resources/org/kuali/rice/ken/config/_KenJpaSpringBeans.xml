@@ -96,7 +96,7 @@
 		</property>
 	</bean>
 
-  <bean id="org.kuali.rice.ken.providerRegister" class="org.kuali.rice.krad.data.config.ProviderRegistrationFactory">
+  <bean id="org.kuali.rice.ken.providerRegister" class="org.kuali.rice.krad.data.provider.ProviderRegistrar">
     <property name="providerRegistry" ref="providerRegistry" />
     <property name="providers">
       <util:list>

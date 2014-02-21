@@ -32,7 +32,6 @@ import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.data.link.Link;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.datadictionary.WorkflowProperties;

@@ -113,6 +113,18 @@
 			<name>SearchAttributeIndexTestRuleTemplateLevel3</name>
 			<description>Search Attribute Index Test Template</description>
 		</ruleTemplate>
+    <ruleTemplate allowOverwrite="true">
+      <name>SearchAttributeIndexTestRuleTemplateLevel1Ojb</name>
+      <description>Search Attribute Index Test Document Ojb Template</description>
+    </ruleTemplate>
+    <ruleTemplate allowOverwrite="true">
+      <name>SearchAttributeIndexTestRuleTemplateLevel2Ojb</name>
+      <description>Search Attribute Index Test Ojb Template</description>
+    </ruleTemplate>
+    <ruleTemplate allowOverwrite="true">
+      <name>SearchAttributeIndexTestRuleTemplateLevel3Ojb</name>
+      <description>Search Attribute Index Test Ojb Template</description>
+    </ruleTemplate>
 	</ruleTemplates>
 
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
@@ -406,6 +418,47 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+    <documentType>
+      <name>SearchAttributeIndexTestDocumentOjb</name>
+      <parent>RiceDocument</parent>
+      <description>Test document for search attribute indexing</description>
+      <label>Search Attribute Indexing test document</label>
+      <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>none</docHandler>
+      <attributes>
+        <attribute>
+          <name>TestDataDictionarySearchableAttribute</name>
+        </attribute>
+      </attributes>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="Level1" />
+          <requests name="Level1" nextNode="Level2" />
+          <requests name="Level2" nextNode="Level3" />
+          <requests name="Level3" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+        <requests name="Level1">
+          <activationType>S</activationType>
+          <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel1Ojb</ruleTemplate>
+        </requests>
+        <requests name="Level2">
+          <activationType>S</activationType>
+          <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel2Ojb</ruleTemplate>
+        </requests>
+        <requests name="Level3">
+          <activationType>S</activationType>
+          <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel3Ojb</ruleTemplate>
+        </requests>
+      </routeNodes>
+    </documentType>
      <documentType>
       <name>CountryMaintenanceDocument</name>
       <parent>RiceDocument</parent>
@@ -569,5 +622,44 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
+    <rule>
+      <documentType>SearchAttributeIndexTestDocumentOjb</documentType>
+      <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel1Ojb</ruleTemplate>
+      <description>SearchAttributeIndexTestRuleTemplateLevel1Ojb</description>
+      <forceAction>false</forceAction>
+      <responsibilities>
+        <responsibility>
+          <user>user1</user>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+    <rule>
+      <documentType>SearchAttributeIndexTestDocumentOjb</documentType>
+      <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel2Ojb</ruleTemplate>
+      <description>SearchAttributeIndexTestRuleTemplateLevel2Ojb</description>
+      <forceAction>false</forceAction>
+      <responsibilities>
+        <responsibility>
+          <user>user2</user>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
+    <rule>
+      <documentType>SearchAttributeIndexTestDocumentOjb</documentType>
+      <ruleTemplate>SearchAttributeIndexTestRuleTemplateLevel3Ojb</ruleTemplate>
+      <description>SearchAttributeIndexTestRuleTemplateLevel3Ojb</description>
+      <forceAction>false</forceAction>
+      <responsibilities>
+        <responsibility>
+          <user>user3</user>
+          <actionRequested>A</actionRequested>
+          <priority>1</priority>
+        </responsibility>
+      </responsibilities>
+    </rule>
 	</rules>
 </data>

@@ -128,6 +128,7 @@
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocumentOjb.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/TravelAccountUseRate.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/TravelAuthorizationDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountType2MaintenanceDocument.xml</value>

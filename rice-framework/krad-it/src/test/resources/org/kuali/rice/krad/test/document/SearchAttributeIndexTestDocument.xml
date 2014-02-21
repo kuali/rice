@@ -18,7 +18,7 @@
 -->
 	<bean id="SearchAttributeIndexTestDocument" parent="SearchAttributeIndexTestDocument-parentBean"/>
 
-	<bean id="SearchAttributeIndexTestDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
+	<bean id="SearchAttributeIndexTestDocument-parentBean" abstract="true" parent="uifTransactionalDocumentEntry">
 		<property name="documentTypeName" value="SearchAttributeIndexTestDocument"/>
 		<property name="documentClass" value="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument"/>
 		<property name="businessRulesClass" value="org.kuali.rice.krad.rules.TransactionalDocumentRuleBase" />

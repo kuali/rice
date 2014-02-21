@@ -19,7 +19,11 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * 
+ * Converts active/inactive represented by the characters "A" and "I" to and from boolean.
+ *
+ * <p>The conversion treats the values as follows: "A" is true and "I" is false.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class BooleanAIConverter implements AttributeConverter<Boolean, String> {

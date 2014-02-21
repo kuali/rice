@@ -22,7 +22,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * 
+ * Converts true/false represented by the characters "Y" and "N" to and from boolean.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter(
 		autoApply = true)

@@ -115,7 +115,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Description" p:style="width: 40%;">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Description" p:style="max-width: 600px;">
           <property name="items">
             <list>
               <bean parent="Uif-LinkField" p:href="javascript:void(0)"
@@ -167,7 +167,7 @@
   <bean id="transactionDetailFields1" parent="Uif-HorizontalBoxGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-GridSection" p:style="width: 40%;">
+        <bean parent="Uif-GridSection" p:style="max-width: 600px;">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="transactionDisplayType" p:label="Transaction Type">

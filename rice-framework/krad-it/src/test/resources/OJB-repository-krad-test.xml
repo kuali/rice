@@ -158,4 +158,9 @@
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
   </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.krad.test.document.OjbAndJpa" table="KR_KIM_TEST_BO">
+    <field-descriptor name="primaryKey" column="PK" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+  </class-descriptor>
+
 </descriptor-repository>

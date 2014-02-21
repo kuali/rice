@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Convert;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 @Entity
 @Table(name = "KRIM_PERM_T")
@@ -39,31 +41,28 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     @Column(name = "PERM_ID")
     protected String id;
 
-    @Transient
+    @Column(name = "NMSPC_CD")
     protected String namespaceCode;
 
-    @Transient
+    @Column(name = "NM")
     protected String name;
 
-    @Transient
+    @Column(name = "DESC_TXT")
     protected String description;
 
-    @Transient
+    @Column(name = "ACTV_IND")
+    @Convert(converter = BooleanYNConverter.class)
     protected boolean active;
 
-    @Transient
+    @Column(name = "PERM_TMPL_ID")
     protected String templateId;
 
-    @Transient
     protected String detailValues;
 
-    @Transient
     protected Map<String, String> details;
 
-    @Transient
     protected PermissionTemplateBo template = new PermissionTemplateBo();
 
-    @Transient
     protected List<PermissionAttributeBo> attributeDetails;
 
     /**

@@ -39,11 +39,11 @@ public class TravelAccountController extends MaintenanceDocumentController {
     @Override
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-
         String dialog = "TravelAccount-RouteConfirmationDialog";
         if (!hasDialogBeenAnswered(dialog, form)) {
             return showDialog(dialog, form, request, response);
         }
+
         boolean dialogAnswer = getBooleanDialogResponse(dialog, form, request, response);
         if (dialogAnswer) {
             return super.route(form, result, request, response);
@@ -51,6 +51,5 @@ public class TravelAccountController extends MaintenanceDocumentController {
             resetDialogStatus(dialog, form);
             return getUIFModelAndView(form);
         }
-
     }
 }

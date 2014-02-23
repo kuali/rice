@@ -630,7 +630,7 @@ public final class KRADUtils {
      * @param parameters - map of request parameters with field values as String for the fields in the dataObjectClass
      * @return Map <String,Object> converted values
      */
-    public static Map<String, Object> hydrateRequestParametersForJPA (Class<?> dataObjectClass,
+    public static Map<String, Object> coerceRequestParameterTypes(Class<?> dataObjectClass,
             Map<String, String> parameters) {
         Map<String, Object> filteredFieldValues = new HashMap<String, Object>();
         List<java.lang.reflect.Field> allFields = ObjectPropertyUtils.getAllFields(
@@ -656,15 +656,15 @@ public final class KRADUtils {
                 if(convertAnnotationFound) {
                     filteredFieldValues.put(fieldName, Truth.strToBooleanIgnoreCase(strValue));
                 }
-            } else if (TypeUtils.isDecimalClass(propertyType)) {
+            } else if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)) {
                 try {
-                    filteredFieldValues.put(fieldName, new BigDecimal(strValue));
-                } catch (NumberFormatException nfe) {
-                        GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
-                                RiceKeyConstants.ERROR_NUMBER, strValue);
-                        throw nfe;
+                    filteredFieldValues.put(fieldName, hydrateAttributeValue(propertyType, strValue));
+                } catch (Exception nfe) {
+                    GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
+                            RiceKeyConstants.ERROR_NUMBER, strValue);
+                    throw new RuntimeException("Could not parse property value into Number for " + fieldName );
                 }
-            } else if (TypeUtils.isTemporalClass(propertyType)) {
+            }  else if (TypeUtils.isTemporalClass(propertyType)) {
                 try {
                     filteredFieldValues.put(fieldName, CoreApiServiceLocator.getDateTimeService().convertToSqlDate(
                         strValue));

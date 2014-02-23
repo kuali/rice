@@ -236,4 +236,29 @@
       </list>
     </property>
   </bean>
+
+  <bean id="LabsInquiry-EDocLite" parent="Uif-InquiryView">
+    <property name="parentLocation">
+      <bean parent="Uif-RicePortalParentLocation"/>
+    </property>
+    <property name="headerText" value="EDocLite Long Id Sample"/>
+    <property name="viewName" value="LabsInquiry-EDocLite"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.edl.impl.bo.EDocLiteDefinition"/>
+    <property name="items">
+      <list>
+        <bean id="EDocLite-InquiryView-General" parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="EDocLite Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="id"/>
+              <bean parent="Uif-DataField" p:propertyName="name"/>
+              <bean parent="Uif-DataField" p:propertyName="xmlContent"/>
+              <bean parent="Uif-DataField" p:propertyName="activeInd"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

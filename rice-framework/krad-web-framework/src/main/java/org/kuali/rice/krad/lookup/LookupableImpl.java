@@ -486,7 +486,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             }
         }
 
-        Map<String, Object> translatedValues  = KRADUtils.hydrateRequestParametersForJPA(
+        Map<String, Object> translatedValues  = KRADUtils.coerceRequestParameterTypes(
                 (Class<? extends ExternalizableBusinessObject>) getDataObjectClass(), filteredFieldValues);
 
         List<?> searchResults = eboModuleService.getExternalizableBusinessObjectsListForLookup(

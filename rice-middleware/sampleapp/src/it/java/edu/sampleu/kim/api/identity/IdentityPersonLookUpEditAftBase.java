@@ -61,7 +61,6 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
     }
     
     public void testIdentityPersonLookUpEdit() throws Exception {
-        // This tests only runs correctly the first time.
         selectFrameIframePortlet();
         waitAndTypeByName("principalName","fran");
         waitAndClickSearchSecond();
@@ -83,8 +82,8 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         waitAndClickByName("methodToCall.route");
 
         if (hasDocError()) {
-            // After the second run of this test, there will be 3 Errors.  Requires a decent amount of work to satisfy constraints.
-            if (!extractErrorText().startsWith("3 error(s) found on page")) {
+            // After the second run of this test, there will be 2 Errors.  Requires a decent amount of work to satisfy constraints.
+            if (!extractErrorText().startsWith("2 error(s) found on page")) {
                 checkForDocError();
             }
         } else {

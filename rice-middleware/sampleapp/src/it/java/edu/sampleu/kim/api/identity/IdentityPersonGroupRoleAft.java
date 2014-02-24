@@ -104,10 +104,6 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
         waitAndClickByName("methodToCall.addAffln.anchor");
     }
 
-    private boolean noAffilication() {
-        return !isElementPresentByName("document.affiliations[0].dflt");
-    }
-
     private void addGroups() throws InterruptedException {
         for (String groupId : GROUPS) {
             waitAndTypeByName("newGroup.groupId", groupId);

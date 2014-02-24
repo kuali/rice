@@ -1462,12 +1462,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (driver.findElements(By.id(iframeId)).size() > 0) { // find elements so an exception isn't thrown if not found
             WebElement contentFrame = driver.findElement(By.id(iframeId)); // don't highlight
             driver.switchTo().frame(contentFrame);
+        } else {
+            System.out.println("Unable to find " + iframeId);
         }
     }
     protected void gotoIframeByXpath(final String iframeXpath) {
         if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {  // find elements so an exception isn't thrown if not found
             WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
+        } else {
+            System.out.println("Unable to find " + iframeXpath);
         }
     }
 
@@ -1660,6 +1664,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String resultsCount = dataTableInfo.getText();
         resultsCount = resultsCount.substring(resultsCount.indexOf(" of ") + 4, resultsCount.indexOf(" entries")).trim();
         return resultsCount;
+    }
+
+    protected boolean noAffilication() {
+        return !isElementPresentByName("document.affiliations[0].dflt");
     }
 
     protected void open(String url) {
@@ -2982,106 +2990,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTextPresent("Term Parameters");
         waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
-    }
-
-    protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
-        String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        assertEquals("Kuali Portal Index", getTitle());
-        selectFrameIframePortlet();
-
-        // click on the create new button
-        waitAndClickCreateNew();
-
-        // lookup on the Document Type Name
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-
-        // type in the name field the text RoutingRuleDocument
-        waitAndTypeByName("name", "RoutingRuleDocument");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value link
-        waitAndClickReturnValue();
-
-        // lookup on the Rule Template Name
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-
-        // type in the name field the text RuleRoutingTemplate
-        waitAndTypeByName("name", "RuleRoutingTemplate");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value link
-        waitAndClickReturnValue("testWorkFlowRouteRulesBlanketApp");
-
-        // click the create new button
-        waitAndClickByName("methodToCall.createRule");
-        waitForPageToLoad();
-        String docId = waitForDocId();
-        assertTrue(isElementPresentByName(CANCEL_NAME));
-
-        // type in the Document Overview Description the text Test Routing Rule
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule " + random);
-
-        // click the Force Action checkbox
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
-
-        // type in the Description text area the text Test Routing Rule1
-        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1 "
-                + random);
-
-        // type in the Document type name field the text DocumentTypeDocument
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
-                "DocumentTypeDocument");
-
-        // lookup on Person
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value
-        waitAndClickReturnValue();
-
-        // select from the Action Request ACKNOWLEDGE
-        selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
-                "ACKNOWLEDGE");
-
-        // type in the Priority field the text 1
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
-
-        // click the add button
-        waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
-        waitForPageToLoad();
-
-        // click Blanket Approve
-        waitAndClickByName(BLANKET_APPROVE_NAME);
-
-        // doc search for the docId
-        waitForPageToLoad();
-        driver.switchTo().defaultContent(); //selectWindow("null");
-        waitAndClickDocSearch();
-        waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
-        selectFrameIframePortlet();
-        waitAndTypeByName("documentId", docId);
-        waitAndClickSearch();
-
-        // Expect the doc status to be FINAL
-        waitForElementPresent(By.linkText(docId));
-        if (isElementPresent(By.linkText(docId))) {
-            if (!DOC_STATUS_FINAL.equalsIgnoreCase(getTextByXpath(DOC_STATUS_XPATH_2))) {
-                jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));
-            }
-        } else {
-            assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
-            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
-        }
     }
 
     protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {

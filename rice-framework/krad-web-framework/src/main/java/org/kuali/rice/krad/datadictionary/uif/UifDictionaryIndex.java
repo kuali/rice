@@ -32,7 +32,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -122,17 +121,14 @@ public class UifDictionaryIndex implements Runnable {
             View view = ddBeans.getBean(beanName, View.class);
 
             ProcessLogger.trace("view:getBean");
-            ViewLifecycle.preProcess(view);
 
-            ProcessLogger.trace("view:preProcess");
-            
-            // TODO: remove
-            CopyUtils.preventModification(view);
-
-            ProcessLogger.trace("view:preventModification");
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Updating view status to CREATED for view: " + view.getId());
+            String viewStatus = view.getViewStatus();
+            if (UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+                ViewLifecycle.preProcess(view);
             }
+            assert UifConstants.ViewStatus.CACHED.equals(view.getViewStatus()) : view.getViewStatus()
+                    + ", before pre-process = " + viewStatus;
+            ProcessLogger.trace("view:preProcess:" + viewStatus);
 
             boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_DEV_MODE);

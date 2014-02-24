@@ -473,6 +473,20 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void appendToStyle(String itemStyle);
 
     /**
+     * Get the key of the action item to invoke upon pressing the enter key.
+     * 
+     * @return String enterKeyAction
+     */
+    public String getEnterKeyAction();
+    
+    /**
+     * Set the enterKeyAction
+     *
+     * @param enterKeyAction
+     */
+    public void setEnterKeyAction(String enterKeyAction);
+
+    /**
      * Number of places the component should take up horizontally in the
      * container
      *

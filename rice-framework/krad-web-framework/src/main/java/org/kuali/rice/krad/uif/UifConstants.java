@@ -449,6 +449,8 @@ public class UifConstants {
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
+        public static final String ENTER_KEY = "enter_key";
+        public static final String PRIMARY_ACTION = "primary_action";
     }
 
     public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");

@@ -124,6 +124,8 @@ public class Action extends ContentElementBase {
 
     private boolean evaluateDisabledOnKeyUp;
 
+    private boolean primaryAction;
+
     private boolean disabled;
     private String disabledReason;
     private String disabledExpression;
@@ -223,8 +225,7 @@ public class Action extends ContentElementBase {
         enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
 
         // clear alt text to avoid screen reader confusion when using image in button with text
-        if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
-                actionLabel)) {
+        if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(actionLabel)) {
             actionImage.setAltText("");
         }
 
@@ -262,12 +263,10 @@ public class Action extends ContentElementBase {
 
         if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
-
             setActionScript(actionScript);
         }
 
         buildActionData(view, model, parent);
-
     }
 
     /**
@@ -414,6 +413,11 @@ public class Action extends ContentElementBase {
         }
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
+
+        // add data attribute if this is the primary action
+        if (this.isPrimaryAction()) {
+            this.addDataAttribute(UifConstants.DataAttributes.PRIMARY_ACTION, Boolean.toString(this.isPrimaryAction()));
+        }
     }
 
     /**
@@ -1361,6 +1365,25 @@ public class Action extends ContentElementBase {
      */
     public void setEvaluateDisabledOnKeyUp(boolean evaluateDisabledOnKeyUp) {
         this.evaluateDisabledOnKeyUp = evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Evaluate if this action is the primary action for a page, view, group, or section.
+     *
+     * @return true if this action is primary, false otherwise
+     */
+    @BeanTagAttribute(name = "primaryAction")
+    public boolean isPrimaryAction() {
+        return this.primaryAction;
+    }
+
+    /**
+     * Setter for {@link #isPrimaryAction()}.
+     *
+     * @param primaryAction property value
+     */
+    public void setPrimaryAction(boolean primaryAction) {
+        this.primaryAction = primaryAction;
     }
 
     /**

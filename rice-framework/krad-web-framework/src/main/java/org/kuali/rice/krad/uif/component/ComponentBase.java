@@ -148,6 +148,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private ComponentSecurity componentSecurity;
 
+    private String enterKeyAction;
+
     private String onLoadScript;
     private String onUnloadScript;
     private String onCloseScript;
@@ -535,6 +537,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         if (this.additionalCssClasses != null) {
             finalCssClasses.addAll(additionalCssClasses);
+        }
+
+        // add data attributes to help identify enter key actions
+        if (this.getEnterKeyAction() != null && StringUtils.isNotBlank(this.getEnterKeyAction())) {
+            this.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, this.getEnterKeyAction());
         }
 
         cssClasses = finalCssClasses;
@@ -1471,6 +1478,22 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mousemove", getOnMouseMoveScript()));
 
         return sb.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute(name = "enterKeyAction")
+    @Override
+    public String getEnterKeyAction() {
+        return this.enterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setEnterKeyAction(String enterKeyAction) {
+        this.enterKeyAction = enterKeyAction;
     }
 
     /**

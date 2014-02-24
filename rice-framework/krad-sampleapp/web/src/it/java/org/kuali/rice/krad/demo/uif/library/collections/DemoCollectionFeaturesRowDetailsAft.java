@@ -111,9 +111,7 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesRowDetailsOpenedDetails() throws Exception {
         selectByName("exampleShown","Opened Details");
-        if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']")) {
-          fail("Row Details Present");
-        }
+        assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']");
         waitAndClickByXpath("//a[@id='Demo-TableLayoutDetails-Section6_detLink_add']");
         assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/div/table/tbody/tr[@class='detailsRow']/td");
         waitAndClickByXpath("//div[@id='Demo-TableLayoutDetails-Section6']/button");

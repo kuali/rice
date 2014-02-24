@@ -219,8 +219,7 @@ public class UifConstants {
     
     public static class PostMetadata {
         public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "attributeQuery";
-        public static final String INPUT_FIELD_SUGGEST = "suggest";
-        public static final String INPUT_FIELD_SUGGEST_QUERY = "suggestQuery";
+
         public static final String INPUT_FIELD_IS_UPPERCASE = "isUppercase";
         public static final String LABEL = "label";
         public static final String PATH = "path";
@@ -233,7 +232,6 @@ public class UifConstants {
         public static final String BINDING_INFO = "bindingInfo";
         public static final String ADD_LINE_BINDING_INFO = "addLineBindingInfo";
         public static final String ADD_LINE_PLACEMENT = "addLinePlacement";
-        public static final String BASE_ID = "BASE_ID";
         public static final String COLL_DISPLAY_START = "displayStart";
         public static final String COLL_DISPLAY_LENGTH = "displayLength";
         public static final String COLL_LABEL = "collectionLabel";
@@ -243,6 +241,7 @@ public class UifConstants {
         public static final String DUPLICATE_LINE_LABEL_STRING = "duplicateLineLabelString";
         public static final String STATE_MAPPING = "stateMapping";
         public static final String STATE_OBJECT_BINDING_PATH = "stateObjectBindingPath";
+        public static final String SUGGEST = "suggest";
         public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
         public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
     }

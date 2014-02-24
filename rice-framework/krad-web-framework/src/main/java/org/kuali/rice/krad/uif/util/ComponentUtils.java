@@ -62,7 +62,7 @@ public class ComponentUtils {
         if (component == null) {
             return null;
         }
-        
+
         T copy = component.copy();
 
         if (StringUtils.isNotBlank(idSuffix)) {
@@ -74,7 +74,7 @@ public class ComponentUtils {
 
     /**
      * Copy a list of components
-     * 
+     *
      * @param <T> component type
      * @param components the list of components to copy
      * @return the copied list
@@ -118,7 +118,7 @@ public class ComponentUtils {
         if (components == null || components.isEmpty()) {
             return Collections.emptyList();
         }
-        
+
         List<T> copiedComponentList = new ArrayList<T>(components.size());
 
         for (T field : components) {
@@ -134,11 +134,11 @@ public class ComponentUtils {
         if (items == null || items.isEmpty()) {
             return Collections.emptyList();
         }
-        
+
         List<T> typeComponents = Collections.emptyList();
-        
+
         for (Component component : items) {
-            
+
             if (!componentType.isInstance(component)) {
                 continue;
             }
@@ -189,7 +189,7 @@ public class ComponentUtils {
 
     /**
      * Get all nested children of a given component.
-     * 
+     *
      * @param component The component to search.
      * @return All nested children of the component.
      * @see ViewLifecycleUtils#getElementsForLifecycle(LifecycleElement)
@@ -198,10 +198,10 @@ public class ComponentUtils {
         if (component == null) {
             return Collections.emptyList();
         }
-        
+
         List<Component> components = Collections.emptyList();
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         elementQueue.offer(component);
 
         try {
@@ -267,10 +267,10 @@ public class ComponentUtils {
     }
 
     public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         elementQueue.offer(component);
-        
+
         try {
             while (!elementQueue.isEmpty()) {
                 LifecycleElement currentElement = elementQueue.poll();
@@ -314,11 +314,11 @@ public class ComponentUtils {
     }
 
     public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         try {
             elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(component).values());
-            
+
             while (!elementQueue.isEmpty()) {
                 LifecycleElement currentElement = elementQueue.poll();
                 if (currentElement == null) {
@@ -341,58 +341,55 @@ public class ComponentUtils {
     /**
      * Generate a hash code unique within the current view for a single lifecycle element. A unique
      * ID value will be assigned to the lifecycle element, replacing the current ID.
-     * 
+     *
      * <p>This method may only be called during the view lifecycle.</p>
-     * 
+     *
      * @param element The element to generate a hash code for.
      * @param seed A hash value to use as a seed for the new hash.
-     * 
      * @return A hash code based on the provided element and seed value.
      * @see AssignIdsTask For a complete description of the algorithm. This method implements a
-     *      single step in the algorithm described in that task.
+     * single step in the algorithm described in that task.
      */
     public static int generateId(LifecycleElement element, int seed) {
         if (element == null) {
             return seed;
         }
-        
+
         final int prime = 6971;
         int hash = prime * seed + element.getClass().getName().hashCode();
-        
+
         String id = element.getId();
         hash *= prime;
         if (id != null) {
             hash += id.hashCode();
         }
-        
+
         do {
             hash *= 4507;
             id = Long.toString(((long) hash) - ((long) Integer.MIN_VALUE), 36);
         } while (!ViewLifecycle.getView().getViewIndex().observeAssignedId(id));
-        
+
         element.setId(UifConstants.COMPONENT_ID_PREFIX + id);
-        
+
         return hash;
     }
-    
+
     /**
      * Replace all IDs from a component and its children with new generated ID values.
-     * 
+     *
      * <p>If there are features that depend on a static id of this
      * component, this call may cause errors.</p>
      *
      * @param components A list of component to clear all IDs from.
-     * 
      * @see AssignIdsTask For a complete description of the algorithm.
      */
     public static void clearAndAssignIds(List<? extends Component> components) {
         if (components == null || components.isEmpty()) {
             return;
         }
-        
+
         int hash = 1;
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> toClear = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> toClear = RecycleUtils.getInstance(LinkedList.class);
         toClear.addAll(components);
         try {
             while (!toClear.isEmpty()) {
@@ -407,8 +404,7 @@ public class ComponentUtils {
                 }
 
                 if (element instanceof Component) {
-                    List<Component> propertyReplacerComponents =
-                            ((Component) element).getPropertyReplacerComponents();
+                    List<Component> propertyReplacerComponents = ((Component) element).getPropertyReplacerComponents();
                     if (propertyReplacerComponents == null) {
                         continue;
                     }
@@ -447,7 +443,7 @@ public class ComponentUtils {
 
     /**
      * Traverse a component tree, setting a property on all components for which the property is writable.
-     * 
+     *
      * @param <T> component type
      * @param components The components to traverse.
      * @param propertyPath The property path to set.
@@ -462,8 +458,8 @@ public class ComponentUtils {
         }
 
         Set<Class<?>> skipTypes = null;
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         elementQueue.addAll(components);
 
         try {
@@ -481,8 +477,9 @@ public class ComponentUtils {
                 }
 
                 if (!ObjectPropertyUtils.isWritableProperty(currentElement, propertyPath)) {
-                    if (skipTypes == null)
+                    if (skipTypes == null) {
                         skipTypes = new HashSet<Class<?>>();
+                    }
                     skipTypes.add(componentClass);
                     continue;
                 }
@@ -497,7 +494,7 @@ public class ComponentUtils {
 
     /**
      * Traverse a component tree, setting a property on all components for which the property is writable.
-     * 
+     *
      * @param component The component to traverse.
      * @param propertyPath The property path to set.
      * @param propertyValue The property value to set.
@@ -538,8 +535,8 @@ public class ComponentUtils {
     public static boolean canBeRefreshed(Component component) {
         boolean hasRefreshCondition = StringUtils.isNotBlank(component.getProgressiveRender()) ||
                 StringUtils.isNotBlank(component.getConditionalRefresh()) || (component.getRefreshTimer() > 0) ||
-                (component.getRefreshWhenChangedPropertyNames() != null &&
-                        !component.getRefreshWhenChangedPropertyNames().isEmpty());
+                (component.getRefreshWhenChangedPropertyNames() != null && !component
+                        .getRefreshWhenChangedPropertyNames().isEmpty());
 
         return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() ||
                 component.isRetrieveViaAjax();
@@ -557,9 +554,9 @@ public class ComponentUtils {
         if (elements == null || elements.isEmpty()) {
             return;
         }
-        
+
         Queue<LifecycleElement> elementQueue = new LinkedList<LifecycleElement>();
-        
+
         try {
             elementQueue.addAll(elements);
             while (!elementQueue.isEmpty()) {
@@ -609,9 +606,9 @@ public class ComponentUtils {
         if (components == null || components.isEmpty()) {
             return;
         }
-        
-        @SuppressWarnings("unchecked")
-        Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(LinkedList.class);
+
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
         try {
             elementQueue.addAll(components);
             while (!elementQueue.isEmpty()) {
@@ -705,7 +702,7 @@ public class ComponentUtils {
      * items share the same order value, all but the last item found in the list
      * will be removed.
      * </p>
-     * 
+     *
      * @param <T> ordered type
      * @param items
      * @param defaultOrderSequence
@@ -717,14 +714,14 @@ public class ComponentUtils {
         if (items == null) {
             return null;
         }
-        
+
         List<T> orderedItems = new ArrayList<T>(items.size());
 
         // do replacement for items with the same order property value
         Set<Integer> foundOrders = new HashSet<Integer>();
 
         // reverse the list, so items later in the list win
-        for (int i = items.size()-1; i >= 0; i--) {
+        for (int i = items.size() - 1; i >= 0; i--) {
             T component = items.get(i);
             int order = component.getOrder();
 
@@ -835,7 +832,8 @@ public class ComponentUtils {
         }
 
         if (container != null) {
-            List<Container> subContainers = ViewLifecycleUtils.getNestedElementsOfTypeShallow(container, Container.class);
+            List<Container> subContainers = ViewLifecycleUtils.getNestedElementsOfTypeShallow(container,
+                    Container.class);
             for (Container subContainer : subContainers) {
                 adjustNestedLevelsForTableCollections(subContainer, currentLevel);
             }

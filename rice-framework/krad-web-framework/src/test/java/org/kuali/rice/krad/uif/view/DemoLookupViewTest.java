@@ -15,23 +15,12 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
-import org.kuali.rice.krad.lookup.LookupForm;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
-import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
-import org.kuali.rice.krad.web.controller.UifControllerHelper;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Unit tests for proving correct operation of demo lookup views.

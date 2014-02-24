@@ -2337,6 +2337,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         this.postRenderContent = postRenderContent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ComponentBase clone() throws CloneNotSupportedException {
         ComponentBase copy = (ComponentBase) super.clone();

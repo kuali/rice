@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs;
 
+import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.web.form.UifFormBase;
 //import org.kuali.student.enrollment.registration.client.service.dto.CourseSearchResult;
 
@@ -29,6 +30,8 @@ import java.util.List;
  */
 public class KitchenSinkPerformanceForm extends UifFormBase {
     private String inputOne;
+
+    @SessionTransient
     private List<CourseSearchResult> perfCollection;
 
     public String getInputOne() {

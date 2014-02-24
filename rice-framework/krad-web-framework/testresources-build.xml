@@ -56,6 +56,7 @@
 		<krad-unpack-rice-artifact artifact="impl" />
 		<krad-unpack-rice-artifact artifact="kim-impl" />
 		<krad-unpack-rice-artifact artifact="krad-sampleapp-impl" />
+		<krad-unpack-rice-artifact artifact="krad-sampleapp-web" />
 	</target>
 						
 	<!-- Define filtered test resources -->

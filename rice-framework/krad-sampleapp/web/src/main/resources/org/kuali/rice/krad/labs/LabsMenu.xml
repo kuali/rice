@@ -106,6 +106,8 @@
                     p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-HeadLink-Tags"/>
               <bean parent="Uif-Link" p:linkText="Meta tags" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Meta-Tags"/>
+              <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
             </list>
           </property>
         </bean>

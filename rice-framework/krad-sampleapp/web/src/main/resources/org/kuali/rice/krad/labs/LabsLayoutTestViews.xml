@@ -230,7 +230,6 @@
                           </property>
                         </bean>
                       </property>
-
                     </bean>
                     <bean parent="Uif-InputField-LabelTop" p:label="Field 6"
                           p:instructionalText="These are instructions"
@@ -247,9 +246,7 @@
                           </property>
                         </bean>
                       </property>
-
                     </bean>
-
                     <bean parent="Uif-InputField-LabelTop" p:label="Field 7"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField7" p:constraintText="Additional Info">
@@ -258,7 +255,6 @@
                               p:checkboxLabel="Checkbox Label"/>
                       </property>
                     </bean>
-
                     <bean parent="Uif-InputField-LabelTop" p:label="Field 8"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField8" p:constraintText="Additional Info">
@@ -274,9 +270,7 @@
                           </property>
                         </bean>
                       </property>
-
                     </bean>
-
                     <bean parent="Uif-InputField-LabelTop" p:label="Field 9"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField9" p:constraintText="Additional Info">
@@ -495,5 +489,46 @@
     </property>
   </bean>
 
+  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="save">
+    <property name="singlePageView" value="true" />
+    <property name="page">
+      <bean parent="Uif-Page" p:instructionalText="Page - enterKeyAction=>details1" p:enterKeyAction="details1">
+        <property name="items">
+          <list>
+            <bean p:headerText="Section1 - enterKeyAction=>details2" parent="Uif-VerticalBoxSection" p:enterKeyAction="details2">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="details2" p:id="btn-details2" p:actionScript="alert('details2');" />
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section2 - no enterKeyAction" parent="Uif-VerticalBoxSection">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="details1" p:id="btn-details1" p:actionScript="alert('details1');" />
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section3 - no enterKeyAction - btn3 is primary" parent="Uif-VerticalBoxSection">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn1" p:id="btn-btn1" p:actionScript="alert('btn1');" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn2" p:id="btn-btn2" p:actionScript="alert('btn2');" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn3" p:id="btn-btn3" p:actionScript="alert('btn3');" p:primaryAction="true"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm" />
+  </bean>
 
 </beans>

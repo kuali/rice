@@ -624,7 +624,12 @@ public class ViewLifecycle implements Serializable {
      */
     public static ViewLifecyclePhase getPhase() {
         ViewLifecycleProcessor processor = PROCESSOR.get();
-        return processor == null ? null : processor.getActivePhase();
+        try {
+            return processor == null ? null : processor.getActivePhase();
+        } catch (IllegalStateException e) {
+            LOG.debug("No lifecycle phase is active on the current processor", e);
+            return null;
+        }
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -191,7 +192,7 @@ public final class LifecyclePhaseFactory {
     public static RenderComponentPhase render(Component component, Object model, String path,
             List<String> refreshPaths) {
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
-        renderPhase.prepare(component, model, path, refreshPaths, null, null, 0);
+        renderPhase.prepare(component, model, path, refreshPaths, null, null, Collections.<String> emptySet());
         return renderPhase;
     }
 
@@ -206,7 +207,7 @@ public final class LifecyclePhaseFactory {
      * @return lifecycle processing task for processing the render phase on the component
      */
     public static RenderComponentPhase render(FinalizeComponentPhase finalizePhase,
-            List<String> refreshPaths, RenderComponentPhase renderParent, int pendingChildren) {
+            List<String> refreshPaths, RenderComponentPhase renderParent, Set<String> pendingChildren) {
         LifecycleElement element = finalizePhase.getElement();
         RenderComponentPhase renderPhase = RecycleUtils.getInstance(RenderComponentPhase.class);
         renderPhase.prepare(element, finalizePhase.getModel(), finalizePhase.getParentPath(), refreshPaths,

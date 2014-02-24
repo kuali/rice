@@ -16,19 +16,20 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private boolean processed;
     private boolean completed;
 
-    private int pendingSuccessors = -1;
+    private Set<String> pendingSuccessors = new LinkedHashSet<String>();
 
     private ViewLifecycleTask<?> currentTask;
 
@@ -72,7 +73,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         processed = false;
         completed = false;
         refreshPaths = null;
-        pendingSuccessors = -1;
+        pendingSuccessors.clear();
     }
 
     /**
@@ -141,20 +142,22 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
                 }
 
-                processor.setActivePhase(this);
-
                 String viewStatus = element.getViewStatus();
                 if (viewStatus != null &&
-                        !viewStatus.equals(getStartViewStatus()) &&
-                        !viewStatus.equals(getEndViewStatus())) {
-                    ViewLifecycle.reportIllegalState("Component is not in the expected status " + getStartViewStatus() +
-                            " at the start of this phase, found " + element.getClass() + " " + element.getId() + " " +
-                            viewStatus + "\nThis phase: " + this);
+                        !viewStatus.equals(getStartViewStatus())) {
+                    trace("dup " + getStartViewStatus() + " " + getEndViewStatus() + " " + viewStatus);
+                    // TODO: Consider a warning here instead of the "dup" trace, or short-circuit to
+                    // prevent duplicate processing of components.  Either way, this is not an illegal
+                    // state in that the lifecycle can most likely complete without further issue
+//                    ViewLifecycle.reportIllegalState("Component is not in the expected status " + getStartViewStatus() +
+//                            " at the start of this phase, found " + element.getClass() + " " + element.getId() + " " +
+//                            viewStatus + "\nThis phase: " + this);
                 }
 
-                trace("path-update " + element.getViewPath());
-                View view = ViewLifecycle.getView();
+                processor.setActivePhase(this);
 
+                trace("path-update " + element.getViewPath());
+                
                 // TODO: this cannot be enforced currently due to help tooltip getting pushed to header
 //                if (ViewLifecycle.isStrict()) {
 //                    if (element == view) {
@@ -208,7 +211,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             if (skipLifecycle) {
                 notifyCompleted();
             } else {
-                assert pendingSuccessors == -1 : this;
+                assert pendingSuccessors.isEmpty() : pendingSuccessors;
 
                 Queue<ViewLifecyclePhase> successors = new LinkedList<ViewLifecyclePhase>();
 
@@ -292,10 +295,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      * @param successors phases to process
      */
     protected void processSuccessors(Queue<ViewLifecyclePhase> successors) {
-        pendingSuccessors = successors.size();
+        for (ViewLifecyclePhase successor : successors) {
+            if (!pendingSuccessors.add(successor.getParentPath())) {
+                ViewLifecycle.reportIllegalState("Already pending " + successor + "\n" + this);
+            }
+        }
+
         trace("processed " + pendingSuccessors);
 
-        if (pendingSuccessors == 0) {
+        if (pendingSuccessors.isEmpty()) {
             notifyCompleted();
         } else {
             for (ViewLifecyclePhase successor : successors) {
@@ -464,9 +472,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected abstract ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent);
 
-
-
-
+    /**
+     * May be overridden in order to check for illegal state based on more concrete assumptions than
+     * can be made here.
+     * 
+     * @throws IllegalStateException If the conditions for completing the lifecycle phase have not been met.
+     */
+    protected void verifyCompleted() {
+    }
 
     /**
      * Notifies predecessors that this task has completed.
@@ -498,7 +511,9 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 // Initial phase chain:  treat the next phase as a successor so that
                 // this phase (and therefore the controlling thread) will be notified
                 nextPhase.predecessor = this;
-                pendingSuccessors++;
+                synchronized (pendingSuccessors) {
+                    pendingSuccessors.add(nextPhase.getParentPath());
+                }
             }
 
             ViewLifecycle.getProcessor().pushPendingPhase(nextPhase);
@@ -508,8 +523,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         synchronized (this) {
             if (predecessor != null) {
                 synchronized (predecessor) {
-                    predecessor.pendingSuccessors--;
-                    if (predecessor.pendingSuccessors == 0) {
+                    predecessor.pendingSuccessors.remove(getParentPath());
+                    if (predecessor.pendingSuccessors.isEmpty()) {
                         predecessor.notifyCompleted();
                     }
                     LifecyclePhaseFactory.recycle(this);

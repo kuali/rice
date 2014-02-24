@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -113,84 +114,91 @@ public final class UifUnitTestUtils {
      * @throws Exception
      */
     public static void establishMockConfig(String applicationId) throws Exception {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        SimpleConfig config = new SimpleConfig();
-        Properties configProperties = new Properties();
-
-        URL defaultsUrl = loader.getResource("KRAD-UifDefaults.properties");
-        URL rootUrl = new URL(defaultsUrl.toExternalForm().substring(0, defaultsUrl.toExternalForm().lastIndexOf('/')));
-        configProperties.setProperty("root.url", rootUrl.toExternalForm());
-
-        InputStream defaultPropertyResource = defaultsUrl.openStream();
-        Assert.assertNotNull("KRAD-UifDefaults.properties", defaultPropertyResource);
-        configProperties.load(defaultPropertyResource);
-
-        InputStream appPropertyResource = loader.getResourceAsStream(applicationId + ".properties");
-        Assert.assertNotNull(applicationId + ".properties", appPropertyResource);
-        configProperties.load(appPropertyResource);
-
-        for (String propName : configProperties.stringPropertyNames()) {
-            String propValue = (String) configProperties.getProperty(propName);
-            StringBuilder propBuilder = new StringBuilder(propValue);
-            int exprStart = 0, exprEnd = 0;
-            while (exprStart != -1) {
-                exprStart = propBuilder.indexOf("${", exprEnd);
-                if (exprStart == -1) {
-                    continue;
-                }
-
-                exprEnd = propBuilder.indexOf("}", exprStart);
-                if (exprEnd - exprStart < 3) {
-                    continue;
-                }
-
-                String expr = propBuilder.substring(exprStart + 2, exprEnd);
-                String exprValue = configProperties.getProperty(expr);
-                if (exprValue != null) {
-                    propBuilder.delete(exprStart, exprEnd + 1);
-                    propBuilder.insert(exprStart, exprValue);
-                    configProperties.setProperty(propName, propBuilder.toString());
-                    exprEnd = exprStart + exprValue.length();
-                }
-            }
-        }
-
-        String resourceBundles = configProperties.getProperty("test.resource.bundles");
-        if (resourceBundles != null) {
-            for (String resourceBundle : resourceBundles.split(",")) {
-                InputStream propertyResource = loader.getResourceAsStream(resourceBundle);
-                Assert.assertNotNull(resourceBundle, resourceBundle);
-                configProperties.load(propertyResource);
-                LOG.info("Added resource bundle " + resourceBundle);
-            }
-        }
-
-        config.putProperties(configProperties);
-        config.putProperty("application.id", applicationId);
-
-        ConfigContext.init(config);
-
-        MockServletContext servletContext = new MockServletContext();
-        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName("KRAD-UifDefaults"), Arrays.asList(
-                "KRAD-UifDefaults-test-context.xml"), servletContext));
-        GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName(applicationId), Arrays.asList(
-                applicationId + "-test-context.xml"), servletContext));
-
-        TL_CONFIG_PROPERTIES.set(ConfigContext.getCurrentContextConfig().getProperties());
         try {
-            GlobalResourceLoader.start();
-            Lifecycle viewService = GlobalResourceLoader.getService("viewService");
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-            if (viewService != null) {
-                viewService.start();
+            SimpleConfig config = new SimpleConfig();
+            Properties configProperties = new Properties();
+
+            URL defaultsUrl = loader.getResource("KRAD-UifDefaults.properties");
+            URL rootUrl = new URL(defaultsUrl.toExternalForm().substring(0,
+                    defaultsUrl.toExternalForm().lastIndexOf('/')));
+            configProperties.setProperty("root.url", rootUrl.toExternalForm());
+
+            InputStream defaultPropertyResource = defaultsUrl.openStream();
+            Assert.assertNotNull("KRAD-UifDefaults.properties", defaultPropertyResource);
+            configProperties.load(defaultPropertyResource);
+
+            InputStream appPropertyResource = loader.getResourceAsStream(applicationId + ".properties");
+            Assert.assertNotNull(applicationId + ".properties", appPropertyResource);
+            configProperties.load(appPropertyResource);
+
+            for (String propName : configProperties.stringPropertyNames()) {
+                String propValue = (String) configProperties.getProperty(propName);
+                StringBuilder propBuilder = new StringBuilder(propValue);
+                int exprStart = 0, exprEnd = 0;
+                while (exprStart != -1) {
+                    exprStart = propBuilder.indexOf("${", exprEnd);
+                    if (exprStart == -1) {
+                        continue;
+                    }
+
+                    exprEnd = propBuilder.indexOf("}", exprStart);
+                    if (exprEnd - exprStart < 3) {
+                        continue;
+                    }
+
+                    String expr = propBuilder.substring(exprStart + 2, exprEnd);
+                    String exprValue = configProperties.getProperty(expr);
+                    if (exprValue != null) {
+                        propBuilder.delete(exprStart, exprEnd + 1);
+                        propBuilder.insert(exprStart, exprValue);
+                        configProperties.setProperty(propName, propBuilder.toString());
+                        exprEnd = exprStart + exprValue.length();
+                    }
+                }
             }
 
-        } finally {
-            TL_CONFIG_PROPERTIES.remove();
-        }
+            String resourceBundles = configProperties.getProperty("test.resource.bundles");
+            if (resourceBundles != null) {
+                for (String resourceBundle : resourceBundles.split(",")) {
+                    InputStream propertyResource = loader.getResourceAsStream(resourceBundle);
+                    Assert.assertNotNull(resourceBundle, resourceBundle);
+                    configProperties.load(propertyResource);
+                    LOG.info("Added resource bundle " + resourceBundle);
+                }
+            }
 
-        configureKradWebApplicationContext();
+            config.putProperties(configProperties);
+            config.putProperty("application.id", applicationId);
+
+            ConfigContext.init(config);
+
+            MockServletContext servletContext = new MockServletContext();
+            GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName("KRAD-UifDefaults"), Arrays
+                    .asList(
+                    "KRAD-UifDefaults-test-context.xml"), servletContext));
+            GlobalResourceLoader.addResourceLoader(new SpringResourceLoader(new QName(applicationId), Arrays.asList(
+                    applicationId + "-test-context.xml"), servletContext));
+
+            TL_CONFIG_PROPERTIES.set(ConfigContext.getCurrentContextConfig().getProperties());
+            try {
+                GlobalResourceLoader.start();
+                Lifecycle viewService = GlobalResourceLoader.getService("viewService");
+
+                if (viewService != null) {
+                    viewService.start();
+                }
+
+            } finally {
+                TL_CONFIG_PROPERTIES.remove();
+            }
+
+            configureKradWebApplicationContext();
+        } catch (Throwable t) {
+            LOG.error("Skipping tests, resource setup failed", t);
+            Assume.assumeNoException("Skipping tests, resource setup failed", t);
+        }
     }
 
     /**

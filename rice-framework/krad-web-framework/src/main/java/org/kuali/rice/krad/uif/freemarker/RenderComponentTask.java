@@ -84,8 +84,8 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
             throw new IllegalStateException("Error rendering component " + component.getId(), e);
         }
 
-        component.setSelfRendered(true);
         component.setRenderedHtmlOutput(renderingContext.getRenderedOutput());
+        component.setSelfRendered(true);
     }
 
 }

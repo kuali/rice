@@ -15,15 +15,16 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.component.Component;
-
 import java.beans.PropertyEditor;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Holds data about the rendered view that might be needed to handle a post request.
@@ -56,10 +57,10 @@ public class ViewPostMetadata implements Serializable {
      * Default contructor.
      */
     public ViewPostMetadata() {
-        fieldPropertyEditors = new HashMap<String, PropertyEditor>();
-        secureFieldPropertyEditors = new HashMap<String, PropertyEditor>();
-        inputFieldIds = new HashSet<String>();
-        addedCollectionObjects = new HashMap<String, List<Object>>();
+        fieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
+        secureFieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
+        inputFieldIds = Collections.synchronizedSet(new HashSet<String>());
+        addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
     }
 
     /**
@@ -192,17 +193,22 @@ public class ViewPostMetadata implements Serializable {
      */
     public ComponentPostMetadata initializeComponentPostMetadata(String componentId) {
         ComponentPostMetadata componentPostMetadata;
-
-        if (componentPostMetadataMap != null && (componentPostMetadataMap.containsKey(componentId))) {
-            componentPostMetadata = componentPostMetadataMap.get(componentId);
-        } else {
-            componentPostMetadata = new ComponentPostMetadata(componentId);
-
-            if (componentPostMetadataMap == null) {
-                componentPostMetadataMap = new HashMap<String, ComponentPostMetadata>();
+        
+        if (componentPostMetadataMap == null) {
+            synchronized (this) {
+                if (componentPostMetadataMap == null) {
+                    componentPostMetadataMap = new HashMap<String, ComponentPostMetadata>();
+                }
             }
-
-            componentPostMetadataMap.put(componentId, componentPostMetadata);
+        }
+        
+        componentPostMetadata = componentPostMetadataMap.get(componentId);
+        
+        if (componentPostMetadata == null) {
+            synchronized (componentPostMetadataMap) {
+                componentPostMetadata = new ComponentPostMetadata(componentId);
+                componentPostMetadataMap.put(componentId, componentPostMetadata);
+            }
         }
 
         return componentPostMetadata;
@@ -289,7 +295,7 @@ public class ViewPostMetadata implements Serializable {
      * @see ViewPostMetadata#getAllRenderedPropertyPaths()
      */
     public void setAllRenderedPropertyPaths(Set<String> allRenderedPropertyPaths) {
-        this.allRenderedPropertyPaths = allRenderedPropertyPaths;
+        this.allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>(allRenderedPropertyPaths));
     }
 
     /**
@@ -300,7 +306,7 @@ public class ViewPostMetadata implements Serializable {
      */
     public void addRenderedPropertyPath(String propertyPath) {
         if (this.allRenderedPropertyPaths == null) {
-            this.allRenderedPropertyPaths = new HashSet<String>();
+            this.allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         }
 
         this.allRenderedPropertyPaths.add(propertyPath);

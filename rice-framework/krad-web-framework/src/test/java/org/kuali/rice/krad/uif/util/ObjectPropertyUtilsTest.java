@@ -34,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -57,19 +55,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
-
-    @BeforeClass
-    public static void setupMockUserSession() throws Throwable {
-        UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
-        UifUnitTestUtils.establishMockUserSession("testuser");
-    }
-
-    @AfterClass
-    public static void teardownMockUserSession() throws Exception {
-        GlobalVariables.setUserSession(null);
-        GlobalVariables.clear();
-        GlobalResourceLoader.stop();
-    }
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestAnnotation {
@@ -505,7 +490,10 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testKradUifCollectionGroupBuilder() {
+    public void testKradUifCollectionGroupBuilder() throws Throwable {
+        UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
+        UifUnitTestUtils.establishMockUserSession("testuser");
+        try {
         // Performance medium generates this property path:
         // newCollectionLines['newCollectionLines_'mediumCollection1'_.subList']
 
@@ -547,6 +535,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
             public void run() {
                 collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
             }});
+    } finally {
+        GlobalVariables.setUserSession(null);
+        GlobalVariables.clear();
+        GlobalResourceLoader.stop();
+    }
     }
 
     @Test

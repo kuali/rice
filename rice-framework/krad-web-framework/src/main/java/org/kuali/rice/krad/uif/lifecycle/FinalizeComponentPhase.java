@@ -16,8 +16,10 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -29,6 +31,7 @@ import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.RegisterPropertyEditorTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
  * Lifecycle phase processing task for finalizing a component.
@@ -119,6 +122,18 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
+     * Verify that the render phase has no pending children.
+     */
+    @Override
+    protected void verifyCompleted() {
+        super.verifyCompleted();
+        
+        if (renderPhase != null) {
+            renderPhase.verifyCompleted();
+        }
+    }
+
+    /**
      * Update state of the component and perform final preparation for rendering.
      *
      * {@inheritDoc}
@@ -149,9 +164,33 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
             if (predecessor instanceof FinalizeComponentPhase) {
                 parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
             }
+            
+            @SuppressWarnings("unchecked")
+            Set<String> pendingChildren = RecycleUtils.getInstance(LinkedHashSet.class);
+            for (ViewLifecyclePhase successor : successors) {
+                boolean skipSuccessor;
+                if (successor instanceof ViewLifecyclePhaseBase) {
+                    skipSuccessor = ((ViewLifecyclePhaseBase) successor).shouldSkipLifecycle(); 
+                } else {
+                    // TODO: consider moving shouldSkipLifecycle to public interface
+                    skipSuccessor = successor.getElement().skipLifecycle();
+                }
 
-            renderPhase = LifecyclePhaseFactory.render(this, getRefreshPaths(), parentRenderPhase, successors.size());
-            trace("create-render " + successors.size());
+                // Don't queue successors that will be skipped.
+                // Doing so would cause notification issues for the render phase.
+                if (skipSuccessor) {
+                    continue;
+                }
+                
+                // Queue the successor, with strict validation that it hasn't already been queued
+                if (!pendingChildren.add(successor.getParentPath())) {
+                    ViewLifecycle.reportIllegalState("Successor is already pending " + pendingChildren + "\n"
+                            + successor + "\n" + this);
+                }
+            }
+
+            renderPhase = LifecyclePhaseFactory.render(this, getRefreshPaths(), parentRenderPhase, pendingChildren);
+            trace("create-render " + getElement().getId() + " " + pendingChildren);
         }
 
         if (successors.isEmpty() && renderPhase != null) {

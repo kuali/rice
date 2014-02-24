@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -50,13 +51,16 @@ import freemarker.template.Template;
 
 public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
+    private static final Logger LOG = Logger.getLogger(ComponentFreemarkerTest.class);
+    
     @BeforeClass
     public static void setUpClass() throws Throwable {
+        UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
         try {
-            UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
             ComponentFactory.getMessage();
         } catch (Throwable t) {
-            Assume.assumeNoException("Skipping tests, resource setup failed", t);
+            LOG.error("Skipping tests, message component is not available", t);
+            Assume.assumeNoException("Skipping tests, message component is not available", t);
         }
     }
 

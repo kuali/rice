@@ -1027,19 +1027,19 @@ a.demo-documentationLink {
 
 /* example specific css */
 
-div#Demo-InputField-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+div#Demo-InputFieldView div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 290px;
 }
 
-div#Demo-RichMessages-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+div#Demo-RichMessagesView div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 360px;
 }
 
-div#Demo-Suggest-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+div#Demo-SuggestView div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 300px;
 }
 
-div#Demo-Breadcrumbs-View div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
+div#Demo-BreadcrumbsView div#ComponentLibrary-TabGroup_tabs > .ui-tabs-panel{
     min-height: 300px;
 }
 

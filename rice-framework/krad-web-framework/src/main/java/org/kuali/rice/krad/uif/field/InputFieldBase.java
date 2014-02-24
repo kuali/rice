@@ -367,58 +367,41 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             validationMessages.generateMessages(view, model, this);
         }
 
+        addComponentPostMetadata();
+    }
+
+    /**
+     * Invoked during the finalize phase to capture state of the component needs to support post operations.
+     */
+    protected void addComponentPostMetadata() {
         ViewLifecycle.getViewPostMetadata().getInputFieldIds().add(this.getId());
 
-        if (this.getLabel() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.LABEL,
-                    this.getLabel());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.LABEL,
+                this.getLabel());
 
-        if (this.getName() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PATH,
-                    this.getName());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PATH, this.getName());
 
-        if (this.getSimpleConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
-                    this.getSimpleConstraint());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
+                this.getSimpleConstraint());
 
-        if (this.getValidCharactersConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT, this.getValidCharactersConstraint());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT, this.getValidCharactersConstraint());
 
-        if (this.getCaseConstraint() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
-                    this.getCaseConstraint());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
+                this.getCaseConstraint());
 
-        if (this.getMustOccurConstraints() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS, this.getMustOccurConstraints());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS,
+                this.getMustOccurConstraints());
 
-        if (this.getPrerequisiteConstraints() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS, this.getPrerequisiteConstraints());
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS,
+                this.getPrerequisiteConstraints());
 
-        if (this.getAttributeQuery() != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY, attributeQuery);
-        }
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY, attributeQuery);
 
-        Suggest suggest = getSuggest();
-        if (suggest != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                    UifConstants.PostMetadata.INPUT_FIELD_SUGGEST, suggest);
-
-            AttributeQuery suggestQuery = suggest.getSuggestQuery();
-            if (suggestQuery != null) {
-                ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                        UifConstants.PostMetadata.INPUT_FIELD_SUGGEST_QUERY, suggestQuery);
-            }
+        if (this.suggest != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SUGGEST,
+                    this.suggest.getPostData());
         }
 
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
@@ -534,6 +517,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      */
     protected void setupFieldQuery() {
         if (getAttributeQuery() != null) {
+            getAttributeQuery().defaultQueryTarget(ViewLifecycle.getHelper());
+
             // adjust paths on query mappings
             getAttributeQuery().updateQueryFieldMapping(getBindingInfo());
             getAttributeQuery().updateReturnFieldMapping(getBindingInfo());
@@ -582,7 +567,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * already contains a value for a property, the definitions value is not
      * used.
      *
-     * @param view view instance the field belongs to
      * @param attributeDefinition AttributeDefinition instance the property values should be
      * copied from
      */

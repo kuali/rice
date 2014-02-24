@@ -116,20 +116,17 @@ public class UifDictionaryIndex implements Runnable {
             if (StringUtils.isBlank(beanName)) {
                 throw new DataDictionaryException("Unable to find View with id: " + viewId);
             }
-
             ProcessLogger.trace("view:init:" + viewId);
+           
             View view = ddBeans.getBean(beanName, View.class);
-
             ProcessLogger.trace("view:getBean");
-
-            String viewStatus = view.getViewStatus();
-            if (UifConstants.ViewStatus.CREATED.equals(viewStatus)) {
+            
+            if (UifConstants.ViewStatus.CREATED.equals(view.getViewStatus())) {
                 ViewLifecycle.preProcess(view);
+                
+                ProcessLogger.trace("view:preProcess");
             }
-            assert UifConstants.ViewStatus.CACHED.equals(view.getViewStatus()) : view.getViewStatus()
-                    + ", before pre-process = " + viewStatus;
-            ProcessLogger.trace("view:preProcess:" + viewStatus);
-
+            
             boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_DEV_MODE);
 

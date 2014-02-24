@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.Serializable;
@@ -76,6 +77,19 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
 
         queryMethodArgumentFieldList = new ArrayList<String>();
         queryMethodInvokerConfig = new MethodInvokerConfig();
+    }
+
+    /**
+     * If the query is configured with a method and the target of that method is undefined, sets the target
+     * class to the class of the given view helper service.
+     *
+     * @param viewHelperService instance of view helper to use as default for query methods
+     */
+    public void defaultQueryTarget(ViewHelperService viewHelperService) {
+        if ((queryMethodInvokerConfig.getTargetClass() == null) && (queryMethodInvokerConfig.getTargetObject()
+                == null)) {
+            queryMethodInvokerConfig.setTargetClass(viewHelperService.getClass());
+        }
     }
 
     /**

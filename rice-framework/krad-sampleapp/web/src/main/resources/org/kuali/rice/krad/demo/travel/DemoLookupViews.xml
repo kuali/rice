@@ -47,6 +47,30 @@
 
   </bean>
 
+  <bean id="LookupSampleViewAdditionalParameters" parent="Uif-LookupView">
+    <property name="viewName" value="LookupSampleViewAdditionalParameters"/>
+    <property name="viewHelperServiceClass" value="edu.sampleu.travel.TravelLookupableImpl"/>
+    <property name="headerText" value="Lookup Sample Additional Parameters (minSubsidized:50)"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:label="Fiscal Officer User ID"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate"/>
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="LookupSampleViewURLSearch" parent="LookupSampleView">
     <property name="viewName" value="LookupSampleViewURLSearch"/>
     <property name="headerText" value="Lookup Sample - Return results of URL criteria"/>

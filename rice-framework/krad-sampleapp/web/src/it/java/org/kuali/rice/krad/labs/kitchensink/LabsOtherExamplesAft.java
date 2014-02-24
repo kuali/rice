@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "http://env14.rice.kuali.org/kr-krad/uicomponents?viewId=UifCompView";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView";
     
     @Override
     protected String getBookmarkUrl() {

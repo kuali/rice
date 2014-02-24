@@ -163,7 +163,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
         passed();
     }
 
-//    @Test
+    @Test
     public void testCollectionFeaturesColumnCalculationsNav() throws Exception {
         testAllColumnCalculations();
         passed();

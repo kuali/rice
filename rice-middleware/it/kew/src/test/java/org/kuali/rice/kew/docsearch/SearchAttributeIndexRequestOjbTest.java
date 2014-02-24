@@ -32,7 +32,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SearchAttributeIndexRequestTestOjb extends SearchAttributeIndexRequestTest {
+public class SearchAttributeIndexRequestOjbTest extends SearchAttributeIndexRequestTest {
 
     private static final String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocumentOjb";
 	

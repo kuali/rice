@@ -421,6 +421,7 @@ public class UifConstants {
         public static final String PARENT = "parent";
         public static final String SUMMARIZE = "summarize";
         public static final String DISPLAY_MESSAGES = "displayMessages";
+        public static final String CLOSEABLE = "closeable";
         public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
         public static final String DISPLAY_LABEL = "displayLabel";
         public static final String SHOW_PAGE_SUMMARY_HEADER = "showPageSummaryHeader";

@@ -364,6 +364,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
+            pageValidationPhase = true;
             //reinitialize BubblePopup
             initBubblePopups();
 
@@ -377,6 +378,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
             });
 
             writeMessagesForPage();
+            pageValidationPhase = false;
         }
     }
     else {

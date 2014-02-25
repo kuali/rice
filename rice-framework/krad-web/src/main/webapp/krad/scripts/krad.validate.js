@@ -324,7 +324,7 @@ function writeMessagesAtField(id) {
 
         if (createMessagesDiv){
             messagesDiv = jQuery("<div id='" + id +
-                    "_errors' class='uif-validationMessages' data-messages_for='" + id + "' style='display: none;'>");
+                    "_errors' class='alert' data-messages_for='" + id + "' style='display: none;'>");
         }
 
         //ensure the messagesDiv is hidden and empty
@@ -385,7 +385,7 @@ function writeMessagesAtField(id) {
         //show appropriate icons/styles based on message severity level
         if (jQuery(messagesDiv).find(".uif-errorMessageItem-field").length) {
             if (data.errors.length) {
-                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientErrorDiv");
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_ERROR_DIV_CLASS);
             }
 
             if (data.fieldModified && data.errors.length == 0) {
@@ -432,7 +432,7 @@ function writeMessagesAtField(id) {
         }
         else if (jQuery(messagesDiv).find(".uif-infoMessageItem-field").length) {
             if (data.info.length) {
-                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass("uif-clientInfoDiv");
+                jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_INFO_DIV_CLASS);
             }
             field.addClass(kradVariables.HAS_INFO_CLASS);
             if (showImage) {
@@ -577,7 +577,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
         }
 
         //show messages if data is received as force show or if this group is considered a section
-        var showMessages = data.isSection || data.forceShow;
+        var showMessages = (data.isSection || data.forceShow) && (!data.closed || pageValidationPhase);
 
         //TabGroups rely on tab error indication to indicate messages - don't show messages here
         var type = group.data("type");
@@ -630,14 +630,18 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 var messageBlock = jQuery("[data-messages_for='" + id + "']");
 
                 if (messageBlock.length === 0) {
-                    var cssClasses = "uif-validationMessages uif-groupValidationMessages";
-                    if (pageLevel){
-                        cssClasses = cssClasses + " uif-pageValidationMessages";
-                    }
+                    var cssClasses = "alert";
 
                     messageBlock = jQuery("<div id='" + id + "_messages' class='"
                             + cssClasses + "' data-messages_for='" + id + "' "
                             + "style='display: none;'>");
+
+                    if (data.closeable) {
+                        messageBlock.bind('closed.bs.alert', function () {
+                            var data = getValidationData(group, true);
+                            data.closed = true;
+                        });
+                    }
 
                     var disclosureBlock = group.find("#" + id + "_disclosureContent");
                     if (disclosureBlock.length) {
@@ -657,6 +661,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS);
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS);
+                messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS);
 
                 //give the block styling
                 if (data.errorTotal > 0) {
@@ -667,6 +672,9 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 }
                 else if (data.infoTotal > 0) {
                     messageBlock.addClass(kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS);
+                }
+                else {
+                    messageBlock.addClass(kradVariables.PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS);
                 }
 
                 //clear and write the new list of summary items
@@ -734,6 +742,12 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                         messageBlock.find(".uif-validationMessagesList").attr("aria-labelledby",
                                 "pageValidationHeader");
                     }
+                }
+
+                if (data.closeable) {
+                    messageBlock.prepend("<button type='button' class='close' "
+                            + "data-dismiss='alert' aria-hidden='true'>x</button>");
+                    messageBlock.alert();
                 }
             }
             else {
@@ -946,7 +960,7 @@ function recursiveGroupMessageCount(parentId) {
         return data;
     }
 
-    jQuery("#" + parentId).find("div[data-parent='" + parentId + "']").not("div[data-role='InputField']").each(function () {
+    jQuery("#" + parentId).find("[data-parent='" + parentId + "']").not("div[data-role='InputField']").each(function () {
         var groupData = getValidationData(jQuery(this), true);
         if (groupData) {
             data.errorTotal = data.errorTotal + groupData.serverErrors.length + (groupData.errors ? groupData.errors.length : 0);
@@ -1389,11 +1403,12 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             }
 
             if (isLink) {
-                link = jQuery("<li data-messageItemFor='" + fieldId + "'><a href='#'>"
+                link = jQuery("<li data-messageItemFor='" + fieldId + "'><a class='alert-link' href='#'>"
                         + name + linkText + collapsedElements + "</a> </li>");
             }
             else {
-                link = jQuery("<li tabindex='0' data-messageItemFor='" + fieldId + "' class='uif-correctedError'>"
+                link = jQuery("<li tabindex='0' data-messageItemFor='" + fieldId
+                        + "' class='alert-link uif-correctedError'>"
                         + name + linkText + collapsedElements + "</li>");
             }
 
@@ -1691,7 +1706,8 @@ function generateSummaryLink(sectionId) {
             linkType = "uif-infoMessageItem";
             highlight = kradVariables.INFO_HIGHLIGHT_SECTION_CLASS;
         }
-        summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a href='#'>"
+        summaryLink = jQuery("<li data-messageItemFor='" + sectionId + "' class='" + linkType + "'><a "
+                + "class='alert-link' href='#'>"
                 + summaryMessage + "</a></li>");
 
         summaryLink.find("a").click(function (event) {

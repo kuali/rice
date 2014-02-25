@@ -168,6 +168,7 @@ function validateForm() {
     pauseTooltipDisplay = true;
 
     if (validateClient) {
+        pageValidationPhase = true;
         // Turn on this flag to avoid prematurely writing out messages which will cause performance issues if MANY
         // fields have validation errors simultaneously (first we are only checking for errors, not checking and
         // writing simultaneously like normal)
@@ -196,6 +197,7 @@ function validateForm() {
 
         // Finally, write the result of the validation messages
         writeMessagesForPage();
+        pageValidationPhase = false;
     }
 
     if (!validForm) {

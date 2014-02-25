@@ -37,6 +37,7 @@ var validateClient = true;
 var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 var haltValidationMessaging = false;
+var pageValidationPhase = false;
 var gAutoFocus = false;
 var clientErrorStorage = new Object();
 var summaryTextExistence = new Object();
@@ -759,6 +760,7 @@ function setupPage(validate) {
     //skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-role='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
+        pageValidationPhase = true;
         //Handle messages at field, if any
         jQuery("div[data-role='InputField']").each(function () {
             var id = jQuery(this).attr('id');
@@ -768,6 +770,7 @@ function setupPage(validate) {
         //Write the result of the validation messages
         writeMessagesForPage();
         messageSummariesShown = true;
+        pageValidationPhase = false;
     }
 
     //focus on pageValidation header if there are messages on this page

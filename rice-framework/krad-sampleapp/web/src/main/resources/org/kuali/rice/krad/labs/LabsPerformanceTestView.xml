@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2006-2014 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
 
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -25,7 +26,7 @@
   <!-- View definitions -->
   <bean id="Demo-Performance-LightTable" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -109,7 +110,7 @@
 
   <bean id="Demo-Performance-LightTable-DisableSort" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -193,7 +194,7 @@
 
   <bean id="Demo-Performance-BasicTableCollection" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -254,7 +255,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="items">
@@ -285,7 +286,7 @@
 
   <bean id="Demo-Performance-RichTable-ServerSidePaging" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -343,7 +344,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="layoutManager.richTable">
@@ -377,7 +378,7 @@
 
   <bean id="Demo-Performance-RichTable-NoServerSidePaging" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -433,7 +434,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="layoutManager.richTable">

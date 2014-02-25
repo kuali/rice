@@ -1,20 +1,19 @@
 /**
- * Copyright 2012 The Kuali Foundation Licensed under the
- * Educational Community License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may
- * obtain a copy of the License at
+ * Copyright 2005-2014 The Kuali Foundation
  *
- * http://www.osedu.org/licenses/ECL-2.0
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing
- * permissions and limitations under the License.
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * Created by bobhurt on 8/7/12
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.kuali.rice.krad.labs;
+package org.kuali.rice.krad.labs.coursesearch;
 
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -32,34 +31,39 @@ import javax.json.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
- * This class is the controller class for kitchen sink performance page.
+ * This class is the controller class for course search performance labs.
  *
- * @author Kuali Student Team
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/kitchensinkperformance")
-public class KitchenSinkPerformanceController extends UifControllerBase {
+@RequestMapping(value = "/coursesearchperformance")
+public class CourseSearchController extends UifControllerBase {
 
     public static final String KUALI_ATP_2012_FALL = "kuali.atp.2012Fall";
-//    ScheduleOfClassesService scheduleOfClassesService;
 
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected KitchenSinkPerformanceForm createInitialForm(HttpServletRequest request) {
-        return new KitchenSinkPerformanceForm();
+    protected CourseSearchForm createInitialForm(HttpServletRequest request) {
+        return new CourseSearchForm();
     }
 
+    /**
+     *
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
-        KitchenSinkPerformanceForm perfForm = (KitchenSinkPerformanceForm) form;
+        CourseSearchForm perfForm = (CourseSearchForm) form;
 
         return getUIFModelAndView(perfForm);
     }
@@ -67,14 +71,14 @@ public class KitchenSinkPerformanceController extends UifControllerBase {
     /**
      *  This method takes the user input (int) and generates a collection with that many rows. That collection is saved
      *  to the form object so it can be displayed on the page.
-     * @param form    KitchenSinkPerformanceForm
+     * @param form    CourseSearchForm
      * @param result
      * @param request
      * @param response
      * @return    ModelAndView
      */
     @RequestMapping(params = "methodToCall=buildcollection")
-    public ModelAndView buildCollection(@ModelAttribute("KualiForm") KitchenSinkPerformanceForm form, BindingResult result,
+    public ModelAndView buildCollection(@ModelAttribute("KualiForm") CourseSearchForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
         String courseCode = form.getInputOne(); // get input from page
@@ -663,29 +667,39 @@ public class KitchenSinkPerformanceController extends UifControllerBase {
         return getUIFModelAndView(form);
     }
 
+    /**
+     *
+     * @param jsonArray
+     * @param collectionList
+     * @throws JsonException
+     */
     public void populateCourseSearchResults(JsonArray jsonArray, List<CourseSearchResult> collectionList)throws JsonException {
-       int j = jsonArray.size();
-       int i;
-       for(i=0; i<j; i++) {
-           CourseSearchResult courseSearchResult = new CourseSearchResult();
-           JsonObject jsonObject = (JsonObject)jsonArray.get(i);
-           courseSearchResult.setCourseOfferingId(jsonObject.getString("courseOfferingId"));
-           courseSearchResult.setCourseOfferingCode(jsonObject.getString("courseOfferingCode"));
-           courseSearchResult.setHonorsCourse(jsonObject.getBoolean("honorsCourse"));
-           courseSearchResult.setAuditCourse(jsonObject.getBoolean("auditCourse"));
-           courseSearchResult.setStudentSelectablePassFail(jsonObject.getBoolean("studentSelectablePassFail"));
-           courseSearchResult.setCourseOfferingDesc(jsonObject.getString("courseOfferingDesc"));
-           courseSearchResult.setCourseOfferingCreditOptionDisplay(jsonObject.getString(
-                   "courseOfferingCreditOptionDisplay"));
-           courseSearchResult.setCourseOfferingGradingOptionDisplay(jsonObject.getString(
-                   "courseOfferingGradingOptionDisplay"));
-           collectionList.add(courseSearchResult);
-       }
+        int j = jsonArray.size();
+        int i;
+        for(i=0; i<j; i++) {
+            CourseSearchResult courseSearchResult = new CourseSearchResult();
+            JsonObject jsonObject = (JsonObject)jsonArray.get(i);
+            courseSearchResult.setCourseOfferingId(jsonObject.getString("courseOfferingId"));
+            courseSearchResult.setCourseOfferingCode(jsonObject.getString("courseOfferingCode"));
+            courseSearchResult.setHonorsCourse(jsonObject.getBoolean("honorsCourse"));
+            courseSearchResult.setAuditCourse(jsonObject.getBoolean("auditCourse"));
+            courseSearchResult.setStudentSelectablePassFail(jsonObject.getBoolean("studentSelectablePassFail"));
+            courseSearchResult.setCourseOfferingDesc(jsonObject.getString("courseOfferingDesc"));
+            courseSearchResult.setCourseOfferingCreditOptionDisplay(jsonObject.getString(
+                    "courseOfferingCreditOptionDisplay"));
+            courseSearchResult.setCourseOfferingGradingOptionDisplay(jsonObject.getString(
+                    "courseOfferingGradingOptionDisplay"));
+            collectionList.add(courseSearchResult);
+        }
 
 
     }
 
-
+    /**
+     *
+     * @param urlToRead
+     * @return
+     */
     public String getHTML(String urlToRead) {
         URL url;
         HttpURLConnection conn;

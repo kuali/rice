@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2014 The Kuali Foundation
+/**
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.kuali.rice.krad.labs;
+package org.kuali.rice.krad.labs.coursesearch;
 
 /**
- * Created by jcovey on 1/28/14.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CourseSearchResult {
 
@@ -34,66 +33,130 @@ public class CourseSearchResult {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCourseOfferingId() {
         return courseOfferingId;
     }
 
+    /**
+     *
+     * @param courseOfferingId
+     */
     public void setCourseOfferingId(String courseOfferingId) {
         this.courseOfferingId = courseOfferingId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCourseOfferingCode() {
         return courseOfferingCode;
     }
 
+    /**
+     *
+     * @param courseOfferingCode
+     */
     public void setCourseOfferingCode(String courseOfferingCode) {
         this.courseOfferingCode = courseOfferingCode;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getHonorsCourse() {
         return honorsCourse;
     }
 
+    /**
+     *
+     * @param honorsCourse
+     */
     public void setHonorsCourse(boolean honorsCourse) {
         this.honorsCourse = honorsCourse;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getAuditCourse() {
         return auditCourse;
     }
 
+    /**
+     *
+     * @param auditCourse
+     */
     public void setAuditCourse(boolean auditCourse) {
         this.auditCourse = auditCourse;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getStudentSelectablePassFail() {
         return studentSelectablePassFail;
     }
 
+    /**
+     *
+     * @param studentSelectablePassFail
+     */
     public void setStudentSelectablePassFail(boolean studentSelectablePassFail) {
         this.studentSelectablePassFail = studentSelectablePassFail;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCourseOfferingDesc() {
         return courseOfferingDesc;
     }
 
+    /**
+     *
+     * @param courseOfferingDesc
+     */
     public void setCourseOfferingDesc(String courseOfferingDesc) {
         this.courseOfferingDesc = courseOfferingDesc;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCourseOfferingCreditOptionDisplay() {
         return courseOfferingCreditOptionDisplay;
     }
 
+    /**
+     *
+     * @param courseOfferingCreditOptionDisplay
+     */
     public void setCourseOfferingCreditOptionDisplay(String courseOfferingCreditOptionDisplay) {
         this.courseOfferingCreditOptionDisplay = courseOfferingCreditOptionDisplay;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getCourseOfferingGradingOptionDisplay() {
         return courseOfferingGradingOptionDisplay;
     }
 
+    /**
+     *
+     * @param courseOfferingGradingOptionDisplay
+     */
     public void setCourseOfferingGradingOptionDisplay(String courseOfferingGradingOptionDisplay) {
         this.courseOfferingGradingOptionDisplay = courseOfferingGradingOptionDisplay;
     }

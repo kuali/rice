@@ -51,6 +51,9 @@ public class LabsLookupWithUserControlAft extends LabsLookupBase {
     
     protected void testLabsLookupWithUserControl()throws Exception {
         waitAndTypeByName("lookupCriteria[myPrincipalName]","admin");
+        //force js function to set hidden principalId to the same value as myPrincipalName
+        //if this is not done and the search gets called before principalId is set you will get an exception
+        waitAndTypeByName("lookupCriteria[entityId]","");
         waitAndClickButtonByText("Search");
         waitForElementPresentByClassName("dataTables_info");
         assertTextPresent("1100");

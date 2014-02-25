@@ -125,9 +125,9 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         waitForTextNotPresent("Loading...");
         Thread.sleep(10000);
         waitAndClickButtonByText("Refresh Field but with Server Errors");
-        waitForTextPresent("Field 1: Intended message with key: serverTestError not found. [+1 warning] [+1 message]");
+        waitForTextPresent("Field 1: Intended message with key: serverTestError not found.");
         waitAndClickButtonByText("Refresh Page");
-        waitForTextNotPresent("Field 1: Intended message with key: serverTestError not found. [+1 warning] [+1 message]");
+        waitForTextNotPresent("Field 1: Intended message with key: serverTestError not found.");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureRefreshBasedOnTimer() throws Exception {

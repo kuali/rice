@@ -240,13 +240,6 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krad-sampleapp-impl</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>

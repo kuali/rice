@@ -57,6 +57,17 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         passed();
     }
 
+    public void testConfigComponentCreateNewDuplicateEntryBookmark() throws Exception {
+        testConfigComponentCreateNewDuplicateEntry();
+        passed();
+    }
+    
+     public void testConfigComponentCreateNewDuplicateEntryNav() throws Exception {
+         testConfigComponentCreateNewDuplicateEntry();
+         passed();
+     }
+ 
+
     public void testConfigComponentCreateNew() throws Exception {
         String docId = testCreateNew();
         submitAndClose();
@@ -64,6 +75,32 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         passed();
     }
 
+    public void testConfigComponentCreateNewDuplicateEntry() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickByXpath("//img[@alt='create new']");
+        selectFrameIframePortlet();
+        String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByName("document.documentHeader.documentDescription","Description for Duplicate");
+        selectByName("document.newMaintainableObject.namespaceCode","KR-BUS - Service Bus");
+        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE");
+        waitAndTypeByName("document.newMaintainableObject.name","Component Name "+tempValue);
+        waitAndClickByXpath("//input[@name='methodToCall.route']");
+        waitForTextPresent("Document was successfully submitted.");
+        selectTopFrame();
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Component");
+        selectFrameIframePortlet();
+        waitAndClickByXpath("//img[@alt='create new']");
+        selectFrameIframePortlet();
+        waitAndTypeByName("document.documentHeader.documentDescription","Description for Duplicate");
+        selectByName("document.newMaintainableObject.namespaceCode","KR-BUS - Service Bus");
+        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE");
+        waitAndTypeByName("document.newMaintainableObject.name","Component Name "+tempValue);
+        waitAndClickByXpath("//input[@name='methodToCall.route']");
+        waitForTextPresent("This document cannot be Saved or Routed because a record with the same primary key already exists.");
+        
+    }
+    
     public void testConfigComponentCreateNewSave() throws Exception {
         String docId = testCreateNew();
         saveAndClose();

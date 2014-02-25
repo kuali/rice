@@ -36,4 +36,9 @@ public class ConfigComponentCreateNewBkMrkAft extends ConfigComponentCreateNewAf
     public void testConfigComponentCreateNewSaveBookmark() throws Exception {
         testConfigComponentCreateNewSave();
     }
+    
+    @Test
+    public void testConfigComponentCreateNewDuplicateEntryBookmark() throws Exception {
+        testConfigComponentCreateNewDuplicateEntry();
+    }
 }

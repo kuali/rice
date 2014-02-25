@@ -31,4 +31,9 @@ public class ConfigComponentCreateNewNavAft extends ConfigComponentCreateNewAftB
     public void testConfigComponentCreateNewSaveNav() throws Exception {
         testConfigComponentCreateNewSave();
     }
+    
+    @Test
+    public void testConfigComponentCreateNewDuplicateEntry() throws Exception {
+        testConfigComponentCreateNewDuplicateEntry();
+    }
 }

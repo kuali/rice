@@ -49,12 +49,11 @@ public class RoutingReportAft extends WebDriverLegacyITBase {
 
     protected void testRoutingReport() throws Exception {
         selectFrameIframePortlet();
-        selectByName("ruleTemplateId", "WorkflowDocumentDelegationTemplate");
-        //      selectFrameIframePortlet();
+        selectOptionByName("ruleTemplateId", "1015"); // WorkflowDocumentDelegationTemplate
         assertTextPresent(new String[] {"Enter Routing Data", "Effective Date:", "Document Type:"});
         assertElementPresentByXpath("//input[@name='methodToCall.calculateRoute']");
-        selectByName("ruleTemplateId", "TravelRequest-DestinationRouting");
-        //      selectFrameIframePortlet();
+
+        selectOptionByName("ruleTemplateId", "1026"); // TravelRequest-DestinationRouting
         waitForTextPresent("Destination:");
     }
 

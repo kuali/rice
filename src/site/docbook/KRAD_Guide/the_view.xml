@@ -867,7 +867,15 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-            <para/>
+        	<figure>
+        		<title>Detailed RequestResponseFlow</title>
+        		<mediaobject>
+        			<imageobject>
+        				<imagedata fileref="../images/KRAD_Guide/KradRequestResponse.png" scalefit="1"/>
+        			</imageobject>
+        		</mediaobject>
+        	</figure>
+        	<para/>
         </section>
     </section>
     <section>

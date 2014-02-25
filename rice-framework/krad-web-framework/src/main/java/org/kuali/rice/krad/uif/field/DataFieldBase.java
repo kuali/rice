@@ -224,6 +224,10 @@ public class DataFieldBase extends FieldBase implements DataField {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
 
+        if (this.getDefaultValue()!=null) {
+            ObjectPropertyUtils.setPropertyValue(model, this.getBindingInfo().getBindingName(), this.getDefaultValue());
+        }
+
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
         if (isRender() && viewPostMetadata != null) {
             viewPostMetadata.addRenderedPropertyPath(getBindingInfo().getBindingPath());

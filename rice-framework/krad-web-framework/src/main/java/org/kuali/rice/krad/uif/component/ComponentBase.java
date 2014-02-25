@@ -292,18 +292,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus()) &&
-                !viewStatus.equals(phase.getEndViewStatus())) {
-            ViewLifecycle.reportIllegalState("Component "
-                    + getClass().getName()
-                    + " is not in expected status "
-                    + phase.getStartViewStatus()
-                    + " marking the completion of a lifecycle phase, found "
-                    + viewStatus
-                    + "\nPhase: "
-                    + phase);
-        }
-
         this.viewStatus = phase.getEndViewStatus();
     }
 

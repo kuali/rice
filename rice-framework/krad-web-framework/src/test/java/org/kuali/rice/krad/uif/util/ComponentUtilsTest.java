@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
@@ -37,10 +39,13 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.CollectionGroupBase;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.DataFieldBase;
 import org.kuali.rice.krad.uif.field.FieldBase;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.InputFieldBase;
+import org.kuali.rice.krad.uif.widget.Tooltip;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
@@ -467,6 +472,46 @@ public class ComponentUtilsTest {
         }
 
         return result;
+    }
+
+    /**
+     * Test {@link ComponentUtils#cleanContextDeap} using a BreadcrumbItem object
+     */
+    @Test
+    public void testCleanContextDeap() {
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("contextkey", "value");
+        context.put("contextkey2", "value2");
+
+        BreadcrumbItem breadcrumbItem = new BreadcrumbItem();
+        breadcrumbItem.setContext(context);
+
+        InputField inputField = new InputFieldBase();
+        inputField.setContext(context);
+
+        Label fieldLabel = new Label();
+        fieldLabel.setContext(context);
+
+        Tooltip labelTootlip = new Tooltip();
+        labelTootlip.setContext(context);
+        fieldLabel.setToolTip(labelTootlip);
+
+        inputField.setFieldLabel(fieldLabel);
+
+        breadcrumbItem.setSiblingBreadcrumbComponent(inputField);
+
+        Tooltip tooltip = new Tooltip();
+        tooltip.setContext(context);
+
+        breadcrumbItem.setToolTip(tooltip);
+
+        ComponentUtils.cleanContextDeap(breadcrumbItem);
+
+        assertEquals(0, breadcrumbItem.getContext().size());
+        assertEquals(0, inputField.getContext().size());
+        assertEquals(0, fieldLabel.getContext().size());
+        assertEquals(0, labelTootlip.getContext().size());
+        assertEquals(0, tooltip.getContext().size());
     }
 
     @Ignore // Ignored for now, this is a proof of concept for using reflection to test copying

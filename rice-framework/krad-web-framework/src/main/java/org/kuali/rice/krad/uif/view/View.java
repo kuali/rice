@@ -1866,7 +1866,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * The pathBasedBreadcrumbs for this View.  This has been added for copyProperties().
+     * The pathBasedBreadcrumbs for this View.
      *
      * @param pathBasedBreadcrumbs
      */
@@ -2211,9 +2211,11 @@ public class View extends ContainerBase {
     @Override
     public View clone() throws CloneNotSupportedException {
         View viewCopy = (View) super.clone();
+
         if (this.viewIndex != null) {
             viewCopy.viewIndex = this.viewIndex.copy();
         }
+
         return viewCopy;
     }
 

@@ -46,7 +46,7 @@ public class LifecycleRefreshPathBuilder {
     public static void processLifecycleElements() {
         ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
 
-        Map<String, LifecycleElement> lifecycleElements = viewIndex.getLifecycleElements();
+        Map<String, LifecycleElement> lifecycleElements = viewIndex.getLifecycleElementsByPath();
         for (LifecycleElement lifecycleElement : lifecycleElements.values()) {
             processLifecycleElement(lifecycleElement);
         }

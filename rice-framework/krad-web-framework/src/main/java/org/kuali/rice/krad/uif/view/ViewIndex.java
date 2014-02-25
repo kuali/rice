@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -28,19 +27,15 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.ViewCleaner;
 
 /**
- * Holds component indexes of a {@link View} instance for convenient retrieval during the
- * lifecycle and persisting components for the refresh process.
+ * Holds component indexes of a {@link View} instance for convenient retrieval during the lifecycle.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewIndex implements Serializable {
     private static final long serialVersionUID = 4700818801272201371L;
-    
     private static final Logger LOG = Logger.getLogger(ViewIndex.class);
 
     private Map<String, Component> index;
@@ -49,7 +44,6 @@ public class ViewIndex implements Serializable {
     private Map<String, CollectionGroup> collectionsIndex;
     private Map<String, LifecycleElement> lifecycleElementsByPath;
 
-    private Set<String> idsToHoldInIndex;
     private Set<String> assignedIds;
 
     /**
@@ -60,7 +54,6 @@ public class ViewIndex implements Serializable {
         dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         lifecycleElementsByPath = new HashMap<String, LifecycleElement>();
-        idsToHoldInIndex = new HashSet<String>();
         assignedIds = new HashSet<String>();
     }
 
@@ -135,59 +128,19 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Invoked after the view lifecycle or component refresh has run to clear indexes that are not
-     * needed for the post.
-     */
-    public void clearIndexesAfterRender() {
-        // build list of ids for components whose final state needs to be kept
-        for (Component component : index.values()) {
-            if (component == null) {
-                continue;
-            }
-
-            if (component.isDisableSessionPersistence()) {
-                continue;
-            }
-
-            // if component is a collection we need to keep it for  add/delete and other collection functions
-            if (component.isForceSessionPersistence() || ComponentUtils.canBeRefreshed(component) ||
-                    (component instanceof CollectionGroup)) {
-                synchronized (idsToHoldInIndex) {
-                    idsToHoldInIndex.add(component.getId());
-                }
-            }
-        }
-
-        Map<String, Component> holdComponentStates = new HashMap<String, Component>();
-        synchronized (index) {
-            for (Entry<String, Component> indexEntry : index.entrySet()) {
-                if (idsToHoldInIndex.contains(indexEntry.getKey())) {
-                    Component component = indexEntry.getValue();
-
-                    ViewCleaner.cleanComponent(component, this);
-                    holdComponentStates.put(indexEntry.getKey(), component);
-                }
-            }
-        }
-        index = holdComponentStates;
-
-        for (CollectionGroup collectionGroup : collectionsIndex.values()) {
-            ViewCleaner.cleanComponent(collectionGroup, this);
-        }
-
-        dataFieldIndex.clear();
-        assignedIds.clear();
-    }
-
-    /**
-     * Indicates whether the given component id is for a component maintained by the view index for
-     * the refresh process
+     * Observe an assigned ID.
      *
-     * @param componentId id for the component to check
-     * @return true if the component id is for a refreshed component, false if not
+     * @param id ID to observe
+     * @return true if the ID is unique, false if the ID has already been observed
      */
-    public boolean isIdForRefreshComponent(String componentId) {
-        return idsToHoldInIndex != null && idsToHoldInIndex.contains(componentId);
+    public boolean observeAssignedId(String id) {
+        if (assignedIds.contains(id)) {
+            return false;
+        }
+
+        synchronized (assignedIds) {
+            return assignedIds.add(id);
+        }
     }
 
     /**
@@ -231,26 +184,20 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Returns a set of all data field paths that will be displayed (rendered).
+     * Gets the Map of lifecycle elements that are indexed by their path relative to the view.
      *
-     * @return Set<String> set of property paths for data fields
+     * @return map of all indexed lifecycle elements, key is the element path and value is the element instance
      */
-    public Set<String> getAllDisplayedPropertyPaths() {
-        Set<String> propertyPaths = new HashSet<String>();
-
-        for (DataField field : dataFieldIndex.values()) {
-            if (field.isRender()) {
-                propertyPaths.add(field.getBindingInfo().getBindingPath());
-            }
-        }
-
-        return propertyPaths;
-    }
-
-    public Map<String, LifecycleElement> getLifecycleElements() {
+    public Map<String, LifecycleElement> getLifecycleElementsByPath() {
         return lifecycleElementsByPath;
     }
 
+    /**
+     * Gets a lifecycle element instance by the given path (relative to the view).
+     *
+     * @param path path of the element that should be returned
+     * @return lifecycle element instance for given path or null if element at that path does not exist
+     */
     public LifecycleElement getLifecycleElementByPath(String path) {
         if ((lifecycleElementsByPath != null) && lifecycleElementsByPath.containsKey(path)) {
             return lifecycleElementsByPath.get(path);
@@ -287,22 +234,6 @@ public class ViewIndex implements Serializable {
      */
     public CollectionGroup getCollectionGroupByPath(String collectionPath) {
         return collectionsIndex.get(collectionPath);
-    }
-
-    /**
-     * Observe an assigned ID.
-     *
-     * @param id The ID to observe.
-     * @return True if the ID is unique, false if the ID has already been observed.
-     */
-    public boolean observeAssignedId(String id) {
-        if (assignedIds.contains(id)) {
-            return false;
-        }
-
-        synchronized (assignedIds) {
-            return assignedIds.add(id);
-        }
     }
 
     /**

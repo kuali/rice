@@ -172,27 +172,12 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	 */
 	public void addStyleClass(String styleClass);
 
-	/**
-	 * Context map for the layout manager
-	 *
-	 * @return Map<String, Object> context
-	 * @see org.kuali.rice.krad.uif.component.Component#getContext()
-	 */
-	public Map<String, Object> getContext();
-
     /**
      * Appends to the inline style set on this layoutManager
      *
      * @param styleRules
      */
     public void appendToStyle(String styleRules);
-
-    /**
-	 * Setter for the context Map
-	 *
-	 * @param context
-	 */
-	public void setContext(Map<String, Object> context);
 
 	/**
 	 * List of <code>PropertyReplacer</code> instances that will be

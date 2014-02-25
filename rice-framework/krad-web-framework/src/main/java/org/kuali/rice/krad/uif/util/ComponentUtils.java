@@ -27,6 +27,8 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.util.ReflectionUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -688,6 +690,33 @@ public class ComponentUtils {
         boolean isAddLine = (lineIndex == -1);
         toUpdate.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
         pushAllToContext(component, toUpdate);
+    }
+
+    /**
+     * Sets the context of the given lifecycle element to null, then using reflection recursively finds any
+     * lifecycle element children and sets their context to null.
+     *
+     * @param lifecycleElement lifecycle element instance to clean
+     */
+    public static void cleanContextDeap(LifecycleElement lifecycleElement) {
+        if (lifecycleElement == null) {
+            return;
+        }
+
+        lifecycleElement.setContext(null);
+
+        // find any children that are lifecycle elements and clean them as well
+        Class<?> elementClass = lifecycleElement.getClass();
+
+        List<java.lang.reflect.Field> fields = ReflectionUtils.getAllFields(elementClass);
+        for (java.lang.reflect.Field field : fields) {
+            if (LifecycleElement.class.isAssignableFrom(field.getType())) {
+                ReflectionUtils.makeAccessible(field);
+                LifecycleElement nestedElement = (LifecycleElement) ReflectionUtils.getField(field, lifecycleElement);
+
+                cleanContextDeap(nestedElement);
+            }
+        }
     }
 
     /**

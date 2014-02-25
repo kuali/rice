@@ -82,11 +82,5 @@ public class ViewIndexTest {
         for (Component component : components) {
             assertNotNull(viewIndex.getComponentById(component.getId()));
         }
-
-        viewIndex.clearIndexesAfterRender();
-        // confirm that the index still has the components
-        for (Component component : components) {
-            assertNotNull(viewIndex.getComponentById(component.getId()));
-        }
     }
 }

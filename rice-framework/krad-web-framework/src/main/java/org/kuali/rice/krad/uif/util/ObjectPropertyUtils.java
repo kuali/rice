@@ -29,6 +29,7 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -48,7 +49,6 @@ import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ObjectPropertyUtils {
-
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
     /**
@@ -246,6 +246,16 @@ public final class ObjectPropertyUtils {
     public static Set<String> getReadablePropertyNamesByCollectionType(
             Object bean, Class<?> collectionType) {
         return getReadablePropertyNamesByCollectionType(bean.getClass(), collectionType);
+    }
+
+    /**
+     * Gets the property names for the given object that are writable
+     *
+     * @param bean object to get writable property names for
+     * @return set of property names
+     */
+    public static Set<String> getWritablePropertyNames(Object bean) {
+        return getMetadata(bean.getClass()).getWritablePropertyNames();
     }
 
     /**
@@ -849,6 +859,21 @@ public final class ObjectPropertyUtils {
             readablePropertyNamesByCollectionType.put(collectionType, propertyNames);
             
             return propertyNames;
+        }
+
+        /**
+         * Gets the property names that are writable for the metadata class.
+         *
+         * @return set of writable property names
+         */
+        private Set<String> getWritablePropertyNames() {
+            Set<String> writablePropertyNames = new HashSet<String>();
+
+            for (Entry<String, Method> writeMethodEntry : writeMethods.entrySet()) {
+                writablePropertyNames.add(writeMethodEntry.getKey());
+            }
+
+            return writablePropertyNames;
         }
 
         /**

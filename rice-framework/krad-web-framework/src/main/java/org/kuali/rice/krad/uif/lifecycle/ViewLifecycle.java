@@ -97,7 +97,7 @@ public class ViewLifecycle implements Serializable {
         this.response = response;
         this.refreshComponentPostMetadata = refreshComponentPostMetadata;
         this.helper = view.getViewHelperService();
-        this.eventRegistrations = Collections.synchronizedList(new ArrayList<EventRegistration>());
+        this.eventRegistrations = new ArrayList<EventRegistration>();
     }
 
     /**
@@ -323,9 +323,11 @@ public class ViewLifecycle implements Serializable {
      * @see LifecycleEvent
      */
     public void invokeEventListeners(LifecycleEvent event, View view, Object model, LifecycleElement eventElement) {
-        for (EventRegistration registration : eventRegistrations) {
-            if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventElement)) {
-                registration.getEventListener().processEvent(event, view, model, eventElement);
+        synchronized (eventRegistrations) {
+            for (EventRegistration registration : eventRegistrations) {
+                if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventElement)) {
+                    registration.getEventListener().processEvent(event, view, model, eventElement);
+                }
             }
         }
     }
@@ -350,7 +352,9 @@ public class ViewLifecycle implements Serializable {
         EventRegistration eventRegistration = new EventRegistration(LifecycleEvent.LIFECYCLE_COMPLETE, eventComponent,
                 listenerComponent);
 
-        eventRegistrations.add(eventRegistration);
+        synchronized (eventRegistrations) {
+            eventRegistrations.add(eventRegistration);
+        }
     }
 
     /**

@@ -149,6 +149,9 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
+    //setup the handler for enter key event actions
+    initEnterKeyHandler();
+
     //setup any potential sticky/fixed content
     setupStickyHeaderAndFooter();
 
@@ -165,6 +168,35 @@ jQuery(document).ready(function () {
 
 });
 
+function initEnterKeyHandler(){
+
+    jQuery("[data-enter_key]").on("keyup", function(event) {
+        var enterKeyId = jQuery(event.currentTarget).data("enter_key");
+
+        if(jQuery(event.target).is(":not(a, button, submit, img[data-role='Action'], input[data-role='Action'] )")){
+            console.log('allowed');
+            if(enterKeyId === "@PRIMARY"){
+                console.log("invoke the primary button");
+                enterKeyId = jQuery("[data-primary_action='true']:first").attr('id');
+            }
+
+            if(jQuery('#' + enterKeyId).is(":visible") && jQuery('#' + enterKeyId).is(":disabled") === false){
+                console.log(event);
+                console.log(enterKeyId);
+                event.stopPropagation();
+                return;
+            }else{
+                console.log(enterKeyId + ' is unreachable');
+            }
+
+        }else{
+            console.log('not allowed');
+        }
+
+        event.stopPropagation();
+    });
+
+}
 /**
  * Sets up and initializes the handlers for sticky header and footer content
  */

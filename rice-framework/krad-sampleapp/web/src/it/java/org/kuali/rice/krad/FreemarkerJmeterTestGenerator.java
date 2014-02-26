@@ -79,11 +79,13 @@ public class FreemarkerJmeterTestGenerator {
 
                 // TODO would be nice to allow overriding via System params like the other Freemarker Generators do
                 pathPart = csvProperties.getProperty(propertiesArray[1]);
-                pathPart = pathPart.substring(pathPart.lastIndexOf(File.separatorChar) + 1, pathPart.length());
-                jmeterTest = new File(pathPart + "_" + csvProperties.getProperty(propertiesArray[2]) + "_" + csvProperties.getProperty(propertiesArray[3]) + ".jmx");
-                String output = FreeMarkerTemplateUtils.processTemplateIntoString(cfg.getTemplate(template), csvProperties);
-                output = output.replace("@{", "${");
-                FileUtils.writeStringToFile(jmeterTest, output);
+                if (pathPart != null) {
+                    pathPart = pathPart.substring(pathPart.lastIndexOf(File.separatorChar) + 1, pathPart.length());
+                    jmeterTest = new File(pathPart + "_" + csvProperties.getProperty(propertiesArray[2]) + "_" + csvProperties.getProperty(propertiesArray[3]) + ".jmx");
+                    String output = FreeMarkerTemplateUtils.processTemplateIntoString(cfg.getTemplate(template), csvProperties);
+                    output = output.replace("@{", "${");
+                    FileUtils.writeStringToFile(jmeterTest, output);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

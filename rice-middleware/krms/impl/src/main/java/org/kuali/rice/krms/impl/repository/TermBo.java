@@ -46,10 +46,8 @@ public class TermBo implements TermDefinitionContract, Serializable {
 
     public static final String TERM_SEQ_NAME = "KRMS_TERM_S";
 
-    @PortableSequenceGenerator(name = TERM_SEQ_NAME)
-    @GeneratedValue(generator = TERM_SEQ_NAME)
-    @Id
-    @Column(name = "TERM_ID")
+    @PortableSequenceGenerator(name = TERM_SEQ_NAME) @GeneratedValue(generator = TERM_SEQ_NAME) @Id @Column(
+            name = "TERM_ID")
     private String id;
 
     @Column(name = "TERM_SPEC_ID")
@@ -58,18 +56,16 @@ public class TermBo implements TermDefinitionContract, Serializable {
     @Column(name = "DESC_TXT")
     private String description;
 
-    @Version
-    @Column(name="VER_NBR", length=8)
+    @Version @Column(name = "VER_NBR", length = 8)
     protected Long versionNumber;
 
-
-    // new-ing up an empty one allows the TermBo lookup to work on fields in the term specification: 
-    @ManyToOne(targetEntity = TermSpecificationBo.class, cascade = { CascadeType.REFRESH })
-    @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID", insertable = false, updatable = false)
+    // new-ing up an empty one allows the TermBo lookup to work on fields in the term specification:
+    @ManyToOne(targetEntity = TermSpecificationBo.class, cascade = {CascadeType.REFRESH}) @JoinColumn(
+            name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID", insertable = false, updatable = false)
     private TermSpecificationBo specification = new TermSpecificationBo();
 
     @OneToMany(targetEntity = TermParameterBo.class, orphanRemoval = true,
-            cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST },
+            cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST},
             mappedBy = "term"
     )
     private List<TermParameterBo> parameters;
@@ -79,6 +75,7 @@ public class TermBo implements TermDefinitionContract, Serializable {
 
     /**
      * Converts a mutable bo to it's immutable counterpart
+     *
      * @param bo the mutable business object
      * @return the immutable object
      */
@@ -92,6 +89,7 @@ public class TermBo implements TermDefinitionContract, Serializable {
 
     /**
      * Converts a immutable object to it's mutable bo counterpart
+     *
      * @param im immutable object
      * @return the mutable bo
      */
@@ -130,14 +128,20 @@ public class TermBo implements TermDefinitionContract, Serializable {
         return parameters;
     }
 
+    public Map<String, String> getParametersMap() {
+        return parametersMap;
+    }
+
     public void setParameters(List<TermParameterBo> parameters) {
         this.parameters = parameters;
     }
 
     public void exportToParametersMap() {
         // merge in TermParameterBo values 
-        if (parameters != null) for (TermParameterBo param : parameters) {
-            parametersMap.put(param.getName(), param.getValue());
+        if (parameters != null) {
+            for (TermParameterBo param : parameters) {
+                parametersMap.put(param.getName(), param.getValue());
+            }
         }
     }
 
@@ -149,7 +153,8 @@ public class TermBo implements TermDefinitionContract, Serializable {
         }
 
         for (Entry<String, String> paramEntry : parametersMap.entrySet()) {
-            TermParameterDefinition termDef = TermParameterDefinition.Builder.create(null, id, paramEntry.getKey(), paramEntry.getValue()).build();
+            TermParameterDefinition termDef = TermParameterDefinition.Builder.create(null, id, paramEntry.getKey(),
+                    paramEntry.getValue()).build();
             parameters.add(TermParameterBo.from(termDef));
         }
     }

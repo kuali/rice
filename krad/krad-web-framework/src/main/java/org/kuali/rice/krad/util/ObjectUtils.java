@@ -474,18 +474,23 @@ public final class ObjectUtils {
         // KULRICE-8412 Changes so that values passed back through via the URL such as
         // lookups are decrypted where applicable
         if (propertyValue instanceof String) {
-            String propVal = (String)propertyValue;
+            String propVal = (String) propertyValue;
+
             if (propVal.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-                EncryptionService es = CoreApiServiceLocator.getEncryptionService();
+                propVal = StringUtils.removeEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(bo.getClass(), propertyName)) {
                 try {
-                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        propertyValue = (Object) es.decrypt(StringUtils.stripEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX));
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().decrypt(propVal);
                     }
-                } catch (GeneralSecurityException gse) {
-                    gse.printStackTrace();
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
+
         // set property in the object
         PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
     }

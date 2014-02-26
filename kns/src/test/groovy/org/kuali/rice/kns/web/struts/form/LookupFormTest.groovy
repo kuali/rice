@@ -17,6 +17,9 @@ package org.kuali.rice.kns.web.struts.form
 
 import org.junit.Test
 import org.apache.struts.mock.MockHttpServletRequest
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService
+import org.kuali.rice.krad.service.DataObjectAuthorizationService
+
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertFalse
 import org.junit.Before
@@ -62,6 +65,8 @@ class LookupFormTest {
                     [ getParameterValueAsString: { s0,s1,s2 -> null },
                       getParameterValueAsBoolean: { s0,s1,s2,s3 -> false }
                     ] as ParameterService,
+                  dataObjectAuthorizationService:
+                    [ attributeValueNeedsToBeEncryptedOnFormsAndLinks: {s0,s1 -> false } ] as DataObjectAuthorizationService,
                   businessObjectDictionaryService:
                     [ getLookupableID: { s0 -> null } ] as BusinessObjectDictionaryService,
                   kualiLookupable: {

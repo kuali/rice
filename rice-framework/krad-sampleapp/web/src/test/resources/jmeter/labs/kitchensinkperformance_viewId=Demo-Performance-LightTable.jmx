@@ -182,6 +182,15 @@ the JMeter UI or command line script -->
     <stringProp name="RegexExtractor.match_number">0</stringProp>
 </RegexExtractor>
 <hashTree/>
+<RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+    <stringProp name="RegexExtractor.refname">CACHE_KEY</stringProp>
+    <stringProp name="RegexExtractor.regex">type=&quot;hidden&quot; name=&quot;cacheKey&quot; value=&quot;(.+)&quot;</stringProp>
+    <stringProp name="RegexExtractor.template">$1$</stringProp>
+    <stringProp name="RegexExtractor.default"></stringProp>
+    <stringProp name="RegexExtractor.match_number">0</stringProp>
+</RegexExtractor>
+<hashTree/>
 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/" enabled="true">
     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
         <collectionProp name="Arguments.arguments"/>
@@ -2060,7 +2069,7 @@ the JMeter UI or command line script -->
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://${URL}/kr-krad/kitchensinkperformance?viewId=Demo-Performance-LightTable&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2139,7 +2148,7 @@ the JMeter UI or command line script -->
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://${URL}/kr-krad/kitchensinkperformance?viewId=Demo-Performance-LightTable&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2218,7 +2227,7 @@ the JMeter UI or command line script -->
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://${URL}/kr-krad/kitchensinkperformance?viewId=Demo-Performance-LightTable&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
             </elementProp>
             <elementProp name="X-Requested-With" elementType="Header">
                 <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2311,7 +2320,7 @@ the JMeter UI or command line script -->
             </elementProp>
             <elementProp name="Referer" elementType="Header">
                 <stringProp name="Header.name">Referer</stringProp>
-                <stringProp name="Header.value">http://${URL}/kr-krad/labs?viewId=Lab-PerformanceMedium&amp;pageId=Lab-Performance-Page2</stringProp>
+                <stringProp name="Header.value">http://${URL}/kr-krad/kitchensinkperformance?viewId=Demo-Performance-LightTable&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
             </elementProp>
             <elementProp name="Accept-Encoding" elementType="Header">
                 <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -2321,6 +2330,159 @@ the JMeter UI or command line script -->
     </HeaderManager>
     <hashTree/>
 </hashTree>
+  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/kr-krad/kitchensinkperformance" enabled="true">
+    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+      <collectionProp name="Arguments.arguments">
+        <elementProp name="inputOne" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">inputOne</stringProp>
+          <stringProp name="Argument.value"></stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="u89w3zq_lightTable_length" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">u89w3zq_lightTable_length</stringProp>
+          <stringProp name="Argument.value">10</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="pageId" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">pageId</stringProp>
+          <stringProp name="Argument.value">uq1hqp4</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="viewId" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">viewId</stringProp>
+          <stringProp name="Argument.value">Demo-Performance-LightTable</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="formKey" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">formKey</stringProp>
+          <stringProp name="Argument.value">${FORM_KEY}</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="requestedFormKey" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">requestedFormKey</stringProp>
+          <stringProp name="Argument.value"></stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="sessionId" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">sessionId</stringProp>
+          <stringProp name="Argument.value">${SESSION_ID}</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="flowKey" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">flowKey</stringProp>
+          <stringProp name="Argument.value"></stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="view.applyDirtyCheck" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">view.applyDirtyCheck</stringProp>
+          <stringProp name="Argument.value">false</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="dirtyForm" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">dirtyForm</stringProp>
+          <stringProp name="Argument.value">false</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="renderedInLightBox" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">renderedInLightBox</stringProp>
+          <stringProp name="Argument.value">false</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="view.singlePageView" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">view.singlePageView</stringProp>
+          <stringProp name="Argument.value">true</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="view.disableBrowserCache" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">view.disableBrowserCache</stringProp>
+          <stringProp name="Argument.value">true</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="methodToCall" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">methodToCall</stringProp>
+          <stringProp name="Argument.value">buildcollection</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="ajaxReturnType" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">ajaxReturnType</stringProp>
+          <stringProp name="Argument.value">update-page</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="ajaxRequest" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">ajaxRequest</stringProp>
+          <stringProp name="Argument.value">true</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="focusId" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">focusId</stringProp>
+          <stringProp name="Argument.value">generate_button</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="jumpToId" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">false</boolProp>
+          <stringProp name="Argument.name">jumpToId</stringProp>
+          <stringProp name="Argument.value">generate_button</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+        <elementProp name="clientViewState" elementType="HTTPArgument">
+          <boolProp name="HTTPArgument.always_encode">true</boolProp>
+          <stringProp name="Argument.name">clientViewState</stringProp>
+          <stringProp name="Argument.value">{&apos;u89w3zq_lightTable&apos;:{&apos;richTableState&apos;:{&apos;iCreate&apos;:1393453380405,&apos;iStart&apos;:0,&apos;iEnd&apos;:0,&apos;iLength&apos;:10,&apos;aaSorting&apos;:[[0,&apos;asc&apos;,0]],&apos;oSearch&apos;:{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},&apos;aoSearchCols&apos;:[{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true}],&apos;abVisCols&apos;:[true,true,true,true,true,true,true,true]}}}</stringProp>
+          <stringProp name="Argument.metadata">=</stringProp>
+          <boolProp name="HTTPArgument.use_equals">true</boolProp>
+        </elementProp>
+      </collectionProp>
+    </elementProp>
+    <stringProp name="HTTPSampler.domain">${URL}</stringProp>
+    <stringProp name="HTTPSampler.port"></stringProp>
+    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+    <stringProp name="HTTPSampler.protocol">http</stringProp>
+    <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+    <stringProp name="HTTPSampler.path">/kr-krad/kitchensinkperformance</stringProp>
+    <stringProp name="HTTPSampler.method">POST</stringProp>
+    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+    <boolProp name="HTTPSampler.monitor">false</boolProp>
+    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+  </HTTPSamplerProxy>
 </hashTree>
 </hashTree>
 </hashTree>

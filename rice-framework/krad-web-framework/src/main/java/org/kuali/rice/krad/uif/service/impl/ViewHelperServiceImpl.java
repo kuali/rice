@@ -1043,6 +1043,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return dataObjectService;
     }
 
+    protected void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
     /**
      * Set the legacy data adapter.
      *

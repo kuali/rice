@@ -342,4 +342,42 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         return CoreApiServiceLocator.getEncryptionService();
     }
 
+    /**
+     * Returns a clone of the InquirableImpl.
+     *
+     * @return InquirableImpl clone
+     */
+    public InquirableImpl copy() {
+        InquirableImpl inquirableImplCopy = new InquirableImpl();
+
+        if (this.dataObjectClass != null) {
+            inquirableImplCopy.dataObjectClass = this.dataObjectClass;
+        }
+
+        if (this.getConfigurationService() != null) {
+            inquirableImplCopy.setConfigurationService(this.getConfigurationService());
+        }
+
+        if (this.getDataDictionaryService() != null) {
+            inquirableImplCopy.setDataDictionaryService(this.getDataDictionaryService());
+        }
+
+        if (this.getLegacyDataAdapter() != null) {
+            inquirableImplCopy.setLegacyDataAdapter(this.getLegacyDataAdapter());
+        }
+
+        if (this.getDataObjectService() != null) {
+            inquirableImplCopy.setDataObjectService(this.getDataObjectService());
+        }
+
+        if (this.getViewDictionaryService() != null) {
+            inquirableImplCopy.setViewDictionaryService(this.getViewDictionaryService());
+        }
+
+        if (this.getExpressionEvaluatorFactory() != null) {
+            inquirableImplCopy.setExpressionEvaluatorFactory(this.getExpressionEvaluatorFactory());
+        }
+
+        return inquirableImplCopy;
+    }
 }

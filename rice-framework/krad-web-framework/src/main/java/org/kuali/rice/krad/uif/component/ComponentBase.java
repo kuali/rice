@@ -236,11 +236,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                 return;
             }
         } else {
-            ViewLifecycle.reportIllegalState("Component "
-                    + getClass()
-                    + " "
-                    + getId()
-                    + " has been initialized, but the lifecycle is not active.");
+//            ViewLifecycle.reportIllegalState("Component "
+//                    + getClass()
+//                    + " "
+//                    + getId()
+//                    + " has been initialized, but the lifecycle is not active.");
             return;
         }
     }

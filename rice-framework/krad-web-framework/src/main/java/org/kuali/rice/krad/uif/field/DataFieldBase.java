@@ -225,7 +225,7 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
 
         if (this.getDefaultValue()!=null) {
-            ObjectPropertyUtils.setPropertyValue(model, this.getBindingInfo().getBindingName(), this.getDefaultValue());
+            ObjectPropertyUtils.setPropertyValue(model, this.getBindingInfo().getBindingPath(), this.getDefaultValue());
         }
 
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();

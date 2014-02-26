@@ -25,7 +25,7 @@
 
   <!-- Loads the riceDataSource, will be a different database depending on what database environment this is running under -->
 
-  <context:load-time-weaver/>
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <bean id="riceDataSource"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"

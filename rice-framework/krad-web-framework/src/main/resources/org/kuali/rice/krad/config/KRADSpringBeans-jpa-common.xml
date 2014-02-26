@@ -30,7 +30,7 @@
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- Enables Load-Time Weaving -->
-	<context:load-time-weaver />
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
 	<!-- List of all the base packages which we must scan as part of any module. -->
 	<util:list id="kradJpaPackagesToScan">

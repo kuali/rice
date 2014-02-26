@@ -42,7 +42,7 @@
   </bean>
 
   <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver />
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <util:list id="rice.ksb.registry.managedClassNames">
     <value>org.kuali.rice.ksb.impl.registry.ServiceInfoBo</value>

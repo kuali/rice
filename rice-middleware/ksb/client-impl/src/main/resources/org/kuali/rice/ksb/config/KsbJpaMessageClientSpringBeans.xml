@@ -30,7 +30,7 @@
 
 
   <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver/>
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <util:list id="rice.ksb.message.managedClassNames">
     <value>org.kuali.rice.ksb.messaging.PersistedMessageBO</value>

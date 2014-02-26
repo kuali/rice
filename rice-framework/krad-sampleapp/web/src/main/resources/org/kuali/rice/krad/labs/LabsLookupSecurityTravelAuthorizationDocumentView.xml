@@ -59,6 +59,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
                   p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelerDetail">
+              <property name="lightBox.render" value="false"/>
               <property name="fieldConversions">
                 <map>
                   <entry key="id" value="travelerDetailId"/>

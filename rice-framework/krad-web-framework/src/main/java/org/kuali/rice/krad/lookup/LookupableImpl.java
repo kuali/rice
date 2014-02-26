@@ -561,14 +561,18 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         } else if (StringUtils.isBlank(returnLink.getHref())) {
             String href = getReturnUrl(lookupView, lookupForm, dataObject);
 
-            if (StringUtils.isBlank(href)) {
+            if (StringUtils.isNotBlank(href)) {
+                returnLink.setHref(href);
+            } else {
                 returnLink.setRender(false);
-
                 return;
             }
 
-            returnLink.setHref(href);
-            returnLink.setTarget(lookupForm.getReturnTarget());
+            String target = lookupForm.getReturnTarget();
+
+            if (StringUtils.isNotBlank(target)) {
+                returnLink.setTarget(target);
+            }
         }
 
         // add data attribute for attaching event handlers on the return links

@@ -507,6 +507,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         for (Iterator iter = pkNames.iterator(); iter.hasNext();) {
             String fieldNm = (String) iter.next();
 
+            // If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+                LOG.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+            }
+
             Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
             if (fieldVal == null) {
                 fieldVal = KRADConstants.EMPTY_STRING;
@@ -852,6 +860,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         Iterator returnKeysIt = getReturnKeys().iterator();
         while (returnKeysIt.hasNext()) {
             String fieldNm = (String) returnKeysIt.next();
+
+            // If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+                LOG.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+            }
 
             Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
             if (fieldVal == null) {

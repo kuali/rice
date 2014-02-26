@@ -122,11 +122,18 @@ public class UifDictionaryIndex implements Runnable {
             ProcessLogger.trace("view:getBean");
             
             if (UifConstants.ViewStatus.CREATED.equals(view.getViewStatus())) {
-                ViewLifecycle.preProcess(view);
-                
-                ProcessLogger.trace("view:preProcess");
+                try {
+                    ViewLifecycle.preProcess(view);
+
+                    ProcessLogger.trace("view:preProcess");
+                } catch (IllegalStateException ex) {
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug("preProcess not run due to an IllegalStateException.  "
+                                + "Exception message: " + ex.getMessage());
+                    }
+                }
             }
-            
+
             boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
                     KRADConstants.ConfigParameters.KRAD_DEV_MODE);
 

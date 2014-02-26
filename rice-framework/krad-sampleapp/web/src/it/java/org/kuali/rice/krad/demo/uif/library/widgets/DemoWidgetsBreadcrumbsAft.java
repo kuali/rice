@@ -155,7 +155,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     private void assertNewWindow(String urlNumber, String titleOne, String titleTwo, String message) throws InterruptedException {
-        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
+        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 2000);
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue(message, driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
@@ -165,7 +165,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 3000;
         while (!titleTwo.equals(element.getText().trim()) && secondsToWait > 0) {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
             secondsToWait -= 1000;
             element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         }

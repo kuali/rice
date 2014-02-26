@@ -122,7 +122,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     
     protected void testEditFiscalOfficer() throws Exception {
     	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
+        clearTextByName("document.newMaintainableObject.dataObject.foId");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
     	waitAndClickButtonByText("blanket approve");
     	navigate();
     	if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='eric']"))

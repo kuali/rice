@@ -168,8 +168,16 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
                 collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
                 lineGroup.setStyle("display: none");
             }
+
+            if (collectionGroup.getAddLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, collectionGroup.getAddLineEnterKeyAction());
+            }
         } else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
+
+            if (collectionGroup.getLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
+                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, collectionGroup.getLineEnterKeyAction());
+            }
         }
 
         if (((UifFormBase) lineBuilderContext.getModel()).isAddedCollectionItem(currentLine)) {

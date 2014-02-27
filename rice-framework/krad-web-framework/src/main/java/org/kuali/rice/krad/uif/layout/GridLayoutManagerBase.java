@@ -61,10 +61,13 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
 
     private List<String> rowCssClasses;
 
+    private List<String> rowDataAttributes;
+
     public GridLayoutManagerBase() {
         super();
 
         rowCssClasses = new ArrayList<String>();
+        rowDataAttributes = new ArrayList<String>();
     }
 
     /**
@@ -310,5 +313,26 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
     @Override
     public void setRowCssClasses(List<String> rowCssClasses) {
         this.rowCssClasses = rowCssClasses;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.layout.GridLayoutManager#getRowDataAttributes()
+     */
+    @Override
+    @BeanTagAttribute(name = "rowDataAttributes", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getRowDataAttributes() {
+        return rowDataAttributes;
+    }
+
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.layout.GridLayoutManager#setRowDataAttributes(java.util.List)
+     */
+    @Override
+    public void setRowDataAttributes(List<String> rowDataAttributes) {
+        this.rowDataAttributes = rowDataAttributes;
     }
 }

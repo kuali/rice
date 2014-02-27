@@ -124,6 +124,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private List<? extends Component> addLineItems;
     private List<? extends Component> addLineActions;
 
+    private String addLineEnterKeyAction;
+
+    private String lineEnterKeyAction;
+
     private boolean renderLineActions;
     private List<? extends Component> lineActions;
 
@@ -575,6 +579,40 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     public void setLineActions(List<? extends Component> lineActions) {
         this.lineActions = lineActions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "addLineEnterKeyAction")
+    public String getAddLineEnterKeyAction() {
+        return this.addLineEnterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAddLineEnterKeyAction(String addLineEnterKeyAction) {
+        this.addLineEnterKeyAction = addLineEnterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "lineEnterKeyAction")
+    public String getLineEnterKeyAction() {
+        return this.lineEnterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLineEnterKeyAction(String lineEnterKeyAction) {
+        this.lineEnterKeyAction = lineEnterKeyAction;
     }
 
     /**

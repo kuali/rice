@@ -106,8 +106,7 @@ public interface CollectionGroup extends Group, DataBinding {
     /**
      * Indicates whether an add line should be rendered for the collection
      *
-     * @return true if add line should be rendered, false if it should
-     *         not be
+     * @return true if add line should be rendered, false if it should not be
      */
     boolean isRenderAddLine();
 
@@ -117,6 +116,40 @@ public interface CollectionGroup extends Group, DataBinding {
      * @param renderAddLine
      */
     void setRenderAddLine(boolean renderAddLine);
+
+    /**
+     * Get the id of the add line action to invoke when the enter key is pressed.
+     * Use '@PRIMARY' if supposed to use first action where 'primaryAction'
+     * property is set to true.
+     * 
+     * @return id or '@PRIMARY'
+     */
+    String getAddLineEnterKeyAction();
+
+    /**
+     * Setter for add line default action.
+     * 
+     * @param addLineEnterKeyAction
+     * @see #getAddLineEnterKeyAction()
+     */
+    void setAddLineEnterKeyAction(String addLineEnterKeyAction);
+
+    /**
+     * Get the id of nonAdd line action to invoke when the enter key is pressed.
+     * Use '@PRIMARY' if supposed to use first action where 'primaryAction'
+     * property is set to true.
+     * 
+     * @return id or '@PRIMARY'
+     */
+    String getLineEnterKeyAction();
+
+    /**
+     * Setter for nonAdd line default action.
+     * 
+     * @param lineEnterKeyAction
+     * @see #getLineEnterKeyAction()
+     */
+    void setLineEnterKeyAction(String lineEnterKeyAction);
 
     /**
      * Convenience getter for the add line label field text. The text is used to

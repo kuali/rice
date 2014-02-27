@@ -179,10 +179,9 @@ public interface GridLayoutManager extends LayoutManager {
      * The list of styles for each row
      *
      * <p>
-     * Each entry in the list gives the style for the row with the same index. This style will be added the the <tr>
-     * tag
-     * when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines and
-     * other special cases like the add item row.
+     * Each entry in the list gives the style for the row with the same index. This style will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines
+     * and other special cases like the add item row.
      * </p>
      *
      * @return list of styles for the rows
@@ -195,5 +194,25 @@ public interface GridLayoutManager extends LayoutManager {
      * @param rowCssClasses
      */
     void setRowCssClasses(List<String> rowCssClasses);
+
+    /**
+     * The list of data attributes for each row
+     *
+     * <p>
+     * Each entry in the list gives the data attributes for the row with the same index. These data attributes will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the data attributes for newly added lines
+     * and other special cases like the add item row.
+     * </p>
+     *
+     * @return list of styles for the rows
+     */
+    List<String> getRowDataAttributes();
+
+    /**
+     * Setter for the list that stores the data attributes of each row
+     *
+     * @param rowDataAttributes
+     */
+    void setRowDataAttributes(List<String> rowDataAttributes);
 
 }

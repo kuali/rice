@@ -262,6 +262,15 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
+
+//        for (Field field : this.getAllRowFields()) {
+//            field.addDataAttribute("test", "test");
+//            
+//            if (field.getDataAttributes().get("addData") != null)
+//                field.addDataAttribute("addDataId", field.getId());
+//            if (field.getDataAttributes().get("lineData") != null)
+//                field.addDataAttribute("lineDataId", field.getId());
+//        }
     }
 
     /**
@@ -551,6 +560,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             isAddLine = true;
         }
 
+//        if (isAddLine) {
+//            for (Field field : lineFields) {
+//                field.addDataAttribute("addData", "addData");
+//            }
+//        }
+//        else {
+//            for (Field field : lineFields) {
+//                field.addDataAttribute("lineData", "lineData");
+//            }
+//        }
+
         // capture the first row of fields for widgets that build off the table
         if (lineIndex == 0 || this.firstRowFields.isEmpty()) {
             this.firstRowFields = lineFields;
@@ -602,6 +622,29 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         rowCss = StringUtils.removeStart(rowCss, " ");
         this.getRowCssClasses().add(rowCss);
+
+        // create row data attributes
+        String rowDataAttributes = "";
+        //String rowDataAttributes = "data-junk=\"junk\"";
+
+        // non add line
+        if (isAddLine) {
+            if (collectionGroup.getAddLineEnterKeyAction() != null
+                    && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+                rowDataAttributes = "data-" + UifConstants.DataAttributes.ENTER_KEY + "=\""
+                        + KRADUtils.convertToHTMLAttributeSafeString(collectionGroup.getAddLineEnterKeyAction()) + "\"";
+            }
+        }
+        // add line
+        else {
+            if (collectionGroup.getLineEnterKeyAction() != null
+                    && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
+                rowDataAttributes = "data-" + UifConstants.DataAttributes.ENTER_KEY + "=\""
+                        + KRADUtils.convertToHTMLAttributeSafeString(collectionGroup.getLineEnterKeyAction()) + "\"";
+            }
+        }
+
+        this.getRowDataAttributes().add(rowDataAttributes);
 
         // if separate add line prepare the add line group
         if (isAddLine && separateAddLine) {

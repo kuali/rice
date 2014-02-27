@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
+import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
@@ -183,7 +184,13 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());
 
-                if (!skipLifecycle) {
+                // if skipping lifecycle we need to make sure the element has an id
+                if (skipLifecycle) {
+                    if (StringUtils.isBlank(element.getId())) {
+                        String elementId = AssignIdsTask.generateId(element, ViewLifecycle.getView());
+                        element.setId(elementId);
+                    }
+                } else {
                     Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                     initializePendingTasks(pendingTasks);
 

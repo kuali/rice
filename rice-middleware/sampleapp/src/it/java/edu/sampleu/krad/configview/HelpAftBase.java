@@ -39,19 +39,14 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
         waitAndClickByLinkText("Help");
         Thread.sleep(5000);
-        selectFrameIframePortlet();
     }
 
     protected void testHelpNav(JiraAwareFailable failable) throws Exception {
         navigation();
         testViewHelp();
-        navigation();
         testPageHelp();
-        navigation();
         testTooltipHelp();
-        navigation();
         testDisplayOnlyTooltipHelp();
-        navigation();
         testMissingTooltipHelp();
         passed();
     }

@@ -212,4 +212,18 @@ public interface Container extends Component, Helpable {
      */
     boolean isProcessRemoteFieldHolders();
 
+    /**
+     * Get the key of the action item to invoke upon pressing the enter key.
+     * 
+     * @return String enterKeyAction
+     */
+    public String getEnterKeyAction();
+
+    /**
+     * Set the enterKeyAction
+     *
+     * @param enterKeyAction
+     */
+    public void setEnterKeyAction(String enterKeyAction);
+
 }

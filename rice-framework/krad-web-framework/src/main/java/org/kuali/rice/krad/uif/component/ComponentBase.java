@@ -25,22 +25,16 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.ControlBase;
-import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -147,8 +141,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private boolean forceSessionPersistence;
 
     private ComponentSecurity componentSecurity;
-
-    private String enterKeyAction;
 
     private String onLoadScript;
     private String onUnloadScript;
@@ -537,11 +529,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         if (this.additionalCssClasses != null) {
             finalCssClasses.addAll(additionalCssClasses);
-        }
-
-        // add data attributes to help identify enter key actions
-        if (this.getEnterKeyAction() != null && StringUtils.isNotBlank(this.getEnterKeyAction())) {
-            this.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, this.getEnterKeyAction());
         }
 
         cssClasses = finalCssClasses;
@@ -1478,22 +1465,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         sb.append(ScriptUtils.buildEventHandlerScript(getId(), "mousemove", getOnMouseMoveScript()));
 
         return sb.toString();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @BeanTagAttribute(name = "enterKeyAction")
-    @Override
-    public String getEnterKeyAction() {
-        return this.enterKeyAction;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setEnterKeyAction(String enterKeyAction) {
-        this.enterKeyAction = enterKeyAction;
     }
 
     /**

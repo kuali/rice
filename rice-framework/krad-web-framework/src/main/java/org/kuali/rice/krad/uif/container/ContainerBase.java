@@ -67,6 +67,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     @DelayedCopy
     private ValidationMessages validationMessages;
 
+    private String enterKeyAction;
+
 	/**
 	 * Default Constructor
 	 */
@@ -153,6 +155,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         // Generate validation messages
         if (validationMessages != null) {
             validationMessages.generateMessages(ViewLifecycle.getView(), model, this);
+        }
+
+        // add data attributes to help identify enter key actions
+        if (this.getEnterKeyAction() != null && StringUtils.isNotBlank(this.getEnterKeyAction())) {
+            this.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, this.getEnterKeyAction());
         }
  	}
 
@@ -452,6 +459,22 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         }
 
         super.completeValidation(tracer.getCopy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute(name = "enterKeyAction")
+    @Override
+    public String getEnterKeyAction() {
+        return this.enterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setEnterKeyAction(String enterKeyAction) {
+        this.enterKeyAction = enterKeyAction;
     }
 
 }

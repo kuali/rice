@@ -191,6 +191,25 @@ the JMeter UI or command line script -->
     <stringProp name="RegexExtractor.match_number">0</stringProp>
 </RegexExtractor>
 <hashTree/>
+<RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+    <stringProp name="RegexExtractor.refname">LIGHT_TABLE_ID</stringProp>
+    <stringProp name="RegexExtractor.regex">div id=&quot;(.+)_length&quot; class=&quot;dataTables_length&quot;</stringProp>
+    <stringProp name="RegexExtractor.template">$1$</stringProp>
+    <stringProp name="RegexExtractor.default"></stringProp>
+    <stringProp name="RegexExtractor.match_number">0</stringProp>
+</RegexExtractor>
+<hashTree/>
+<hashTree/>
+<RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+    <stringProp name="RegexExtractor.refname">PAGE_ID</stringProp>
+    <stringProp name="RegexExtractor.regex">input id=&quot;pageId&quot; type=&quot;hidden&quot; name=&quot;pageId&quot; value=&quot;(.+)"</stringProp>
+    <stringProp name="RegexExtractor.template">$1$</stringProp>
+    <stringProp name="RegexExtractor.default"></stringProp>
+    <stringProp name="RegexExtractor.match_number">0</stringProp>
+</RegexExtractor>
+<hashTree/>
 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/" enabled="true">
     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
         <collectionProp name="Arguments.arguments"/>
@@ -2340,9 +2359,9 @@ the JMeter UI or command line script -->
           <stringProp name="Argument.metadata">=</stringProp>
           <boolProp name="HTTPArgument.use_equals">true</boolProp>
         </elementProp>
-        <elementProp name="u89w3zq_lightTable_length" elementType="HTTPArgument">
+        <elementProp name="${LIGHT_TABLE_ID}_length" elementType="HTTPArgument">
           <boolProp name="HTTPArgument.always_encode">false</boolProp>
-          <stringProp name="Argument.name">u89w3zq_lightTable_length</stringProp>
+          <stringProp name="Argument.name">${LIGHT_TABLE_ID}_length</stringProp>
           <stringProp name="Argument.value">10</stringProp>
           <stringProp name="Argument.metadata">=</stringProp>
           <boolProp name="HTTPArgument.use_equals">true</boolProp>
@@ -2350,7 +2369,7 @@ the JMeter UI or command line script -->
         <elementProp name="pageId" elementType="HTTPArgument">
           <boolProp name="HTTPArgument.always_encode">false</boolProp>
           <stringProp name="Argument.name">pageId</stringProp>
-          <stringProp name="Argument.value">uq1hqp4</stringProp>
+          <stringProp name="Argument.value">${PAGE_ID}</stringProp>
           <stringProp name="Argument.metadata">=</stringProp>
           <boolProp name="HTTPArgument.use_equals">true</boolProp>
         </elementProp>
@@ -2462,7 +2481,7 @@ the JMeter UI or command line script -->
         <elementProp name="clientViewState" elementType="HTTPArgument">
           <boolProp name="HTTPArgument.always_encode">true</boolProp>
           <stringProp name="Argument.name">clientViewState</stringProp>
-          <stringProp name="Argument.value">{&apos;u89w3zq_lightTable&apos;:{&apos;richTableState&apos;:{&apos;iCreate&apos;:1393453380405,&apos;iStart&apos;:0,&apos;iEnd&apos;:0,&apos;iLength&apos;:10,&apos;aaSorting&apos;:[[0,&apos;asc&apos;,0]],&apos;oSearch&apos;:{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},&apos;aoSearchCols&apos;:[{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true}],&apos;abVisCols&apos;:[true,true,true,true,true,true,true,true]}}}</stringProp>
+          <stringProp name="Argument.value">{&apos;${LIGHT_TABLE}&apos;:{&apos;richTableState&apos;:{&apos;iCreate&apos;:1393453380405,&apos;iStart&apos;:0,&apos;iEnd&apos;:0,&apos;iLength&apos;:10,&apos;aaSorting&apos;:[[0,&apos;asc&apos;,0]],&apos;oSearch&apos;:{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},&apos;aoSearchCols&apos;:[{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true},{&apos;bCaseInsensitive&apos;:true,&apos;sSearch&apos;:&apos;&apos;,&apos;bRegex&apos;:false,&apos;bSmart&apos;:true}],&apos;abVisCols&apos;:[true,true,true,true,true,true,true,true]}}}</stringProp>
           <stringProp name="Argument.metadata">=</stringProp>
           <boolProp name="HTTPArgument.use_equals">true</boolProp>
         </elementProp>

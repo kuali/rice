@@ -133,7 +133,7 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         if (!beanNode.property.list.bean.find { "MaintainableCollectionDefinition".equals(it.@parent) }) {
             def maintainableBeanItems = beanNode.property.list.bean;
             transformMaintainableItems(builder, beanNode, maintainableBeanItems, beanNode.@id);
-           } else {
+        } else {
             transformMaintainableSectionDefinitionBeanWithCollection(builder, beanNode);
         }
     }
@@ -549,6 +549,12 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         String propName = getPropertyName(beanAttributes);
         if ( propName !=null ) {
             String controlDef = attributeDefinitionControls.get(currentDataObjectClassName)?.get(propName);
+            if (controlDef!=null && controlDef.equals("FileControlDefinition")) {
+                def templateText = buildPropertyReplacerAttachment(propName);
+                def templateSpringBeanRootNode = new XmlParser(false,true).parseText(templateText);
+                getBeanFromTemplate(templateSpringBeanRootNode, builder)
+                return;
+            }
             //KULRICE-11711
             if (controlDef!=null && controlDef.equals("LookupReadonlyControlDefinition")) {
                 beanAttributes.putAt("p:windgetInputOnly", "true");
@@ -635,4 +641,32 @@ class MaintenanceDocumentEntryBeanTransformer extends SpringBeanTransformer {
         }
     }
 
+    /**
+     * builds a uif view page from the following
+     * form-bean element (contains the form name and class), form title and id comes from name
+     * jspRoot: contains the pages and the beans
+     *
+     * @param jspRoot
+     * @param formClass
+     * @param actionClass
+     * @return
+     */
+    public static def buildPropertyReplacerAttachment(attachmentBinding) {
+        attachmentBinding = [fileName: "PLACEHOLDER", attachmentFile: attachmentBinding]
+        def fileText = ConversionUtils.buildTemplateToString(ConversionUtils.getTemplateDir(), "UifAttachment.fragment.tmpl", attachmentBinding)
+        return fileText
+    }
+
+    /**
+     * Helper method for extracting a bean from a beans collection
+     *
+     * @param templateRootNode
+     * @param builder
+     * @return
+     */
+
+    private def getBeanFromTemplate(Node templateRootNode, NodeBuilder builder) {
+        NodeList beansList = templateRootNode.value();
+        builder.createNode("bean", beansList.get(0).attributes(), beansList.get(0).value() );
+    }
 }

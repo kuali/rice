@@ -3171,11 +3171,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testPageHelp() throws Exception {
         // test tooltip help
-        fireMouseOverEventByXpath("//h2/span[@class='uif-headerText-span']");
-        assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
+        fireMouseOverEventByXpath("//a/span[@class='uif-headerText-span']");
+        waitForTextPresent("Sample text for section help - tooltip help");
 
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Help Page']");
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
@@ -3228,12 +3228,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
 
         // test tooltip help of section header
-        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
+        fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
@@ -3242,29 +3238,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[1].style.display='none'";
-        Thread.sleep(3000);
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
 
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
 
         // verify that standalone help with tooltip is not rendered
         assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
@@ -3276,82 +3259,44 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
     }
 
     /**
      * Test the tooltip help on the sub-section and fields that are display only
      */
     protected void testDisplayOnlyTooltipHelp() throws Exception {
-        // verify that no tooltips are displayed initially
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
-            assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
-            assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
-        }
 
         // test tooltip help of sub-section header
         fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
 
         // test tooltip help of display only data field
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
+        waitForElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]");
     }
 
     /**
      * Test the tooltip help on the section and fields with no content
      */
     protected void testMissingTooltipHelp() throws Exception {
-        // verify that no tooltips are displayed initially
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-
-        // verify that no external help exist
-        assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
 
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
 
         // test tooltip help of field
         fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
     }
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
@@ -3691,12 +3636,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testViewHelp() throws Exception {
         // test tooltip help
         fireEvent("field102", "blur");
-        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        Thread.sleep(500);
-        assertEquals("Sample text for view help", getTextByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
-
+        fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
+        waitForTextPresent("Sample text for field help - label left");
+        
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
@@ -4009,29 +3953,28 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void verifyRichMessagesValidationLettersNumbersValidation() throws Exception
     {
         //For letters only Validation
-        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
+        assertTrue(isElementPresentByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']"));
         waitAndTypeByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
-                "abc");
+                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc");
         assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
-        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc12");
+                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']");
+        waitAndTypeByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc12");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
-        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        waitForElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']");
         Thread.sleep(3000);
-        clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
-        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']","abc");
+        clearTextByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']");
+        waitAndTypeByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
 
         //For numbers only validation
         waitAndTypeByXpath("//input[@name= 'field6']", "123");
         assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
-        clearTextByXpath("//input[@name= 'field6']");
-        waitAndTypeByXpath("//input[@name= 'field6']", "123ab");
+        clearTextByXpath("//input[@name='field6']");
+        waitAndTypeByXpath("//input[@name='field6']", "123ab");
         fireEvent("field6", "blur");
         Thread.sleep(5000);
-        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']"));
         Thread.sleep(3000);
     }
 
@@ -4063,27 +4006,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
     {
         //Testing link tag
-        waitAndClickByXpath("//div[contains(., 'Testing link tag')]/a");
+        waitAndClickByLinkText("Kuali Site");
         Thread.sleep(9000);
         switchToWindow("Open Source Software | www.kuali.org");
         switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
 
         //Testing methodToCall Action
-        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
+        waitAndClickByXpath("//p[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);
         assertTrue(isElementPresentByXpath(
                 "//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath(
-                "//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
 
         //Testing methodToCall action (no client validation check)
-        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action (no client validation check)')]/a");
+        waitAndClickByXpath("//p[contains(., 'Testing methodToCall action (no client validation check)')]/a");
         assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
         assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
         Thread.sleep(3000);
     }
 

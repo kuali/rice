@@ -489,13 +489,13 @@
     </property>
   </bean>
 
-  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:instructionalText="FormView - enterKeyAction=>save"  p:enterKeyAction="save">
+  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView">
     <property name="singlePageView" value="true" />
     <property name="page">
-      <bean parent="Uif-Page" p:instructionalText="Page - enterKeyAction=>details1" p:enterKeyAction="details1">
+      <bean parent="Uif-Page" p:instructionalText="Page - enterKeyAction=>btn-details1" p:enterKeyAction="btn-details1">
         <property name="items">
           <list>
-            <bean p:headerText="Section1 - enterKeyAction=>details2" parent="Uif-VerticalBoxSection" p:enterKeyAction="details2">
+            <bean p:headerText="Section1 - enterKeyAction=>btn-details2" parent="Uif-VerticalBoxSection" p:enterKeyAction="btn-details2">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
@@ -537,6 +537,103 @@
       </bean>
     </property>
     <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm" />
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="add" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
+                <property name="headerText" value="Table Layout Enter Key Support" />
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+                <property name="propertyName" value="collection1" />
+                <property name="layoutManager.generateAutoSequence" value="true" />
+                <property name="layoutManager.richTable.render" value="true" />
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTables2" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="add" p:lineEnterKeyAction="line">
+                <property name="headerText" value="Table Layout Enter Key Support 2" />
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+                <property name="propertyName" value="collection1" />
+                <property name="layoutManager.generateAutoSequence" value="true" />
+                <property name="layoutManager.richTable.render" value="true" />
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+                  </list>
+                </property>
+                <property name="addLineActions">
+                  <list>
+                    <bean parent="Uif-AddLineAction" p:id="ST-DemoButton01" />
+                  </list>
+                </property>
+                <property name="lineActions">
+                  <list>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button1" p:id="ST-DemoButton11" p:actionScript="alert('You clicked a button1');" />
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2');" p:primaryAction="true" />
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button3" p:id="ST-DemoButton13" p:actionScript="alert('You clicked a button3');" />
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyStacked" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-StackedCollectionSection" p:addLineEnterKeyAction="add" p:lineEnterKeyAction="line">
+                <property name="headerText" value="Stack Layout Enter Key Support" />
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+                <property name="propertyName" value="collection2" />
+                <property name="layoutManager.summaryTitle" value="Line Summary" />
+                <property name="layoutManager.summaryFields" value="field1" />
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" />
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" />
+                  </list>
+                </property>
+                <property name="lineActions">
+                  <list>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button" p:id="ST-DemoButton21" p:actionScript="alert('You clicked a button');" p:primaryAction="true"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
 </beans>

@@ -489,46 +489,64 @@
     </property>
   </bean>
 
-  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView">
+  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@PRIMARY">
     <property name="singlePageView" value="true" />
     <property name="page">
-      <bean parent="Uif-Page" p:instructionalText="Page - enterKeyAction=>btn-details1" p:enterKeyAction="btn-details1">
+      <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to @PRIMARY">
         <property name="items">
           <list>
-            <bean p:headerText="Section1 - enterKeyAction=>btn-details2" parent="Uif-VerticalBoxSection" p:enterKeyAction="btn-details2">
+            <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 1">
               <property name="items">
                 <list>
-                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
-                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="details2" p:id="btn-details2" p:actionScript="alert('details2');" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1');"/>
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section2 - no enterKeyAction" parent="Uif-VerticalBoxSection">
+            <bean p:headerText="Section 2" parent="Uif-VerticalBoxSection" p:instructionalText="enterKeyAction is not set, should fire primary button">
               <property name="items">
                 <list>
-                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
-                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="details1" p:id="btn-details1" p:actionScript="alert('details1');" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 1" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 2" />
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2');"/>
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section3 - no enterKeyAction - btn3 is primary" parent="Uif-VerticalBoxSection">
+            <bean p:headerText="Section 3" parent="Uif-VerticalBoxSection" p:enterKeyAction="button2" p:instructionalText="enterKeyAction is set to button 2">
               <property name="items">
                 <list>
-                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
-                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn1" p:id="btn-btn1" p:actionScript="alert('btn1');" />
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn2" p:id="btn-btn2" p:actionScript="alert('btn2');" />
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="btn3" p:id="btn-btn3" p:actionScript="alert('btn3');" p:primaryAction="true"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 3" p:id="button3"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 4" p:id="button4"/>
+
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section4 - enterKeyAction=>@PRIMARY" parent="Uif-VerticalBoxSection" p:enterKeyAction="@PRIMARY">
+            <bean p:headerText="Section 4" parent="Uif-VerticalBoxSection" p:enterKeyAction="button6" p:instructionalText="enterKeyAction is set to button 6">
               <property name="items">
                 <list>
-                  <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
-                  <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField19" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 5" p:id="button5" p:actionScript="alert('button 5');"/>
+                  <bean p:headerText="Section 4: Sub Section 1" parent="Uif-VerticalBoxSubSection" p:enterKeyAction="button5" p:instructionalText="enterKeyAction is set to button 5">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:propertyName="inputField20" p:label="Field 1"/>
+                        <bean parent="Uif-InputField" p:propertyName="inputField21" p:label="Field 2"/>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 6" p:id="button6" p:actionScript="alert('button 6');"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean p:headerText="Section 5" parent="Uif-VerticalBoxSection">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:id="primary_button" p:primaryAction="true"  p:actionScript="alert('primary button');"/>
                 </list>
               </property>
             </bean>
@@ -538,6 +556,7 @@
     </property>
     <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm" />
   </bean>
+
 
   <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">
     <property name="items">
@@ -553,8 +572,8 @@
                 <property name="layoutManager.richTable.render" value="true" />
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
-                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField22" />
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField23" />
                   </list>
                 </property>
               </bean>

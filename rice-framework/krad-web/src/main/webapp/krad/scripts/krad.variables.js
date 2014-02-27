@@ -53,7 +53,8 @@ JavascriptKradVariables.prototype = {
 
     // constants for data role attribute values
     DATA_ROLES: {
-        DISCLOSURE_LINK: "disclosureLink"
+        DISCLOSURE_LINK: "disclosureLink",
+        ACTION: "Action"
     },
 
     DIRTY_CLASS: "dirty",
@@ -61,6 +62,7 @@ JavascriptKradVariables.prototype = {
     DISABLE_BROWSER_CACHE: "view.disableBrowserCache",
     DISABLED_CLASS: "disabled",
     DIALOG_PLACEHOLDER: "_dialogPlaceholder",
+    ENTER_KEY_PRIMARY: "@PRIMARY",
     ERROR_HIGHLIGHT_SECTION_CLASS: "uif-errorHighlight-section",
     ERROR_MESSAGE_ITEM_CLASS: "uif-errorMessageItem-field",
     FIELD_CLASS: "uif-field",

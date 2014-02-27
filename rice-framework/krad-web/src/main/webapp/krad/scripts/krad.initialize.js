@@ -171,32 +171,55 @@ jQuery(document).ready(function () {
 function initEnterKeyHandler(){
 
     jQuery("[data-enter_key]").on("keyup", function(event) {
-        var enterKeyId = jQuery(event.currentTarget).data("enter_key");
 
-        if(jQuery(event.target).is(":not(a, button, submit, img[data-role='Action'], input[data-role='Action'] )")){
-            console.log('allowed');
-            if(enterKeyId === "@PRIMARY"){
-                console.log("invoke the primary button");
-                enterKeyId = jQuery("[data-primary_action='true']:first").attr('id');
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        if(keycode === 13) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            var enterKeyId = jQuery(event.currentTarget).data("enter_key");
+
+            //make sure the targeted action is a permitted element
+            if(jQuery(event.target).is(":not(a, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'] )")){
+
+                if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
+
+                    var primaryButtons = jQuery(event.currentTarget).find("[data-primary_action='true']");
+                    var primaryButton = primaryButtons.filter(function() {
+                        return jQuery(this).parents('[data-enter_key]').length < 2;
+                    });
+
+                    if (primaryButton.length) {
+                        enterKeyId = primaryButton.attr("id");
+                    }
+                }
+
+                if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
+                     return false;
+                }
+
+                if(jQuery('#' + enterKeyId).is(":visible") && jQuery('#' + enterKeyId).is(":disabled") === false){
+                    jQuery(document).find('#' + enterKeyId).click();
+                }
+
             }
-
-            if(jQuery('#' + enterKeyId).is(":visible") && jQuery('#' + enterKeyId).is(":disabled") === false){
-                console.log(event);
-                console.log(enterKeyId);
-                event.stopPropagation();
-                return;
-            }else{
-                console.log(enterKeyId + ' is unreachable');
-            }
-
-        }else{
-            console.log('not allowed');
+            return false;
         }
-
-        event.stopPropagation();
     });
 
+    jQuery("[data-enter_key]").on("keydown", function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        if(keycode === 13) {
+            event.preventDefault();
+            return false;
+        }
+
+    });
 }
+
 /**
  * Sets up and initializes the handlers for sticky header and footer content
  */

@@ -95,7 +95,7 @@ the JMeter UI or command line script -->
         </elementProp>
         <elementProp name="TESTPATH" elementType="Argument">
             <stringProp name="Argument.name">TESTPATH</stringProp>
-            <stringProp name="Argument.value">${__P(testpath,kr-krad/kitchensinkperformance)}</stringProp>
+            <stringProp name="Argument.value">${__P(testpath,/kr-krad/kitchensinkperformance)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
         </elementProp>
         <elementProp name="VIEWID" elementType="Argument">
@@ -2349,7 +2349,7 @@ the JMeter UI or command line script -->
     </HeaderManager>
     <hashTree/>
 </hashTree>
-  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/kr-krad/kitchensinkperformance" enabled="true">
+  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/kr-krad/kitchensinkperformance Next" enabled="true">
     <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
       <collectionProp name="Arguments.arguments">
         <elementProp name="inputOne" elementType="HTTPArgument">

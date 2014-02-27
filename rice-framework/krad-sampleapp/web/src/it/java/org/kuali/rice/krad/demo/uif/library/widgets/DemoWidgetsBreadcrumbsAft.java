@@ -165,7 +165,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 3000;
         while (!titleTwo.equals(element.getText().trim()) && secondsToWait > 0) {
-            Thread.sleep(3000);
+            Thread.sleep(4000);
             secondsToWait -= 1000;
             element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         }

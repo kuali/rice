@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
+import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -431,6 +433,28 @@ public class ObjectUtils {
 			LOG.debug("reformatting propertyValue using Formatter " + formatter.getClass().getName());
 			propertyValue = formatter.convertFromPresentationFormat(propertyValue);
 		}
+
+        if (propertyValue instanceof String) {
+            String propVal = (String) propertyValue;
+
+            if (propVal.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                propVal = StringUtils.removeEnd(propVal, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (bo instanceof BusinessObject) {
+                Class<? extends BusinessObject> businessObjectClass = ((BusinessObject) bo).getClass();
+
+                if (KNSServiceLocator.getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, propertyName)) {
+                    try {
+                        if (KNSServiceLocator.getEncryptionService().isEnabled()) {
+                            propertyValue = KNSServiceLocator.getEncryptionService().decrypt(propVal);
+                        }
+                    } catch (GeneralSecurityException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
 
 		// set property in the object
 		PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);

@@ -494,6 +494,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 Properties parameters = new Properties();
 		 for (Iterator iter = pkNames.iterator(); iter.hasNext();) {
 			 String fieldNm = (String) iter.next();
+			 
+			// If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+                LOG.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+            }
 
 			 Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
 			 if (fieldVal == null) {
@@ -839,6 +847,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 Iterator returnKeysIt = getReturnKeys().iterator();
 		 while (returnKeysIt.hasNext()) {
 			 String fieldNm = (String) returnKeysIt.next();
+			 
+            // If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+                LOG.error(errorMessage);
+                throw new RuntimeException(errorMessage);
+            }
 
 			 Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
 			 if (fieldVal == null) {
@@ -853,7 +869,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 					 LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
 					 throw new RuntimeException(e);
 				 }
-
 			 }
 
 			 //need to format date in url

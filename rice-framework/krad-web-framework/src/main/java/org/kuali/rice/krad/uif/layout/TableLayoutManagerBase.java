@@ -595,6 +595,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             rowCss = "";
         }
 
+        Map<String, Object> lineContext = new HashMap<String, Object>();
+        lineContext.putAll(this.getContext());
+        lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
+        lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
+        lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
+        lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
+        lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+        lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+
         // conditionalRowCssClass generation logic, if applicable
         if (conditionalRowCssClasses != null && !conditionalRowCssClasses.isEmpty()) {
             int oddRemainder = 1;
@@ -603,17 +614,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             }
 
             boolean isOdd = lineIndex % 2 == oddRemainder || lineIndex == -1;
-            Map<String, Object> lineContext = new HashMap<String, Object>();
-
-            lineContext.putAll(this.getContext());
-            lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
-            lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
-            lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
-            lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
-            lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
-            lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
-            lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
-            lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
 
             // get row css based on conditionalRowCssClasses map
             rowCss = rowCss + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses, lineIndex, isOdd,
@@ -625,22 +625,29 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         // create row data attributes
         String rowDataAttributes = "";
-        //String rowDataAttributes = "data-junk=\"junk\"";
 
         // non add line
         if (isAddLine) {
             if (collectionGroup.getAddLineEnterKeyAction() != null
                     && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+                String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
+                if (addLineEnterKeyAction.indexOf("@{") != -1) {
+                    addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
+                }
                 rowDataAttributes = "data-" + UifConstants.DataAttributes.ENTER_KEY + "=\""
-                        + KRADUtils.convertToHTMLAttributeSafeString(collectionGroup.getAddLineEnterKeyAction()) + "\"";
+                        + KRADUtils.convertToHTMLAttributeSafeString(addLineEnterKeyAction) + "\"";
             }
         }
         // add line
         else {
             if (collectionGroup.getLineEnterKeyAction() != null
                     && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
+                String lineEnterKeyAction = collectionGroup.getLineEnterKeyAction();
+                if (lineEnterKeyAction.indexOf("@{") != -1) {
+                    lineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getLineEnterKeyAction());
+                }
                 rowDataAttributes = "data-" + UifConstants.DataAttributes.ENTER_KEY + "=\""
-                        + KRADUtils.convertToHTMLAttributeSafeString(collectionGroup.getLineEnterKeyAction()) + "\"";
+                        + KRADUtils.convertToHTMLAttributeSafeString(lineEnterKeyAction) + "\"";
             }
         }
 

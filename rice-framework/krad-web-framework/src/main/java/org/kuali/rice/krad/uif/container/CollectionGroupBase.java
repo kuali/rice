@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
+import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -124,8 +125,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private List<? extends Component> addLineItems;
     private List<? extends Component> addLineActions;
 
+    @KeepExpression
     private String addLineEnterKeyAction;
 
+    @KeepExpression
     private String lineEnterKeyAction;
 
     private boolean renderLineActions;

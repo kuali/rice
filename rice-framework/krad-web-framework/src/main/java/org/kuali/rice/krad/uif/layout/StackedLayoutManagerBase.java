@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.layout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -42,6 +44,8 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -140,6 +144,8 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     @Override
     public void buildLine(LineBuilderContext lineBuilderContext) {
+        View view = ViewLifecycle.getView();
+
         List<Field> lineFields = lineBuilderContext.getLineFields();
         CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
         int lineIndex = lineBuilderContext.getLineIndex();
@@ -147,6 +153,19 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         Object currentLine = lineBuilderContext.getCurrentLine();
         List<? extends Component> actions = lineBuilderContext.getLineActions();
         String bindingPath = lineBuilderContext.getBindingPath();
+
+        Map<String, Object> lineContext = new HashMap<String, Object>();
+        lineContext.putAll(this.getContext());
+        lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
+        lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
+        lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
+        lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
+        lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+        lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, lineBuilderContext.isAddLine());
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         // construct new group
         Group lineGroup = null;
@@ -169,14 +188,25 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
                 lineGroup.setStyle("display: none");
             }
 
+            // add enter key action
             if (collectionGroup.getAddLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
-                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, collectionGroup.getAddLineEnterKeyAction());
+                String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
+                if (addLineEnterKeyAction.indexOf("@{") != -1) {
+                    addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
+                }
+                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, addLineEnterKeyAction);
             }
-        } else {
+        }
+        else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
 
+            // add enter key action
             if (collectionGroup.getLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
-                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, collectionGroup.getLineEnterKeyAction());
+                String lineEnterKeyAction = collectionGroup.getLineEnterKeyAction();
+                if (lineEnterKeyAction.indexOf("@{") != -1) {
+                    lineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getLineEnterKeyAction());
+                }
+                lineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, lineEnterKeyAction);
             }
         }
 

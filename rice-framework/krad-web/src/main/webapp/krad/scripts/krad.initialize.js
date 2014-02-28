@@ -170,7 +170,7 @@ jQuery(document).ready(function () {
 
 function initEnterKeyHandler(){
 
-    jQuery("[data-enter_key]").on("keyup", function(event) {
+    jQuery(document).on("keyup", "[data-enter_key]", function(event) {
 
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
@@ -209,7 +209,7 @@ function initEnterKeyHandler(){
         }
     });
 
-    jQuery("[data-enter_key]").on("keydown", function(event){
+    jQuery(document).on("keydown", "[data-enter_key]", function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
         if(keycode === 13) {

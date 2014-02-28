@@ -106,6 +106,8 @@
                     p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-RichTable-ServerSidePaging"/>
               <bean parent="Uif-Link" p:linkText="Demo Performance Rich Table Without Server Side Paging" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-RichTable-NoServerSidePaging"/>
+              <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
               <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables" p:target="_self"
                     p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables"/>
               <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables 2" p:target="_self"

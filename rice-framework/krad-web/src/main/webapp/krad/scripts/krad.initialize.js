@@ -1140,7 +1140,7 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
                 // find span for the data or input field and get its text
                 var inputField = jQuery(td).find('.uif-field');
                 if (inputField.length != 0) {
-                    value = jQuery.trim(inputField.find("span:first").text());
+                    value = jQuery.trim(inputField.text());
                 } else {
                     // just use the text within the cell
                     value = jQuery(td).text();

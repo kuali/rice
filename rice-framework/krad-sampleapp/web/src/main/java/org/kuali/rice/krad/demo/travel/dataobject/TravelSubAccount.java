@@ -36,10 +36,15 @@ public class TravelSubAccount extends DataObjectBase {
 
 	private static final long serialVersionUID = 5768156680246084251L;
 
-	@Id
 	@ManyToOne
-    @JoinColumn(name = "ACCT_NUM")
+    @JoinColumn(name = "ACCT_NUM" ,insertable=false, updatable=false)
     TravelAccount account;
+
+    @Id
+    @Column(name = "ACCT_NUM",length = 10)
+    @Label("Travel Account Number")
+    @NotNull
+    private String travelAccountNumber;
 
 	@Id
     @ForceUppercase
@@ -74,5 +79,13 @@ public class TravelSubAccount extends DataObjectBase {
 
     public void setSubAccountName(String subAccountName) {
         this.subAccountName = subAccountName;
+    }
+
+    public String getTravelAccountNumber() {
+        return travelAccountNumber;
+    }
+
+    public void setTravelAccountNumber(String travelAccountNumber) {
+        this.travelAccountNumber = travelAccountNumber;
     }
 }

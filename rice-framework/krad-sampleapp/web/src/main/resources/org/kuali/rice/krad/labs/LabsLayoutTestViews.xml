@@ -490,12 +490,13 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@PRIMARY">
+    <property name="headerText" value="Enter Key Support"/>
     <property name="singlePageView" value="true" />
     <property name="page">
-      <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to @PRIMARY">
+      <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to @PRIMARY[br]Using this action will fire the primary action button.">
         <property name="items">
           <list>
-            <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 1">
+            <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1" />
@@ -504,7 +505,7 @@
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section 2" parent="Uif-VerticalBoxSection" p:instructionalText="enterKeyAction is not set, should fire primary button">
+            <bean p:headerText="Section 2" parent="Uif-VerticalBoxSection" p:instructionalText="enterKeyAction is not set.[br]Press the enter key to fire primary enter key action button.">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 1" />
@@ -513,7 +514,7 @@
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section 3" parent="Uif-VerticalBoxSection" p:enterKeyAction="button2" p:instructionalText="enterKeyAction is set to button 2">
+            <bean p:headerText="Section 3" parent="Uif-VerticalBoxSection" p:enterKeyAction="button2" p:instructionalText="enterKeyAction is set to button 2.[br]Press the enter key to fire button 2.">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 1"/>
@@ -524,13 +525,13 @@
                 </list>
               </property>
             </bean>
-            <bean p:headerText="Section 4" parent="Uif-VerticalBoxSection" p:enterKeyAction="button6" p:instructionalText="enterKeyAction is set to button 6">
+            <bean p:headerText="Section 4" parent="Uif-VerticalBoxSection" p:enterKeyAction="button6" p:instructionalText="enterKeyAction is set to button 6.[br]Press the enter key to fire button 6.">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 1"/>
                   <bean parent="Uif-InputField" p:propertyName="inputField19" p:label="Field 2"/>
                   <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 5" p:id="button5" p:actionScript="alert('button 5');"/>
-                  <bean p:headerText="Section 4: Sub Section 1" parent="Uif-VerticalBoxSubSection" p:enterKeyAction="button5" p:instructionalText="enterKeyAction is set to button 5">
+                  <bean p:headerText="Section 4: Sub Section 1" parent="Uif-VerticalBoxSubSection" p:enterKeyAction="button5" p:instructionalText="enterKeyAction is set to button 5.[br]Press the enter key to fire button 5.">
                     <property name="items">
                       <list>
                         <bean parent="Uif-InputField" p:propertyName="inputField20" p:label="Field 1"/>
@@ -543,7 +544,7 @@
               </property>
             </bean>
 
-            <bean p:headerText="Section 5" parent="Uif-VerticalBoxSection">
+            <bean p:headerText="Section 5" parent="Uif-VerticalBoxSection" p:instructionalText="Section with button set to primary enter key button.">
               <property name="items">
                 <list>
                   <bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:id="primary_button" p:primaryAction="true"  p:actionScript="alert('primary button');"/>
@@ -585,6 +586,7 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTables2" parent="Uif-FormView">
+
     <property name="items">
       <list>
         <bean p:headerText="Page Title" parent="Uif-Page">

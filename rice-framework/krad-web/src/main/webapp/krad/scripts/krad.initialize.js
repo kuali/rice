@@ -172,34 +172,46 @@ function initEnterKeyHandler(){
 
     jQuery(document).on("keyup", "[data-enter_key]", function(event) {
 
+        // grab the keycode based on browser
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
+        // check for enter key
         if(keycode === 13) {
+
 
             event.preventDefault();
             event.stopPropagation();
 
+
+            // Using event bubbling, we search for inner most element with attribute "data-enter_key" and assign it's value as an ID
             var enterKeyId = jQuery(event.currentTarget).data("enter_key");
 
             //make sure the targeted action is a permitted element
             if(jQuery(event.target).is(":not(a, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'] )")){
 
+                // check to see if primary enter key action button is targeted
                 if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
 
+                    // find all primary action buttons on page with attribute data-primary_action='true'
                     var primaryButtons = jQuery(event.currentTarget).find("[data-primary_action='true']");
+
+                    // filter the buttons only one parent section deep
                     var primaryButton = primaryButtons.filter(function() {
                         return jQuery(this).parents('[data-enter_key]').length < 2;
                     });
 
+                    // if the button exists get it's id
                     if (primaryButton.length) {
                         enterKeyId = primaryButton.attr("id");
                     }
                 }
 
+                // if enterKeyAction is still set to  ENTER_KEY_PRIMARY value, do nothing, button doesn't exisit
                 if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
                      return false;
                 }
 
+                //make sure action button is visible and not disabled before we fire it
                 if(jQuery('#' + enterKeyId).is(":visible") && jQuery('#' + enterKeyId).is(":disabled") === false){
                     jQuery(document).find('#' + enterKeyId).click();
                 }
@@ -209,6 +221,7 @@ function initEnterKeyHandler(){
         }
     });
 
+    // a hack to capture the native browser enter key behavior..  keydown and keyup
     jQuery(document).on("keydown", "[data-enter_key]", function(event){
         var keycode = (event.keyCode ? event.keyCode : event.which);
 

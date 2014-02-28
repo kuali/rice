@@ -84,7 +84,10 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
         // get id for new permission
         DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_PERM_ID_S);
         String newId = incrementer.nextStringValue();
-        ((GenericPermissionBo)document.getNewMaintainableObject().getDataObject()).setId(newId);
+        GenericPermissionBo permissionBo = (GenericPermissionBo)document.getNewMaintainableObject().getDataObject();
+        permissionBo.setId(newId);
+        permissionBo.setVersionNumber(null);
+
     }
 
 	@SuppressWarnings("rawtypes")

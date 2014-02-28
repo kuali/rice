@@ -560,17 +560,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             isAddLine = true;
         }
 
-//        if (isAddLine) {
-//            for (Field field : lineFields) {
-//                field.addDataAttribute("addData", "addData");
-//            }
-//        }
-//        else {
-//            for (Field field : lineFields) {
-//                field.addDataAttribute("lineData", "lineData");
-//            }
-//        }
-
         // capture the first row of fields for widgets that build off the table
         if (lineIndex == 0 || this.firstRowFields.isEmpty()) {
             this.firstRowFields = lineFields;

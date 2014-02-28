@@ -612,7 +612,7 @@
                 <property name="lineActions">
                   <list>
                     <bean parent="Uif-PrimaryActionButton" p:actionLabel="button1" p:id="ST-DemoButton11" p:actionScript="alert('You clicked a button1');" />
-                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2');" p:primaryAction="true" />
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2 - primary" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2-primary');" p:primaryAction="true" />
                     <bean parent="Uif-PrimaryActionButton" p:actionLabel="button3" p:id="ST-DemoButton13" p:actionScript="alert('You clicked a button3');" />
                   </list>
                 </property>

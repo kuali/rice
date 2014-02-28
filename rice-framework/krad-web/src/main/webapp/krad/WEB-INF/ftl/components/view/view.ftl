@@ -60,14 +60,12 @@
         <!-- VIEW FOOTER -->
         <@krad.template component=view.footer/>
 
-        <#if (view.dialogs?size > 0)>
-            <!-- DIALOG LIST -->
-            <div id="dialogs_div">
-                <#list view.dialogs as dialog>
-                    <@krad.template component=dialog/>
-                </#list>
-            </div>
-        </#if>
+        <!-- DIALOGS/Placeholders -->
+        <div id="Uif-Dialogs">
+            <#list view.dialogs as dialog>
+                <@krad.template component=dialog/>
+            </#list>
+        </div>
 
     </@krad.div>
 

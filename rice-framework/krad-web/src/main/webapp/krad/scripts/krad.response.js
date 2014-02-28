@@ -80,8 +80,6 @@ KradResponse.prototype = {
 
         markActiveMenuLink();
 
-
-
         viewContent.trigger(kradVariables.EVENTS.ADJUST_PAGE_MARGIN);
         $pageInLayout.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
@@ -150,7 +148,10 @@ KradResponse.prototype = {
 
         // replace component
         if ($componentInDom.length) {
-            if ($componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
+            // only do highlighting if the is the first time the content is being displayed, and it is not
+            // a dialog
+            var componentInDialog = jQuery('#' + kradVariables.IDS.DIALOGS + ' #' + id).length > 0;
+            if (!componentInDialog && $componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
                 var isNewlyDisclosed = true;
             }
 

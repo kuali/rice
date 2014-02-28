@@ -35,6 +35,8 @@ public class ComponentPostMetadata implements Serializable {
 
     private Map<String, String> phasePathMapping;
     private Map<String, List<String>> refreshPathMappings;
+    private boolean isDetachedComponent;
+
     private Map<String, Object> unmodifiableData;
     private Map<String, Object> data;
 
@@ -119,6 +121,27 @@ public class ComponentPostMetadata implements Serializable {
      */
     public void setRefreshPathMappings(Map<String, List<String>> refreshPathMappings) {
         this.refreshPathMappings = refreshPathMappings;
+    }
+
+    /**
+     * Indicates whether the component is detached from the view (not in the view's structure, but an external
+     * component, for example a dialog).
+     *
+     * <p>This is used by the component refresh process to determine whether it can get the component instance
+     * by its path from the view (in the case of the component being attached), or if it must use its id (in the
+     * case of the component being detached).</p>
+     *
+     * @return boolean true if the component is detached, false if not
+     */
+    public boolean isDetachedComponent() {
+        return isDetachedComponent;
+    }
+
+    /**
+     * @see ComponentPostMetadata#isDetachedComponent
+     */
+    public void setDetachedComponent(boolean isDetachedComponent) {
+        this.isDetachedComponent = isDetachedComponent;
     }
 
     /**

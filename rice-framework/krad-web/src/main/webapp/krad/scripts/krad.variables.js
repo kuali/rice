@@ -51,7 +51,8 @@ JavascriptKradVariables.prototype = {
 
     // constants for data role attribute values
     DATA_ROLES: {
-        DISCLOSURE_LINK: "disclosureLink"
+        DISCLOSURE_LINK: "disclosureLink",
+        PLACEHOLDER: "placeholder"
     },
 
     DIRTY_CLASS: "dirty",
@@ -72,6 +73,11 @@ JavascriptKradVariables.prototype = {
     HAS_WARNING_CLASS: "uif-hasWarning",
     HEADER_TEXT_CLASS: "uif-headerText",
     IMAGE_LOCATION: "kradImageLocation",
+
+    // constants for element ids
+    IDS: {
+        DIALOGS: "Uif-Dialogs"
+    },
 
     // constants for id suffixes
     ID_SUFFIX: {

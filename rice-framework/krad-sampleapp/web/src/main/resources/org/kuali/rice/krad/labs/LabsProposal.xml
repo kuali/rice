@@ -562,7 +562,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-ActionLink" p:actionLabel="Wizard"
-              p:actionScript="showLightboxComponent('LabsProposal-wizard')"/>
+              p:actionScript="showLightboxComponent('LabsProposal-wizard',{},true)"/>
       </list>
     </property>
   </bean>

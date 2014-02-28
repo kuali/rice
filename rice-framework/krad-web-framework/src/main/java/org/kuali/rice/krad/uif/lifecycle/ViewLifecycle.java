@@ -201,6 +201,79 @@ public class ViewLifecycle implements Serializable {
     }
 
     /**
+     * Performs a lifecycle process to rebuild the component given by the update id.
+     *
+     * @param view view instance the component belongs to
+     * @param model object containing the full view data
+     * @param request The active servlet request.
+     * @param response The active servlet response.
+     * @param viewPostMetadata post metadata for the view
+     * @param componentId id of the component within the view, used to pull the current component from the view
+     * @return component instance the lifecycle has been run on
+     */
+    public static Component performComponentLifecycle(View view, Object model, HttpServletRequest request,
+            HttpServletResponse response, ViewPostMetadata viewPostMetadata, String componentId) {
+        ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
+        if ((componentPostMetadata == null) || componentPostMetadata.isDetachedComponent()) {
+            if (componentPostMetadata == null) {
+                componentPostMetadata = viewPostMetadata.initializeComponentPostMetadata(componentId);
+            }
+
+            setupStandaloneComponentForRefresh(view, componentId, componentPostMetadata);
+        }
+
+        Map<String, List<String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
+
+        encapsulateLifecycle(view, model, viewPostMetadata, componentPostMetadata, request, response,
+                new ViewLifecycleBuild(null, refreshPathMappings));
+
+        return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
+    }
+
+    /**
+     * Before running the lifecycle on a component that is not attached to a view, we need to retrieve the component,
+     * add it to the dialogs list, and setup its refresh paths.
+     *
+     * @param view view instance the component should be attached to
+     * @param componentId id for the component the lifecycle should be run on
+     * @param componentPostMetadata post metadata instance for the component
+     * @return instance of component post metadata configured for the component
+     */
+    protected static void setupStandaloneComponentForRefresh(View view, String componentId,
+            ComponentPostMetadata componentPostMetadata) {
+        Component refreshComponent = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
+                componentId);
+
+        if ((refreshComponent == null) || !(refreshComponent instanceof Group)) {
+            throw new RuntimeException("Refresh component was null or not a group instance");
+        }
+
+        List<Group> dialogs = new ArrayList<Group>();
+        if ((view.getDialogs() != null) && !view.getDialogs().isEmpty()) {
+            dialogs.addAll(view.getDialogs());
+        }
+
+        dialogs.add((Group) refreshComponent);
+        view.setDialogs(dialogs);
+
+        String refreshPath = UifPropertyPaths.DIALOGS + "[" + (view.getDialogs().size() - 1) + "]";
+        componentPostMetadata.setPath(refreshPath);
+
+        List<String> refreshPaths = new ArrayList<String>();
+        refreshPaths.add(refreshPath);
+
+        Map<String, List<String>> refreshPathMappings = new HashMap<String, List<String>>();
+
+        refreshPathMappings.put(UifConstants.ViewPhases.INITIALIZE, refreshPaths);
+        refreshPathMappings.put(UifConstants.ViewPhases.APPLY_MODEL, refreshPaths);
+        refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, refreshPaths);
+
+        componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
+
+        componentPostMetadata.setDetachedComponent(true);
+    }
+
+    /**
      * Indicates if the component the phase is being run on is a component being refreshed (if this is a full
      * lifecycle this method will always return false).
      *
@@ -242,75 +315,6 @@ public class ViewLifecycle implements Serializable {
         }
 
         return refreshPath;
-    }
-
-    /**
-     * Performs a lifecycle process to rebuild the component given by the update id.
-     *
-     * @param view view instance the component belongs to
-     * @param model object containing the full view data
-     * @param request The active servlet request.
-     * @param response The active servlet response.
-     * @param viewPostMetadata post metadata for the view
-     * @param componentId id of the component within the view, used to pull the current component from the view
-     * @return component instance the lifecycle has been run on
-     */
-    public static Component performComponentLifecycle(View view, Object model, HttpServletRequest request,
-            HttpServletResponse response, ViewPostMetadata viewPostMetadata, String componentId) {
-        ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
-        if (componentPostMetadata == null) {
-            componentPostMetadata = setupStandaloneComponentForRefresh(view, componentId);
-        }
-
-        Map<String, List<String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
-
-        encapsulateLifecycle(view, model, viewPostMetadata, componentPostMetadata, request, response,
-                new ViewLifecycleBuild(null, refreshPathMappings));
-
-        return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
-    }
-
-    /**
-     * Before running the lifecycle on a component that is not attached to a view, we need to retrieve the component,
-     * add it to the dialogs list, and setup its refresh paths.
-     *
-     * @param view view instance the component should be attached to
-     * @param componentId id for the component the lifecycle should be run on
-     * @return instance of component post metadata configured for the component
-     */
-    protected static ComponentPostMetadata setupStandaloneComponentForRefresh(View view, String componentId) {
-        Component refreshComponent = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
-                componentId);
-
-        if ((refreshComponent == null) || !(refreshComponent instanceof Group)) {
-            throw new RuntimeException("Refresh component was null or not a group instance");
-        }
-
-        List<Group> dialogs = new ArrayList<Group>();
-        if ((view.getDialogs() != null) && !view.getDialogs().isEmpty()) {
-            dialogs.addAll(view.getDialogs());
-        }
-
-        dialogs.add((Group) refreshComponent);
-        view.setDialogs(dialogs);
-
-        ComponentPostMetadata componentPostMetadata = new ComponentPostMetadata(componentId);
-
-        String refreshPath = UifPropertyPaths.DIALOGS + "[" + (view.getDialogs().size() - 1) + "]";
-        componentPostMetadata.setPath(refreshPath);
-
-        List<String> refreshPaths = new ArrayList<String>();
-        refreshPaths.add(refreshPath);
-
-        Map<String, List<String>> refreshPathMappings = new HashMap<String, List<String>>();
-
-        refreshPathMappings.put(UifConstants.ViewPhases.INITIALIZE, refreshPaths);
-        refreshPathMappings.put(UifConstants.ViewPhases.APPLY_MODEL, refreshPaths);
-        refreshPathMappings.put(UifConstants.ViewPhases.FINALIZE, refreshPaths);
-
-        componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
-
-        return componentPostMetadata;
     }
 
     /**

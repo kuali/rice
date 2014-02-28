@@ -1060,25 +1060,24 @@ function collectionLineChanged(inputField, highlightItemClass) {
 }
 
 /**
- * Display the component of the id in a light box
+ * Display the component of the id in a light box.
  *
- * <p>
- * The specified component is used as the content of the fancy box.
- * The second argument is optional and allows the FancyBox options to be overridden.
- * </p>
+ * <p>The specified component is used as the content of the fancy box.
+ * The second argument is optional and allows the FancyBox options to be overridden.</p>
  *
  * @param componentId the id of the component that will be used for the lightbox content (usually a group id)
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
+ * @param alwaysRefresh indicates even if the component is currently in the dom, its contents will be retrieved
+ * from the server
  */
-function showLightboxComponent(componentId, overrideOptions, alwaysAjax) {
+function showLightboxComponent(componentId, overrideOptions, alwaysRefresh) {
     if (overrideOptions === undefined) {
         overrideOptions = {};
     }
 
-    if (alwaysAjax === undefined) {
-        alwaysAjax = false;
+    if (alwaysRefresh === undefined) {
+        alwaysRefresh = false;
     }
-
 
     // set renderedInLightBox indicator and remove it when lightbox is closed
     if (jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val() != true) {
@@ -1088,19 +1087,21 @@ function showLightboxComponent(componentId, overrideOptions, alwaysAjax) {
         }});
     }
 
-    if (jQuery('#' + componentId).length > 0 && !alwaysAjax && !jQuery('#' + componentId).hasClass('uif-placeholder'))  {
+    if (jQuery('#' + componentId).length > 0 && !alwaysRefresh && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         _showLightboxComponentHelper(componentId, overrideOptions);
     } else {
-        if(jQuery('#' + componentId).length == 0) {
-           jQuery(".dialogs_div").append('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
-            retrieveComponent(componentId, undefined, function () {
-                _showLightboxComponentHelper(componentId, overrideOptions);}, {}, true);
+        var placeholderSpan = '<span id="' + componentId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
+                '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
+        if (jQuery('#' + componentId).length == 0) {
+            jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
         } else {
-           jQuery('#' + componentId).replaceWith('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
-            retrieveComponent(componentId, undefined, function () {
-                _showLightboxComponentHelper(componentId, overrideOptions);}, {}, true);
+            jQuery('#' + componentId).replaceWith(placeholderSpan);
         }
-     }
+
+        retrieveComponent(componentId, undefined, function () {
+            _showLightboxComponentHelper(componentId, overrideOptions);
+            }, {}, true);
+    }
 }
 
 /**

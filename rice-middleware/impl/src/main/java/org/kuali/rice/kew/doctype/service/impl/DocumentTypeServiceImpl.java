@@ -164,13 +164,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentType save(DocumentType documentType) {
-        // any time that we save a document type, let's grap an optimistic lock on it's parent document type, that's
+        // any time that we save a document type, let's grab an optimistic lock on it's parent document type, that's
         // because perhaps another transaction created a new version of the parent doc type, if we don't optimistic
         // lock and fail this transaction, then we will end up linking to a non-current parent version!
         if (documentType.getParentId() != null) {
             getDocumentTypeDAO().incrementOptimisticLock(documentType.getParentId());
         }
-    	return getDataObjectService().save(documentType, PersistenceOption.FLUSH);
+        return getDataObjectService().save(documentType, PersistenceOption.FLUSH);
     }
 
     public DocumentTypeDAO getDocumentTypeDAO() {

@@ -87,6 +87,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
         docType.setName("");
         docType.setPreviousVersionId(null);
         docType.setObjectId(null);
+        docType.setVersionNumber(null);
     }
 
     @Override

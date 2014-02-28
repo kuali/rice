@@ -44,7 +44,7 @@
   <bean id="InitiatedDocumentFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:actionScript="window.close();"/>
       </list>
     </property>
   </bean>

@@ -330,7 +330,7 @@ public class LookupController extends UifControllerBase {
             redirectAttributes.addAttribute(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
         }
 
-        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getActiveView().getId());
+        redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
         redirectAttributes.addAttribute(KRADConstants.REFRESH_CALLER_TYPE,
                 UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
         redirectAttributes.addAttribute(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());

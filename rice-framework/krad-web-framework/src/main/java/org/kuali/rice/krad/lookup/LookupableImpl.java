@@ -168,8 +168,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
         Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
-        if (lookupForm.getActiveView() != null) {
-            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getActiveView(), lookupForm);
+        if (lookupForm.getView() != null) {
+            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
         }
 
         // combine date range criteria
@@ -227,8 +227,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         List<String> wildcardAsLiteralPropertyNames = new ArrayList<String>();
 
         Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
-        if (lookupForm.getActiveView() != null) {
-            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getActiveView(), lookupForm);
+        if (lookupForm.getView() != null) {
+            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
         }
 
         for (String fieldName : searchCriteria.keySet()) {
@@ -258,13 +258,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
 
-        // if postedView is null then we are executing the search from get request, in which case we
-        // can't validate the criteria
-        if (form.getActiveView() == null) {
-            return valid;
-        }
-
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getActiveView(),
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
                 form);
 
         // TODO: this should be an error condition but we have an issue when the search is performed from
@@ -435,9 +429,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         List<String> defaultSortColumns = null;
         boolean defaultSortAscending = true;
 
-        if (form.getActiveView() != null) {
-            defaultSortColumns = ((LookupView) form.getActiveView()).getDefaultSortAttributeNames();
-            defaultSortAscending = ((LookupView) form.getActiveView()).isDefaultSortAscending();
+        if (form.getView() != null) {
+            defaultSortColumns = ((LookupView) form.getView()).getDefaultSortAttributeNames();
+            defaultSortAscending = ((LookupView) form.getView()).isDefaultSortAscending();
         }
 
         boolean hasExpression = false;
@@ -504,8 +498,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Map<String, String> clearedLookupCriteria = new HashMap<String, String>();
 
         Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
-        if (form.getActiveView() != null) {
-            criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getActiveView(), form);
+        if (form.getView() != null) {
+            criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
         }
 
         // fields marked as read only through the initial request should not be cleared
@@ -768,7 +762,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected String getMaintenanceActionUrl(LookupForm lookupForm, Object dataObject, String methodToCall,
             List<String> pkNames) {
-        LookupView lookupView = (LookupView) lookupForm.getActiveView();
+        LookupView lookupView = (LookupView) lookupForm.getView();
 
         Properties props = new Properties();
         props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);

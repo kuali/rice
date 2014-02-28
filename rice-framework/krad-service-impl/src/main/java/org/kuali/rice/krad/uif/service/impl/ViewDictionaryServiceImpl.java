@@ -150,7 +150,7 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
                     multipleValueSelectSpecifiedOnURL = true;
                 }
             }
-            lookupView = (LookupView) lookupForm.getActiveView();
+            lookupView = (LookupView) lookupForm.getView();
         } else {
             Map<String, String> indexKey = new HashMap<String, String>();
             indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);

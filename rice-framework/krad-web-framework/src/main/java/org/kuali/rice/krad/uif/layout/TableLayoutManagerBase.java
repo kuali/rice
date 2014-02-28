@@ -1546,10 +1546,11 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         detailsItems.add(getRowDetailsGroup());
         detailsFieldGroup.setItems(detailsItems);
         detailsFieldGroup.setId(collectionGroup.getId() + UifConstants.IdSuffixes.DETAIL_GROUP);
-        this.getRowDetailsGroup().setHidden(true);
 
         if (ajaxDetailsRetrieval && !this.rowDetailsOpen) {
             this.getRowDetailsGroup().setRetrieveViaAjax(true);
+        } else {
+            this.getRowDetailsGroup().setHidden(true);
         }
         
         detailsFieldGroup.setReadOnly(collectionGroup.isReadOnly());

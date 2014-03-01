@@ -123,7 +123,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
 
-    @DelayedCopy
     private Tooltip toolTip;
 
     private int order;
@@ -365,9 +364,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void performInitialization(Object model) {
-        if (toolTip != null && toolTip.getTooltipContent() == null) {
-            toolTip = null;
-        }
     }
 
     /**

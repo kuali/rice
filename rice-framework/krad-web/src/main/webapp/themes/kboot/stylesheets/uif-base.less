@@ -28,6 +28,7 @@ body { background: white}
 
 .uif-label{
   overflow: hidden;
+  display: inline;
 }
 
 .uif-label .uif-requiredMessage {
@@ -35,7 +36,7 @@ body { background: white}
 }
 
 .uif-labelBlock {
-  margin-bottom: 0;
+  display: inline;
 }
 
 .uif-labelBlock .uif-requiredMessage {
@@ -430,7 +431,7 @@ table.uif-gridLayout > tbody > tr > td.uif-inputField {
   margin-bottom: 2px;
 }
 .uif-boxLayoutVerticalItem {
-  display: block;/*    margin-bottom: 10px;*/
+  display: block;
 }
 .uif-linkGroup .uif-boxLayoutHorizontalItem {
   display: inline;
@@ -747,10 +748,7 @@ a.inlineBlock, span.inlineBlock {
   clear: both;
   display: block;
 }
-/** to position the label correctly in label above and below situations**/
-.uif-labelBlock {
-  display: block;
-}
+
 /** highlight color when something is disclosed **/
 .uif-progressiveDisclosure-highlight {
   background-color: #FFF8C6;
@@ -1116,10 +1114,27 @@ span.uif-correctedError {
   border: 2px solid #f7941e !important;
 }
 
-
 .uif-hasError-modified > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="RadioSet"], .uif-hasError-modified > fieldset[data-type="CheckboxSet"] {
   border: 2px solid gray !important;
 }
+
+.popover.uif-tooltip-error-cs {
+    background-color: @alert-danger-bg;
+}
+
+.popover.uif-tooltip-error-cs.top > .arrow:after {
+    border-top-color: @alert-danger-bg;
+}
+
+.popover.uif-tooltip-error-cs.bottom > .arrow:after {
+    border-bottom-color: @alert-danger-bg;
+}
+
+/** needed for tooltips to work in fancybox **/
+.fancybox-inner {
+  overflow: visible !important;
+}
+
 .uif-validationMessages li a {
   white-space: normal;
 }
@@ -1267,25 +1282,11 @@ span.ui-spinner input {
 .uif-rowDetails .uif-boxLayoutVerticalItem {
   margin-bottom: 5px;
 }
-/* Toooltip styles for validation messages **************************************************************/
-.jquerybubblepopup {
-  text-align: left;
+/* Toooltip styles**************************************************************/
+.uif-popupContent {
+  max-width: none;
 }
-.jquerybubblepopup-kr-error-cs .jquerybubblepopup-innerHtml {
-  background-color: #FFE1E9
-}
-.jquerybubblepopup-kr-warning-cs .jquerybubblepopup-innerHtml {
-  background-color: #FFFEDA
-}
-.jquerybubblepopup-kr-info-cs .jquerybubblepopup-innerHtml {
-  background-color: #E7F3FE
-}
-.jquerybubblepopup-kr-error-ss .jquerybubblepopup-innerHtml, .jquerybubblepopup-kr-warning-ss .jquerybubblepopup-innerHtml, .jquerybubblepopup-kr-info-ss .jquerybubblepopup-innerHtml {
-  background-color: white;
-}
-.jquerybubblepopup-ie {
-  filter: none !important;
-}
+
 /***** Lightbox customization ******************************************************************/
 .fancybox-inner form {
   height: 100%;

@@ -525,6 +525,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HelpView"/>
         <bean parent="Uif-Link" p:linkText="Tooltip"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TooltipView"/>
+        <bean parent="Uif-Link" p:linkText="Popover Content"
+                      p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-PopoverContentView"/>
         <bean parent="Uif-Link" p:linkText="DatePicker"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DatePickerView"/>
         <bean parent="Uif-Link" p:linkText="SyntaxHighlighter"

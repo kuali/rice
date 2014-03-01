@@ -136,6 +136,7 @@ JavascriptKradVariables.prototype = {
     PAGE_VALIDATION_MESSAGE_WARNING_CLASS: "alert-warning",
     PERFORM_DIRTY_VALIDATION: "performdirtyvalidation",
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
+    POPOVER_DATA: "bs.popover",
     RENDERED_IN_LIGHTBOX: "renderedInLightBox",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
@@ -188,14 +189,6 @@ JavascriptKradVariables.prototype = {
     ADD_CONTROLS: "add_controls",
     SUBMIT_DATA: "submit_data",
     DETAILS_DEFAULT_OPEN: "details_default_open",
-    BUBBLEPOPUP_THEME_PATH: "/plugins/tooltip/jquerybubblepopup-theme/",
-    FORM_BUBBLEPOPUP_DEFAULT_OPTIONS: {
-        position: 'bottom',
-        align: 'left',
-        tail: { align: 'left', hidden: false },
-        manageMouseEvents: false,
-        themeName: 'popup-form'
-    },
     EVENT_NAMESPACE: "uif",
     EVENTS: {
         ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,

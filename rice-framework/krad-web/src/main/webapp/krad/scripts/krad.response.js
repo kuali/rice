@@ -66,7 +66,7 @@ KradResponse.prototype = {
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
         var pageInLayout = "#" + kradVariables.VIEW_CONTENT_WRAPPER + " [data-role='Page']:first";
-        hideBubblePopups(pageInLayout);
+        hideTooltips(pageInLayout);
 
         var $pageInLayout = jQuery(pageInLayout);
 
@@ -126,7 +126,7 @@ KradResponse.prototype = {
 
         var $componentInDom = jQuery("#" + id);
 
-        hideBubblePopups($componentInDom);
+        hideTooltips($componentInDom);
 
         var component = jQuery("#" + id + "_update", content);
 

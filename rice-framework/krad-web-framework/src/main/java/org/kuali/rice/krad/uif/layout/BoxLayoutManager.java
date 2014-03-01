@@ -27,6 +27,8 @@ import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
@@ -101,6 +103,10 @@ public class BoxLayoutManager extends LayoutManagerBase {
                     
                 } else {
                     c.addStyleClass("uif-boxLayoutVerticalItem");
+
+                    if (!(c instanceof Header || c instanceof Container || c instanceof Message)) {
+                        c.addStyleClass("pull-left");
+                    }
 
                     for (String styleClass : this.getItemStyleClasses()) {
                         addStyleClass(styleClass);

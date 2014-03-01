@@ -798,7 +798,6 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         //make sure scripts are run after table renders (must be done here for deferred rendering)
         runHiddenScripts(tableId, false, true);
-        initBubblePopups();
 
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
         jQuery(oTable).on("dataTables.tableDraw", function () {
@@ -1390,46 +1389,104 @@ function createSpinner(id, options) {
  * @param options - options for the tooltip
  */
 function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
-    var elementInfo = getHoverElement(id);
-    var element = elementInfo.element;
+    //var elementInfo = getHoverElement(id);
+    //var element = elementInfo.element;
+    var tooltipElement = jQuery("#" + id);
 
-    options['innerHtml'] = text;
-    options['manageMouseEvents'] = false;
+    if (tooltipElement.is("[data-header_for]")) {
+        var innerHeaderSpan = tooltipElement.find("> :header span:first");
+        if (innerHeaderSpan.length == 1) {
+            tooltipElement = innerHeaderSpan;
+            options.container = jQuery("#" + id);
+        }
+    }
+
+    options.content = text;
+
     if (onFocusFlag) {
+
         // Add onfocus trigger
-        jQuery("#" + id).focus(function () {
-//            if (!jQuery("#" + id).IsBubblePopupOpen()) {
-            // TODO : use data attribute to check if control
+        tooltipElement.focus(function () {
             if (!isControlWithMessages(id)) {
-                jQuery("#" + id).SetBubblePopupOptions(options, true);
-                jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
-                jQuery("#" + id).ShowBubblePopup();
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+                if (!popoverData) {
+                    popoverData = initializeTooltip(tooltipElement, options);
+                }
+
+                if (!popoverData.shown) {
+                    popoverData.options.content = text;
+                    tooltipElement.popover("show");
+                    popoverData.shown = true;
+                }
             }
-//            }
         });
-        jQuery("#" + id).blur(function () {
-            jQuery("#" + id).HideBubblePopup();
+
+        tooltipElement.blur(function () {
+            if (!isControlWithMessages(id)) {
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+
+                if (popoverData && popoverData.shown) {
+                    tooltipElement.popover("hide");
+                    popoverData.shown = false;
+                }
+            }
         });
     }
     if (onMouseHoverFlag) {
-        // Add mouse hover trigger
-        jQuery("#" + id).hover(function () {
-            if (!jQuery("#" + id).IsBubblePopupOpen()) {
-                if (!isControlWithMessages(id)) {
-                    jQuery("#" + id).SetBubblePopupOptions(options, true);
-                    jQuery("#" + id).SetBubblePopupInnerHtml(options.innerHTML, true);
-                    jQuery("#" + id).ShowBubblePopup();
+
+        tooltipElement.on("mouseover", function(){
+            if (!isControlWithMessages(id)) {
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+                if (!popoverData) {
+                    popoverData = initializeTooltip(tooltipElement, options);
+                }
+
+                if (!popoverData.shown) {
+                    popoverData.options.content = text;
+                    tooltipElement.popover("show");
+                    popoverData.shown = true;
                 }
             }
-        }, function (event) {
-            if (!onFocusFlag || !jQuery("#" + id).is(":focus")) {
-                var result = mouseInTooltipCheck(event, id, element, this, elementInfo.type);
-                if (result) {
-                    mouseLeaveHideTooltip(id, jQuery("#" + id), element, elementInfo.type);
+        });
+
+        tooltipElement.on("mouseout", function(){
+            if (!isControlWithMessages(id) && !(onFocusFlag && jQuery("#" + id).is(":focus"))) {
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+
+                if (popoverData && popoverData.shown) {
+                    tooltipElement.popover("hide");
+                    popoverData.shown = false;
                 }
             }
         });
     }
+}
+
+function initializeTooltip(tooltipElement, extendedOptions, additionalClasses) {
+    var classAttr = "popover";
+    if (additionalClasses) {
+        classAttr = classAttr + " " + additionalClasses;
+    }
+    var options = {
+            trigger:"manual",
+            placement: "auto top",
+            html: true,
+            animation: false,
+            template: '<div class="' + classAttr + '"><div class="arrow"></div><div class="popover-content"></div></div>'
+        };
+
+    if (extendedOptions) {
+        jQuery.extend(options, extendedOptions);
+    }
+
+    tooltipElement.popover(options);
+    tooltipElement.attr("data-hasTooltip", "true");
+
+    return tooltipElement.data(kradVariables.POPOVER_DATA);
 }
 
 /**
@@ -1441,7 +1498,7 @@ function isControlWithMessages(id) {
     // check if component is or contains a control
     if (jQuery("#" + id).is("[data-role='Control']")
             || (jQuery("#" + id).is("[data-role='InputField']") && jQuery("#" + id + "_control").is("[data-role='Control']"))) {
-        return hasMessage(id)
+        return hasMessage(id);
     }
     return false;
 }
@@ -1460,64 +1517,6 @@ function hasMessage(id) {
         return true;
     }
     return false;
-}
-
-/**
- * Workaround to prevent hiding the tooltip when the mouse actually may still be hovering over the field
- * correctly, checks to see if the mouseleave event was entering the tooltip and if so dont continue the
- * hide action, rather add a mouseleave handler that will only be invoked once for that segment, when this
- * is left the check occurs again, until the user has either left the tooltip or the field - then the tooltip
- * is hidden appropriately
- * @param event - mouseleave event
- * @param fieldId - id of the field this logic is being applied to
- * @param triggerElements - the elements that can trigger mouseover
- * @param callingElement - original element that invoked the mouseleave
- * @param type - type of the field
- */
-function mouseInTooltipCheck(event, fieldId, triggerElements, callingElement, type) {
-    if (event.relatedTarget &&
-            jQuery(event.relatedTarget).length &&
-            jQuery(event.relatedTarget).attr("class") != null &&
-            jQuery(event.relatedTarget).attr("class").indexOf("jquerybubblepopup") >= 0) {
-        //this bind is only every invoked once, then unbound - return false to stop hide
-        jQuery(event.relatedTarget).one("mouseleave", function (event) {
-            mouseInTooltipCheck(event, fieldId, triggerElements, callingElement, type);
-        });
-        return false;
-    }
-    //If target moving into is not a triggerElement for this hover
-    // and if the source of the event is not a trigger element
-    else if (!jQuery(event.relatedTarget).is(triggerElements) && !jQuery(event.target).is(triggerElements)) {
-        //hide the tooltip for the original element
-        mouseLeaveHideTooltip(fieldId, callingElement, triggerElements, type, true);
-        return true;
-    }
-    else {
-        return true;
-    }
-}
-
-/**
- * Method to hide the tooltip when the mouse leave event was successful for the field
- * @param id id of the field
- * @param currentElement the current element be iterated on
- * @param elements all elements within the hover set
- * @param type type of field
- */
-function mouseLeaveHideTooltip(id, currentElement, elements, type, force) {
-    var hide = true;
-    var tooltipElement = jQuery(currentElement);
-
-    if (type == "fieldset") {
-        //hide only if mouseleave is on fieldset not its internal radios/checkboxes
-        hide = force || jQuery(currentElement).is("fieldset");
-        tooltipElement = elements.filter("label:first");
-    }
-
-    //hide only if hide flag is true and the tooltip is open
-    if (hide && jQuery(tooltipElement).IsBubblePopupOpen()) {
-        hideTooltip(id);
-    }
 }
 
 /**

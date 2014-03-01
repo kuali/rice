@@ -66,8 +66,6 @@ var refreshImage;
 var navigationImage;
 var ajaxReturnHandlers = {};
 
-var gCurrentBubblePopupId;
-
 var activeDialogId;
 var sessionWarningTimer;
 var sessionTimeoutTimer;
@@ -86,7 +84,7 @@ var refreshTimerComponentMap = {};
 
 //setup handler for opening form content popups with errors
 jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
-    openPopupContentsWithErrors();
+    openPopoverContentsWithErrors();
 });
 
 // common event registering done here through JQuery ready event
@@ -148,6 +146,15 @@ jQuery(document).ready(function () {
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
+
+    jQuery(window).unbind("resize.tooltip");
+    jQuery(window).bind("resize.tooltip", function(){
+        var visibleTooltips = jQuery(".popover:visible");
+        visibleTooltips.each(function(){
+            // bug with popover plugin does not reposition tooltip on window resize, forcing it here
+            jQuery(this).prev("[data-hasTooltip]").popover("show");
+        });
+    });
 
     //setup the handler for enter key event actions
     initEnterKeyHandler();
@@ -278,17 +285,6 @@ function setupStickyHeaderAndFooter() {
 function initFieldHandlers() {
     time(true, "field-handlers");
 
-    var validationTooltipOptions = {
-        position: "top",
-        align: "left",
-        distance: 0,
-        manageMouseEvents: false,
-        themePath: getBubblePopupThemePath(),
-        alwaysVisible: false,
-        tail: {align: "left"},
-        themeMargins: {total: "13px", difference: "2px"}
-    };
-
     //add global action handler
     jQuery(document).on("click", "a[data-role='Action'], button[data-role='Action'], "
             + "img[data-role='Action'], input[data-role='Action']",
@@ -377,39 +373,8 @@ function initFieldHandlers() {
                     var hasMessages = jQuery("[data-messages_for='" + fieldId + "']").children().length;
 
                     //only display the tooltip if not already focused or already showing
-                    if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
-                        if (elementInfo.themeMargins) {
-                            validationTooltipOptions.themeMargins = elementInfo.themeMargins;
-                        }
-
-                        //special case check for input within a fieldset, hide other tooltips to avoid overlap
-                        if (jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
-                                && jQuery(tooltipElement).parents("fieldset[data-type='CheckboxSet'], "
-                                + "fieldset[data-type='RadioSet']").length) {
-                            hideBubblePopups();
-                        }
-                        var show = true;
-
-                        //special case check for if any internal inputs of a fieldset: if they are showing tooltips
-                        //do not show this fieldset's tooltip to avoid overlap
-                        if (elementInfo.type == "fieldset") {
-                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function () {
-                                if (jQuery(this).IsBubblePopupOpen()) {
-                                    show = false;
-                                }
-                            });
-                        }
-
-                        if (show) {
-                            var data = getValidationData(jQuery("#" + fieldId));
-                            validationTooltipOptions.themeName = data.tooltipTheme;
-                            validationTooltipOptions.innerHTML = jQuery("[data-messages_for='" + fieldId + "']").html();
-                            //set the margin to offset it from the left appropriately
-                            validationTooltipOptions.divStyle = {margin: getTooltipMargin(tooltipElement)};
-                            jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
-                            jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
-                            jQuery(tooltipElement).ShowBubblePopup();
-                        }
+                    if (!focus && hasMessages) {
+                        showMessageTooltip(fieldId);
                     }
                 }
             });
@@ -428,15 +393,20 @@ function initFieldHandlers() {
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
-                    //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
-                    //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
-                    //when entered
-                    var result = mouseOutBubblePopupCheck(event, fieldId, element, this, elementInfo.type, data);
-                    if (!result) {
-                        return false;
+                    var tooltipElement = this;
+                    var focus = jQuery(tooltipElement).is(":focus");
+                    if (elementInfo.type == "fieldset") {
+                        //for checkbox/radio fieldsets we put the tooltip on the label of the first input
+                        tooltipElement = jQuery(element).filter(".uif-tooltip");
+                        //if the fieldset or one of the inputs have focus then the fieldset is considered focused
+                        focus = jQuery(element).filter("fieldset").is(":focus")
+                                || jQuery(element).filter("input").is(":focus");
                     }
-                    //continue with the mouseleave event
-                    mouseLeaveHideMessageTooltip(fieldId, this, element, elementInfo.type);
+
+                    if (!focus) {
+                        hideMessageTooltip(fieldId);
+                    }
+
                 }
             });
 
@@ -723,37 +693,13 @@ function setupHelperTextHandler() {
     });
 }
 
-/**
- * Calls the create call to initialize the bubblepopup plugin to take into account any content that may have
- * bubblepopups
- *
- * @param selector (optional) if specified used as the selection string to select an element to check to see if it has
- * elements that could have tooltips, if the content does not contain these elements, does not reinitialize the create
- * call
- */
-function initBubblePopups() {
-    //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
-    jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-            + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
-        themePath: getBubblePopupThemePath()});
-}
-
-function hideBubblePopups(element) {
+function hideTooltips(element) {
     if (element != undefined && element.length) {
-        jQuery(element).find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups()
+        jQuery(element).find("[data-hasTooltip]").popover("hide");
     }
     else {
-        jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea,"
-                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups();
+        jQuery("[data-hasTooltip]").popover("hide");
     }
-}
-
-/**
- * Returns the URL to the bubblepopup theme directory
- */
-function getBubblePopupThemePath() {
-    return getConfigParam(kradVariables.APPLICATION_URL) + kradVariables.BUBBLEPOPUP_THEME_PATH;
 }
 
 /**
@@ -855,9 +801,6 @@ function setupPage(validate) {
     jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
 
     pageValidatorReady = true;
-
-    //ensure bubblepopups are initialized
-    initBubblePopups();
 
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 

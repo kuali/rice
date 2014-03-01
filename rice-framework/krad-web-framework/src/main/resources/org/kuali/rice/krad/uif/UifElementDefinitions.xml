@@ -160,6 +160,11 @@
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/label.ftl"/>
     <property name="templateName" value="uif_label"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>clearfix</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-label</value>

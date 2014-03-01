@@ -181,7 +181,7 @@
         <bean parent="Uif-SecondaryActionButton-Small" id="submitButton1">
           <property name="actionLabel" value="Popover Form Action"/>
           <property name="actionScript"
-                    value="openPopupContent(e,'UifCompView-PopoverContent-1');"/>
+                    value="openPopoverContent(e,'UifCompView-PopoverContent-1');"/>
         </bean>
         <bean id="UifCompView-PopoverContent-1" parent="Uif-HorizontalBoxSection">
           <property name="cssClasses">

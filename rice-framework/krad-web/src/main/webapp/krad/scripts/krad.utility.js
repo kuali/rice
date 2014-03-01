@@ -365,8 +365,6 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
             pageValidationPhase = true;
-            //reinitialize BubblePopup
-            initBubblePopups();
 
             jQuery(selector).find("div[data-role='InputField']").andSelf().filter("div[data-role='InputField']").each(function () {
                 var id = jQuery(this).attr('id');
@@ -383,9 +381,6 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
     }
     else {
         evaluateScripts();
-
-        //reinitialize BubblePopup
-        initBubblePopups();
     }
 
     profile(false, "run-scripts:" + id);

@@ -319,18 +319,6 @@
   <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
   <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
     <property name="onMouseHover" value="true"/>
-    <property name="templateOptions">
-      <map>
-        <entry key="position" value="top"/>
-        <entry key="align" value="left"/>
-        <entry key="alwaysVisible" value="false"/>
-        <entry key="tail" value="{ align:'left', hidden: false }"/>
-        <entry key="themePath"
-               value="@{#ConfigProperties['application.url']}/plugins/tooltip/jquerybubblepopup-theme/"/>
-        <entry key="themeName" value="black"/>
-        <entry key="selectable" value="true"/>
-      </map>
-    </property>
   </bean>
 
   <bean id="Uif-TooltipHelp" parent="Uif-TooltipHelp-parentBean"/>

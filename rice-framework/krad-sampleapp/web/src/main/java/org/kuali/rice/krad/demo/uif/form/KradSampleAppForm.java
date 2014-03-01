@@ -41,7 +41,6 @@ import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -414,16 +413,15 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             tree2.setRootElement(root);
         }
         
-        List<DocumentSearchResult> results;
+        List<DocumentSearchResult> results = Collections.emptyList();
         try {
 			DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
 			builder.setDocumentTypeName("TravelAuthorization");
-			DocumentSearchService documentSearchService =
-					org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
-			results = documentSearchService == null ? Collections.<DocumentSearchResult> emptyList() :
-					documentSearchService.lookupDocuments(
-							GlobalVariables.getUserSession().getPrincipalId(),
-							builder.build()).getSearchResults();
+            DocumentSearchService documentSearchService =
+				org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
+            if (documentSearchService != null) {
+                results = documentSearchService.lookupDocuments(null, builder.build()).getSearchResults();
+            }
         } catch (NoClassDefFoundError e) {
         	results = Collections.emptyList();
         }
@@ -444,7 +442,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 	                if (!travelDestinations.isEmpty()) {
 	                    newTravelAuthorizationDocument.setTripDestinationId(travelDestinations.get(0).getTravelDestinationId());
 	                }
-	
+
 	                Document document
 	                        = KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
 	                setDocumentNumber(document.getDocumentNumber());

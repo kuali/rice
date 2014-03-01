@@ -312,4 +312,5 @@ public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Seri
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
+
 }

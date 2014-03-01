@@ -31,6 +31,7 @@
         <ref bean="Demo-QuickFinder-Example1"/>
         <ref bean="Demo-QuickFinder-Example2"/>
         <ref bean="Demo-QuickFinder-Example3"/>
+        <ref bean="Demo-QuickFinder-Example4"/>
       </list>
     </property>
   </bean>
@@ -86,6 +87,24 @@
           </property>
         </bean>
         <!-- ex:Demo-QuickFinder-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-QuickFinder-Example4" parent="Uif-VerticalBoxSection" p:headerText="Lookup (with additional parameters)">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-QuickFinder-Example4 start-->
+        <bean parent="GenericTextField" p:propertyName="inputField15">
+          <property name="instructionalText" value="Search with additional parameter of minSubsidized:50"/>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:inputField15" p:additionalLookupParameters="minSubsidized:50" p:viewName="LookupSampleViewAdditionalParameters">
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-QuickFinder-Example4 end-->
       </list>
     </property>
   </bean>

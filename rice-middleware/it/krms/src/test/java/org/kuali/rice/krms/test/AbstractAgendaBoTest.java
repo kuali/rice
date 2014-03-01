@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.krms.test;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -313,9 +316,10 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         Map<String, String> queryArgs = new HashMap<String, String>();
         queryArgs.put("specification.namespace", contextDefinition.getNamespace());
         queryArgs.put("specification.name", termName);
-        TermBo termBo = getBoService().findByPrimaryKey(TermBo.class, queryArgs);
-        if (termBo != null) {
-            return TermBo.to(termBo);
+        QueryResults<TermBo> queryResults = getDataObjectService().findMatching(TermBo.class, QueryByCriteria.Builder.andAttributes(queryArgs).build());
+
+        if (!CollectionUtils.isEmpty(queryResults.getResults())) {
+            return TermBo.to(queryResults.getResults().get(0));
         }
 
         // campusCode TermSpec
@@ -366,6 +370,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
             functionBuilder.getParameters().add(
                     FunctionParameterDefinition.Builder.create("arg0", Integer.class.getName(), 0));
             functionBuilder.getParameters().add(FunctionParameterDefinition.Builder.create("arg1", Integer.class.getName(), 1));
+
             functionBuilder.setReturnType(Integer.class.getName());
 
             gcdFunction = functionBoService.createFunction(functionBuilder.build());
@@ -413,8 +418,8 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         Map<String, String> queryArgs = new HashMap<String, String>();
         queryArgs.put("specification.namespace", contextDefinition.getNamespace());
         queryArgs.put("specification.name", "outputTermSpec");
-        TermBo result = getBoService().findByPrimaryKey(TermBo.class, queryArgs);
-        if (result != null) return TermBo.to(result);
+        QueryResults<TermBo> queryResults = getDataObjectService().findMatching(TermBo.class, QueryByCriteria.Builder.andAttributes(queryArgs).build());
+        if (!CollectionUtils.isEmpty(queryResults.getResults())) return TermBo.to(queryResults.getResults().get(0));
 
         // output TermSpec
         TermSpecificationDefinition outputTermSpec =

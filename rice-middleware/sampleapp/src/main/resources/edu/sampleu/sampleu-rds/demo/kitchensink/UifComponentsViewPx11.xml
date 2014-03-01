@@ -80,7 +80,7 @@
   </verticalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-WindowEvents-Group1">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true"
                        propertyName="field100">
         <control>
           <textControl-bean onClickScript="alert('Clicked Text Control');"/>
@@ -135,7 +135,7 @@
                   options-ref="color-options" size="3"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field110">
         <control>
           <textAreaControl-bean cols="40" onBlurScript="jq(this).stop().animate({'height':'-=50px'},100);"
@@ -248,7 +248,7 @@
                                  style="background-color:aqua; height:200px; width:300px">
         <items>
           <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true"
-                           id="Group3-HorizontalBoxSection-Field100" labelPlacement="TOP" propertyName="field100"
+                           id="Group3-HorizontalBoxSection-Field100" propertyName="field100"
                            style="padding-left:15px">
             <control>
               <textControl-bean onClickScript="alert('Clicked Text Control');"/>
@@ -281,13 +281,13 @@
   </horizontalBoxSection-bean>
   <horizontalBoxSection-bean id="UifCompView-KeyEvents-Group1">
     <items>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="true"
                        propertyName="field100">
         <control>
           <textControl-bean onKeyPressScript="alert('Pressed a Key');"/>
         </control>
       </inputField-bean>
-      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false" labelPlacement="TOP"
+      <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"
                        propertyName="field110">
         <control>
           <textAreaControl-bean cols="40" id="KeyEvents-Group1-TextArea"

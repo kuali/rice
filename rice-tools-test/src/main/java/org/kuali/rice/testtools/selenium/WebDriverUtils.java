@@ -803,8 +803,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed || (getElementByAttributeValue(driver, attribute, attributeValue) != null)) {
                     break;
@@ -815,6 +816,29 @@ public class WebDriverUtils {
         WebElement element = getElementByAttributeValue(driver, attribute, attributeValue);
         driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
         return element;
+    }
+
+    public static void waitToAcceptAlert(WebDriver driver, int waitSeconds, String message) throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIME_LOOP_MS, TimeUnit.MILLISECONDS);
+
+        boolean failed = false;
+
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds) {
+                failed = true;
+            }
+            try {
+                if (failed) {
+                    break;
+                } else if (isAlertPresent(driver)) {
+                    acceptAlertIfPresent(driver);
+                    break;
+                }
+            } catch (Exception e) {}
+        }
+
+        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
     }
 
     /**
@@ -841,8 +865,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed) {
                     break;
@@ -911,8 +936,9 @@ public class WebDriverUtils {
 
         for (int second = 0;; second++) {
             Thread.sleep(1000);
-            if (second >= waitSeconds)
+            if (second >= waitSeconds) {
                 failed = true;
+            }
             try {
                 if (failed || (driver.findElements(by)).size() > 0) {
                     break;

@@ -31,7 +31,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
- * Concrete model object implementation of KRMS {@Link KrmsTypeAttributeContract}
+ * Concrete model object implementation of KRMS {@link KrmsTypeAttributeContract}
  * <p>immutable. To construct an instance of a KrmsTypeAttribute, use the {@link KrmsTypeAttribute.Builder} class.
  * Instances of KrmsTypeAttribute can be (un)marshalled to and from XML.</p>
  *

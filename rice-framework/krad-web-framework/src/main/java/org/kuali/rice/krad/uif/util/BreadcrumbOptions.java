@@ -45,7 +45,6 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  */
 @BeanTag(name = "breadcrumbOptions-bean", parent = "Uif-BreadcrumbOptions")
 public class BreadcrumbOptions implements Serializable, Copyable {
-
     private static final long serialVersionUID = -6705552809624394000L;
 
     //custom breadcrumbs
@@ -144,9 +143,11 @@ public class BreadcrumbOptions implements Serializable, Copyable {
 
         //add to breadcrumbItem to current items if it is set to use in path based
         if (model instanceof UifFormBase && ((UifFormBase) model).getHistoryFlow() != null) {
+            // clean the breadcrumb item since it will be stored in session
+            ComponentUtils.cleanContextDeap(view.getBreadcrumbItem());
+
             ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(view.getBreadcrumbItem());
         }
-
     }
 
     /**

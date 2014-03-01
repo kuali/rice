@@ -38,7 +38,7 @@ public class RuleManagementIntegrationTest extends AbstractBoTest {
         NaturalLanguageTemplateBoServiceImpl naturalLanguageTemplateBoServiceImpl = new NaturalLanguageTemplateBoServiceImpl();
         naturalLanguageTemplateBoServiceImpl.setNaturalLanguageTemplater(NaturalLanguageTemplateIntegrationGenTest.newStringReplaceTemplater());
         ruleManagementServiceImpl.setNaturalLanguageTemplateBoService(naturalLanguageTemplateBoServiceImpl);
-        ruleManagementServiceImpl.setBusinessObjectService(getBoService()); // Business Object Service gets set to other Services
+        ruleManagementServiceImpl.setDataObjectService(getDataObjectService()); // Business Object Service gets set to other Services
     }
 
     @Test

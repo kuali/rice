@@ -29,6 +29,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -62,6 +64,24 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     }
 
     /**
+     * CollectionItemClassProvider backed by the legacy data adapter
+     */
+    public static class LegacyDataAdapterProvider implements CollectionItemClassProvider {
+        protected static LegacyDataAdapter legacyDataAdapter = null;
+        protected static LegacyDataAdapter getLegacyDataAdapter() {
+            if (legacyDataAdapter == null) {
+                legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+            }
+            return legacyDataAdapter;
+        }
+        @Override
+        public Class getCollectionItemClass(Object bean, String property) {
+            Map<String, Class> collectionObjectTypes = getLegacyDataAdapter().listCollectionObjectTypes(bean.getClass());
+            return collectionObjectTypes.get(property);
+        }
+    }
+
+    /**
      * CollectionItemClassProvider backed by OJB metadata
      */
     public static class PersistenceStructureServiceProvider implements CollectionItemClassProvider {
@@ -80,8 +100,8 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         }
     }
 
-    // default is to consult OJB
-    protected static CollectionItemClassProvider collectionItemClassProvider = new PersistenceStructureServiceProvider();
+    // default is to consult LegacyDataAdapter
+    protected static CollectionItemClassProvider collectionItemClassProvider = new LegacyDataAdapterProvider();
 
 	// begin Kuali Foundation modification
     public PojoPropertyUtilsBean() {

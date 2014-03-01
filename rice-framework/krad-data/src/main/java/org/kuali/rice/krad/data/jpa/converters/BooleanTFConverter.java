@@ -19,7 +19,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * 
+ * Converts true/false represented by the characters "T" and "F" to and from boolean.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class BooleanTFConverter implements AttributeConverter<Boolean, String> {

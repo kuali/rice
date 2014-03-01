@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.bo;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
 
@@ -25,20 +26,28 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class PersistableAttachmentBase extends PersistableBusinessObjectBase implements PersistableAttachment {
-	@Lob
-	@Column(name="ATT_CNTNT")
-    private byte[] attachmentContent;
-	@Column(name="FILE_NM",length=150)
-    private String fileName;
-	@Column(name="CNTNT_TYP",length=255)
-    private String contentType;
 
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends PersistableAttachmentBase {}
+
+    @Lob
+	@Column(name = "ATT_CNTNT")
+    private byte[] attachmentContent;
+
+	@Column(name = "FILE_NM", length = 150)
+    private String fileName;
+
+	@Column(name = "CNTNT_TYP", length = 255)
+    private String contentType;
 
     @Override
     public byte[] getAttachmentContent() {
         return this.attachmentContent;
     }
-
 
     @Override
     public void setAttachmentContent(byte[] attachmentContent) {

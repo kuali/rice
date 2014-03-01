@@ -45,8 +45,6 @@
 
 	<bean id="parameterService" class="org.kuali.rice.krad.uif.util.MockParameterService" />
 	
-	<bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
-
 	<bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
 
 	<util:list id="uifDictionaryBeans">

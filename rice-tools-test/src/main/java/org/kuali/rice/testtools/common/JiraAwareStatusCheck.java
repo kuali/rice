@@ -22,7 +22,8 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Prints out status of JiraAware Jiras from property files.
+ * Prints out status of JiraAware Jiras from JiraAwareContainsFailures.properties and JiraAwareRegexFailures.properties
+ * files.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

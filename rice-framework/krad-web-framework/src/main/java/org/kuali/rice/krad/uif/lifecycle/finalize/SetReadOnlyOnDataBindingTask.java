@@ -40,7 +40,7 @@ public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase<DataBind
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

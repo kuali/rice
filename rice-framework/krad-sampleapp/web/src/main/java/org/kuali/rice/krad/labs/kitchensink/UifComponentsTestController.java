@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
+import java.util.Properties;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -351,7 +357,8 @@ public class UifComponentsTestController extends UifControllerBase {
      * @param response
      * @return ModelAndView model and view
      */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
+    @SuppressWarnings("unused")
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
     public ModelAndView errorCheck(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 

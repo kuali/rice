@@ -234,4 +234,5 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     public void setHighlightValueChange(boolean highlightValueChange) {
         this.highlightValueChange = highlightValueChange;
     }
+
 }

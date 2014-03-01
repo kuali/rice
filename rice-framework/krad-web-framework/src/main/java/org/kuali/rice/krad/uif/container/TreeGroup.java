@@ -197,7 +197,9 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets all node components within the tree.
+     * 
+     * @return list of node components
      */
     public List<Component> getNodeComponents() {
         List<Component> components = new ArrayList<Component>();
@@ -206,7 +208,9 @@ public class TreeGroup extends GroupBase implements DataBinding {
     }
 
     /**
-     * {@inheritDoc}
+     * Gets all node components prototypes within the tree.
+     * 
+     * @return list of node component prototypes
      */
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     public List<Component> getComponentPrototypes() {

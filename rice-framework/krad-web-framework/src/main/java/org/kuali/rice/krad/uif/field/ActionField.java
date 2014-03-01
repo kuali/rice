@@ -68,6 +68,7 @@ public class ActionField extends FieldBase {
     }
 
     /**
+     * Nested action component.
      *
      * @return Action instance
      */

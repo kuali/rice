@@ -30,7 +30,7 @@
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 	<!-- Enables Load-Time Weaving -->
-	<context:load-time-weaver />
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
 	<!-- List of all the base packages which we must scan as part of any module. -->
 	<util:list id="kradJpaPackagesToScan">
@@ -82,8 +82,7 @@
 
 	<bean
 		id="metadataProviderAnnotation"
-		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-		p:jpaMetadataProvider-ref="metadataProviderJpa" />
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
 	<util:list id="springMetadataParentBeanFiles">
 		<value>classpath:org/kuali/rice/krad/data/provider/spring/krad-metadata-parent-beans.xml</value>

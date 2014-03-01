@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
+import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
@@ -35,7 +36,9 @@ import java.util.List;
  * @since 1.1
  */
 @BeanTag(name = "constraint-bean")
-public class BaseConstraint implements Constraint {
+public class BaseConstraint extends DictionaryBeanBase implements Constraint {
+    private static final long serialVersionUID = -2891712660500311114L;
+
     protected String messageNamespaceCode;
     protected String messageComponentCode;
     protected String messageKey;
@@ -263,6 +266,8 @@ public class BaseConstraint implements Constraint {
         }
         this.constraintStateOverrides = constraintStateOverrides;
     }
+
+
 
     /**
      * Validates different requirements of component compiling a series of reports detailing information on errors

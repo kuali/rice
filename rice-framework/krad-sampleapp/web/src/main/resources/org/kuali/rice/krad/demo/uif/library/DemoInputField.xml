@@ -31,8 +31,6 @@
         <ref bean="Demo-InputField-Example2"/>
         <ref bean="Demo-InputField-Example3"/>
         <ref bean="Demo-InputField-Example4"/>
-        <ref bean="Demo-InputField-Example5"/>
-        <ref bean="Demo-InputField-Example6"/>
         <ref bean="Demo-InputField-Example7"/>
         <ref bean="Demo-InputField-Example8"/>
         <ref bean="Demo-InputField-Example9"/>
@@ -95,43 +93,18 @@
     </property>
   </bean>
 
-  <!-- Label top -->
-  <bean id="Demo-InputField-Example5" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-InputField-Example5 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Label Top Field" p:propertyName="inputField5"
-              p:instructionalText="Instructions for your field"
-              p:constraintText="Text to tell users about constraints this field may have"/>
-        <!-- ex:Demo-InputField-Example5 end-->
-      </list>
-    </property>
-  </bean>
 
-  <!-- Label right -->
-  <bean id="Demo-InputField-Example6" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-InputField-Example6 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Label Right Field" p:propertyName="inputField6"
-              p:instructionalText="Instructions for your field"
-              p:constraintText="Text to tell users about constraints this field may have"
-              p:labelPlacement="RIGHT"/>
-        <!-- ex:Demo-InputField-Example6 end-->
-      </list>
-    </property>
-  </bean>
 
   <!-- Quickfinder -->
   <bean id="Demo-InputField-Example7" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example7 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Quickfinder Field" p:propertyName="inputField7"
+        <bean parent="Uif-InputField" p:label="Quickfinder Field" p:propertyName="inputField7"
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:inputField7" p:additionalLookupParameters="myParam1:test1,myParam2:test2"/>
+                  p:fieldConversions="number:inputField7"/>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example7 end-->
@@ -144,7 +117,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example8 start-->
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField8" p:label="Quickfinder Field" p:widgetInputOnly="true">
+        <bean parent="Uif-InputField" p:propertyName="inputField8" p:label="Quickfinder Field" p:widgetInputOnly="true">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:inputField8"/>
@@ -160,7 +133,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example9 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField9"
+        <bean parent="Uif-InputField" p:label="Inquiry Field" p:propertyName="inputField9"
               p:instructionalText="Click the inquiry image to see details of TravelAccount with number corresponding
                   to the input" p:constraintText="Input a1-a9" p:defaultValue="a2">
           <property name="inquiry">
@@ -178,7 +151,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example10 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Inquiry Field" p:propertyName="inputField10"
+        <bean parent="Uif-InputField" p:label="Inquiry Field" p:propertyName="inputField10"
               p:widgetInputOnly="true" p:instructionalText="Instructions are not displayed on readOnly fields"
               p:defaultValue="a2">
           <property name="inquiry">
@@ -196,7 +169,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example11 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Required Field"
+        <bean parent="Uif-InputField" p:label="Required Field"
               p:instructionalText="Try clicking in and out without entering a value"
               p:propertyName="inputField11" p:required="true">
         </bean>
@@ -210,7 +183,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example12 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Uppercase field" p:propertyName="inputField12"
+        <bean parent="Uif-InputField" p:label="Uppercase field" p:propertyName="inputField12"
               p:uppercaseValue="true">
         </bean>
         <!-- ex:Demo-InputField-Example12 end-->
@@ -223,7 +196,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InputField-Example13 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Disable Native Autocomplete field" p:propertyName="inputField13"
+        <bean parent="Uif-InputField" p:label="Disable Native Autocomplete field" p:propertyName="inputField13"
               p:disableNativeAutocomplete="true">
         </bean>
         <!-- ex:Demo-InputField-Example13 end-->

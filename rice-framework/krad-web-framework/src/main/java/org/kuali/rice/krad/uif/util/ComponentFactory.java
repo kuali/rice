@@ -90,13 +90,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Factory class for creating new UIF components from their base definitions
- * in the dictionary
+ * Factory class for creating new UIF components from their base definitions in the dictionary.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentFactory {
-
     private static Log LOG = LogFactory.getLog(ComponentFactory.class);
 
     public static final String TEXT_CONTROL = "Uif-TextControl";
@@ -185,8 +183,7 @@ public class ComponentFactory {
     private static Map<String, Component> cache = new HashMap<String, Component>();
 
     /**
-     * Gets a fresh copy of the component by the id passed in which used to look up the component in
-     * the view index, then retrieve a new instance with initial state configured using the factory id
+     * Returns a new {@link Component} instance for the given bean id from the spring factory.
      *
      * @param id id for the component in the view index
      * @return Component new instance
@@ -214,14 +211,13 @@ public class ComponentFactory {
      * @param beanId id of the bean definition
      * @return new component instance or null if no such component definition was found
      */
-    public static Component getNewComponentInstance(final String beanId) {
+    public static Component getNewComponentInstance(String beanId) {
         Component component;
 
         if (cache.containsKey(beanId)) {
             component = cache.get(beanId);
         } else {
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService()
-                    .getDictionaryBean(beanId);
+            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(beanId);
 
             // clear id before returning so duplicates do not occur
             component.setId(null);
@@ -231,7 +227,6 @@ public class ComponentFactory {
 
             CopyUtils.preventModification(component);
 
-            // add to cache
             synchronized (cache) {
                 cache.put(beanId, component);
             }

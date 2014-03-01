@@ -59,4 +59,5 @@ public class DataFieldSecurity extends FieldSecurity {
     public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
         this.attributeSecurity = attributeSecurity;
     }
+
 }

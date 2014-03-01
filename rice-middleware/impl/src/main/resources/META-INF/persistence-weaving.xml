@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+     This persistence.xml file exists for the sole purpose of being used during the static bytecode weaving process.
+-->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="impl">
+    <description>
+      This is a persistence unit used for the purposes of static bytecode weaving in Eclipselink (see pom.xml of
+      this module). It is not used or loaded by the runtime at all.
+    </description>
+    <!-- Because this is the accursed impl module, we have entities from all different Rice components, sigh -->
+    <!-- Converters -->
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanTFConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01Converter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.HashConverter</class>
+    <!-- KCB/KEN -->
+    <class>org.kuali.rice.kcb.bo.Message</class>
+    <class>org.kuali.rice.kcb.bo.MessageDelivery</class>
+    <class>org.kuali.rice.kcb.bo.RecipientDelivererConfig</class>
+    <class>org.kuali.rice.kcb.bo.RecipientPreference</class>
+    <class>org.kuali.rice.ken.bo.NotificationBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationChannelBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationChannelReviewerBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationContentTypeBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationMessageDelivery</class>
+    <class>org.kuali.rice.ken.bo.NotificationPriorityBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationProducerBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationRecipientBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationRecipientListBo</class>
+    <class>org.kuali.rice.ken.bo.NotificationSenderBo</class>
+    <class>org.kuali.rice.ken.bo.UserChannelSubscriptionBo</class>
+    <!-- KEW -->
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeInstance</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNode</class>
+    <class>org.kuali.rice.kew.engine.node.Branch</class>
+    <class>org.kuali.rice.kew.notes.Note</class>
+    <class>org.kuali.rice.kew.doctype.bo.DocumentType</class>
+    <class>org.kuali.rice.kew.engine.node.BranchPrototype</class>
+    <class>org.kuali.rice.kew.engine.node.NodeState</class>
+    <class>org.kuali.rice.kew.engine.node.BranchState</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentStatusTransition</class>
+    <class>org.kuali.rice.kew.engine.node.RouteNodeConfigParam</class>
+    <class>org.kuali.rice.kew.notes.Attachment</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypePolicy</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypeAttributeBo</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleAttribute</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo</class>
+    <class>org.kuali.rice.kew.rule.bo.RuleTemplateBo</class>
+    <class>org.kuali.rice.kew.rule.RuleTemplateOptionBo</class>
+    <class>org.kuali.rice.kew.rule.RuleExtensionBo</class>
+    <class>org.kuali.rice.kew.rule.RuleBaseValues</class>
+    <class>org.kuali.rice.kew.rule.RuleExpressionDef</class>
+    <class>org.kuali.rice.kew.rule.RuleExtensionValue</class>
+    <class>org.kuali.rice.kew.rule.RuleResponsibilityBo</class>
+    <class>org.kuali.rice.kew.engine.node.ProcessDefinitionBo</class>
+    <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatus</class>
+    <class>org.kuali.rice.kew.doctype.DocumentTypePolicyId</class>
+    <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatusId</class>
+    <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeBase</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue</class>
+    <class>org.kuali.rice.kew.docsearch.SearchableAttributeLongValue</class>
+    <class>org.kuali.rice.kew.documentlink.DocumentLink</class>
+    <class>org.kuali.rice.kew.useroptions.UserOptions</class>
+    <class>org.kuali.rice.kew.rule.RuleDelegationBo</class>
+    <class>org.kuali.rice.kew.actionitem.ActionItem</class>
+    <class>org.kuali.rice.kew.actionitem.OutboxItem</class>
+    <class>org.kuali.rice.kew.actionrequest.ActionRequestValue</class>
+    <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
+    <!-- KIM -->
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActiveToFromBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableEditableBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableToFromEditableBase</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableBase</class>
+    <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.GroupDocumentMember</class>
+    <class>org.kuali.rice.kim.bo.ui.GroupDocumentQualifier</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleMember</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRolePermission</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction</class>
+    <class>org.kuali.rice.kim.impl.role.RoleResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentAddress</class>
+    <class>org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation</class>
+    <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentEmail</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentGroup</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentName</class>
+    <class>org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentPhone</class>
+    <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy</class>
+    <class>org.kuali.rice.kim.bo.ui.PersonDocumentRole</class>
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentRoleMember</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegation</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember</class>
+    <class>org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementGroupDocument</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementPersonDocument</class>
+    <class>org.kuali.rice.kim.document.IdentityManagementRoleDocument</class>
+
+
+  </persistence-unit>
+</persistence>

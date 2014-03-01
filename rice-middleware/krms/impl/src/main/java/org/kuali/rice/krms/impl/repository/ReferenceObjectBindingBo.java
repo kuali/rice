@@ -15,32 +15,63 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBindingContract;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.io.Serializable;
 
 /**
  * The mutable implementation of the @{link ReferenceObjectBindingContract} interface, the counterpart to the immutable implementation {@link ReferenceObjectBinding}.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class ReferenceObjectBindingBo
-    extends PersistableBusinessObjectBase
-    implements ReferenceObjectBindingContract
-{
+@Entity
+@Table(name = "KRMS_REF_OBJ_KRMS_OBJ_T")
+public class ReferenceObjectBindingBo implements ReferenceObjectBindingContract, Versioned, Serializable {
 
-    private String collectionName;
-    private String krmsDiscriminatorType;
-    private String krmsObjectId;
-    private String namespace;
-    private String referenceDiscriminatorType;
-    private String referenceObjectId;
+    private static final long serialVersionUID = 1l;
+
+    @PortableSequenceGenerator(name = "KRMS_REF_OBJ_KRMS_OBJ_S")
+    @GeneratedValue(generator = "KRMS_REF_OBJ_KRMS_OBJ_S")
+    @Id
+    @Column(name = "REF_OBJ_KRMS_OBJ_ID")
     private String id;
+
+    @Column(name = "COLLECTION_NM")
+    private String collectionName;
+
+    @Column(name = "KRMS_DSCR_TYP")
+    private String krmsDiscriminatorType;
+
+    @Column(name = "KRMS_OBJ_ID")
+    private String krmsObjectId;
+
+    @Column(name = "NMSPC_CD")
+    private String namespace;
+
+    @Column(name = "REF_DSCR_TYP")
+    private String referenceDiscriminatorType;
+
+    @Column(name = "REF_OBJ_ID")
+    private String referenceObjectId;
+
+    @Column(name = "ACTV")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
+
+    @Column(name = "VER_NBR")
+    @Version
     private Long versionNumber;
-    private SequenceAccessorService sequenceAccessorService;
 
     /**
      * Default Constructor
@@ -191,7 +222,10 @@ public class ReferenceObjectBindingBo
      * 
      */
     public static ReferenceObjectBinding to(ReferenceObjectBindingBo referenceObjectBindingBo) {
-        if (referenceObjectBindingBo == null) { return null; }
+        if (referenceObjectBindingBo == null) {
+            return null;
+        }
+
         return ReferenceObjectBinding.Builder.create(referenceObjectBindingBo).build();
     }
 
@@ -202,7 +236,10 @@ public class ReferenceObjectBindingBo
      * 
      */
     public static org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBo from(ReferenceObjectBinding referenceObjectBinding) {
-        if (referenceObjectBinding == null) return null;
+        if (referenceObjectBinding == null) {
+            return null;
+        }
+
         ReferenceObjectBindingBo referenceObjectBindingBo = new ReferenceObjectBindingBo();
         referenceObjectBindingBo.setCollectionName(referenceObjectBinding.getCollectionName());
         referenceObjectBindingBo.setKrmsDiscriminatorType(referenceObjectBinding.getKrmsDiscriminatorType());
@@ -213,34 +250,7 @@ public class ReferenceObjectBindingBo
         referenceObjectBindingBo.setId(referenceObjectBinding.getId());
         referenceObjectBindingBo.setActive(referenceObjectBinding.isActive());
         referenceObjectBindingBo.setVersionNumber(referenceObjectBinding.getVersionNumber());
-        // TODO collections, etc.
+
         return referenceObjectBindingBo;
     }
-
-    /**
-     * Returns the next available id for the given table and class.
-     * @return String the next available id for the given table and class.
-     * 
-     */
-    private String getNewId(String table, Class clazz) {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
-        return id.toString();
-    }
-
-    /**
-     * Set the SequenceAccessorService, useful for testing.
-     * @param sas SequenceAccessorService to use for getNewId.
-     * 
-     */
-    public void setSequenceAccessorService(SequenceAccessorService sas) {
-        sequenceAccessorService = sas;
-    }
-
-    public SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService;
-    }
-
 }

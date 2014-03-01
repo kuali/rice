@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.fields;
 
+import org.junit.Ignore;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.junit.Assert;
@@ -167,8 +168,8 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 
     protected void testDataFieldExamples() throws Exception {
         testDataFieldDefault();
-        testDataFieldLabelTop();
-        testDataFieldLabelRight();
+//        testDataFieldLabelTop(); // removed form demo
+//        testDataFieldLabelRight(); // removed from demo
         testDataFieldDefaultValue();
         testDataFieldAppendProperty();
         testDataFieldReplaceProperty();
@@ -180,12 +181,14 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
     }
 
     @Test
+    @Ignore // just run the individual tests
     public void testDataFieldExamplesBookmark() throws Exception {
         testDataFieldExamples();
         passed();
     }
 
     @Test
+    @Ignore // just run the individual tests
     public void testDataFieldExamplesNav() throws Exception {
         testDataFieldExamples();
         passed();
@@ -200,30 +203,6 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
     @Test
     public void testDataFieldDefaultNav() throws Exception {
         testDataFieldDefault();
-        passed();
-    }
-
-    @Test
-    public void testDataFieldLabelTopBookmark() throws Exception {
-        testDataFieldLabelTop();
-        passed();
-    }
-
-    @Test
-    public void testDataFieldLabelTopNav() throws Exception {
-        testDataFieldLabelTop();
-        passed();
-    }
-
-    @Test
-    public void testDataFieldLabelRightBookmark() throws Exception {
-        testDataFieldLabelRight();
-        passed();
-    }
-
-    @Test
-    public void testDataFieldLabelRightNav() throws Exception {
-        testDataFieldLabelRight();
         passed();
     }
 

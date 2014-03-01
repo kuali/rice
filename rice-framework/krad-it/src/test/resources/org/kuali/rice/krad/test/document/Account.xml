@@ -37,20 +37,6 @@
       </list>
     </property>
     <property name="objectLabel" value="Account"/>
-    <!-- 
-    <property name="relationships">
-      <list>
-        <bean parent="RelationshipDefinition">
-          <property name="objectAttributeName" value="extension.accountType"/>
-          <property name="primitiveAttributes">
-            <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="extension.accountTypeCode" p:targetName="accountTypeCode"/>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property> -->    
-    
   </bean>
 
 <!-- Attribute Definitions -->
@@ -103,9 +89,23 @@
   <bean id="Account-extension.accountType.codeAndDescription-parentBean" abstract="true" parent="AccountType-codeAndDescription">
     <property name="name" value="extension.accountType.codeAndDescription"/>
   </bean>
+
   <bean id="Account-amId" parent="Account-amId-parentBean"/>
 
-  <bean id="Account-amId-parentBean" abstract="true" parent="AccountManager-amId">
+  <bean id="Account-amId-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Account Manager"/>
+    <property name="maxLength" value="30"/>
+    <property name="validationPattern">
+      <bean parent="AnyCharacterValidationPattern"/>
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="30"/>
+    </property>
+    <property name="summary" value="Account Manager"/>
+    <property name="name" value="amId"/>
+    <property name="label" value="Account Manager"/>
+    <property name="description" value="Account Manager"/>
   </bean>
 
 <!-- Business Object Inquiry Definition -->

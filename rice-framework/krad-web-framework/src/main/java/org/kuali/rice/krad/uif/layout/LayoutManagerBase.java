@@ -221,7 +221,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     /**
      * Default Impl
      *
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getSupportedContainer()
+     * {@inheritDoc}
      */
     @Override
     public Class<? extends Container> getSupportedContainer() {
@@ -229,25 +229,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentsForLifecycle()
-     */
-    @Override
-    public final List<Component> getComponentsForLifecycle() {
-        return new ArrayList<Component>();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
-     */
-    @Override
-    public final List<Component> getComponentPrototypes() {
-        List<Component> components = new ArrayList<Component>();
-
-        return components;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getId()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "id")
@@ -256,7 +238,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setId(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setId(String id) {
@@ -298,7 +280,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplate()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "template")
@@ -307,7 +289,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setTemplate(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setTemplate(String template) {
@@ -316,7 +298,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getTemplateName()
+     * {@inheritDoc}
      */
     @BeanTagAttribute(name = "tempateName")
     public String getTemplateName() {
@@ -324,7 +306,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setTemplateName(java.lang.String)
+     * {@inheritDoc}
      */
     public void setTemplateName(String templateName) {
         checkMutable(true);
@@ -332,7 +314,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getStyle()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "Style")
@@ -341,7 +323,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setStyle(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void setStyle(String style) {
@@ -459,7 +441,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#addStyleClass(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void addStyleClass(String styleClass) {
@@ -474,7 +456,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#appendToStyle(java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public void appendToStyle(String styleRules) {
@@ -486,7 +468,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getContext()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
@@ -499,7 +481,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setContext(java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public void setContext(Map<String, Object> context) {
@@ -513,8 +495,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#pushObjectToContext(java.lang.String,
-     *      java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public void pushObjectToContext(String objectName, Object object) {
@@ -527,7 +508,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#pushAllToContext(java.util.Map)
+     * {@inheritDoc}
      */
     @Override
     public void pushAllToContext(Map<String, Object> sourceContext) {
@@ -544,7 +525,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getPropertyReplacers()
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "propertyReplacers", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -553,7 +534,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManager#setPropertyReplacers(java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
@@ -626,4 +607,5 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public boolean isFinal() {
         return StringUtils.equals(viewStatus, ViewStatus.FINAL);
     }
+
 }

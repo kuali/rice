@@ -998,7 +998,7 @@
                     if (y.length == 0) {
                         var B = p(H);
                         y = a(B);
-                        y.appendTo( (a('form').length > 0) ? "form" : "body" );
+                        y.appendTo( (a('form').length > 0) ? "form :first" : "body" );
                     }
                     /* end kuali customization */
                     y.attr("data-for", w.id);

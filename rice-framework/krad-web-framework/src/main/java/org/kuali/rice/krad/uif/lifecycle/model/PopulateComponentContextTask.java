@@ -41,7 +41,7 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase<Lifecycl
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getPhase()
+     * {@inheritDoc}
      */
     @Override
     public ApplyModelComponentPhase getElementState() {
@@ -49,7 +49,7 @@ public class PopulateComponentContextTask extends ViewLifecycleTaskBase<Lifecycl
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

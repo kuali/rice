@@ -243,6 +243,7 @@ public class UifConstants {
         public static final String DUPLICATE_LINE_LABEL_STRING = "duplicateLineLabelString";
         public static final String STATE_MAPPING = "stateMapping";
         public static final String STATE_OBJECT_BINDING_PATH = "stateObjectBindingPath";
+        public static final String SUGGEST = "suggest";
         public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
         public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
     }

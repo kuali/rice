@@ -127,5 +127,19 @@ public interface Group extends Container {
      * @param renderFooter value
      */
     void setRenderFooter(boolean renderFooter);
+
+    /**
+     * This method ...
+     * 
+     * @return
+     */
+    String getWrapperTag();
+
+    /**
+     * This method ...
+     * 
+     * @param footer
+     */
+    void setWrapperTag(String footer);
     
 }

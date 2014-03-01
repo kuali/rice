@@ -80,7 +80,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     private Map<String, Object> commonContext;
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#recycle()
+     * {@inheritDoc}
      */
     @Override
     protected void recycle() {
@@ -125,7 +125,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getViewPhase()
+     * {@inheritDoc}
      */
     @Override
     public String getViewPhase() {
@@ -133,7 +133,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see ViewLifecyclePhase#getStartViewStatus()
+     * {@inheritDoc}
      */
     @Override
     public String getStartViewStatus() {
@@ -141,7 +141,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see ViewLifecyclePhase#getEndViewStatus()
+     * {@inheritDoc}
      */
     @Override
     public String getEndViewStatus() {
@@ -149,7 +149,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase#getEventToNotify()
+     * {@inheritDoc}
      */
     @Override
     public LifecycleEvent getEventToNotify() {
@@ -192,7 +192,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * recursively called for all the component children
      * </p>
      *
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBase#initializePendingTasks(java.util.Queue)
+     * {@inheritDoc}
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
@@ -201,7 +201,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(ApplyAuthAndPresentationLogicTask.class, this));
 
-        if (isRefreshComponent()) {
+        if (ViewLifecycle.isRefreshComponent(getViewPhase(), getViewPath())) {
             tasks.add(LifecycleTaskFactory.getTask(RefreshStateModifyTask.class, this));
         }
 
@@ -213,6 +213,8 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
+     * Define all nested lifecycle components, and component prototypes, as successors.
+     * 
      * {@inheritDoc}
      */
     @Override

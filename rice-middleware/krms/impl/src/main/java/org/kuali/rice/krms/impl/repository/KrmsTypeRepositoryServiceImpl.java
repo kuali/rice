@@ -19,19 +19,20 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -151,16 +152,16 @@ public class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositoryService 
     }
 
     /**
-     * Sets the businessObjectService property.
+     * Sets the dataObjectService property.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param dataObjectService The dataObjectService to set.
      */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
+    public void setDataObjectService(final DataObjectService dataObjectService) {
         if (krmsTypeBoService instanceof KrmsTypeBoServiceImpl) {
-            ((KrmsTypeBoServiceImpl) krmsTypeBoService).setBusinessObjectService(businessObjectService);
+            ((KrmsTypeBoServiceImpl) krmsTypeBoService).setDataObjectService(dataObjectService);
         }
         if (typeTypeRelationBoService instanceof TypeTypeRelationBoServiceImpl) {
-            ((TypeTypeRelationBoServiceImpl) typeTypeRelationBoService).setBusinessObjectService(businessObjectService);
+            ((TypeTypeRelationBoServiceImpl) typeTypeRelationBoService).setDataObjectService(dataObjectService);
         }
     }
 
@@ -210,22 +211,26 @@ public class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositoryService 
     private List<KrmsTypeDefinition> _findTypesForType(String typeId, List<String> fromServiceNames, List<String> toServiceNames)
             throws RiceIllegalArgumentException {
         KrmsTypeDefinition fromType = this.getTypeById(typeId);
+
         if (fromType == null) {
             throw new RiceIllegalArgumentException(typeId + " does not exist");
         }
         if (!fromServiceNames.contains(fromType.getServiceName())) {
             throw new RiceIllegalArgumentException(typeId + "'s serviceTypeName is " + fromType.getServiceName() + " expected " + fromServiceNames);
         }
+
         List<TypeTypeRelation> rels = this.findTypeTypeRelationsByFromType(typeId);
         rels = new ArrayList (rels);
         Collections.sort(rels, new TypeTypeRelationSequenceComparator ());
         List<KrmsTypeDefinition> list = new ArrayList<KrmsTypeDefinition>(rels.size());
+
         for (TypeTypeRelation rel : rels) {
             KrmsTypeDefinition info = this.getTypeById(rel.getToTypeId());
             if (toServiceNames.contains(info.getServiceName())) {
                 list.add(info);
             }
         }
+
         return list;
     }
     

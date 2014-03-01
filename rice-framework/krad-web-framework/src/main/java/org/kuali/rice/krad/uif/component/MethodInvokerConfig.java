@@ -16,11 +16,10 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
@@ -40,6 +39,22 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
 
     private String staticMethod;
     private Class[] argumentTypes;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() throws ClassNotFoundException, NoSuchMethodException {
+        if ((getTargetObject() == null) && (getTargetClass() != null)) {
+            try {
+                setTargetObject(getTargetClass().newInstance());
+            } catch (Exception e) {
+                throw new RiceRuntimeException("Unable to create new intance of target class", e);
+            }
+        }
+
+        super.prepare();
+    }
 
     /**
      * Set a fully qualified static method name to invoke,

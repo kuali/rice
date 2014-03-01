@@ -17,12 +17,14 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
  * Lifecycle phase processing task for rendering a component.
@@ -33,7 +35,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public class RenderComponentPhase extends ViewLifecyclePhaseBase {
 
     private RenderComponentPhase renderParent;
-    private int pendingChildren;
+    private Set<String> pendingChildren;
 
     /**
      * {@inheritDoc}
@@ -42,7 +44,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     protected void recycle() {
         super.recycle();
         renderParent = null;
-        pendingChildren = -1;
+        pendingChildren = null;
     }
 
     /**
@@ -57,7 +59,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * processing before this phase
      */
     protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
-            Component parentComponent, RenderComponentPhase renderParent, int pendingChildren) {
+            Component parentComponent, RenderComponentPhase renderParent, Set<String> pendingChildren) {
         super.prepare(element, model, path, refreshPaths, parentComponent, null);
 
         this.renderParent = renderParent;
@@ -103,6 +105,17 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
+     * Verify that the all pending children have completed.
+     */
+    @Override
+    protected void verifyCompleted() {
+        if (pendingChildren != null) {
+            ViewLifecycle.reportIllegalState("Render phase is not complete, children are still pending "
+                    + pendingChildren + "\n" + this);
+        }
+    }
+
+    /**
      * Perform rendering on the given component.
      *
      * {@inheritDoc}
@@ -126,15 +139,30 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializeSuccessors(Queue<ViewLifecyclePhase> successors) {
-        if (renderParent == null) {
+        if (renderParent == null || renderParent.pendingChildren == null) {
+            trace(renderParent == null ? "no-parent" : "no-children");
             return;
         }
 
         synchronized (renderParent) {
             // InitializeSuccessors is invoked right after processing.
             // Once the last sibling is processed, then queue the parent phase as a successor.
-            if (--renderParent.pendingChildren == 0) {
+            if (!renderParent.pendingChildren.remove(getParentPath())) {
+                ViewLifecycle.reportIllegalState("Render phase isn't a pending child\n"
+                        + this + "\nRender Parent: " + renderParent);
+            }
+
+            trace("remove-child " + renderParent.getElement().getId() + " " +
+                    renderParent.getViewPath() + " " + getParentPath() + " "
+                    + renderParent.pendingChildren);
+
+            if (renderParent.pendingChildren.isEmpty()) {
                 successors.add(renderParent);
+                renderParent.trace("pend-rend");
+                
+                Set<String> toRecycle = renderParent.pendingChildren;
+                renderParent.pendingChildren = null;
+                RecycleUtils.recycle(toRecycle);
             }
         }
     }

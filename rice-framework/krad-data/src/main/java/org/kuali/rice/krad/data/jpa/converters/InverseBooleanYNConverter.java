@@ -22,7 +22,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class InverseBooleanYNConverter implements AttributeConverter<Boolean, String> {

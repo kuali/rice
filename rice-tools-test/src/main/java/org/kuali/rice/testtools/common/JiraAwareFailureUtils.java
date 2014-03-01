@@ -154,6 +154,10 @@ public class JiraAwareFailureUtils {
      * @param failable to fail with the jiraMatches value if the contents or message is detected
      */
     public static void failOnMatchedJira(String contents, String message, JiraAwareFailable failable) {
+        if (message == null) {
+            message = ""; // prevent NPEs
+        }
+
         String match = findMatchedJiraContains(message);
         if (match != null && !match.equals("")) {
             failable.fail(match);

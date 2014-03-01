@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.lifecycle.initialize;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
@@ -37,14 +38,16 @@ public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskB
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {
         // the component can have an expression graph for which the expressions need pulled to
         // the list the expression service will evaluate
-        ViewLifecycle.getExpressionEvaluator()
-            .populatePropertyExpressionsFromGraph((UifDictionaryBean) getElementState().getElement(), true);
+        if (!getElementState().getElement().getId().startsWith("null")) {
+            ViewLifecycle.getExpressionEvaluator()
+                .populatePropertyExpressionsFromGraph((UifDictionaryBean) getElementState().getElement(), true);
+        }
     }
 
 }

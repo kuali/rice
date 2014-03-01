@@ -17,8 +17,6 @@ package org.kuali.rice.kim.inquiry;
 
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
-import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -39,16 +37,8 @@ public abstract class KimInquirableImpl extends KualiInquirableImpl {
     protected final String ATTRIBUTE_DATA_ID = "attributeDataId";
     protected final String ASSIGNED_TO_ROLES = "assignedToRolesToDisplay";
 
-    private static transient DataObjectService dataObjectService;
-    
     protected String getKimAttributeLabelFromDD(String attributeName){
         return KRADServiceLocatorWeb.getDataDictionaryService().getAttributeLabel(KimAttributes.class, attributeName);
     }
     
-    public static DataObjectService getDataObjectService() {
-        if ( dataObjectService == null ) {
-            dataObjectService = KradDataServiceLocator.getDataObjectService();
-        }
-        return dataObjectService;
-    }
 }

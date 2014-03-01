@@ -21,7 +21,12 @@
 
     <@krad.div component=field>
 
-        <@krad.fieldLbl field=field>
+            <#local renderLabel=field.label?has_content && !field.labelRendered/>
+
+            <#-- render field label -->
+            <#if renderLabel>
+                <@krad.template component=field.fieldLabel/>
+            </#if>
 
             <#-- TODO: verify removal -->
             <#--<#if field.renderFieldset>-->
@@ -188,8 +193,6 @@
             <#--<#if field.renderFieldset>-->
                 <#--</fieldset>-->
             <#--</#if>-->
-
-        </@krad.fieldLbl>
 
         <#if field.renderMarkerIconSpan>
             <span id="${field.id}_markers"></span>

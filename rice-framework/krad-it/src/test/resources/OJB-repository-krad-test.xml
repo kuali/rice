@@ -74,27 +74,11 @@
 			<fk-pointing-to-element-class column="ACCT_NUM" />
 		</collection-descriptor>
 	</class-descriptor>
-	
-	<class-descriptor class="org.kuali.rice.krad.test.document.bo.AccountManager" table="TRV_ACCT_FO">
-		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
-		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
-		<collection-descriptor name="accounts"
-            element-class-ref="org.kuali.rice.krad.test.document.bo.Account"
-            auto-retrieve="true"
-            auto-update="false"
-            auto-delete="false">
-			<inverse-foreignkey field-ref="amId" />
-		</collection-descriptor>
-	</class-descriptor>
-	
+
 	<class-descriptor class="org.kuali.rice.krad.test.document.bo.Account" table="TRV_ACCT">
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
-		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nullable="false" />
-
-		<reference-descriptor name="accountManager" class-ref="org.kuali.rice.krad.test.document.bo.AccountManager" auto-delete="none" auto-retrieve="true" auto-update="object" proxy="true">
-			<foreignkey field-ref="amId" />
-		</reference-descriptor>
+		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="VARCHAR" />
 		
 		<reference-descriptor name="extension" class-ref="org.kuali.rice.krad.test.document.bo.AccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
 			<foreignkey field-ref="number" />
@@ -111,11 +95,7 @@
     <class-descriptor class="org.kuali.rice.krad.test.document.bo.SimpleAccount" table="TRV_ACCT">
         <field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="trvl_id_seq"/>
         <field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
-        <field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nullable="true" />
-
-        <reference-descriptor name="accountManager" class-ref="org.kuali.rice.krad.test.document.bo.AccountManager" auto-delete="none" auto-retrieve="true" auto-update="object" proxy="true">
-            <foreignkey field-ref="amId" />
-        </reference-descriptor>
+        <field-descriptor name="amId" column="acct_fo_id" jdbc-type="VARCHAR" nullable="true" />
 
         <reference-descriptor name="extension" class-ref="org.kuali.rice.krad.test.document.bo.AccountExtension" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
             <foreignkey field-ref="number" />
@@ -149,7 +129,7 @@
 		<field-descriptor name="accountAwake" column="ACCT_AWAKE" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 	</class-descriptor>
 	
-	<class-descriptor class="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument" table="TST_SEARCH_ATTR_INDX_TST_DOC_T">
+	<class-descriptor class="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocumentOjb" table="TST_SEARCH_ATTR_INDX_TST_DOC_T">
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -174,6 +154,11 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.krad.test.document.OjbOnly" table="KR_KIM_TEST_BO">
+    <field-descriptor name="primaryKey" column="PK" jdbc-type="VARCHAR" primarykey="true" />
+    <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.krad.test.document.OjbAndJpa" table="KR_KIM_TEST_BO">
     <field-descriptor name="primaryKey" column="PK" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor name="principalId" column="PRNCPL_ID" jdbc-type="VARCHAR" />
   </class-descriptor>

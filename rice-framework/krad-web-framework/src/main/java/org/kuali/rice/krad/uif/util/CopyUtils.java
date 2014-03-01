@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -57,46 +56,7 @@ public final class CopyUtils {
 
     private static Logger LOG = LoggerFactory.getLogger(CopyUtils.class);
 
-    private static Boolean useClone;
     private static Boolean delay;
-
-    /**
-     * Determine whether or not to use cloning during deep copy.
-     * 
-     * <p>
-     * In Rice 2.3, the copy() implementation required developers to implement copyProperties() for
-     * data dictionary and related objects in for faster copying performance than possible using
-     * {@link CloneUtils}. However, copyProperties() adds overhead to the development of DD
-     * implementations, in particular UIF components. To negate this overhead while achieving a
-     * faster copy implementation overall, a generic deep copy mechanism leveraging the standard
-     * {@link Cloneable} interface as a super-interface for {@link Copyable} is included in this
-     * class. When cloning is enabled, copyProperties() is not use.
-     * </p>
-     * 
-     * <p>
-     * The cloning feature is currently experimental, and disabled by default. Eventually, however,
-     * the intent is to deprecate copyProperties() and leverage the new deep clone algorithm to
-     * simplify the development of new data dictionary components.
-     * </p>
-     * 
-     * <p>
-     * This value is controlled by the parameter &quot;krad.uif.copyable.useClone&quot;. By default,
-     * the copyProperties() mechanism will be used.
-     * </p>
-     * 
-     * @return True if exceptions will be thrown due to strictness violations, false if a warning
-     *         should be logged instead.
-     */
-    public static boolean isUseClone() {
-        if (useClone == null) {
-            boolean defaultUseClone = false;
-            Config config = ConfigContext.getCurrentContextConfig();
-            useClone = config == null ? defaultUseClone : config.getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_USE_CLONE, defaultUseClone);
-        }
-
-        return useClone;
-    }
 
     /**
      * Determine whether or not to use a delayed copy proxy.
@@ -128,104 +88,6 @@ public final class CopyUtils {
     }
 
     /**
-     * Thread local stack for detecting circular chains during copy.
-     */
-    private static final ThreadLocal<Deque<Copyable>> COPY_STACK = new ThreadLocal<Deque<Copyable>>();
-
-    /**
-     * Helper for {@link #copy(Copyable)} for preserving original copyProperties() method signature.
-     * 
-     * @param obj The original copyable object.
-     * @param copy The copied object.
-     * @param copyProperties the copyProperties() method.
-     */
-    private static void doCopyProperties(Copyable obj, Object copy, Method copyProperties) {
-        // Detect circular chains while copying.  Without this mechanism in place,
-        // a circular chain of components will result in StackOverfowError which
-        // is much more difficult to debug.  This mechanism aims to simplify the
-        // location of the circular chain so that it can be resolved.
-        Deque<Copyable> copyStack = COPY_STACK.get();
-        boolean outer = copyStack == null;
-        if (outer) {
-            // ComponentBase.copy() is head recursive.  When COPY_STACK is null, then
-            // we are at the head.
-            copyStack = new LinkedList<Copyable>();
-            COPY_STACK.set(copyStack);
-        }
-
-        try {
-            // Detected circular chain prior to pushing this component onto the copy stack,
-            // and still push this component to include in error reporting and simplify the
-            // finally block assertion that this component is at the head of the stack.
-            boolean dup = copyStack.contains(obj);
-            copyStack.push(obj);
-
-            if (dup) {
-                // Prevent stack overflow and report a meaningful exception if a circular
-                // component chain has been defined.
-                StringBuilder msg = new StringBuilder("Detected circular chain in component structure during copy");
-                msg.append("\nStack: ");
-                for (Copyable c : copyStack) {
-                    msg.append("\n  ").append(c.getClass());
-
-                    if (c instanceof LifecycleElement) {
-                        msg.append(" ").append(((LifecycleElement) c).getId());
-                    }
-                }
-                msg.append("\nPhase: ").append(ViewLifecycle.getPhase());
-                throw new IllegalStateException(msg.toString());
-            }
-
-            try {
-                String phaseTask = "copy";
-                boolean doTrace = ViewLifecycle.isTrace();
-                if (doTrace) {
-                    if (ViewLifecycle.isActive()) {
-                        ViewLifecyclePhase phase = ViewLifecycle.getPhase();
-                        if (phase != null) {
-                            ViewLifecycleTask task = phase.getCurrentTask();
-                            phaseTask += "-" + phase.getViewPhase()
-                                    + "-" + obj.getClass().getSimpleName()
-                                    + "@" + phase.getViewPath()
-                                    + (task == null ? "" : "-" + task.getClass().getSimpleName());
-                        }
-                    }
-                    ProcessLogger.ntrace(phaseTask + ":", ":" + obj.getClass().getSimpleName(), 1000);
-                    ProcessLogger.countBegin(phaseTask);
-                }
-                
-                copyProperties.invoke(obj, copy);
-                
-                if (doTrace) {
-                    ProcessLogger.countEnd(phaseTask, obj.getClass() +
-                            (obj instanceof LifecycleElement ? " " + ((LifecycleElement) obj).getId() : ""));
-                }
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Access error copying properties with " + copyProperties);
-            } catch (InvocationTargetException e) {
-                Throwable cause = e.getCause();
-
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
-                } else if (cause instanceof Error) {
-                    throw (Error) cause;
-                } else {
-                    throw new IllegalStateException("Unexpected error in copyProperties()", e);
-                }
-            }
-
-        } finally {
-            // Take *this* component off the stack, and assert that *this* was in fact popped.
-            Copyable popped = copyStack.pop();
-            assert obj == popped;
-            if (outer) {
-                // Remove the stack from the thread when the entire tree has been copied.
-                COPY_STACK.remove();
-            }
-        }
-    }
-
-    /**
      * Mix-in copy implementation for objects that implement the {@link Copyable} interface}
      * 
      * @param <T> copyable type
@@ -238,41 +100,19 @@ public final class CopyUtils {
             return null;
         }
 
-        // Use cloning when enabled.
-        // The rest of this method supports the original copyProperties() implementation.
-        if (isUseClone()) {
-            String cid = null;
-            if (ViewLifecycle.isTrace()) {
-                StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-                int i=3;
-                while (ComponentUtils.class.getName().equals(trace[i].getClassName())) i++;
-                StackTraceElement caller = trace[i];
-                cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
-                        + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
-                ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000);
-            }
-
-            return (T) getDeepCopy(obj);
+        String cid = null;
+        if (ViewLifecycle.isTrace()) {
+            StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+            int i = 3;
+            while (ComponentUtils.class.getName().equals(trace[i].getClassName()))
+                i++;
+            StackTraceElement caller = trace[i];
+            cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
+                    + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
+            ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000);
         }
 
-        Class<?> copyClass = obj.getClass();
-        T copy;
-        try {
-            copy = (T) copyClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException("Unabled to instantiate " + copyClass);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException("Access error attempting to instantiate " + copyClass);
-        }
-
-        ClassMetadata metadata = getMetadata(copyClass);
-        if (metadata.copyPropertiesMethod != null) {
-            doCopyProperties(obj, copy, metadata.copyPropertiesMethod);
-        } else {
-            LOG.warn(copyClass + " does not define a public or protected copyProperties(T) method");
-        }
-
-        return copy;
+        return (T) getDeepCopy(obj);
     }
 
     /**
@@ -1410,11 +1250,6 @@ public final class CopyUtils {
         private final Method cloneMethod;
 
         /**
-         * The protected copyProperties() method, if defined for this type.
-         */
-        private final Method copyPropertiesMethod;
-
-        /**
          * All fields on the class that should have a shallow copy performed during a deep copy
          * operation.
          */
@@ -1449,25 +1284,9 @@ public final class CopyUtils {
             List<Field> cloneList = new ArrayList<Field>();
             Map<Field, Class<?>> collectionTypeMap = new HashMap<Field, Class<?>>();
 
-            Method targetCopyPropertiesMethod = null;
             Class<?> currentClass = targetClass;
             while (currentClass != Object.class && currentClass != null) {
 
-                if (targetCopyPropertiesMethod == null) {
-                    try {
-                        Method copyProperties = currentClass.getDeclaredMethod("copyProperties", Object.class);
-
-                        int mod = copyProperties.getModifiers();
-                        if ((mod & Modifier.PUBLIC) == Modifier.PUBLIC
-                                || (mod & Modifier.PROTECTED) == Modifier.PROTECTED) {
-                            copyProperties.setAccessible(true);
-                            targetCopyPropertiesMethod = copyProperties;
-                        }
-                    } catch (NoSuchMethodException e) {} catch (SecurityException e) {
-                        LOG.warn("copyProperties() method is restricted for " + currentClass, e);
-                    }
-                }
-                
                 for (Field currentField : currentClass.getDeclaredFields()) {
                     if ((currentField.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
                         continue;
@@ -1503,7 +1322,6 @@ public final class CopyUtils {
             // Seal index collections to prevent external modification.
             cloneFields = Collections.unmodifiableList(cloneList);
             collectionTypeByField = Collections.unmodifiableMap(collectionTypeMap);
-            copyPropertiesMethod = targetCopyPropertiesMethod;
         }
     }
 

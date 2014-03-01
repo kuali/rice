@@ -17,6 +17,8 @@ package edu.sampleu.travel;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * Tests the Component section in Rice.
@@ -58,556 +60,128 @@ public abstract class UifComponentValidationRegexPatternAftBase extends WebDrive
         waitAndClickById("UifCompView-Navigation4");
 
         //---------------------------------------------Fixed Point------------------------------//
-        waitAndTypeByName("field50", "123.12");
-        fireEvent("field50", "blur");
-        try {
-            validateErrorImage(true);
-            fail("Framework error validateErrorImage(true) should have thrown an AssertionExcpetion");
-        } catch (AssertionError ae) {
-            jGrowl("validateErrorImage(true) when not expected okay.");
-            // expected
-        }
-        validateErrorImage(false);
-
-        clearTextByName("field50");
-        waitAndTypeByName("field50", "123.123");
-        fireEvent("field50", "blur");
-        try {
-            validateErrorImage(false);
-            fail("Framework error validateErrorImage(false) should have thrown an AssertionExcpetion");
-        } catch (AssertionError ae) {
-            jGrowl("validateErrorImage(false) when expected okay.");
-        }
-        validateErrorImage(true);
-
-        clearTextByName("field50");
-        waitAndTypeByXpath("//input[@name='field50']", "1234.4");
-        fireEvent("field50", "blur");
-        validateErrorImage(true);
-        clearTextByName("field50");
-        waitAndTypeByXpath("//input[@name='field50']", "1234.434");
-        fireEvent("field50", "blur");
-        validateErrorImage(true);
-        clearTextByName("field50");
-        waitAndTypeByXpath("//input[@name='field50']", "123.67");
-        fireEvent("field50", "blur");
-        validateErrorImage(false);
-        clearTextByName("field50");
+        assertInvalidValidFieldValues("field50", new String[]{"123.123", "1234.4", "1234.434"}, new String[]{"123.67"});
 
         //---------------------------------------------Floating Point------------------------------//
-        waitAndTypeByXpath("//input[@name='field51']", "127.");
-        fireEvent("field51", "blur");
-        validateErrorImage(true);
-        clearTextByName("field51");
-        waitAndTypeByXpath("//input[@name='field51']", "1234()98");
-        fireEvent("field51", "blur");
-        validateErrorImage(true);
-        clearTextByName("field51");
-        waitAndTypeByXpath("//input[@name='field51']", "-123.67");
-        fireEvent("field51", "blur");
-        validateErrorImage(false);
-        clearTextByName("field51");
+        assertInvalidValidFieldValues("field51", new String[]{"127.", "1234()98"}, new String[]{"-123.67"});
 
         //---------------------------------------------Integer Pattern constraint------------------------------//
-        waitAndTypeByXpath("//input[@name='field77']", "127.");
-        fireEvent("field77", "blur");
-        validateErrorImage(true);
-        clearTextByName("field77");
-        waitAndTypeByXpath("//input[@name='field77']", "1234.4123");
-        fireEvent("field77", "blur");
-        validateErrorImage(true);
-        clearTextByName("field77");
-        waitAndTypeByXpath("//input[@name='field77']", "123E123");
-        fireEvent("field77", "blur");
-        validateErrorImage(true);
-        clearTextByName("field77");
-        waitAndTypeByXpath("//input[@name='field77']", "-123");
-        fireEvent("field77", "blur");
-        validateErrorImage(false);
-        clearTextByName("field77");
+        assertInvalidValidFieldValues("field77", new String[]{"127.", "1234.4123", "123E123"}, new String[]{"-123"});
 
         //---------------------------------------------Phone Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field52']", "1271231234");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "123-123-123");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "12-12-123445");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "1234-12-1234");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "123.123.1234");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "123-123-12345");
-        fireEvent("field52", "blur");
-        validateErrorImage(true);
-        clearTextByName("field52");
-        waitAndTypeByXpath("//input[@name='field52']", "123-123-1234");
-        fireEvent("field52", "blur");
-        validateErrorImage(false);
-        clearTextByName("field52");
+        assertInvalidValidFieldValues("field52", new String[]{"1271231234", "123-123-123", "12-12-123445", "1234-12-1234",
+                "123.123.1234", "123-123-12345"}, new String[]{"123-123-1234"});
 
         //---------------------------------------------JavaClass Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field53']", "127");
-        fireEvent("field53", "blur");
-        validateErrorImage(true);
-        clearTextByName("field53");
-        waitAndTypeByXpath("//input[@name='field53']", "TestJava!@#Class");
-        fireEvent("field53", "blur");
-        validateErrorImage(true);
-        clearTextByName("field53");
-        waitAndTypeByXpath("//input[@name='field53']", "Test JavaClass");
-        fireEvent("field53", "blur");
-        validateErrorImage(true);
-        clearTextByName("field53");
-        waitAndTypeByXpath("//input[@name='field53']", "Test JavaClass");
-        fireEvent("field53", "blur");
-        validateErrorImage(true);
-        clearTextByName("field53");
-        waitAndTypeByXpath("//input[@name='field53']", "TestJavaClass");
-        fireEvent("field53", "blur");
-        validateErrorImage(false);
-        clearTextByName("field53");
+        assertInvalidValidFieldValues("field53", new String[]{"127", "TestJava!@#Class", "Test JavaClass"}, new String[]{"TestJavaClass"});
 
         //---------------------------------------------Email Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field54']", "123@123.123");
-        fireEvent("field54", "blur");
-        validateErrorImage(true);
-        clearTextByName("field54");
-        waitAndTypeByXpath("//input[@name='field54']", "email.com@emailServer");
-        fireEvent("field54", "blur");
-        validateErrorImage(true);
-        clearTextByName("field54");
-        waitAndTypeByXpath("//input[@name='field54']", "emailemailServer@.com");
-        fireEvent("field54", "blur");
-        validateErrorImage(true);
-        clearTextByName("field54");
-        waitAndTypeByXpath("//input[@name='field54']", "email@emailServercom");
-        fireEvent("field54", "blur");
-        validateErrorImage(true);
-        clearTextByName("field54");
-        waitAndTypeByXpath("//input[@name='field54']", "email@emailServer.com");
-        fireEvent("field54", "blur");
-        validateErrorImage(false);
-        clearTextByName("field54");
+        assertInvalidValidFieldValues("field54", new String[]{"123@123.123", "email.com@emailServer", "emailemailServer@.com"}, new String[]{"email@emailServer.com"});
 
         //---------------------------------------------URL pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field84']", "www.google.com");
-        fireEvent("field84", "blur");
-        validateErrorImage(true);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "https:www.google.com");
-        fireEvent("field84", "blur");
-        validateErrorImage(true);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "ftp://www.google.comsdfa123!#@");
-        fireEvent("field84", "blur");
-        validateErrorImage(true);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "ftp:/www.google.coms");
-        fireEvent("field84", "blur");
-        validateErrorImage(true);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "ftp://www.google.com");
-        fireEvent("field84", "blur");
-        validateErrorImage(false);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "https://www.google.com");
-        fireEvent("field84", "blur");
-        validateErrorImage(false);
-        clearTextByName("field84");
-        waitAndTypeByXpath("//input[@name='field84']", "http://www.google.com");
-        fireEvent("field84", "blur");
-        validateErrorImage(false);
-        clearTextByName("field84");
+        assertInvalidValidFieldValues("field84", new String[]{"www.google.com", "https:www.google.com", "ftp://www.google.comsdfa123!#@",
+                "ftp:/www.google.coms"}, new String[]{"ftp://www.google.com", "https://www.google.com", "http://www.google.com"});
 
         //---------------------------------------------Date pattern Text------------------------------//
-        //-------------invalid formats
-        waitAndTypeByXpath("//input[@name='field55']", "12/12/2112 12:12:87 am");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12 am");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12/12/2112 12:12");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12-12-2112 12:12:78");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12 Sept");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "Sept 12 12:12");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "221299 12:12:13");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "111222 12:12");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "9/9/2012 12:12 am");
-        fireEvent("field55", "blur");
-        validateErrorImage(true);
-        clearTextByName("field55");
+        assertInvalidValidFieldValues("field55", new String[]{"12/12/2112 12:12:87 am", "12-12-2112 12:12 am", "12-12-2112 12:12",
+                "12/12/2112 12:12", "12-12-2112 12:12:78", "12 Sept", "Sept 12 12:12", "221299 12:12:13", "111222 12:12", "9/9/2012 12:12 am"},
+                new String[]{"09/09/2012 12:12 pm", "090923", "Sept 12", "2034", "12/12/2012 23:12:59", "12-12-12 23:12:59", "121212 23:12:32",
+                        "Sept 12 23:45:50", "2011 12:23:32"});
 
-        //-------------valid formats
-        waitAndTypeByXpath("//input[@name='field55']", "09/09/2012 12:12 pm");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "090923");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "Sept 12");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "2034");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12/12/2012 23:12:59");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "12-12-12 23:12:59");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "121212 23:12:32");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "Sept 12 23:45:50");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
-        waitAndTypeByXpath("//input[@name='field55']", "2011 12:23:32");
-        fireEvent("field55", "blur");
-        validateErrorImage(false);
-        clearTextByName("field55");
 
         //---------------------------------------------BasicDate pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field75']", "12122012");
-        fireEvent("field75", "blur");
-        validateErrorImage(true);
-        clearTextByName("field75");
-        waitAndTypeByXpath("//input[@name='field75']", "13-12-34");
-        fireEvent("field75", "blur");
-        validateErrorImage(true);
-        clearTextByName("field75");
-        waitAndTypeByXpath("//input[@name='field75']", "12:12:2034");
-        fireEvent("field75", "blur");
-        validateErrorImage(true);
-        clearTextByName("field75");
-        waitAndTypeByXpath("//input[@name='field75']", "12-12-2034");
-        fireEvent("field75", "blur");
-        validateErrorImage(false);
-        clearTextByName("field75");
+        assertInvalidValidFieldValues("field75", new String[]{"12122012", "13-12-34", "12:12:2034"}, new String[]{"12-12-2034"});
 
         //---------------------------------------------Time12H Pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field82']", "13:00:12");
-        fireEvent("field82", "blur");
-        validateErrorImage(true);
-        clearTextByName("field82");
-        waitAndTypeByXpath("//input[@name='field82']", "09:00:");
-        fireEvent("field82", "blur");
-        validateErrorImage(true);
-        clearTextByName("field82");
-        waitAndTypeByXpath("//input[@name='field82']", "3-00:12");
-        fireEvent("field82", "blur");
-        validateErrorImage(true);
-        clearTextByName("field82");
-        waitAndTypeByXpath("//input[@name='field82']", "3:00:34");
-        fireEvent("field82", "blur");
-        validateErrorImage(false);
-        clearTextByName("field82");
-        waitAndTypeByXpath("//input[@name='field82']", "3:00");
-        fireEvent("field82", "blur");
-        validateErrorImage(false);
-        clearTextByName("field82");
+        assertInvalidValidFieldValues("field82", new String[]{"13:00:12", "09:00:", "3-00:12"}, new String[]{"3:00:34", "3:00"});
 
         //---------------------------------------------Time24H Pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field83']", "24:00:12");
-        fireEvent("field83", "blur");
-        validateErrorImage(true);
-        clearTextByName("field83");
-        waitAndTypeByXpath("//input[@name='field83']", "14:00:");
-        fireEvent("field83", "blur");
-        validateErrorImage(true);
-        clearTextByName("field83");
-        waitAndTypeByXpath("//input[@name='field83']", "13:00:76");
-        fireEvent("field83", "blur");
-        validateErrorImage(true);
-        clearTextByName("field83");
-        waitAndTypeByXpath("//input[@name='field83']", "13:00:23");
-        fireEvent("field83", "blur");
-        validateErrorImage(false);
-        clearTextByName("field83");
-        waitAndTypeByXpath("//input[@name='field83']", "23:00:12");
-        fireEvent("field83", "blur");
-        validateErrorImage(false);
-        clearTextByName("field83");
+        assertInvalidValidFieldValues("field83", new String[]{"24:00:12", "14:00:", "13:00:76"}, new String[]{"13:00:23", "23:00:12"});
 
         //---------------------------------------------Timestamp pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field56']", "1000-12-12 12:12:12.103");
-        fireEvent("field56", "blur");
-        validateErrorImage(true);
-        clearTextByName("field56");
-        waitAndTypeByXpath("//input[@name='field56']", "2000/12/12 12-12-12.87");
-        fireEvent("field56", "blur");
-        validateErrorImage(true);
-        clearTextByName("field56");
-        waitAndTypeByXpath("//input[@name='field56']", "2000/12/12 12-12-12.87");
-        fireEvent("field56", "blur");
-        validateErrorImage(true);
-        clearTextByName("field56");
-        waitAndTypeByXpath("//input[@name='field56']", "2011-08-12 12:12:12");
-        fireEvent("field56", "blur");
-        validateErrorImage(true);
-        clearTextByName("field56");
-
-        //--------this should not be allowed
-        /*
-        clearTimeStampText();
-        waitAndType("//input[@name='field56']", "2999-12-12 12:12:12.103");
-        focus("//input[@name='field57']");
-        Thread.sleep(100);
-        assertTrue(isTextPresent("Must be a date/time in the format of yyyy-mm-dd hh:mm:ss.ms, between the years of 1900 and 2099, inclusive. \"ms\" represents milliseconds, and must be included."));
-        */
-        waitAndTypeByXpath("//input[@name='field56']", "2099-12-12 12:12:12.103");
-        fireEvent("field56", "blur");
-        validateErrorImage(false);
-        clearTextByName("field56");
+        assertInvalidValidFieldValues("field56", new String[]{"1000-12-12 12:12:12.103", "2000/12/12 12-12-12.87",
+                "2000/12/12 12-12-12.87", "2011-08-12 12:12:12", /*"2999-12-12 12:12:12.103"*/ }, new String[]{"2099-12-12 12:12:12.103"});
 
         //---------------------------------------------Year Pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field57']", "1599");
-        fireEvent("field57", "blur");
-        validateErrorImage(true);
-        clearTextByName("field57");
-        waitAndTypeByXpath("//input[@name='field57']", "2200");
-        fireEvent("field57", "blur");
-        validateErrorImage(true);
-        clearTextByName("field57");
-        waitAndTypeByXpath("//input[@name='field57']", "20000");
-        fireEvent("field57", "blur");
-        validateErrorImage(true);
-        clearTextByName("field57");
-        waitAndTypeByXpath("//input[@name='field57']", "-202");
-        fireEvent("field57", "blur");
-        validateErrorImage(true);
-        clearTextByName("field57");
-        waitAndTypeByXpath("//input[@name='field57']", "2000");
-        fireEvent("field57", "blur");
-        validateErrorImage(false);
-        clearTextByName("field57");
+        assertInvalidValidFieldValues("field57", new String[]{"1599", "2200",
+                "20000", "-202"}, new String[]{"2000"});
 
         //---------------------------------------------Month Pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field58']", "0");
-        fireEvent("field58", "blur");
-        validateErrorImage(true);
-        clearTextByName("field58");
-        waitAndTypeByXpath("//input[@name='field58']", "-12");
-        fireEvent("field58", "blur");
-        validateErrorImage(true);
-        clearTextByName("field58");
-        waitAndTypeByXpath("//input[@name='field58']", "100");
-        fireEvent("field58", "blur");
-        validateErrorImage(true);
-        clearTextByName("field58");
-        waitAndTypeByXpath("//input[@name='field58']", "12");
-        fireEvent("field58", "blur");
-        validateErrorImage(false);
-        clearTextByName("field58");
+        assertInvalidValidFieldValues("field58", new String[]{"0", "-12", "100"}, new String[]{"12"});
 
         //---------------------------------------------ZipCode Pattern Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field61']", "123");
-        fireEvent("field61", "blur");
-        validateErrorImage(true);
-        clearTextByName("field61");
-        waitAndTypeByXpath("//input[@name='field61']", "2341 12");
-        fireEvent("field61", "blur");
-        validateErrorImage(true);
-        clearTextByName("field61");
-        waitAndTypeByXpath("//input[@name='field61']", "0-1231");
-        fireEvent("field61", "blur");
-        validateErrorImage(true);
-        clearTextByName("field61");
-        waitAndTypeByXpath("//input[@name='field61']", "12345");
-        fireEvent("field61", "blur");
-        validateErrorImage(false);
-        clearTextByName("field61");
+        assertInvalidValidFieldValues("field61", new String[]{"123", "2341 12", "0-1231"}, new String[]{"12345"});
 
         //---------------------------------------------Alpha Numeric w/o options Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field62']", "123 23 @#");
-        fireEvent("field62", "blur");
-        validateErrorImage(true);
-        clearTextByName("field62");
-        waitAndTypeByXpath("//input[@name='field62']", "-asd123");
-        fireEvent("field62", "blur");
-        validateErrorImage(true);
-        clearTextByName("field62");
-        waitAndTypeByXpath("//input[@name='field62']", "asd/123");
-        fireEvent("field62", "blur");
-        validateErrorImage(true);
-        clearTextByName("field62");
-        waitAndTypeByXpath("//input[@name='field62']", "asd123");
-        fireEvent("field62", "blur");
-        validateErrorImage(false);
-        clearTextByName("field62");
+        assertInvalidValidFieldValues("field62", new String[]{"123 23 @#", "-asd123", "asd/123"}, new String[]{"asd123"});
 
         //---------------------------------------------Alpha Numeric with options Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field63']", "123^we");
-        fireEvent("field63", "blur");
-        validateErrorImage(true);
-        clearTextByName("field63");
-        waitAndTypeByXpath("//input[@name='field63']", "-123_asd");
-        fireEvent("field63", "blur");
-        validateErrorImage(true);
-        clearTextByName("field63");
-        waitAndTypeByXpath("//input[@name='field63']", "123 23 @#");
-        fireEvent("field63", "blur");
-        clearTextByName("field63");
-        waitAndTypeByXpath("//input[@name='field63']", "as_de 456/123");
-        fireEvent("field63", "blur");
-        validateErrorImage(false);
-        clearTextByName("field63");
+        assertInvalidValidFieldValues("field63", new String[]{"123^we", "-123_asd", "123 23 @#"}, new String[]{"as_de 456/123"});
 
         //---------------------------------------------Alpha with Whitespace and commas Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field64']", "123^we");
-        fireEvent("field64", "blur");
-        validateErrorImage(true);
-        clearTextByName("field64");
-        waitAndTypeByXpath("//input[@name='field64']", "asd_pqr");
-        fireEvent("field64", "blur");
-        validateErrorImage(true);
-        clearTextByName("field64");
-        waitAndTypeByXpath("//input[@name='field64']", "asd/def");
-        fireEvent("field64", "blur");
-        validateErrorImage(true);
-        clearTextByName("field64");
-        waitAndTypeByXpath("//input[@name='field64']", "asd ,pqr");
-        fireEvent("field64", "blur");
-        validateErrorImage(false);
-        clearTextByName("field64");
+        assertInvalidValidFieldValues("field64", new String[]{"123^we", "asd_pqr", "asd/def"}, new String[]{"asd ,pqr"});
 
         //---------------------------------------------AlphaPatterrn with disallowed charset Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field76']", "123");
-        fireEvent("field76", "blur");
-        validateErrorImage(true);
-        clearTextByName("field76");
-        waitAndTypeByXpath("//input[@name='field76']", "`abcd`");
-        fireEvent("field76", "blur");
-        validateErrorImage(true);
-        clearTextByName("field76");
-        waitAndTypeByXpath("//input[@name='field76']", "|abcd|");
-        fireEvent("field76", "blur");
-        validateErrorImage(true);
-        clearTextByName("field76");
-        waitAndTypeByXpath("//input[@name='field76']", "~abcd~");
-        fireEvent("field76", "blur");
-        validateErrorImage(true);
-        clearTextByName("field76");
-        waitAndTypeByXpath("//input[@name='field76']", " ab_c d_ef ");
-        fireEvent("field76", "blur");
-        validateErrorImage(false);
-        clearTextByName("field76");
+        assertInvalidValidFieldValues("field76", new String[]{"123", "`abcd`", "|abcd|", "~abcd~"}, new String[]{" ab_c d_ef "});
 
         //---------------------------------------------Anything with No Whitespace Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field65']", "123 ^we");
-        fireEvent("field65", "blur");
-        validateErrorImage(true);
-        clearTextByName("field65");
-        waitAndTypeByXpath("//input[@name='field65']", "123^we!@#^&*~:");
-        fireEvent("field65", "blur");
-        validateErrorImage(false);
-        clearTextByName("field65");
+        assertInvalidValidFieldValues("field65", new String[]{"123 ^we"}, new String[]{"123^we!@#^&*~:"});
 
         //---------------------------------------------CharacterSet Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field66']", "123 ^we");
-        fireEvent("field66", "blur");
-        validateErrorImage(true);
-        clearTextByName("field66");
-        waitAndTypeByXpath("//input[@name='field66']", "123_^we");
-        fireEvent("field66", "blur");
-        validateErrorImage(true);
-        clearTextByName("field66");
-        waitAndTypeByXpath("//input[@name='field66']", "abc ABC");
-        fireEvent("field66", "blur");
-        validateErrorImage(true);
-        clearTextByName("field66");
-        waitAndTypeByXpath("//input[@name='field66']", "aAbBcC");
-        fireEvent("field66", "blur");
-        validateErrorImage(false);
-        clearTextByName("field66");
+        assertInvalidValidFieldValues("field66", new String[]{"123 ^we", "123_^we", "abc ABC"}, new String[]{"aAbBcC"});
 
         //---------------------------------------------Numeric Character Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field67']", "123 ^we");
-        fireEvent("field67", "blur");
-        validateErrorImage(true);
-        clearTextByName("field67");
-        waitAndTypeByXpath("//input[@name='field67']", "123/10");
-        fireEvent("field67", "blur");
-        validateErrorImage(true);
-        clearTextByName("field67");
-        waitAndTypeByXpath("//input[@name='field67']", "(123.00)");
-        fireEvent("field67", "blur");
-        validateErrorImage(true);
-        clearTextByName("field67");
-        waitAndTypeByXpath("//input[@name='field67']", "(12-3)");
-        fireEvent("field67", "blur");
-        validateErrorImage(false);
-        clearTextByName("field67");
+        assertInvalidValidFieldValues("field67", new String[]{"123 ^we", "123/10", "(123.00)"}, new String[]{"(12-3)"});
 
         //---------------------------------------------Valid Chars Custom Text------------------------------//
-        waitAndTypeByXpath("//input[@name='field68']", "123.123");
-        fireEvent("field68", "blur");
-        validateErrorImage(true);
-        clearTextByName("field68");
-        waitAndTypeByXpath("//input[@name='field68']", "a.b");
-        fireEvent("field68", "blur");
-        validateErrorImage(true);
-        clearTextByName("field68");
-        waitAndTypeByXpath("//input[@name='field68']", "123 qwe");
-        fireEvent("field68", "blur");
-        validateErrorImage(true);
-        clearTextByName("field68");
-        waitAndTypeByXpath("//input[@name='field68']", "5.a");
-        fireEvent("field68", "blur");
-        validateErrorImage(true);
-        clearTextByName("field68");
-        waitAndTypeByXpath("//input[@name='field68']", "a.0,b.4");
-        fireEvent("field68", "blur");
-        validateErrorImage(true);
-        clearTextByName("field68");
-        waitAndTypeByXpath("//input[@name='field68']", "a.0");
-        fireEvent("field68", "blur");
-        validateErrorImage(false);
-        clearTextByName("field68");
-        passed();
+        assertInvalidValidFieldValues("field68", new String[]{ "123.123", "a.b", "123 qwe", "5.a", "a.0,b.4"}, new String[]{"a.0"});
+    }
+
+    private boolean isErrorAttributeTrue(String fieldName) throws Exception {
+        Thread.sleep(500);
+        boolean valid = false;
+
+        for (int second = 0; second < 5; second++) {
+            if ((valid = validateErrorAttribute(fieldName)) == true) {
+                break;
+            }
+        }
+
+        return valid;
+    }
+
+    private boolean validateErrorAttribute(String fieldName) throws InterruptedException {
+        try {
+            WebElement field = findElement(By.name(fieldName));
+            return "true".equals(field.getAttribute("aria-invalid"));
+        } catch (Exception e) {
+            // don't fail here, we're in a loop let the caller decide when to fail
+        }
+
+        Thread.sleep(1000);
+
+        return false;
+    }
+
+    private void assertInvalidValidFieldValues(String fieldNameToTest, String[] invalids, String[] valids) throws Exception {
+        for (String invalid : invalids) {
+            clearTextByName(fieldNameToTest);
+            waitAndTypeByName(fieldNameToTest, invalid);
+            fireEvent(fieldNameToTest, "blur");
+            if (!isErrorAttributeTrue(fieldNameToTest)) {
+                jiraAwareFail(invalid + " expected to be invalid for field name " + fieldNameToTest);
+            }
+            clearTextByName(fieldNameToTest);
+        }
+
+        for (String valid : valids) {
+            clearTextByName(fieldNameToTest);
+            waitAndTypeByName(fieldNameToTest, valid);
+            fireEvent(fieldNameToTest, "blur");
+            if (isErrorAttributeTrue(fieldNameToTest)) {
+                jiraAwareFail(valid + " expected to be valid for field name " + fieldNameToTest);
+            }
+            clearTextByName(fieldNameToTest);
+        }
     }
 }

@@ -16,23 +16,27 @@
 package org.kuali.rice.krad.uif.control;
 
 /**
- * Interface representing a select control component. 
+ * Control interface for a select box. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface SelectControl extends Control, MultiValueControl, SizedControl {
 
     /**
-     * Indicates whether or not multiple options may be selected.
-     * 
-     * @return true if multiple options may be selected
+     * Indicates whether multiple values can be selected. Defaults to false
+     * <p>
+     * If multiple is set to true, the underlying property must be of Array type
+     * </p>
+     *
+     * @return true if multiple values can be selected, false if only
+     *         one value can be selected
      */
     boolean isMultiple();
 
     /**
-     * Setter for {@link #isMultiple()}
-     * 
-     * @param multiple property value
+     * Set whether multiple values can be selected
+     *
+     * @param multiple
      */
     void setMultiple(boolean multiple);
 

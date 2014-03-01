@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.kns;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.runners.BootstrapTest;
+import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -28,6 +33,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+@RunWith(LoadTimeWeavableTestRunner.class)
+@BootstrapTest(KNSTestCase.BootstrapTest.class)
 public class KNSTestCase extends KRADTestCase {
 
     @Override
@@ -41,5 +49,10 @@ public class KNSTestCase extends KRADTestCase {
         springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
 
         return springResourceLoader;
+    }
+
+    public static final class BootstrapTest extends KNSTestCase {
+        @Test
+        public void bootstrapTest() {};
     }
 }

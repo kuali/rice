@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.CompoundKey;
@@ -26,6 +28,7 @@ import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -68,6 +71,52 @@ public class ProviderBasedDataObjectServiceTest {
         assertSame(findResult, service.find(Object.class, "id"));
 
         verify(mockProvider).find(any(Class.class), eq("id"));
+    }
+
+    @Test
+    public void testFindUnique_NoResults() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.create().build();
+        QueryResults<Object> emptyResults = GenericQueryResults.Builder.<Object>create().build();
+        when(mockProvider.findMatching(Object.class, criteria)).thenReturn(emptyResults);
+
+        Object singleResult = service.findUnique(Object.class, criteria);
+        assertNull(singleResult);
+    }
+
+    @Test
+    public void testFindUnique_OneResult() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.create().build();
+
+        // create results that contain a single object
+        Object theResult = new Object();
+        GenericQueryResults.Builder<Object> resultsBuilder =
+                GenericQueryResults.Builder.<Object>create();
+        resultsBuilder.setResults(Lists.newArrayList(theResult));
+        QueryResults<Object> results = resultsBuilder.build();
+        when(mockProvider.findMatching(Object.class, criteria)).thenReturn(results);
+
+        // now we should just get the one result back
+        Object singleResult = service.findUnique(Object.class, criteria);
+        assertNotNull(singleResult);
+        assertEquals(theResult, singleResult);
+    }
+
+    @Test(expected = IncorrectResultSizeDataAccessException.class)
+    public void testFindUnique_TooManyResults() {
+        QueryByCriteria criteria = QueryByCriteria.Builder.create().build();
+
+        // create results that contains multiple objects
+        Object result1 = new Object();
+        Object result2 = new Object();
+        GenericQueryResults.Builder<Object> resultsBuilder =
+                GenericQueryResults.Builder.<Object>create();
+        resultsBuilder.setResults(Lists.newArrayList(result1, result2));
+        QueryResults<Object> results = resultsBuilder.build();
+        when(mockProvider.findMatching(Object.class, criteria)).thenReturn(results);
+
+        // now when we invoke this, we should get the data access exception
+        // (see the "expected" exception on the @Test annotation)
+        service.findUnique(Object.class, criteria);
     }
 
     @Test

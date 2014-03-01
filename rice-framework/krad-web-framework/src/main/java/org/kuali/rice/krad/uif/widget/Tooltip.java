@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.view.View;
         {@BeanTag(name = "tooltip-bean", parent = "Uif-Tooltip"), @BeanTag(name = "tooltipHelp-bean", parent = "Uif-TooltipHelp"),
                 @BeanTag(name = "tooltipFocus-bean", parent = "Uif-TooltipFocus")})
 public class Tooltip extends WidgetBase {
+    private static final long serialVersionUID = -7641043761619191329L;
 
     private String tooltipContent;
 

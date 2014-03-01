@@ -76,4 +76,5 @@ public class FieldSecurity extends ComponentSecurity {
     public void setViewInLineAuthz(Boolean viewInLineAuthz) {
         this.viewInLineAuthz = viewInLineAuthz;
     }
+
 }

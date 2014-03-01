@@ -47,6 +47,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     }
     
     protected void testKitchenSinkEventExamples() throws InterruptedException {
+        waitForTextPresent("OnKeyPress, OnKeyUp, OnKeyDown"); // make sure page is loaded
     	//OnClick examples on various components
         waitAndClickByName("field100"); // Field Label
     	alertAccept();
@@ -85,7 +86,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
         alertAccept();
 
         //Mouse Event on Button
-        waitAndClickByXpath("//button[@style='margin-top:10px;']");
+        waitAndClickButtonByText("Click Me!");
         alertAccept();
     }
 }

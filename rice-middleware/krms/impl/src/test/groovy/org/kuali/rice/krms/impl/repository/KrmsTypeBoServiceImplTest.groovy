@@ -22,10 +22,12 @@ import org.junit.BeforeClass
 
 import org.junit.Test
 import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
+
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
 class KrmsTypeBoServiceImplTest {
 
@@ -33,7 +35,7 @@ class KrmsTypeBoServiceImplTest {
 
 	static Map<String, KrmsTypeBo> sampleTypes = new HashMap<String, KrmsTypeBo>()
 	static Map<String, KrmsTypeBo> sampleTypesKeyedByName = new HashMap<String, KrmsTypeBo>()
-	def mockBusinessObjectService
+	def mockDataObjectService
 
 	// create chart attribute Builder
 	private static final String NAMESPACE = "KRMS_TEST"
@@ -81,37 +83,37 @@ class KrmsTypeBoServiceImplTest {
 
 	@Before
 	void setupBoServiceMockContext() {
-		mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+		mockDataObjectService = new MockFor(DataObjectService.class)
 	}
 
 
 	@Test
 	public void test_getType() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
+		mockDataObjectService.demand.find(1..1) {
 			clazz, id -> sampleTypes.get("1")
 		}
 
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		KrmsTypeDefinition myType = service.getTypeById("1")
 
 		Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("1")), myType)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void testGetByIdWhenNoneFound() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> null}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) {Class clazz, String id -> null}
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		KrmsTypeDefinition myType = service.getTypeById("I_DONT_EXIST")
 
 		Assert.assertNull(myType)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
@@ -146,17 +148,17 @@ class KrmsTypeBoServiceImplTest {
 
 	@Test
 	public void testGetByNameAndNamespace() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			Class clazz, Map map -> sampleTypesKeyedByName.get("Student")
+		mockDataObjectService.demand.findMatching(1..1) {
+			Class clazz, crit -> buildQueryResults([sampleTypesKeyedByName.get("Student")])
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		KrmsTypeDefinition myType = service.getTypeByName("KRMS_TEST", "Student")
 
 		Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
@@ -169,106 +171,107 @@ class KrmsTypeBoServiceImplTest {
 
   @Test
   public void test_findAllTypesByNamespace() {
-     mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2")]
+     mockDataObjectService.demand.findMatching(1..1) {
+      Class clazz, crit -> buildQueryResults([sampleTypes.get("1"), sampleTypes.get("2")])
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+
+    DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
     KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-    service.setBusinessObjectService(bos)
+    service.setDataObjectService(dataObjectService)
     Collection<KrmsTypeDefinition> myTypes = service.findAllTypesByNamespace("KRMS_TEST")
 
 	Assert.assertEquals( myTypes.size(), new Integer(2))
 	Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("1")), myTypes[0])
 	Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("2")), myTypes[1])
-    mockBusinessObjectService.verify(bos)
+    mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   public void test_findAllTypes() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2"), sampleTypes.get("3")]
+    mockDataObjectService.demand.findMatching(1..1) {
+      Class clazz, crit -> buildQueryResults([sampleTypes.get("1"), sampleTypes.get("2"), sampleTypes.get("3")])
     }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+    DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
     KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-    service.setBusinessObjectService(bos)
+    service.setDataObjectService(dataObjectService)
     Collection<KrmsTypeDefinition> myTypes = service.findAllTypes()
 	Assert.assertEquals( myTypes.size(), new Integer(3))
-    mockBusinessObjectService.verify(bos)
+    mockDataObjectService.verify(dataObjectService)
   }
   
   @Test
   public void test_createKrmsType_null_input() {
-	  def boService = mockBusinessObjectService.proxyDelegateInstance()
+	  def boService = mockDataObjectService.proxyDelegateInstance()
 	  KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-	  service.setBusinessObjectService(boService)
+	  service.setDataObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.createKrmsType(null)
 	  }
-	  mockBusinessObjectService.verify(boService)
+	  mockDataObjectService.verify(boService)
   }
 
   @Test
   void test_createKrmsType_exists() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			Class clazz, Map map -> TEST_KRMS_TYPE_BO
+		mockDataObjectService.demand.findMatching(1..1) {
+			Class clazz, crit -> buildQueryResults([TEST_KRMS_TYPE_BO])
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			service.createKrmsType(TEST_KRMS_TYPE_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   void test_createKrmsType_success() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
+		mockDataObjectService.demand.findMatching(1..1) { clazz, crit -> buildQueryResults([]) }
+		mockDataObjectService.demand.save { bo, po -> bo }
 		
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		
 		service.createKrmsType(TEST_KRMS_TYPE_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   public void test_updateKrmsType_null_input() {
-	  def boService = mockBusinessObjectService.proxyDelegateInstance()
+	  def boService = mockDataObjectService.proxyDelegateInstance()
 	  KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-	  service.setBusinessObjectService(boService)
+	  service.setDataObjectService(boService)
 	  shouldFail(IllegalArgumentException.class) {
 		  service.updateKrmsType(null)
 	  }
-	  mockBusinessObjectService.verify(boService)
+	  mockDataObjectService.verify(boService)
   }
 
   @Test
   void test_updateKrmsType_does_not_exist() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
+		mockDataObjectService.demand.find(1..1) {
 			Class clazz, String id -> null
 		}
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		shouldFail(IllegalStateException.class) {
 			service.updateKrmsType(TEST_KRMS_TYPE_DEF)
 		}
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   void test_updateKrmsType_success() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_KRMS_TYPE_BO}
-		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
-		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+		mockDataObjectService.demand.find(1..1) {Class clazz, String id -> TEST_KRMS_TYPE_BO}
+		mockDataObjectService.demand.save { bo, po -> bo }
+		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
-		service.setBusinessObjectService(bos)
+		service.setDataObjectService(dataObjectService)
 		service.updateKrmsType(TEST_KRMS_TYPE_DEF)
-		mockBusinessObjectService.verify(bos)
+		mockDataObjectService.verify(dataObjectService)
   }
 
 }

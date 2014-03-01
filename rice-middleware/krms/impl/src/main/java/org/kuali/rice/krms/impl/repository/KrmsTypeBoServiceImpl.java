@@ -19,7 +19,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -32,9 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+
 public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
 
 	/**
 	 * This overridden method creates a KrmsType if it does not 
@@ -56,7 +59,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
             throw new RiceIllegalStateException("the KRMS Type to create already exists: " + krmsType);
 		}
 		
-		KrmsTypeBo bo = (KrmsTypeBo)businessObjectService.save(KrmsTypeBo.from(krmsType));
+		KrmsTypeBo bo = dataObjectService.save(KrmsTypeBo.from(krmsType), PersistenceOption.FLUSH);
 		
 		return KrmsTypeBo.to(bo);
 	}
@@ -73,7 +76,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         }
 
 		final String idKey = krmsType.getId();
-		final KrmsTypeBo existing = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, idKey);
+		final KrmsTypeBo existing = dataObjectService.find(KrmsTypeBo.class, idKey);
 
         if (existing == null) {
             throw new RiceIllegalStateException("the KRMS type does not exist: " + krmsType);
@@ -89,7 +92,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         	toUpdate = krmsType;
         }
         
-        return KrmsTypeBo.to(businessObjectService.save(KrmsTypeBo.from(toUpdate)));
+        return KrmsTypeBo.to(dataObjectService.save(KrmsTypeBo.from(toUpdate), PersistenceOption.FLUSH));
 	}
 
     @Override
@@ -98,7 +101,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
             throw new RiceIllegalArgumentException("id was a null or blank value");
         }
 
-        KrmsTypeBo krmsTypeBo = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, id);
+        KrmsTypeBo krmsTypeBo = dataObjectService.find(KrmsTypeBo.class, id);
 
         return KrmsTypeBo.to(krmsTypeBo);
     }
@@ -117,7 +120,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("namespace", namespaceCode);
         map.put("name", name);
         
-        KrmsTypeBo myType = businessObjectService.findByPrimaryKey(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        KrmsTypeBo myType = findSingleMatching(dataObjectService, KrmsTypeBo.class, Collections.unmodifiableMap(map));
+
         return KrmsTypeBo.to(myType);
     }
 
@@ -131,7 +135,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("namespace", namespaceCode);
         map.put("active", Boolean.TRUE);
 
-        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> krmsTypeBos = findMatching(dataObjectService, KrmsTypeBo.class,
+                Collections.unmodifiableMap(map));
 
         return convertListOfBosToImmutables(krmsTypeBos);
     }
@@ -146,7 +151,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("serviceName", serviceName);
         map.put("active", Boolean.TRUE);
 
-        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> krmsTypeBos = findMatching(dataObjectService, KrmsTypeBo.class, Collections.unmodifiableMap(map));
 
         return convertListOfBosToImmutables(krmsTypeBos);
     }
@@ -156,7 +161,9 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("active", Boolean.TRUE);
 
-        Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> krmsTypeBos = findMatching(dataObjectService, KrmsTypeBo.class,
+                Collections.unmodifiableMap(map));
+
         return convertListOfBosToImmutables(krmsTypeBos);
     }
 
@@ -168,7 +175,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-        Collection<ContextValidAgendaBo> contextValidAgendaBos = businessObjectService.findMatchingOrderBy(ContextValidAgendaBo.class, Collections.unmodifiableMap(map), "agendaType.name", true);
+        Collection<ContextValidAgendaBo> contextValidAgendaBos = findMatchingOrderBy(dataObjectService,
+                ContextValidAgendaBo.class, Collections.unmodifiableMap(map), "agendaType.name", true);
         List<KrmsTypeDefinition>  agendaTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidAgendaBo contextValidAgendaBo : contextValidAgendaBos) {
@@ -191,7 +199,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("agendaTypeId", agendaTypeId);
         map.put("contextId", contextId);
-        ContextValidAgendaBo contextValidAgendaBo = businessObjectService.findByPrimaryKey(ContextValidAgendaBo.class, Collections.unmodifiableMap(map));
+        ContextValidAgendaBo contextValidAgendaBo = findSingleMatching(dataObjectService, ContextValidAgendaBo.class,
+                Collections.unmodifiableMap(map));
 
         return KrmsTypeBo.to(contextValidAgendaBo.getAgendaType());
     }
@@ -204,7 +213,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-        Collection<ContextValidRuleBo> contextValidRuleBos = businessObjectService.findMatchingOrderBy(ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
+        Collection<ContextValidRuleBo> contextValidRuleBos = findMatchingOrderBy(dataObjectService,
+                ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
         List<KrmsTypeDefinition>  ruleTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidRuleBo contextValidRuleBo : contextValidRuleBos) {
@@ -227,7 +237,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("ruleTypeId", ruleTypeId);
         map.put("contextId", contextId);
-        ContextValidRuleBo contextValidRuleBo = businessObjectService.findByPrimaryKey(ContextValidRuleBo.class, Collections.unmodifiableMap(map));
+        ContextValidRuleBo contextValidRuleBo = findSingleMatching(dataObjectService, ContextValidRuleBo.class,
+                Collections.unmodifiableMap(map));
 
         return KrmsTypeBo.to(contextValidRuleBo.getRuleType());
     }
@@ -240,7 +251,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-        Collection<ContextValidActionBo> contextValidActionBos = businessObjectService.findMatchingOrderBy(ContextValidActionBo.class, Collections.unmodifiableMap(map), "actionType.name", true);
+        Collection<ContextValidActionBo> contextValidActionBos = findMatchingOrderBy(dataObjectService,
+                ContextValidActionBo.class, Collections.unmodifiableMap(map), "actionType.name", true);
         List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidActionBo contextValidActionBo : contextValidActionBos) {
@@ -263,7 +275,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("actionTypeId", actionTypeId);
         map.put("contextId", contextId);
-        ContextValidActionBo contextValidActionBo = businessObjectService.findByPrimaryKey(ContextValidActionBo.class, Collections.unmodifiableMap(map));
+        ContextValidActionBo contextValidActionBo = findSingleMatching(dataObjectService, ContextValidActionBo.class,
+                Collections.unmodifiableMap(map));
 
         return KrmsTypeBo.to(contextValidActionBo.getActionType());
     }
@@ -273,7 +286,10 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         if (StringUtils.isBlank(attributeDefinitionId)) {
             throw new RiceIllegalArgumentException("attributeDefinitionId was a null or blank value");
         }
-        KrmsAttributeDefinitionBo krmsAttributeDefinitionBo = businessObjectService.findBySinglePrimaryKey(KrmsAttributeDefinitionBo.class, attributeDefinitionId);
+
+        KrmsAttributeDefinitionBo krmsAttributeDefinitionBo = dataObjectService.find(KrmsAttributeDefinitionBo.class,
+                attributeDefinitionId);
+
         return KrmsAttributeDefinitionBo.to(krmsAttributeDefinitionBo);
     }
 
@@ -292,7 +308,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         criteria.put("name", name);
         criteria.put("namespace", namespaceCode);
 
-        Collection<KrmsAttributeDefinitionBo> attributeDefinitionBos = businessObjectService.findMatching(KrmsAttributeDefinitionBo.class, criteria);
+        Collection<KrmsAttributeDefinitionBo> attributeDefinitionBos = findMatching(dataObjectService,
+                KrmsAttributeDefinitionBo.class, criteria);
 
         if (CollectionUtils.isEmpty(attributeDefinitionBos)) {
             return null;
@@ -317,18 +334,17 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         krmsTypeBo.setId(krmsType.getId());
         krmsTypeBo.setActive(krmsType.isActive());
         krmsTypeBo.setVersionNumber(krmsType.getVersionNumber());
-        // TODO collections, etc.
 
         return krmsTypeBo;
     }
 
     /**
-     * Sets the businessObjectService attribute value.
+     * Sets the dataObjectService attribute value.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param dataObjectService The dataObjectService to set.
      */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**

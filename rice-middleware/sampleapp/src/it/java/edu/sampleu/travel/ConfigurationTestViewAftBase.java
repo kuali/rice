@@ -17,6 +17,10 @@ package edu.sampleu.travel;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * Tests the Component section in Rice.
@@ -65,4 +69,68 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         testAddLineAllDay(idPrefix, addLineIdSuffix);
         passed();
     }
+
+    protected void testAddLineWithSpecificTime(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
+        String inputTime = "7:06";
+        waitAndTypeByXpath(startTimeId, inputTime);
+        String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
+        selectByXpath(amPmSelectLocator, "PM");
+        assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClickButtonByText("add");
+        Thread.sleep(5000); //allow for line to be added
+
+        //confirm that line has been added
+        assertTrue("line (//input[@value='7:06'])is not present", isElementPresentByXpath("//input[@value='7:06']"));
+    }
+
+    protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
+        String inputTime = "5:20";
+        waitAndTypeByXpath(startTimeId, inputTime);
+        String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
+        waitAndClickByXpath(allDayId);
+        checkForIncidentReport();
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClickButtonByText("add");
+        Thread.sleep(5000); //allow for line to be added
+
+        //confirm that line has been added
+        assertTrue("line (//input[@checked='checked'])is not present", isElementPresentByXpath("//input[@checked='checked']"));
+    }
+
+    protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
+        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
+        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
+        String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
+        waitAndClickByXpath(allDayId);
+        checkForIncidentReport();
+        Thread.sleep(5000); //allow for ajax refresh
+        waitAndClickButtonByText("add");
+        Thread.sleep(5000); //allow for line to be added
+
+        //confirm that another line has been added (by checking the number of delete buttons)
+        WebElement table = findElement(By.id("ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent"));
+        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'delete')]"), table);
+        assertEquals("line was not added", 3, columns.size());
+
+    }
+
+    /**
+     * verify that add line controls are present
+     */
+    protected void confirmAddLineControlsPresent(String idPrefix, String addLineIdSuffix) {
+        String[] addLineIds = {"StartTime", "StartTimeAmPm", "AllDay"};
+
+        for (String id : addLineIds) {
+            String tagId = "//*[@id='" + idPrefix + id + addLineIdSuffix + "']";
+            assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
+        }
+    }
+
 }

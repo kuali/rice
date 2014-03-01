@@ -126,8 +126,19 @@ class RoleServiceImplTest {
     public void test_getRoleByName() {
         dataObjectServiceMockFor.demand.findMatching(1..sampleRolesByName.size()) {
             Class clazz, QueryByCriteria criteria ->
-                Map map = asMap(criteria);
-                return toQueryResults(toRoleBoLite(sampleRolesByName.get(map.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE) + ";" + map.get(KimConstants.UniqueKeyConstants.NAME))))
+                Map<String, Object> map = new HashMap<String, Object>()
+                AndPredicate and = criteria.getPredicate()
+                Set<Predicate> predicates = and.getPredicates()
+                for (Predicate predicate : predicates) {
+                    map.put(predicate.getPropertyPath(), predicate.getValue().getValue())
+                }
+
+                RoleBoLite roleBoLite = toRoleBoLite(sampleRolesByName.get(map.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE) + ";" + map.get(KimConstants.UniqueKeyConstants.NAME)))
+
+                GenericQueryResults.Builder results = GenericQueryResults.Builder.create()
+                results.getResults().add(roleBoLite)
+
+                return results.build()
         }
         injectDataObjectServiceIntoRoleService()
 
@@ -332,22 +343,6 @@ class RoleServiceImplTest {
         roleService.deleteRoleResponsibilityAction("1234")
 
         dataObjectServiceMockFor.verify(dos)
-    }
-
-    private Map<String, Object> asMap(QueryByCriteria criteria) {
-        Map<String, Object> predicateMap = new HashMap<String, Object>();
-        AndPredicate and = criteria.getPredicate();
-        Set<Predicate> predicates = and.getPredicates();
-        for (Predicate predicate : predicates) {
-            predicateMap.put(predicate.getPropertyPath(), predicate.getValue().getValue());
-        }
-        return predicateMap;
-    }
-
-    private QueryResults toQueryResults(Object object) {
-        GenericQueryResults.Builder results = GenericQueryResults.Builder.create();
-        results.getResults().add(object);
-        return results.build();
     }
 
 }

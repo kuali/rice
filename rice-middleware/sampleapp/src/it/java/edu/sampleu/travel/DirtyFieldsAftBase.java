@@ -77,7 +77,7 @@ public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
         assertTrue(waitAndGetAttributeByName("field112", "style").contains("text-transform: uppercase;"));
         assertCancelConfirmation();
         waitForElementPresentByName("field101");
-        SeleneseTestBase.assertEquals("val", waitAndGetAttributeByName("field101", "value"));
+        assertEquals("val", waitAndGetAttributeByName("field101", "value"));
         clearTextByName("field101");
         waitAndTypeByName("field101", "1");
         waitAndTypeByName("field104", "");

@@ -21,6 +21,8 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -114,11 +116,26 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         waitForPageToLoad();
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue("Path-based", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "8"));
-        waitAndClickByLinkText("Page 2");
-        waitForElementPresentByName("inputField9");
-        assertElementPresentByName("inputField9");
+        assertBreadcrumb(3);
+        waitAndClickByLinkText("Click me to continue chaining path-based breadcrumbs", "first click");
+        assertBreadcrumb(4);
+        waitAndClickByLinkText("Click me to continue chaining path-based breadcrumbs", "second click");
+        assertBreadcrumb(5);
         driver.close();
         switchToWindow(START_PAGE_TITLE);
+    }
+
+    protected void assertBreadcrumb(int depth) throws Exception {
+        WebElement element = findElement(By.xpath("//ol[@role='navigation']"));
+        List<WebElement> elements = element.findElements(By.xpath("li"));
+        assertEquals(depth, elements.size());
+        assertTrue(elements.get(0).getText().contains("Home"));
+
+        for (int i = 1; i < elements.size() - 1; i++) {
+            assertTrue(elements.get(i).getText().contains("View Title"));
+        }
+
+        assertTrue(elements.get(elements.size() - 1).getText().contains("Page 1 Title"));
     }
 
     protected void testWidgetsBreadcrumbOverrides() throws Exception {
@@ -129,7 +146,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
 
     protected void testWidgetsBreadcrumbSiblingBreadcrumbs() throws Exception {
         waitAndClickByLinkText("Sibling Breadcrumbs");
-        waitAndClickByXpath("//div[@id='Demo-Breadcrumbs-Example10']/a[contains(text(),'Sibling Breadcrumbs')]");
+        waitAndClickByXpath("//section[@id='Demo-Breadcrumbs-Example10']/a[contains(text(),'Sibling Breadcrumbs')]");
         assertNewWindow("10", "Sibling Breadcrumbs");
     }
 
@@ -138,7 +155,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
     }
 
     private void assertNewWindow(String urlNumber, String titleOne, String titleTwo, String message) throws InterruptedException {
-        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 1000);
+        Thread.sleep(WebDriverUtils.configuredImplicityWait() * 2000);
         switchToWindow(TARGET_PAGE_TITLE);
         assertTrue(message, driver.getCurrentUrl().contains(TARGET_URL_CHECK + urlNumber));
         assertElementPresentByName(FIELD_TO_CHECK);
@@ -148,7 +165,7 @@ public class DemoWidgetsBreadcrumbsAft extends DemoLibraryBase {
         element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         int secondsToWait = WebDriverUtils.configuredImplicityWait() * 3000;
         while (!titleTwo.equals(element.getText().trim()) && secondsToWait > 0) {
-            Thread.sleep(1000);
+            Thread.sleep(4000);
             secondsToWait -= 1000;
             element = findElement(By.xpath("//span[@data-role='breadcrumb']"));
         }

@@ -43,9 +43,9 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
     @Before
     public void setup() {
         typeTypeRelationBoServiceImpl = new TypeTypeRelationBoServiceImpl();
-        typeTypeRelationBoServiceImpl.setBusinessObjectService(getBoService());
+        typeTypeRelationBoServiceImpl.setDataObjectService(getDataObjectService());
         krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
-        krmsTypeBoServiceImpl.setBusinessObjectService(getBoService());
+        krmsTypeBoServiceImpl.setDataObjectService(getDataObjectService());
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

@@ -36,7 +36,6 @@
 					p:name="nonStandardDataType"
 					p:label="Non Standard Label-Spring" 
 					p:mergeAction="MERGE" />
-
 				<bean parent="DataObjectAttribute"
 					p:name="dateProperty"
 					p:mergeAction="REMOVE" />

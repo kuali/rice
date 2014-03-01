@@ -15,18 +15,19 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * This class is now a proxy, which uses the @Entity annotation to decide whether to use the JPA or OJB underlying services to perform an action.
+ * This class was originally introduced a proxy to decide between OJB and JPA implementations, but new work on krad-data
+ * module has rendered this service deprecated so this implementation is largely vestigial.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -36,11 +36,21 @@
     <constructor-arg value="coreService" />
   </bean>
 
-  <util:list id="jpaPackagesToScan">
-    <value>org.kuali.rice.coreservice.impl</value>
-  </util:list>
+  <util:list id="jpaPackagesToScan"/>
 
-  <util:list id="managedClassNames" />
+  <util:list id="managedClassNames">
+    <value>org.kuali.rice.coreservice.impl.component.ComponentBo</value>
+    <value>org.kuali.rice.coreservice.impl.component.ComponentSetBo</value>
+    <value>org.kuali.rice.coreservice.impl.component.DerivedComponentBo</value>
+    <value>org.kuali.rice.coreservice.impl.namespace.NamespaceBo</value>
+    <value>org.kuali.rice.coreservice.impl.parameter.ParameterBo</value>
+    <value>org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo</value>
+    <value>org.kuali.rice.coreservice.impl.style.StyleBo</value>
+    <!--
+      if you add a class here, please be sure to add it to
+      META-INF/persistence-weaving.xml so that it will be statically weaved
+    -->
+  </util:list>
 
   <util:list id="additionalMetadataProviders" />
   <util:list id="springMetadataFileLocations" />

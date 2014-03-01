@@ -38,7 +38,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase<Compon
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
+     * {@inheritDoc}
      */
     @Override
     public ApplyModelComponentPhase getElementState() {
@@ -46,7 +46,7 @@ public class ComponentDefaultApplyModelTask extends ViewLifecycleTaskBase<Compon
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @SuppressWarnings("deprecation")
     @Override

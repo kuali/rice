@@ -33,11 +33,12 @@ import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
  * Adapter that supports "legacy" KNS/KRAD persistence, metadata, and object utility frameworks via runtime
  * argument inspection
  *
- * deprecated This class is deprecated by default, applications should *never*
+ * @deprecated This class is deprecated by default, applications should *never*
  * use this adapter directly
  *
  * @author Kuali Rice Team (rice.collab@kuali.org).
  */
+@Deprecated
 public interface LegacyDataAdapter {
 
     // BusinessObjectService
@@ -450,7 +451,7 @@ public interface LegacyDataAdapter {
      * @return A populated object from the DB, if it exists
      *
      */
-    BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName);
+    Object getReferenceIfExists(Object bo, String referenceName);
 
     /**
      *
@@ -461,9 +462,9 @@ public interface LegacyDataAdapter {
      * @return true if they all are accessible and have values, false otherwise
      *
      */
-    boolean allForeignKeyValuesPopulatedForReference(PersistableBusinessObject bo, String referenceName);
+    boolean allForeignKeyValuesPopulatedForReference(Object bo, String referenceName);
 
-	RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
+    RelationshipDefinition getDictionaryRelationship(Class<?> c, String attributeName);
 
     /**
      * This method gets the title attribute from the datadictionary for the given data object class

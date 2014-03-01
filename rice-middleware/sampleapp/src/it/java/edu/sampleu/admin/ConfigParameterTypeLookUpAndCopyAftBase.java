@@ -68,6 +68,6 @@ public abstract class ConfigParameterTypeLookUpAndCopyAftBase extends AdminTmplM
         waitAndTypeByName("document.newMaintainableObject.name","AuthorizationCopy");
         waitAndClickByName("methodToCall.route");
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+  <bean id="LabsLookupSecurityTravelAuthorization" parent="TravelAuthorization">
+    <property name="viewName" value="LabsLookupSecurityTravelAuthorization"/>
+    <property name="items">
+      <list>
+        <bean parent="LabsLookupSecurityTravelAuthorization-MainPage"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsLookupSecurityTravelAuthorization-MainPage" parent="Uif-DocumentPage">
+    <property name="items">
+      <list merge="true">
+        <bean parent="LabsLookupSecurityTravelAuthorization-TripOverview"/>
+        <bean parent="TravelAuthorization-ActualExpenses"/>
+        <bean parent="TravelAuthorization-DailyCostEstimates"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Trip Overview -->
+  <bean id="LabsLookupSecurityTravelAuthorization-TripOverview"  parent="TravelAuthorization-TripOverview">
+    <property name="items">
+      <list>
+        <bean parent="LabsLookupSecurityTravelAuthorization-TripOverview-TravelerSection"/>
+        <bean parent="TravelAuthorization-TripOverview-TripInformationSection"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsLookupSecurityTravelAuthorization-TripOverview-TravelerSection" parent="TravelAuthorization-TripOverview-TravelerSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:label="Traveler Lookup" p:propertyName="travelerDetailId">
+          <property name="id" value="travelerQuickfinder"/>
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelerDetail">
+              <property name="lightBox.render" value="false"/>
+              <property name="fieldConversions">
+                <map>
+                  <entry key="id" value="travelerDetailId"/>
+                  <entry key="customerNumber" value="travelerDetail.customerNumber"/>
+                  <entry key="firstName" value="travelerDetail.firstName"/>
+                  <entry key="lastName" value="travelerDetail.lastName"/>
+                  <entry key="streetAddressLine1" value="travelerDetail.streetAddressLine1"/>
+                  <entry key="streetAddressLine2" value="travelerDetail.streetAddressLine2"/>
+                  <entry key="cityName" value="travelerDetail.cityName"/>
+                  <entry key="stateCode" value="travelerDetail.stateCode"/>
+                  <entry key="countryCode" value="travelerDetail.countryCode"/>
+                  <entry key="zipCode" value="travelerDetail.zipCode"/>
+                  <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+          <property name="control">
+            <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:propertyName="travelerDetail.customerNumber" />
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine2"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.cityName"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.stateCode"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.countryCode"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
+        <bean parent="Uif-InputField" p:propertyName="travelerDetail.emailAddress" p:label="Alternate Email Address"/>
+        <bean parent="Uif-InputField" p:propertyName="travelerDetail.phoneNumber"/>
+        <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:required="true" p:colSpan="3" />
+      </list>
+    </property>
+  </bean>
+
+</beans>

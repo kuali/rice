@@ -96,24 +96,6 @@ class DictionaryConverterTest {
     }
 
     @Test
-    void testTransformBusinessObjectEntryBean() {
-        String xmlFilePath = ConversionUtils.getResourceFile(dictTestDir + "InquiryDefinitionSample.xml").absolutePath;
-        def rootNode = getFileRootNode(xmlFilePath);
-        def beanNode = rootNode.bean.find { "BusinessObjectEntry" == it.@parent };
-        Node resultNode = null;
-        try {
-            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assert.fail("exception occurred in testing");
-        }
-
-        log.finer "result for transforming business object entry - " + getNodeString(resultNode);
-        def expectedProperties = [];
-        Assert.assertEquals("properties copied or renamed properly", beanNode.findAll { expectedProperties.contains(it.@name) }.size(), expectedProperties.size())
-    }
-
-    @Test
     void testFindSpringBeanFiles() {
         List files = [ConversionUtils.getResourceFile(dictTestDir + "AttributePropertySample.xml")];
         try {
@@ -146,25 +128,7 @@ class DictionaryConverterTest {
         }
     }
 
-    @Test
-    void testTransformAttributeDefinitionBeanUsingTransformBusinessObjectEntryBean() {
-        String xmlFilePath = ConversionUtils.getResourceFile(dictTestDir + "InquiryDefinitionSample.xml").absolutePath;
-        def rootNode = getFileRootNode(xmlFilePath)
-        def beanNode = rootNode.bean.find { "TravelerDetail-id-parentBean" == it.@id }
-        Node resultNode = null;
-        try {
-            resultNode = dictionaryConverter.transformBusinessObjectEntryBean(beanNode)
-        } catch (Exception e) {
-            e.printStackTrace()
-            Assert.fail("exception occurred in testing")
-        }
 
-
-        checkBeanPropertyExists(resultNode, "validCharactersConstraint");
-        def constraintProperty = resultNode.property.find { "validCharactersConstraint".equals(it.@name) };
-        Assert.assertTrue("constraint bean not converted", "NumericPatternConstraint".equals(constraintProperty.bean[0].@parent));
-        checkBeanPropertyExists(resultNode, "controlField");
-    }
 
     @Test
     public void testTransformSpringBeans() {
@@ -182,17 +146,6 @@ class DictionaryConverterTest {
      * Removes any children beans that exists from the xml file
      *
      */
-    @Test
-    public void testRemoveChildrenBeans() {
-        String lookupDefFilePath = ConversionUtils.getResourceFile(dictTestDir + "LookupDefinitionSample.xml").absolutePath;
-        def lookupDefFile = new File(lookupDefFilePath)
-        def ddRootNode = new XmlParser().parse(lookupDefFile);
-        def beanNode = ddRootNode.bean.find { "BusinessObjectEntry".equals(it.@parent) };
-        String parentName = beanNode.@parent;
-
-        dictionaryConverter.removeChildrenBeans(beanNode);
-        Assert.assertEquals("child bean still exists", ddRootNode.findAll { parentName.equals(it.@name) }.size(), 0);
-    }
 
     @Test
     public void testIsBeanTransformable() {

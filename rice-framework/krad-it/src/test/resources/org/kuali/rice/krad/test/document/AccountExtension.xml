@@ -20,7 +20,7 @@
 
   <bean id="AccountExtension-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="businessObjectClass" value="org.kuali.rice.krad.test.document.bo.AccountExtension"/>
-    <property name="titleAttribute" value="number"/>
+    <property name="titleAttribute" value="account.number"/>
     <property name="attributes">
       <list>
         <ref bean="AccountExtension-number"/>
@@ -36,7 +36,9 @@
   <bean id="AccountExtension-number" parent="AccountExtension-number-parentBean"/>
 
   <bean id="AccountExtension-number-parentBean" abstract="true" parent="Account-number">
+    <property name="name" value="account.number"/>
   </bean>
+
   <bean id="AccountExtension-accountTypeCode" parent="AccountExtension-accountTypeCode-parentBean"/>
 
   <bean id="AccountExtension-accountTypeCode-parentBean" abstract="true" parent="AccountType-accountTypeCode">

@@ -32,7 +32,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
-import org.kuali.rice.krad.uif.util.CopyUtils;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -117,21 +117,23 @@ public class UifDictionaryIndex implements Runnable {
             if (StringUtils.isBlank(beanName)) {
                 throw new DataDictionaryException("Unable to find View with id: " + viewId);
             }
-
+            ProcessLogger.trace("view:init:" + viewId);
+           
             ProcessLogger.trace("view:init:" + viewId);
             View view = ddBeans.getBean(beanName, View.class);
-
             ProcessLogger.trace("view:getBean");
-            ViewLifecycle.preProcess(view);
-
-            ProcessLogger.trace("view:preProcess");
             
-            // TODO: remove
-            CopyUtils.preventModification(view);
+            if (UifConstants.ViewStatus.CREATED.equals(view.getViewStatus())) {
+                try {
+                    ViewLifecycle.preProcess(view);
 
-            ProcessLogger.trace("view:preventModification");
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Updating view status to CREATED for view: " + view.getId());
+                    ProcessLogger.trace("view:preProcess");
+                } catch (IllegalStateException ex) {
+                    if ( LOG.isDebugEnabled() ) {
+                        LOG.debug("preProcess not run due to an IllegalStateException.  "
+                                + "Exception message: " + ex.getMessage());
+                    }
+                }
             }
 
             boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(

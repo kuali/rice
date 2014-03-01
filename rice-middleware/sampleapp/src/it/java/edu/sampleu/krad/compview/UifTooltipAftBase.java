@@ -17,6 +17,7 @@ package edu.sampleu.krad.compview;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * Tests the Component section in Rice.
@@ -42,6 +43,38 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
         waitAndClickKRAD();
         waitAndClickByXpath(KITCHEN_SINK_XPATH);
         switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+    }
+
+    protected void testUifTooltipByName(String nameField1, String nameField2) throws Exception {
+        findElement(By.name(nameField2)); // fields must be in view for tooltips to be displayed
+
+        // check if tooltip opens on focus
+        fireEvent(nameField1, "focus");
+        fireMouseOverEventByName(nameField1);
+
+        assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
+                "td.jquerybubblepopup-innerHtml"));
+        fireEvent(nameField1, "blur");
+
+        fireEvent(nameField2, "focus");
+        Thread.sleep(5000);
+
+        // check if tooltip opens on mouse over
+        fireMouseOverEventByName(nameField2);
+        assertTrue("unable to detect tooltip", isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+
+        // check if tooltip closed on mouse out of nameField2
+        fireEvent(nameField2, "blur");
+        waitAndTypeByName(nameField1, "");
+        Thread.sleep(5000);
+        assertFalse("able to detect tooltip", isVisibleByXpath(
+                "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+
+        // check that default tooltip does not display when there are an error message on the field
+        waitAndTypeByName(nameField1, "1");
+        fireEvent(nameField1, "blur");
+        fireMouseOverEventByName(nameField1);
+        Thread.sleep(10000);
     }
 
     protected void testUifTooltipNav(JiraAwareFailable failable) throws Exception {

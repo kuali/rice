@@ -105,7 +105,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         }
 
         // found key set, now build map of key values pairs we can use to retrieve the object
-        Map<String, Object> keyPropertyValues = new HashMap<String, Object>();
+        Map<String, String> keyPropertyValues = new HashMap<String, String>();
         for (String keyPropertyName : dataObjectKeySet) {
             String keyPropertyValue = parameters.get(keyPropertyName);
 
@@ -155,16 +155,19 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         // now retrieve the object based on the key set
         Object dataObject = null;
 
+        Map<String, Object> translatedValues  = KRADUtils.coerceRequestParameterTypes(
+                (Class<? extends ExternalizableBusinessObject>) getDataObjectClass(), keyPropertyValues);
+
         ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
                 getDataObjectClass());
         if (moduleService != null && moduleService.isExternalizable(getDataObjectClass())) {
             dataObject = moduleService.getExternalizableBusinessObject(getDataObjectClass().asSubclass(
-                    ExternalizableBusinessObject.class), keyPropertyValues);
+                    ExternalizableBusinessObject.class), translatedValues);
         } else if ( KradDataServiceLocator.getDataObjectService().supports(getDataObjectClass())) {
-            dataObject = KradDataServiceLocator.getDataObjectService().find(getDataObjectClass(), new CompoundKey(keyPropertyValues));
+            dataObject = KradDataServiceLocator.getDataObjectService().find(getDataObjectClass(), new CompoundKey(translatedValues));
         } else if (BusinessObject.class.isAssignableFrom(getDataObjectClass())) {
             dataObject = getLegacyDataAdapter().findByPrimaryKey(getDataObjectClass().asSubclass(
-                    BusinessObject.class), keyPropertyValues);
+                    BusinessObject.class), translatedValues);
         } else {
             throw new IllegalArgumentException( "ERROR: Unsupported object type passed to inquiry: " + getDataObjectClass() + " / keys=" + keyPropertyValues );
         }
@@ -339,4 +342,42 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         return CoreApiServiceLocator.getEncryptionService();
     }
 
+    /**
+     * Returns a clone of the InquirableImpl.
+     *
+     * @return InquirableImpl clone
+     */
+    public InquirableImpl copy() {
+        InquirableImpl inquirableImplCopy = new InquirableImpl();
+
+        if (this.dataObjectClass != null) {
+            inquirableImplCopy.dataObjectClass = this.dataObjectClass;
+        }
+
+        if (this.getConfigurationService() != null) {
+            inquirableImplCopy.setConfigurationService(this.getConfigurationService());
+        }
+
+        if (this.getDataDictionaryService() != null) {
+            inquirableImplCopy.setDataDictionaryService(this.getDataDictionaryService());
+        }
+
+        if (this.getLegacyDataAdapter() != null) {
+            inquirableImplCopy.setLegacyDataAdapter(this.getLegacyDataAdapter());
+        }
+
+        if (this.getDataObjectService() != null) {
+            inquirableImplCopy.setDataObjectService(this.getDataObjectService());
+        }
+
+        if (this.getViewDictionaryService() != null) {
+            inquirableImplCopy.setViewDictionaryService(this.getViewDictionaryService());
+        }
+
+        if (this.getExpressionEvaluatorFactory() != null) {
+            inquirableImplCopy.setExpressionEvaluatorFactory(this.getExpressionEvaluatorFactory());
+        }
+
+        return inquirableImplCopy;
+    }
 }

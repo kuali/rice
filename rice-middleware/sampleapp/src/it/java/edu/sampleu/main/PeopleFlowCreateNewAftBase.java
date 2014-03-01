@@ -58,4 +58,39 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         testPeopleFlowBlanketApprove();
         passed();
     }
+    
+    public void testPeopleFlowDuplicateEntryBookmark(JiraAwareFailable failable) throws Exception {
+    	testPeopleFlowDuplicateEntry();
+    	passed();
+    }
+    
+    public void testPeopleFlowDuplicateEntryNav(JiraAwareFailable failable) throws Exception {
+    	testPeopleFlowDuplicateEntry();
+    	passed();
+    }
+    
+    private void testPeopleFlowDuplicateEntry() throws Exception {
+    	selectFrameIframePortlet();
+        waitAndClickByLinkText("Create New");
+        clearTextByName("document.documentHeader.documentDescription");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Duplicate");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
+        clearTextByName("document.newMaintainableObject.dataObject.name");
+        String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
+        waitAndClickButtonByText("submit");
+        waitForTextPresent("Document was successfully submitted.");
+        selectTopFrame();
+        waitAndClickByLinkText("Main Menu");
+        waitAndClickByLinkText("People Flow");
+        selectFrameIframePortlet();
+        waitAndClickByLinkText("Create New");
+        clearTextByName("document.documentHeader.documentDescription");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Duplicate");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
+        clearTextByName("document.newMaintainableObject.dataObject.name");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
+        waitAndClickButtonByText("submit");
+        waitForTextPresent("A PeopleFlow already exists with the name");
+    }
 }

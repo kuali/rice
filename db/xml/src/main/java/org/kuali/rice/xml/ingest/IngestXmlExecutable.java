@@ -16,8 +16,10 @@
 package org.kuali.rice.xml.ingest;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kuali.common.util.FormatUtils;
 import org.kuali.common.util.LocationUtils;
@@ -56,7 +58,7 @@ public final class IngestXmlExecutable implements Executable {
 	private static final Logger logger = LoggerUtils.make();
 	private static final String XML_SUFFIX = ".xml";
 
-	private final String locationListing;
+	private final List<String> locationListings;
 	private final boolean skip;
 	private final Optional<XmlIngesterService> service;
 
@@ -67,9 +69,11 @@ public final class IngestXmlExecutable implements Executable {
 			return;
 		}
 		long start = System.currentTimeMillis();
-		logger.info("Starting bootstrap XML Ingester.");
-		logger.info("Ingesting XML documents listed in [{}]", locationListing);
-		List<XmlDocCollection> collections = getXmlDocCollectionList(locationListing);
+		logger.info("Starting XML Ingester.");
+        for (String locationListing : locationListings) {
+		    logger.info("Ingesting XML documents listed in [{}]", locationListing);
+        }
+		List<XmlDocCollection> collections = getXmlDocCollectionList(locationListings);
 		logger.info("Found {} files to ingest.", collections.size());
 		Collection<XmlDocCollection> failures = ingest(collections);
 		validateNoFailures(failures);
@@ -77,9 +81,9 @@ public final class IngestXmlExecutable implements Executable {
 		logger.info("Finished ingesting bootstrap XML - {}", FormatUtils.getTime(System.currentTimeMillis() - start));
 	}
 
-	protected List<XmlDocCollection> getXmlDocCollectionList(String locationListing) {
+	protected List<XmlDocCollection> getXmlDocCollectionList(List<String> locationListings) {
 		List<XmlDocCollection> list = Lists.newArrayList();
-		List<String> locations = LocationUtils.getLocations(locationListing);
+		List<String> locations = LocationUtils.getLocations(locationListings);
 		for (String location : locations) {
 			Preconditions.checkState(StringUtils.endsWith(location.toLowerCase(), XML_SUFFIX), "[%s] is not an XML document", location);
 			Preconditions.checkState(LocationUtils.exists(location), "[%s] does not exist", location);
@@ -113,27 +117,27 @@ public final class IngestXmlExecutable implements Executable {
 	}
 
 	private IngestXmlExecutable(Builder builder) {
-		this.locationListing = builder.locationListing;
+		this.locationListings = builder.locationListings;
 		this.skip = builder.skip;
 		this.service = builder.service;
-	}
-
-	public static Builder builder(String locationListing) {
-		return new Builder(locationListing);
 	}
 
 	public static class Builder {
 
 		// Required
-		private final String locationListing;
+		private final List<String> locationListings;
 
 		// Optional
 		private Optional<XmlIngesterService> service = Optional.absent();
 		private boolean skip = false;
 
 		public Builder(String locationListing) {
-			this.locationListing = locationListing;
-		}
+			this.locationListings = Collections.singletonList(locationListing);
+        }
+
+        public Builder(List<String> locationListings) {
+            this.locationListings = locationListings;
+        }
 
 		public Builder service(XmlIngesterService service) {
 			this.service = Optional.of(service);
@@ -153,8 +157,11 @@ public final class IngestXmlExecutable implements Executable {
 
 		private static void validate(IngestXmlExecutable instance) {
 			Preconditions.checkNotNull(instance.service, "service cannot be null");
-			Preconditions.checkArgument(!StringUtils.isBlank(instance.locationListing), "locationListing cannot be blank");
-			Preconditions.checkArgument(LocationUtils.exists(instance.locationListing), "[%s] does not exist", instance.locationListing);
+			Preconditions.checkArgument(!CollectionUtils.isEmpty(instance.locationListings), "locationListings cannot be empty");
+            for (String locationListing : instance.locationListings) {
+                Preconditions.checkArgument(!StringUtils.isBlank(locationListing), "locationListings cannot have blank entries");
+			    Preconditions.checkArgument(LocationUtils.exists(locationListing), "[%s] does not exist", locationListing);
+            }
 		}
 	}
 
@@ -162,8 +169,8 @@ public final class IngestXmlExecutable implements Executable {
 		return service;
 	}
 
-	public String getLocationListing() {
-		return locationListing;
+	public List<String> getLocationListings() {
+		return locationListings;
 	}
 
 	public boolean isSkip() {

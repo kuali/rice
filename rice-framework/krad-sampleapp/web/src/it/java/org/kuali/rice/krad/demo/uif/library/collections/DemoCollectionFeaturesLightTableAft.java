@@ -51,7 +51,7 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesLightTableInquiryLinkActions() throws Exception {
         waitAndClickByLinkText("Inquiry, Links, and Actions");
-        waitAndClickByXpath("//div[@id='Demo-LightTable-Example2']/a");
+        waitAndClickByXpath("//section[@id='Demo-LightTable-Example2']/a");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td/div/a");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup2_lightTable']/tbody/tr/td[5]/div/fieldset/div/button");
@@ -60,7 +60,7 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesLightTableConditionalRender() throws Exception {
         waitAndClickByLinkText("Conditional Render");
-        waitAndClickByXpath("//div[@id='Demo-LightTable-Example3']/a");
+        waitAndClickByXpath("//section[@id='Demo-LightTable-Example3']/a");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup3_lightTable']/tbody/tr/td[3]");
         switchToWindow("Kuali");

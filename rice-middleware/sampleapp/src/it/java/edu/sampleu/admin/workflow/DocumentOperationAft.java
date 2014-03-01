@@ -45,11 +45,11 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
 
     protected void testDocumentOperation() throws Exception { 
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId","3010");
+        waitAndTypeByName("documentId","2381");
         waitAndClickByName("methodToCall.getDocument");
         waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
         assertTextPresent(new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:",
-                "3010", "Route Node Instance ID:", "2923"});
+                "2443", "Route Node Instance ID:", "2443"});
     }
 
     @Test

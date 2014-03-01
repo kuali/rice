@@ -23,7 +23,7 @@
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
 
-  <context:load-time-weaver/>
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <bean id="incrementerName" class="java.lang.String">
     <constructor-arg type="java.lang.String" value="KRTST_GENERATED_PK_S" />

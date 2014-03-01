@@ -32,8 +32,8 @@ import org.kuali.rice.krad.util.KRADUtils;
  */
 @BeanTag(name = "locationSuggest-bean", parent = "Uif-LocationSuggest")
 public class LocationSuggest extends Suggest {
-
     private static final long serialVersionUID = 5940714417896326889L;
+
     private String baseUrl;
     private String additionalUrlPathPropertyName;
     private String hrefPropertyName;
@@ -57,6 +57,14 @@ public class LocationSuggest extends Suggest {
         if (StringUtils.isNotBlank(objectIdPropertyName)) {
             requestParameterPropertyNames.put(objectIdPropertyName, objectIdPropertyName);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocationSuggestPostData getPostData() {
+        return new LocationSuggestPostData(this);
     }
 
     /**
@@ -222,6 +230,78 @@ public class LocationSuggest extends Suggest {
             return KRADUtils.getRequestStringFromMap(additionalRequestParameters);
         } else {
             return "";
+        }
+    }
+
+    /**
+     * Holds post data for the location suggest component.
+     */
+    public static class LocationSuggestPostData extends SuggestPostData {
+        private static final long serialVersionUID = -4326794621463438438L;
+
+        private String baseUrl;
+        private String additionalUrlPathPropertyName;
+        private String hrefPropertyName;
+        private String objectIdPropertyName;
+        private Map<String, String> requestParameterPropertyNames;
+        private Map<String, String> additionalRequestParameters;
+
+        /**
+         * Constructor taking suggest widget to pull post data from.
+         *
+         * @param suggest component instance to pull data
+         */
+        public LocationSuggestPostData(LocationSuggest suggest) {
+            super(suggest);
+
+            this.baseUrl = suggest.getBaseUrl();
+            this.additionalUrlPathPropertyName = suggest.getAdditionalUrlPathPropertyName();
+            this.hrefPropertyName = suggest.getHrefPropertyName();
+            this.objectIdPropertyName = suggest.getObjectIdPropertyName();
+            this.requestParameterPropertyNames = suggest.getRequestParameterPropertyNames();
+            this.additionalRequestParameters = suggest.getAdditionalRequestParameters();
+        }
+
+        /**
+         * @see LocationSuggest#getBaseUrl()
+         */
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        /**
+         * @see LocationSuggest#getAdditionalUrlPathPropertyName()
+         */
+        public String getAdditionalUrlPathPropertyName() {
+            return additionalUrlPathPropertyName;
+        }
+
+        /**
+         * @see LocationSuggest#getHrefPropertyName()
+         */
+        public String getHrefPropertyName() {
+            return hrefPropertyName;
+        }
+
+        /**
+         * @see LocationSuggest#getObjectIdPropertyName()
+         */
+        public String getObjectIdPropertyName() {
+            return objectIdPropertyName;
+        }
+
+        /**
+         * @see LocationSuggest#getRequestParameterPropertyNames()
+         */
+        public Map<String, String> getRequestParameterPropertyNames() {
+            return requestParameterPropertyNames;
+        }
+
+        /**
+         * @see LocationSuggest#getAdditionalRequestParameters()
+         */
+        public Map<String, String> getAdditionalRequestParameters() {
+            return additionalRequestParameters;
         }
     }
 }

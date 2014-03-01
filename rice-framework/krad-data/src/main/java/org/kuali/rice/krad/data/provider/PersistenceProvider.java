@@ -22,7 +22,7 @@ import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
  * Defines persistence SPI for data providers.  PersistenceProviders are responsible for creating, updating, querying,
- * and deleting data objects.  DataObjectTypes the PersistenceProvider supports must be queried through
+ * copying and deleting data objects.  DataObjectTypes the PersistenceProvider supports must be queried through
  * {@link #handles(Class)} before interaction with the PersistenceProvider.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -113,6 +113,19 @@ public interface PersistenceProvider extends Provider {
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     void delete(Object dataObject);
+
+    /**
+     * Returns a copy of the given data object instance.
+     *
+     * <p>The method of copying is provider dependent, and will handle instances (including nested) using whatever
+     * measures might be required to deal with the quirks of said provider (e.g. fetching lazy loaded relations).
+     * </p>
+     *
+     * @param dataObject the data object to copy
+     * @param <T> the type of the data object
+     * @return a copy of the given data object
+     */
+    <T> T copyInstance(T dataObject);
 
     /**
      * Indicates whether or not this provider handles persistence for the given data object type.

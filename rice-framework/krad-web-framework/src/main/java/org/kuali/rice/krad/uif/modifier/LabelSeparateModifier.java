@@ -101,7 +101,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Set<Class<? extends Component>> getSupportedComponents() {

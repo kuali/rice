@@ -15,26 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyMap;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
-import java.io.InputStream;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Assert;
@@ -80,6 +60,21 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.core.io.Resource;
+
+import javax.xml.namespace.QName;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyMap;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests that the LegacyDataAdapter is correctly calling either the DataObjectService or appropriate legacy service
@@ -188,7 +183,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
     public void testLinkAndSave() {
         Serializable obj = newDataObject();
         lda.linkAndSave(obj);
-        verify(dataObjectService).save(obj, PersistenceOption.LINK);
+        verify(dataObjectService).save(obj, PersistenceOption.LINK_KEYS);
         verify(businessObjectService, never()).linkAndSave(any(PersistableBusinessObject.class));
     }
 

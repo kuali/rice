@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 /**
  * KRAD Data Layer API containing basic CRUD operations and access to a metadata repository.
@@ -31,7 +32,7 @@ public interface DataObjectService {
     /**
      * Invoked to retrieve a data object instance by a single primary key field or id object. In the
      * case of a compound primary key consisting of multiple attributes on the data object, a
-     * CompoundKey can be passed in order to encapsulate these into a single argument.
+     * {@link CompoundKey} can be passed in order to encapsulate these into a single argument.
      *
      * @param type the type of the data object to find
      * @param id the id representing the primary key of the data object to find
@@ -42,6 +43,8 @@ public interface DataObjectService {
      * @throws IllegalArgumentException if {@code type} does not denote a data object type or {@code id} is not a valid
      * type for the data object's primary key or is null
      * @throws DataAccessException if data access fails
+     *
+     * @see CompoundKey
      */
     <T> T find(Class<T> type, Object id);
 
@@ -62,6 +65,23 @@ public interface DataObjectService {
      * @throws DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Executes a query for the data object matching the given queryByCriteria and expecting a single unique result to
+     * be returned. If no results match the given criteria, then null will be returned. If the given criteria matches
+     * more than one result, then an {@link IncorrectResultSizeDataAccessException} will be
+     * thrown.
+     *
+     * @param type the type of the data object to query
+     * @param queryByCriteria query object defining the criteria for the query
+     * @param <T> the data object class type
+     *
+     * @return the single result of the query, or null if no objects were matched
+     *
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws IncorrectResultSizeDataAccessException if more than one object matched the given criteria
+     */
+    <T> T findUnique(Class<T> type, QueryByCriteria queryByCriteria);
 
     /**
      * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
@@ -150,6 +170,19 @@ public interface DataObjectService {
      * @throws IllegalArgumentException if the given data object is null or an invalid data object type
      */
     <T> DataObjectWrapper<T> wrap(T dataObject);
+
+    /**
+     * Returns a copy of the given data object instance.
+     *
+     * <p>The method of copying is provider dependent, and will handle instances (including nested) using whatever
+     * measures might be required to deal with the quirks of said provider (e.g. fetching lazy loaded relations).
+     * </p>
+     *
+     * @param dataObject the data object to copy
+     * @param <T> the type of the data object
+     * @return a copy of the given data object
+     */
+    <T> T copyInstance(T dataObject);
 
     /**
      * Returns whether the DataObjectService supports the given type, where

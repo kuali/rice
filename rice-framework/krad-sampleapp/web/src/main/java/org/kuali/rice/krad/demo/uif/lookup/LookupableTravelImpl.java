@@ -39,13 +39,7 @@ public class LookupableTravelImpl extends LookupableImpl {
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
 
-        // if postedView is null then we are executing the search from get request, in which case we
-        // can't validate the criteria
-        if (form.getActiveView() == null) {
-            return valid;
-        }
-
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getActiveView(),
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
                 form);
 
         // TODO: this should be an error condition but we have an issue when the search is performed from

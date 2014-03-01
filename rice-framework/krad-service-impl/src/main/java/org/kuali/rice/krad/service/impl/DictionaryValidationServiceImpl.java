@@ -18,7 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -45,7 +45,6 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.datadictionary.validation.result.ProcessorResult;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
@@ -90,10 +89,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public static final String VALIDATE_METHOD = "validate";
 
     protected DataDictionaryService dataDictionaryService;
-//    protected BusinessObjectService businessObjectService;
-//    protected PersistenceService persistenceService;
+    //    protected BusinessObjectService businessObjectService;
+    //    protected PersistenceService persistenceService;
     protected DocumentDictionaryService documentDictionaryService;
-//    protected PersistenceStructureService persistenceStructureService;
+    //    protected PersistenceStructureService persistenceStructureService;
     @Deprecated
     private LegacyDataAdapter legacyDataAdapter;
 
@@ -117,16 +116,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object)
      */
     @Override
-	public DictionaryValidationResult validate(Object object) {
+    public DictionaryValidationResult validate(Object object) {
         return validate(object, object.getClass().getName(), (String) null, true);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validate(java.lang.Object, java.lang.String,
-     *      java.lang.String, boolean)
+     * java.lang.String, boolean)
      */
     @Override
-	public DictionaryValidationResult validate(Object object, String entryName, String attributeName,
+    public DictionaryValidationResult validate(Object object, String entryName, String attributeName,
             boolean doOptionalProcessing) {
         StateMapping stateMapping = null;
         String validationState = null;
@@ -211,7 +210,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAttribute(org.kuali.rice.krad.document.Document,
-     *      java.lang.String, java.lang.String)
+     * java.lang.String, java.lang.String)
      */
     @Override
     public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
@@ -222,7 +221,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document,
-     *      int, boolean)
+     * int, boolean)
      */
     @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
@@ -232,7 +231,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDocumentAndUpdatableReferencesRecursively(org.kuali.rice.krad.document.Document,
-     *      int, boolean, boolean)
+     * int, boolean, boolean)
      */
     @Override
     public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth,
@@ -253,11 +252,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             return;
         }
         processedBOs.add(businessObject);  // add bo to list to prevent excessive looping
-        Map<String, Class> references = getLegacyDataAdapter().listReferenceObjectFields(
-                businessObject.getClass());
+        Map<String, Class> references = getLegacyDataAdapter().listReferenceObjectFields(businessObject.getClass());
         for (String referenceName : references.keySet()) {
             if (getLegacyDataAdapter().isReferenceUpdatable(businessObject.getClass(), referenceName)) {
-                Object referenceObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(referenceName);
+                Object referenceObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject)
+                        .getPropertyValueNullSafe(referenceName);
 
                 if (KRADUtils.isNull(referenceObj) || !(referenceObj instanceof PersistableBusinessObject)) {
                     continue;
@@ -273,11 +272,11 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 GlobalVariables.getMessageMap().removeFromErrorPath(referenceName);
             }
         }
-        Map<String, Class> collections = getLegacyDataAdapter().listCollectionObjectTypes(
-                businessObject.getClass());
+        Map<String, Class> collections = getLegacyDataAdapter().listCollectionObjectTypes(businessObject.getClass());
         for (String collectionName : collections.keySet()) {
             if (getLegacyDataAdapter().isCollectionUpdatable(businessObject.getClass(), collectionName)) {
-                Object listObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject).getPropertyValueNullSafe(collectionName);
+                Object listObj = KradDataServiceLocator.getDataObjectService().wrap(businessObject)
+                        .getPropertyValueNullSafe(collectionName);
 
                 if (KRADUtils.isNull(listObj)) {
                     continue;
@@ -329,16 +328,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.krad.bo.BusinessObject)
      */
     @Override
-	public boolean isBusinessObjectValid(BusinessObject businessObject) {
+    public boolean isBusinessObjectValid(BusinessObject businessObject) {
         return isBusinessObjectValid(businessObject, null);
     }
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.krad.bo.BusinessObject,
-     *      String)
+     * String)
      */
     @Override
-	public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
+    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
         final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
@@ -375,7 +374,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.krad.bo.BusinessObject,
-     *      boolean)
+     * boolean)
      */
     @Override
     public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
@@ -394,7 +393,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param object
      * @param propertyDescriptors
      */
-    protected void validateBusinessObjectsFromDescriptors(Object object, PropertyDescriptor[] propertyDescriptors, int depth) {
+    protected void validateBusinessObjectsFromDescriptors(Object object, PropertyDescriptor[] propertyDescriptors,
+            int depth) {
         DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(object);
 
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
@@ -449,7 +449,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @deprecated since 1.1
      */
     @Override
-	@Deprecated
+    @Deprecated
     public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor,
             String errorPrefix, boolean validateRequired) {
 
@@ -460,26 +460,26 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.datadictionary.ReferenceDefinition)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExists(java.lang.Object dataObject,
+     * org.kuali.rice.krad.datadictionary.ReferenceDefinition)
      */
     @Override
-	public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference) {
-        return validateReferenceExists(bo, reference.getAttributeName());
+    public boolean validateReferenceExists(Object dataObject, ReferenceDefinition reference) {
+        return validateReferenceExists(dataObject, reference.getAttributeName());
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.krad.bo.BusinessObject,
-     *      java.lang.String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExists(java.lang.Object dataObject,
+     * java.lang.String)
      */
     @Override
-	public boolean validateReferenceExists(BusinessObject bo, String referenceName) {
+    public boolean validateReferenceExists(Object dataObject, String referenceName) {
 
         // attempt to retrieve the specified object from the db
-        BusinessObject referenceBo = getLegacyDataAdapter().getReferenceIfExists(bo, referenceName);
+        Object referenceDataObject = getLegacyDataAdapter().getReferenceIfExists(dataObject, referenceName);
 
         // if it isn't there, then it doesn't exist, return false
-        if (KRADUtils.isNotNull(referenceBo)) {
+        if (KRADUtils.isNotNull(referenceDataObject)) {
             return true;
         }
 
@@ -488,27 +488,29 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.datadictionary.ReferenceDefinition)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(java.lang.Object
+     * dataObject,
+     * org.kuali.rice.krad.datadictionary.ReferenceDefinition)
      */
     @Override
-	public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference) {
-        return validateReferenceIsActive(bo, reference.getAttributeName());
+    public boolean validateReferenceIsActive(Object dataObject, ReferenceDefinition reference) {
+        return validateReferenceIsActive(dataObject, reference.getAttributeName());
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceIsActive(java.lang.Object
+     * dataObject,
+     * String)
      */
     @Override
-	public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
-
+    public boolean validateReferenceIsActive(Object dataObject, String referenceName) {
         // attempt to retrieve the specified object from the db
-        BusinessObject referenceBo = getLegacyDataAdapter().getReferenceIfExists(bo, referenceName);
-        if (referenceBo == null) {
+        Object referenceDataObject = getLegacyDataAdapter().getReferenceIfExists(dataObject, referenceName);
+        if (referenceDataObject == null) {
             return false;
         }
-        if (!(referenceBo instanceof MutableInactivatable) || ((MutableInactivatable) referenceBo).isActive()) {
+        // mutable is related only to BusinessObject classes
+        if (!(referenceDataObject instanceof Inactivatable) || ((Inactivatable) referenceDataObject).isActive()) {
             return true;
         }
 
@@ -516,11 +518,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.datadictionary.ReferenceDefinition)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(java.lang.Object
+     * dataObject,
+     * org.kuali.rice.krad.datadictionary.ReferenceDefinition)
      */
     @Override
-	public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference) {
+    public boolean validateReferenceExistsAndIsActive(Object dataObject, ReferenceDefinition reference) {
         boolean success = true;
         // intelligently use the fieldname from the reference, or get it out
         // of the dataDictionaryService
@@ -528,24 +531,24 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (reference.isDisplayFieldNameSet()) {
             displayFieldName = reference.getDisplayFieldName();
         } else {
-            Class<?> boClass =
-                    reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : bo.getClass();
+            Class<?> boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() :
+                    dataObject.getClass();
             displayFieldName = dataDictionaryService.getAttributeLabel(boClass,
                     reference.getAttributeToHighlightOnFail());
         }
 
         if (reference.isCollectionReference()) {
-            success = validateCollectionReferenceExistsAndIsActive(bo, reference, displayFieldName, StringUtils.split(
-                    reference.getCollection(), "."), null);
+            success = validateCollectionReferenceExistsAndIsActive(dataObject, reference, displayFieldName,
+                    StringUtils.split(reference.getCollection(), "."), null);
         } else {
-            success = validateReferenceExistsAndIsActive(bo, reference.getAttributeName(),
+            success = validateReferenceExistsAndIsActive(dataObject, reference.getAttributeName(),
                     reference.getAttributeToHighlightOnFail(), displayFieldName);
         }
         return success;
     }
 
     /**
-     * @param bo the object to get the collection from
+     * @param dataObject the object to get the collection from
      * @param reference the <code>ReferenceDefinition</code> of the collection to validate
      * @param displayFieldName the name of the field
      * @param intermediateCollections array containing the path to the collection as tokens
@@ -555,26 +558,24 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * each subcollection
      * @return
      */
-    private boolean validateCollectionReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference,
+    private boolean validateCollectionReferenceExistsAndIsActive(Object dataObject, ReferenceDefinition reference,
             String displayFieldName, String[] intermediateCollections, String pathToAttributeI) {
         boolean success = true;
-        Collection<PersistableBusinessObject> referenceCollection;
+        Collection<?> referenceCollection;
         String collectionName = intermediateCollections[0];
         // remove current collection from intermediates
         intermediateCollections = (String[]) ArrayUtils.removeElement(intermediateCollections, collectionName);
         try {
-            referenceCollection = (Collection) PropertyUtils.getProperty(bo, collectionName);
+            referenceCollection = (Collection) PropertyUtils.getProperty(dataObject, collectionName);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         int pos = 0;
-        Iterator<PersistableBusinessObject> iterator = referenceCollection.iterator();
+        Iterator<?> iterator = referenceCollection.iterator();
         while (iterator.hasNext()) {
             String pathToAttribute = StringUtils.defaultString(pathToAttributeI)
-                    + collectionName
-                    + "["
-                    + (pos++)
-                    + "].";
+                    + collectionName + "[" + (pos++) + "].";
             // keep drilling down until we reach the nested collection we want
             if (intermediateCollections.length > 0) {
                 success &= validateCollectionReferenceExistsAndIsActive(iterator.next(), reference, displayFieldName,
@@ -590,11 +591,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.krad.bo.BusinessObject,
-     *      String, String, String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateReferenceExistsAndIsActive(java.lang.Object
+     * dataObject,
+     * String, String, String)
      */
     @Override
-	public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
+    public boolean validateReferenceExistsAndIsActive(Object dataObject, String referenceName,
             String attributeToHighlightOnFail, String displayFieldName) {
 
         // if we're dealing with a nested attribute, we need to resolve down to the BO where the primitive attribute is located
@@ -603,112 +605,100 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (PropertyAccessorUtils.isNestedOrIndexedProperty(referenceName)) {
             String nestedAttributePrefix = KRADUtils.getNestedAttributePrefix(referenceName);
             String nestedAttributePrimitive = KRADUtils.getNestedAttributePrimitive(referenceName);
-            Object nestedObject = KradDataServiceLocator.getDataObjectService().wrap(bo).getPropertyValueNullSafe(nestedAttributePrefix);
-            if (!(nestedObject instanceof BusinessObject)) {
-                throw new ObjectNotABusinessObjectRuntimeException(
-                        "Attribute requested (" + nestedAttributePrefix + ") is of class: " + "'" +
-                                nestedObject.getClass().getName() + "' and is not a " +
-                                "descendent of BusinessObject.");
-            }
-            return validateReferenceExistsAndIsActive((BusinessObject) nestedObject, nestedAttributePrimitive,
+            Object nestedObject = KradDataServiceLocator.getDataObjectService().wrap(dataObject)
+                    .getPropertyValueNullSafe(nestedAttributePrefix);
+            return validateReferenceExistsAndIsActive(nestedObject, nestedAttributePrimitive,
                     attributeToHighlightOnFail, displayFieldName);
         }
 
-        boolean success = true;
-        boolean exists;
-        boolean active;
+        boolean hasReferences = validateFkFieldsPopulated(dataObject, referenceName);
+        boolean referenceExists = hasReferences && validateReferenceExists(dataObject, referenceName);
+        boolean canIncludeActiveReference = referenceExists && (!(dataObject instanceof Inactivatable) ||
+                ((Inactivatable) dataObject).isActive());
+        boolean referenceActive = canIncludeActiveReference && validateReferenceIsActive(dataObject, referenceName);
 
-        boolean fkFieldsPopulated = true;
+        if(hasReferences && !referenceExists) {
+            GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE,
+                    displayFieldName);
+            return false;
+        } else if(canIncludeActiveReference && !referenceActive) {
+            GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_INACTIVE,
+                    displayFieldName);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validateFkFieldsPopulated(Object dataObject, String referenceName) {
         // need to check for DD relationship FKs
-        List<String> fkFields = getDataDictionaryService().getRelationshipSourceAttributes(bo.getClass().getName(),
-                referenceName);
+        List<String> fkFields = getDataDictionaryService().getRelationshipSourceAttributes(
+                dataObject.getClass().getName(), referenceName);
         if (fkFields != null) {
             for (String fkFieldName : fkFields) {
                 Object fkFieldValue = null;
                 try {
-                    fkFieldValue = PropertyUtils.getProperty(bo, fkFieldName);
+                    fkFieldValue = PropertyUtils.getProperty(dataObject, fkFieldName);
                 }
                 // if we cant retrieve the field value, then
                 // it doesnt have a value
                 catch (IllegalAccessException e) {
-                    fkFieldsPopulated = false;
+                    return false;
                 } catch (InvocationTargetException e) {
-                    fkFieldsPopulated = false;
+                    return false;
                 } catch (NoSuchMethodException e) {
-                    fkFieldsPopulated = false;
+                    return false;
                 }
 
                 // test the value
                 if (fkFieldValue == null) {
-                    fkFieldsPopulated = false;
+                    return false;
                 } else if (String.class.isAssignableFrom(fkFieldValue.getClass())) {
                     if (StringUtils.isBlank((String) fkFieldValue)) {
-                        fkFieldsPopulated = false;
+                        return false;
                     }
                 }
             }
-        } else if (bo instanceof PersistableBusinessObject) { // if no DD relationship exists, check the persistence service
-            fkFieldsPopulated = getLegacyDataAdapter().allForeignKeyValuesPopulatedForReference(
-                    (PersistableBusinessObject) bo, referenceName);
+        } else { // if no DD relationship exists, check the persistence service / data object service
+            return getLegacyDataAdapter().allForeignKeyValuesPopulatedForReference(dataObject, referenceName);
         }
-
-        // only bother if all the fk fields have values
-        if (fkFieldsPopulated) {
-
-            // do the existence test
-            exists = validateReferenceExists(bo, referenceName);
-            if (exists) {
-
-                // do the active test, if appropriate
-                if (!(bo instanceof MutableInactivatable) || ((MutableInactivatable) bo).isActive()) {
-                    active = validateReferenceIsActive(bo, referenceName);
-                    if (!active) {
-                        GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail,
-                                RiceKeyConstants.ERROR_INACTIVE, displayFieldName);
-                        success &= false;
-                    }
-                }
-            } else {
-                GlobalVariables.getMessageMap().putError(attributeToHighlightOnFail, RiceKeyConstants.ERROR_EXISTENCE,
-                        displayFieldName);
-                success &= false;
-            }
-        }
-        return success;
+        return true;
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecks(org.kuali.rice.krad.bo.BusinessObject)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecks(java.lang.Object
+     * dataObject)
      */
     @Override
-	public boolean validateDefaultExistenceChecks(BusinessObject bo) {
+    public boolean validateDefaultExistenceChecks(Object dataObject) {
         boolean success = true;
 
         // get a collection of all the referenceDefinitions setup for this object
-        Collection references = getDocumentDictionaryService().getDefaultExistenceChecks(bo.getClass());
+        Collection references = getDocumentDictionaryService().getDefaultExistenceChecks(dataObject.getClass());
 
         // walk through the references, doing the tests on each
         for (Iterator iter = references.iterator(); iter.hasNext(); ) {
             ReferenceDefinition reference = (ReferenceDefinition) iter.next();
 
             // do the existence and validation testing
-            success &= validateReferenceExistsAndIsActive(bo, reference);
+            success &= validateReferenceExistsAndIsActive(dataObject, reference);
         }
         return success;
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.bo.BusinessObject,
-     *      org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
+     * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(java.lang.Object
+     * dataObject,
+     * java.lang.Object newCollectionLine, java.lang.String collectionName)
      */
     @Override
-	public boolean validateDefaultExistenceChecksForNewCollectionItem(BusinessObject bo,
-            BusinessObject newCollectionItem, String collectionName) {
+    public boolean validateDefaultExistenceChecksForNewCollectionItem(Object dataObject, Object newCollectionItem,
+            String collectionName) {
         boolean success = true;
 
         if (StringUtils.isNotBlank(collectionName)) {
             // get a collection of all the referenceDefinitions setup for this object
-            Collection references = getDocumentDictionaryService().getDefaultExistenceChecks(bo.getClass());
+            Collection references = getDocumentDictionaryService().getDefaultExistenceChecks(dataObject.getClass());
 
             // walk through the references, doing the tests on each
             for (Iterator iter = references.iterator(); iter.hasNext(); ) {
@@ -720,7 +710,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                     } else {
                         Class boClass =
                                 reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() :
-                                        bo.getClass();
+                                        dataObject.getClass();
                         displayFieldName = dataDictionaryService.getAttributeLabel(boClass,
                                 reference.getAttributeToHighlightOnFail());
                     }
@@ -738,7 +728,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.krad.document.TransactionalDocument)
      */
     @Override
-	public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
+    public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
         boolean success = true;
 
         // get a collection of all the referenceDefinitions setup for this object
@@ -756,10 +746,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     /**
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.krad.document.TransactionalDocument,
-     *      org.kuali.rice.krad.bo.BusinessObject, String)
+     * org.kuali.rice.krad.bo.BusinessObject, String)
      */
     @Override
-	public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
+    public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
             BusinessObject newCollectionItem, String collectionName) {
         boolean success = true;
         if (StringUtils.isNotBlank(collectionName)) {
@@ -808,7 +798,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @return
      */
     @Override
-	public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing,
+    public DictionaryValidationResult validate(AttributeValueReader valueReader, boolean doOptionalProcessing,
             String validationState, StateMapping stateMapping) {
         DictionaryValidationResult result = new DictionaryValidationResult();
 
@@ -1013,7 +1003,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *
      * @param definition -   the constrainable attribute definition of a specific attribute name
      * @throws AttributeValidationException
-     * @see #validateAttribute(DictionaryValidationResult, AttributeValueReader, boolean) for the other parameters
      */
     protected void validateAttribute(DictionaryValidationResult result, Constrainable definition,
             AttributeValueReader attributeValueReader, boolean checkIfRequired, String validationState,
@@ -1254,10 +1243,10 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     }
 
     @Deprecated
-	public LegacyDataAdapter getLegacyDataAdapter() {
-		if ( legacyDataAdapter == null ) {
-			legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
-		}
-		return legacyDataAdapter;
-	}
+    public LegacyDataAdapter getLegacyDataAdapter() {
+        if (legacyDataAdapter == null) {
+            legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+        }
+        return legacyDataAdapter;
+    }
 }

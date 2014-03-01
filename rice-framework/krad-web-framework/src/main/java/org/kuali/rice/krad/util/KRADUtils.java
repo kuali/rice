@@ -23,8 +23,10 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
@@ -70,11 +72,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -619,6 +623,78 @@ public final class KRADUtils {
     }
 
     /**
+     * This method converts request parameters coming in as String to native types in case of Boolean, Number or java.sql.Date.
+     * For boolean the conversion is performed only if an @Converter annotation is set on the JPA entity field.
+     *
+     * @param dataObjectClass - business object class
+     * @param parameters - map of request parameters with field values as String for the fields in the dataObjectClass
+     * @return Map <String,Object> converted values
+     */
+    public static Map<String, Object> coerceRequestParameterTypes(Class<?> dataObjectClass,
+            Map<String, String> parameters) {
+        Map<String, Object> filteredFieldValues = new HashMap<String, Object>();
+        List<java.lang.reflect.Field> allFields = ObjectPropertyUtils.getAllFields(
+                new ArrayList<java.lang.reflect.Field>(), dataObjectClass, Object.class);
+
+        for (String fieldName : parameters.keySet()) {
+            Class<?> propertyType = ObjectPropertyUtils.getPropertyType(dataObjectClass, fieldName);
+
+            String strValue = parameters.get(fieldName);
+
+            if (TypeUtils.isBooleanClass(propertyType) && isConvertAnnotationPresent(allFields, fieldName)) {
+                filteredFieldValues.put(fieldName, Truth.strToBooleanIgnoreCase(strValue));
+            } else if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType)) {
+                try {
+                    filteredFieldValues.put(fieldName, hydrateAttributeValue(propertyType, strValue));
+                } catch (Exception nfe) {
+                    GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
+                            RiceKeyConstants.ERROR_NUMBER, strValue);
+                    throw new RuntimeException("Could not parse property value into Number for " + fieldName);
+                }
+            } else if (TypeUtils.isTemporalClass(propertyType)) {
+                try {
+                    filteredFieldValues.put(fieldName, CoreApiServiceLocator.getDateTimeService().convertToSqlDate(
+                            strValue));
+                } catch (ParseException pe) {
+                    GlobalVariables.getMessageMap().putError("parameters[" + fieldName + "]",
+                            RiceKeyConstants.ERROR_DATE_TIME, strValue);
+                    throw new RuntimeException("Could not parse property value into java.sql.Date for " + fieldName);
+                }
+            }
+
+            // If value not converted set the value from parameters
+            if (filteredFieldValues.get(fieldName) == null) {
+                filteredFieldValues.put(fieldName, parameters.get(fieldName));
+            }
+
+        }
+        return filteredFieldValues;
+
+    }
+
+    /**
+     * Checks to see if the specified field from the list of allFields has the @Convert annotation set on it
+     *
+     * @param allFields  List of all fields on the entity
+     * @param fieldName  Field name to check for @Convert annotation
+     * @return true if annotation is present else false
+     */
+    private static boolean isConvertAnnotationPresent(List<java.lang.reflect.Field> allFields, String fieldName) {
+        //Check if there is a @Convert annotation on the field
+        boolean convertAnnotationFound = false;
+        for (java.lang.reflect.Field f : allFields) {
+            if (f.getName().equalsIgnoreCase(fieldName)) {
+                if (f.getAnnotation(javax.persistence.Convert.class) != null) {
+                    convertAnnotationFound = true;
+                }
+                break;
+            }
+        }
+
+        return convertAnnotationFound;
+    }
+
+    /**
      * Check if data might be sensitive
      *
      * <p>
@@ -816,33 +892,44 @@ public final class KRADUtils {
      * Logs the error messages if any in the message map
      */
     public static void logErrors() {
-        if (GlobalVariables.getMessageMap().hasErrors()) {
 
-            for (Iterator<Map.Entry<String, List<ErrorMessage>>> i =
-                         GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext(); ) {
-                Map.Entry<String, List<ErrorMessage>> e = i.next();
-
-                StringBuffer logMessage = new StringBuffer();
-                logMessage.append("[" + e.getKey() + "] ");
-                boolean first = true;
-
-                List<ErrorMessage> errorList = e.getValue();
-                for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext(); ) {
-                    ErrorMessage em = j.next();
-
-                    // if its the first message for the key
-                    if (first) {
-                        first = false;
-                    } else {
-                        logMessage.append(";");
-                    }
-                    logMessage.append(em);
-                }
-
-                LOG.error(logMessage);
-            }
+        if (!GlobalVariables.getMessageMap().hasErrors()) {
+            return;
         }
 
+        for (Iterator<Map.Entry<String, List<ErrorMessage>>> i =
+                     GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext(); ) {
+            Map.Entry<String, List<ErrorMessage>> e = i.next();
+
+            StringBuffer logMessage = buildMessage(e);
+            LOG.error(logMessage);
+        }
+    }
+
+    /**
+     * Builds the message for a given entry in the messageMap. The entry could have multiple messages for a given key.
+     * The messages are appended separated by a ;
+     * @param e  Map entry of property and errors for that property
+     * @return logMessage
+     */
+    private static StringBuffer buildMessage(Map.Entry<String, List<ErrorMessage>> e) {
+        StringBuffer logMessage = new StringBuffer();
+        logMessage.append("[" + e.getKey() + "] ");
+        boolean first = true;
+
+        List<ErrorMessage> errorList = e.getValue();
+        for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext(); ) {
+            ErrorMessage em = j.next();
+
+            // if its the first message for the key
+            if (first) {
+                first = false;
+            } else {
+                logMessage.append(";");
+            }
+            logMessage.append(em);
+        }
+        return logMessage;
     }
 
     /**

@@ -47,6 +47,8 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     private List<KeyMessage> richOptions;
     private List<Component> inlineComponents;
 
+    private List<Message> internalMessageComponents;
+
     private boolean locationSelect = false;
 
     public MultiValueControlBase() {
@@ -64,6 +66,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
         if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
+            internalMessageComponents = new ArrayList<Message>();
 
             for (KeyValue option : options) {
                 Message message = ComponentFactory.getMessage();
@@ -84,6 +87,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 message.setInlineComponents(inlineComponents);
                 message.setRenderWrapperTag(false);
                 richOptions.add(new KeyMessage(key, value, message));
+                internalMessageComponents.add(message);
             }
         }
     }
@@ -187,6 +191,17 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      */
     public void setRichOptions(List<KeyMessage> richOptions) {
         this.richOptions = richOptions;
+    }
+
+    /**
+     * Used by reflection during the lifecycle to get internal message components that may be contained in options
+     *
+     * <p>There are no references to this method in the code, this is intentional.  DO NOT REMOVE.</p>
+     *
+     * @return the internal message components, if any
+     */
+    public List<Message> getInternalMessageComponents() {
+        return internalMessageComponents;
     }
 
     /**

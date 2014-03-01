@@ -20,36 +20,34 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
 @Entity
-@Table(
-		name = "KRTST_TEST_TABLE_EXT_T")
+@Table(name = "KRTST_TEST_TABLE_EXT_T")
 @ExtensionFor(TestDataObject.class)
 public class TestDataObjectExtension implements Serializable {
-	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(
-			name = "PK_PROP")
-	String primaryKeyProperty;
+    @OneToOne
+	@JoinColumn(name = "PK_PROP")
+	private TestDataObject primaryKeyProperty;
 
-	@Column(
-			name = "STR_PROP",
-			length = 40)
-	String extensionProperty;
+	@Column(name = "STR_PROP", length = 40)
+	private String extensionProperty;
 
-	public String getPrimaryKeyProperty() {
-		return primaryKeyProperty;
-	}
+    public TestDataObject getPrimaryKeyProperty() {
+        return primaryKeyProperty;
+    }
 
-	public void setPrimaryKeyProperty(String primaryKeyProperty) {
-		this.primaryKeyProperty = primaryKeyProperty;
-	}
+    public void setPrimaryKeyProperty(TestDataObject primaryKeyProperty) {
+        this.primaryKeyProperty = primaryKeyProperty;
+    }
 
-	public String getExtensionProperty() {
+    public String getExtensionProperty() {
 		return extensionProperty;
 	}
 

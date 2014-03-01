@@ -39,7 +39,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-FixedPointPatternConstraint-Example1 start-->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField1"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
               p:constraintText="Maximum 5 numbers total, minimum 2 decimal places (3 max before decimal)">
           <property name="validCharactersConstraint">
             <bean parent="FixedPointPatternConstraint" p:precision="5"
@@ -58,7 +58,7 @@
       <list>
         <!-- ex:Demo-FixedPointPatternConstraint-Example2 start-->
         <!-- decimal only example -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField2"
+        <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField2"
               p:constraintText="Allows only decimal numbers of length 4">
           <property name="validCharactersConstraint">
             <bean parent="FixedPointPatternConstraint" p:precision="4"
@@ -67,7 +67,7 @@
         </bean>
 
         <!-- negative allowed -->
-        <bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField3"
+        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField3"
               p:constraintText="Maximum 6 numbers total, minimum 3 decimal places (3 max before decimal).  Can be negative.">
           <property name="validCharactersConstraint">
             <bean parent="FixedPointPatternConstraint" p:allowNegative="true" p:precision="6" p:scale="3"/>

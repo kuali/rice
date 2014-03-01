@@ -35,7 +35,7 @@
         <bean parent="Uif-Page" p:id="RollUpTransactions1" p:title="View Transactions">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:label="Type to refresh" p:propertyName="testField"/>
+              <bean parent="Uif-InputField" p:label="Type to refresh" p:propertyName="testField"/>
               <bean parent="Uif-VerticalBoxSection" p:title="Section">
                 <property name="refreshWhenChangedPropertyNames" value="testField"/>
                 <property name="items">
@@ -76,7 +76,7 @@
 
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges" p:labelPlacement="TOP"/>
+        <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges"/>
       </list>
     </property>
 
@@ -115,7 +115,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="Uif-HorizontalFieldGroup" p:label="Description" p:style="width: 40%;">
+        <bean parent="Uif-HorizontalFieldGroup" p:label="Description" p:style="max-width: 600px;">
           <property name="items">
             <list>
               <bean parent="Uif-LinkField" p:href="javascript:void(0)"
@@ -167,7 +167,7 @@
   <bean id="transactionDetailFields1" parent="Uif-HorizontalBoxGroup">
     <property name="items">
       <list>
-        <bean parent="Uif-GridSection" p:style="width: 40%;">
+        <bean parent="Uif-GridSection" p:style="max-width: 600px;">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="transactionDisplayType" p:label="Transaction Type">

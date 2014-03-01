@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.krad.data;
 
-import static org.junit.Assert.assertNotNull;
-
 import org.apache.log4j.Level;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.data.DataType;
@@ -28,6 +25,8 @@ import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.TestDictionaryConfig;
 import org.kuali.rice.krad.uif.control.TextControl;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -65,32 +64,35 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
     public void verifyLabelOverride() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertEquals("Label for DO not pulled from metadata: " + dataObjectEntry + "\n", "A Spring-Provided Label", dataObjectEntry.getObjectLabel());
+        assertEquals("Label for DO not pulled from metadata: " + dataObjectEntry + "\n", "A Spring-Provided Label",
+                dataObjectEntry.getObjectLabel());
     }
 
     @Test
     public void verifyUifObjectDescriptionOverride() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertEquals("Description not overridden", "UIF-Provided Description", dataObjectEntry.getObjectDescription());
+        assertEquals("Description not overridden", "UIF-Provided Description", dataObjectEntry.getObjectDescription());
     }
 
     @Test
     public void verifyAttributeLabelOverrideFromSpringMetadata() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition("nonStandardDataType");
-        Assert.assertNotNull("nonStandardDataType attribute did not exist",attributeDefinition);
-        Assert.assertEquals("Label on nonStandardDataType attribute not pulled from Spring metadata: " + attributeDefinition + "\n", "Non Standard Label-Spring", attributeDefinition.getLabel());
+        assertNotNull("nonStandardDataType attribute did not exist",attributeDefinition);
+        assertEquals(
+                "Label on nonStandardDataType attribute not pulled from Spring metadata: " + attributeDefinition + "\n",
+                "Non Standard Label-Spring", attributeDefinition.getLabel());
     }
 
     @Test
     public void verifyAttributesExist() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertNotNull("attribute list should not have been null", dataObjectEntry.getAttributes() );
-        Assert.assertFalse("attribute list should not have been empty", dataObjectEntry.getAttributes().isEmpty() );
+        assertNotNull("attribute list should not have been null", dataObjectEntry.getAttributes() );
+        assertFalse("attribute list should not have been empty", dataObjectEntry.getAttributes().isEmpty());
 
-        Assert.assertNotNull("stringProperty should have been present in the list", dataObjectEntry.getAttributeDefinition("stringProperty") );
+        assertNotNull("stringProperty should have been present in the list", dataObjectEntry.getAttributeDefinition("stringProperty") );
     }
 
     @Test
@@ -98,24 +100,25 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition("stringProperty");
-        Assert.assertEquals( "springProperty label incorrect", "Attribute Label From Annotation", attributeDefinition.getLabel());
-        Assert.assertEquals( "springProperty data type incorrect", DataType.STRING, attributeDefinition.getDataType());
+        assertEquals("springProperty label incorrect", "Attribute Label From Annotation",
+                attributeDefinition.getLabel());
+        assertEquals("springProperty data type incorrect", DataType.STRING, attributeDefinition.getDataType());
     }
 
     public void verifyTitleAttribute() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertEquals( "title attribute property incorrect", "primaryKeyProperty", dataObjectEntry.getTitleAttribute() );
+        assertEquals("title attribute property incorrect", "primaryKeyProperty", dataObjectEntry.getTitleAttribute());
     }
 
     @Test
     public void verifyPrimaryKey() {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
 
-        Assert.assertNotNull("PK list should not have been null", dataObjectEntry.getPrimaryKeys() );
-        Assert.assertFalse("PK list should not have been empty", dataObjectEntry.getPrimaryKeys().isEmpty() );
-        Assert.assertEquals("PK list length wrong", 1, dataObjectEntry.getPrimaryKeys().size() );
-        Assert.assertEquals("PK field incorrect", "primaryKeyProperty", dataObjectEntry.getPrimaryKeys().get(0) );
+        assertNotNull("PK list should not have been null", dataObjectEntry.getPrimaryKeys() );
+        assertFalse("PK list should not have been empty", dataObjectEntry.getPrimaryKeys().isEmpty());
+        assertEquals("PK list length wrong", 1, dataObjectEntry.getPrimaryKeys().size());
+        assertEquals("PK field incorrect", "primaryKeyProperty", dataObjectEntry.getPrimaryKeys().get(0));
     }
 
     @Test
@@ -123,14 +126,17 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         String propertyName = "stringProperty";
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition(propertyName);
-        Assert.assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
+        assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
 
-        Assert.assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
-        Assert.assertEquals( "Type of control field is incorrect", TextControl.class, attributeDefinition.getControlField().getClass() );
-        Assert.assertEquals( "Size of control is incorrect", 40, ((TextControl) attributeDefinition.getControlField()).getSize() );
-        Assert.assertNotNull( "MaxLength of control is missing", ((TextControl) attributeDefinition.getControlField()).getMaxLength() );
-        Assert.assertEquals( "MaxLength of control is incorrect", 40, ((TextControl) attributeDefinition.getControlField()).getMaxLength().intValue() );
-        Assert.assertEquals( "textExpand property incorrect", false, ((TextControl) attributeDefinition.getControlField()).isTextExpand() );
+        assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
+        assertTrue("Type of control field is incorrect", attributeDefinition.getControlField() instanceof TextControl);
+        assertEquals("Size of control is incorrect", 40,
+                ((TextControl) attributeDefinition.getControlField()).getSize());
+        assertNotNull( "MaxLength of control is missing", ((TextControl) attributeDefinition.getControlField()).getMaxLength() );
+        assertEquals("MaxLength of control is incorrect", 40,
+                ((TextControl) attributeDefinition.getControlField()).getMaxLength().intValue());
+        assertEquals("textExpand property incorrect", false,
+                ((TextControl) attributeDefinition.getControlField()).isTextExpand());
     }
 
     @Test
@@ -138,14 +144,17 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         String propertyName = "longStringProperty";
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition(propertyName);
-        Assert.assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
+        assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
 
-        Assert.assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
-        Assert.assertEquals( "Type of control field is incorrect", TextControl.class, attributeDefinition.getControlField().getClass() );
-        Assert.assertEquals( "Size of control is incorrect", 200, ((TextControl) attributeDefinition.getControlField()).getSize() );
-        Assert.assertNotNull( "MaxLength of control is missing", ((TextControl) attributeDefinition.getControlField()).getMaxLength() );
-        Assert.assertEquals( "MaxLength of control is incorrect", 200, ((TextControl) attributeDefinition.getControlField()).getMaxLength().intValue() );
-        Assert.assertEquals( "textExpand property incorrect", true, ((TextControl) attributeDefinition.getControlField()).isTextExpand() );
+        assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
+        assertTrue("Type of control field is incorrect", attributeDefinition.getControlField() instanceof TextControl);
+        assertEquals("Size of control is incorrect", 200,
+                ((TextControl) attributeDefinition.getControlField()).getSize());
+        assertNotNull( "MaxLength of control is missing", ((TextControl) attributeDefinition.getControlField()).getMaxLength() );
+        assertEquals("MaxLength of control is incorrect", 200,
+                ((TextControl) attributeDefinition.getControlField()).getMaxLength().intValue());
+        assertEquals("textExpand property incorrect", true,
+                ((TextControl) attributeDefinition.getControlField()).isTextExpand());
     }
 
     @Test
@@ -153,11 +162,11 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         String propertyName = "dateProperty";
         AttributeDefinition attributeDefinition = dataObjectEntry.getAttributeDefinition(propertyName);
-        Assert.assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
+        assertNotNull(propertyName + " should have been present in the attribute list", attributeDefinition );
 
-        Assert.assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
-        Assert.assertEquals( "Type of control field is incorrect", TextControl.class, attributeDefinition.getControlField().getClass() );
-        Assert.assertNotNull( "control field is missing a datepicker", ((TextControl) attributeDefinition.getControlField()).getDatePicker() );
+        assertNotNull( "the ControlField should not have been null", attributeDefinition.getControlField() );
+        assertTrue("Type of control field is incorrect", attributeDefinition.getControlField() instanceof TextControl);
+        assertNotNull( "control field is missing a datepicker", ((TextControl) attributeDefinition.getControlField()).getDatePicker() );
     }
 
     @Test
@@ -165,7 +174,7 @@ public class DataDictionaryMetadataDefaultingTest extends KRADTestCase {
         DataObjectEntry dataObjectEntry = getDataObjectEntry(MAIN_DATA_OBJECT_FOR_TESTING);
         String relationshipName = "referencedObject";
         RelationshipDefinition relationshipDefinition = dataObjectEntry.getRelationshipDefinition(relationshipName);
-        Assert.assertNotNull(relationshipName + " should have been present in the relationship list", relationshipDefinition );
+        assertNotNull(relationshipName + " should have been present in the relationship list", relationshipDefinition );
     }
 
     protected DataObjectEntry getDataObjectEntry( String dataObjectClassName ) {

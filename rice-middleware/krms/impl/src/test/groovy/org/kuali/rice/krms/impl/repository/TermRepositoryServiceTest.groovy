@@ -18,15 +18,12 @@ package org.kuali.rice.krms.impl.repository
 import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.krad.service.BusinessObjectService
-import org.kuali.rice.krms.api.repository.RuleRepositoryService
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.term.TermRepositoryService
-import org.kuali.rice.krms.api.repository.term.TermDefinition
-import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
-import org.kuali.rice.krms.api.repository.term.TermResolverDefinition
 
 import static groovy.util.GroovyTestCase.assertEquals
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
 class TermRepositoryServiceTest {
 
@@ -43,7 +40,7 @@ class TermRepositoryServiceTest {
 
     @Before
     void setupBoServiceMockContext() {
-        mock = new MockFor(BusinessObjectService.class)
+        mock = new MockFor(DataObjectService.class)
     }
 
 //
@@ -57,10 +54,10 @@ class TermRepositoryServiceTest {
         TermSpecificationBo resultTermSpecBo = new TermSpecificationBo(id:"1", name:"FooTerm", namespace: "RICE", type: "java.lang.String");
         TermBo resultTermBo = new TermBo(id:"1", specificationId:"1", description:"desc",specification:resultTermSpecBo, parameters:[]);
 
-        mock.demand.findBySinglePrimaryKey { a, b -> resultTermBo };
+        mock.demand.find (1..1) { a, b -> resultTermBo };
 
         def boService = mock.proxyDelegateInstance()
-		termRepositoryServiceImpl.setBusinessObjectService(boService)
+		termRepositoryServiceImpl.setDataObjectService(boService)
 
         assertEquals("FooTerm", termRepositoryService.getTerm("1").getSpecification().getName());
 
@@ -89,10 +86,10 @@ class TermRepositoryServiceTest {
         TermSpecificationBo resultTermSpecBo = new TermSpecificationBo(id:"1", name:"FooTerm", namespace: "RICE", type: "java.lang.String");
         TermResolverBo resultTermResolverBo = new TermResolverBo(id: "1", name: "FooResolver", namespace: "RICE", contextId: "1", typeId: "1", outputId: "1", output: resultTermSpecBo);
 
-        mock.demand.findMatching { a, b -> [resultTermResolverBo] };
+        mock.demand.findMatching { a, b -> buildQueryResults([resultTermResolverBo]) };
 
         def boService = mock.proxyDelegateInstance()
-        termRepositoryServiceImpl.setBusinessObjectService(boService)
+        termRepositoryServiceImpl.setDataObjectService(boService)
 
         assertEquals("FooResolver", termRepositoryService.findTermResolversByNamespace("RICE").get(0).getName());
 

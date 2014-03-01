@@ -602,7 +602,7 @@
             </bean>
 
             <bean parent="Uif-InputField" p:propertyName="proposition.description" p:constraintText="size 100"
-                  p:style="margin-left: 1pt;" p:showLabel="true" p:label="Description" p:labelPlacement="TOP"
+                  p:style="margin-left: 1pt;" p:showLabel="true" p:label="Description"
                   p:maxLength="255" p:required="true">
               <property name="control">
                 <bean parent="Uif-TextControl" p:size="93" p:maxLength="100"
@@ -626,9 +626,9 @@
                           <property name="items">
                             <list>
 
-                              <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.categoryId"
+                              <bean parent="Uif-InputField" p:propertyName="proposition.categoryId"
                                     p:style="margin-left: 12pt" p:showLabel="true" p:label="Category"
-                                    p:labelPlacement="TOP" p:maxLength="40">
+                                    p:maxLength="40">
                                 <property name="control">
                                   <bean parent="Uif-DropdownControl" p:cssClasses="categorySelect"/>
                                 </property>
@@ -637,7 +637,7 @@
                                 </property>
                               </bean>
 
-                              <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[0].value"
+                              <bean parent="Uif-InputField" p:propertyName="proposition.parameters[0].value"
                                     p:showLabel="true" p:label="Term" p:maxLength="255" p:required="true">
                                 <property name="control">
                                   <bean parent="Uif-DropdownControl" p:cssClasses="termSelect"/>
@@ -662,9 +662,9 @@
                           <property name="items">
                             <list>
 
-                              <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.newTermDescription"
+                              <bean parent="Uif-InputField" p:propertyName="proposition.newTermDescription"
                                     p:required="true"
-                                    p:style="margin-left: 12pt" p:showLabel="true" p:label="Name" p:labelPlacement="TOP"
+                                    p:style="margin-left: 12pt" p:showLabel="true" p:label="Name"
                                     p:maxLength="40">
                                 <property name="control">
                                   <bean parent="Uif-TextControl" p:watermarkText="Name of new Term"/>
@@ -693,7 +693,7 @@
                   </bean>
 
                   <!-- operator -->
-                  <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[2].value"
+                  <bean parent="Uif-InputField" p:propertyName="proposition.parameters[2].value"
                         p:showLabel="true"
                         p:style="padding-bottom: 0em;padding-top:null 0em;padding-left: 0em;padding-right: 0em;"
                         p:label="Comparison" p:maxLength="20">
@@ -707,7 +707,7 @@
 
                   <!-- user entered value -->
                   <!-- KULRICE-6728 dont display user entered value if operator is ==null or !=null -->
-                  <bean parent="Uif-InputField-LabelTop" p:propertyName="proposition.parameters[1].value"
+                  <bean parent="Uif-InputField" p:propertyName="proposition.parameters[1].value"
                         p:showLabel="true" p:label="Value" p:maxLength="255"
                         p:required="@{#np.proposition.parameters[2].value == null or !( #np.proposition.parameters[2].value matches '(?:=null|!=null)' )}"
                         p:progressiveRenderAndRefresh="true"

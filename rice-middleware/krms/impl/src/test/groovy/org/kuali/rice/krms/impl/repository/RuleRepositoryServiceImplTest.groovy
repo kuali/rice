@@ -18,8 +18,9 @@ package org.kuali.rice.krms.impl.repository
 import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.RuleRepositoryService
 import org.kuali.rice.krms.api.repository.context.ContextDefinition
 import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria
@@ -40,8 +41,8 @@ class RuleRepositoryServiceImplTest {
     }
 
     @Before
-    void setupCriteriaLookupServiceMockContext() {
-        mock = new MockFor(CriteriaLookupService.class)
+    void setupDataObjectMockContext() {
+        mock = new MockFor(DataObjectService.class)
     }
 
 //
@@ -57,10 +58,10 @@ class RuleRepositoryServiceImplTest {
 
         GenericQueryResults.Builder<ContextBo> queryResults = GenericQueryResults.Builder.create();
         queryResults.results = [resultContext]
-        mock.demand.lookup() { a, b -> queryResults.build() }
+        mock.demand.findMatching() { a, b -> queryResults.build() }
 
-        def criteriaLookupService = mock.proxyDelegateInstance()
-        ruleRepositoryServiceImpl.setCriteriaLookupService(criteriaLookupService)
+        def dos = mock.proxyDelegateInstance()
+        ruleRepositoryServiceImpl.setDataObjectService(dos)
 
         ContextSelectionCriteria criteria = ContextSelectionCriteria.newCriteria("RICE", "context1", Collections.emptyMap());
 
@@ -72,8 +73,8 @@ class RuleRepositoryServiceImplTest {
     @Test
     public void test_select_context_null_criteria() {
 
-        def criteriaLookupService = mock.proxyDelegateInstance()
-        ruleRepositoryServiceImpl.setCriteriaLookupService(criteriaLookupService)
+        def bos = mock.proxyDelegateInstance()
+        ruleRepositoryServiceImpl.setDataObjectService(bos)
 
         shouldFail(RiceIllegalArgumentException.class) {
             ContextDefinition context = ruleRepositoryService.selectContext(null);

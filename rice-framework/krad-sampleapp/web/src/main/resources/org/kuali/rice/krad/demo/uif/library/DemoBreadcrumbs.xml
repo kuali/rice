@@ -260,7 +260,7 @@
         <bean parent="Uif-BreadcrumbItem" p:label="Application"
               p:url.href="@{#ConfigProperties['application.url']}"/>
         <bean parent="Uif-BreadcrumbItem" p:label="Breadcrumbs Demo"
-              p:url.viewId="Demo-Breadcrumbs-View" p:url.controllerMapping="/kradsampleapp"/>
+              p:url.viewId="Demo-BreadcrumbsView" p:url.controllerMapping="/kradsampleapp"/>
         <bean parent="Uif-BreadcrumbItem" p:label="Override Demo"
               p:url.viewId="Demo-Breadcrumbs-View9" p:url.controllerMapping="/kradsampleapp"/>
         <bean parent="Uif-BreadcrumbItem" p:label="Demo Page"
@@ -274,22 +274,22 @@
   <bean id="Demo-Breadcrumbs-View10" parent="Demo-Breadcrumbs-BaseView">
     <!-- ex:Demo-Breadcrumbs-Example10 start-->
     <property name="breadcrumbItem.siblingBreadcrumbComponent">
-      <bean parent="Uif-InputField" p:label="Navigate to" p:propertyName="viewId">
+      <bean parent="Uif-InputField" p:label="Navigate to" p:propertyName="inputField25">
         <property name="control">
           <bean parent="Uif-DropdownControl">
             <property name="options">
               <list>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-Breadcrumbs-View" p:value="Breadcrumbs"
-                      p:location.viewId="Demo-Breadcrumbs-View"
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-BreadcrumbsView" p:value="Breadcrumbs"
+                      p:location.viewId="Demo-BreadcrumbsView"
                       p:location.controllerMapping="/kradsampleapp"/>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-InputField-View" p:value="Rich Messages View"
-                      p:location.viewId="Demo-InputField-View"
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-InputFieldView" p:value="Rich Messages View"
+                      p:location.viewId="Demo-InputFieldView"
                       p:location.controllerMapping="/kradsampleapp"/>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-Action-View" p:value="ReadOnly Test View"
-                      p:location.viewId="Demo-Action-View"
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-ActionView" p:value="ReadOnly Test View"
+                      p:location.viewId="Demo-ActionView"
                       p:location.controllerMapping="/kradsampleapp"/>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-OptionsListControl-View" p:value="Client Disable View"
-                      p:location.viewId="Demo-OptionsListControl-View"
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-OptionsListControlView" p:value="Client Disable View"
+                      p:location.viewId="Demo-OptionsListControlView"
                       p:location.controllerMapping="/kradsampleapp"/>
               </list>
             </property>
@@ -345,23 +345,23 @@
     <!-- ex:Demo-Breadcrumbs-Example1 end-->
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField1"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField2"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField3"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField4"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField5"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField6"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField7"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField8"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField9"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField10"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField11"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField12"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField13"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField14"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField15"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField16"/>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field" p:propertyName="inputField17"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField2"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField3"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField4"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField5"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField6"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField7"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField8"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField9"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField10"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField11"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField12"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField13"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField14"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField15"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField16"/>
+        <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField17"/>
       </list>
     </property>
   </bean>

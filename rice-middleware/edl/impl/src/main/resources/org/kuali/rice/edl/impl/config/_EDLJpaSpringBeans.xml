@@ -41,7 +41,6 @@
     <value>org.kuali.rice.edl.impl.extract.Fields</value>
     <value>org.kuali.rice.edl.impl.bo.EDocLiteAssociation</value>
     <value>org.kuali.rice.edl.impl.bo.EDocLiteDefinition</value>
-
   </util:list>
 
   <util:list id="additionalMetadataProviders" />

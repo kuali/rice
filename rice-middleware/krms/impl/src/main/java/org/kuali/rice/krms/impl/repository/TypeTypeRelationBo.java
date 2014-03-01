@@ -15,36 +15,75 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelationContract;
+import org.kuali.rice.krms.impl.repository.jpa.RelationshipTypeConverter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.io.Serializable;
 
 /**
  * The mutable implementation of the @{link TypeTypeRelationContract} interface, the counterpart to the immutable implementation {@link TypeTypeRelation}.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class TypeTypeRelationBo
-    extends PersistableBusinessObjectBase
-    implements TypeTypeRelationContract
-{
+@Entity
+@Table(name = "KRMS_TYP_RELN_T")
+public class TypeTypeRelationBo implements TypeTypeRelationContract, Versioned, Serializable {
 
+    private static final long serialVersionUID = 1l;
+
+    @Column(name = "FROM_TYP_ID")
     private String fromTypeId;
+
+    @Column(name = "TO_TYP_ID")
     private String toTypeId;
+
+    @Column(name = "RELN_TYP")
+    @Convert(converter = RelationshipTypeConverter.class)
+
+    @Enumerated(value = EnumType.ORDINAL)
     private RelationshipType relationshipType;
+
+    @Column(name = "SEQ_NO")
     private Integer sequenceNumber;
+
+    @PortableSequenceGenerator(name = "KRMS_TYP_RELN_S")
+    @GeneratedValue(generator = "KRMS_TYP_RELN_S")
+    @Id
+    @Column(name = "TYP_RELN_ID")
     private String id;
+
+    @Column(name = "ACTV")
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
+
+    @Column(name = "VER_NBR")
+    @Version
     private Long versionNumber;
-    private SequenceAccessorService sequenceAccessorService;
 
+    @ManyToOne(targetEntity = KrmsTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "FROM_TYP_ID", referencedColumnName = "TYP_ID", insertable = false, updatable = false)
     private KrmsTypeBo fromType;
+
+    @ManyToOne(targetEntity = KrmsTypeBo.class, cascade = { CascadeType.REFRESH })
+    @JoinColumn(name = "TO_TYP_ID", referencedColumnName = "TYP_ID", insertable = false, updatable = false)
     private KrmsTypeBo toType;
-
-
 
     /**
      * Default Constructor
@@ -165,7 +204,10 @@ public class TypeTypeRelationBo
      * 
      */
     public static TypeTypeRelation to(TypeTypeRelationBo typeTypeRelationBo) {
-        if (typeTypeRelationBo == null) { return null; }
+        if (typeTypeRelationBo == null) {
+            return null;
+        }
+
         return TypeTypeRelation.Builder.create(typeTypeRelationBo).build();
     }
 
@@ -176,7 +218,10 @@ public class TypeTypeRelationBo
      * 
      */
     public static org.kuali.rice.krms.impl.repository.TypeTypeRelationBo from(TypeTypeRelation typeTypeRelation) {
-        if (typeTypeRelation == null) return null;
+        if (typeTypeRelation == null) {
+            return null;
+        }
+
         TypeTypeRelationBo typeTypeRelationBo = new TypeTypeRelationBo();
         typeTypeRelationBo.setFromTypeId(typeTypeRelation.getFromTypeId());
         typeTypeRelationBo.setToTypeId(typeTypeRelation.getToTypeId());
@@ -185,34 +230,8 @@ public class TypeTypeRelationBo
         typeTypeRelationBo.setId(typeTypeRelation.getId());
         typeTypeRelationBo.setActive(typeTypeRelation.isActive());
         typeTypeRelationBo.setVersionNumber(typeTypeRelation.getVersionNumber());
-        // TODO collections, etc.
+
         return typeTypeRelationBo;
-    }
-
-    /**
-     * Returns the next available id for the given table and class.
-     * @return String the next available id for the given table and class.
-     * 
-     */
-    private String getNewId(String table, Class clazz) {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(table, clazz);
-        return id.toString();
-    }
-
-    /**
-     * Set the SequenceAccessorService, useful for testing.
-     * @param sas SequenceAccessorService to use for getNewId.
-     * 
-     */
-    public void setSequenceAccessorService(SequenceAccessorService sas) {
-        sequenceAccessorService = sas;
-    }
-
-    public SequenceAccessorService getSequenceAccessorService() {
-        return sequenceAccessorService;
     }
 
     public KrmsTypeBo getFromType() {
@@ -230,5 +249,4 @@ public class TypeTypeRelationBo
     public void setToType(KrmsTypeBo toType) {
         this.toType = toType;
     }
-
 }

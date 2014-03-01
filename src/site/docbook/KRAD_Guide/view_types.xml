@@ -110,13 +110,38 @@
         property, which specifies the sort key and the defaultSortAscending property, which reverses
         the sorting order. </para>
       <section>
-        <title>Adding Action URLs</title>
-        <para>The resultsActionsField property contains the field with the actions that are
-          available on each line of the result such as edit, copy and delete. 
-        </para>
-        <para>The resultsReturnField property contains the field with the available actions
-          for returning the results to a previous screen.
-        </para>
+        <title>Changing Result Actions</title>
+        <para>The requltsGroup.lineActions property contains components that build the actions that
+          are available on each line of the result.  Typically these are edit, copy and delete on
+          lookups to maintain existing documents and return on quickfinder lookups for returning the
+          results to the previous screen.</para>
+        <para>Content customization are done via the resultsGroup.ineAction poperty of the view.
+          Any components can be used in the action columns.  In the following example several links
+          are grouped together.</para>
+        <programlisting linenumbering="numbered">
+&lt;property name="resultsGroup.lineActions"&gt;
+  &lt;list&gt;
+    &lt;bean parent="Uif-Lookup-MaintenanceEditLink"/&gt;
+    &lt;bean parent="Uif-LinkGroup" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"
+          p:linkSeparator="|"  p:style="clear: none;"&gt;
+    &lt;property name="items"&gt;
+      &lt;list&gt;
+        &lt;bean id="action-loan" parent="Uif-Link" p:linkText="loan" p:finalizeMethodToCall="loan"/&gt;
+        &lt;bean id="action-renew" parent="Uif-Link" p:linkText="renew" p:finalizeMethodToCall="renew"/&gt;
+        &lt;bean id="action-return" parent="Uif-Link" p:linkText="return" pfinalizeMethodToCall="return"/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+  &lt;bean parent="Uif-Lookup-MaintenanceCopyLink"/&gt;
+&lt;/property&gt;
+          </programlisting>
+        <para>Layout customization are done via the resultsGroup.layoutManagerproperty of the view.  
+          In the following example actions are vertically stacked.</para>
+        <programlisting linenumbering="numbered">
+&lt;property name="resultsGroup.layoutManager.actionFieldPrototype"&gt;
+  &lt;bean parent="Uif-VerticalFieldGroup" p:required="false" p:label="Actions" p:shortLabel="Actions"/&gt;
+&lt;/property&gt;
+        </programlisting>
       </section>
       <section>
         <title>Changing Layout for the Results</title>

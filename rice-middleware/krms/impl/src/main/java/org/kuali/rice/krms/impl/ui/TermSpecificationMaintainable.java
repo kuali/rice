@@ -16,12 +16,12 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
@@ -29,8 +29,8 @@ import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -45,25 +45,20 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermSpecificationMaintainable.class);
 
-	/**
-	 * @return the boService
-	 */
-	public BusinessObjectService getBoService() {
-		return KNSServiceLocator.getBusinessObjectService();
-	}
-
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
 
         TermSpecificationBo termSpecificationBo = (TermSpecificationBo) super.retrieveObjectForEditOrCopy(document,
                 dataObjectKeys);
 
-        if (!CollectionUtils.isEmpty(termSpecificationBo.getContextIds())) {
-            for (String contextId : termSpecificationBo.getContextIds()) {
+        if (!CollectionUtils.isEmpty(termSpecificationBo.getContextValidTerms())) {
+            for (ContextValidTermBo contextValidTerm : termSpecificationBo.getContextValidTerms()) {
                 ContextDefinition context =
-                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextId);
+                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getContextId());
+
                 if (context != null) {
                     termSpecificationBo.getContexts().add(ContextBo.from(context));
+                    termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
                 }
             }
         }
@@ -73,21 +68,6 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         }
 
         return termSpecificationBo;
-    }
-
-    /**
-     * Add the Term Specification's Context to the given termSpecificationBo.  Note that there is no check for the Context
-     * already having been added to the Term Specification.
-     * @param termSpecificationBo with
-     */
-    private void findContexts(TermSpecificationBo termSpecificationBo) {
-        Collection<ContextValidTermBo> validContextMappings =
-            getBoService().findMatching(ContextValidTermBo.class,
-                    Collections.singletonMap("termSpecificationId", termSpecificationBo.getId()));
-
-        if (!CollectionUtils.isEmpty(validContextMappings)) for (ContextValidTermBo validContextMapping : validContextMappings) {
-            termSpecificationBo.getContextIds().add(validContextMapping.getContextId());
-        }
     }
 
     /**
@@ -137,7 +117,8 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     }
 
     /**
-     * Store contexts in contextIds (needed for serialization)
+     * Overrides the parent method to additionaly clear the contexts list, which is needed for serialization performance
+     * & space.
      *
      * @see org.kuali.rice.krad.maintenance.Maintainable#prepareForSave
      */
@@ -146,31 +127,89 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         super.prepareForSave();
 
         TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
-        termSpec.setContextIds(new ArrayList<String>());
-        for (ContextBo context : termSpec.getContexts()) {
-            termSpec.getContextIds().add(context.getId());
+        termSpec.getContexts().clear();
+    }
+
+    /**
+     * For context addition, adds the item to the persisted contextValidTerms collection on the data object.
+     *
+     * <p>Without this step, the context is only added to a transient collection and the relationship will never be
+     * persisted. </p>
+     */
+    @Override
+    public void processAfterAddLine(ViewModel viewModel, Object addLine, String collectionId, String collectionPath,
+            boolean isValidLine) {
+        super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
+
+        // we only want to do our custom processing if a context has been added
+        if (addLine == null || !(addLine instanceof ContextBo)) { return; }
+
+        ContextBo addedContext = (ContextBo) addLine;
+        TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
+
+        boolean alreadyHasContextValidTerm = false;
+
+        for (ContextValidTermBo contextValidTerm : termSpec.getContextValidTerms()) {
+            if (contextValidTerm.getContextId().equals(addedContext.getId())) {
+                alreadyHasContextValidTerm = true;
+                break;
+            }
+        }
+
+        if (!alreadyHasContextValidTerm) {
+            ContextValidTermBo contextValidTerm = new ContextValidTermBo();
+            contextValidTerm.setContextId(addedContext.getId());
+            contextValidTerm.setTermSpecification(termSpec);
+            termSpec.getContextValidTerms().add(contextValidTerm);
         }
     }
 
+    /**
+     * For context removal, removes the given item from the persisted contextValidTerms collection on the data object.
+     *
+     * <p>Without this step, the context is only removed from a transient collection and the severed relationship will
+     * never be persisted. </p>
+     */
     @Override
-    public void saveDataObject() {
-        TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
+    public void processCollectionDeleteLine(ViewModel viewModel, String collectionId, String collectionPath,
+            int lineIndex) {
+        super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
 
-        super.saveDataObject();    // save it, it should get an id assigned
+        List collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
+        Object deletedItem = collection.get(lineIndex);
 
-        if (termSpec.getId() != null) {
-            // clear all context valid term mappings
-            getBoService().deleteMatching(ContextValidTermBo.class,
-                    Collections.singletonMap("termSpecificationId", termSpec.getId()));
+        // we only want to do our custom processing if a context has been deleted
+        if (deletedItem == null || !(deletedItem instanceof ContextBo)) { return; }
 
-            // add a new mapping for each context in the collection
-            for (String contextId : termSpec.getContextIds()) {
-                ContextValidTermBo contextValidTerm = new ContextValidTermBo();
-                contextValidTerm.setContextId(contextId);
-                contextValidTerm.setTermSpecificationId(termSpec.getId());
-                getBoService().save(contextValidTerm);
+        ContextBo context = (ContextBo) deletedItem;
+        TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
+
+        // find the context and remove it using the special powers of ListIterator
+        ListIterator<ContextValidTermBo> contextValidTermListIter = termSpec.getContextValidTerms().listIterator();
+        while (contextValidTermListIter.hasNext()) {
+            ContextValidTermBo contextValidTerm = contextValidTermListIter.next();
+
+            if (contextValidTerm.getContextId().equals(context.getId())) {
+                contextValidTerm.setTermSpecification(null);
+                contextValidTermListIter.remove();
             }
         }
+    }
+
+    /**
+     * Pulls the data object out of the given form and returns it, casting it to the desired type.
+     *
+     * <p>Assumes that the form is actually a MaintenanceDocumentForm.  The
+     * form.document.newMaintainableObject.dataObject is returned.</p>
+     *
+     * @param form
+     * @param <T> the type of data object to return
+     * @return the data object
+     */
+    private static <T> T getDataObjectFromForm(ViewModel form) {
+        if (form == null) { return null; }
+
+        return (T) ((MaintenanceDocumentForm)form).getDocument().getNewMaintainableObject().getDataObject();
     }
 
     @Override
@@ -189,9 +228,10 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 
         TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
         termSpec.setContexts(new ArrayList<ContextBo>());
-        for (String contextId : termSpec.getContextIds()) {
-            ContextDefinition context = KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextId);
+        for (ContextValidTermBo contextValidTerm : termSpec.getContextValidTerms()) {
+            ContextDefinition context = KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getContextId());
             termSpec.getContexts().add(ContextBo.from(context));
+            termSpec.getContextIds().add(context.getId());
         }
     }
 }

@@ -20,7 +20,9 @@ import javax.persistence.Converter;
 import java.math.BigDecimal;
 
 /**
-*  Used to convert 0/1 boolean where the field is stored as a Decimal numeric type
+ * Used to convert 0/1 boolean where the field is stored as a Decimal numeric type
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class Boolean01BigDecimalConverter implements AttributeConverter<Boolean, BigDecimal> {

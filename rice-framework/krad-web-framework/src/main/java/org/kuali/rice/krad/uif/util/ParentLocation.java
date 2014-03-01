@@ -498,4 +498,5 @@ public class ParentLocation extends UifDictionaryBeanBase implements Serializabl
     public List<BreadcrumbItem> getResolvedBreadcrumbItems() {
         return resolvedBreadcrumbItems;
     }
+
 }

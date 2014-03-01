@@ -34,7 +34,7 @@ public interface AttributeQueryService {
      * attribute query or as arguments to the query method. The fieldTerm parameter gives the current value
      * of the field that should be matched on. The query is expected to return a list of values to suggest
      *
-     * @param view - view instance for which the field belongs
+     * @param viewPostMetadata - post metadata related to the field
      * @param fieldId - id for the attribute field to perform the query for
      * @param fieldTerm - the partial value of the query field to match
      * @param queryParameters - map of key/value pairs that are parameters to the query
@@ -49,11 +49,12 @@ public interface AttributeQueryService {
      * The query is expected to return a Map of field name/value pairs (unlike the suggest query which just returns
      * values for one field)
      *
-     * @param view - view instance for which the field belongs
+     * @param viewPostMetadata - post metadata related to the field
      * @param fieldId - id for the attribute field to perform the query for
      * @param queryParameters - map of key/value pairs that are parameters to the query
      * @return AttributeQueryResult instance populated with the Map<String, String> of result field data
      */
     public AttributeQueryResult performFieldQuery(ViewPostMetadata viewPostMetadata,
             String fieldId, Map<String, String> queryParameters);
+
 }

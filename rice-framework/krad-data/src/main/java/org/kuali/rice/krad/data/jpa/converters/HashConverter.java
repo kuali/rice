@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 /**
  * This class calls core service to hash values going to the database.
  * 
- * 
+ *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class HashConverter implements AttributeConverter<String, String> {

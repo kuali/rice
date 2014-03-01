@@ -37,7 +37,7 @@ public interface RuleBoService {
      * @throws IllegalStateException if the rule already exists in the system
      */
     @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
-	public RuleDefinition createRule(RuleDefinition rule);
+    public RuleDefinition createRule(RuleDefinition rule);
 
     /**
      * This will update an existing {@link RuleDefinition}.
@@ -47,7 +47,7 @@ public interface RuleBoService {
      * @throws IllegalStateException if the Rule does not exists in the system
      */
     @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
-	public void updateRule(RuleDefinition rule);
+    public void updateRule(RuleDefinition rule);
 
     /**
      * Delete the {@link RuleDefinition} with the given id.
@@ -68,7 +68,7 @@ public interface RuleBoService {
      * @throws IllegalArgumentException if the ruleId is null or blank.
      */
     @Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleId=' + #p0")
-	public RuleDefinition getRuleByRuleId(String ruleId);
+    public RuleDefinition getRuleByRuleId(String ruleId);
 
     /**
      * Retrieves an Rule from the repository based on the provided rule name
@@ -83,13 +83,6 @@ public interface RuleBoService {
      * is null or blank.
      */
     @Cacheable(value= RuleDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
-	public RuleDefinition getRuleByNameAndNamespace(String name, String namespace);
-	
-//	public void createRuleAttribute(RuleAttribute ruleAttribute);
-//	public void updateRuleAttribute(RuleAttribute ruleAttribute);
-//	
-//	public RuleAttribute getRuleAttributeById(String attrId);
+    public RuleDefinition getRuleByNameAndNamespace(String name, String namespace);
 
-//	public void setBusinessObjectService(final BusinessObjectService businessObjectService);
-//	public List<RuleDefinition> convertListOfBosToImmutables(final Collection<RuleBo> ruleBos);
 }

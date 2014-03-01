@@ -89,8 +89,8 @@ public class DemoLayoutManagersGridLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersGridLayoutNestedLayout() throws Exception {
         selectByName("exampleShown","Nested Layout");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example7']/table/tbody/tr/th[@class='uif-gridLayoutCell']/div/table");
-        assertElementPresentByXpath("//div[@data-parent='Demo-GridLayoutManager-Example7']/table/tbody/tr/td[@class='uif-gridLayoutCell']");
+        assertElementPresentByXpath("//section[@id='Demo-GridLayoutManager-Example7']/div/table/tbody/tr/th[@class='uif-gridLayoutCell']/section/table");
+        assertElementPresentByXpath("//section[@id='Demo-GridLayoutManager-Example7']/div/table/tbody/tr/td[@class='uif-gridLayoutCell']/section/table");
     }
     
     @Test

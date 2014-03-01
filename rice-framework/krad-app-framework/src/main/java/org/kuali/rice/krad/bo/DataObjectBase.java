@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -72,6 +73,13 @@ import org.kuali.rice.core.api.mo.common.Versioned;
  */
 @MappedSuperclass
 public abstract class DataObjectBase implements Versioned, GloballyUnique, Serializable {
+
+    /**
+     * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is
+     * weaved which uses it, hence this class.
+     */
+    @Embeddable
+    private static final class WeaveMe extends DataObjectBase {}
 
 	@Version
     @Column(name="VER_NBR", length=8)
@@ -181,4 +189,5 @@ public abstract class DataObjectBase implements Versioned, GloballyUnique, Seria
         };
         return new DataObjectToStringBuilder(this).toString();
     }
+
 }

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -28,6 +27,8 @@ import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.springframework.util.ClassUtils;
+
+import com.google.common.collect.Lists;
 
 /**
  * Utility class which is used to determine whether the given object or class has been configured in the "legacy" KRAD/KNS
@@ -230,8 +231,7 @@ class LegacyDetector {
         boolean isTransientBo = false;
 
         List<String> transientClassNames = Lists.newArrayList(
-                "org.kuali.rice.krad.bo.TransientBusinessObjectBase",
-                "org.kuali.rice.kim.impl.permission.UberPermissionBo");
+                "org.kuali.rice.krad.bo.TransientBusinessObjectBase");
 
         try {
             Object dataObject = dataObjectClass.newInstance();

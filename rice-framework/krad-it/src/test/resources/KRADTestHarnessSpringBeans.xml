@@ -117,8 +117,6 @@
         <value>classpath:org/kuali/rice/krad/test/document/Account.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountExtension.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/krad/test/document/AccountManager.xml</value>
-        <value>classpath:org/kuali/rice/krad/test/document/AccountManagerMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument2.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountRequestDocument3.xml</value>
@@ -130,8 +128,10 @@
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocument2.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/RiceTestTransactionalDocumentDivergentType.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/SearchAttributeIndexTestDocumentOjb.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/TravelAccountUseRate.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/TravelAuthorizationDocument.xml</value>
+        <value>classpath:org/kuali/rice/krad/test/document/AccountType2MaintenanceDocument.xml</value>
         <!-- <value>org/kuali/rice/krad/test/datadictionary/TestDataObject.xml</value> -->
         <value>classpath:org/kuali/rice/krad/uif/TestViewTheme.xml</value>
         <!--Due to maven dependencies, this entry will break the krad integrations tests
@@ -197,7 +197,7 @@
         p:serviceName="kd-dataObjectService"/>
 
   <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver/>
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <util:list id="jpaPackagesToScan">
     <!-- krad jpa packages -->
@@ -209,6 +209,7 @@
     <!-- test jpa packages -->
     <value>org.kuali.rice.krad.test.document</value>
     <value>org.kuali.rice.krad.data.jpa.testbo</value>
+    <value>org.kuali.rice.krad.test.conference</value>
     <!-- sampleu jpa packages -->
     <value>edu.sampleu.travel.dataobject</value>
   </util:list>
@@ -261,8 +262,7 @@
         p:entityManager-ref="kradTestSharedEntityManager" />
 
   <bean id="kradTestMetadataProviderAnnotation"
-        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"
-        p:jpaMetadataProvider-ref="kradTestMetadataProviderJpa" />
+        class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
 
   <bean id="kradTestMetadataProvider"
         class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">

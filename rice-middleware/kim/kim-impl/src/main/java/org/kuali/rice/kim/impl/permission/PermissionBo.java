@@ -79,8 +79,8 @@ public class PermissionBo extends DataObjectBase implements PermissionContract {
     @JoinColumn(name = "PERM_TMPL_ID", referencedColumnName = "PERM_TMPL_ID", insertable = false, updatable = false)
     protected PermissionTemplateBo template = new PermissionTemplateBo();
 
-    @OneToMany(targetEntity = PermissionAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
+    @OneToMany(targetEntity = PermissionAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID")
     protected List<PermissionAttributeBo> attributeDetails;
 
     @Transient

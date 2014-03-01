@@ -37,6 +37,14 @@ public interface MetadataChild extends MetadataCommon {
 	 */
 	List<DataObjectAttributeRelationship> getAttributeRelationships();
 
+    /**
+     * If this metadata element is part of a bi-directional relationship, this method returns the other side of the
+     * bi-directional relationship.
+     *
+     * @return the inverse of this relationship if it is bi-directional, false otherwise
+     */
+    MetadataChild getInverseRelationship();
+
 	/**
 	 * For related objects, whether this object will be automatically saved when the containing object is persisted.
 	 */

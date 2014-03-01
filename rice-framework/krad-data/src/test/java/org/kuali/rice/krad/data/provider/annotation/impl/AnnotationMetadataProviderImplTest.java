@@ -15,39 +15,34 @@
  */
 package org.kuali.rice.krad.data.provider.annotation.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl;
 import org.kuali.rice.krad.data.jpa.testbo.ReferencedDataObject;
 import org.kuali.rice.krad.data.jpa.testbo.SomeOtherCollection;
 import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
-import org.kuali.rice.krad.data.jpa.testbo.TestDataObjectExtension;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
-import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
-import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl;
+import org.mockito.Mockito;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class AnnotationMetadataProviderImplTest {
 
+    static DataObjectService dataObjectService;
 	static EclipseLinkJpaMetadataProviderImpl jpaMetadataProvider;
 	CompositeMetadataProviderImpl compositeProvider;
 	AnnotationMetadataProviderImpl annotationMetadataProvider;
@@ -58,6 +53,7 @@ public class AnnotationMetadataProviderImplTest {
 		Logger.getLogger(CompositeMetadataProviderImpl.class).setLevel(Level.DEBUG);
 		Logger.getLogger(AnnotationMetadataProviderImpl.class).setLevel(Level.DEBUG);
 		Logger.getLogger(EclipseLinkJpaMetadataProviderImpl.class).setLevel(Level.DEBUG);
+        dataObjectService = Mockito.mock(DataObjectService.class);
 		jpaMetadataProvider = new EclipseLinkJpaMetadataProviderImpl();
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("krad-data-unit-test");
 		jpaMetadataProvider.setEntityManager(entityManagerFactory.createEntityManager());
@@ -66,7 +62,7 @@ public class AnnotationMetadataProviderImplTest {
 	@Before
 	public void setUp() throws Exception {
 		annotationMetadataProvider = new AnnotationMetadataProviderImpl();
-		annotationMetadataProvider.setJpaMetadataProvider(jpaMetadataProvider);
+        annotationMetadataProvider.setDataObjectService(dataObjectService);
 		ArrayList<MetadataProvider> providers = new ArrayList<MetadataProvider>();
 		providers.add(jpaMetadataProvider);
 		providers.add(annotationMetadataProvider);
@@ -78,7 +74,7 @@ public class AnnotationMetadataProviderImplTest {
 	public void testInitializeMetadataNoTypesProvided() {
 		AnnotationMetadataProviderImpl provider = new AnnotationMetadataProviderImpl();
         provider.initializeMetadata(null);
-        assertTrue(provider.initializationAttempted);
+        assertTrue(provider.isInitializationAttempted());
 		assertTrue(provider.getSupportedTypes().isEmpty());
         assertFalse(provider.handles(TestDataObject.class));
 	}
@@ -137,55 +133,6 @@ public class AnnotationMetadataProviderImplTest {
 		DataObjectAttribute attr = metadata.getAttribute("keyAndString");
 		assertNotNull("keyAndString property does not exist", attr);
 		assertEquals("keyAndString label incorrect", "Test Data Object", attr.getLabel());
-	}
-
-	// @Test
-	// public void testPersonRelationship() {
-	// DataObjectMetadata metadata = compositeProvider.provideMetadata().get(
-	// TestDataObject.class);
-	// assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);
-	//
-	// DataObjectRelationship relationship = metadata.getRelationship("fiscalOfficer");
-	// assertNotNull("getRelationship(fiscalOfficer) should not have returned null", relationship);
-	//
-	// assertEquals("Incorrect related data object type", "org.kuali.rice.kim.api.identity.Person",
-	// relationship.getRelatedObjectType().getClass().getName());
-	// System.err.println(relationship);
-	// assertEquals("attributes list on relationship has incorrect length", 1, relationship
-	// .getAttributeRelationships().size());
-	// assertEquals("parent attribute name incorrect", "foId", relationship.getAttributeRelationships().get(0)
-	// .getParentAttributeName());
-	// assertEquals("child attribute name incorrect", "principalId", relationship.getAttributeRelationships()
-	// .get(0).getChildAttributeName());
-	// }
-
-	@Test
-	public void testExtensionAttribute_metadataRelationship() {
-		DataObjectMetadata metadata = compositeProvider.provideMetadata().get(
-				TestDataObject.class);
-		DataObjectMetadata extensionMetadata = compositeProvider.provideMetadata().get(TestDataObjectExtension.class);
-
-		assertNotNull("Metadata should have been retrieved for TestDataObject", metadata);
-		assertNotNull("Metadata should have been retrieved for TestDataObjectExtension", extensionMetadata);
-
-		DataObjectRelationship relationship = metadata.getRelationship("extension");
-		assertNotNull("A relationship should have been defined for the extension attribute", relationship);
-		System.err.println("Extension Relationship: " + relationship);
-
-		assertTrue("should be loaded with parent", relationship.isLoadedAtParentLoadTime());
-		assertFalse("should NOT be proxied", relationship.isLoadedDynamicallyUponUse());
-		assertFalse("should NOT be read-only", relationship.isReadOnly());
-		assertTrue("should be saved with parent", relationship.isSavedWithParent());
-		assertTrue("should be deleted with parent", relationship.isDeletedWithParent());
-
-		assertNotNull("attribute relationships must not be null", relationship.getAttributeRelationships());
-		assertEquals("attribute relationships size incorrect", 1, relationship.getAttributeRelationships()
-				.size());
-		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
-		assertEquals("first parent attribute name mismatch", "primaryKeyProperty",
-				linkingAttribute.getParentAttributeName());
-		assertEquals("first child attribute name mismatch", "primaryKeyProperty",
-				linkingAttribute.getChildAttributeName());
 	}
 
 	@Test

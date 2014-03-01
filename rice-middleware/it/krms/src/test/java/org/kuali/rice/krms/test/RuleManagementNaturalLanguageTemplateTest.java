@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.kuali.rice.krms.test;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -137,9 +137,11 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         naturalLanguageTemplateBuilder.setId("da" + "-" + "reqActive");
         try {
             ruleManagementService.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
-            fail("Should have thrown DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails");
-        } catch (DataIntegrityViolationException e) {
-            // throws DataIntegrityViolationException: OJB operation; SQL []; Cannot add or update a child row: a foreign key constraint fails
+            fail("Should have thrown PersistenceException");
+        } catch (DataAccessException e) {
+            // Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Cannot
+            // add or update a child row: a foreign key constraint fails (`rice24test`.`krms_nl_tmpl_t`, CONSTRAINT
+            // `KRMS_TYP_T` FOREIGN KEY (`TYP_ID`) REFERENCES `krms_typ_t` (`TYP_ID`))
         }
     }
 

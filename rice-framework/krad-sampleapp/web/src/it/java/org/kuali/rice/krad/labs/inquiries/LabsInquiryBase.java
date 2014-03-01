@@ -25,8 +25,8 @@ public abstract class LabsInquiryBase extends WebDriverLegacyITBase {
 
 	final String CLOSE="Close";
 	
-    final String[][] LABELED_IAT_TEXT = {{"Travel Account Type Code:", "IAT"},
-                                         {"Account Type Name:", "Income"},
+    public static final String[][] LABELED_IAT_TEXT = {{"Travel Account Type Code:", "IAT"},
+                                         {"Name:", "Income"},
                                          {"Account Type:", "IAT - Income"}};
 
     protected void navigateToInquiry(String screenLinkText) throws InterruptedException {

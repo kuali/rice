@@ -42,17 +42,17 @@ public class DemoElementsMessageAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsMessageDefault() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Message-Example1']/p[@class='uif-message uif-boxLayoutVerticalItem clearfix']");
+        assertElementPresentByXpath("//section[@id='Demo-Message-Example1']/p[@class='uif-message uif-boxLayoutVerticalItem clearfix']");
     }
     
     protected void testLibraryElementsMessageWithExpression() throws Exception {
     	selectByName("exampleShown","Message with Expression");
-    	assertElementPresentByXpath("//div[@id='Demo-Message-Example2']/div[@class='uif-message uif-boxLayoutVerticalItem clearfix']/b");
+    	assertElementPresentByXpath("//section[@id='Demo-Message-Example2']/p[@class='uif-message uif-boxLayoutVerticalItem clearfix']/b");
     }
     
     protected void testLibraryElementsMessageWithCustomCss() throws Exception {
     	selectByName("exampleShown","Message with Custom CSS");
-    	assertElementPresentByXpath("//div[@id='Demo-Message-Example3']/span[@class='uif-message uif-boxLayoutVerticalItem clearfix badge']");
+    	assertElementPresentByXpath("//section[@id='Demo-Message-Example3']/p[@class='uif-message uif-boxLayoutVerticalItem clearfix badge']");
     }
     
     private void testLibraryElementMessageAll() throws Exception{

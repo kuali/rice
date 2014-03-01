@@ -26,12 +26,25 @@
       <ref bean="InitiatedDocumentFooter"/>
     </property>
     <property name="formClass" value="org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Disclosure-VerticalBoxSection" p:layoutManager.orientation="VERTICAL">
+                <property name="instructionalText" value="The Document you have selected cannot be opened."/>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="InitiatedDocumentFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"/>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:actionScript="window.close();"/>
       </list>
     </property>
   </bean>

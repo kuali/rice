@@ -17,11 +17,12 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.TypeTypeRelationGenTest;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
-import static org.mockito.Mockito.*;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,7 +50,7 @@ public final class TypeTypeRelationBoServiceImplGenTest {
     @Before
     public void setUp() {
         typeTypeRelationBoServiceImpl = new TypeTypeRelationBoServiceImpl();
-        typeTypeRelationBoServiceImpl.setBusinessObjectService(mock(BusinessObjectService.class));
+        typeTypeRelationBoServiceImpl.setDataObjectService(mock(DataObjectService.class));
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

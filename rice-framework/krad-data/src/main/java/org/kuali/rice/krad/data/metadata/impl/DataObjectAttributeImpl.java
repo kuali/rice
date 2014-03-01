@@ -63,8 +63,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 
 	protected PropertyEditor propertyEditor;
 	protected KeyValuesFinder validValues;
-	protected DataType dataType = DataType.STRING;
-	protected Class<?> type = String.class;
+	protected DataType dataType;
+	protected Class<?> type;
 	
 	protected Set<UifDisplayHint> displayHints;
 
@@ -292,7 +292,10 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	}
 
 	public Class<?> getType() {
-		return type;
+		if (type != null) {
+            return type;
+        }
+        return String.class;
 	}
 
 	public void setType(Class<?> javaType) {

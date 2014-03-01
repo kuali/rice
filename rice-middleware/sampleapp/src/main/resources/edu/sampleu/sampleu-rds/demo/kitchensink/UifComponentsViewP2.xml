@@ -266,13 +266,13 @@
                   <horizontalFieldGroup-bean>
                     <items>
                       <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField4"
-                                       labelPlacement="TOP" propertyName="field1" required="true"/>
+                                       propertyName="field1" required="true"/>
                       <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField5"
-                                       labelPlacement="TOP" propertyName="field2" required="true"/>
+                                       propertyName="field2" required="true"/>
                       <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField6"
-                                       labelPlacement="TOP" propertyName="field3" required="true"/>
+                                       propertyName="field3" required="true"/>
                       <inputField-bean fieldLabel.cssClasses="labelTop" id="UifCompView-OtherField7"
-                                       labelPlacement="TOP" propertyName="field4" required="true"/>
+                                       propertyName="field4" required="true"/>
                     </items>
                   </horizontalFieldGroup-bean>
                 </items>

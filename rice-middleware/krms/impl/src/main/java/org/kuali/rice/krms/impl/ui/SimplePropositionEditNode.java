@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
@@ -27,7 +26,7 @@ import org.kuali.rice.krms.impl.repository.TermBo;
 import java.util.List;
 
 /**
- * abstract data class for the rule tree {@link Node}s
+ * abstract data class for the {@link org.kuali.rice.krms.impl.ui.RuleTreeNode}s
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -65,7 +64,8 @@ public class SimplePropositionEditNode extends RuleTreeNode {
             String termName = "";
             String termId = prop.getValue();
             if (termId != null && termId.length() > 0){
-                TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
+                TermBo term = getDataObjectService().find(TermBo.class, termId);
+
                 if (term != null){
                     termName = term.getSpecification().getName();
                 }
@@ -89,8 +89,8 @@ public class SimplePropositionEditNode extends RuleTreeNode {
         this.parameterDisplayString = parameterDisplayString;
     }
 
-    public BusinessObjectService getBoService() {
-        return KNSServiceLocator.getBusinessObjectService();
+    public DataObjectService getDataObjectService() {
+        return KRADServiceLocator.getDataObjectService();
     }
     
 }

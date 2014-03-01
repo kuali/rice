@@ -69,6 +69,6 @@ public abstract class ConfigParameterTypeLookUpAndEditAftBase extends AdminTmplM
         waitAndClickByName("methodToCall.route");
         checkForDocError();
         waitAndClickByName("methodToCall.close");
-        waitAndClickByName("methodToCall.processAnswer.button1");        
+//         waitAndClickByName("methodToCall.processAnswer.button1");
     }
 }

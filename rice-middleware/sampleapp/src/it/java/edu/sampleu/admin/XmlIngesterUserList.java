@@ -24,6 +24,8 @@ import org.junit.Test;
  *
  * <pre>mvn -f rice-middleware/sampleapp/pom.xml -Pstests failsafe:integration-test -Dremote.public.url=env7.rice.kuali.org -Dit.test=XmlIngesterNavAft -DXMLIngester.groupId=2008 -DXMLIngester.userIncludeDTSinPrefix=false -DXMLIngester.userCntBegin=0 -DXMLIngester.userCnt=600  -DXMLIngester.userPrefix=loadtester -Dremote.driver.dontTearDown=y</pre>
  *
+ * See IdentityPersonGroupRoleAft for setting groups and roles
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class XmlIngesterUserList extends XmlIngesterAftBase {
@@ -33,7 +35,8 @@ public class XmlIngesterUserList extends XmlIngesterAftBase {
      * @throws Exception
      */
     @Test
-    public void testXmlIngesterUserListNav() throws Exception {
+    public void testXmlIngesterUserListBookmark() throws Exception {
         super.testXmlIngesterUserList();
+        passed();
     }
 }

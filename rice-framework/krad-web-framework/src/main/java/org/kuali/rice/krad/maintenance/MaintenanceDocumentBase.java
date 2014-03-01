@@ -15,28 +15,6 @@
  */
 package org.kuali.rice.krad.maintenance;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
@@ -79,6 +57,27 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Document class for all maintenance documents which wraps the maintenance object in
  * a <code>Maintainable</code> that is also used for various callbacks
@@ -114,6 +113,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     @Transient
     protected Maintainable oldMaintainableObject;
+
     @Transient
     protected Maintainable newMaintainableObject;
 
@@ -197,7 +197,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         String className = newMaintainableObject.getDataObject().getClass().getName();
         String truncatedClassName = className.substring(className.lastIndexOf('.') + 1);
         if (isOldDataObjectInDocument()) {
-            documentTitle = "Edit ";
+            if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(oldMaintainableObject.getMaintenanceAction())) {
+                documentTitle = "Copy ";
+            } else {
+                documentTitle = "Edit ";
+            }
         } else {
             documentTitle = "New ";
         }

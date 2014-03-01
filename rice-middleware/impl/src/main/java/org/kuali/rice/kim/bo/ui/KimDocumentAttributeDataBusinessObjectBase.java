@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -36,8 +37,9 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @MappedSuperclass
 public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoActivatableEditableBase {
-	private static final long serialVersionUID = -1512640359333185819L;
-	
+
+    private static final long serialVersionUID = -1512640359333185819L;
+
 	@Id
 	@Column(name = "ATTR_DATA_ID")
     @GeneratedValue(generator="KRIM_ATTR_DATA_ID_S")

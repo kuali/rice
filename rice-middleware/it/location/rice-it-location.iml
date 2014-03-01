@@ -18,6 +18,7 @@
     <orderEntry type="module" module-name="rice-location-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.6" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.4" level="project" />
@@ -172,6 +173,7 @@
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="module" module-name="rice-it-krad" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-edl-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-krad-sampleapp-impl" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-http-jetty:2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:7.4.5.v20110725" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-continuation:7.4.5.v20110725" level="project" />

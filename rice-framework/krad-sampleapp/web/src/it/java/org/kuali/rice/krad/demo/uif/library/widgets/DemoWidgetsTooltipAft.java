@@ -46,7 +46,7 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
 
     protected void testWidgetsTooltipFocus() throws Exception {
         selectByName("exampleShown","Tooltip On Focus");
-        waitAndTypeByXpath("//div[@id='Demo-Tooltip-Example2']/div/input[@name='dataField1']","");
+        waitAndTypeByXpath("//section[@id='Demo-Tooltip-Example2']/div/input[@name='dataField1']",""); // XPATH as dataField1 is used as a name twice
         assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This tooltip appears when the field receives focus')]");
     }
 

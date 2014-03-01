@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+     This persistence.xml file exists for the sole purpose of being used during the static bytecode weaving process.
+-->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="kim-impl">
+    <description>
+      This is a persistence unit used for the purposes of static bytecode weaving in Eclipselink (see pom.xml of
+      this module). It is not used or loaded by the runtime at all.
+    </description>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter</class>
+    <class>org.kuali.rice.kim.impl.common.attribute.KimAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateMemberAttributeDataBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo</class>
+    <class>org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupBo</class>
+    <class>org.kuali.rice.kim.impl.group.GroupMemberBo</class>
+    <class>org.kuali.rice.kim.impl.identity.EntityDefaultInfoCacheBo</class>
+    <class>org.kuali.rice.kim.impl.identity.EntityTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.address.EntityAddressBo</class>
+    <class>org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo</class>
+    <class>org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipBo</class>
+    <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipChangeTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.citizenship.EntityCitizenshipStatusBo</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailBo</class>
+    <class>org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentBo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo</class>
+    <class>org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.entity.EntityBo</class>
+    <class>org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo</class>
+    <class>org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.name.EntityNameBo</class>
+    <class>org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityBioDemographicsBo</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityDisabilityAccomodationNeededBo</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityEthnicityBo</class>
+    <class>org.kuali.rice.kim.impl.identity.personal.EntityEthnicityRaceTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo</class>
+    <class>org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.principal.PrincipalBo</class>
+    <class>org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo</class>
+    <class>org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo</class>
+    <class>org.kuali.rice.kim.impl.identity.residency.EntityResidencyStatusBo</class>
+    <class>org.kuali.rice.kim.impl.identity.residency.EntityResidencyTypeBo</class>
+    <class>org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo</class>
+    <class>org.kuali.rice.kim.impl.identity.visa.EntityVisaBo</class>
+    <class>org.kuali.rice.kim.impl.identity.visa.EntityVisaTypeBo</class>
+    <class>org.kuali.rice.kim.impl.permission.GenericPermissionBo</class>
+    <class>org.kuali.rice.kim.impl.permission.PermissionAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.permission.PermissionBo</class>
+    <class>org.kuali.rice.kim.impl.permission.PermissionTemplateBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ResponsibilityTemplateBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleBoLite</class>
+    <class>org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleMemberBo</class>
+    <class>org.kuali.rice.kim.impl.role.RolePermissionBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo</class>
+    <class>org.kuali.rice.kim.impl.role.RoleResponsibilityBo</class>
+    <class>org.kuali.rice.kim.impl.type.KimTypeAttributeBo</class>
+    <class>org.kuali.rice.kim.impl.type.KimTypeBo</class>
+  </persistence-unit>
+</persistence>

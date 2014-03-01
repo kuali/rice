@@ -18,16 +18,14 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krms.api.repository.NaturalLanguageTree;
 import org.kuali.rice.krms.api.repository.RuleManagementService;
-import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.TranslateBusinessMethods;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
@@ -45,7 +43,9 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermRepositoryService;
 import org.kuali.rice.krms.impl.repository.language.SimpleNaturalLanguageTemplater;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,8 +74,14 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     private ContextBoService contextBoService = new ContextBoServiceImpl();
     private NaturalLanguageTemplaterContract templater = new SimpleNaturalLanguageTemplater();
     private TermRepositoryService termRepositoryService = new TermBoServiceImpl();
-    private SequenceAccessorService sequenceAccessorService = null;
     private TranslateBusinessMethods translationBusinessMethods = null;
+
+    // For MaxValueIncrementerFactory use.
+    private DataSource dataSource;
+    private DataFieldMaxValueIncrementer ruleSequenceIncrementer;
+    private DataFieldMaxValueIncrementer referenceObjectBindingSequenceIncrementer;
+    private static final String RULE_SEQ_NAME = "KRMS_RULE_S";
+    private static final String REF_OBJ_SEQ_NAME= "KRMS_REF_OBJ_KRMS_OBJ_S";
 
     /**
      * Fields to ignore when calling reflection-based equals in
@@ -247,23 +253,28 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         this.termRepositoryService = termRepositoryService;
     }
 
-    /**
-     * get the {@link SequenceAccessorService}
-     * @return the {@link SequenceAccessorService}
-     */
-    public SequenceAccessorService getSequenceAccessorService() {
-        if (this.sequenceAccessorService == null) {
-            this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-        }
-        return sequenceAccessorService;
+    public DataSource getDataSource() {
+        return dataSource;
     }
 
-    /**
-     * set the {@link SequenceAccessorService}
-     * @param sequenceAccessorService the {@link SequenceAccessorService} to set
-     */
-    public void setSequenceAccessorService(SequenceAccessorService sequenceAccessorService) {
-        this.sequenceAccessorService = sequenceAccessorService;
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    private DataFieldMaxValueIncrementer getRuleSequenceIncrementer() {
+        if (ruleSequenceIncrementer == null) {
+            ruleSequenceIncrementer = MaxValueIncrementerFactory.getIncrementer(dataSource, RULE_SEQ_NAME);
+        }
+
+        return ruleSequenceIncrementer;
+    }
+
+    private DataFieldMaxValueIncrementer getReferenceObjectBindingSequenceIncrementer() {
+        if (referenceObjectBindingSequenceIncrementer == null) {
+            referenceObjectBindingSequenceIncrementer = MaxValueIncrementerFactory.getIncrementer(dataSource, REF_OBJ_SEQ_NAME);
+        }
+
+        return referenceObjectBindingSequenceIncrementer;
     }
 
     /**
@@ -294,7 +305,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             throws RiceIllegalArgumentException {
         //Set the id if it doesn't exist.
         if (referenceObjectDefinition.getId() == null) {
-            String referenceObjectBindingId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_REF_OBJ_KRMS_OBJ_S", ReferenceObjectBindingBo.class).toString();
+            String referenceObjectBindingId = getReferenceObjectBindingSequenceIncrementer().nextStringValue();
             ReferenceObjectBinding.Builder refBldr = ReferenceObjectBinding.Builder.create(referenceObjectDefinition);
             refBldr.setId(referenceObjectBindingId);
             referenceObjectDefinition = refBldr.build();
@@ -323,7 +334,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             QueryByCriteria.Builder qBuilder = QueryByCriteria.Builder.create();
             List<Predicate> pList = new ArrayList<Predicate>();
             qBuilder.setPredicates(in("id", ids.toArray()));
-            GenericQueryResults<ReferenceObjectBindingBo> results = getCriteriaLookupService().lookup(ReferenceObjectBindingBo.class, qBuilder.build());
+            QueryResults<ReferenceObjectBindingBo> results = getDataObjectService().findMatching(
+                    ReferenceObjectBindingBo.class, qBuilder.build());
 
             bos = results.getResults();
         }
@@ -747,7 +759,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             }
         } else {
             // if no id then set it because it is needed to store propositions connected to this rule
-            String ruleId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class).toString();
+            String ruleId = getRuleSequenceIncrementer().nextStringValue();
             RuleDefinition.Builder ruleBldr = RuleDefinition.Builder.create(ruleDefinition);
             ruleBldr.setId(ruleId);
             ruleDefinition = ruleBldr.build();
@@ -770,7 +782,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
         // if no id then set it because it is needed to store propositions connected to this rule
         if (ruleDefinition.getId() == null) {
-            String ruleId = getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class).toString();
+            String ruleId = getRuleSequenceIncrementer().nextStringValue();
             RuleDefinition.Builder ruleBldr = RuleDefinition.Builder.create(ruleDefinition);
             ruleBldr.setId(ruleId);
             ruleDefinition = ruleBldr.build();
@@ -1302,7 +1314,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findContextIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryByCriteria);
+        if (queryByCriteria == null) {
+            throw new RiceIllegalArgumentException("queryByCriteria must not be null");
+        }
+
+        QueryResults<ContextBo> results = getDataObjectService().findMatching(ContextBo.class, queryByCriteria);
 
         List<String> list = new ArrayList<String> ();
         for (ContextBo bo : results.getResults()) {
@@ -1314,7 +1330,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findAgendaIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<AgendaBo> results = getCriteriaLookupService().lookup(AgendaBo.class, queryByCriteria);
+        QueryResults<AgendaBo> results = getDataObjectService().findMatching(AgendaBo.class, queryByCriteria);
         List<String> list = new ArrayList<String> ();
 
         for (AgendaBo bo : results.getResults()) {
@@ -1326,7 +1342,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findRuleIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<RuleBo> results = getCriteriaLookupService().lookup(RuleBo.class, queryByCriteria);
+        QueryResults<RuleBo> results = getDataObjectService().findMatching(RuleBo.class, queryByCriteria);
         List<String> list = new ArrayList<String> ();
 
         for (RuleBo bo : results.getResults()) {
@@ -1338,7 +1354,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findPropositionIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<PropositionBo> results = getCriteriaLookupService().lookup(PropositionBo.class, queryByCriteria);
+        QueryResults<PropositionBo> results = getDataObjectService().findMatching(PropositionBo.class, queryByCriteria);
 
         List<String> list = new ArrayList<String> ();
         for (PropositionBo bo : results.getResults()) {
@@ -1350,7 +1366,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public List<String> findActionIds(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
-        GenericQueryResults<ActionBo> results = getCriteriaLookupService().lookup(ActionBo.class, queryByCriteria);
+        QueryResults<ActionBo> results = getDataObjectService().findMatching(ActionBo.class, queryByCriteria);
 
         List<String> list = new ArrayList<String> ();
         for (ActionBo bo : results.getResults()) {
@@ -1359,49 +1375,53 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
         return list;
     }
-    
+
     /**
-     * Sets the businessObjectService property.
+     * Sets the dataObjectService property.
      *
-     * @param businessObjectService The businessObjectService to set.
+     * @param dataObjectService The businessObjectService to set.
      */
     @Override
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        super.setBusinessObjectService(businessObjectService);
-        if (referenceObjectBindingBoService instanceof ReferenceObjectBindingBoServiceImpl) {
-            ((ReferenceObjectBindingBoServiceImpl) referenceObjectBindingBoService).setBusinessObjectService(businessObjectService);
-        }
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+
+        super.setDataObjectService(dataObjectService);
 
         if (agendaBoService instanceof AgendaBoServiceImpl) {
-            ((AgendaBoServiceImpl) agendaBoService).setBusinessObjectService(businessObjectService);
+            ((AgendaBoServiceImpl) agendaBoService).setDataObjectService(dataObjectService);
         }
 
         if (ruleBoService instanceof RuleBoServiceImpl) {
-            ((RuleBoServiceImpl) ruleBoService).setBusinessObjectService(businessObjectService);
+            ((RuleBoServiceImpl) ruleBoService).setDataObjectService(dataObjectService);
         }
 
         if (actionBoService instanceof ActionBoServiceImpl) {
-            ((ActionBoServiceImpl) actionBoService).setBusinessObjectService(businessObjectService);
+            ((ActionBoServiceImpl) actionBoService).setDataObjectService(dataObjectService);
         }
 
         if (propositionBoService instanceof PropositionBoServiceImpl) {
-            ((PropositionBoServiceImpl) propositionBoService).setBusinessObjectService(businessObjectService);
-        }
-
-        if (naturalLanguageUsageBoService instanceof NaturalLanguageUsageBoServiceImpl) {
-            ((NaturalLanguageUsageBoServiceImpl) naturalLanguageUsageBoService).setBusinessObjectService(businessObjectService);
-        }
-
-        if (naturalLanguageTemplateBoService instanceof NaturalLanguageTemplateBoServiceImpl) {
-            ((NaturalLanguageTemplateBoServiceImpl) naturalLanguageTemplateBoService).setBusinessObjectService(businessObjectService);
+            ((PropositionBoServiceImpl) propositionBoService).setDataObjectService(dataObjectService);
         }
 
         if (contextBoService instanceof ContextBoServiceImpl) {
-            ((ContextBoServiceImpl) contextBoService).setBusinessObjectService(businessObjectService);
+            ((ContextBoServiceImpl) contextBoService).setDataObjectService(dataObjectService);
+        }
+
+        if (referenceObjectBindingBoService instanceof ReferenceObjectBindingBoServiceImpl) {
+            ((ReferenceObjectBindingBoServiceImpl) referenceObjectBindingBoService).setDataObjectService(
+                    dataObjectService);
+        }
+
+        if (naturalLanguageUsageBoService instanceof NaturalLanguageUsageBoServiceImpl) {
+            ((NaturalLanguageUsageBoServiceImpl) naturalLanguageUsageBoService).setDataObjectService(dataObjectService);
+        }
+
+        if (naturalLanguageTemplateBoService instanceof NaturalLanguageTemplateBoServiceImpl) {
+            ((NaturalLanguageTemplateBoServiceImpl) naturalLanguageTemplateBoService).setDataObjectService(
+                    dataObjectService);
         }
 
         if (termRepositoryService instanceof TermBoServiceImpl) {
-            ((TermBoServiceImpl) termRepositoryService).setBusinessObjectService(businessObjectService);
+            ((TermBoServiceImpl) termRepositoryService).setDataObjectService(dataObjectService);
         }
     }
 }

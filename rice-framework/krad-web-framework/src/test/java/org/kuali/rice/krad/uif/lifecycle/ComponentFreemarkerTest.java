@@ -27,7 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -49,9 +51,17 @@ import freemarker.template.Template;
 
 public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
+    private static final Logger LOG = Logger.getLogger(ComponentFreemarkerTest.class);
+    
     @BeforeClass
     public static void setUpClass() throws Throwable {
         UifUnitTestUtils.establishMockConfig("KRAD-ComponentFreemarkerTest");
+        try {
+            ComponentFactory.getMessage();
+        } catch (Throwable t) {
+            LOG.error("Skipping tests, message component is not available", t);
+            Assume.assumeNoException("Skipping tests, message component is not available", t);
+        }
     }
 
     @AfterClass
@@ -63,6 +73,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
     public void testMessage() throws Throwable {
         Message m = ComponentFactory.getMessage();
         m.setMessageText("foobar");
+        m.setWrapperTag("span");
+        m.setId("_span");
 
         FreeMarkerViewResolver viewResolver = (FreeMarkerViewResolver)
                 UifUnitTestUtils.getWebApplicationContext().getBean("viewResolver");
@@ -102,7 +114,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
         visit.invoke(env, macro, args, null, null, null);
 
         assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
-                "foobar    </span>", out.toString().trim());
+                "foobar  </span>", out.toString().trim());
     }
 
     @Test
@@ -115,6 +127,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();
                 msg.setMessageText("foobar");
+                msg.setId("_naps");
+                msg.setWrapperTag("pans");
 //                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
@@ -123,8 +137,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getProcessor().performPhase(renderPhase);
 
                 assertTrue(msg.isSelfRendered());
-                assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
-                        "foobar    </span>", msg.getRenderedHtmlOutput().trim());
+                assertEquals("<pans id=\"_naps\" class=\"uif-message\"   >\r\n" +
+                        "foobar  </pans>", msg.getRenderedHtmlOutput().trim());
             }
         });
     }

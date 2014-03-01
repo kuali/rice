@@ -139,11 +139,11 @@ public class ComponentSuggestClass {
     public static List<TestViewObject> getViewOptions() {
         List<TestViewObject> options = new ArrayList<TestViewObject>();
 
-        options.add(new TestViewObject("Input Field", "Demo-InputField-View"));
-        options.add(new TestViewObject("Suggest", "Demo-Suggest-View"));
-        options.add(new TestViewObject("Select Control", "Demo-SelectControl-View"));
-        options.add(new TestViewObject("TextControl","Demo-TextControl-View"));
-        options.add(new TestViewObject("Sticky Header","Demo-StickyHeader-View"));
+        options.add(new TestViewObject("Input Field", "Demo-InputFieldView"));
+        options.add(new TestViewObject("Suggest", "Demo-SuggestView"));
+        options.add(new TestViewObject("Select Control", "Demo-SelectControlView"));
+        options.add(new TestViewObject("TextControl","Demo-TextControlView"));
+        options.add(new TestViewObject("Sticky Header","Demo-StickyHeaderView"));
 
         return options;
     }

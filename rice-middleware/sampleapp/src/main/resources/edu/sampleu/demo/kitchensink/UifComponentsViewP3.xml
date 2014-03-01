@@ -51,7 +51,7 @@
     <property name="disclosure.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="Uif-InputField-LabelTop" p:label="Field A" p:propertyName="booleanField">
+        <bean parent="Uif-InputField" p:label="Field A" p:propertyName="booleanField">
           <property name="control">
             <bean parent="Uif-CheckboxControl"/>
           </property>

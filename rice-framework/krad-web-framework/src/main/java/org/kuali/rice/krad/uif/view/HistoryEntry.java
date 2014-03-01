@@ -138,4 +138,5 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     public void setFormKey(String formKey) {
         this.formKey = formKey;
     }
+
 }

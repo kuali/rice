@@ -183,13 +183,11 @@ addLineActionFields,addLineActions
 directInquiryActionField,directInquiryAction
 helpActionField,helpAction
 quickfinderActionField,quickfinderAction
-Uif-MessageField,Uif-Message
 constraintMessageField,constraintMessage
 instructionalMessageField,instructionalMessage
 requiredMessageField,requiredMessage
 cutline,cutlineMessage
 inquiryLinkField,inquiryLink
-title,headerText
 refreshWhenChanged,refreshWhenChangedPropertyNames
 refreshDiscloseMethodToCall,methodToCallOnRefresh
 styleClasses,cssClasses
@@ -247,3 +245,7 @@ suppressActions,renderResultActions
 hideReturnLinks,renderReturnLink
 renderSearchButtons,renderCriteriaActions
 readOnlySearchFields,readOnlyLookupFields
+Uif-InputField-LabelTop,Uif-InputField
+Uif-InputField-LabelRight,Uif-InputField
+Uif-DataField-LabelTop,Uif-DataField
+Uif-DataField-LabelRight,Uif-DataField

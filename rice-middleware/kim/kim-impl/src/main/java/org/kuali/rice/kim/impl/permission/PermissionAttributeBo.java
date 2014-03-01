@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
@@ -32,7 +33,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name = "KRIM_PERM_ATTR_DATA_T")
-public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract {
+public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract, BusinessObject {
     private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
@@ -95,5 +96,9 @@ public class PermissionAttributeBo extends KimAttributeDataBo implements KimAttr
         bo.setVersionNumber(im.getVersionNumber());
         bo.setObjectId(im.getObjectId());
         return bo;
+    }
+
+    @Override
+    public void refresh() {
     }
 }

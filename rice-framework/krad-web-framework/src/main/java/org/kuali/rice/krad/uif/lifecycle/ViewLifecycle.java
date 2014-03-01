@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
@@ -96,7 +97,7 @@ public class ViewLifecycle implements Serializable {
         this.response = response;
         this.refreshComponentPostMetadata = refreshComponentPostMetadata;
         this.helper = view.getViewHelperService();
-        this.eventRegistrations = Collections.synchronizedList(new ArrayList<EventRegistration>());
+        this.eventRegistrations = new ArrayList<EventRegistration>();
     }
 
     /**
@@ -213,8 +214,12 @@ public class ViewLifecycle implements Serializable {
     public static Component performComponentLifecycle(View view, Object model, HttpServletRequest request,
             HttpServletResponse response, ViewPostMetadata viewPostMetadata, String componentId) {
         ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
-        if (componentPostMetadata == null) {
-            componentPostMetadata = setupStandaloneComponentForRefresh(view, componentId);
+        if ((componentPostMetadata == null) || componentPostMetadata.isDetachedComponent()) {
+            if (componentPostMetadata == null) {
+                componentPostMetadata = viewPostMetadata.initializeComponentPostMetadata(componentId);
+            }
+
+            setupStandaloneComponentForRefresh(view, componentId, componentPostMetadata);
         }
 
         Map<String, List<String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
@@ -231,9 +236,11 @@ public class ViewLifecycle implements Serializable {
      *
      * @param view view instance the component should be attached to
      * @param componentId id for the component the lifecycle should be run on
+     * @param componentPostMetadata post metadata instance for the component
      * @return instance of component post metadata configured for the component
      */
-    protected static ComponentPostMetadata setupStandaloneComponentForRefresh(View view, String componentId) {
+    protected static void setupStandaloneComponentForRefresh(View view, String componentId,
+            ComponentPostMetadata componentPostMetadata) {
         Component refreshComponent = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
                 componentId);
 
@@ -249,8 +256,6 @@ public class ViewLifecycle implements Serializable {
         dialogs.add((Group) refreshComponent);
         view.setDialogs(dialogs);
 
-        ComponentPostMetadata componentPostMetadata = new ComponentPostMetadata(componentId);
-
         String refreshPath = UifPropertyPaths.DIALOGS + "[" + (view.getDialogs().size() - 1) + "]";
         componentPostMetadata.setPath(refreshPath);
 
@@ -265,7 +270,51 @@ public class ViewLifecycle implements Serializable {
 
         componentPostMetadata.setRefreshPathMappings(refreshPathMappings);
 
-        return componentPostMetadata;
+        componentPostMetadata.setDetachedComponent(true);
+    }
+
+    /**
+     * Indicates if the component the phase is being run on is a component being refreshed (if this is a full
+     * lifecycle this method will always return false).
+     *
+     * @return boolean true if the component is being refreshed, false if not
+     */
+    public static boolean isRefreshComponent(String viewPhase, String viewPath) {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return false;
+        }
+
+        return StringUtils.equals(getRefreshComponentPhasePath(viewPhase), viewPath);
+    }
+
+    /**
+     * When a refresh lifecycle is being processed, returns the phase path (path at the current phase) for
+     * the component being refreshed.
+     *
+     * @return path for refresh component at this phase, or null if this is not a refresh lifecycle
+     */
+    public static String getRefreshComponentPhasePath(String viewPhase) {
+        if (!ViewLifecycle.isRefreshLifecycle()) {
+            return null;
+        }
+
+        ComponentPostMetadata refreshComponentPostMetadata = ViewLifecycle.getRefreshComponentPostMetadata();
+        if (refreshComponentPostMetadata == null) {
+            return null;
+        }
+
+        String refreshPath = refreshComponentPostMetadata.getPath();
+        if (refreshComponentPostMetadata.getPhasePathMapping() != null) {
+            Map<String, String> phasePathMapping = refreshComponentPostMetadata.getPhasePathMapping();
+
+            // find the path for the element at this phase (if it was the same as the final path it will not be
+            // in the phase path mapping
+            if (phasePathMapping.containsKey(viewPhase)) {
+                refreshPath = phasePathMapping.get(viewPhase);
+            }
+        }
+
+        return refreshPath;
     }
 
     /**
@@ -278,9 +327,11 @@ public class ViewLifecycle implements Serializable {
      * @see LifecycleEvent
      */
     public void invokeEventListeners(LifecycleEvent event, View view, Object model, LifecycleElement eventElement) {
-        for (EventRegistration registration : eventRegistrations) {
-            if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventElement)) {
-                registration.getEventListener().processEvent(event, view, model, eventElement);
+        synchronized (eventRegistrations) {
+            for (EventRegistration registration : eventRegistrations) {
+                if (registration.getEvent().equals(event) && (registration.getEventComponent() == eventElement)) {
+                    registration.getEventListener().processEvent(event, view, model, eventElement);
+                }
             }
         }
     }
@@ -305,7 +356,9 @@ public class ViewLifecycle implements Serializable {
         EventRegistration eventRegistration = new EventRegistration(LifecycleEvent.LIFECYCLE_COMPLETE, eventComponent,
                 listenerComponent);
 
-        eventRegistrations.add(eventRegistration);
+        synchronized (eventRegistrations) {
+            eventRegistrations.add(eventRegistration);
+        }
     }
 
     /**
@@ -579,7 +632,12 @@ public class ViewLifecycle implements Serializable {
      */
     public static ViewLifecyclePhase getPhase() {
         ViewLifecycleProcessor processor = PROCESSOR.get();
-        return processor == null ? null : processor.getActivePhase();
+        try {
+            return processor == null ? null : processor.getActivePhase();
+        } catch (IllegalStateException e) {
+            LOG.debug("No lifecycle phase is active on the current processor", e);
+            return null;
+        }
     }
 
     /**

@@ -44,9 +44,8 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
 public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
 
-//    @Id
-//    @Column(name = "DOC_TYP_ID", nullable = false)
-//    private String documentTypeId;
+    @Transient
+    private String documentTypeId;
 
     @Id
     @Column(name = "DOC_PLCY_NM", nullable = false)
@@ -69,7 +68,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public DocumentTypePolicy() {}
 
     public DocumentTypePolicy(String documentTypeId, String policyName, Boolean policyValue) {
-        //this.documentTypeId = documentTypeId;
+        this.documentTypeId = documentTypeId;
         this.policyName = policyName;
         this.policyValue = policyValue;
     }
@@ -104,14 +103,14 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public boolean isDisApprove() {
         return DISAPPROVE.getCode().equals(this.getPolicyName());
     }
-//
-//    public String getDocumentTypeId() {
-//        return documentTypeId;
-//    }
-//
-//    public void setDocumentTypeId(String documentTypeId) {
-//        this.documentTypeId = documentTypeId;
-//    }
+
+    public String getDocumentTypeId() {
+        return documentTypeId;
+    }
+
+    public void setDocumentTypeId(String documentTypeId) {
+        this.documentTypeId = documentTypeId;
+    }
 
     public String getPolicyName() {
         return policyName;

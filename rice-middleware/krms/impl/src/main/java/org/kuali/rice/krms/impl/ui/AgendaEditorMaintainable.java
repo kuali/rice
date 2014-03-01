@@ -18,20 +18,16 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
@@ -55,6 +51,7 @@ import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
@@ -63,6 +60,8 @@ import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
+import org.kuali.rice.krms.impl.repository.RepositoryBoIncrementer;
+import org.kuali.rice.krms.impl.repository.RuleAttributeBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermParameterBo;
@@ -77,6 +76,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
+
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
  *
@@ -90,17 +91,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             AgendaEditorMaintainable.class);
 
     public static final String NEW_AGENDA_EDITOR_DOCUMENT_TEXT = "New Agenda Editor Document";
-
-    private transient SequenceAccessorService sequenceAccessorService;
+    private static final RepositoryBoIncrementer termIdIncrementer = new RepositoryBoIncrementer(TermBo.TERM_SEQ_NAME);
+    private static final RepositoryBoIncrementer termParameterIdIncrementer = new RepositoryBoIncrementer(TermParameterBo.TERM_PARM_SEQ_NAME);
 
     private transient KrmsRetriever krmsRetriever = new KrmsRetriever();
-
-    /**
-     * @return the boService
-     */
-    public BusinessObjectService getBoService() {
-        return KNSServiceLocator.getBusinessObjectService();
-    }
 
     /**
      * return the contextBoService
@@ -255,8 +249,12 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         try {
             // Since the dataObject is a wrapper class we need to build it and populate with the agenda bo.
             AgendaEditor agendaEditor = new AgendaEditor();
-            AgendaBo agenda = getLegacyDataAdapter().findObjectBySearch(
+            AgendaBo agenda = findSingleMatching(getDataObjectService(),
                     ((AgendaEditor) getDataObject()).getAgenda().getClass(), dataObjectKeys);
+
+            // HACK: force lazy loaded items to be fetched
+            forceLoadLazyRelations(agenda);
+
             if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
                 String dateTimeStamp = (new Date()).getTime() + "";
                 String newAgendaName = AgendaItemBo.COPY_OF_TEXT + agenda.getName() + " " + dateTimeStamp;
@@ -290,16 +288,35 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return dataObject;
     }
 
-    /**
-     * Returns the sequenceAssessorService
-     *
-     * @return {@link SequenceAccessorService}
-     */
-    private SequenceAccessorService getSequenceAccessorService() {
-        if (sequenceAccessorService == null) {
-            sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+    private void forceLoadLazyRelations(AgendaBo agenda) {
+        for (AgendaItemBo item : agenda.getItems()) {
+            for (ActionBo action : item.getRule().getActions()) {
+                if (CollectionUtils.isEmpty(action.getAttributeBos())) { continue; }
+
+                for (ActionAttributeBo actionAttribute : action.getAttributeBos()) {
+                    actionAttribute.getAttributeDefinition();
+                }
+            }
+
+            Tree propTree = item.getRule().refreshPropositionTree(true);
+            walkPropositionTree(item.getRule().getProposition());
+
+            for (RuleAttributeBo ruleAttribute : item.getRule().getAttributeBos()) {
+                ruleAttribute.getAttributeDefinition();
+            }
         }
-        return sequenceAccessorService;
+    }
+
+    private void walkPropositionTree(PropositionBo prop) {
+        if (prop == null) { return; }
+
+        if (prop.getParameters() != null) for (PropositionParameterBo param : prop.getParameters()) {
+            param.getPropId();
+        }
+
+        if (prop.getCompoundComponents() != null) for (PropositionBo childProp : prop.getCompoundComponents()) {
+            walkPropositionTree(childProp);
+        }
     }
 
     /**
@@ -337,31 +354,9 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             }
         }
 
-        if (agendaBo instanceof PersistableBusinessObject) {
-            Map<String, String> primaryKeys = new HashMap<String, String>();
-            primaryKeys.put("id", agendaBo.getId());
-            AgendaBo dbAgendaBo = getBoService().findByPrimaryKey(AgendaBo.class, primaryKeys);
-
-            if (ObjectUtils.isNotNull(dbAgendaBo)) {
-                Map<String, String> primaryKeyForFirstItem = new HashMap<String, String>();
-                primaryKeyForFirstItem.put("id", dbAgendaBo.getFirstItemId());
-                AgendaItemBo dbFirstAgendaItemBo = getBoService().findByPrimaryKey(AgendaItemBo.class,
-                    primaryKeyForFirstItem);
-
-                List<AgendaItemBo> deletionOrder = new ArrayList<AgendaItemBo>();
-                addItemsToListForDeletion(deletionOrder, dbFirstAgendaItemBo);
-
-                for (AgendaItemBo agendaItemToDelete : deletionOrder) {
-                    getLegacyDataAdapter().delete(agendaItemToDelete);
-                }
-
-                dbAgendaBo.setItems(null);
-                getLegacyDataAdapter().delete(dbAgendaBo);
-            }
-
+        if (agendaBo != null) {
             flushCacheBeforeSave();
-
-            getLegacyDataAdapter().linkAndSave(agendaBo);
+            getDataObjectService().save(agendaBo);
         } else {
             throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
         }
@@ -427,17 +422,15 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 TermBo newTerm = new TermBo();
                 newTerm.setDescription(propositionBo.getNewTermDescription());
                 newTerm.setSpecificationId(termSpecId);
-                newTerm.setId(KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
-                        KrmsMaintenanceConstants.Sequences.TERM_SPECIFICATION, TermBo.class).toString());
+                newTerm.setId(termIdIncrementer.getNewId());
 
                 List<TermParameterBo> params = new ArrayList<TermParameterBo>();
                 for (Map.Entry<String, String> entry : propositionBo.getTermParameters().entrySet()) {
                     TermParameterBo param = new TermParameterBo();
-                    param.setTermId(newTerm.getId());
+                    param.setTerm(newTerm);
                     param.setName(entry.getKey());
                     param.setValue(entry.getValue());
-                    param.setId(KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(
-                            KrmsMaintenanceConstants.Sequences.TERM_PARAMETER, TermParameterBo.class).toString());
+                    param.setId(termParameterIdIncrementer.getNewId());
 
                     params.add(param);
                 }
@@ -541,11 +534,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     @Override
     public boolean isLockable() {
         return true;
-    }
-
-    @Override
-    public PersistableBusinessObject getPersistableBusinessObject() {
-        return ((AgendaEditor) getDataObject()).getAgenda();
     }
 
     @Override

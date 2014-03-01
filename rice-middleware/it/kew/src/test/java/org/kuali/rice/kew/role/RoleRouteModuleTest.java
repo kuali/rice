@@ -775,6 +775,9 @@ public class RoleRouteModuleTest extends KEWTestCase {
                         KradDataServiceLocator.getDataObjectService().delete(roleMember);
                     }
 
+                    // flush deletes on DataObjectService
+                    KradDataServiceLocator.getDataObjectService().flush(RoleMemberBo.class);
+
                     List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
                     assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
 

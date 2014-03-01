@@ -52,8 +52,8 @@ public class LabsLookupHeadingsAft extends LabsLookupBase {
     
     protected void testLabsLookupHeadings()throws Exception {
         waitForElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-upperGroup clearfix']/span");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-lowerGroup clearfix']/span");
-        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-rightGroup']/span");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-lowerGroup clearfix']/p");
+        assertElementPresentByXpath("//div[@class='uif-horizontalBoxGroup uif-header-rightGroup']/p");
         waitAndClickButtonByText("Custom Button");
         alertAccept();
     }

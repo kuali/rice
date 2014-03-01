@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.container;
 
 import java.util.List;
 
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -29,7 +28,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 /**
- * TODO mark don't forget to fill this in. 
+ * Interface representing an editable collection within a view. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -381,16 +380,6 @@ public interface CollectionGroup extends Group, DataBinding {
     void setFilters(List<CollectionFilter> filters);
 
     /**
-     *  List of property names that should be checked for duplicates in the collection.
-     */
-    List<String> getDuplicateLinePropertyNames();
-
-    /**
-     * @see CollectionGroup#getDuplicateLinePropertyNames()
-     */
-    void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames);
-    
-    /**
      *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
      */
     List<BindingInfo> getUnauthorizedLineBindingInfos();
@@ -737,4 +726,11 @@ public interface CollectionGroup extends Group, DataBinding {
      */
     void pushCollectionGroupToReference();
     
+    /**
+     * This method ...
+     * 
+     * @return
+     */
+    List<String> getDuplicateLinePropertyNames();
+
 }

@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -41,14 +49,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
 
 /**
  * Base implementation of <code>Component</code> which other component implementations should extend
@@ -236,11 +236,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                 return;
             }
         } else {
-            ViewLifecycle.reportIllegalState("Component "
-                    + getClass()
-                    + " "
-                    + getId()
-                    + " has been initialized, but the lifecycle is not active.");
+//            ViewLifecycle.reportIllegalState("Component "
+//                    + getClass()
+//                    + " "
+//                    + getId()
+//                    + " has been initialized, but the lifecycle is not active.");
             return;
         }
     }
@@ -272,7 +272,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the view status
-     * 
+     *
      * @param status view status
      */
     @Override
@@ -286,23 +286,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the view status
-     * 
+     *
      * @param phase completed view lifecycle phase
      */
     @Override
     public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus()) &&
-                !viewStatus.equals(phase.getEndViewStatus())) {
-            ViewLifecycle.reportIllegalState("Component "
-                    + getClass().getName()
-                    + " is not in expected status "
-                    + phase.getStartViewStatus()
-                    + " marking the completion of a lifecycle phase, found "
-                    + viewStatus
-                    + "\nPhase: "
-                    + phase);
-        }
-
         this.viewStatus = phase.getEndViewStatus();
     }
 
@@ -368,12 +356,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * The following updates are done here:
-     *
+     * 
      * <ul>
      * <li>Evaluate the progressive render condition (if set) and combine with the current render
      * status to set the render status</li>
      * </ul>
-     *
+     * 
      * {@inheritDoc}
      */
     @Override
@@ -396,13 +384,13 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * The following finalization is done here:
-     *
+     * 
      * <ul>
      * <li>progressiveRender and conditionalRefresh variables are processed if set</li>
      * <li>If any of the style properties were given, sets the style string on the style property</li>
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
-     *
+     * 
      * {@inheritDoc}
      */
     @Override
@@ -2284,7 +2272,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     @Override
     public String getScriptDataAttributesJs() {
-
         String script = "";
 
         if (getScriptDataAttributes() == null || getScriptDataAttributes().isEmpty()) {
@@ -2342,6 +2329,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         this.postRenderContent = postRenderContent;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ComponentBase clone() throws CloneNotSupportedException {
         ComponentBase copy = (ComponentBase) super.clone();

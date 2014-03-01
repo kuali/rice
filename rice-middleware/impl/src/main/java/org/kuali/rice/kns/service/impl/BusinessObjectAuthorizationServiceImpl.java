@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -62,13 +69,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 @Deprecated
 @LegacyDataFramework
@@ -415,8 +415,8 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	protected void addInquirableItemRestrictions(Collection sectionDefinitions,
+	@SuppressWarnings("rawtypes")
+    protected void addInquirableItemRestrictions(Collection sectionDefinitions,
 			InquiryAuthorizer authorizer, InquiryRestrictions restrictions,
 			BusinessObject primaryBusinessObject,
 			BusinessObject businessObject, String propertyPrefix, Person user) {
@@ -428,29 +428,30 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 								inquiryCollectionDefinition.getBusinessObjectClass().getName());
 
 				try {
-					Collection<BusinessObject> collection = (Collection<BusinessObject>) PropertyUtils
+					Collection<?> collection = (Collection<?>) PropertyUtils
 							.getProperty(businessObject,
 									inquiryCollectionDefinition.getName());
 					int i = 0;
-					for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
-							.hasNext();) {
+					for (Iterator<?> iterator = collection.iterator(); iterator.hasNext();) {
 						String newPropertyPrefix = propertyPrefix + inquiryCollectionDefinition.getName() + "[" + i + "].";
-						BusinessObject collectionItemBusinessObject = iterator.next();
+						Object collectionItemBusinessObject = iterator.next();
 						considerBusinessObjectFieldUnmaskAuthorization(
 								collectionItemBusinessObject, user, restrictions,
 								newPropertyPrefix, null);
-						considerBusinessObjectFieldViewAuthorization(
-								collectionBusinessObjectEntry, primaryBusinessObject, collectionItemBusinessObject,
-								user, authorizer, restrictions, newPropertyPrefix);
-						addInquirableItemRestrictions(
-								inquiryCollectionDefinition
-										.getInquiryCollections(),
-								authorizer,
-								restrictions,
-								primaryBusinessObject,
-								collectionItemBusinessObject,
-								newPropertyPrefix,
-								user);
+						if ( collectionItemBusinessObject instanceof BusinessObject ) {
+    						considerBusinessObjectFieldViewAuthorization(
+    								collectionBusinessObjectEntry, primaryBusinessObject, (BusinessObject)collectionItemBusinessObject,
+    								user, authorizer, restrictions, newPropertyPrefix);
+    						addInquirableItemRestrictions(
+    								inquiryCollectionDefinition
+    										.getInquiryCollections(),
+    								authorizer,
+    								restrictions,
+    								primaryBusinessObject,
+    								(BusinessObject)collectionItemBusinessObject,
+    								newPropertyPrefix,
+    								user);
+						}
 						i++;
 					}
 				} catch (Exception e) {
@@ -525,11 +526,13 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
     public boolean canFullyUnmaskField(Person user,
 			Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
-		if(isNonProductionEnvAndUnmaskingTurnedOff())
-			return false;
+		if(isNonProductionEnvAndUnmaskingTurnedOff()) {
+            return false;
+        }
 
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId()))
-			return false;
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) {
+            return false;
+        }
 		Boolean result = null;
 		if (document != null) { // if a document was passed, evaluate the permission in the context of a document
 			try { // try/catch and fallthrough is a fix for KULRICE-3365
@@ -556,11 +559,13 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
     public boolean canPartiallyUnmaskField(
 			Person user, Class<?> dataObjectClass, String fieldName, Document document) {
 		// KFSMI-5095
-		if(isNonProductionEnvAndUnmaskingTurnedOff())
-			return false;
+		if(isNonProductionEnvAndUnmaskingTurnedOff()) {
+            return false;
+        }
 
-		if(user==null || StringUtils.isEmpty(user.getPrincipalId()))
-			return false;
+		if(user==null || StringUtils.isEmpty(user.getPrincipalId())) {
+            return false;
+        }
 
 		if ( document == null ) {
 			return getPermissionService().isAuthorizedByTemplate(user.getPrincipalId(), KRADConstants.KNS_NAMESPACE,

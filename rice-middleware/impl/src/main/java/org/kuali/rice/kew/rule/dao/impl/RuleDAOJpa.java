@@ -482,13 +482,16 @@ public class RuleDAOJpa implements RuleDAO {
 	public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
-        builder.setPredicates(equal("ruleTemplateId",ruleTemplateId),
-                                equal("templateRuleInd",Boolean.TRUE));
+        if(StringUtils.isNotBlank(ruleTemplateId)){
+            builder.setPredicates(equal("ruleTemplateId",ruleTemplateId),
+                    equal("templateRuleInd",Boolean.TRUE));
 
-		List rules = getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
-		if (rules != null && !rules.isEmpty()) {
-			return (RuleBaseValues) rules.get(0);
-		}
+            List rules = getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
+            if (rules != null && !rules.isEmpty()) {
+                return (RuleBaseValues) rules.get(0);
+            }
+        }
+
 		return null;
 	}
 

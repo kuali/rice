@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import org.apache.ojb.broker.metadata.DescriptorRepository;
-import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.util.ClasspathOrFileResourceLoader;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -27,20 +24,14 @@ import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.identity.PersonServiceImpl;
 import org.kuali.rice.kim.impl.identity.external.EntityExternalIdentifierBo;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kim.test.bo.BOContainingPerson;
-import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.util.AutoPopulatingList;
 
 import javax.xml.namespace.QName;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -304,37 +295,11 @@ public class PersonServiceImplTest extends KIMTestCase {
 	}
 
 	@Test
-	public void testLookupWithPersonJoin() throws Exception {
-		
-		// merge the OJB file in containing the OJB metadata
-        InputStream is = new ClasspathOrFileResourceLoader().getResource("classpath:org/kuali/rice/kim/test/OJB-repository-kimunittests.xml").getInputStream();
-        MetadataManager mm = MetadataManager.getInstance();
-        DescriptorRepository dr = mm.readDescriptorRepository(is);
-        mm.mergeDescriptorRepository(dr);
-		
-		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation("KR-KIM", "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
-		KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
-		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
-		BOContainingPerson bo = new BOContainingPerson();
-		bo.setBoPrimaryKey( "ONE" );
-		bo.setPrincipalId( "p1" );
-		bos.save( bo );
-		bo = new BOContainingPerson();
-		bo.setBoPrimaryKey( "TWO" );
-		bo.setPrincipalId( "p2" );
-		bos.save( bo );
-
-		Lookupable l = KNSServiceLocator.getKualiLookupable();
-		l.setBusinessObjectClass( BOContainingPerson.class );
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put( "person.principalName", "principal1" );
-		List<BOContainingPerson> results = (List)l.getSearchResultsUnbounded( (Map)criteria );
-		System.out.println( results );
-		assertNotNull( "results may not be null", results );
-		assertEquals( "number of results is incorrect", 1, results.size() );
-		bo =  results.iterator().next();
-		assertEquals( "principalId does not match", "p1", bo.getPrincipalId() );
+	public void testUpdatePersonIfNecessary() throws Exception {
+        Person person = personService.updatePersonIfNecessary("p1", null);
+        assertNotNull("person object must not be null", person);
+		assertEquals("principalId does not match", "p1", person.getPrincipalId() );
+        assertEquals("principalName does not match", "principal1", person.getPrincipalName());
 	}
 
 //	@Test

@@ -42,7 +42,7 @@
         <ref bean="TravelerDetail-emailAddress" />
         <ref bean="TravelerDetail-phoneNumber" />
         <ref bean="TravelerDetail-travelerTypeCode" />
-        <ref bean="TravelerDetail-customerNumber" />
+        <!-- customerNumber is being used to test lookup security without a DD entry -->
         <ref bean="TravelerDetail-driversLicenseNumber" />
         <ref bean="TravelerDetail-liabilityInsurance" />
         <ref bean="TravelerDetail-citizenship" />
@@ -283,19 +283,6 @@
     <property name="description" value="Traveler Type Code" />
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="50"/>
-    </property>
-  </bean>
-
-  <bean id="TravelerDetail-customerNumber" parent="TravelerDetail-customerNumber-parentBean" />
-  <bean id="TravelerDetail-customerNumber-parentBean" parent="AttributeDefinition">
-    <property name="name" value="customerNumber" />
-    <property name="label" value="Customer Number" />
-    <property name="shortLabel" value="Customer" />
-    <property name="maxLength" value="40" />
-    <property name="summary" value="Customer" />
-    <property name="description" value="Customer Number" />
-    <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="0"/>
     </property>
   </bean>
 

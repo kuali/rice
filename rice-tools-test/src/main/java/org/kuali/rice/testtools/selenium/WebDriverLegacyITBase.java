@@ -82,11 +82,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String AGENDA_LOOKUP_LINK_TEXT = "Agenda Lookup";
 
     /**
-     * "//input[@aria-invalid]"
-     */
-    public static final String ARIA_INVALID_XPATH = "//input[@aria-invalid]";
-
-    /**
      * backdoorId
      */
     public static final String BACKDOOR_ID_TEXT = "backdoorId";
@@ -157,6 +152,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * //a[@title='Create a new record']
      */
     public static final String CREATE_NEW_XPATH2 = "//a[@title='Create a new record']";
+
+    /**
+     * div.dataTables_wrapper thead th
+     */
+    public static final String DATA_TABLE_TH_CSS = "div.dataTables_wrapper thead th";
+
+    /**
+     * div.dataTables_wrapper thead th
+     */
+    public static final String DATA_TABLE_TR_CSS = "div.dataTables_wrapper tbody tr";
 
     /**
      * //div[@class='left-errmsg-tab']/div/div
@@ -829,14 +834,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void assertDocFinal(String docId) throws InterruptedException {
-        jiraAwareWaitFor(By.linkText("spreadsheet"), this.getClass().toString());
-
-        if (isElementPresent(By.linkText(docId))) {
-            assertEquals(DOC_STATUS_FINAL, getDocStatus());
-        } else {
-            assertEquals(docId,findElement(By.xpath(DOC_ID_XPATH_2)).getText());
-            assertEquals(DOC_STATUS_FINAL, getDocStatus());
-        }
+        assertDocSearch(docId, DOC_STATUS_FINAL);
     }
 
     protected void assertDocSearch(String docId, String docStatus) throws InterruptedException {
@@ -1015,13 +1013,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.navigate().back();
     }
 
-    private void blanketApproveAssert() throws InterruptedException {
+    private void blanketApproveAssert(String docId) throws InterruptedException {
         checkForDocError();
-        waitAndClickDocSearch();
-        waitForElementsPresentByClassName("footer-copyright", "footer-copyright");
-        assertEquals("Kuali Portal Index", driver.getTitle());
-        selectFrameIframePortlet();
-        waitAndClickSearch();
+        assertDocSearch(docId, DOC_STATUS_FINAL);
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
@@ -1036,13 +1030,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      *
      * @throws InterruptedException
      */
-    protected void blanketApproveTest() throws InterruptedException {
+    protected void blanketApproveTest(String docId) throws InterruptedException {
         jGrowl("Click Blanket Approve");
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
 
-        blanketApproveAssert();
+        blanketApproveAssert(docId);
     }
 
     protected void check(By by) throws InterruptedException {
@@ -1207,7 +1201,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         testLookUp();
         assertTextPresent("Notes and Attachments");
         waitAndClick(By.xpath(CANCEL2_XPATH));
-        passed();
     }
 
     //    protected void deleteSubCollectionLine() throws Exception {
@@ -1465,10 +1458,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
+    protected void gotoIframeById(final String iframeId) {
+        if (driver.findElements(By.id(iframeId)).size() > 0) { // find elements so an exception isn't thrown if not found
+            WebElement contentFrame = driver.findElement(By.id(iframeId)); // don't highlight
+            driver.switchTo().frame(contentFrame);
+        } else {
+            System.out.println("Unable to find " + iframeId);
+        }
+    }
     protected void gotoIframeByXpath(final String iframeXpath) {
-        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {
+        if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {  // find elements so an exception isn't thrown if not found
             WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
+        } else {
+            System.out.println("Unable to find " + iframeXpath);
         }
     }
 
@@ -1663,6 +1666,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return resultsCount;
     }
 
+    protected boolean noAffilication() {
+        return !isElementPresentByName("document.affiliations[0].dflt");
+    }
+
     protected void open(String url) {
         driver.get(url);
     }
@@ -1724,7 +1731,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      * @throws InterruptedException
      */
     protected void select(By by, String selectText) throws InterruptedException {
-        checkForIncidentReport(by.toString(), "trying to select text " + selectText);
+//        checkForIncidentReport(by.toString(), "trying to select text " + selectText); // I think a report will now be picked-up by the jiraAwareFail
         WebElement select1 = findElement(by);
         String name = select1.getAttribute("name");
         WebDriverUtils.jGrowl(getDriver(), "Select " + selectText, false, "Select " + selectText + " from " + name);
@@ -1733,7 +1740,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         for (WebElement option : options) {
             if (option.getText().equals(selectText)) {
                 option.click();
-                break;
+//                break; // seems to be causing a hang?
             }
         }
     }
@@ -1790,7 +1797,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String today = getDateToday();
         Calendar nextYearCal = Calendar.getInstance();
         nextYearCal.add(Calendar.YEAR, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String nextYear = sdf.format(nextYearCal.getTime());
 
         //Enter details for BrownGroup.
@@ -1802,7 +1809,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("document.groupDescription", groupDescription);
 
         // Add Ad hoc Recipient
-        addAdHocRecipientsPerson(new String[]{"dev1", "F"});
+        addAdHocRecipientsPerson(new String[]{"dev1", "F"}); // "One, Developer"
 
         // Add Ad hoc Workgroup
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.group.GroupBo!!).(((namespaceCode:newAdHocRouteWorkgroup.recipientNamespaceCode,name:newAdHocRouteWorkgroup.recipientName))).((`newAdHocRouteWorkgroup.recipientNamespaceCode:namespaceCode,newAdHocRouteWorkgroup.recipientName:name`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
@@ -1828,12 +1835,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
         waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
         waitAndClickSearch();
+        String adHocPerson = waitForElementPresentByXpath("//table[@id='row']/tbody/tr/td[2]/a").getText();
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitAndClickSave();
         waitAndClickSubmit();
         waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH, "Document is not submitted successfully");
         selectTopFrame();
+
+        // Verify Document Overview info
+        docSearch(docId);
+        waitAndClickByLinkText(docId);
+        switchToWindow("Kuali :: Group");
+        assertTextPresent(new String[]{"Adding Brown Group", "I want to add Brown Group to test KIM", organizationDocumentNumber});
+        waitAndClickByName("methodToCall.close");
+
         waitAndClickByLinkText("Administration");
         waitAndClickByLinkText("Group");
         selectFrameIframePortlet();
@@ -1842,15 +1858,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresent(By.linkText(groupName), docId + " with groupName "+ groupName + " not present!");
         waitAndClickByLinkText("edit");
         waitAndClickByName("methodToCall.showAllTabs");
-        waitForTextPresent("admin admin");
-        assertTextPresent("Adding Brown Group");
-        assertTextPresent("I want to add Brown Group to test KIM");
-        assertTextPresent(organizationDocumentNumber);
-        assertTextPresent(groupDescription);
-        assertTextPresent("One, Developer");
-        if (adHocWrkGrp != null ) {
-            assertTextPresent(adHocWrkGrp);
-        }
+        assertTextPresent(new String[]{adHocPerson, groupDescription, nameSpace, groupName});
     }
 
     protected String getDateTimeStampFormatted() {
@@ -1930,8 +1938,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testCreateNewAgenda() throws Exception {
@@ -2272,8 +2279,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityPermissionBlanketApprove() throws Exception {
@@ -2289,8 +2295,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByXpath("//select[@name='document.newMaintainableObject.templateId']", LABEL_KUALI_DEFAULT);
         waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']",
                 "ValidationTestPermission" + dtsTwo);
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityPersonBlanketApprove() throws Exception {
@@ -2314,8 +2319,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName("newName.dflt");
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityResponsibilityBlanketApprove() throws Exception {
@@ -2332,8 +2336,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + dtsTwo);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {
@@ -2354,8 +2357,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationCampusBlanketApprove() throws Exception {
@@ -2370,8 +2372,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 .createUniqueDtsPlusTwoRandomChars());
         waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
         selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
@@ -2393,8 +2394,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertBlanketApproveButtonsPresent();
         blanketApproveCheck();
         if (!hasDocError("same primary key already exists")) { // don't fail as to still have the same key after 25 sequential attempts we've created many today already
-            blanketApproveAssert();
-            assertDocFinal(docId);
+            blanketApproveAssert(docId);
         }
     }
 
@@ -2420,8 +2420,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String countyName = "Validation Test County" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationPostBlanketApprove() throws Exception {
@@ -2445,8 +2444,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
         String cityName = "Validation Test Postal Code " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLocationStateBlanketApprove() throws Exception {
@@ -2467,8 +2465,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         String state = "Validation Test State " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", state);
         waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void testLookUp() throws Exception {
@@ -2792,8 +2789,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         return params;
     }
 
-    protected List<String> testVerifyPerson(String docId, String personName) throws Exception
-    {
+    protected List<String> testVerifyPerson(String docId, String personName) throws Exception {
         waitAndClickByLinkText(personName);
         waitForPageToLoad();
         Thread.sleep(5000);
@@ -2823,38 +2819,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         params.add(personName);
 
         return params;
-    }
-
-    protected void testUifTooltipByName(String nameField1, String nameField2) throws Exception {
-        findElement(By.name(nameField2)); // fields must be in view for tooltips to be displayed
-
-        // check if tooltip opens on focus
-        fireEvent(nameField1, "focus");
-        fireMouseOverEventByName(nameField1);
-
-        assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
-                "td.jquerybubblepopup-innerHtml"));
-        fireEvent(nameField1, "blur");
-
-        fireEvent(nameField2, "focus");
-        Thread.sleep(5000);
-
-        // check if tooltip opens on mouse over
-        fireMouseOverEventByName(nameField2);
-        assertTrue(isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
-
-        // check if tooltip closed on mouse out of nameField2
-        fireEvent(nameField2, "blur");
-        waitAndTypeByName(nameField1, "");
-        Thread.sleep(5000);
-        assertFalse(isVisibleByXpath(
-                "//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
-
-        // check that default tooltip does not display when there are an error message on the field
-        waitAndTypeByName(nameField1, "1");
-        fireEvent(nameField1, "blur");
-        fireMouseOverEventByName(nameField1);
-        Thread.sleep(10000);
     }
 
     protected void testValidCharsConstraintIT() throws Exception {
@@ -2946,68 +2910,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals("true", waitAndGetAttributeByXpath(refreshTextSelectLocator, "disabled"));
     }
 
-    /**
-     * verify that add line controls are present
-     */
-    protected void confirmAddLineControlsPresent(String idPrefix, String addLineIdSuffix) {
-        String[] addLineIds = {"StartTime", "StartTimeAmPm", "AllDay"};
-
-        for (String id : addLineIds) {
-            String tagId = "//*[@id='" + idPrefix + id + addLineIdSuffix + "']";
-            assertTrue("Did not find id " + tagId, isElementPresentByXpath(tagId));
-        }
-    }
-
-    protected void testAddLineWithSpecificTime(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
-        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
-        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
-        String inputTime = "7:06";
-        waitAndTypeByXpath(startTimeId, inputTime);
-        String amPmSelectLocator = "//*[@id='" + idPrefix + "StartTimeAmPm" + addLineIdSuffix + "']";
-        selectByXpath(amPmSelectLocator, "PM");
-        assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
-        Thread.sleep(5000); //allow for ajax refresh        
-        waitAndClickByXpath("//button");
-        Thread.sleep(5000); //allow for line to be added
-
-        //confirm that line has been added
-        assertTrue("line (//input[@value='7:06'])is not present https://jira.kuali.org/browse/KULRICE-8162 Configuration Test View Time Info add line button doesn't addline",
-                isElementPresentByXpath("//input[@value='7:06']"));
-    }
-
-    protected void testAddLineWithAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
-        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
-        String startTimeId = "//*[@id='" + idPrefix + "StartTime" + addLineIdSuffix + "']";
-        String inputTime = "5:20";
-        waitAndTypeByXpath(startTimeId, inputTime);
-        String allDaySelector = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
-        Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickByXpath(allDaySelector);
-        Thread.sleep(5000); //allow for ajax refresh
-        checkForIncidentReport();
-        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
-        Thread.sleep(5000); //allow for line to be added
-    }
-
-    protected void testAddLineAllDay(String idPrefix, String addLineIdSuffix) throws Exception {
-        waitForElementPresentByXpath("//label[@id='" + idPrefix + "TextInputField_label']");
-        confirmAddLineControlsPresent(idPrefix, addLineIdSuffix);
-
-        //store number of rows before adding the lines
-        String allDayId = "//*[@id='" + idPrefix + "AllDay" + addLineIdSuffix + "']";
-        Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickByXpath(allDayId);
-        waitAndClick("div#ConfigurationTestView-ProgressiveRender-TimeInfoSection button");
-        Thread.sleep(5000); //allow for line to be added
-
-        WebElement table = findElement(By.id("ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent"));
-        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'delete')]"), table);
-        //confirm that line has been added (by checking for the new delete button)
-        assertEquals("line was not added", 3, columns.size());
-    }
-
     //    protected void testTravelAccountTypeLookup() throws Exception {
     //        selectFrameIframePortlet();
     //
@@ -3088,106 +2990,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTextPresent("Term Parameters");
         waitAndClick(By.xpath(CANCEL2_XPATH));
         passed();
-    }
-
-    protected void testWorkFlowRouteRulesBlanketApp() throws Exception {
-        String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitForPageToLoad();
-        Thread.sleep(3000);
-        assertEquals("Kuali Portal Index", getTitle());
-        selectFrameIframePortlet();
-
-        // click on the create new button
-        waitAndClickCreateNew();
-
-        // lookup on the Document Type Name
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:documentTypeName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-
-        // type in the name field the text RoutingRuleDocument
-        waitAndTypeByName("name", "RoutingRuleDocument");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value link
-        waitAndClickReturnValue();
-
-        // lookup on the Rule Template Name
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kew.rule.bo.RuleTemplateBo!!).(((name:ruleTemplateName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchor");
-
-        // type in the name field the text RuleRoutingTemplate
-        waitAndTypeByName("name", "RuleRoutingTemplate");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value link
-        waitAndClickReturnValue("testWorkFlowRouteRulesBlanketApp");
-
-        // click the create new button
-        waitAndClickByName("methodToCall.createRule");
-        waitForPageToLoad();
-        String docId = waitForDocId();
-        assertTrue(isElementPresentByName(CANCEL_NAME));
-
-        // type in the Document Overview Description the text Test Routing Rule
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Routing Rule " + random);
-
-        // click the Force Action checkbox
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.forceAction']");
-
-        // type in the Description text area the text Test Routing Rule1
-        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1 "
-                + random);
-
-        // type in the Document type name field the text DocumentTypeDocument
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.fieldValues(1321~docTypeFullName)']",
-                "DocumentTypeDocument");
-
-        // lookup on Person
-        waitAndClickByName("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor15");
-
-        // click the search button
-        waitAndClickSearch();
-
-        // click the return value
-        waitAndClickReturnValue();
-
-        // select from the Action Request ACKNOWLEDGE
-        selectByXpath("//select[@id='document.newMaintainableObject.add.personResponsibilities.actionRequestedCd']",
-                "ACKNOWLEDGE");
-
-        // type in the Priority field the text 1
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.add.personResponsibilities.priority']", "1");
-
-        // click the add button
-        waitAndClickByName("methodToCall.addLine.personResponsibilities.(!!org.kuali.rice.kew.rule.PersonRuleResponsibility!!).(:::;15;:::).anchor15");
-        waitForPageToLoad();
-
-        // click Blanket Approve
-        waitAndClickByName(BLANKET_APPROVE_NAME);
-
-        // doc search for the docId
-        waitForPageToLoad();
-        driver.switchTo().defaultContent(); //selectWindow("null");
-        waitAndClickDocSearch();
-        waitForPageToLoad();
-        assertEquals("Kuali Portal Index", getTitle());
-        selectFrameIframePortlet();
-        waitAndTypeByName("documentId", docId);
-        waitAndClickSearch();
-
-        // Expect the doc status to be FINAL
-        waitForElementPresent(By.linkText(docId));
-        if (isElementPresent(By.linkText(docId))) {
-            if (!DOC_STATUS_FINAL.equalsIgnoreCase(getTextByXpath(DOC_STATUS_XPATH_2))) {
-                jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));
-            }
-        } else {
-            assertEquals(docId, getTextByXpath(DOC_ID_XPATH_2));
-            assertEquals(DOC_STATUS_FINAL, getTextByXpath(DOC_STATUS_XPATH_2));
-        }
     }
 
     protected void testCreateNewRRDTravelRequestDestRouting() throws Exception {
@@ -3369,11 +3171,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testPageHelp() throws Exception {
         // test tooltip help
-        fireMouseOverEventByXpath("//h2/span[@class='uif-headerText-span']");
-        assertEquals("Sample text for page help", getText("td.jquerybubblepopup-innerHtml"));
+        fireMouseOverEventByXpath("//a/span[@class='uif-headerText-span']");
+        waitForTextPresent("Sample text for section help - tooltip help");
 
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Help Page']");
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
@@ -3426,12 +3228,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
 
         // test tooltip help of section header
-        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section1']/div/h3[@class='uif-headerText']");
+        fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
@@ -3440,29 +3238,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[1].style.display='none'";
-        Thread.sleep(3000);
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
 
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[2].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
         Thread.sleep(3000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[3].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
 
         // verify that standalone help with tooltip is not rendered
         assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
@@ -3474,82 +3259,44 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[4].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +"element[5].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[6].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" + "element[7].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        Thread.sleep(3000);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
     }
 
     /**
      * Test the tooltip help on the sub-section and fields that are display only
      */
     protected void testDisplayOnlyTooltipHelp() throws Exception {
-        // verify that no tooltips are displayed initially
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]")) {
-            assertFalse(isVisible("//td[contains(text(),'Sample text for sub-section help')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]")) {
-            assertFalse(isVisible("//td[contains(text(),'Sample text for read only field help')]"));
-        }
 
         // test tooltip help of sub-section header
         fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
-        String javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
-        assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
 
         // test tooltip help of display only data field
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for read only field help')]"));
-        javascript="var element = document.getElementsByClassName('jquerybubblepopup jquerybubblepopup-black');" +
-                "element[0].style.display='none'";
-        ((JavascriptExecutor) driver).executeScript(javascript);
+        waitForElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]");
     }
 
     /**
      * Test the tooltip help on the section and fields with no content
      */
     protected void testMissingTooltipHelp() throws Exception {
-        // verify that no tooltips are displayed initially
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-
-        // verify that no external help exist
-        assertFalse(isElementPresent("#ConfigurationTestView-Help-Section2 input.uif-helpImage"));
 
         // test tooltip help of section header
         fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
 
         // test tooltip help of field
         fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
-        assertFalse(isElementPresentByXpath("//*[@class='jquerybubblepopup jquerybubblepopup-black']"));
+        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
     }
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
@@ -3889,12 +3636,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testViewHelp() throws Exception {
         // test tooltip help
         fireEvent("field102", "blur");
-        fireMouseOverEventByXpath("//h1/span[@class='uif-headerText-span']");
-        Thread.sleep(500);
-        assertEquals("Sample text for view help", getTextByXpath("//td[@class='jquerybubblepopup-innerHtml']"));
-
+        fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
+        waitForTextPresent("Sample text for field help - label left");
+        
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View - Help']");
+        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
@@ -4157,8 +3903,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 "Workflow Maintenance Document Type Document " + dts);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
                 "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-        blanketApproveTest();
-        assertDocFinal(docId);
+        blanketApproveTest(docId);
     }
 
     protected void uncheck(By by) throws InterruptedException {
@@ -4174,43 +3919,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void uncheckByXpath(String locator) throws InterruptedException {
         uncheck(By.xpath(locator));
-    }
-
-    protected boolean validateErrorImage(boolean validateVisible) throws Exception {
-        Thread.sleep(500);
-        boolean valid = false;
-
-        for (int second = 0; second < 5; second++) {
-            if ((valid = validateErrorImage(validateVisible, second, ARIA_INVALID_XPATH)) == true) {
-                break;
-            }
-        }
-
-        if (validateVisible) {
-            assertTrue("valid = " + valid + " when validateVisible is " + validateVisible, valid);
-        } else {
-            assertFalse("valid = " + valid + " when validateVisible is " + validateVisible, valid);
-        }
-
-        return valid;
-    }
-
-    private boolean validateErrorImage(boolean validateVisible, int second, String xpath) throws InterruptedException {
-        try {
-            if (validateVisible) {
-                if (isElementPresentByXpath(xpath) && isVisibleByXpath(xpath)) {
-                    return true;
-                }
-            } else {
-                if (!isElementPresentByXpath(xpath) || !isVisibleByXpath(xpath)) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            // don't fail here, we're in a loop let the caller decide when to fail
-        }
-        Thread.sleep(1000);
-        return false;
     }
 
     protected void verifyRichMessagesValidationBasicFunctionality() throws Exception
@@ -4245,29 +3953,28 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void verifyRichMessagesValidationLettersNumbersValidation() throws Exception
     {
         //For letters only Validation
-        assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field5']"));
+        assertTrue(isElementPresentByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']"));
         waitAndTypeByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']",
-                "abc");
+                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc");
         assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath(
-                "//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']");
-        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock']/input[@name= 'field5']","abc12");
+                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']");
+        waitAndTypeByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc12");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
-        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        waitForElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']");
         Thread.sleep(3000);
-        clearTextByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']");
-        waitAndTypeByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']/input[@name= 'field5']","abc");
+        clearTextByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']");
+        waitAndTypeByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc");
         waitAndTypeByXpath("//input[@name= 'field6']", "");
 
         //For numbers only validation
         waitAndTypeByXpath("//input[@name= 'field6']", "123");
         assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
-        clearTextByXpath("//input[@name= 'field6']");
-        waitAndTypeByXpath("//input[@name= 'field6']", "123ab");
+        clearTextByXpath("//input[@name='field6']");
+        waitAndTypeByXpath("//input[@name='field6']", "123ab");
         fireEvent("field6", "blur");
         Thread.sleep(5000);
-        assertTrue(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
+        assertTrue(isElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']"));
         Thread.sleep(3000);
     }
 
@@ -4299,27 +4006,21 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void verifyRichMessagesValidationLinkDeclarationsFunctionality() throws Exception
     {
         //Testing link tag
-        waitAndClickByXpath("//div[contains(., 'Testing link tag')]/a");
+        waitAndClickByLinkText("Kuali Site");
         Thread.sleep(9000);
         switchToWindow("Open Source Software | www.kuali.org");
         switchToWindow(RICH_MESSAGES_WINDOW_TITLE);
 
         //Testing methodToCall Action
-        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action')]/a");
+        waitAndClickByXpath("//p[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);
         assertTrue(isElementPresentByXpath(
                 "//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath(
-                "//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
 
         //Testing methodToCall action (no client validation check)
-        waitAndClickByXpath("//div[contains(., 'Testing methodToCall action (no client validation check)')]/a");
+        waitAndClickByXpath("//p[contains(., 'Testing methodToCall action (no client validation check)')]/a");
         assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages']"));
         assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@id='Demo-RadioCheckboxMessageSection']/div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages-error']"));
         Thread.sleep(3000);
     }
 

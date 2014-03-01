@@ -59,7 +59,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-SelectControl-Example2 start-->
-          <bean parent="Uif-InputField-LabelTop" p:propertyName="inputField2" >
+          <bean parent="Uif-InputField" p:propertyName="inputField2" >
           <property name="control">
             <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options"/>
           </property>

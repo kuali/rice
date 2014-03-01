@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+     This persistence.xml file exists for the sole purpose of being used during the static bytecode weaving process.
+-->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="krms-impl">
+    <description>
+      This is a persistence unit used for the purposes of static bytecode weaving in Eclipselink (see pom.xml of
+      this module). It is not used or loaded by the runtime at all.
+    </description>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krms.impl.repository.jpa.RelationshipTypeConverter</class>
+    <class>org.kuali.rice.krms.impl.repository.FunctionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.FunctionParameterBo</class>
+    <class>org.kuali.rice.krms.impl.repository.CategoryBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermSpecificationBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermParameterBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermResolverBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermResolverAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo</class>
+    <class>org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.AgendaBo</class>
+    <class>org.kuali.rice.krms.impl.repository.AgendaAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.AgendaItemBo</class>
+    <class>org.kuali.rice.krms.impl.repository.RuleBo</class>
+    <class>org.kuali.rice.krms.impl.repository.RuleAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.PropositionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.PropositionParameterBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ActionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ActionAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextValidAgendaBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextValidActionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextValidRuleBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ContextValidTermBo</class>
+    <class>org.kuali.rice.krms.impl.repository.KrmsTypeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo</class>
+    <class>org.kuali.rice.krms.impl.repository.TypeTypeRelationBo</class>
+    <class>org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBo</class>
+    <class>org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateAttributeBo</class>
+    <class>org.kuali.rice.krms.impl.repository.NaturalLanguageUsageBo</class>
+    <class>org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBo</class>
+  </persistence-unit>
+</persistence>

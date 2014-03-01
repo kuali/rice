@@ -106,7 +106,6 @@
     <property name="layoutManager.renderSequenceField" value="true"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="readOnly" value="false"/>
-    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <!--Cant figure out how to get this to work at this time
        <property name="layoutManager.separateAddLine" value="true"/>
 <property name="layoutManager.addLineGroup.items">
@@ -235,7 +234,9 @@
     <property name="collectionObjectClass"
               value="edu.sampleu.demo.kitchensink.UITestObject"/>
     <property name="propertyName" value="list5"/>
-    <property name="readOnly" value="true"/>
+    <property name="readOnly"  value="true"/>
+    <property name="layoutManager.rowDetailsOpen" value="true"/>
+    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.expandDetailsActionPrototype">
       <bean parent="Uif-ExpandDetailsImageAction"/>
@@ -293,11 +294,11 @@
           <property name="propertyName" value="subList"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field1" p:label="Field 1"
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
                     p:required="true"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 2"
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
                     p:required="true"/>
-              <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 3"
+              <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
                     p:required="true"/>
             </list>
           </property>
@@ -396,8 +397,6 @@
     <property name="propertyName" value="list1"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="readOnly" value="false"/>
-    <property name="layoutManager.rowDetailsOpen" value="true"/>
-    <property name="layoutManager.showToggleAllDetails" value="true"/>
     <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
     <property name="layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">

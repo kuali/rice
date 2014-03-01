@@ -395,6 +395,13 @@
   <bean id="TravelerDetail-lookupDefinition-parentBean" abstract="true"
         parent="LookupDefinition">
     <property name="title" value="Traveler Detail Lookup" />
+    <property name="helpDefinition" >
+      <bean parent="HelpDefinition"
+            p:parameterNamespace="KSAPP-TRVL"
+            p:parameterName="principalName">
+              <property name="parameterDetailType">String</property>
+            </bean>
+    </property>
     <property name="defaultSort">
       <bean parent="SortDefinition">
         <property name="attributeNames">
@@ -428,10 +435,29 @@
     </property>
   </bean>
 
-  <bean id="TestCase-lookupDefinition" parent="TestCase-lookupDefinition-parentBean" />
-  <bean id="TestCase-lookupDefinition-parentBean" abstract="true"
-        parent="LookupDefinition">
+  <bean id="TravelerDetail-lookupDefinition-withHelpDefinition" parent="TravelerDetail-lookupDefinition-withHelpDefinition-parentBean" />
+  <bean id="TravelerDetail-lookupDefinition-withHelpDefinition-parentBean" abstract="true" parent="LookupDefinition">
+  <property name="title" value="Traveler Detail Lookup" />
+  <property name="helpDefinition" >
+    <bean parent="HelpDefinition"
+          p:parameterNamespace="KSAPP-TRVL"
+          p:parameterName="principalName">
+      <property name="parameterDetailType">String</property>
+    </bean>
+  </property>
+  </bean>
+
+  <bean id="TravelerDetail-lookupDefinition-withHelpUrl" parent="TravelerDetail-lookupDefinition-withHelpUrl-parentBean" />
+  <bean id="TravelerDetail-lookupDefinition-withHelpUrl-parentBean" abstract="true" parent="LookupDefinition">
     <property name="title" value="Traveler Detail Lookup" />
+    <property name="helpUrl" value="helpUrl.html"/>
+  </bean>
+
+
+<bean id="TestCase-lookupDefinition" parent="TestCase-lookupDefinition-parentBean" />
+<bean id="TestCase-lookupDefinition-parentBean" abstract="true"
+      parent="LookupDefinition">
+<property name="title" value="Traveler Detail Lookup" />
     <property name="disableSearchButtons" value="true"/>
     <property name="defaultSort">
       <bean parent="SortDefinition">

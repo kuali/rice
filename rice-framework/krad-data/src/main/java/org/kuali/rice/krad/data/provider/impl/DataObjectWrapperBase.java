@@ -15,25 +15,19 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataChild;
+import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -43,9 +37,21 @@ import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.core.CollectionFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataObjectWrapperBase.class);
@@ -54,11 +60,14 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     private final DataObjectMetadata metadata;
     private final BeanWrapper wrapper;
     private final DataObjectService dataObjectService;
+    private final ReferenceLinker referenceLinker;
 
-    protected DataObjectWrapperBase(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService) {
+    protected DataObjectWrapperBase(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService,
+            ReferenceLinker referenceLinker) {
         this.dataObject = dataObject;
         this.metadata = metadata;
         this.dataObjectService = dataObjectService;
+        this.referenceLinker = referenceLinker;
         this.wrapper = PropertyAccessorFactory.forBeanPropertyAccess(dataObject);
         // note that we do *not* want to set auto grow to be true here since we are using this primarily for
         // access to the data, we will expose getPropertyValueNullSafe instead because it prevents a a call to
@@ -367,24 +376,28 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 	public Map<String, Object> getForeignKeyAttributeMap(String relationshipName) {
 		MetadataChild relationship = findAndValidateRelationship(relationshipName);
         List<DataObjectAttributeRelationship> attributeRelationships = relationship.getAttributeRelationships();
+
         if (!attributeRelationships.isEmpty()) {
-            // ok, it has some of these relationships, are they all populated?
-            boolean allPopulated = true;
             Map<String, Object> attributeMap = new LinkedHashMap<String, Object>();
+
             for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
-                String attributeName = attributeRelationship.getParentAttributeName();
-                Object attributeValue = getPropertyValue(attributeName);
-                if (attributeValue == null) {
-                    allPopulated = false;
-                    break;
+                // obtain the property value on the current parent object
+                String parentAttributeName = attributeRelationship.getParentAttributeName();
+                Object parentAttributeValue = getPropertyValue(parentAttributeName);
+
+                // not all of our relationships are populated, so we cannot obtain a valid foreign key
+                if (parentAttributeValue == null) {
+                    return null;
                 }
-                attributeMap.put(attributeName, attributeValue);
+
+                // store the mapping with the child attribute name to fetch on the referenced child object
+                String childAttributeName = attributeRelationship.getChildAttributeName();
+                attributeMap.put(childAttributeName, parentAttributeValue);
             }
-            if (allPopulated) {
-                // if they are all populated, then we have our foreign key!
-				return attributeMap;
-            }
+
+            return attributeMap;
         }
+
         return null;
     }
 
@@ -441,25 +454,182 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     @Override
-    public void fetchRelationship(String relationshipName) {
-        fetchRelationship(findAndValidateRelationship(relationshipName));
+    public void linkChanges(Set<String> changedPropertyPaths) {
+        referenceLinker.linkChanges(getWrappedInstance(), changedPropertyPaths);
     }
 
-	protected void fetchRelationship(MetadataChild relationship) {
+    @Override
+    public void linkForeignKeys(boolean onlyLinkReadOnly) {
+        linkForeignKeysInternalWrapped(this, onlyLinkReadOnly, Sets.newHashSet());
+    }
+
+    protected void linkForeignKeysInternal(Object object, boolean onlyLinkReadOnly, Set<Object> linked) {
+        if (object == null || linked.contains(object) || !dataObjectService.supports(object.getClass())) {
+            return;
+        }
+        linked.add(object);
+        DataObjectWrapper<?> wrapped = dataObjectService.wrap(object);
+        linkForeignKeysInternalWrapped(wrapped, onlyLinkReadOnly, linked);
+    }
+
+    protected void linkForeignKeysInternalWrapped(DataObjectWrapper<?> wrapped, boolean onlyLinkReadOnly, Set<Object> linked) {
+        List<DataObjectRelationship> relationships = wrapped.getMetadata().getRelationships();
+        for (DataObjectRelationship relationship : relationships) {
+            String relationshipName = relationship.getName();
+            Object relationshipValue = wrapped.getPropertyValue(relationshipName);
+
+            // let's get the current value and recurse down if it's a relationship that is cascaded on save
+            if (relationship.isSavedWithParent()) {
+
+                linkForeignKeysInternal(relationshipValue, onlyLinkReadOnly, linked);
+            }
+
+            // next, if we have related attributes, we need to link our keys
+            linkForeignKeysInternal(wrapped, relationship, relationshipValue, onlyLinkReadOnly);
+        }
+        List<DataObjectCollection> collections = wrapped.getMetadata().getCollections();
+        for (DataObjectCollection collection : collections) {
+            String relationshipName = collection.getName();
+
+            // let's get the current value and recurse down for each element if it's a collection that is cascaded on save
+            if (collection.isSavedWithParent()) {
+                Collection<?> collectionValue = (Collection<?>)wrapped.getPropertyValue(relationshipName);
+                if (collectionValue != null) {
+                    for (Object object : collectionValue) {
+                        linkForeignKeysInternal(object, onlyLinkReadOnly, linked);
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void fetchRelationship(String relationshipName) {
+        fetchRelationship(relationshipName, true, true);
+    }
+
+    @Override
+    public void fetchRelationship(String relationshipName, boolean useForeignKeyAttribute, boolean nullifyDanglingRelationship) {
+        fetchRelationship(findAndValidateRelationship(relationshipName), useForeignKeyAttribute, nullifyDanglingRelationship);
+    }
+
+	protected void fetchRelationship(MetadataChild relationship, boolean useForeignKeyAttribute, boolean nullifyDanglingRelationship) {
+        Class<?> relatedType = relationship.getRelatedType();
+        if (!dataObjectService.supports(relatedType)) {
+            LOG.warn("Encountered a related type that is not supported by DataObjectService, fetch "
+                    + "relationship will do nothing: " + relatedType);
+            return;
+        }
         // if we have at least one attribute relationships here, then we are set to proceed
+        if (useForeignKeyAttribute) {
+            fetchRelationshipUsingAttributes(relationship, nullifyDanglingRelationship);
+        } else {
+            fetchRelationshipUsingIdentity(relationship, nullifyDanglingRelationship);
+        }
+    }
+
+    protected void fetchRelationshipUsingAttributes(MetadataChild relationship, boolean nullifyDanglingRelationship) {
+        Class<?> relatedType = relationship.getRelatedType();
+        if (relationship.getAttributeRelationships().isEmpty()) {
+            throw new IllegalArgumentException("Attempted to fetch a relationship using a foreign key attribute "
+                    + "when one does not exist: " + relationship.getName());
+        } else {
+            Object fetchedValue = null;
+            if (relationship instanceof DataObjectRelationship) {
+                Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
+                if (foreignKey != null) {
+                    fetchedValue = dataObjectService.find(relatedType, foreignKey);
+                }
+            } else if (relationship instanceof DataObjectCollection) {
+                Map<String, Object> foreignKeyAttributeMap = getForeignKeyAttributeMap(relationship.getName());
+                fetchedValue = dataObjectService.findMatching(relatedType,
+                        QueryByCriteria.Builder.andAttributes(foreignKeyAttributeMap).build()).getResults();
+            }
+            if (fetchedValue != null || nullifyDanglingRelationship) {
+                setPropertyValue(relationship.getName(), fetchedValue);
+            }
+        }
+    }
+
+    protected void fetchRelationshipUsingIdentity(MetadataChild relationship, boolean nullifyDanglingRelationship) {
+        Object propertyValue = getPropertyValue(relationship.getName());
+        if (propertyValue != null) {
+            if (!dataObjectService.supports(propertyValue.getClass())) {
+                throw new IllegalArgumentException("Attempting to fetch an invalid relationship, must be a"
+                        + "DataObjectRelationship when fetching without a foreign key");
+            }
+            DataObjectWrapper<?> wrappedRelationship = dataObjectService.wrap(propertyValue);
+            Map<String, Object> primaryKeyValues = wrappedRelationship.getPrimaryKeyValues();
+            Object newPropertyValue = dataObjectService.find(wrappedRelationship.getWrappedClass(),
+                    new CompoundKey(primaryKeyValues));
+            if (newPropertyValue != null || nullifyDanglingRelationship) {
+                propertyValue = newPropertyValue;
+                setPropertyValue(relationship.getName(), propertyValue);
+            }
+        }
+        // now copy pk values back to the foreign key, because we are being explicity asked to fetch the relationship
+        // using the identity and not the FK, we don't care about whether the FK field is read only or not so pass
+        // "false" for onlyLinkReadOnly argument to linkForeignKeys
+        linkForeignKeysInternal(this, relationship, propertyValue, false);
+        populateInverseRelationship(relationship, propertyValue);
+    }
+
+    @Override
+    public void linkForeignKeys(String relationshipName, boolean onlyLinkReadOnly) {
+        MetadataChild relationship = findAndValidateRelationship(relationshipName);
+        Object propertyValue = getPropertyValue(relationshipName);
+        linkForeignKeysInternal(this, relationship, propertyValue, onlyLinkReadOnly);
+    }
+
+    protected void linkForeignKeysInternal(DataObjectWrapper<?> wrapped, MetadataChild relationship,
+            Object relationshipValue, boolean onlyLinkReadOnly) {
         if (!relationship.getAttributeRelationships().isEmpty()) {
-			Object fetchedValue = null;
-			if (relationship instanceof DataObjectRelationship) {
-				Object foreignKey = getForeignKeyAttributeValue(relationship.getName());
-				if (foreignKey != null) {
-					fetchedValue = dataObjectService.find(relationship.getRelatedType(), foreignKey);
-				}
-			} else if (relationship instanceof DataObjectCollection) {
-				Map<String, Object> foreignKeyAttributeMap = getForeignKeyAttributeMap(relationship.getName());
-				fetchedValue = dataObjectService.findMatching(relationship.getRelatedType(),
-						QueryByCriteria.Builder.andAttributes(foreignKeyAttributeMap).build()).getResults();
-			}
-			setPropertyValue(relationship.getName(), fetchedValue);
+            // this means there's a foreign key so we need to copy values back
+            DataObjectWrapper<?> wrappedRelationship = null;
+            if (relationshipValue != null) {
+                wrappedRelationship = dataObjectService.wrap(relationshipValue);
+            }
+            for (DataObjectAttributeRelationship attributeRelationship : relationship.getAttributeRelationships()) {
+                String parentAttributeName = attributeRelationship.getParentAttributeName();
+                // if the property value is null, we need to copy null back to all parent foreign keys,
+                // otherwise we copy back the actual value
+                Object childAttributeValue = null;
+                if (wrappedRelationship != null) {
+                    childAttributeValue =
+                            wrappedRelationship.getPropertyValue(attributeRelationship.getChildAttributeName());
+                }
+                if (onlyLinkReadOnly) {
+                    DataObjectAttribute attribute = wrapped.getMetadata().getAttribute(parentAttributeName);
+                    if (attribute.isReadOnly()) {
+                        wrapped.setPropertyValue(parentAttributeName, childAttributeValue);
+                    }
+                } else {
+                    wrapped.setPropertyValue(parentAttributeName, childAttributeValue);
+                }
+            }
+        }
+    }
+
+    protected void populateInverseRelationship(MetadataChild relationship, Object propertyValue) {
+        if (propertyValue != null) {
+            MetadataChild inverseRelationship = relationship.getInverseRelationship();
+            if (inverseRelationship != null) {
+                DataObjectWrapper<?> wrappedRelationship = dataObjectService.wrap(propertyValue);
+                if (inverseRelationship instanceof DataObjectCollection) {
+                    DataObjectCollection collectionRelationship = (DataObjectCollection)inverseRelationship;
+                    String colRelName = inverseRelationship.getName();
+                    Collection<Object> collection =
+                            (Collection<Object>)wrappedRelationship.getPropertyValue(colRelName);
+                    if (collection == null) {
+                        // if the collection is null, let's instantiate an empty one
+                        collection =
+                                CollectionFactory.createCollection(wrappedRelationship.getPropertyType(colRelName), 1);
+                        wrappedRelationship.setPropertyValue(colRelName, collection);
+                    }
+                    collection.add(getWrappedInstance());
+                }
+            }
         }
     }
 

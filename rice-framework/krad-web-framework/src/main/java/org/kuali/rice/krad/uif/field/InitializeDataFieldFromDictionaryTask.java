@@ -20,12 +20,11 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
@@ -53,7 +52,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      * Sets properties of the <code>InputField</code> (if blank) to the corresponding attribute
      * entry in the data dictionary
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {
@@ -153,15 +152,19 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         int modelClassPathLength = modelClassPath.length();
 
         // check if property path matches one of the modelClass entries
-        for (Entry<String, Class<?>> modelClassEntry : modelClasses.entrySet()) {
-            String path = modelClassEntry.getKey();
-            int pathlen = path.length();
+        synchronized (modelClasses) {
+            // synchronizing on modelClasses prevents ConcurrentModificationException during
+            // asynchronous lifecycle processing
+            for (Entry<String, Class<?>> modelClassEntry : modelClasses.entrySet()) {
+                String path = modelClassEntry.getKey();
+                int pathlen = path.length();
 
-            if (modelClassPath.startsWith(path) && pathlen > bestMatchLength
-                    && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen) == '.') {
-                bestMatchLength = pathlen;
-                modelClass = modelClassEntry.getValue();
-                modelProperty = modelClassPath.substring(pathlen + 1);
+                if (modelClassPath.startsWith(path) && pathlen > bestMatchLength
+                        && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen) == '.') {
+                    bestMatchLength = pathlen;
+                    modelClass = modelClassEntry.getValue();
+                    modelProperty = modelClassPath.substring(pathlen + 1);
+                }
             }
         }
 

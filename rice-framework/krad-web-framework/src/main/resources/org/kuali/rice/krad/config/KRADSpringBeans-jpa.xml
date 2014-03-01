@@ -40,7 +40,7 @@
 	<util:list id="additionalMetadataProviders" />
 	<util:list id="springMetadataFileLocations" />
 
-  <bean id="dataObjectService" class="org.kuali.rice.krad.data.config.KradDataFactoryBean"/>
+  <bean id="dataObjectService" class="org.kuali.rice.krad.data.KradDataFactoryBean"/>
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 

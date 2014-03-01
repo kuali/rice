@@ -106,7 +106,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     //DataField
     private String dataField1 = "1001";
-    private String dataField2 = "";
+    private String dataField2;
     private String dataField3 = "My Book Title";
 
     //MessageField

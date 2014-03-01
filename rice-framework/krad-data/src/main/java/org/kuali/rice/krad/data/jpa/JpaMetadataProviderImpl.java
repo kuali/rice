@@ -26,6 +26,7 @@ import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeRelationshipImp
 import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectMetadataImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectRelationshipImpl;
+import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 
 import javax.persistence.EntityManager;
@@ -58,28 +59,28 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	 * Hook called after all "standard" annotations are processed to perform any further extraction based on the
 	 * internals of the JPA implementation.
 	 */
-	abstract protected void populateImplementationSpecificEntityLevelMetadata(DataObjectMetadataImpl metadata,
+	protected abstract void populateImplementationSpecificEntityLevelMetadata(DataObjectMetadataImpl metadata,
 			EntityType<?> entityType);
 
 	/**
 	 * Hook called after all "standard" attribute-level annotations are processed to perform any further extraction
 	 * based on the internals of the JPA implementation.
 	 */
-	abstract protected void populateImplementationSpecificAttributeLevelMetadata(DataObjectAttributeImpl attribute,
+    protected abstract void populateImplementationSpecificAttributeLevelMetadata(DataObjectAttributeImpl attribute,
 			SingularAttribute<?, ?> attr);
 
 	/**
 	 * Hook called after all "standard" field-level annotations are processed on attributes identified as "plural" to
 	 * perform any further extraction based on the internals of the JPA implementation.
 	 */
-	abstract protected void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
+    protected abstract void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
 			PluralAttribute<?, ?, ?> cd);
 
 	/**
 	 * Hook called after all "standard" field-level annotations are processed on attributes identified as "associations"
 	 * to perform any further extraction based on the internals of the JPA implementation.
 	 */
-	abstract protected void populateImplementationSpecificRelationshipLevelMetadata(
+    protected abstract void populateImplementationSpecificRelationshipLevelMetadata(
 			DataObjectRelationshipImpl relationship, SingularAttribute<?, ?> rd);
 
 	/**
@@ -96,7 +97,7 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	 *            The child/extension class which needs to be linked. It must also already be known to JPA.
 	 */
 	@Override
-	public abstract void addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
+	public abstract DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
 			Class<?> extensionEntity);
 
 	@Override
@@ -107,15 +108,11 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		// QUESTION: When is JPA loaded so this service can initialize itself?
 		// Build and store the map
 
-        //Only extract the metadata if EntityType and not a MappedSuperClass
 		for ( IdentifiableType<?> identifiableType : entityManager.getMetamodel().getEntities() ) {
+            //Only extract the metadata if EntityType and not a MappedSuperClass
             if(identifiableType instanceof EntityType<?>){
                 EntityType<?> type = (EntityType<?>)identifiableType;
                 try {
-                    masterMetadataMap.put(type.getBindableJavaType(), getMetadataForClass(type.getBindableJavaType()));
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Added Metadata For: " + type.getBindableJavaType());
-                    }
                     masterMetadataMap.put(type.getBindableJavaType(), getMetadataForClass(type.getBindableJavaType()));
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Added Metadata For: " + type.getBindableJavaType());
@@ -136,6 +133,22 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	 */
 	@SuppressWarnings("unchecked")
 	public DataObjectMetadata getMetadataForClass(Class<?> persistableClass) {
+        // first, let's scan for extensions
+        List<DataObjectRelationship> relationships = new ArrayList<DataObjectRelationship>();
+        Map<Class<?>, Class<?>> extensionMap = new HashMap<Class<?>, Class<?>>();
+        for (EntityType<?> entityType : getEntityManager().getMetamodel().getEntities()) {
+            if (entityType.getJavaType().isAnnotationPresent(ExtensionFor.class)) {
+                ExtensionFor extensionFor = entityType.getJavaType().getAnnotation(ExtensionFor.class);
+                if (extensionFor.value().equals(persistableClass)) {
+                    DataObjectRelationship relationship =
+                            addExtensionRelationship(persistableClass, extensionFor.extensionPropertyName(), entityType.getJavaType());
+                    // have to do this because even though we've added the DatabaseMapping in EclipseLink, it will not
+                    // rebuild the JPA metamodel for us
+                    relationships.add(relationship);
+                }
+            }
+        }
+        // now let's build us some metadata!
 		DataObjectMetadataImpl metadata = new DataObjectMetadataImpl();
 		EntityType<?> entityType = entityManager.getMetamodel().entity(persistableClass);
 		metadata.setProviderName(this.getClass().getSimpleName());
@@ -144,9 +157,6 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		metadata.setReadOnly(false);
 		
 		metadata.setSupportsOptimisticLocking(entityType.hasVersionAttribute());
-		// metadata.setTypeDescription(typeDescription);
-		// No need to set the label. The base class will handle it.
-		// metadata.setLabel(getLabelFromPropertyName(persistableClass.getSimpleName()));
 		populateImplementationSpecificEntityLevelMetadata(metadata, entityType);
 
 		// PK Extraction
@@ -181,7 +191,8 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 
 		// Reference/Relationship Extraction
 		try {
-			metadata.setRelationships(getRelationships(entityType.getSingularAttributes()));
+            relationships.addAll(getRelationships(entityType.getSingularAttributes()));
+			metadata.setRelationships(relationships);
 		} catch (RuntimeException ex) {
 			LOG.error("Error processing relationship metadata for " + entityType.getBindableJavaType().getName());
 			throw ex;

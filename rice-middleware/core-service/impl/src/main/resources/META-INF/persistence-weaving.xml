@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!--
+     This persistence.xml file exists for the sole purpose of being used during the static bytecode weaving process.
+-->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="core-service-impl">
+    <description>
+      This is a persistence unit used for the purposes of static bytecode weaving in Eclipselink (see pom.xml of
+      this module). It is not used or loaded by the runtime at all.
+    </description>
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter</class>
+    <class>org.kuali.rice.coreservice.impl.component.ComponentBo</class>
+    <class>org.kuali.rice.coreservice.impl.component.ComponentSetBo</class>
+    <class>org.kuali.rice.coreservice.impl.component.DerivedComponentBo</class>
+    <class>org.kuali.rice.coreservice.impl.namespace.NamespaceBo</class>
+    <class>org.kuali.rice.coreservice.impl.parameter.ParameterBo</class>
+    <class>org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo</class>
+    <class>org.kuali.rice.coreservice.impl.style.StyleBo</class>
+  </persistence-unit>
+</persistence>

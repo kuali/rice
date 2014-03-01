@@ -154,7 +154,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-ProgressiveRender-StartTimeInputField" parent="Uif-InputField"
-        p:propertyName="startTime" p:label="Start Time"  p:refreshWhenChangedPropertyNames="#lp.allDay"
+        p:propertyName="startTime" p:label="Start Time"  p:refreshWhenChangedPropertyNames="allDay"
         p:resetDataOnRefresh="true" p:required="@{#lp.allDay eq false}" >
     <property name="control">
       <bean parent="Uif-TextControl" p:size="4" p:watermarkText="hh:mm" p:disabled="@{#lp.allDay}"/>
@@ -165,7 +165,7 @@
   </bean>
 
   <bean id="ConfigurationTestView-ProgressiveRender-StartTimeAmPmInputField" parent="Uif-InputField"
-        p:propertyName="startTimeAmPm" p:refreshWhenChangedPropertyNames="#lp.allDay" p:required="@{#lp.allDay eq false}">
+        p:propertyName="startTimeAmPm" p:refreshWhenChangedPropertyNames="allDay" p:required="@{#lp.allDay eq false}">
 
     <property name="control">
       <bean parent="Uif-DropdownControl" p:disabled="@{#lp.allDay}">

@@ -15,24 +15,10 @@
  */
 package org.kuali.rice.krad.data.provider.annotation.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
-import org.kuali.rice.krad.data.jpa.JpaMetadataProvider;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
@@ -41,6 +27,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataConfigurationException;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
+import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectAttributeRelationshipImpl;
 import org.kuali.rice.krad.data.metadata.impl.DataObjectCollectionImpl;
@@ -53,7 +40,6 @@ import org.kuali.rice.krad.data.provider.annotation.BusinessKey;
 import org.kuali.rice.krad.data.provider.annotation.CollectionRelationship;
 import org.kuali.rice.krad.data.provider.annotation.CollectionSortAttribute;
 import org.kuali.rice.krad.data.provider.annotation.Description;
-import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
@@ -72,6 +58,20 @@ import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence
  * metadata provider which should have run before this one. At the moment, it will only process classes which were
@@ -86,9 +86,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(AnnotationMetadataProviderImpl.class);
 
-	JpaMetadataProvider jpaMetadataProvider;
+	private boolean initializationAttempted = false;
+    private DataObjectService dataObjectService;
 
-	boolean initializationAttempted = false;
 
 	/**
 	 * Perform the primary initialization of data based on the passed in collection of already known
@@ -127,14 +127,6 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			if (annotationsFound) {
 				masterMetadataMap.put(type, metadata);
 			}
-		}
-		// This is being done *after* all normal processing since it needs to be able to be update entries
-		// created by this metadata provider.
-		LOG.info("Scanning For Data Object Extension Classes");
-		for (Class<?> type : types) {
-			// special case - check for ExtensionFor annotation (different because it actually
-			// modifies the referenced class, not the current one being scanned.
-			processExtensionForAnnotation(type);
 		}
 		LOG.info("Completed Scanning For Metadata Annotations");
 		if (LOG.isDebugEnabled()) {
@@ -182,97 +174,6 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			metadata.setAttributes(attributes);
 		}
 		return classAnnotationFound;
-	}
-
-	// protected DataObjectAttributeBase createNonPersistentProperty(Class<?> owningClass, String name) {
-	// Method m = null;
-	// try {
-	// m = owningClass.getMethod("get" + StringUtils.capitalize(name));
-	// if (m == null) {
-	// m = owningClass.getMethod("is" + StringUtils.capitalize(name));
-	// }
-	// } catch (Exception ex) {
-	// throw new IllegalArgumentException("Exception while attempting to retrieve getter method for property: "
-	// + name + " on " + owningClass, ex);
-	// }
-	// if (m == null) {
-	// throw new IllegalArgumentException("ERROR: No getter method can be found for property " + name + " on "
-	// + owningClass);
-	// }
-	// if (m.getReturnType() == null) {
-	// throw new IllegalArgumentException("discovered method: " + m.getName() + " has no return type.");
-	// }
-	// DataObjectAttributeBase attr = new DataObjectAttributeBase();
-	// attr.setName(name);
-	// DataType dataType = DataType.getDataTypeFromClass(m.getReturnType());
-	// if (dataType == null) {
-	// dataType = DataType.STRING;
-	// }
-	// attr.setDataType(dataType);
-	// attr.setPersisted(false);
-	//
-	// return attr;
-	// }
-
-	/**
-	 * Special case for the {@link ExtensionFor} annotation. This particular annotation not only adds a relationship to
-	 * a *different* data object than the one being annotated, it reaches into the JPA implementation and adds the
-	 * relationship to that object so that this object will automatically be loaded as part of the data object being
-	 * extended.
-	 */
-	protected void processExtensionForAnnotation(Class<?> clazz) {
-		ExtensionFor a = clazz.getAnnotation(ExtensionFor.class);
-		if (a == null) {
-			return;
-		}
-		Class<?> baselineEntityClass = a.value();
-		if (baselineEntityClass == null) {
-			throw new IllegalArgumentException("ERROR: baselineEntityClass on the @ExtensionFor annotation on " + clazz
-					+ " was null.");
-		}
-		String extensionProperty = a.extensionPropertyName();
-		if (StringUtils.isBlank(extensionProperty)) {
-			throw new IllegalArgumentException("ERROR: extensionProperty on the @ExtensionFor annotation on " + clazz
-					+ " was blank.");
-		}
-
-		DataObjectMetadata parentEntityMetadata = jpaMetadataProvider.getMetadataForType(baselineEntityClass);
-		if (parentEntityMetadata == null) {
-			throw new IllegalArgumentException("ERROR processing @ExtensionFor: " + baselineEntityClass
-					+ " is not known to the metadata repository");
-		}
-		DataObjectMetadata childEntityMetadata = jpaMetadataProvider.getMetadataForType(clazz);
-
-		DataObjectMetadataImpl metadata = (DataObjectMetadataImpl) masterMetadataMap.get(baselineEntityClass);
-		if (metadata == null) {
-			metadata = new DataObjectMetadataImpl();
-			metadata.setType(baselineEntityClass);
-			masterMetadataMap.put(baselineEntityClass, metadata);
-		}
-
-		// Inject into JPA Metamodel
-		jpaMetadataProvider.addExtensionRelationship(baselineEntityClass, extensionProperty, clazz);
-		// add relationship
-		DataObjectRelationshipImpl relationship = new DataObjectRelationshipImpl();
-		relationship.setName(extensionProperty);
-		relationship.setRelatedType(childEntityMetadata.getType());
-		relationship.setBackingObjectName(childEntityMetadata.getBackingObjectName());
-		relationship.setDeletedWithParent(true);
-		relationship.setLoadedAtParentLoadTime(true);
-		relationship.setLoadedDynamicallyUponUse(false);
-		relationship.setReadOnly(false);
-		relationship.setSavedWithParent(true);
-		List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
-		int index = 0;
-		List<String> referencePkFields = childEntityMetadata.getPrimaryKeyAttributeNames();
-		for (String pkField : parentEntityMetadata.getPrimaryKeyAttributeNames()) {
-			attributeRelationships.add(new DataObjectAttributeRelationshipImpl(pkField, referencePkFields.get(index)));
-			index++;
-		}
-		relationship.setAttributeRelationships(attributeRelationships);
-		List<DataObjectRelationship> relationships = new ArrayList<DataObjectRelationship>(1);
-		relationships.add(relationship);
-		metadata.setRelationships(relationships);
 	}
 
 	/**
@@ -545,11 +446,13 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		relationship.setDeletedWithParent(false);
 		relationship.setLoadedAtParentLoadTime(false);
 		relationship.setLoadedDynamicallyUponUse(true);
+
 		List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
 		List<String> referencePkFields = Collections.emptyList();
-		if (jpaMetadataProvider.handles(childType)) {
-			referencePkFields = jpaMetadataProvider.getMetadataForType(childType)
-					.getPrimaryKeyAttributeNames();
+        MetadataRepository metadataRepository = getDataObjectService().getMetadataRepository();
+		if (metadataRepository.contains(childType)) {
+            DataObjectMetadata childMetadata = metadataRepository.getMetadata(childType);
+			referencePkFields = childMetadata.getPrimaryKeyAttributeNames();
 		} else {
 			// HACK ALERT!!!!!!!! FIXME: can be removed once Person is annotated for JPA
 			if (f.getType().getName().equals("org.kuali.rice.kim.api.identity.Person")) {
@@ -562,6 +465,7 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			index++;
 		}
 		relationship.setAttributeRelationships(attributeRelationships);
+
 		relationships.add(relationship);
 		metadata.setRelationships(relationships);
 	}
@@ -737,7 +641,18 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		return true;
 	}
 
-	public void setJpaMetadataProvider(JpaMetadataProvider jpaMetadataProvider) {
-		this.jpaMetadataProvider = jpaMetadataProvider;
-	}
+    public boolean isInitializationAttempted() {
+        return initializationAttempted;
+    }
+
+    public DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KradDataServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 }

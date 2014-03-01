@@ -169,7 +169,7 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
     }
 
     public boolean canCancel(Document document) {
-        return getDocumentPresentationController().canEdit(document);
+        return getDocumentPresentationController().canCancel(document);
     }
 
     public boolean canRecall(Document document) {

@@ -58,7 +58,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      * @param insertFirst - indicates if the item should be inserted as the first item
      */
     @Override
-    protected void addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
+    protected int addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
         if (collection instanceof List) {
             ((List) collection).add(0, addLine);
             if (addLine instanceof PeopleFlowMemberBo) {
@@ -82,6 +82,15 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         } else {
             collection.add(addLine);
         }
+        // find the index where we added it after the sort so we can return that index
+        int index = 0;
+        for (Object element : collection) {
+            if (element == addLine) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
     }
 
     /**
@@ -141,8 +150,7 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
      * than MaintainableImpl uses.
      *
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterAddLine(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,
-     *      java.lang.Object)
+     * org.kuali.rice.krad.uif.container.CollectionGroup, Object, Object, boolean)
      */
     @Override
     public void processAfterAddLine(ViewModel model, Object addLine, String collectionId, String collectionPath,

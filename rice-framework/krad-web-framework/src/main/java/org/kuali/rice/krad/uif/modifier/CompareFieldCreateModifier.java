@@ -306,7 +306,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -419,4 +419,5 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     public void setComparables(List<ComparableInfo> comparables) {
         this.comparables = comparables;
     }
+
 }

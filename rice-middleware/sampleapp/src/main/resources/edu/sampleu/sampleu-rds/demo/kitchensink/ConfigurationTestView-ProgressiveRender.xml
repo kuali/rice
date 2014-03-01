@@ -116,7 +116,7 @@
     </spring:property>
   </disclosure-tableCollectionSection-bean>
   <inputField-bean id="ConfigurationTestView-ProgressiveRender-StartTimeInputField" label="Start Time"
-                   propertyName="startTime" refreshWhenChangedPropertyNames="#lp.allDay"
+                   propertyName="startTime" refreshWhenChangedPropertyNames="allDay"
                    required="@{#lp.allDay eq false}" resetDataOnRefresh="true">
     <control>
       <textControl-bean disabled="@{#lp.allDay}" size="4" watermarkText="hh:mm"/>
@@ -126,7 +126,7 @@
     </validCharactersConstraint>
   </inputField-bean>
   <inputField-bean id="ConfigurationTestView-ProgressiveRender-StartTimeAmPmInputField" propertyName="startTimeAmPm"
-                   refreshWhenChangedPropertyNames="#lp.allDay" required="@{#lp.allDay eq false}">
+                   refreshWhenChangedPropertyNames="allDay" required="@{#lp.allDay eq false}">
     <control>
       <dropdownControl-bean disabled="@{#lp.allDay}">
         <options>

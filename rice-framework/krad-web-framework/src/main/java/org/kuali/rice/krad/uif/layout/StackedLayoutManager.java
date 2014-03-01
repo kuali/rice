@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.widget.Pager;
 
 /**
- * TODO mark don't forget to fill this in. 
+ * Layout manager interface for stacked collections. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -176,6 +176,13 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      */
     List<Group> getStackedGroups();
 
+    /**
+     * Used by reflection during the lifecycle to get groups for the lifecycle when not using a wrapper group
+     *
+     * <p>There are no references to this method in the code, this is intentional.  DO NOT REMOVE.</p>
+     *
+     * @return the stacked groups, if any
+     */
     List<Group> getStackedGroupsNoWrapper();
 
     /**

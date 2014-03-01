@@ -50,7 +50,7 @@ public class SyncClientSideStateTask extends ViewLifecycleTaskBase<Component> {
      * Updates the properties of the given component instance with the value found from the
      * corresponding map of client state (if found)
      * 
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

@@ -69,8 +69,8 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     @Column(name = "ROLE_ID")
     private String roleId;
 
-    @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ROLE_MBR_ID", referencedColumnName = "ROLE_MBR_ID", insertable = false, updatable = false)
+    @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
+    @JoinColumn(name = "ROLE_MBR_ID", referencedColumnName = "ROLE_MBR_ID")
     private List<RoleMemberAttributeDataBo> attributeDetails;
 
     @Transient

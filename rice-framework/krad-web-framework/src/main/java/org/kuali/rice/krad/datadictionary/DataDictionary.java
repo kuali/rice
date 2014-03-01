@@ -15,24 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
@@ -40,6 +26,8 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 import org.kuali.rice.krad.datadictionary.parse.StringListConverter;
 import org.kuali.rice.krad.datadictionary.parse.StringMapConverter;
+import org.kuali.rice.krad.datadictionary.uif.ComponentBeanPostProcessor;
+import org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryIndex;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -49,12 +37,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.datadictionary.uif.ComponentBeanPostProcessor;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -68,6 +56,18 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StopWatch;
 
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 /**
  * Encapsulates a bean factory and indexes to the beans within the factory for providing
  * framework metadata
@@ -75,7 +75,8 @@ import org.springframework.util.StopWatch;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataDictionary {
-    private static final Log LOG = LogFactory.getLog(DataDictionary.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(DataDictionary.class);
 
     protected static boolean validateEBOs = true;
 
@@ -273,7 +274,7 @@ public class DataDictionary {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info( "Generating Inquiry View for : " + entry.getDataObjectClass() );
             }
-            String inquiryBeanName = entry.getFullClassName()+"-InquiryView-default";
+            String inquiryBeanName = entry.getDataObjectClass().getSimpleName()+"-InquiryView-default";
 
             InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);
             inquiryView.setId(inquiryBeanName);
@@ -314,7 +315,7 @@ public class DataDictionary {
             if ( LOG.isInfoEnabled() ) {
                 LOG.info( "Generating Lookup View for : " + entry.getDataObjectClass() );
             }
-            String lookupBeanName = entry.getFullClassName()+"-LookupView-default";
+            String lookupBeanName = entry.getDataObjectClass().getSimpleName()+"-LookupView-default";
 
             LookupView lookupView = KRADServiceLocatorWeb.getUifDefaultingService().deriveLookupViewFromMetadata(entry);
             lookupView.setId(lookupBeanName);
@@ -347,25 +348,43 @@ public class DataDictionary {
         }
 
         List<ErrorReport> errorReports = Validator.getErrorReports();
-        if (errorReports.size() > 0) {
-            boolean errors = false;
-            LOG.error("***********************************************************");
-            LOG.error("ERRORS OR WARNINGS REPORTED UPON DATA DICTIONARY VALIDATION");
-            LOG.error("***********************************************************");
-            for (ErrorReport err : errorReports) {
-                if (err.isError()) {
-                    LOG.error(err.errorMessage());
-                    errors = true;
-                } else {
-                    LOG.warn(err.errorMessage());
-                }
-            }
-            if (errors) {
-                throw new DataDictionaryException("Errors during DD validation, failing validation.");
+        if (!errorReports.isEmpty()) {
+            boolean hasErrors = hasErrors(errorReports);
+            String errorReport = produceErrorReport(errorReports, hasErrors);
+            if (hasErrors) {
+                String message = "Errors during DD validation, failing validation.\n" + errorReport;
+                throw new DataDictionaryException(message);
+            } else {
+                String message = "Warnings during DD validation.\n" + errorReport;
+                LOG.warn(message);
             }
         }
 
         timer.stop();
+    }
+
+    private boolean hasErrors(List<ErrorReport> errorReports) {
+        for (ErrorReport err : errorReports) {
+            if (err.isError()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected String produceErrorReport(List<ErrorReport> errorReports, boolean hasErrors) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("***********************************************************\n");
+        if (hasErrors) {
+            builder.append("ERRORS REPORTED UPON DATA DICTIONARY VALIDATION\n");
+        } else {
+            builder.append("WARNINGS REPORTED UPON DATA DICTIONARY VALIDATION\n");
+        }
+        builder.append("***********************************************************\n");
+        for (ErrorReport report : errorReports) {
+            builder.append(report.errorMessage()).append("\n");
+        }
+        return builder.toString();
     }
 
     public void validateDD() {
@@ -561,6 +580,10 @@ public class DataDictionary {
      */
     public Map<String, BusinessObjectEntry> getBusinessObjectEntries() {
         return ddMapper.getBusinessObjectEntries(ddIndex);
+    }
+
+    public Map<String, DataObjectEntry> getDataObjectEntries() {
+        return ddMapper.getDataObjectEntries(ddIndex);
     }
 
     /**

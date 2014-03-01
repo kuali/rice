@@ -16,7 +16,10 @@
 package org.kuali.rice.krms.test;
 
 import org.junit.Before;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -27,6 +30,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -58,6 +62,10 @@ public abstract class AbstractBoTest extends KRMSTestCase {
     protected BusinessObjectService getBoService() {
 		return KNSServiceLocator.getBusinessObjectService();
 	}
+
+    protected DataObjectService getDataObjectService() {
+        return KRADServiceLocator.getDataObjectService();
+    }
 
     protected ContextDefinition createContextDefinition(String nameSpace, String name,
             Map<String, String> contextAttributes) {
@@ -99,10 +107,13 @@ public abstract class AbstractBoTest extends KRMSTestCase {
         // TODO: do this fur eel
         for (KrmsAttributeDefinition contextTypeAttributeDefinition : attributeDefintions) {
             ContextAttributeBo contextAttribute = new ContextAttributeBo();
-            contextAttribute.setAttributeDefinitionId(contextTypeAttributeDefinition.getId());
-            contextAttribute.setContextId(contextDefinition.getId());
+            contextAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(contextTypeAttributeDefinition));
+            contextAttribute.setContext(ContextBo.from(contextDefinition));
             contextAttribute.setValue(contextAttributes.get(contextTypeAttributeDefinition.getName()));
-            getBoService().save(contextAttribute);
+
+            contextAttribute = getDataObjectService().save(contextAttribute);
+//            // TODO: inject properly...
+//            KRADServiceLocator.getDataObjectService().save(contextAttribute);
         }
 
         return contextDefinition;
@@ -136,15 +147,16 @@ public abstract class AbstractBoTest extends KRMSTestCase {
 
 
     public String getNamespaceByContextName(String name) {
-        Collection<ContextBo> results = getBoService().findMatching(ContextBo.class, Collections.singletonMap("name", name));
-        if (CollectionUtils.isEmpty(results)) {
+        QueryByCriteria contextCrit = QueryByCriteria.Builder.forAttribute("name", name).build();
+        QueryResults<ContextBo> results = getDataObjectService().findMatching(ContextBo.class, contextCrit);
+        if (CollectionUtils.isEmpty(results.getResults())) {
             return null;
         }
-        if (results.size() != 1) {
+        if (results.getResults().size() != 1) {
             throw new IllegalStateException(
                     "getNamespaceByContextName can't handle a universe where multiple contexts have the same name");
         }
-        return results.iterator().next().getNamespace();
+        return results.getResults().iterator().next().getNamespace();
     }
 
     public ContextBoService getContextRepository() {

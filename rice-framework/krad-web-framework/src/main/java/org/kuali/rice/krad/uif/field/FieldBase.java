@@ -60,7 +60,7 @@ public class FieldBase extends ComponentBase implements Field {
     private Label fieldLabel;
 
     private Position labelPlacement;
-
+    
     private boolean labelRendered;
 
     public FieldBase() {
@@ -107,7 +107,7 @@ public class FieldBase extends ComponentBase implements Field {
                 fieldLabel.setRenderColon(false);
             }
 
-            if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)){
+            if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)) {
                 fieldLabel.addStyleClass("uif-labelBlock");
             }
 
@@ -273,19 +273,19 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
-     * Indicates where the label is placed in relation to the field (valid options are
-     * LEFT, RIGHT, BOTTOM, and TOP
-     *
+     * Indicates where the label is placed in relation to the field (valid options are LEFT, RIGHT,
+     * BOTTOM, and TOP
+     * 
      * @return position of label
      */
-    @BeanTagAttribute(name="labelPlacement",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "labelPlacement", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Position getLabelPlacement() {
         return this.labelPlacement;
     }
 
     /**
      * Setter for the label's position in relation to the field (control if editable)
-     *
+     * 
      * @param labelPlacement
      */
     public void setLabelPlacement(Position labelPlacement) {
@@ -373,4 +373,5 @@ public class FieldBase extends ComponentBase implements Field {
 
         getFieldSecurity().setViewInLineAuthz(viewInLineAuthz);
     }
+
 }

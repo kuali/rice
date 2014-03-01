@@ -52,6 +52,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
@@ -59,6 +60,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.uif.view.MaintenanceDocumentView;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
@@ -107,6 +109,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
         return dataObject;
     }
+
 
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#setDocumentNumber
@@ -567,6 +570,58 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         return this.documentNumber;
     }
 
+
+
+    /**
+     * Hook for service overrides to perform custom apply model logic on the component
+     *
+     * @param element element instance to apply model to
+     * @param model Top level object containing the data (could be the model or a top level business
+     *        object, dto)
+     */
+    @Override
+    public void performCustomApplyModel(LifecycleElement element, Object model) {
+
+        MaintenanceDocumentForm form = (MaintenanceDocumentForm) model;
+
+        /**
+         *  Primary keys should not be editable on maintenance edit action
+         *
+         *  Determines if the maintenance action matches MAINTENANCE_EDIT_ACTION, that the element is of type InputField and
+         *  if the bindingPath includes a new maintainable path
+         */
+        if (KRADConstants.MAINTENANCE_EDIT_ACTION.equals(form.getMaintenanceAction()) && element instanceof InputField
+                && StringUtils.contains(((InputField) element).getName(), KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+            setPrimaryKeyReadOnly(element);
+
+        }
+    }
+
+    /**
+     * sets primary keys to read-only
+     */
+     private void setPrimaryKeyReadOnly(LifecycleElement element){
+
+         String propertyName =  ((InputField) element).getPropertyName();
+         MaintenanceDocumentView maintenanceView = (MaintenanceDocumentView) ViewLifecycle.getView();
+
+         /**
+          *   get a list of primary keys from the maintenance view dataObject
+          */
+         List<String> primaryKeys = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(maintenanceView.getDataObjectClassName());
+
+         /**
+          *  loop thru primary keys, match to our component field name and set it to read-only
+          */
+         for (String field : primaryKeys) {
+             if(propertyName.equals(field)){
+                 ((InputField) element).setReadOnly(true);
+
+             }
+         }
+     }
+
+
     /**
      * For the copy action, clears out primary key values and replaces any new fields that the current user is
      * unauthorized for with default values in the old record.
@@ -620,6 +675,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             form.getDocument().setFieldsClearedOnCopy(true);
         }
     }
+
+
 
     /**
      * Determines if the current field is restricted and replaces its value with a default value if so.

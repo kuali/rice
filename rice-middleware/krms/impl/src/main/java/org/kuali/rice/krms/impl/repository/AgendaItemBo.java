@@ -17,68 +17,114 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Agenda Item business object
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AgendaItemBo extends PersistableBusinessObjectBase implements AgendaItemDefinitionContract {
+@Entity
+@Table(name = "KRMS_AGENDA_ITM_T")
+public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final String COPY_OF_TEXT = "Copy of ";
-    private static final String KRMS_AGENDA_ITM_S = "KRMS_AGENDA_ITM_S";
 
-	private String id;
-	private String agendaId;
-	private String ruleId;
-	private String subAgendaId;
-	private String whenTrueId;
-	private String whenFalseId;
-	private String alwaysId;
-	
-	private RuleBo rule;
-	
-	private AgendaItemBo whenTrue;
-	private AgendaItemBo whenFalse;
-	private AgendaItemBo always;
+    public static final String AGENDA_ITEM_SEQ_NAME = "KRMS_AGENDA_ITM_S";
+    static final RepositoryBoIncrementer agendaItemIdIncrementer = new RepositoryBoIncrementer(AGENDA_ITEM_SEQ_NAME);
 
-    private static SequenceAccessorService sequenceAccessorService;
-	
-	public String getUl(AgendaItemBo firstItem) {
-		return ("<ul>" + getUlHelper(firstItem) + "</ul>");
-	}
-	
-	public String getUlHelper(AgendaItemBo item) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<li>" + ruleId + "</li>");
-		if (whenTrue != null) {
-			sb.append("<ul><li>when true</li><ul>");
-			sb.append(getUlHelper(whenTrue));
-			sb.append("</ul></ul>");
-		}
-		if (whenFalse != null) {
-			sb.append("<ul><li>when false</li><ul>");
-			sb.append(getUlHelper(whenFalse));
-			sb.append("</ul></ul>");
-		}
-		if (always != null) {
-			sb.append(getUlHelper(always));
-		}
-		return sb.toString();
-	}
+    @PortableSequenceGenerator(name = AGENDA_ITEM_SEQ_NAME)
+    @GeneratedValue(generator = AGENDA_ITEM_SEQ_NAME)
+    @Id
+    @Column(name = "AGENDA_ITM_ID")
+    private String id;
+
+    @Column(name = "AGENDA_ID")
+    private String agendaId;
+
+    @Column(name = "RULE_ID")
+    private String ruleId;
+
+    @Column(name = "SUB_AGENDA_ID")
+    private String subAgendaId;
+
+    @Column(name = "WHEN_TRUE")
+    private String whenTrueId;
+
+    @Column(name = "WHEN_FALSE")
+    private String whenFalseId;
+
+    @Column(name = "ALWAYS")
+    private String alwaysId;
+
+    @ManyToOne(targetEntity = RuleBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", insertable = false, updatable = false)
+    private RuleBo rule;
+
+    @Column(name = "VER_NBR")
+    @Version
+    private Long versionNumber;
+
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "WHEN_TRUE", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
+    private AgendaItemBo whenTrue;
+
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "WHEN_FALSE", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
+    private AgendaItemBo whenFalse;
+
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @JoinColumn(name = "ALWAYS", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
+    private AgendaItemBo always;
+
+    public String getUl(AgendaItemBo firstItem) {
+        return ("<ul>" + getUlHelper(firstItem) + "</ul>");
+    }
+
+    public String getUlHelper(AgendaItemBo item) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<li>" + ruleId + "</li>");
+
+        if (whenTrue != null) {
+            sb.append("<ul><li>when true</li><ul>");
+            sb.append(getUlHelper(whenTrue));
+            sb.append("</ul></ul>");
+        }
+        if (whenFalse != null) {
+            sb.append("<ul><li>when false</li><ul>");
+            sb.append(getUlHelper(whenFalse));
+            sb.append("</ul></ul>");
+        }
+        if (always != null) {
+            sb.append(getUlHelper(always));
+        }
+
+        return sb.toString();
+    }
 
     public String getRuleText() {
         StringBuilder resultBuilder = new StringBuilder();
@@ -92,14 +138,12 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
                 resultBuilder.append(": ");
                 resultBuilder.append(getRule().getDescription());
             }
-            // add a description of the action configured on the rule, if there is one
+
+            // add a description of the action configured on the rule, if there is one  
             if (!CollectionUtils.isEmpty(getRule().getActions())) {
                 resultBuilder.append("   [");
                 ActionBo action = getRule().getActions().get(0);
-
-                KrmsTypeDefinition krmsTypeDefn =
-                        KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(action.getTypeId());
-
+                KrmsTypeDefinition krmsTypeDefn = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(action.getTypeId());
                 resultBuilder.append(krmsTypeDefn.getName());
                 resultBuilder.append(": ");
                 resultBuilder.append(action.getName());
@@ -107,186 +151,193 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
                 if (getRule().getActions().size() > 1) {
                     resultBuilder.append(" ... ");
                 }
+
                 resultBuilder.append("]");
             }
         } else {
             throw new IllegalStateException();
         }
+
         return resultBuilder.toString();
     }
 
-//	def List<AgendaItemBo> alwaysList
-//	def List<AgendaItemBo> whenTrueList
-//	def List<AgendaItemBo> whenFalseList
-	
-	public List<AgendaItemBo> getAlwaysList() {
-		List<AgendaItemBo> results = new ArrayList<AgendaItemBo>();
-		
-		AgendaItemBo currentNode = this;
-		while (currentNode.always != null) {
-			results.add(currentNode.always);
-			currentNode = currentNode.always;
-		}
-		
-		return results;
-	}
+    public List<AgendaItemBo> getAlwaysList() {
+        List<AgendaItemBo> results = new ArrayList<AgendaItemBo>();
+        AgendaItemBo currentNode = this;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return this.id;
-	}
+        while (currentNode.always != null) {
+            results.add(currentNode.always);
+            currentNode = currentNode.always;
+        }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+        return results;
+    }
 
-	/**
-	 * @return the agendaId
-	 */
-	public String getAgendaId() {
-		return this.agendaId;
-	}
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return this.id;
+    }
 
-	/**
-	 * @param agendaId the agendaId to set
-	 */
-	public void setAgendaId(String agendaId) {
-		this.agendaId = agendaId;
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @return the ruleId
-	 */
-	public String getRuleId() {
-		return this.ruleId;
-	}
+    /**
+     * @return the agendaId
+     */
+    public String getAgendaId() {
+        return this.agendaId;
+    }
 
-	/**
-	 * @param ruleId the ruleId to set
-	 */
-	public void setRuleId(String ruleId) {
-		this.ruleId = ruleId;
-	}
+    /**
+     * @param agendaId the agendaId to set
+     */
+    public void setAgendaId(String agendaId) {
+        this.agendaId = agendaId;
+    }
 
-	/**
-	 * @return the subAgendaId
-	 */
-	public String getSubAgendaId() {
-		return this.subAgendaId;
-	}
+    /**
+     * @return the ruleId
+     */
+    public String getRuleId() {
+        return this.ruleId;
+    }
 
-	/**
-	 * @param subAgendaId the subAgendaId to set
-	 */
-	public void setSubAgendaId(String subAgendaId) {
-		this.subAgendaId = subAgendaId;
-	}
+    /**
+     * @param ruleId the ruleId to set
+     */
+    public void setRuleId(String ruleId) {
+        this.ruleId = ruleId;
+    }
 
+    /**
+     * @return the subAgendaId
+     */
+    public String getSubAgendaId() {
+        return this.subAgendaId;
+    }
 
-	/**
-	 * @return the whenTrueId
-	 */
-	public String getWhenTrueId() {
-		return this.whenTrueId;
-	}
+    /**
+     * @param subAgendaId the subAgendaId to set
+     */
+    public void setSubAgendaId(String subAgendaId) {
+        this.subAgendaId = subAgendaId;
+    }
 
-	/**
-	 * @param whenTrueId the whenTrueId to set
-	 */
-	public void setWhenTrueId(String whenTrueId) {
-		this.whenTrueId = whenTrueId;
-	}
+    /**
+     * @return the whenTrueId
+     */
+    public String getWhenTrueId() {
+        return this.whenTrueId;
+    }
 
-	/**
-	 * @return the whenFalseId
-	 */
-	public String getWhenFalseId() {
-		return this.whenFalseId;
-	}
+    /**
+     * @param whenTrueId the whenTrueId to set
+     */
+    public void setWhenTrueId(String whenTrueId) {
+        this.whenTrueId = whenTrueId;
+    }
 
-	/**
-	 * @param whenFalseId the whenFalseId to set
-	 */
-	public void setWhenFalseId(String whenFalseId) {
-		this.whenFalseId = whenFalseId;
-	}
+    /**
+     * @return the whenFalseId
+     */
+    public String getWhenFalseId() {
+        return this.whenFalseId;
+    }
 
-	/**
-	 * @return the alwaysId
-	 */
-	public String getAlwaysId() {
-		return this.alwaysId;
-	}
+    /**
+     * @param whenFalseId the whenFalseId to set
+     */
+    public void setWhenFalseId(String whenFalseId) {
+        this.whenFalseId = whenFalseId;
+    }
 
-	/**
-	 * @param alwaysId the alwaysId to set
-	 */
-	public void setAlwaysId(String alwaysId) {
-		this.alwaysId = alwaysId;
-	}
+    /**
+     * @return the alwaysId
+     */
+    public String getAlwaysId() {
+        return this.alwaysId;
+    }
 
-	/**
-	 * @return the whenTrue
-	 */
-	public AgendaItemBo getWhenTrue() {
-		return this.whenTrue;
-	}
+    /**
+     * @param alwaysId the alwaysId to set
+     */
+    public void setAlwaysId(String alwaysId) {
+        this.alwaysId = alwaysId;
+    }
 
-	/**
-	 * @param whenTrue the whenTrue to set
-	 */
-	public void setWhenTrue(AgendaItemBo whenTrue) {
-		this.whenTrue = whenTrue;
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(Long versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    /**
+     * @return the whenTrue
+     */
+    public AgendaItemBo getWhenTrue() {
+        return this.whenTrue;
+    }
+
+    /**
+     * @param whenTrue the whenTrue to set
+     */
+    public void setWhenTrue(AgendaItemBo whenTrue) {
+        this.whenTrue = whenTrue;
+
         if (whenTrue != null) {
             setWhenTrueId(whenTrue.getId());
         } else {
             setWhenTrueId(null);
         }
-	}
+    }
 
-	/**
-	 * @return the whenFalse
-	 */
-	public AgendaItemBo getWhenFalse() {
-		return this.whenFalse;
-	}
+    /**
+     * @return the whenFalse
+     */
+    public AgendaItemBo getWhenFalse() {
+        return this.whenFalse;
+    }
 
-	/**
-	 * @param whenFalse the whenFalse to set
-	 */
-	public void setWhenFalse(AgendaItemBo whenFalse) {
-		this.whenFalse = whenFalse;
+    /**
+     * @param whenFalse the whenFalse to set
+     */
+    public void setWhenFalse(AgendaItemBo whenFalse) {
+        this.whenFalse = whenFalse;
+
         if (whenFalse != null) {
             setWhenFalseId(whenFalse.getId());
         } else {
             setWhenFalseId(null);
         }
-	}
+    }
 
-	/**
-	 * @return the always
-	 */
-	public AgendaItemBo getAlways() {
-		return this.always;
-	}
+    /**
+     * @return the always
+     */
+    public AgendaItemBo getAlways() {
+        return this.always;
+    }
 
-	/**
-	 * @param always the always to set
-	 */
-	public void setAlways(AgendaItemBo always) {
-		this.always = always;
+    /**
+     * @param always the always to set
+     */
+    public void setAlways(AgendaItemBo always) {
+        this.always = always;
         if (always != null) {
             setAlwaysId(always.getId());
         } else {
             setAlwaysId(null);
         }
-	}
-	
+    }
+
     /**
      * @return the rule
      */
@@ -296,7 +347,7 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
 
     @Override
     public AgendaDefinitionContract getSubAgenda() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // no sub-agenda support at this time
     }
 
     /**
@@ -311,44 +362,47 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
         }
     }
 
-	
     /**
-	* Converts a mutable bo to it's immutable counterpart
-	* @param bo the mutable business object
-	* @return the immutable object
-	*/
-   static AgendaItemDefinition to(AgendaItemBo bo) {
-	   if (bo == null) { return null; }
-	   AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(bo);
-	   
-	   return builder.build();
-   }
+     * Converts a mutable bo to it's immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    static AgendaItemDefinition to(AgendaItemBo bo) {
+        if (bo == null) {
+            return null;
+        }
 
-   /**
-	* Converts a immutable object to it's mutable bo counterpart
-	* @param im immutable object
-	* @return the mutable bo
-	*/
-   static AgendaItemBo from(AgendaItemDefinition im) {
-	   if (im == null) { return null; }
+        AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(bo);
 
-	   AgendaItemBo bo = new AgendaItemBo();
-	   bo.id = im.getId();
-	   bo.agendaId = im.getAgendaId();
-	   bo.ruleId = im.getRuleId();
-	   bo.subAgendaId = im.getSubAgendaId();
-	   bo.whenTrueId = im.getWhenTrueId();
-	   bo.whenFalseId = im.getWhenFalseId();
-	   bo.alwaysId = im.getAlwaysId();
-       bo.versionNumber = im.getVersionNumber();
+        return builder.build();
+    }
 
-       bo.rule = RuleBo.from(im.getRule());
-       bo.whenTrue = AgendaItemBo.from(im.getWhenTrue());
-       bo.whenFalse = AgendaItemBo.from(im.getWhenFalse());
-       bo.always = AgendaItemBo.from(im.getAlways());
-	   
-	   return bo;
-   }
+    /**
+     * Converts a immutable object to it's mutable bo counterpart
+     * @param im immutable object
+     * @return the mutable bo
+     */
+    static AgendaItemBo from(AgendaItemDefinition im) {
+        if (im == null) {
+            return null;
+        }
+
+        AgendaItemBo bo = new AgendaItemBo();
+        bo.id = im.getId();
+        bo.agendaId = im.getAgendaId();
+        bo.ruleId = im.getRuleId();
+        bo.subAgendaId = im.getSubAgendaId();
+        bo.whenTrueId = im.getWhenTrueId();
+        bo.whenFalseId = im.getWhenFalseId();
+        bo.alwaysId = im.getAlwaysId();
+        bo.versionNumber = im.getVersionNumber();
+        bo.rule = RuleBo.from(im.getRule());
+        bo.whenTrue = AgendaItemBo.from(im.getWhenTrue());
+        bo.whenFalse = AgendaItemBo.from(im.getWhenFalse());
+        bo.always = AgendaItemBo.from(im.getAlways());
+
+        return bo;
+    }
 
     /**
      * Returns a copy of this AgendaItem
@@ -357,16 +411,14 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
      * @param dts DateTimeStamp to append to the copied AgendaItem name
      * @return AgendaItemBo copy of this AgendaItem with new id and name
      */
-    public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda,  Map<String, RuleBo> oldRuleIdToNew,
-            Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
-        // Use deepCopy and update all the ids.
+    public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, Map<String, RuleBo> oldRuleIdToNew, Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
+        // Use deepCopy and update all the ids.  
         AgendaItemBo copiedAgendaItem = (AgendaItemBo) SerializationUtils.deepCopy(this);
-        copiedAgendaItem.setId(getNewId());
+        copiedAgendaItem.setId(agendaItemIdIncrementer.getNewId());
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
-
         oldAgendaItemIdToNew.put(this.getId(), copiedAgendaItem);
 
-        // Don't create another copy of a rule that we have already copied.
+        // Don't create another copy of a rule that we have already copied.  
         if (!oldRuleIdToNew.containsKey(this.getRuleId())) {
             if (this.getRule() != null) {
                 copiedAgendaItem.setRule(this.getRule().copyRule(COPY_OF_TEXT + this.getRule().getName() + " " + dts));
@@ -406,27 +458,5 @@ public class AgendaItemBo extends PersistableBusinessObjectBase implements Agend
             }
         }
         return copiedAgendaItem;
-    }
-
-
-    /**
-     * Set the SequenceAccessorService, useful for testing.
-     * @param sas SequenceAccessorService to use for getNewId()
-     */
-    public static void setSequenceAccessorService(SequenceAccessorService sas) {
-        sequenceAccessorService = sas;
-    }
-
-    /**
-     * Returns the next available AgendaItem id.
-     * @return String the next available id
-     */
-    private static String getNewId() {
-        if (sequenceAccessorService == null) {
-            // we don't assign to sequenceAccessorService to preserve existing behavior
-            return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class) + "";
-        }
-        Long id = sequenceAccessorService.getNextAvailableSequenceNumber(KRMS_AGENDA_ITM_S, AgendaItemBo.class);
-        return id.toString();
     }
 }

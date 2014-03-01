@@ -39,6 +39,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.TestDictionaryConfig;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
@@ -53,65 +54,8 @@ import org.kuali.rice.krad.util.ObjectUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@TestDictionaryConfig(namespaceCode="KR-NS",dataDictionaryFiles="classpath:org/kuali/rice/krad/test/document")
 public class ExtensionAttributeTest extends KRADTestCase {
-
-	DataDictionary dd = null;
-
-	@Override
-    @Before
-	public void setUp() throws Exception {
-		super.setUp();
-
-		dd = new DataDictionary();
-		dd.addConfigFileLocation("KR-NS", "classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/uif/UifActionDefinitions.xml");
-        dd.addConfigFileLocation("KR-NS",
-                "classpath:org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml");
-        dd.addConfigFileLocation("KR-NS",
-                "classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml");
-		dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
-		dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
-        dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/identity/PersonImpl.xml");
-        dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
-        dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/group/Group.xml");
-        dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/role/RoleBo.xml");
-        dd.addConfigFileLocation("KR-KIM","classpath:org/kuali/rice/kim/impl/type/KimType.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/campus/Campus.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/campus/CampusType.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/country/Country.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/state/State.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/county/County.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/parameter/Parameter.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml");
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/coreservice/web/component/Component.xml");
-
-        dd.addConfigFileLocation("KR-NS","classpath:org/kuali/rice/krad/test/document");
-
-        dd.parseDataDictionaryConfigurationFiles( false );
-	}
-
-	@Override
-    @After
-	public void tearDown() throws Exception {
-		super.tearDown();
-		dd = null;
-	}
 
 	@Test
     /**

@@ -730,7 +730,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
     jQuery(document).ready(function () {
         var table = jQuery("#" + tableId);
 
-        var detailsOpen = table.parent().data("detailsdefaultopen");
+        var detailsOpen = table.parent().data("details_default_open");
         table.data("open", detailsOpen);
 
         if (groupingOptions) {
@@ -800,7 +800,11 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         runHiddenScripts(tableId, false, true);
 
         //insure scripts (if any) are run on each draw, fixes bug with scripts lost when paging after a refresh
-        jQuery(oTable).on("dataTables.tableDraw", function () {
+        jQuery(oTable).on("dataTables.tableDraw", function (event) {
+            if (event.currentTarget != event.target) {
+                return;
+            }
+
             runHiddenScripts(tableId, false, true);
             jQuery("div[data-role='InputField'][data-has_messages='true']", "#" + tableId).each(function () {
                 var id = jQuery(this).attr('id');
@@ -815,6 +819,10 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         //handle row details related functionality setup
         if (detailsOpen != undefined) {
             jQuery(oTable).on("dataTables.tableDraw", function () {
+                if (event.currentTarget != event.target) {
+                    return;
+                }
+
                 if (table.data("open")) {
                     openAllDetails(tableId);
                 }
@@ -1190,7 +1198,7 @@ function createTabs(id, widgetId, options, position) {
     var tabs = jQuery("#" + id + "_tabs").tabs(options);
 
     // when active tab changes we need to update the client side state
-    tabs.on("activate", function (event, ui) {
+    tabs.on("tabsactivate", function (event, ui) {
         var activeTabId = ui.newPanel.attr('id');
         activeTabId = activeTabId.replace(/_tab$/, "");
 

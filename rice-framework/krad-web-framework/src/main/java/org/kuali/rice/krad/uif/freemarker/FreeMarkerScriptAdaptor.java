@@ -37,7 +37,7 @@ public class FreeMarkerScriptAdaptor implements InlineTemplateAdaptor, Serializa
     /**
      * Render a script template inline.
      * 
-     * @see freemarker.core.InlineTemplateAdaptor#accept(freemarker.core.Environment)
+     * {@inheritDoc}
      */
     @Override
     public void accept(Environment env) throws TemplateException, IOException {

@@ -16,12 +16,14 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -33,7 +35,11 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper.DataTablesInputs;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -41,6 +47,7 @@ import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
@@ -57,7 +64,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecycleTest extends ProcessLoggingUnitTest {
-
     private static final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTest.class);
 
     @Override
@@ -151,12 +157,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testTransactionViewOnly() throws Throwable {
-        ViewService viewService = KRADServiceLocatorWeb.getViewService();
-        viewService.getViewById("TransactionView");
-    }
-
-    @Test
     public void testTransactionInitPhase() throws Throwable {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View transactionView = viewService.getViewById("TransactionView");
@@ -186,13 +186,106 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testComponentLibraryHome() throws Throwable {
+    public void testComponentLibrary() throws Throwable {
         testFormView("ComponentLibraryHome", null);
     }
 
     @Test
     public void testColumnCalculations() throws Throwable {
         testFormView("Demo-TableLayoutTotalingView", null);
+    }
+    
+    @Test
+    public void testPerformanceMediumAll() throws Throwable {
+        UifFormBase form = testFormView("Lab-PerformanceMedium", "u1c5ay4e");
+
+        View view = form.getView();
+        ViewPostMetadata viewPostMetadata = form.getViewPostMetadata();
+        form.setView(null);
+
+        final CollectionGroup table = (CollectionGroup) ((PageGroup) view.getItems().get(0)).getItems().get(1);
+        assertEquals("u1c5ay4e", table.getId());
+
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setParameter("methodToCall", "tableJsonRetrieval");
+        request.setParameter("tableId", table.getId());
+        request.setParameter("ajaxReturnType", "update-none");
+        request.setParameter("ajaxRequest", "true");
+        request.setParameter("sEcho", "1");
+        request.setParameter("iColumns", "11");
+        request.setParameter("sColumns", "");
+        request.setParameter("iDisplayStart", "0");
+        request.setParameter("iDisplayLength", "10");
+        request.setParameter("mDataProp_0", "function");
+        request.setParameter("mDataProp_1", "function");
+        request.setParameter("mDataProp_2", "function");
+        request.setParameter("mDataProp_3", "function");
+        request.setParameter("mDataProp_4", "function");
+        request.setParameter("mDataProp_5", "function");
+        request.setParameter("mDataProp_6", "function");
+        request.setParameter("mDataProp_7", "function");
+        request.setParameter("mDataProp_8", "function");
+        request.setParameter("mDataProp_9", "function");
+        request.setParameter("mDataProp_10", "function");
+        request.setParameter("sSearch", "");
+        request.setParameter("bRegex", "false");
+        request.setParameter("sSearch_0", "");
+        request.setParameter("bRegex_0", "false");
+        request.setParameter("bSearchable_0", "true");
+        request.setParameter("sSearch_1", "");
+        request.setParameter("bRegex_1", "false");
+        request.setParameter("bSearchable_1", "true");
+        request.setParameter("sSearch_2", "");
+        request.setParameter("bRegex_2", "false");
+        request.setParameter("bSearchable_2", "true");
+        request.setParameter("sSearch_3", "");
+        request.setParameter("bRegex_3", "false");
+        request.setParameter("bSearchable_3", "true");
+        request.setParameter("sSearch_4", "");
+        request.setParameter("bRegex_4", "false");
+        request.setParameter("bSearchable_4", "true");
+        request.setParameter("sSearch_5", "");
+        request.setParameter("bRegex_5", "false");
+        request.setParameter("bSearchable_5", "true");
+        request.setParameter("sSearch_6", "");
+        request.setParameter("bRegex_6", "false");
+        request.setParameter("bSearchable_6", "true");
+        request.setParameter("sSearch_7", "");
+        request.setParameter("bRegex_7", "false");
+        request.setParameter("bSearchable_7", "true");
+        request.setParameter("sSearch_8", "");
+        request.setParameter("bRegex_8", "false");
+        request.setParameter("bSearchable_8", "true");
+        request.setParameter("sSearch_9", "");
+        request.setParameter("bRegex_9", "false");
+        request.setParameter("bSearchable_9", "true");
+        request.setParameter("sSearch_10", "");
+        request.setParameter("bRegex_10", "false");
+        request.setParameter("bSearchable_10", "true");
+        request.setParameter("iSortCol_0", "0");
+        request.setParameter("sSortDir_0", "asc");
+        request.setParameter("iSortingCols", "1");
+        request.setParameter("bSortable_0", "false");
+        request.setParameter("bSortable_1", "false");
+        request.setParameter("bSortable_2", "true");
+        request.setParameter("bSortable_3", "true");
+        request.setParameter("bSortable_4", "true");
+        request.setParameter("bSortable_5", "true");
+        request.setParameter("bSortable_6", "true");
+        request.setParameter("bSortable_7", "true");
+        request.setParameter("bSortable_8", "false");
+        request.setParameter("bSortable_9", "true");
+        request.setParameter("bSortable_10", "false");
+
+        HttpServletResponse response = new MockHttpServletResponse();
+        ViewLifecycle.encapsulateLifecycle(view, form, viewPostMetadata,
+                viewPostMetadata.getComponentPostMetadata(table.getId()), request, response, new Runnable() {
+                    @Override
+                    public void run() {
+                        DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(),
+                                (ViewModel) ViewLifecycle.getModel(), table, new DataTablesInputs(request));
+                    }
+                });
     }
 
     @SuppressWarnings("unchecked")

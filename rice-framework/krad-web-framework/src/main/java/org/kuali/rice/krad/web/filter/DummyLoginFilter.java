@@ -227,8 +227,7 @@ public class DummyLoginFilter implements Filter {
         String key = keyValuePair.substring(0, eq);
         if (!key.equals("__login_pw")
                 && !key.equals("__login_user")
-                && !key.equals("login_message")
-                && !key.equals("returnLocation")) {
+                && !key.equals("login_message")) {
             return Boolean.TRUE;
         }
 

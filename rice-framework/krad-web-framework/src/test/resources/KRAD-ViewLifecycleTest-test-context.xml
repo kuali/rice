@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -32,6 +32,12 @@
 	<bean id="dataDictionaryService" class="org.kuali.rice.krad.uif.util.TestDataDictionaryService">
 		<property name="dataDictionary" ref="dataDictionary" />
 	</bean>
+
+	<bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
+    	<property name="dataDictionaryService" ref="dataDictionaryService"/>
+	</bean>
+
+	<bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
 
 	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService">
 		<property name="resourceBundleNames">

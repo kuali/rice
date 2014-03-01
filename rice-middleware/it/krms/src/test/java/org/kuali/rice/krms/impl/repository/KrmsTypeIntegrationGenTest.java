@@ -40,7 +40,7 @@ public final class KrmsTypeIntegrationGenTest extends AbstractBoTest {
         krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
 //        krmsTypeBoServiceImpl.setAttributeDefinitionService(krmsAttributeDefinitionService);
-        krmsTypeBoServiceImpl.setBusinessObjectService(getBoService());
+        krmsTypeBoServiceImpl.setDataObjectService(getDataObjectService());
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

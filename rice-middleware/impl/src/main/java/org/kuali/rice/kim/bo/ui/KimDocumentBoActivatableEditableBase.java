@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
@@ -28,10 +29,11 @@ import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
  *
  */
 @MappedSuperclass
-public class KimDocumentBoActivatableEditableBase  extends KimDocumentBoBase {
+public class KimDocumentBoActivatableEditableBase extends KimDocumentBoBase {
+
     private static final long serialVersionUID = 9042706897191231672L;
 
-	@Column(name="EDIT_FLAG")
+    @Column(name="EDIT_FLAG")
 	@Convert(converter=BooleanYNConverter.class)
     protected boolean edit;
 

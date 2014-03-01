@@ -272,7 +272,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         //a.getAccountManager().setAmId(Long.parseLong(a.getNumber()));
         SimpleAccountExtension e = (SimpleAccountExtension) a.getExtension();
         e.setAccountTypeCode(e.getAccountType().getAccountTypeCode());
-        e.setNumber(a.getNumber());
+        e.setAccount(a);
     }
 
     protected void addUnlinkedReferences(Object o) {
@@ -322,7 +322,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         if (expected.getExtension() != null) {
             SimpleAccountExtension e1 = (SimpleAccountExtension) expected.getExtension();
             SimpleAccountExtension e2 = (SimpleAccountExtension) actual.getExtension();
-            assertEquals(e1.getNumber(), e2.getNumber());
+            assertEquals(e1.getAccount().getNumber(), e2.getAccount().getNumber());
             assertEquals(e1.getAccountTypeCode(), e2.getAccountTypeCode());
 
             if (e1.getAccountType() != null) {

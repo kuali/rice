@@ -1345,13 +1345,13 @@
         <programlisting>        &lt;bean parent="Uif-CssGridGroup">
           &lt;property name="items">
           &lt;list>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:colSpan="4" p:instructionalText="This is
+          &lt;bean parent="Uif-InputField" p:label="Field 1" p:colSpan="4" p:instructionalText="This is
           instructions"
           p:propertyName="inputField1"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="4" p:propertyName="inputField2"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="4" p:propertyName="inputField3"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:colSpan="6" p:propertyName="inputField4"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:colSpan="6" p:propertyName="inputField5"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 2" p:colSpan="4" p:propertyName="inputField2"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 3" p:colSpan="4" p:propertyName="inputField3"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 4" p:colSpan="6" p:propertyName="inputField4"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 5" p:colSpan="6" p:propertyName="inputField5"/>
           &lt;/list>
           &lt;/property>
           &lt;/bean>
@@ -1362,9 +1362,9 @@
         <programlisting>        &lt;bean parent="Uif-CssGridGroup">
           &lt;property name="items">
           &lt;list>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField6"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:colSpan="8" p:propertyName="inputField7"/>
-          &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:colSpan="4" p:propertyName="inputField8"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField6"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 2" p:colSpan="8" p:propertyName="inputField7"/>
+          &lt;bean parent="Uif-InputField" p:label="Field 3" p:colSpan="4" p:propertyName="inputField8"/>
           &lt;/list>
           &lt;/property>
           &lt;/bean>
@@ -1402,12 +1402,12 @@
             &lt;property name="layoutManager.defaultItemColSpan" value="3"/>
             &lt;property name="items">
             &lt;list>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 1" p:propertyName="inputField22"/>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 2" p:propertyName="inputField23"/>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 3" p:propertyName="inputField24"/>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 4" p:propertyName="inputField25"/>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 5" p:propertyName="inputField26"/>
-            &lt;bean parent="Uif-InputField-LabelTop" p:label="Field 6" p:propertyName="inputField27"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField22"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField23"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField24"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField25"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 5" p:propertyName="inputField26"/>
+            &lt;bean parent="Uif-InputField" p:label="Field 6" p:propertyName="inputField27"/>
             &lt;/list>
             &lt;/property>
             &lt;/bean>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="KradTransactionalSample-PageR1C1" parent="KradSampleAppView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-TransactionalSampleView</value>
+      </list>
+    </property>
+    <property name="page.headerText" value="Lookup Security"/>
+    <property name="page.items">
+      <list>
+        <bean id="KradTransactionalSampleItems-PageR1C1" parent="Uif-VerticalBoxSection"
+              p:headerText="Transactional Sample - Lookup Security"
+              p:instructionalText="A simple transactional document that references some sensitive fields.">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Travel Authorization Transactional Sample - Lookup Security"
+                    p:href="approval?methodToCall=docHandler&amp;command=initiate&amp;docTypeName=TravelAuthorization&amp;viewName=LabsLookupSecurityTravelAuthorization"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KradTransactionalSample-PageR1C2" parent="KradSampleAppView">
+    <property name="page.headerText" value="Sample"/>
+    <property name="page.items">
+      <list>
+        <bean id="KradTransactionalSampleItems-PageR1C2" parent="Uif-VerticalBoxSection"
+              p:headerText="Demo of a sample transactional page"
+              p:instructionalText="This is a placeholder content to replaced">
+          <property name="items">
+            <list>
+
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="KradTransactionalSample-PageR1C3" parent="KradSampleAppView">
+    <property name="page.headerText" value="Sample"/>
+    <property name="page.items">
+      <list>
+        <bean id="KradTransactionalSampleItems-PageR1C3" parent="Uif-VerticalBoxSection"
+              p:headerText="Demo of a sample transactional page"
+              p:instructionalText="This is a placeholder content to replaced">
+          <property name="items">
+            <list>
+
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

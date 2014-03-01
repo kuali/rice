@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.impl.util.KrmsImplConstants.PropertyNames;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.deleteMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 /**
  * This is the interface for accessing KRMS repository Context related
@@ -32,163 +34,103 @@ import java.util.*;
  */
 public final class ContextBoServiceImpl implements ContextBoService {
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
 
-	/**
-	 * This method will create a {@link ContextDefinition} as described
-	 * by the parameter passed in.
-	 * 
-	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
-	 */
-	@Override
-	public ContextDefinition createContext(ContextDefinition context) {
-		if (context == null){
-	        throw new IllegalArgumentException("context is null");
-		}
-		final String contextIdKey = context.getId();
-		final ContextDefinition existing = getContextByContextId(contextIdKey);
-		if (existing != null){
-            throw new IllegalStateException("the context to create already exists: " + context);			
-		}	
-		ContextBo bo = (ContextBo)businessObjectService.save(ContextBo.from(context));
-		return ContextBo.to(bo);
-	}
+    /**
+     * This method will create a {@link ContextDefinition} as described
+     * by the parameter passed in.
+     *
+     * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContext(org.kuali.rice.krms.api.repository.context.ContextDefinition)
+     */
+    @Override
+    public ContextDefinition createContext(ContextDefinition context) {
+        if (context == null) {
+            throw new IllegalArgumentException("context is null");
+        }
 
-	/**
-	 * This method updates an existing Context in the repository.
-	 */
-	@Override
-	public void updateContext(ContextDefinition context) {
-		if (context == null){
-	        throw new IllegalArgumentException("context is null");
-		}
+        final String contextIdKey = context.getId();
+        final ContextDefinition existing = getContextByContextId(contextIdKey);
 
-		// must already exist to be able to update
-		final String contextIdKey = context.getId();
-		final ContextBo existing = businessObjectService.findBySinglePrimaryKey(ContextBo.class, contextIdKey);
+        if (existing != null) {
+            throw new IllegalStateException("the context to create already exists: " + context);
+        }
+
+        ContextBo bo = dataObjectService.save(ContextBo.from(context));
+        return ContextBo.to(bo);
+    }
+
+    /**
+     * This method updates an existing Context in the repository.
+     */
+    @Override
+    public void updateContext(ContextDefinition context) {
+        if (context == null){
+            throw new IllegalArgumentException("context is null");
+        }
+
+        // must already exist to be able to update
+        final String contextIdKey = context.getId();
+        final ContextBo existing = dataObjectService.find(ContextBo.class, contextIdKey);
+
         if (existing == null) {
             throw new IllegalStateException("the context does not exist: " + context);
         }
+
         final ContextDefinition toUpdate;
+
         if (!existing.getId().equals(context.getId())){
-			// if passed in id does not match existing id, correct it
-        	final ContextDefinition.Builder builder = ContextDefinition.Builder.create(context);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
+            // if passed in id does not match existing id, correct it
+            final ContextDefinition.Builder builder = ContextDefinition.Builder.create(context);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
         } else {
-        	toUpdate = context;
+            toUpdate = context;
         }
-        
-		// copy all updateable fields to bo
-		ContextBo boToUpdate = ContextBo.from(toUpdate);
 
-		// delete any old, existing attributes
-		Map<String,String> fields = new HashMap<String,String>(1);
-		fields.put(PropertyNames.Context.CONTEXT_ID, toUpdate.getId());
-		businessObjectService.deleteMatching(ContextAttributeBo.class, fields);
-        
-		// update the rule and create new attributes
-        businessObjectService.save(boToUpdate);
-	}
+        // copy all updateable fields to bo
+        ContextBo boToUpdate = ContextBo.from(toUpdate);
 
-	/**
-	 * This overridden method ...
-	 */
-	@Override
-	public ContextDefinition getContextByContextId(String contextId) {
-		if (StringUtils.isBlank(contextId)){
-            return null;			
-		}
-		ContextBo bo = businessObjectService.findBySinglePrimaryKey(ContextBo.class, contextId);
-		return ContextBo.to(bo);
-	}
+        // delete any old, existing attributes
+        Map<String,String> fields = new HashMap<String,String>(1);
+        fields.put("context.id", toUpdate.getId());
+        deleteMatching(dataObjectService, ContextAttributeBo.class, fields);
 
-	/**
-	 * This overridden method ...
-	 */
-	public ContextDefinition getContextByNameAndNamespace( String name, String namespace ){
-		if (StringUtils.isBlank(name)){
-			throw new IllegalArgumentException("name is null or blank");
-		}
-		if (StringUtils.isBlank(namespace)){
-			throw new IllegalArgumentException("namespace is null or blank");
-		}
+        // update the rule and create new attributes
+        dataObjectService.save(boToUpdate);
+    }
+
+    @Override
+    public ContextDefinition getContextByContextId(String contextId) {
+        if (StringUtils.isBlank(contextId)){
+            return null;
+        }
+        ContextBo bo = dataObjectService.find(ContextBo.class, contextId);
+        return ContextBo.to(bo);
+    }
+
+    @Override
+    public ContextDefinition getContextByNameAndNamespace( String name, String namespace ){
+        if (StringUtils.isBlank(name)){
+            throw new IllegalArgumentException("name is null or blank");
+        }
+        if (StringUtils.isBlank(namespace)){
+            throw new IllegalArgumentException("namespace is null or blank");
+        }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
         map.put("namespace", namespace);
-		ContextBo bo = businessObjectService.findByPrimaryKey(ContextBo.class, map);
-		return ContextBo.to(bo);
-	}
-	
-//	/**
-//	 * This overridden method ...
-//	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#createContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
-//	 */
-//	@Override
-//	public void createContextAttribute(ContextAttribute attribute) {
-//		if (attribute == null){
-//	        throw new IllegalArgumentException("context attribute is null");
-//		}
-//		final String attrIdKey = attribute.getId();
-//		final ContextAttribute existing = getContextAttributeById(attrIdKey);
-//		if (existing != null){
-//            throw new IllegalStateException("the context attribute to create already exists: " + attribute);			
-//		}
-//		
-//		businessObjectService.save(ContextAttributeBo.from(attribute));		
-//	}
-//
-//	/**
-//	 * This overridden method ...
-//	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#updateContextAttribute(org.kuali.rice.krms.api.repository.ContextAttribute)
-//	 */
-//	@Override
-//	public void updateContextAttribute(ContextAttribute attribute) {
-//		if (attribute == null){
-//	        throw new IllegalArgumentException("context attribute is null");
-//		}
-//		final String attrIdKey = attribute.getId();
-//		final ContextAttribute existing = getContextAttributeById(attrIdKey);
-//        if (existing == null) {
-//            throw new IllegalStateException("the context attribute does not exist: " + attribute);
-//        }
-//        final ContextAttribute toUpdate;
-//        if (!existing.getId().equals(attribute.getContextId())){
-//        	final ContextAttribute.Builder builder = ContextAttribute.Builder.create(attribute);
-//        	builder.setId(existing.getId());
-//        	toUpdate = builder.build();
-//        } else {
-//        	toUpdate = attribute;
-//        }
-//        
-//        businessObjectService.save(ContextAttributeBo.from(toUpdate));		
-//	}
-//	
-//	
-//	/**
-//	 * This method ...
-//	 * 
-//	 * @see org.kuali.rice.krms.impl.repository.ContextBoService#getContextsByRuleId(java.lang.String)
-//	 */
-//	public ContextAttribute getContextAttributeById(String attrId) {
-//		if (StringUtils.isBlank(attrId)){
-//            return null;			
-//		}
-//		ContextAttributeBo bo = businessObjectService.findBySinglePrimaryKey(ContextAttributeBo.class, attrId);
-//		return ContextAttributeBo.to(bo);
-//	}
+        ContextBo bo = findSingleMatching(dataObjectService, ContextBo.class, map);
 
-
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+        return ContextBo.to(bo);
     }
 
-
+    /**
+     * Sets the dataObjectService attribute value.
+     *
+     * @param dataObjectService The dataObjectService to set.
+     */
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
 }

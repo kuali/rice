@@ -19,10 +19,20 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * PersistenceOption is used when saving through the data object service to configure how the data will be stored
+ */
 public class PersistenceOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-    public static PersistenceOption LINK = new PersistenceOption("org.kuali.rice.krad.data.LINK");
+    /**
+     * Used to link references and synchronize foreign keys in the data object
+     */
+    public static PersistenceOption LINK_KEYS = new PersistenceOption("org.kuali.rice.krad.data.LINK_KEYS");
+
+    /**
+     * Used to synchronize the data object with the database
+     */
     public static PersistenceOption FLUSH = new PersistenceOption("org.kuali.rice.krad.data.FLUSH");
 
     private final String optionId;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2013 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,29 +24,34 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TRV_ACCT_EXT")
+@Table(name = "TRV_ACCT_EXT")
 @ExtensionFor(SimpleAccount.class)
 public class SimpleAccountExtension extends DataObjectBase {
-    
-	@Id
-	@Column(name="ACCT_NUM")
-    private String number;
-	@Column(name="ACCT_TYPE")
+
+    private static final long serialVersionUID = -4862497845036765764L;
+
+    @Id
+    @OneToOne
+	@JoinColumn(name = "ACCT_NUM")
+    private SimpleAccount account;
+
+	@Column(name = "ACCT_TYPE")
     private String accountTypeCode;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ACCT_TYPE",insertable=false,updatable=false)
-    private AccountType accountType; 
-    
-    public String getNumber() {
-        return number;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ACCT_TYPE", insertable=false, updatable=false)
+    private AccountType accountType;
+
+    public SimpleAccount getAccount() {
+        return account;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setAccount(SimpleAccount account) {
+        this.account = account;
     }
 
     public String getAccountTypeCode() {
@@ -64,6 +69,5 @@ public class SimpleAccountExtension extends DataObjectBase {
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
 	}
-
  
 }

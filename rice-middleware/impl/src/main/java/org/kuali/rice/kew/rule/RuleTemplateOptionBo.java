@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -58,6 +59,9 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
     @Version
 	@Column(name="VER_NBR")
 	private Long versionNumber;
+
+    @Transient
+    private String ruleTemplateId;
 
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID",nullable = false)
@@ -96,7 +100,7 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
     }
     @Override
     public String getRuleTemplateId() {
-        return getRuleTemplate() != null ? getRuleTemplate().getId() : null;
+        return getRuleTemplate() != null ? getRuleTemplate().getId() : ruleTemplateId;
     }
 
     @Override
@@ -121,5 +125,10 @@ public class RuleTemplateOptionBo extends BusinessObjectBase implements RuleTemp
     public void refresh() {
         KRADServiceLocatorWeb.getLegacyDataAdapter().retrieveNonKeyFields(this);
     }
+
+    public void setRuleTemplateId(String ruleTemplateId) {
+        this.ruleTemplateId = ruleTemplateId;
+    }
+
 }
 

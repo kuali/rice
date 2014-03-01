@@ -274,6 +274,7 @@
   <bean id="TermSpecificationBo-InquiryView-parentBean" abstract="true" parent="Uif-InquiryView">
     <property name="headerText" value="Term Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.repository.TermSpecificationInquiryHelperServiceImpl" />
     <property name="singlePageView" value="true"/>
     <property name="items">
       <list>

@@ -38,7 +38,7 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleEle
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
+     * {@inheritDoc}
      */
     @Override
     public FinalizeComponentPhase getElementState() {
@@ -46,7 +46,7 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleEle
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {

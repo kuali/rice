@@ -27,7 +27,6 @@
     <mapping-file>META-INF/krad-test-orm.xml</mapping-file>
     <class>org.kuali.rice.krad.test.document.AccountRequestDocument</class>
     <class>org.kuali.rice.krad.test.document.AccountRequestDocumentWithCyclicalReference</class>
-    <class>org.kuali.rice.krad.test.document.bo.AccountManager</class>
     <class>org.kuali.rice.krad.test.document.bo.Account</class>
     <class>org.kuali.rice.krad.test.document.bo.AccountType</class>
     <class>org.kuali.rice.krad.test.document.bo.AccountExtension</class>

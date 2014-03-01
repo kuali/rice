@@ -43,13 +43,13 @@ public class DemoContainerAccordionAft extends WebDriverLegacyITBase {
 
     protected void testLibraryContainerAccordion() throws Exception {
         waitAndClickByLinkText("Accordion Item 1");
-        assertElementPresentByXpath("//div[@id='Demo-AccordionGroup-SubList1' and @style='display: block;']");
+        assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList1' and @style='display: block;']");
         waitAndClickByLinkText("Accordion Item 1");
-        assertElementPresentByXpath("//div[@id='Demo-AccordionGroup-SubList1' and @style='display: none;']");
+        assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList1' and @style='display: none;']");
         waitAndClickByLinkText("Accordion Item 2");
-        assertElementPresentByXpath("//div[@id='Demo-AccordionGroup-SubList2' and @style='display: block;']");
+        assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList2' and @style='display: block;']");
         waitAndClickByLinkText("Accordion Item 2");
-        assertElementPresentByXpath("//div[@id='Demo-AccordionGroup-SubList2' and @style='display: none;']");
+        assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList2' and @style='display: none;']");
     
     }
     

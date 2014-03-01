@@ -49,18 +49,14 @@ import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.MetaTag;
 import org.kuali.rice.krad.uif.element.ViewHeader;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
@@ -282,6 +278,8 @@ public class View extends ContainerBase {
                 List<Component> newItems = (List<Component>) page.getItems();
                 newItems.addAll(items);
                 page.setItems(newItems);
+
+                page.sortItems();
 
                 // reset the items list to include the one page
                 items = new ArrayList<Group>();
@@ -1703,7 +1701,7 @@ public class View extends ContainerBase {
         if (dialogs == Collections.EMPTY_LIST && isMutable(true)) {
             dialogs = new LifecycleAwareList<Group>(this);
         }
-        
+
         return dialogs;
     }
 
@@ -1714,7 +1712,7 @@ public class View extends ContainerBase {
      */
     public void setDialogs(List<Group> dialogs) {
         checkMutable(true);
-        
+
         if (dialogs == null) {
             this.dialogs = Collections.emptyList();
         } else {
@@ -1868,7 +1866,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * The pathBasedBreadcrumbs for this View.  This has been added for copyProperties().
+     * The pathBasedBreadcrumbs for this View.
      *
      * @param pathBasedBreadcrumbs
      */
@@ -2206,19 +2204,23 @@ public class View extends ContainerBase {
     }
 
     /**
-     * {@inheritDoc}
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
     @Override
     public View clone() throws CloneNotSupportedException {
         View viewCopy = (View) super.clone();
+
         if (this.viewIndex != null) {
             viewCopy.viewIndex = this.viewIndex.copy();
         }
+
         return viewCopy;
     }
 
     /**
-     * {@inheritDoc}
+     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

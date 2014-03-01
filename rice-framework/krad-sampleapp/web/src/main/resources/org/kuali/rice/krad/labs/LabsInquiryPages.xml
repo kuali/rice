@@ -272,7 +272,21 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Link to demonstrate ability to suppress the automatically generated inquiry link on fields." p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=LabsInquiry-PerDiemSections-NoInquiry&amp;travelPerDiemExpenseId=10000"/>
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=LabsInquiry-FiscalOfficerView&amp;id=10000"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <bean id="KradInquirySample-PageR6C2" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR6C2" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="inquiry with a pk of type Long" p:target="_self"
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;viewId=LabsInquiry-EDocLite&amp;id=2008"/>
             </list>
           </property>
         </bean>

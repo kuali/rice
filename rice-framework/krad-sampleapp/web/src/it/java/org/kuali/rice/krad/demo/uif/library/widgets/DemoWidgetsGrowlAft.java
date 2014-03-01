@@ -62,7 +62,7 @@ public class DemoWidgetsGrowlAft extends DemoLibraryBase {
         selectByName("exampleShown","Client-side Growls");
 
         //create growl
-        waitAndClickByXpath("//div[@id='Demo-Growls-Example2']/button");
+        waitAndClickByXpath("//section[@id='Demo-Growls-Example2']/button");
 
         //give it a half second to display
         Thread.sleep(500);

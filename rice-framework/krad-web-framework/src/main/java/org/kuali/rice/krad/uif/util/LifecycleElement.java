@@ -168,6 +168,32 @@ public interface LifecycleElement extends Serializable, Copyable {
     void notifyCompleted(ViewLifecyclePhase phase);
 
     /**
+     * Context map for the lifecycle element.
+     *
+     * <p>Any el statements configured for the components properties (e.g. title="@{foo.property}") are evaluated
+     * using the el context map. This map will get populated with default objects like the model, view, and request
+     * from the {@code ViewHelperService}. Other components can push further objects into the context so that
+     * they are available for use with that component. For example, field instances that are part of a collection
+     * line as receive the current line instance</p>
+     *
+     * <p>Context map also provides objects to methods that are invoked for {@code GeneratedField} instances</p>
+     *
+     * <p>The Map key gives the name of the variable that can be used within expressions, and the Map value gives
+     * the object instance for which expressions containing the variable should evaluate against</p>
+     *
+     * <p>NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
+     * component. Instead you should call #pushAllToContext</p>
+     *
+     * @return Map<String, Object> context
+     */
+    Map<String, Object> getContext();
+
+    /**
+     * @see LifecycleElement#getContext()
+     */
+    void setContext(Map<String, Object> context);
+
+    /**
      * Places the given object into the context Map for the component with the given name
      * 
      * <p>

@@ -19,12 +19,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.KrmsConstants;
@@ -49,13 +47,12 @@ import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 import java.util.List;
 import java.util.Map;
 
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
+
 /**
  * This class contains the rules for the AgendaEditor.
  */
 public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
-
-    @Deprecated
-    private BusinessObjectService boService;
 
     @Override
     protected boolean primaryKeyCheck(MaintenanceDocument document) {
@@ -104,8 +101,8 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
                 // DB call that may not be necessary, and we want to minimize these.
 
                 // attempt to do a lookup, see if this object already exists by these Primary Keys
-                PersistableBusinessObject testBo = getBoService()
-                        .findByPrimaryKey(dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+                PersistableBusinessObject testBo = findSingleMatching(getDataObjectService(),
+                        dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
 
                 // if the retrieve was successful, then this object already exists, and we need
                 // to complain
@@ -455,19 +452,5 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     public AgendaAuthorizationService getAgendaAuthorizationService() {
         return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
     }
-
-
-    public BusinessObjectService getBoService() {
-        if(boService == null){
-            return KNSServiceLocator.getBusinessObjectService();
-        }
-        return boService;
-    }
-
-    public void setBoService(BusinessObjectService boService) {
-        this.boService = boService;
-    }
-
-
 }
 

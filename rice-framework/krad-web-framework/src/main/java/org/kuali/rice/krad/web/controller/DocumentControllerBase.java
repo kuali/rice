@@ -291,7 +291,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         performWorkflowAction(form, WorkflowAction.BLANKETAPPROVE, true);
 
-        return returnToHub(form);
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+            return getUIFModelAndView(form);
+        }
+        else {
+            return returnToHub(form);
+        }
     }
 
     /**

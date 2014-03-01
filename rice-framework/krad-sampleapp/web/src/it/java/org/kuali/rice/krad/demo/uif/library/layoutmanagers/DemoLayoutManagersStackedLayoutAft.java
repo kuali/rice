@@ -57,7 +57,7 @@ public class DemoLayoutManagersStackedLayoutAft extends WebDriverLegacyITBase {
     protected void testLayoutManagersStackedWithStackedSubCollectionLayout() throws Exception {
         selectByName("exampleShown","Stacked Collection with a Stacked Sub-Collection");
         waitForElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr/td/div/input");
-        assertElementPresentByXpath("//div[@id='Demo-StackedLayoutManager-Collection3']/div[2]/div[2]/table/tbody/tr[5]/td/div/fieldset/div/div[3]/table");
+        assertElementPresentByXpath("//section[@data-parent='Demo-StackedLayoutManager-Collection3']/table/tbody/tr[5]/td/div/fieldset/section/div/table");
     }
     
     protected void testLayoutManagersStackedCollectionWithServersidePaging() throws Exception {

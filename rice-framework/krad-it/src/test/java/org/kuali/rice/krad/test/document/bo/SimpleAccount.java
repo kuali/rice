@@ -52,10 +52,6 @@ public class SimpleAccount extends DataObjectBase {
     @Transient
     private Object extension;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
-    @JoinColumn(name="ACCT_FO_ID",insertable=false,updatable=false)
-    private AccountManager accountManager;
-
     public String getName() {
         return name;
     }
@@ -79,14 +75,6 @@ public class SimpleAccount extends DataObjectBase {
     public void setAmId(Long id) {
         System.err.println("Setting AmId from " + this.amId + " to " + id);
         this.amId = id;
-    }
-
-    public AccountManager getAccountManager() {
-        return this.accountManager;
-    }
-
-    public void setAccountManager(AccountManager accountManager) {
-        this.accountManager = accountManager;
     }
 
     public Object getExtension() {

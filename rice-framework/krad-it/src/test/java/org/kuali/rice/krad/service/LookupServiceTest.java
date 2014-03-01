@@ -15,11 +15,9 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.data.jpa.testbo.TestDataObject;
 import org.kuali.rice.krad.test.document.bo.Account;
-import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
@@ -85,23 +83,21 @@ public class LookupServiceTest extends KRADTestCase {
      *
      * @throws Exception
      */
-
-    /**
-     * This test is no longer needed since the account manager table no longer exists.
-     * testLookupReturnLimits_TestDataObject found below also tests lookup return limits
-     * so no replacement test is needed.
-     *
-     */
-     @Test @Ignore
-     public void testLookupReturnLimits_AccountManager() throws Exception {
+     @Test
+     public void testLookupReturnLimits_Account() throws Exception {
         Map formProps = new HashMap();
-        Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, false);
-        assertEquals(90, accountManagers.size());
+        Collection travelAccounts = findCollectionBySearchHelper(Account.class, formProps, false);
+        assertEquals(200, travelAccounts.size());
 
-        accountManagers = findCollectionBySearch(AccountManager.class, formProps);
-        assertEquals(90, accountManagers.size());
+        travelAccounts = findCollectionBySearch(Account.class, formProps);
+        assertEquals(200, travelAccounts.size());
      }
 
+    /**
+     * tests lookup return limits
+     *
+     * @throws Exception
+     */
     @Test
     public void testLookupReturnLimits_TestDataObject() throws Exception {
         Map formProps = new HashMap();
@@ -132,30 +128,6 @@ public class LookupServiceTest extends KRADTestCase {
      *
      * @throws Exception
      */
-
-    /**
-     * This test is no longer needed since the account manager table no longer exists.
-     * testLookupReturnDefaultUnbounded_Account found below also tests an unbounded lookup
-     * so no replacement test is needed.
-     */
-     @Test @Ignore
-     public void testLookupReturnDefaultUnbounded_AccountManager() throws Exception {
-        Map formProps = new HashMap();
-        Collection accountManagers = findCollectionBySearchHelper(AccountManager.class, formProps, true);
-        int size = accountManagers.size();
-        assertTrue("# of Fiscal Officers should be > 200", size > 200);
-
-        accountManagers = findCollectionBySearchUnbounded(AccountManager.class, formProps);
-        size = accountManagers.size();
-        assertTrue("# of Fiscal Officers should be > 200", size > 200);
-     }
-
-
-    /**
-     * tests an unbounded lookup
-     *
-     * @throws Exception
-     */
     @Test
     public void testLookupReturnDefaultUnbounded_Account() throws Exception {
         Map formProps = new HashMap();
@@ -168,6 +140,11 @@ public class LookupServiceTest extends KRADTestCase {
         assertTrue("# of Travel Accounts should be > 200", size > 200);
     }
 
+    /**
+     * tests an unbounded lookup
+     *
+     * @throws Exception
+     */
     @Test
     public void testLookupReturnDefaultUnbounded_TestDataObject() throws Exception {
         Map formProps = new HashMap();

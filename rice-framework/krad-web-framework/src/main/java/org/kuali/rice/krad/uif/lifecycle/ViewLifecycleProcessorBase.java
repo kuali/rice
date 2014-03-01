@@ -37,7 +37,7 @@ public abstract class ViewLifecycleProcessorBase implements ViewLifecycleProcess
     }
 
     /**
-     * @see ViewLifecycleProcessor#getLifecycle()
+     * {@inheritDoc}
      */
     @Override
     public ViewLifecycle getLifecycle() {

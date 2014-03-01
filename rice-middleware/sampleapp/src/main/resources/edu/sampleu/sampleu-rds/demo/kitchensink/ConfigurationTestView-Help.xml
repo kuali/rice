@@ -65,7 +65,7 @@
         </control>
       </inputField-bean>
       <inputField-bean id="field-label-right" instructionalText="Label right with help" label="Field Label"
-                       labelPlacement="RIGHT" propertyName="field102">
+                       propertyName="field102">
         <help>
           <help-bean tooltipHelpContent="Sample text for field help - label right"/>
         </help>
@@ -74,7 +74,7 @@
         </control>
       </inputField-bean>
       <inputField-bean id="field-label-top" instructionalText="Label top with help" label="Field Label"
-                       labelPlacement="TOP" propertyName="field102">
+                       propertyName="field102">
         <help>
           <help-bean tooltipHelpContent="Sample text for field help - label top"/>
         </help>
@@ -170,7 +170,7 @@
         </control>
       </inputField-bean>
       <inputField-bean id="field-label-right-external-help" instructionalText="Label right with help"
-                       label="Field Label" labelPlacement="RIGHT" propertyName="field102">
+                       label="Field Label" propertyName="field102">
         <help>
           <help-bean externalHelpUrl="http://www.kuali.org/?label_right"/>
         </help>
@@ -179,7 +179,7 @@
         </control>
       </inputField-bean>
       <inputField-bean id="field-label-top-external-help" instructionalText="Label top with help from system parameters"
-                       label="Field Label" labelPlacement="TOP" propertyName="field102">
+                       label="Field Label" propertyName="field102">
         <help>
           <help-bean>
             <helpDefinition>
@@ -296,7 +296,7 @@
       <inputField-bean help.helpDefinition.parameterDetailType="TEST_COMPONENT"
                        help.helpDefinition.parameterName="TEST_PARAM" help.helpDefinition.parameterNamespace="KR-SAP"
                        help.tooltipHelpContent="Field help (label right)" instructionalText="Label right with help"
-                       label="Field Label" labelPlacement="RIGHT" propertyName="field102">
+                       label="Field Label" propertyName="field102">
         <control>
           <textControl-bean/>
         </control>
@@ -305,7 +305,7 @@
                        help.helpDefinition.parameterDetailType="TEST_COMPONENT"
                        help.helpDefinition.parameterName="TEST_PARAM" help.helpDefinition.parameterNamespace="KR-SAP"
                        help.tooltipHelpContent="Field help (label top)" instructionalText="Label top with help"
-                       label="Field Label" labelPlacement="TOP" propertyName="field102">
+                       label="Field Label" propertyName="field102">
         <control>
           <textControl-bean/>
         </control>

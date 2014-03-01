@@ -77,22 +77,22 @@ public class DemoWidgetsDisclosureAft extends DemoLibraryBase {
     	waitAndClickByLinkText("Animation Speed");
     	assertElementPresentByName("inputField7");
     	assertElementPresentByName("inputField10");
-    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example3']/div/h3/a/span");
-    	waitForElementPresentByXpath("//div[@data-parent='Demo-Disclosure-Example3']/div[@style='display: none;']");
+    	waitAndClickByXpath("//section[@data-parent='Demo-Disclosure-Example3']/header/h3/a/span");
+    	waitForElementPresentByXpath("//section[@data-parent='Demo-Disclosure-Example3']/header[@style='display: none;']");
     }
     
     protected void testWidgetsDisclosureRenderImage() throws Exception {
     	waitAndClickByLinkText("Render Image");
     	assertElementPresentByName("inputField11");
     	assertElementPresentByName("inputField12");
-    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example4']/div/h3/a/span");
-    	waitForElementPresentByXpath("//div[@data-parent='Demo-Disclosure-Example4']/div[@style='display: none;']");
+    	waitAndClickByXpath("//section[@data-parent='Demo-Disclosure-Example4']/header/h3/a/span");
+    	waitForElementPresentByXpath("//section[@data-parent='Demo-Disclosure-Example4']/header[@style='display: none;']");
     }
     
     protected void testWidgetsDisclosureChangeImage() throws Exception {
     	waitAndClickByLinkText("Change Image");
     	waitForElementPresentByXpath("//span[@class='icon-folder-open']");
-    	waitAndClickByXpath("//div[@data-parent='Demo-Disclosure-Example5']/div/h3/a/span");
+    	waitAndClickByXpath("//section[@data-parent='Demo-Disclosure-Example5']/header/h3/a/span");
 //    	waitForElementPresentByXpath("//span[@class='icon-folder-open' and @style='display: none;']");
     	waitForElementPresentByXpath("//span[@class='icon-folder']");
     }

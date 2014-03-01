@@ -289,8 +289,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected void assertResultCount(String count) throws InterruptedException {
-        jiraAwareWaitFor(By.cssSelector("li.uif-infoMessageItem"), "result count for " + this.getClass().toString());
-        assertTextPresent(count + " items retrieved, displaying all items.", "li.uif-infoMessageItem", this.getClass().toString());
+        jiraAwareWaitFor(By.cssSelector("div.dataTables_info"), "result count for " + this.getClass().toString());
+        assertTextPresent("of " + count + " entries", "div.dataTables_info", this.getClass().toString());
     }
 
     /**

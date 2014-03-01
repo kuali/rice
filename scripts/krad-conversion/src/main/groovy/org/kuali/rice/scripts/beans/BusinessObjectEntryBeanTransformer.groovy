@@ -24,6 +24,13 @@ import groovy.util.logging.Log
  */
 @Log
 class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
+    def boeCopyProperties = [];
+    def boeRenameProperties = ["businessObjectClass":"dataObjectClass"];
+    def boeIgnoreCarryoverProperties = ["inquiryDefinition","lookupDefinition","relationships"];
+
+    def boeCopyAttributes = [];
+    def boeRenameAttributes = [:];
+    def boeIgnoreCarryoverAttributes = [];
 
     /**
      * Processes BusinessObjectEntry and can be used on attribute definitions
@@ -32,16 +39,18 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      * @return
      */
     def transformBusinessObjectEntryBean(Node beanNode) {
-        if (beanNode?.@parent == "BusinessObjectEntry") {
-            beanNode.@parent = "DataObjectEntry";
+        if(!maintainBusinessObjectStructure) {
+            if (beanNode?.@parent == "BusinessObjectEntry") {
+                beanNode.@parent = "DataObjectEntry";
+            }
+            removeProperties(beanNode, boeIgnoreCarryoverProperties);
+            renameProperties(beanNode, boeRenameProperties);
         }
-        transformControlProperty(beanNode, ddBeanControlMap, replacePropertyDuringConversion);
-        transformValidationPatternProperty(beanNode, replacePropertyDuringConversion)
-        this.removeProperties(beanNode, ddPropertiesRemoveList);
-        this.renameProperties(beanNode, ddPropertiesMap);
-        renamePropertyBeans(beanNode, ddPropertiesMap, false);
 
-        return beanNode
+        transformControlProperty(beanNode, ddBeanControlMap, replacePropertyDuringConversion);
+        transformValidationPatternProperty(beanNode, replacePropertyDuringConversion);
+
+        return beanNode;
     }
 
     /**
@@ -49,19 +58,25 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
      *
      * @param beanNode
      * @param renamedControlBeans
-     * @param replace
+     * @param replaceLegacyProps
      * @return
      */
-    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans, boolean replace) {
+    def transformControlProperty(def beanNode, Map<String, String> renamedControlBeans, boolean replaceLegacyProps) {
         def controlProperty = beanNode?.property?.find { "control".equals(it.@name) };
         def controlFieldProperty = beanNode?.property?.find { "controlField".equals(it.@name) };
+        def controlDefinitionBean = controlProperty?.bean?.find { it.@parent?.endsWith("Definition") };
+
+        def ofRenameAttributes = [];
+        def ofRenameProperties = ["valuesFinderClass":"optionsFinder","includeKeyInLabel":"includeKeyInDescription",
+        "includeBlankRow":"includeBlankRow","keyAttribute":"keyAttribute","labelAttribute":"labelAttribute"];
+
         if (controlProperty) {
             def controlDefBean = controlProperty.bean.find { it.@parent?.endsWith("Definition") };
             def controlDefParent = controlDefBean.@parent;
-            if (controlFieldProperty && replace) {
+            if (controlFieldProperty && replaceLegacyProps) {
                 this.removeProperties(beanNode, ["control"]);
             } else if (renamedControlBeans.get(controlDefParent) != null) {
-                if (replace) {
+                if (replaceLegacyProps) {
                     controlProperty.replaceNode {
                         property(name: "controlField") {
                             transformControlDefinitionBean(delegate, controlDefBean, renamedControlBeans)
@@ -75,7 +90,8 @@ class BusinessObjectEntryBeanTransformer extends SpringBeanTransformer {
                     }
                 }
 
-                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) || "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
+                if ("Uif-VerticalRadioControl".equals(renamedControlBeans.get(controlDefParent)) ||
+                        "Uif-DropdownControl".equals(renamedControlBeans.get(controlDefParent))) {
                     def classAttribute = genericGatherAttributes(controlDefBean, ["*valuesFinderClass": "p:optionsFinder" ]);
                     def attributes = genericGatherAttributes(controlDefBean, ["*includeKeyInLabel": "p:includeKeyInDescription",
                             "*includeBlankRow": "p:includeBlankRow","*keyAttribute": "p:keyAttribute",

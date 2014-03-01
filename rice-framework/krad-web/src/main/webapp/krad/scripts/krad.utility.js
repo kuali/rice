@@ -442,9 +442,13 @@ function runScriptsForId(id) {
  * @param jqueryObj - a jquery object representing a hidden input element with a script in its value attribute
  */
 function evalHiddenScript(jqueryObj) {
-    if (jqueryObj.attr("name") === undefined || jqueryObj.closest("[data-open='false']").length) {
+    if (jqueryObj.attr("name") === undefined || (jqueryObj.closest("[data-open]").length &&
+            jqueryObj.closest("[data-open]").attr("data-open") === "false")) {
         return;
     }
+
+    jqueryObj.removeAttr("name");
+    jqueryObj.attr("script", "first_run");
 
     var js = jqueryObj.val();
     try {
@@ -460,10 +464,6 @@ function evalHiddenScript(jqueryObj) {
     // cleanup script for non-dev modes
     if (scriptCleanup) {
         jqueryObj.remove();
-    }
-    else {
-        jqueryObj.attr("script", "first_run");
-        jqueryObj.removeAttr("name");
     }
 }
 
@@ -1183,6 +1183,7 @@ function showLightboxContent(content, overrideOptions) {
         overrideOptions = {};
     }
 
+    jQuery(content).addClass("uif-lightbox");
     _initAndOpenLightbox({type: 'html', content: content}, overrideOptions);
 }
 
@@ -1218,13 +1219,12 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = {fitToView: true,
+    var options = { fitToView: true,
         openEffect: 'fade',
         closeEffect: 'fade',
         openSpeed: 200,
         closeSpeed: 200,
         minHeight: 10,
-        //minWidth: 10,
         helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
     };
 
@@ -1245,7 +1245,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-    jQuery(".fancybox-inner").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm' class='uif-lightbox'>");
+    jQuery(".fancybox-inner").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm'>");
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);

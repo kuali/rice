@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -69,18 +71,22 @@ public class AgendaEditorMaintainableIntegrationTest extends AbstractBoTest {
 
         // like RepositoryCreateAndExecuteIntegrationTest
         propositionBoService = new PropositionBoServiceImpl();
-        ((PropositionBoServiceImpl)propositionBoService).setBusinessObjectService(getBoService());
+        ((PropositionBoServiceImpl)propositionBoService).setDataObjectService(getDataObjectService());
         termBoService = new TermBoServiceImpl();
-        ((TermBoServiceImpl)termBoService).setBusinessObjectService(getBoService());
+
+        // TODO: fix
+        ((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService(
+                "dataObjectService"));
+
         contextRepository = new ContextBoServiceImpl();
-        ((ContextBoServiceImpl)contextRepository).setBusinessObjectService(getBoService());
+        ((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
         agendaBoService = new AgendaBoServiceImpl();
-        ((AgendaBoServiceImpl)agendaBoService).setBusinessObjectService(getBoService());
+        ((AgendaBoServiceImpl)agendaBoService).setDataObjectService(getDataObjectService());
         ((AgendaBoServiceImpl)agendaBoService).setAttributeDefinitionService(krmsAttributeDefinitionService);
         ruleBoService = new RuleBoServiceImpl();
-        ((RuleBoServiceImpl)ruleBoService).setBusinessObjectService(getBoService());
+        ((RuleBoServiceImpl)ruleBoService).setDataObjectService(getDataObjectService());
         actionBoService = new ActionBoServiceImpl();
-        ((ActionBoServiceImpl)actionBoService).setBusinessObjectService(getBoService());
+        ((ActionBoServiceImpl)actionBoService).setDataObjectService(getDataObjectService());
     }
 
     @Test
@@ -121,10 +127,10 @@ public class AgendaEditorMaintainableIntegrationTest extends AbstractBoTest {
         aem.saveDataObject();
     }
 
-    private AgendaBo findAgendaByPrimaryKey(AgendaDefinition agendaDefinition) {Map<String,String>
-            primaryKeys = new HashMap<String, String>();
-        primaryKeys.put("id", agendaDefinition.getId());
-        return getBoService().findByPrimaryKey(AgendaBo.class, primaryKeys);
+    private AgendaBo findAgendaByPrimaryKey(AgendaDefinition agendaDefinition) {
+        Map<String,String>
+                primaryKeys = new HashMap<String, String>();
+        return getDataObjectService().find(AgendaBo.class, agendaDefinition.getId());
     }
 
     private void createAgendaDefinition(String agendaName, String agendaLabel, ContextDefinition contextDefinition) {

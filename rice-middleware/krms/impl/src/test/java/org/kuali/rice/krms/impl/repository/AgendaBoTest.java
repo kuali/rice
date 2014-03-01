@@ -16,33 +16,38 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Test;
-
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueIncrementer;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.Assert.*;
 
 public class AgendaBoTest {
 
     public static final String TEST_PREFIX = "AgendaBoTest";
+
     @Test
     public void testCopy() {
-        SequenceAccessorService mapSas = new IncrementalSas();
-        AgendaBo.setSequenceAccessorService(mapSas);
-        AgendaItemBo.setSequenceAccessorService(mapSas);
-        RuleBo.setSequenceAccessorService(mapSas);
-        PropositionBo.setSequenceAccessorService(mapSas);
+        AgendaBo.agendaIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+        AgendaItemBo.agendaItemIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+
+        // RuleBo has multiple incrementers to set
+        RuleBo.ruleIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+        RuleBo.actionAttributeIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+        RuleBo.actionIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+        RuleBo.ruleAttributeIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+
+        // PropositionBo has multiple incrementers to set too
+        PropositionBo.propositionIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
+        PropositionBo.propositionParameterIdIncrementer.setDataFieldMaxValueIncrementer(new MockDataFieldMaxValueIncrementer());
 
         ContextBo contextBo = ContextBo.from(ContextDefinition.Builder.create(TEST_PREFIX + "ContextName", TEST_PREFIX + "Namespace").build());
         contextBo.setId(TEST_PREFIX + "ContextId");
@@ -149,21 +154,15 @@ public class AgendaBoTest {
     }
 }
 
-class IncrementalSas implements SequenceAccessorService {
-    static Map<String, Long> sasMap = new HashMap<String, Long>();
+/**
+ * mock incrementer used to get "sequence values" when there is no live database
+ */
+class MockDataFieldMaxValueIncrementer extends AbstractDataFieldMaxValueIncrementer {
+
+    AtomicLong value = new AtomicLong(-1);
 
     @Override
-    public Long getNextAvailableSequenceNumber(String sequenceName, Class clazz) {
-        return getNextAvailableSequenceNumber(sequenceName + clazz.getCanonicalName());
-    }
-
-    @Override
-    public synchronized Long getNextAvailableSequenceNumber(String sequenceName) {
-        if (sasMap.get(sequenceName) == null) {
-            sasMap.put(sequenceName, 0L);
-        }
-        long l = sasMap.get(sequenceName);
-        sasMap.put(sequenceName, l + 1);
-        return l;
+    protected long getNextKey() {
+        return value.incrementAndGet();
     }
 }

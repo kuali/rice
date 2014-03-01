@@ -15,14 +15,18 @@
  */
 package org.kuali.rice.krad.web.form;
 
+import org.kuali.rice.krad.data.util.Link;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.web.bind.ChangeTracking;
 
 /**
  * Form class for <code>MaintenanceDocumentView</code> screens
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@ChangeTracking
+@Link(path = "document.newMaintainableObject.dataObject")
 public class MaintenanceDocumentForm extends DocumentFormBase {
 	private static final long serialVersionUID = -5805825500852498048L;
 

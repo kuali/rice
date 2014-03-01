@@ -39,7 +39,9 @@ public class Scrollpane  extends WidgetBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        buildCSSforScrollPane((Component) parent);
+        if (parent instanceof Component) {
+            buildCSSforScrollPane((Component) parent);
+        }
     }
 
     private void buildCSSforScrollPane(Component parent) {

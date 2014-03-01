@@ -44,8 +44,8 @@ public class DemoNavigationGroupAft extends DemoLibraryNavigationBase {
     protected void testNavigationView() throws Exception {
        waitAndClickByLinkText("Navigation Group Tab Example");
        switchToWindow("Kuali :: Navigation View");
-       waitForElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li");
-       assertElementPresentByXpath("//div[@id='Uif-Navigation']/ul/li[3]");
+       waitForElementPresentByXpath("//nav[@id='Uif-Navigation']/ul/li");
+       assertElementPresentByXpath("//nav[@id='Uif-Navigation']/ul/li[3]");
        super.testNavigationView();
        switchToWindow("Kuali");
     }

@@ -45,11 +45,11 @@ public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest
     @Before
     public void setup() {
         naturalLanguageUsageBoServiceImpl = new NaturalLanguageUsageBoServiceImpl();
-        naturalLanguageUsageBoServiceImpl.setBusinessObjectService(getBoService());
+        naturalLanguageUsageBoServiceImpl.setDataObjectService(getDataObjectService());
 
         // NOTE: this is not fully wired, we only need the BusinessObjectService for what we do with this impl
         naturalLanguageTemplateBoServiceImpl = new NaturalLanguageTemplateBoServiceImpl();
-        naturalLanguageTemplateBoServiceImpl.setBusinessObjectService(getBoService());
+        naturalLanguageTemplateBoServiceImpl.setDataObjectService(getDataObjectService());
     }
 
     @Test(expected = java.lang.IllegalArgumentException.class)

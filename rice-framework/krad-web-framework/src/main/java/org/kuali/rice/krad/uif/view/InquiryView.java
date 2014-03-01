@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 /**
@@ -93,5 +94,22 @@ public class InquiryView extends FormView {
      */
     public void setDataObjectClassName(Class<?> dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
+    }
+
+    /**
+     * This overridden method returns a clone of the InquiryView
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     */
+    @Override
+    public InquiryView clone() throws CloneNotSupportedException {
+        InquiryView inquiryViewCopy = (InquiryView) super.clone();
+
+        // use deep copy method to ensure non reference copy of viewHelperService
+        if (this.getViewHelperService() != null) {
+            inquiryViewCopy.setViewHelperService( ((InquirableImpl) this.getViewHelperService()).copy());
+        }
+
+        return inquiryViewCopy;
     }
 }

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -29,6 +30,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
  */
 @MappedSuperclass
 public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
+
     private static final long serialVersionUID = 9042706897191231670L;
 
     @Id

@@ -42,7 +42,7 @@
   </bean>
 
   <!-- Enables Load-Time Weaving -->
-  <context:load-time-weaver />
+  <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
 
   <util:list id="rice.ken.managedClassNames">
     <value>org.kuali.rice.ken.bo.NotificationBo</value>
@@ -81,12 +81,27 @@
           class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
           p:entityManager-ref="rice.ken.sharedEntityManager"/>
 
-  <bean id="org.kuali.rice.ken.providerRegister" class="org.kuali.rice.krad.data.config.ProviderRegistrationFactory">
+	<bean
+		id="rice.ken.metadataProviderAnnotation"
+		class="org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl"/>
+
+	<bean
+		id="rice.ken.metadataProvider"
+		class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+		<property name="providers">
+			<list>
+				<ref bean="rice.ken.metadataProviderJpa" />
+				<ref bean="rice.ken.metadataProviderAnnotation" />
+			</list>
+		</property>
+	</bean>
+
+  <bean id="org.kuali.rice.ken.providerRegister" class="org.kuali.rice.krad.data.provider.ProviderRegistrar">
     <property name="providerRegistry" ref="providerRegistry" />
     <property name="providers">
       <util:list>
         <ref bean="rice.ken.jpaPersistenceProvider" />
-        <ref bean="rice.ken.metadataProviderJpa" />
+        <ref bean="rice.ken.metadataProvider" />
       </util:list>
     </property>
   </bean>

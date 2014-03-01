@@ -3754,6 +3754,72 @@
         <column name="SVC_DSCRPTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DSCRPTR" required="true" type="CLOB"/>
     </table>
+    <table name="KRTST_CONF_COORD_T">
+        <column name="ID" primaryKey="true" size="14" type="DECIMAL"/>
+        <column name="NM" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_CONF_LBL_EXT_T">
+        <column name="NM" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="EXTRA" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_CONF_LBL_T">
+        <column name="NM" primaryKey="true" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_CONF_PRESENTER_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="NM" size="40" type="VARCHAR"/>
+        <column name="INST_NM" size="40" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_CONF_ROOM_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="BLDG_NM" size="40" type="VARCHAR"/>
+        <column name="NUM" size="10" type="VARCHAR"/>
+    </table>
+    <table name="KRTST_CONF_SESS_PRES_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="SESS_ID" size="10" type="VARCHAR"/>
+        <column name="PRES_ID" size="10" type="VARCHAR"/>
+        <column name="PRIMARY_IND" size="1" type="CHAR"/>
+        <foreign-key foreignTable="KRTST_CONF_SESS_T" name="KRTST_CONF_SESS_PRES_FK1">
+            <reference foreign="ID" local="SESS_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_PRESENTER_T" name="KRTST_CONF_SESS_PRES_FK2">
+            <reference foreign="ID" local="PRES_ID"/>
+        </foreign-key>
+    </table>
+    <table name="KRTST_CONF_SESS_T">
+        <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="TITLE" size="40" type="VARCHAR"/>
+        <column name="SESS_DT" type="DATE"/>
+        <column name="START_TIME" size="10" type="VARCHAR"/>
+        <column name="END_TIME" size="10" type="VARCHAR"/>
+        <column name="SESS_TYPE_CODE" size="1" type="CHAR"/>
+        <column name="DESCRIPTION" size="255" type="VARCHAR"/>
+        <column name="COORD_ID" size="14" type="DECIMAL"/>
+        <column name="ALT_COORD1_ID" size="14" type="DECIMAL"/>
+        <column name="ALT_COORD2_ID" size="14" type="DECIMAL"/>
+        <column name="ROOM_ID" size="10" type="VARCHAR"/>
+        <column name="ALT_ROOM1_ID" size="10" type="VARCHAR"/>
+        <column name="ALT_ROOM2_ID" size="10" type="VARCHAR"/>
+        <foreign-key foreignTable="KRTST_CONF_COORD_T" name="KRTST_CONF_SESS_FK1">
+            <reference foreign="ID" local="COORD_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_COORD_T" name="KRTST_CONF_SESS_FK2">
+            <reference foreign="ID" local="ALT_COORD1_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_COORD_T" name="KRTST_CONF_SESS_FK3">
+            <reference foreign="ID" local="ALT_COORD2_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_ROOM_T" name="KRTST_CONF_SESS_FK4">
+            <reference foreign="ID" local="ROOM_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_ROOM_T" name="KRTST_CONF_SESS_FK5">
+            <reference foreign="ID" local="ALT_ROOM1_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="KRTST_CONF_ROOM_T" name="KRTST_CONF_SESS_FK6">
+            <reference foreign="ID" local="ALT_ROOM2_ID"/>
+        </foreign-key>
+    </table>
     <table name="KRTST_TEST_DISABLE_NO_VER_T">
         <column name="ID" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -3767,7 +3833,7 @@
     </table>
     <table name="TRV_ACCT_EXT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
-        <column name="ACCT_TYPE" size="100" type="VARCHAR"/>
+        <column name="ACCT_TYPE" primaryKey="true" size="100" type="VARCHAR"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
@@ -3905,5 +3971,10 @@
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
     <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
     <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
+    <sequence name="KRTST_CONF_COORD_S" nextval="1"/>
+    <sequence name="KRTST_CONF_PRESENTER_S" nextval="1"/>
+    <sequence name="KRTST_CONF_ROOM_S" nextval="1"/>
+    <sequence name="KRTST_CONF_SESS_PRES_S" nextval="1"/>
+    <sequence name="KRTST_CONF_SESS_S" nextval="1"/>
     <sequence name="TRVL_TRAVELER_DTL_ID_S" nextval="10001"/>
 </database>

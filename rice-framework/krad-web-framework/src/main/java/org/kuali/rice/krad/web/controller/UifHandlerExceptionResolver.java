@@ -86,6 +86,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();
+        incidentReportForm.setSessionId(request.getSession().getId());
 
         // Set the post url map to the incident report controller and not 
         // the one the exception occurred on
@@ -109,14 +110,11 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         if (form != null) {
             incidentReportForm.setAjaxRequest(form.isAjaxRequest());
-            incidentReportForm.setSessionId(form.getSessionId());
         } else {
             String ajaxRequestParm = request.getParameter(UifParameters.AJAX_REQUEST);
             if (StringUtils.isNotBlank(ajaxRequestParm)) {
                 incidentReportForm.setAjaxRequest(Boolean.parseBoolean(ajaxRequestParm));
             }
-            String sessionId = request.getSession().getId();
-            incidentReportForm.setSessionId(sessionId);
         }
 
         // Set the view object

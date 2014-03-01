@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krms.impl.rule;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
@@ -32,7 +35,7 @@ import java.util.Map;
 
 public class TermBusRule extends MaintenanceDocumentRuleBase {
 
-    private BusinessObjectService boService;
+    private DataObjectService dataObjectService;
 
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
@@ -49,6 +52,7 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
     private boolean validateTermSpecId(TermBo term) {
         if (StringUtils.isBlank(term.getSpecificationId())) {
             this.putFieldError(KRMSPropertyConstants.Term.TERM_SPECIFICATION_ID, "error.term.invalidTermSpecification");
+
             return false;
         }
 
@@ -57,6 +61,7 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
 
         if (termSpec == null) {
             this.putFieldError(KRMSPropertyConstants.Term.TERM_SPECIFICATION_ID, "error.term.invalidTermSpecification");
+
             return false;
         }
 
@@ -68,6 +73,7 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
             TermDefinition termInDatabase = getTermBoService().getTerm(term.getId());
             if ((termInDatabase  != null) && (!StringUtils.equals(termInDatabase.getId(), term.getId()))) {
                 this.putFieldError(KRMSPropertyConstants.Term.TERM_ID, "error.term.duplicateId");
+
                 return false;
             }
         }
@@ -84,15 +90,22 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
         if (term.getSpecification() != null && StringUtils.isNotBlank(term.getDescription()) && StringUtils.isNotBlank(
                 term.getSpecification().getNamespace())) {
 
-            Map<String, String> criteria = new HashMap<String, String>();
+            Map<String, String> critMap = new HashMap<String, String>();
 
-            criteria.put("description", term.getDescription());
-            criteria.put("specification.namespace", term.getSpecification().getNamespace());
+            critMap.put("description", term.getDescription());
+            critMap.put("specification.namespace", term.getSpecification().getNamespace());
+            QueryByCriteria criteria = QueryByCriteria.Builder.andAttributes(critMap).build();
+            QueryResults<TermBo> queryResults = getDataObjectService().findMatching(TermBo.class, criteria);
 
-            TermBo termInDatabase = getBoService().findByPrimaryKey(TermBo.class, criteria);
+            TermBo termInDatabase = null;
+
+            if (!CollectionUtils.isEmpty(queryResults.getResults()) && queryResults.getResults().size() == 1) {
+                termInDatabase = queryResults.getResults().get(0);
+            }
 
             if((termInDatabase != null) && (!StringUtils.equals(termInDatabase.getId(), term.getId()))) {
                 this.putFieldError(KRMSPropertyConstants.Term.DESCRIPTION, "error.term.duplicateNameNamespace");
+
                 return false;
             }
         }
@@ -104,15 +117,16 @@ public class TermBusRule extends MaintenanceDocumentRuleBase {
         return KrmsRepositoryServiceLocator.getTermBoService();
     }
 
-    public BusinessObjectService getBoService() {
-        if(boService == null){
-            return KNSServiceLocator.getBusinessObjectService();
+    public DataObjectService getDataObjectService() {
+        if(dataObjectService == null){
+            return KRADServiceLocator.getDataObjectService();
         }
-        return boService;
+
+        return dataObjectService;
     }
 
-    public void setBoService(BusinessObjectService boService) {
-        this.boService = boService;
+    public void setBoService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
 }

@@ -79,7 +79,7 @@
   </inputField>
   <inputField abstract="true" constraintText="Constraint text" id="TestInputField"
               instructionalText="Instructions Instructions Instructions" label="Field Label"
-              parent="Uif-InputField-LabelTop" required="true">
+              parent="Uif-InputField" required="true">
     <control>
       <textControl parent="Uif-TextControl" size="30" watermarkText="Enter Data"/>
     </control>
@@ -175,7 +175,7 @@
     <items>
       <group parent="Uif-VerticalBoxGroup">
         <items>
-          <inputField label="Field Label" parent="Uif-InputField-LabelTop" propertyName="field13">
+          <inputField label="Field Label" parent="Uif-InputField" propertyName="field13">
             <control>
               <textAreaControl cols="40" parent="Uif-TextAreaControl" rows="5"/>
             </control>
@@ -236,7 +236,7 @@
       </group>
       <group parent="Uif-HorizontalBoxGroup">
         <items>
-          <inputField label="Field Label" parent="Uif-InputField-LabelTop" propertyName="field16">
+          <inputField label="Field Label" parent="Uif-InputField" propertyName="field16">
             <control>
               <selectControl parent="Uif-DropdownControl"/>
             </control>
@@ -246,7 +246,7 @@
           </inputField>
           <group parent="Uif-VerticalBoxGroup">
             <items>
-              <inputField label="Field Label" parent="Uif-InputField-LabelTop" propertyName="field17">
+              <inputField label="Field Label" parent="Uif-InputField" propertyName="field17">
                 <control>
                   <textControl parent="Uif-DateControl" size="30"/>
                 </control>

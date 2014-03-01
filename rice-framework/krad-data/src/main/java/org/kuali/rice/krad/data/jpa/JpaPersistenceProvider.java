@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.data.jpa;
 
 import com.google.common.collect.Sets;
+import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -24,18 +25,13 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.data.config.ConfigConstants;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.data.provider.util.ReferenceLinker;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.ChainedPersistenceExceptionTranslator;
 import org.springframework.dao.support.DataAccessUtils;
@@ -68,19 +64,28 @@ import java.util.concurrent.Callable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Transactional
-public class JpaPersistenceProvider implements PersistenceProvider, InitializingBean, BeanFactoryAware {
+public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryAware {
+
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
+
+    /**
+     * Indicates if a JPA {@code EntityManager} flush should be automatically executed when calling
+     * {@link org.kuali.rice.krad.data.DataObjectService#save(Object, org.kuali.rice.krad.data.PersistenceOption...)}
+     * using a JPA provider. This is recommended for testing only since the change is global and would affect all
+     * persistence units.
+     */
+    public static final String AUTO_FLUSH = "rice.krad.data.jpa.autoFlush";
 
     private EntityManager sharedEntityManager;
     private DataObjectService dataObjectService;
 
-    private ReferenceLinker referenceLinker;
     private PersistenceExceptionTranslator persistenceExceptionTranslator;
 
     /**
      * Initialization-on-demand holder idiom for thread-safe lazy loading of configuration.
      */
     private static final class LazyConfigHolder {
-        private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(ConfigConstants.JPA_AUTO_FLUSH, false);
+        private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(AUTO_FLUSH, false);
     }
 
     public EntityManager getSharedEntityManager() {
@@ -101,11 +106,6 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
      */
     public DataObjectService getDataObjectService() {
         return this.dataObjectService;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        this.referenceLinker = new ReferenceLinker(dataObjectService);
     }
 
     @Override
@@ -133,22 +133,26 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> T save(final T dataObject, final PersistenceOption... options) {
         return doWithExceptionTranslation(new Callable<T>() {
-            public T call() {
+            @Override
+			public T call() {
                 verifyDataObjectWritable(dataObject);
 
         		Set<PersistenceOption> optionSet = Sets.newHashSet(options);
 
 		        T mergedDataObject = sharedEntityManager.merge(dataObject);
 
-                if (optionSet.contains(PersistenceOption.LINK)) {
-                    referenceLinker.linkObjects(mergedDataObject);
-                }
-
-                if(optionSet.contains(PersistenceOption.FLUSH) || LazyConfigHolder.autoFlush){
+                // We must flush if they pass us a flush option, have auto flush turned on, or are synching keys
+                // after save. We are required to flush before synching because we may need to use generated values to
+                // perform synchronization and those won't be there until after a flush
+                //
+                // note that the actual synchronization of keys is handled automatically by the framework after the
+                // save has been completed
+                if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
+                        LazyConfigHolder.autoFlush){
 			        sharedEntityManager.flush();
                 }
 
-        		return mergedDataObject;
+                return mergedDataObject;
             }
         });
     }
@@ -156,7 +160,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> T find(final Class<T> type, final Object id) {
         return doWithExceptionTranslation(new Callable<T>() {
-            public T call() {
+            @Override
+			public T call() {
                 if (id instanceof CompoundKey) {
 			        QueryResults<T> results = findMatching(type,
 				        	QueryByCriteria.Builder.andAttributes(((CompoundKey) id).getKeys()).build());
@@ -178,7 +183,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
-            public QueryResults<T> call() {
+            @Override
+			public QueryResults<T> call() {
                 return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria);
             }
         });
@@ -188,7 +194,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria,
             final LookupCustomizer<T> lookupCustomizer) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
-            public QueryResults<T> call() {
+            @Override
+			public QueryResults<T> call() {
                 return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria, lookupCustomizer);
             }
         });
@@ -197,7 +204,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public void delete(final Object dataObject) {
         doWithExceptionTranslation(new Callable<Object>() {
-            public Object call() {
+            @Override
+			public Object call() {
                 verifyDataObjectWritable(dataObject);
                 sharedEntityManager.remove(sharedEntityManager.merge(dataObject));
                 return null;
@@ -206,14 +214,30 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     }
 
     @Override
+    public <T> T copyInstance(final T dataObject) {
+        return doWithExceptionTranslation(new Callable<T>() {
+            @Override
+            public T call() {
+                return (T) sharedEntityManager.unwrap(JpaEntityManager.class).getDatabaseSession().copy(dataObject);
+            }
+        });
+    }
+
+    @Override
     public boolean handles(final Class<?> type) {
         return doWithExceptionTranslation(new Callable<Boolean>() {
-            public Boolean call() {
+            @Override
+			public Boolean call() {
                 try {
                     ManagedType<?> managedType = sharedEntityManager.getMetamodel().managedType(type);
                     return Boolean.valueOf(managedType != null);
                 } catch (IllegalArgumentException iae) {
                     return Boolean.FALSE;
+				} catch (IllegalStateException ex) {
+					// This catches cases where the entity manager is not initialized or has already been destroyed
+					LOG.warn("sharedEntityManager " + sharedEntityManager + " is not in a state to be used: "
+							+ ex.getMessage());
+					return Boolean.FALSE;
                 }
             }
         }).booleanValue();
@@ -222,7 +246,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, Initializing
     @Override
     public void flush(final Class<?> type) {
         doWithExceptionTranslation(new Callable<Object>() {
-            public Object call() {
+            @Override
+			public Object call() {
                 sharedEntityManager.flush();
                 return null;
             }

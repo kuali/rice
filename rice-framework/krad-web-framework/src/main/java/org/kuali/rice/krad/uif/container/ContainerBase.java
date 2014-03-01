@@ -194,8 +194,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
 	 */
 	@Override
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	@ViewLifecycleRestriction
 	public ValidationMessages getValidationMessages() {
 		return this.validationMessages;
 	}

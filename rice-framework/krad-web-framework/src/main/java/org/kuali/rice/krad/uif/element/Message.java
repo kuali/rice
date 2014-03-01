@@ -221,7 +221,7 @@ public class Message extends ContentElementBase {
      */
     @BeanTagAttribute(name = "renderWrapperTag")
     public boolean isRenderWrapperTag() {
-        return renderWrapperTag;
+        return renderWrapperTag && wrapperTag != null;
     }
 
     /**

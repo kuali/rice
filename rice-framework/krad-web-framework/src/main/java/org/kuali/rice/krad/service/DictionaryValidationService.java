@@ -213,11 +213,11 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo - The bo whose reference is being tested.
+     * @param dataObject - the data object whose reference is being tested.
      * @param reference - The ReferenceDefinition to be existence tested.
      * @return True if no exceptions occur and the object exists in the db, false otherwise.
      */
-    public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceExists(Object dataObject, ReferenceDefinition reference);
 
     /**
      * This method examines the populated BusinessObject bo instance passed in for a member named by the referenceName.
@@ -236,11 +236,11 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo - The bo whose reference is being tested.
+     * @param dataObject - the data object whose reference is being tested.
      * @param referenceName - The name of the member to be existence tested.
      * @return True if no exceptions occur and the object exists in the db, false otherwise.
      */
-    public boolean validateReferenceExists(BusinessObject bo, String referenceName);
+    public boolean validateReferenceExists(Object dataObject, String referenceName);
 
     /**
      * This method retrieves the reference from the DB, and then tests whether the object is active.
@@ -257,11 +257,11 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo
+     * @param dataObject
      * @param reference
      * @return true if the reference is active
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceIsActive(Object dataObject, ReferenceDefinition reference);
 
     /**
      * This method retrieves the reference from the DB, and then tests whether the object is active.
@@ -278,14 +278,14 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo
+     * @param dataObject
      * @param referenceName
      * @return true if the reference is active
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName);
+    public boolean validateReferenceIsActive(Object dataObject, String referenceName);
 
     /**
-     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the bo for both existence and
+     * validateReferenceExistsAndIsActive intelligently tests the designated reference on the data object for both existence and
      * active status, where
      * appropriate
      *
@@ -306,14 +306,14 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.</p>
      *
-     * @param bo - the BusinessObject instance to be tested.
+     * @param dataObject - the data object instance to be tested.
      * @param reference - the ReferenceDefinition to control the nature of the testing.
      * @return true or false as per the criteria above
      */
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference);
+    public boolean validateReferenceExistsAndIsActive(Object dataObject, ReferenceDefinition reference);
 
     /**
-     * This method intelligently tests the designated reference on the bo for both existence and active status, where
+     * This method intelligently tests the designated reference on the data object for both existence and active status, where
      * appropriate.
      *
      * It will not test anything if the foreign-key fields for the given reference arent filled out with values, and it
@@ -336,13 +336,13 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo - the BusinessObject instance to be tested.
-     * @param referenceName - the member name on the bo to be tested for existence and active-state
+     * @param dataObject - the BusinessObject instance to be tested.
+     * @param referenceName - the member name on the data object to be tested for existence and active-state
      * @param attributeToHighlightOnFail - the fieldName to highlight with the error message on a failure
      * @param displayFieldName - the human-readable display name of the failed field, to go in the error message
      * @return true or false as per the criteria above
      */
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName,
+    public boolean validateReferenceExistsAndIsActive(Object dataObject, String referenceName,
             String attributeToHighlightOnFail, String displayFieldName);
 
     /**
@@ -356,10 +356,10 @@ public interface DictionaryValidationService {
      * errorMap with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo - BusinessObject instance that should be tested
+     * @param dataObject - BusinessObject instance that should be tested
      * @return true if all passed existence tests, false if any failed
      */
-    public boolean validateDefaultExistenceChecks(BusinessObject bo);
+    public boolean validateDefaultExistenceChecks(Object dataObject);
 
     /**
      * Does an existence check against all references configured as a default existence check in the maintenance
@@ -372,13 +372,13 @@ public interface DictionaryValidationService {
      * with no
      * prefix, other than what has already been pushed onto the errorMap.
      *
-     * @param bo parent business object instance to retrieve default checks for
+     * @param dataObject parent business object instance to retrieve default checks for
      * @param newCollectionItem new collection line to validate
      * @param collectionName name of the collection in the parent
      * @return true if all passed existence tests, false if any failed
      */
-    public boolean validateDefaultExistenceChecksForNewCollectionItem(BusinessObject bo,
-            BusinessObject newCollectionItem, String collectionName);
+    public boolean validateDefaultExistenceChecksForNewCollectionItem(Object dataObject, Object newCollectionItem,
+            String collectionName);
 
     /**
      * This method does an existence check against all references of a transactionalDocument

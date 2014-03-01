@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.test.document.bo;
 
+import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
+import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,32 +25,37 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtensionBase;
-import org.kuali.rice.krad.data.provider.annotation.ExtensionFor;
 
 @Entity
 @Table(name="TRV_ACCT_EXT")
 @ExtensionFor(Account.class)
 public class AccountExtension extends PersistableBusinessObjectExtensionBase {
 
-	@Id
-	@Column(name="ACCT_NUM")
-    private String number;
-	@Column(name="ACCT_TYPE")
+    private static final long serialVersionUID = -3231626970774119782L;
+
+    @Id
+    @OneToOne
+    @JoinColumn(name = "ACCT_NUM")
+	private Account account;
+
+	@Column(name = "ACCT_TYPE")
     private String accountTypeCode;
 
-	@ManyToOne(fetch=FetchType.LAZY,cascade= {CascadeType.DETACH,CascadeType.REFRESH})
-	@JoinColumn(name="ACCT_TYPE",insertable=false,updatable=false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH,CascadeType.REFRESH})
+	@JoinColumn(name = "ACCT_TYPE", insertable=false, updatable=false)
     private AccountType accountType;
 
-    public String getNumber() {
-        return number;
+    @Column(name = "ACCT_NUM", insertable = false, updatable = false)
+    private String number;
+
+    public Account getAccount() {
+        return account;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public String getAccountTypeCode() {
@@ -66,5 +74,11 @@ public class AccountExtension extends PersistableBusinessObjectExtensionBase {
 		this.accountType = accountType;
 	}
 
+    public String getNumber() {
+        return number;
+    }
 
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }

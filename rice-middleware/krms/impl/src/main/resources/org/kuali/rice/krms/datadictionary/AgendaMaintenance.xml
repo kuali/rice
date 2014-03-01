@@ -22,11 +22,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     
-  <bean id="AgendaMaintenanceDocument" parent="MaintenanceDocumentEntry">
+  <bean id="AgendaMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" />
     <property name="documentTypeName" value="AgendaMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>id</value>

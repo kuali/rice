@@ -42,7 +42,7 @@ public class DemoElementsIFrameAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsIFrame() throws Exception {
-        assertElementPresentByXpath("//div[@id='Demo-Iframe-Example1']/iframe");
+        assertElementPresentByXpath("//section[@id='Demo-Iframe-Example1']/iframe");
     }
     
     @Test

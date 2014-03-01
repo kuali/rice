@@ -18,11 +18,11 @@ package org.kuali.rice.krms.impl.repository
 import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import org.kuali.rice.krad.data.DataObjectService
+import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService
 
 import static groovy.util.GroovyTestCase.assertEquals
-import org.kuali.rice.krms.api.repository.function.FunctionRepositoryService
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
 
 class FunctionRepositoryServiceTest {
 
@@ -39,27 +39,27 @@ class FunctionRepositoryServiceTest {
 
     @Before
     void setupBoServiceMockContext() {
-        mock = new MockFor(BusinessObjectService.class)
+        mock = new MockFor(DataObjectService.class)
     }
 
 //
 // FunctionRepositoryService Tests
-//			
-	
+//
+
 	// Test FunctionRepositoryService.getFunction()
 	@Test
 	public void test_get_function() {
 
         FunctionBo resultFunctionBo = new FunctionBo(id: "1", name: "FooFunc", namespace: "RICE", returnType: "java.lang.String", typeId: "1", parameters: [], categories: []);
 
-        mock.demand.findBySinglePrimaryKey { a, b -> resultFunctionBo };
+        mock.demand.find(1..1) { a, b -> resultFunctionBo };
 
-        def boService = mock.proxyDelegateInstance()
-		functionRepositoryServiceImpl.setBusinessObjectService(boService)
+        def dataObjectService = mock.proxyDelegateInstance()
+		functionRepositoryServiceImpl.setDataObjectService(dataObjectService)
 
         assertEquals("FooFunc", functionRepositoryService.getFunction("1").getName());
 
-        mock.verify(boService)
+        mock.verify(dataObjectService)
 	}
 
     @Test
@@ -82,14 +82,14 @@ class FunctionRepositoryServiceTest {
 
         FunctionBo resultFunctionBo = new FunctionBo(id: "1", name: "FooFunc", namespace: "RICE", returnType: "java.lang.String", typeId: "1", parameters: [], categories: []);
 
-        mock.demand.findBySinglePrimaryKey { a, b -> resultFunctionBo };
+        mock.demand.find(1..1) { a, b -> resultFunctionBo };
 
-        def boService = mock.proxyDelegateInstance()
-        functionRepositoryServiceImpl.setBusinessObjectService(boService)
+        def dataObjectService = mock.proxyDelegateInstance()
+        functionRepositoryServiceImpl.setDataObjectService(dataObjectService)
 
         assertEquals("FooFunc", functionRepositoryService.getFunctions(["1"]).get(0).getName());
 
-        mock.verify(boService)
+        mock.verify(dataObjectService)
     }
 
     @Test

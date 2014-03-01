@@ -19,6 +19,7 @@ import edu.sampleu.admin.AdminTmplMthdAftNavBase;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,7 +50,17 @@ public abstract class IdentityResponsibilityAftBase extends AdminTmplMthdAftNavB
     protected String getLinkLocator() {
         return "Responsibility";
     }
-   
+
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.documentTypeName", "DocumentTypeDocument");
+        jiraAwareTypeByName("document.newMaintainableObject.routeNodeName", "routeNodeName" + uniqueString);
+        waitAndClick(By.name("document.newMaintainableObject.actionDetailsAtRoleMemberLevel"));
+        waitAndClick(By.name("document.newMaintainableObject.required"));
+    }
+
     public void testIdentityResponsibilityBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
         passed();

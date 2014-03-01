@@ -21,15 +21,19 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -40,6 +44,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 
 /**
  * Utility methods to get/set property values and working with objects.
@@ -47,7 +52,6 @@ import org.apache.log4j.Logger;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ObjectPropertyUtils {
-
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
     /**
@@ -248,6 +252,16 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Gets the property names for the given object that are writable
+     *
+     * @param bean object to get writable property names for
+     * @return set of property names
+     */
+    public static Set<String> getWritablePropertyNames(Object bean) {
+        return getMetadata(bean.getClass()).getWritablePropertyNames();
+    }
+
+    /**
      * Gets the property names by collection type, based on the read methods.
      * 
      * @param beanClass The bean class.
@@ -420,6 +434,29 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Returns an List of {@code Field} objects reflecting all the fields
+     * declared by the class or interface represented by this
+     * {@code Class} object. This includes public, protected, default
+     * (package) access, and private fields, and includes inherited fields.
+     *
+     * @param fields A list of {@code Field} objects which gets returned.
+     * @param type Type of class or interface for which fields are returned.
+     * @param stopAt The Superclass upto which the inherited fields are to be included
+     * @return List of all fields
+     */
+    public static List<Field> getAllFields(List<Field> fields, Class<?> type, Class<?> stopAt) {
+        for (Field field : type.getDeclaredFields()) {
+            fields.add(field);
+        }
+
+        if (type.getSuperclass() != null && !type.getName().equals(stopAt.getName())) {
+            fields = getAllFields(fields, type.getSuperclass(), stopAt);
+        }
+
+        return fields;
+    }
+
+    /**
      * Get the best known component type for a generic type.
      * 
      * <p>
@@ -537,34 +574,102 @@ public final class ObjectPropertyUtils {
     }
 
     /**
+     * Split parse path entry for supporting {@link ObjectPropertyUtils#splitPropertyPath(String)}. 
+     * 
+     * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class SplitPropertyPathEntry implements PathEntry {
+
+        /**
+         * Invoked at each path separator on the path.
+         * 
+         * <p>
+         * Note that {@link ObjectPathExpressionParser} strips quotes and brackets then treats
+         * list/map references as property names. However
+         * {@link ObjectPropertyUtils#splitPropertyPath(String)} expects that a list/map reference
+         * will be part of the path expression, as a reference to a specific element in a list or
+         * map related to the bean. Therefore, this method needs to rejoin these list/map references
+         * before returning.
+         * </p>
+         * 
+         * @param parentPath The portion of the path leading up to the current node.
+         * @param node The list of property names in the path.
+         * @param next The next property name being parsed.
+         * 
+         * {@inheritDoc}
+         */
+        @Override
+        public List<String> parse(String parentPath, Object node, String next) {
+            if (next == null) {
+                return new ArrayList<String>();
+            }
+
+            @SuppressWarnings("unchecked")
+            List<String> rv = (List<String>) node;
+            // First node, or no path separator in parent path.
+            if (rv.isEmpty()) {
+                rv.add(next);
+                return rv;
+            }
+            
+            rejoinTrailingIndexReference(rv, parentPath);
+            rv.add(next);
+            
+            return rv;
+        }
+    }
+    
+    private static final SplitPropertyPathEntry SPLIT_PROPERTY_PATH_ENTRY = new SplitPropertyPathEntry();
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
+
+    /**
+     * Helper method for splitting property paths with bracketed index references.
+     * 
+     * <p>
+     * Since the parser treats index references as separate tokens, they need to be rejoined in order
+     * to be maintained as a single indexed property reference.  This method handles that operation.
+     * </p>
+     * 
+     * @param tokenList The list of tokens being parsed.
+     * @param path The portion of the path expression represented by the token list.
+     */
+    private static void rejoinTrailingIndexReference(List<String> tokenList, String path) {
+        int lastIndex = tokenList.size() - 1;
+        String lastToken = tokenList.get(lastIndex);
+        String lastParentToken = path.substring(path.lastIndexOf('.') + 1);
+        
+        if (!lastToken.equals(lastParentToken) && lastIndex > 0) {
+
+            // read back one more token and "concatenate" by
+            // recreating the subexpression as a substring of
+            // the parent path
+            String prevToken = tokenList.get(--lastIndex);
+            
+            // parent path index of last prevToken.
+            int iopt = path.lastIndexOf(prevToken, path.lastIndexOf(lastToken));
+            
+            String fullToken = path.substring(iopt);
+            tokenList.remove(lastIndex); // remove first entry
+            tokenList.set(lastIndex, fullToken); // replace send with concatenation
+        }
+    }
+    
+    /**
      * Splits the given property path into a string of property names that make up the path.
      *
      * @param path property path to split
      * @return string array of names, starting from the top parent
+     * @see SplitPropertyPathEntry#parse(String, Object, String)
      */
     public static String[] splitPropertyPath(String path) {
-        // we must escape dots within map keys before doing the split
-        Pattern pattern = Pattern.compile("(\\[(?:\"|')?)((?:\\w+\\.)+)(\\w+(?:\"|')?\\])");
-        Matcher matcher = pattern.matcher(path);
-
-        // replace dots in map keys with *, since that is not a valid character for paths
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(0) + StringUtils.replace(matcher.group(1), ".", "*") + matcher
-                    .group(2));
+        List<String> split = ObjectPathExpressionParser.parsePathExpression(null, path, SPLIT_PROPERTY_PATH_ENTRY);
+        if (split == null || split.isEmpty()) {
+            return EMPTY_STRING_ARRAY;
         }
-        matcher.appendTail(sb);
+        
+        rejoinTrailingIndexReference(split, path);
 
-        String escapedPath = sb.toString();
-
-        String[] paths = StringUtils.split(escapedPath, ".");
-
-        // put back dots within maps keys
-        for (int i = 0; i < paths.length; i++) {
-            paths[i] = StringUtils.replace(paths[i], "*", ".");
-        }
-
-        return paths;
+        return split.toArray(new String[split.size()]);
     }
     
     /**
@@ -757,6 +862,21 @@ public final class ObjectPropertyUtils {
             readablePropertyNamesByCollectionType.put(collectionType, propertyNames);
             
             return propertyNames;
+        }
+
+        /**
+         * Gets the property names that are writable for the metadata class.
+         *
+         * @return set of writable property names
+         */
+        private Set<String> getWritablePropertyNames() {
+            Set<String> writablePropertyNames = new HashSet<String>();
+
+            for (Entry<String, Method> writeMethodEntry : writeMethods.entrySet()) {
+                writablePropertyNames.add(writeMethodEntry.getKey());
+            }
+
+            return writablePropertyNames;
         }
 
         /**

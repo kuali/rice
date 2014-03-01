@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <!--
+
+      Copyright 2005-2014 The Kuali Foundation
+
+      Licensed under the Educational Community License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+
+      http://www.opensource.org/licenses/ecl2.php
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+
+  -->
+  <bean id="SearchAttributeIndexTestDocumentOjb" parent="SearchAttributeIndexTestDocumentOjb-parentBean"/>
+
+  <bean id="SearchAttributeIndexTestDocumentOjb-parentBean" abstract="true" parent="TransactionalDocumentEntry">
+    <property name="documentTypeName" value="SearchAttributeIndexTestDocumentOjb"/>
+    <property name="documentClass" value="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocumentOjb"/>
+    <property name="businessRulesClass" value="org.kuali.rice.krad.rules.TransactionalDocumentRuleBase" />
+    <property name="workflowAttributes">
+      <ref bean="SearchAttributeIndexTestDocumentOjb-workflowAttributes"/>
+    </property>
+    <property name="attributes">
+      <list>
+        <ref bean="SearchAttributeIndexTestDocument-routeLevelCount"/>
+        <ref bean="SearchAttributeIndexTestDocument-constantString"/>
+        <ref bean="SearchAttributeIndexTestDocument-routedString"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Workflow attributes. -->
+
+  <bean id="SearchAttributeIndexTestDocumentOjb-workflowAttributes" parent="SearchAttributeIndexTestDocumentOjb-workflowAttributes-parentBean"/>
+
+  <bean id="SearchAttributeIndexTestDocumentOjb-workflowAttributes-parentBean" abstract="true" parent="WorkflowAttributes">
+    <property name="searchingTypeDefinitions">
+      <ref bean="SearchAttributeIndexTestDocumentOjb-searchingTypeDefinitions"/>
+    </property>
+  </bean>
+
+  <bean id="SearchAttributeIndexTestDocumentOjb-searchingTypeDefinitions" parent="SearchAttributeIndexTestDocumentOjb-searchingTypeDefinitions-parentBean"/>
+
+  <bean id="SearchAttributeIndexTestDocumentOjb-searchingTypeDefinitions-parentBean" abstract="true" class="org.springframework.beans.factory.config.ListFactoryBean">
+    <property name="sourceList">
+      <list>
+        <bean class="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition">
+          <property name="searchingAttribute">
+            <bean class="org.kuali.rice.krad.datadictionary.SearchingAttribute">
+              <property name="businessObjectClassName" value="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocumentOjb"/>
+              <property name="attributeName" value="routeLevelCount"/>
+            </bean>
+          </property>
+          <property name="documentValues">
+            <list>
+              <value>routeLevelCount</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition">
+          <property name="searchingAttribute">
+            <bean class="org.kuali.rice.krad.datadictionary.SearchingAttribute">
+              <property name="businessObjectClassName" value="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocumentOjb"/>
+              <property name="attributeName" value="constantString"/>
+            </bean>
+          </property>
+          <property name="documentValues">
+            <list>
+              <value>constantString</value>
+            </list>
+          </property>
+        </bean>
+        <bean class="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition">
+          <property name="searchingAttribute">
+            <bean class="org.kuali.rice.krad.datadictionary.SearchingAttribute">
+              <property name="businessObjectClassName" value="org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocumentOjb"/>
+              <property name="attributeName" value="routedString"/>
+            </bean>
+          </property>
+          <property name="documentValues">
+            <list>
+              <value>routedString</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

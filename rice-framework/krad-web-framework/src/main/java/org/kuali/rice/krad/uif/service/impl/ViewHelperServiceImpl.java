@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -23,10 +24,13 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
@@ -44,7 +48,6 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
@@ -92,6 +95,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private transient ConfigurationService configurationService;
     private transient DataDictionaryService dataDictionaryService;
     private transient LegacyDataAdapter legacyDataAdapter;
+    private transient DataObjectService dataObjectService;
     private transient ViewDictionaryService viewDictionaryService;
     private transient ExpressionEvaluatorFactory expressionEvaluatorFactory;
 
@@ -293,8 +297,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         boolean isValidLine = performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
         if (isValidLine) {
-            addLine(collection, newLine, addLinePlacement.equals("TOP"));
-
+            int addedIndex = addLine(collection, newLine, addLinePlacement.equals("TOP"));
+            // now link the added line, this is important in situations where perhaps the collection element is
+            // bi-directional and needs to point back to it's parent
+            linkAddedLine(viewModel, collectionPath, addedIndex);
+            
             if (viewModel instanceof UifFormBase) {
                 ((UifFormBase) viewModel).getAddedCollectionItems().add(newLine);
             }
@@ -440,12 +447,33 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param collection the Collection to add the given addLine to
      * @param addLine the line to add to the given collection
      * @param insertFirst indicates if the item should be inserted as the first item
+     *
+     * @return the index at which the item was added to the collection, or -1 if it was not added
      */
-    protected void addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
+    protected int addLine(Collection<Object> collection, Object addLine, boolean insertFirst) {
+        int index = -1;
         if (insertFirst && (collection instanceof List)) {
             ((List<Object>) collection).add(0, addLine);
+            index = 0;
         } else {
-            collection.add(addLine);
+            boolean added = collection.add(addLine);
+            if (added) {
+                index = collection.size() - 1;
+            }
+        }
+        return index;
+    }
+
+    protected void linkAddedLine(Object model, String collectionPath, int addedIndex) {
+        int lastSepIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(collectionPath);
+        if (lastSepIndex != -1) {
+            String collectionParentPath = collectionPath.substring(0, lastSepIndex);
+            Object parent = ObjectPropertyUtils.getPropertyValue(model, collectionParentPath);
+            if (parent != null && getDataObjectService().supports(parent.getClass())) {
+                DataObjectWrapper<?> wrappedParent = getDataObjectService().wrap(parent);
+                String collectionName = collectionPath.substring(lastSepIndex + 1);
+                wrappedParent.linkChanges(Sets.newHashSet(collectionName + "[" + addedIndex + "]"));
+            }
         }
     }
 
@@ -1003,9 +1031,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     protected LegacyDataAdapter getLegacyDataAdapter() {
         if (legacyDataAdapter == null) {
-            return KRADServiceLocatorWeb.getLegacyDataAdapter();
+            legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
         }
         return legacyDataAdapter;
+    }
+
+    protected DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
+    }
+
+    protected void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     /**

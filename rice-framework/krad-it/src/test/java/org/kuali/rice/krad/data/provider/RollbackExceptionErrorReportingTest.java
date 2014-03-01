@@ -15,28 +15,21 @@
  */
 package org.kuali.rice.krad.data.provider;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import javax.transaction.RollbackException;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.eclipse.persistence.exceptions.ValidationException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.bo.AccountType;
-import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
-import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.orm.jpa.JpaSystemException;
+
+import javax.persistence.PersistenceException;
+
+import static org.junit.Assert.*;
 
 /**
  * A test to make sure we get the "real" cause of a transaction rollback exception.
@@ -46,67 +39,42 @@ import org.springframework.transaction.UnexpectedRollbackException;
 @PerSuiteUnitTestData( {
         @UnitTestData(
                 sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = "/")
+                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
                 })
 })
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RollbackExceptionErrorReportingTest extends KRADTestCase {
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RollbackExceptionErrorReportingTest.class);
 
-    protected JpaPersistenceProvider getPersistenceProvider() {
-        return getKRADTestHarnessContext().getBean("kradJpaPersistenceProvider", JpaPersistenceProvider.class);
-    }
-
-    protected DataObjectService getDOS() {
+    protected DataObjectService getDataObjectService() {
         return KradDataServiceLocator.getDataObjectService();
     }
 
-    @BeforeClass
-    public static void beforeTests() {
-        Logger.getLogger(RollbackExceptionErrorReportingTest.class).setLevel(Level.DEBUG);
-    }
-
-    @AfterClass
-    public static void afterTests() {
-        Logger.getLogger(RollbackExceptionErrorReportingTest.class).setLevel(null);
-    }
-
+    /**
+     * Tests that if you try to change a primary key, a {@link org.springframework.orm.jpa.JpaSystemException} is thrown.
+     */
     @Test
-    public void changePrimaryKeyValue() {
-        AccountType acctType = getDOS().find(AccountType.class, "CAT");
+    public void changePrimaryKeyValue_Exception() {
+        AccountType acctType = getDataObjectService().find(AccountType.class, "CAT");
         assertNotNull( "Error retrieving CAT account type from data object service", acctType );
 
         acctType.setAccountTypeCode("CLR");
 
         // test what object getter does
-        enableJotmLogging();
         try {
-            acctType = getDOS().save(acctType);
+            getDataObjectService().save(acctType, PersistenceOption.FLUSH);
             fail( "The save method should have failed." );
-        } catch ( UnexpectedRollbackException ex ) {
+        } catch (JpaSystemException ex) {
+            // JpaSystemException should have been thrown since we are illegally trying to change the
+            // primary key on an attached JPA entity
+            LOG.info(ex, ex);
             assertNotNull("The thrown rollback exception should have had a cause", ex.getCause());
-            LOG.debug( ex );
-            assertTrue( "Embedded error should have been a javax.transaction.RollbackException.  But was: " + ex.getCause(), ex.getCause() instanceof RollbackException );
+            assertTrue("Embedded error should have been a javax.persistence.PersistenceException.  But was: " + ex.getCause(), ex.getCause() instanceof PersistenceException);
             assertNotNull("The embedded rollback exception should have had a cause", ex.getCause().getCause());
-            assertNotNull("The embedded-embedded rollback exception should have had a cause", ex.getCause().getCause().getCause());
-            assertNotNull("The embedded-embedded rollback exception should have had a cause", ex.getCause().getCause().getCause().getCause());
-            assertTrue( "In this case, the error should have been a validation exeption.  But was: " + ex.getCause().getCause().getCause().getCause(), ex.getCause().getCause().getCause().getCause() instanceof ValidationException );
-        } catch ( javax.persistence.OptimisticLockException ex ) {
-            LOG.info( "Failed immediately with an optimistic locking exception - maybe this is better...?", ex );
-        } catch ( Exception ex ) {
-            LOG.warn( "It should have failed with UnexpectedRollbackException (or OptimisticLockException) but instead failed with: ", ex);
-//            fail( "It should have failed with an org.springframework.transaction.UnexpectedRollbackException but instead failed with: " + ex);
+            assertTrue("The embedded rollback exception should have been a validation exception, but was: " + ex.getCause().getCause(), ex.getCause().getCause() instanceof ValidationException);
+        } catch (Exception ex) {
+            fail("It should have failed with JpaSystemException");
         }
-        assertNotNull( "After saving, the acct type object should be available", acctType);
-
-        disableJotmLogging();
     }
 
-    void enableJotmLogging() {
-        Logger.getLogger("org.objectweb.jotm").setLevel(Level.DEBUG);
-    }
-
-    void disableJotmLogging() {
-        Logger.getLogger("org.objectweb.jotm").setLevel(Level.WARN);
-    }
 }

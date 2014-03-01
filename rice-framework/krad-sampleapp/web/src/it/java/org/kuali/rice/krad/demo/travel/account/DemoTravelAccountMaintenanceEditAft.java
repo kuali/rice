@@ -82,16 +82,16 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName(SUB_ACCOUNT_FIELD, "a1");
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, "A1");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
-        gotoIframeByXpath("//iframe[@id='routeLogIFrame']");
-        String error404 = incidentReportMessage();
-        selectTopFrame();
+        waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");
+        waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
+        waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']");
         waitAndClickButtonByText("submit");
-        waitForTextPresent("Document was successfully submitted.");
-        if (error404 != null) {
-            jiraAwareFail("Test passed, but 404 was present on maintenance screen " + error404);
-        }
+        waitForElementPresentByXpath("//a[contains(text(),'A1')]");
+        waitAndClickButtonByText("Save");
+        waitForTextPresent("Document was successfully saved.");
+        waitAndClickButtonByText("blanket approve");
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
@@ -119,29 +119,46 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
             return false;
         }   // catch
     }
+    
+    protected void testEditFiscalOfficer() throws Exception {
+    	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
+        clearTextByName("document.newMaintainableObject.dataObject.foId");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
+    	waitAndClickButtonByText("blanket approve");
+    	navigate();
+    	if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='eric']"))
+    	{
+    		jiraAwareFail("Fiscal Officer Not Changed");
+    	}
+    }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
+    }
+    
+    @Test
+    public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
+    	testEditFiscalOfficer();
     }
 
 }

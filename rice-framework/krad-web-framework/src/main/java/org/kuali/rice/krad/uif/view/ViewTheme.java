@@ -665,4 +665,5 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     public ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
     }
+
 }

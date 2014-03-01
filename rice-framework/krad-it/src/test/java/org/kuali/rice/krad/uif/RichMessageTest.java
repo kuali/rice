@@ -484,7 +484,9 @@ public class RichMessageTest extends KRADTestCase {
         radioGroupControl.setOptions(options);
         performSimulatedLifecycle(radioGroupControl);
         for (LifecycleElement component : ViewLifecycleUtils.getElementsForLifecycle(radioGroupControl).values()) {
-            performSimulatedLifecycle(component);
+            if (component instanceof Component) {
+                performSimulatedLifecycle((Component) component);
+            }
         }
 
         List<KeyMessage> richOptions = radioGroupControl.getRichOptions();
@@ -575,8 +577,12 @@ public class RichMessageTest extends KRADTestCase {
      *
      * @param element
      */
-    private void performSimulatedLifecycle(final LifecycleElement element) {
-        ViewLifecycle.encapsulateLifecycle(view, element, null, null, new Runnable(){
+    private void performSimulatedLifecycle(final Component component) {
+        if (model == null) {
+            model = new SampleForm();
+        }
+
+        ViewLifecycle.encapsulateLifecycle(view, model, null, null, new Runnable(){
             @Override
             public void run() {
                 element.performInitialization(model);

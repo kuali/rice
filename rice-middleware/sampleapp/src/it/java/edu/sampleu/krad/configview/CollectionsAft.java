@@ -155,12 +155,12 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         assertEquals("6", waitAndGetAttributeByName("list1[0].field2", "value"));
         assertEquals("7", waitAndGetAttributeByName("list1[0].field3", "value"));
         assertEquals("8", waitAndGetAttributeByName("list1[0].field4", "value"));
-        Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
+        Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndTypeByName("list1[0].field1", "1");
         waitAndTypeByName("list1[0].field2", "1");
         waitAndTypeByName("list1[0].field3", "1");
         waitAndTypeByName("list1[0].field4", "1");
-        Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
+        Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         if(preValue>postValue) {
             jiraAwareFail("Totalling not working in " + getClass().toString());
         }
@@ -219,16 +219,16 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testAddViaLightbox() throws Exception {
         waitAndClickByLinkText("Add Via Lightbox");
-        Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
+        Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndClickButtonByText("Add Line");
         Thread.sleep(3000);
-        waitAndTypeByXpath("//form/div/table/tbody/tr/td/div/input", "1");
-        waitAndTypeByXpath("//form/div/table/tbody/tr[2]/td/div/input", "1");
-        waitAndTypeByXpath("//form/div/table/tbody/tr[3]/td/div/input", "1");
-        waitAndTypeByXpath("//form/div/table/tbody/tr[4]/td/div/input", "1");
+        waitAndTypeByXpath("//form/section/table/tbody/tr/td/div/input", "1");
+        waitAndTypeByXpath("//form/section/table/tbody/tr[2]/td/div/input", "1");
+        waitAndTypeByXpath("//form/section/table/tbody/tr[3]/td/div/input", "1");
+        waitAndTypeByXpath("//form/section/table/tbody/tr[4]/td/div/input", "1");
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
         Thread.sleep(3000);
-        Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/span")).getText());
+        Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         if(preValue>postValue) {
             jiraAwareFail("Totalling not working in " + getClass().toString());
         }

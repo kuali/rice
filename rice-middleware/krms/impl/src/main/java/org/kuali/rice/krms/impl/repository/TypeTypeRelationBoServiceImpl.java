@@ -16,15 +16,19 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
 
 /**
  * Implementation of the @{link TypeTypeRelationBoService} interface for accessing  {@link TypeTypeRelationBo} related business objects.
@@ -33,20 +37,19 @@ import java.util.Map;
  * 
  */
 public final class TypeTypeRelationBoServiceImpl
-    implements TypeTypeRelationBoService
-{
+    implements TypeTypeRelationBoService {
 
-    private BusinessObjectService businessObjectService;
+    private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
 
     /**
-     * Sets the value of BusinessObjectService to the given value.
+     * Sets the value of DataObjectService to the given value.
      * 
-     * @param businessObjectService the BusinessObjectService value to set.
+     * @param dataObjectService the DataObjectService value to set.
      * 
      */
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
     }
 
     public void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
@@ -65,15 +68,21 @@ public final class TypeTypeRelationBoServiceImpl
         incomingParamCheck(typeTypeRelation , "typeTypeRelation");
         final String typeTypeRelationIdKey = typeTypeRelation.getId();
         final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelationIdKey);
-        if (existing != null){ throw new IllegalStateException("the TypeTypeRelation to create already exists: " + typeTypeRelation);	}
-        TypeTypeRelationBo bo = (TypeTypeRelationBo)businessObjectService.save(from(typeTypeRelation));
+
+        if (existing != null) {
+            throw new IllegalStateException("the TypeTypeRelation to create already exists: " + typeTypeRelation);
+        }
+
+        TypeTypeRelationBo bo = dataObjectService.save(from(typeTypeRelation), PersistenceOption.FLUSH);
+
         return TypeTypeRelationBo.to(bo);
     }
 
     @Override
     public TypeTypeRelation getTypeTypeRelation(String typeTypeRelationId) {
         incomingParamCheck(typeTypeRelationId , "typeTypeRelationId");
-        TypeTypeRelationBo bo = businessObjectService.findBySinglePrimaryKey(TypeTypeRelationBo.class, typeTypeRelationId);
+        TypeTypeRelationBo bo = dataObjectService.find(TypeTypeRelationBo.class, typeTypeRelationId);
+
         return TypeTypeRelationBo.to(bo);
     }
 
@@ -81,8 +90,13 @@ public final class TypeTypeRelationBoServiceImpl
     public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
         incomingParamCheck(typeTypeRelation , "typeTypeRelation");
         final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelation.getId());
-        if (existing == null){ throw new IllegalStateException("the TypeTypeRelation to update does not exists: " + typeTypeRelation);}
+
+        if (existing == null) {
+            throw new IllegalStateException("the TypeTypeRelation to update does not exists: " + typeTypeRelation);
+        }
+
         final TypeTypeRelation toUpdate;
+
         if (!existing.getId().equals(typeTypeRelation.getId())){
             // if passed in id does not match existing id, correct it
             final TypeTypeRelation.Builder builder = TypeTypeRelation.Builder.create(typeTypeRelation);
@@ -96,15 +110,19 @@ public final class TypeTypeRelationBoServiceImpl
         TypeTypeRelationBo boToUpdate = from(toUpdate);
 
         // update the rule and create new attributes
-         businessObjectService.save(boToUpdate);
+         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
 
     @Override
     public void deleteTypeTypeRelation(String typeTypeRelationId) {
         incomingParamCheck(typeTypeRelationId , "typeTypeRelationId");
         final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelationId);
-        if (existing == null){ throw new IllegalStateException("the TypeTypeRelation to delete does not exists: " + typeTypeRelationId);}
-        businessObjectService.delete(from(existing));
+
+        if (existing == null) {
+            throw new IllegalStateException("the TypeTypeRelation to delete does not exists: " + typeTypeRelationId);
+        }
+
+        dataObjectService.delete(from(existing));
     }
 
     @Override
@@ -112,9 +130,11 @@ public final class TypeTypeRelationBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(fromTypeId)) {
             throw new IllegalArgumentException("fromTypeId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("fromTypeId", fromTypeId);
-        List<TypeTypeRelationBo> bos = (List<TypeTypeRelationBo>) businessObjectService.findMatching(TypeTypeRelationBo.class, map);
+        List<TypeTypeRelationBo> bos = findMatching(dataObjectService, TypeTypeRelationBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -123,9 +143,11 @@ public final class TypeTypeRelationBoServiceImpl
         if (org.apache.commons.lang.StringUtils.isBlank(toTypeId)) {
             throw new IllegalArgumentException("toTypeId is null or blank");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("toTypeId", toTypeId);
-        List<TypeTypeRelationBo> bos = (List<TypeTypeRelationBo>) businessObjectService.findMatching(TypeTypeRelationBo.class, map);
+        List<TypeTypeRelationBo> bos = findMatching(dataObjectService, TypeTypeRelationBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -134,9 +156,11 @@ public final class TypeTypeRelationBoServiceImpl
         if (relationshipType == null) {
             throw new IllegalArgumentException("relationshipType is null");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("relationshipType", relationshipType);
-        List<TypeTypeRelationBo> bos = (List<TypeTypeRelationBo>) businessObjectService.findMatching(TypeTypeRelationBo.class, map);
+        List<TypeTypeRelationBo> bos = findMatching(dataObjectService, TypeTypeRelationBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
@@ -145,14 +169,17 @@ public final class TypeTypeRelationBoServiceImpl
         if (sequenceNumber == null) {
             throw new IllegalArgumentException("sequenceNumber is null");
         }
+
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("sequenceNumber", sequenceNumber);
-        List<TypeTypeRelationBo> bos = (List<TypeTypeRelationBo>) businessObjectService.findMatching(TypeTypeRelationBo.class, map);
+        List<TypeTypeRelationBo> bos = findMatching(dataObjectService, TypeTypeRelationBo.class, map);
+
         return convertBosToImmutables(bos);
     }
 
     public List<TypeTypeRelation> convertBosToImmutables(final Collection<TypeTypeRelationBo> typeTypeRelationBos) {
         List<TypeTypeRelation> immutables = new LinkedList<TypeTypeRelation>();
+
         if (typeTypeRelationBos != null) {
             TypeTypeRelation immutable = null;
             for (TypeTypeRelationBo bo : typeTypeRelationBos ) {
@@ -160,6 +187,7 @@ public final class TypeTypeRelationBoServiceImpl
                 immutables.add(immutable);
             }
         }
+
         return Collections.unmodifiableList(immutables);
     }
 

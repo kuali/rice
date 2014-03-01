@@ -48,19 +48,19 @@
     <property name="items">
       <list>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field2" p:label="Field 1">
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 1">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field3" p:label="Field 2">
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 2">
           <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field4" p:label="Field 3">
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 3">
           <property name="control">
             <bean parent="Uif-DropdownControl"/>
           </property>
@@ -69,7 +69,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field114" p:label="Field 4">
+        <bean parent="Uif-InputField" p:propertyName="field114" p:label="Field 4">
           <property name="control">
             <bean parent="Uif-MultiSelectControl"/>
           </property>
@@ -78,7 +78,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field117" p:label="Radio 1"
+        <bean parent="Uif-InputField" p:propertyName="field117" p:label="Radio 1"
               p:width="auto"
               p:instructionalText="RadioGroupControl using an optionsFinder">
           <property name="control">
@@ -89,7 +89,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="bField1" p:label="Checkbox"
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="Checkbox"
               p:defaultValue="true"
               p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by
             default">
@@ -99,7 +99,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field115" p:label="Checkboxes 1"
+        <bean parent="Uif-InputField" p:propertyName="field115" p:label="Checkboxes 1"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyDisplayReplacement="@{#emptyList(field115)?'No Options Selected':''}">
           <property name="control">
@@ -110,7 +110,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:label="Date" p:propertyName="date1" p:required="true">
+        <bean parent="Uif-InputField" p:label="Date" p:propertyName="date1" p:required="true">
           <property name="control">
             <bean parent="Uif-DateControl"/>
           </property>
@@ -124,7 +124,7 @@
     <property name="items">
       <list>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field116" p:label="Break Delimiter"
+        <bean parent="Uif-InputField" p:propertyName="field116" p:label="Break Delimiter"
               p:readOnlyListDisplayType="BREAK">
           <property name="control">
             <bean parent="Uif-MultiSelectControl"/>
@@ -134,7 +134,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="field120" p:label="Alternate Delimiter"
+        <bean parent="Uif-InputField" p:propertyName="field120" p:label="Alternate Delimiter"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyListDisplayType="DELIMITED" p:readOnlyListDelimiter=" - ">
           <property name="control">
@@ -145,7 +145,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="stringList1" p:label="Ordered List"
+        <bean parent="Uif-InputField" p:propertyName="stringList1" p:label="Ordered List"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyListDisplayType="OL">
           <property name="control">
@@ -156,7 +156,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField-LabelTop" p:propertyName="stringList2" p:label="Unordered List"
+        <bean parent="Uif-InputField" p:propertyName="stringList2" p:label="Unordered List"
               p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
               p:readOnlyListDisplayType="UL">
           <property name="control">
@@ -175,19 +175,19 @@
     <property name="items">
       <list>
 
-        <bean parent="Uif-DataField-LabelTop" p:propertyName="stringList4" p:label="String"
+        <bean parent="Uif-DataField" p:propertyName="stringList4" p:label="String"
               p:readOnlyListDisplayType="BREAK">
         </bean>
 
-        <bean parent="Uif-DataField-LabelTop" p:propertyName="intList" p:label="Integer"
+        <bean parent="Uif-DataField" p:propertyName="intList" p:label="Integer"
               p:readOnlyListDisplayType="BREAK">
         </bean>
 
-        <bean parent="Uif-DataField-LabelTop" p:propertyName="doubleList" p:label="Double"
+        <bean parent="Uif-DataField" p:propertyName="doubleList" p:label="Double"
               p:readOnlyListDisplayType="BREAK">
         </bean>
 
-        <bean parent="Uif-DataField-LabelTop" p:propertyName="dateList" p:label="Date"
+        <bean parent="Uif-DataField" p:propertyName="dateList" p:label="Date"
               p:readOnlyListDisplayType="BREAK">
         </bean>
 

@@ -114,7 +114,7 @@ public class KualiLookupableTest extends KNSTestCase {
 
         f = rows.get(3).getField(0);
         Assert.assertEquals("amId", f.getPropertyName());
-        Assert.assertEquals("Account Manager Id", f.getFieldLabel());
+        Assert.assertEquals("Account Manager", f.getFieldLabel());
         Assert.assertEquals("text", f.getFieldType());
     }
 

@@ -36,11 +36,17 @@
 		<constructor-arg value="location" />
 	</bean>
 
-	<util:list id="jpaPackagesToScan">
-    	<value>org.kuali.rice.location.impl</value>
-	</util:list>
+	<util:list id="jpaPackagesToScan"/>
 
-	<util:list id="managedClassNames" />
+	<util:list id="managedClassNames">
+    <value>org.kuali.rice.location.impl.campus.CampusBo</value>
+    <value>org.kuali.rice.location.impl.campus.CampusTypeBo</value>
+    <value>org.kuali.rice.location.impl.country.CountryBo</value>
+    <value>org.kuali.rice.location.impl.county.CountyBo</value>
+    <value>org.kuali.rice.location.impl.postalcode.PostalCodeBo</value>
+    <value>org.kuali.rice.location.impl.state.StateBo</value>
+    <!-- If you add an entity to this list, please also remember to add it to META-INF/persistence-weaving.xml -->
+  </util:list>
 
 	<util:list id="additionalMetadataProviders" />
 	<util:list id="springMetadataFileLocations" />

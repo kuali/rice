@@ -1,0 +1,92 @@
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+  <alias alias="kradApplicationDataSource" name="krmsDataSource" />
+
+  <bean id="jpaPersistenceUnitName" class="java.lang.String">
+    <constructor-arg value="krms" />
+  </bean>
+
+  <util:list id="jpaPackagesToScan"/>
+
+  <util:list id="managedClassNames">
+
+    <value>org.kuali.rice.krms.impl.repository.FunctionBo</value>
+    <value>org.kuali.rice.krms.impl.repository.FunctionParameterBo</value>
+    <value>org.kuali.rice.krms.impl.repository.CategoryBo</value>
+
+    <value>org.kuali.rice.krms.impl.repository.TermSpecificationBo</value>
+    <value>org.kuali.rice.krms.impl.repository.TermBo</value>
+    <value>org.kuali.rice.krms.impl.repository.TermParameterBo</value>
+    <value>org.kuali.rice.krms.impl.repository.TermResolverBo</value>
+    <value>org.kuali.rice.krms.impl.repository.TermResolverAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo</value>
+    <value>org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo</value>
+
+    <value>org.kuali.rice.krms.impl.repository.ContextBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ContextAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.AgendaBo</value>
+    <value>org.kuali.rice.krms.impl.repository.AgendaAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.AgendaItemBo</value>
+    <value>org.kuali.rice.krms.impl.repository.RuleBo</value>
+    <value>org.kuali.rice.krms.impl.repository.RuleAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.PropositionBo</value>
+    <value>org.kuali.rice.krms.impl.repository.PropositionParameterBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ActionBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ActionAttributeBo</value>
+
+    <value>org.kuali.rice.krms.impl.repository.ContextValidAgendaBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ContextValidActionBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ContextValidRuleBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ContextValidTermBo</value>
+
+    <value>org.kuali.rice.krms.impl.repository.KrmsTypeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.KrmsTypeAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo</value>
+
+    <value>org.kuali.rice.krms.impl.repository.TypeTypeRelationBo</value>
+    <value>org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateBo</value>
+    <value>org.kuali.rice.krms.impl.repository.NaturalLanguageTemplateAttributeBo</value>
+    <value>org.kuali.rice.krms.impl.repository.NaturalLanguageUsageBo</value>
+    <value>org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBo</value>
+
+    <!-- Type converters go in here as well -->
+    <value>org.kuali.rice.krms.impl.repository.jpa.RelationshipTypeConverter</value>
+
+    <!-- If you add an entity to this list, please also remember to add it to META-INF/persistence-weaving.xml -->
+  </util:list>
+
+  <util:list id="additionalMetadataProviders" />
+  <util:list id="springMetadataFileLocations" />
+
+  <import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
+
+
+</beans>
+

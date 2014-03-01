@@ -15,6 +15,9 @@
  */
 package edu.sampleu.admin;
 
+/**
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class XmlIngesterUser {
 
     public XmlIngesterUser(String id) {

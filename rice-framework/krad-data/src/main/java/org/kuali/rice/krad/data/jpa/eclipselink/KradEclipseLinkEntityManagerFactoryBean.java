@@ -35,6 +35,7 @@ import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
  *         {@link PersistenceUnitProperties#TARGET_SERVER} to {@link JtaTransactionController} which allows for
  *         EclipseLink integration with JTA.</li>
  *     <li>Configures an EclipseLink "customizer" which allows for a configurable sequence management strategy</li>
+ *     <li>Disables the shared cache (defined by {@link PersistenceUnitProperties#CACHE_SHARED_DEFAULT} by default</li>
  * </ul>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

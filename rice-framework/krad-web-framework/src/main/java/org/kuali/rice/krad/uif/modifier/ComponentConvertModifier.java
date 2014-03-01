@@ -134,7 +134,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getSupportedComponents()
+     * {@inheritDoc}
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -198,4 +198,5 @@ public class ComponentConvertModifier extends ComponentModifierBase {
     public void setComponentReplacementPrototype(Component componentReplacementPrototype) {
         this.componentReplacementPrototype = componentReplacementPrototype;
     }
+
 }

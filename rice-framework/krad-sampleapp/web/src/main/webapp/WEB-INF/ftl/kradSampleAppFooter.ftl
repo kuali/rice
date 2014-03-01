@@ -68,7 +68,7 @@
     <div class="demo-headerFooterContainer">
         <div>
             <div style="position: relative;">
-                <div class="demo-foundationInfo">&#169; 2013 <a href="http://www.kuali.org" target="_blank">Kuali
+                <div class="demo-foundationInfo">&#169; 2014 <a href="http://www.kuali.org" target="_blank">Kuali
                     Foundation</a></div>
                 <div class="demo-poweredBy">
                     Powered by <br/> <span style="font-size: 1.2em; font-weight: bold;">KRAD</span> <br/> ${ConfigProperties.version}

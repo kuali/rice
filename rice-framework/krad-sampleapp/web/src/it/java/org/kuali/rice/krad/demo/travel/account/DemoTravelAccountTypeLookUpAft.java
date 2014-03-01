@@ -68,11 +68,18 @@ public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
         waitForElementsPresentByXpath("//a[contains(text(),'IAT')]");
         assertElementPresentByXpath("//a[contains(text(),'CAT')]");
         assertElementPresentByXpath("//a[contains(text(),'EAT')]");
-        assertElementPresentByXpath("//a[contains(text(),'IAT')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndTypeByName("lookupCriteria[name]","Clearing Account Type");
         waitAndClickButtonByText(SEARCH);
         waitForElementsPresentByXpath("//span[contains(text(),'Clearing Account Type')]");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName("lookupCriteria[code]","CAT");
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextPresent("No values match this search.");
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        waitForTextPresent("CAT");
+        waitForElementsPresentByXpath("//a[contains(text(),'CAT')]");
     }
 
     protected void testTravelAccountTypeLookUpXss(String fieldName) throws Exception {

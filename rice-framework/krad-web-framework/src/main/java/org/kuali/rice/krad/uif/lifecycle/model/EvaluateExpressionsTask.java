@@ -71,7 +71,7 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {
@@ -116,9 +116,6 @@ public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
                 adjustIdIfNecessary(layoutManager);
             }
         }
-
-        // TODO: is this needed?
-        // adjustIdIfNecessary(component);
     }
 
 }

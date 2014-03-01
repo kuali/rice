@@ -49,7 +49,15 @@ public abstract class IdentityPermissionAftBase extends AdminTmplMthdAftNavBase 
     protected String getLinkLocator() {
         return "Permission";
     }
-   
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.newMaintainableObject.templateId", "35"); // KR-IDM : Assign Role
+        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+    }
+
     public void testIdentityPermissionBookmark(JiraAwareFailable failable) throws Exception {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);

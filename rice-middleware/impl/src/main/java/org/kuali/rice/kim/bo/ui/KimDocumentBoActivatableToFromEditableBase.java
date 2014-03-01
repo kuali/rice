@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
@@ -31,9 +32,10 @@ import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
  */
 @MappedSuperclass
 public class KimDocumentBoActivatableToFromEditableBase  extends KimDocumentBoBase {
+
     private static final long serialVersionUID = 9042706897191231673L;
 
-	@Column(name="ACTV_IND")
+    @Column(name="ACTV_IND")
 	@Convert(converter=BooleanYNConverter.class)
     protected boolean active = true;
 	

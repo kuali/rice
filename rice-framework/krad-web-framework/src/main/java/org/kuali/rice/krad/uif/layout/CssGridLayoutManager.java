@@ -157,4 +157,5 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
     public void setDefaultItemColSpan(int defaultItemColSpan) {
         this.defaultItemColSpan = defaultItemColSpan;
     }
+
 }

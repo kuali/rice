@@ -38,7 +38,7 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#getElementState()
+     * {@inheritDoc}
      */
     @Override
     public FinalizeComponentPhase getElementState() {
@@ -46,7 +46,7 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase#performLifecycleTask()
+     * {@inheritDoc}
      */
     @SuppressWarnings("deprecation")
     @Override

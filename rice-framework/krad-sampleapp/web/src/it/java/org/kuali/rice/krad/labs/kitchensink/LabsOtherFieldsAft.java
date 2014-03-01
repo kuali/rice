@@ -65,16 +65,16 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup2' and @class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     	
     	//Message View
-    	assertElementPresentByXpath("//div[@id='UifCompView-MessageFields']//p[@id='UifCompView-MessageField1']");
-    	assertElementPresentByXpath("//div[@id='UifCompView-MessageFields']//p[@id='UifCompView-MessageFieldWithExpression']");
+    	assertElementPresentByXpath("//p[@id='UifCompView-MessageField1']");
+    	assertElementPresentByXpath("//p[@id='UifCompView-MessageFieldWithExpression']");
     	
     	//Syntax Highliter
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter1']/div[@class='uif-syntaxHighlighter']");
-    	assertElementPresentByXpath("//embed[@id='ZeroClipboardMovie_1']");
+    	assertElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter1_syntaxHighlightCopy']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter2']/div[@class='uif-syntaxHighlighter']");
-    	assertElementPresentByXpath("//embed[@id='ZeroClipboardMovie_2']");
+    	assertElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter2_syntaxHighlightCopy']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter3']/div[@class='uif-syntaxHighlighter']");
-    	if(isElementPresentByXpath("//embed[@id='ZeroClipboardMovie_3']")) {
+    	if(isElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter3_syntaxHighlightCopy']")) {
     		fail("Copy is allowed.");
     	}
 
@@ -110,7 +110,7 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
     
     	//Scrollable Groups
-    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup1' and @style='width: 30%;height: 100px;overflow: auto;']");
+    	assertElementPresentByXpath("//section[@id='UifCompView-ScrollableGroup1' and @style='width: 30%;height: 100px;overflow: auto;']");
     	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4' and @style='width: 30%;height: 100px;overflow: auto;']");
     }
 

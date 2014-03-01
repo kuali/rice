@@ -94,7 +94,7 @@ class TermDefinitionTest {
         spec.setDescription(TERM_SPEC_DESCRIPTION);
 
         // create(String id, String name, String value) {
-        TermParameterDefinition.Builder param = TermParameterDefinition.Builder.create(ID + "PARAM", ID + "SPEC", PARAM_NAME, PARAM_VALUE);
+        TermParameterDefinition.Builder param = TermParameterDefinition.Builder.create(ID + "PARAM", ID + "DEF", PARAM_NAME, PARAM_VALUE);
 
         // create(String id, TermSpecificationDefinition termSpecificationDefinition,
         //		Set<TermParameterDefinition> termParameters) {

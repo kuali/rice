@@ -15,30 +15,30 @@
  */
 package org.kuali.rice.krms.impl.repository
 
+import groovy.mock.interceptor.MockFor
 import junit.framework.Assert
-
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.krad.bo.PersistableBusinessObject
-import org.kuali.rice.krad.service.BusinessObjectService
+import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.core.api.criteria.QueryResults
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition
 import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition
 import org.kuali.rice.krms.api.repository.function.FunctionDefinitionContract
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinitionContract
-
-import groovy.mock.interceptor.MockFor
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract
 
 class FunctionBoServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 	
 	// test services
-	def mockBusinessObjectService
-	BusinessObjectService boService;
+	def mockDataObjectService
+	DataObjectService dataObjectService;
 	private FunctionBoServiceImpl functionService;
-	
+
 	// Simple Function data structures	
 	private static final List <FunctionParameterDefinition.Builder> parmList1 = createFunctionParametersSet1()
 	private static final List <FunctionParameterDefinition.Builder> parmList2 = createFunctionParametersSet2()	
@@ -56,77 +56,90 @@ class FunctionBoServiceImplTest {
 				
 	@Before
 	void setupBoServiceMockContext() {
-		mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+		mockDataObjectService = new MockFor(DataObjectService.class)
 		functionService = new FunctionBoServiceImpl()	
 	}
 	
-	void injectBusinessObjectServiceIntoFunctionService() {
-		boService = mockBusinessObjectService.proxyDelegateInstance()
-		functionService.setBusinessObjectService(boService)
+	void injectDataObjectServiceIntoFunctionService() {
+		dataObjectService = mockDataObjectService.proxyDelegateInstance()
+		functionService.setDataObjectService(dataObjectService)
 	}
 //
 // Function tests
-//			
-	@Test
-	public void test_create_function_null_function() {
-		injectBusinessObjectServiceIntoFunctionService()
-		shouldFail(IllegalArgumentException.class) {
-			functionService.createFunction(null)
-		}
-		mockBusinessObjectService.verify(boService)
-	}
+//
+    @Test
+    public void test_create_function_null_function() {
+        injectDataObjectServiceIntoFunctionService()
+        shouldFail(IllegalArgumentException.class) {
+            functionService.createFunction(null)
+        }
+        mockDataObjectService.verify(dataObjectService)
+    }
 
-	@Test
-	void test_create_function_exists() {
-		  mockBusinessObjectService.demand.findByPrimaryKey(1..1) {
-			  Class clazz, Map map -> FUNCTION_BO_001
-		  }
-		  injectBusinessObjectServiceIntoFunctionService()
-		  shouldFail(IllegalStateException.class) {
-			  functionService.createFunction(FUNCTION_DEF_001)
-		  }
-		  mockBusinessObjectService.verify(boService)
-	} 
-	
-	@Test
-	void test_create_function_successful() {
-		  mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
-		  mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
-		  
-		  injectBusinessObjectServiceIntoFunctionService()
-		  
-		  FunctionDefinition fd = functionService.createFunction(FUNCTION_DEF_001)
-		  Assert.assertEquals(FUNCTION_DEF_001, fd)
-		  mockBusinessObjectService.verify(boService)
-	}
+    @Test
+    void test_create_function_exists() {
+        mockDataObjectService.demand.findMatching(1..1) {
+            Class clazz, QueryByCriteria crit -> createQueryResults([FUNCTION_BO_001])
+        }
+
+        injectDataObjectServiceIntoFunctionService()
+        shouldFail(IllegalStateException.class) {
+            functionService.createFunction(FUNCTION_DEF_001)
+        }
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    QueryResults createQueryResults(List items) {
+        GenericQueryResults.Builder qr = GenericQueryResults.Builder.create();
+
+        qr.setResults(items);
+        qr.setTotalRowCount(items.size());
+        qr.setMoreResultsAvailable(false);
+
+        return qr;
+    }
+
+    @Test
+    void test_create_function_successful() {
+        mockDataObjectService.demand.findMatching(1..1) {
+            clazz, crit -> createQueryResults([])
+        }
+        mockDataObjectService.demand.save { bo, po -> bo }
+
+        injectDataObjectServiceIntoFunctionService()
+
+        FunctionDefinition fd = functionService.createFunction(FUNCTION_DEF_001)
+        Assert.assertEquals(FUNCTION_DEF_001, fd)
+        mockDataObjectService.verify(dataObjectService)
+    }
 	
 	@Test
 	public void test_update_function_null_function() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 		shouldFail(IllegalArgumentException.class) {
 			functionService.updateFunction(null)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 	
 	@Test
 	void test_update_function_does_not_exist() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { clazz, map -> null }
-		injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.find(1..1) { clazz, map -> null }
+		injectDataObjectServiceIntoFunctionService()
 
 		shouldFail(IllegalStateException.class) {
 			functionService.updateFunction(FUNCTION_DEF_001)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 	
 	@Test
     void test_update_function_exists() {
 
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..2) {	Class clazz, String id -> FUNCTION_BO_001	}
-		mockBusinessObjectService.demand.save { UPDATED_FUNCTION_BO_001 -> UPDATED_FUNCTION_BO_001 }
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {	Class clazz, String id -> UPDATED_FUNCTION_BO_001	}
-		injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.find(1..2) {	Class clazz, String id -> FUNCTION_BO_001	}
+		mockDataObjectService.demand.save { UPDATED_FUNCTION_BO_001, opts -> UPDATED_FUNCTION_BO_001 }
+		mockDataObjectService.demand.find(1..1) {	Class clazz, String id -> UPDATED_FUNCTION_BO_001	}
+		injectDataObjectServiceIntoFunctionService()
 		
 		def initialFunction = functionService.getFunctionById ("001")
 		Assert.assertEquals(initialFunction.getDescription(), FUNCTION_BO_001.getDescription())
@@ -135,109 +148,110 @@ class FunctionBoServiceImplTest {
 				
 		def updatedFunction = functionService.getFunctionById ("001")
 		Assert.assertEquals(updatedFunction.getDescription(), UPDATED_FUNCTION_BO_001.getDescription())
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
     }
 	
 	@Test
 	void test_get_function_by_id_null_id() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 
 		shouldFail(IllegalArgumentException.class) {
 			functionService.getFunctionById(null)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
     @Test
     void test_get_function_by_id_exists() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {	clazz, map -> FUNCTION_BO_001	}
-		injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.find(1..1) {	clazz, map -> FUNCTION_BO_001	}
+		injectDataObjectServiceIntoFunctionService()
         Assert.assertEquals (FUNCTION_DEF_001, functionService.getFunctionById("002"))
-        mockBusinessObjectService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
     @Test
     void test_get_function_by_id_does_not_exist() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { clazz, map -> null }
-		injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.find(1..1) { clazz, map -> null }
+		injectDataObjectServiceIntoFunctionService()
         Assert.assertNull (functionService.getFunctionById("001"))
-        mockBusinessObjectService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
     }
 
-	@Test
-	public void test_getActionByNameAndNamespace() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {	clazz, map -> FUNCTION_BO_001	}
-        injectBusinessObjectServiceIntoFunctionService()
+    @Test
+    public void test_getActionByNameAndNamespace() {
+        mockDataObjectService.demand.findMatching(1..1) { clazz, crit -> createQueryResults([FUNCTION_BO_001]) }
+        injectDataObjectServiceIntoFunctionService()
 
-		FunctionDefinition fd = functionService.getFunctionByNameAndNamespace(FUNCTION_BO_001.getName(), FUNCTION_BO_001.getNamespace())
+        FunctionDefinition fd = functionService.
+                getFunctionByNameAndNamespace(FUNCTION_BO_001.getName(), FUNCTION_BO_001.getNamespace())
 
-		Assert.assertEquals(FunctionBo.to(FUNCTION_BO_001), fd)
-        mockBusinessObjectService.verify(boService)
-	}
+        Assert.assertEquals(FunctionBo.to(FUNCTION_BO_001), fd)
+        mockDataObjectService.verify(dataObjectService)
+    }
 
-	@Test
+    @Test
 	public void test_getActionByNameAndNamespace_when_none_found() {
-		mockBusinessObjectService.demand.findByPrimaryKey(1..1) { clazz, map -> null }
-        injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> createQueryResults([]) }
+        injectDataObjectServiceIntoFunctionService()
 
 		FunctionDefinition fd = functionService.getFunctionByNameAndNamespace("I_DONT_EXIST", FUNCTION_BO_001.getNamespace())
 
 		Assert.assertNull(fd)
-        mockBusinessObjectService.verify(boService)
+        mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_empty_name() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 		shouldFail(IllegalArgumentException.class) {
 			functionService.getFunctionByNameAndNamespace("", FUNCTION_BO_001.getNamespace())
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_null_name() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 		shouldFail(IllegalArgumentException.class) {
 			functionService.getFunctionByNameAndNamespace(null, FUNCTION_BO_001.getNamespace())
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_empty_namespace() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 		shouldFail(IllegalArgumentException.class) {
 			functionService.getFunctionByNameAndNamespace(FUNCTION_BO_001.getName(), "")
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
 	@Test
 	public void test_getActionByNameAndNamespace_null_namespace() {
-		injectBusinessObjectServiceIntoFunctionService()
+		injectDataObjectServiceIntoFunctionService()
 		shouldFail(IllegalArgumentException.class) {
 			functionService.getFunctionByNameAndNamespace(FUNCTION_BO_001.getName(), null)
 		}
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 
-	@Test
-	public void test_getFunction() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {	Class clazz, String id -> FUNCTION_BO_001	}
-		injectBusinessObjectServiceIntoFunctionService()
-		
-		FunctionDefinition fd = functionService.getFunction(FUNCTION_BO_001.getId())
-		
-		Assert.assertEquals(fd, FUNCTION_DEF_001)
-		mockBusinessObjectService.verify(boService)
-	}
-	
+    @Test
+    public void test_getFunction() {
+        mockDataObjectService.demand.find(1..1) { Class clazz, String id -> FUNCTION_BO_001 }
+        injectDataObjectServiceIntoFunctionService()
+
+        FunctionDefinition fd = functionService.getFunction(FUNCTION_BO_001.getId())
+
+        Assert.assertEquals(fd, FUNCTION_DEF_001)
+        mockDataObjectService.verify(dataObjectService)
+    }
+
 	@Test
 	public void test_getFunctions() {
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {	Class clazz, String id -> FUNCTION_BO_001	}
-		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {	Class clazz, String id -> FUNCTION_BO_002	}	
-		injectBusinessObjectServiceIntoFunctionService()
+		mockDataObjectService.demand.find(1..1) {	Class clazz, String id -> FUNCTION_BO_001	}
+		mockDataObjectService.demand.find(1..1) {	Class clazz, String id -> FUNCTION_BO_002	}
+		injectDataObjectServiceIntoFunctionService()
 		
 		List<String> functionIds = new ArrayList();
 		functionIds.add(FUNCTION_BO_001.getId())
@@ -249,7 +263,7 @@ class FunctionBoServiceImplTest {
 		Assert.assertEquals(fds.get(0).getId(), FUNCTION_BO_001.getId())
 		Assert.assertEquals(fds.get(1).getId(), FUNCTION_BO_002.getId())
 		
-		mockBusinessObjectService.verify(boService)
+		mockDataObjectService.verify(dataObjectService)
 	}
 	
 //
@@ -307,7 +321,7 @@ class FunctionBoServiceImplTest {
 			def String id = "1001"
 			def String name = "functionParm1001"
 			def String description = "function parameter 1001"
-			def String functionId = "Function001"
+			def String functionId = "001"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(0)
 			def Long versionNumber = new Long(1)
@@ -316,7 +330,7 @@ class FunctionBoServiceImplTest {
 			def String id = "1002"
 			def String name = "functionParm1002"
 			def String description = "function parameter 1002"
-			def String functionId = "Function001"
+			def String functionId = "001"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(1)
 			def Long versionNumber = new Long(1)
@@ -325,7 +339,7 @@ class FunctionBoServiceImplTest {
 			def String id = "1003"
 			def String name = "functionParm1003"
 			def String description = "function parameter 1003"
-			def String functionId = "Function001"
+			def String functionId = "001"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(2)
 			def Long versionNumber = new Long(1)
@@ -342,7 +356,7 @@ class FunctionBoServiceImplTest {
 			def String id = "2001"
 			def String name = "functionParm2001"
 			def String description = "function parameter 2001"
-			def String functionId = "Function002"
+			def String functionId = "002"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(0)
 			def Long versionNumber = new Long(1)
@@ -351,7 +365,7 @@ class FunctionBoServiceImplTest {
 			def String id = "2002"
 			def String name = "functionParm2002"
 			def String description = "function parameter 2002"
-			def String functionId = "Function002"
+			def String functionId = "002"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(1)
 			def Long versionNumber = new Long(1)
@@ -360,7 +374,7 @@ class FunctionBoServiceImplTest {
 			def String id = "2003"
 			def String name = "functionParm2003"
 			def String description = "function parameter 2003"
-			def String functionId = "Function002"
+			def String functionId = "002"
 			def String parameterType = "S"
 			def Integer sequenceNumber = new Integer(2)
 			def Long versionNumber = new Long(1)

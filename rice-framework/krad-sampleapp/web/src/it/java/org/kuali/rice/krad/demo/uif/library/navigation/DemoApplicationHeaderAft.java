@@ -39,22 +39,35 @@ public class DemoApplicationHeaderAft extends DemoLibraryNavigationBase {
         waitAndClickByLinkText("Application Header");
     }
 
-    protected void testApplicationHeader() throws Exception {
-        waitAndClickByLinkText("Default Application Header");
+    protected void testApplicationHeaderFluid() throws Exception {
+        waitAndClickByLinkText("Fluid");
+        waitAndClickByLinkText("Fluid Application Header");
         switchToWindow("Kuali :: Default Application Header");
         waitForElementPresentByXpath("//h1/span");
-        waitForTextPresent("Default Application Header");
+        waitForTextPresent("Fluid Application Header");
+        selectParentWindow();
+    }
+
+    protected void testApplicationHeaderFixed() throws Exception {
+        waitAndClickByLinkText("Fixed");
+        waitAndClickByLinkText("Fixed Application Header");
+        switchToWindow("Kuali :: Default Application Header");
+        waitForElementPresentByXpath("//h1/span");
+        waitForTextPresent("Fixed Application Header");
+        selectParentWindow();
     }
 
     @Test
     public void testApplicationHeaderBookmark() throws Exception {
-        testApplicationHeader();
+        testApplicationHeaderFluid();
+        testApplicationHeaderFixed();
         passed();
     }
 
     @Test
     public void testApplicationHeaderNav() throws Exception {
-        testApplicationHeader();
+        testApplicationHeaderFluid();
+        testApplicationHeaderFixed();
         passed();
     }
 }

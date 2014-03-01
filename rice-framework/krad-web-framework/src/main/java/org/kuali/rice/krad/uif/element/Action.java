@@ -164,7 +164,7 @@ public class Action extends ContentElementBase {
      * @param model top level object containing the data (could be the form or a
      * @param parent parent component
      */
-    public void performApplyModel(Object model, Component parent) {
+    public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
         disabledExpression = this.getPropertyExpression("disabled");

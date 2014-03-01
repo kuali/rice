@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -89,32 +88,6 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	 * @return Class<? extends Container> container class supported
 	 */
 	public Class<? extends Container> getSupportedContainer();
-
-	/**
-	 * List of components that are contained within the layout manager that should be sent through the lifecycle
-     *
-	 * <p>
-	 * Used by <code>ViewHelperService</code> for the various lifecycle
-	 * callbacks
-     * </p>
-	 *
-	 * @return List<Component> child components
-	 */
-	public List<Component> getComponentsForLifecycle();
-
-    /**
-     * List of components that are maintained by the layout manager as prototypes for creating other component
-     * instances
-     *
-     * <p>
-     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
-     * are the fields in a collection group that are created for each collection record. They only participate in the
-     * initialize phase.
-     * </p>
-     *
-     * @return List<Component> child component prototypes
-     */
-    public List<Component> getComponentPrototypes();
 
 	/**
 	 * CSS style string to be applied to the area (div) the layout manager
@@ -199,27 +172,12 @@ public interface LayoutManager extends UifDictionaryBean, LifecycleElement, Seri
 	 */
 	public void addStyleClass(String styleClass);
 
-	/**
-	 * Context map for the layout manager
-	 *
-	 * @return Map<String, Object> context
-	 * @see org.kuali.rice.krad.uif.component.Component#getContext()
-	 */
-	public Map<String, Object> getContext();
-
     /**
      * Appends to the inline style set on this layoutManager
      *
      * @param styleRules
      */
     public void appendToStyle(String styleRules);
-
-    /**
-	 * Setter for the context Map
-	 *
-	 * @param context
-	 */
-	public void setContext(Map<String, Object> context);
 
 	/**
 	 * List of <code>PropertyReplacer</code> instances that will be

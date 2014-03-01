@@ -41,6 +41,7 @@ public class LabsInquiryForceUppercaseAft extends LabsInquiryBase {
     	waitAndClickByLinkText("Inquiry with forceUppercase (subAccount=a&travelAccountNumber=a14)");
         
     	// Lightbox
+        waitForTextNotPresent("No records found for the given parameters");
         waitAndClickLinkContainingText("A");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Travel Account Number:", "a14"},

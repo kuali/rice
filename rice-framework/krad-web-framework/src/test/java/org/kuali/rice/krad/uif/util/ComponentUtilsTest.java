@@ -268,13 +268,14 @@ public class ComponentUtilsTest {
         assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i),
-                    (ComponentBase) collectionGroupCopy.getAddLineItems().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i).unwrap(),
+                    (ComponentBase) collectionGroupCopy.getAddLineItems().get(i).unwrap()));
         }
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
-                    collectionGroupCopy.getAddLineActions().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch(
+                    (Component) collectionGroupOriginal.getAddLineActions().get(i).unwrap(),
+                    (Component) collectionGroupCopy.getAddLineActions().get(i).unwrap()));
         }
     }
 

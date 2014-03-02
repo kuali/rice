@@ -200,7 +200,7 @@ function initEnterKeyHandler(){
                 if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
 
                     // find all primary action buttons on page with attribute data-primary_action='true'
-                    var primaryButtons = jQuery(event.currentTarget).find("[data-primary_action='true']");
+                    var primaryButtons = jQuery(event.currentTarget).find("[data-default_enter_key_action='true']");
 
                     // filter the buttons only one parent section deep
                     var primaryButton = primaryButtons.filter(function() {

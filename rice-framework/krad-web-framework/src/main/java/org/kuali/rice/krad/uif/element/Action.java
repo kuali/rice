@@ -124,7 +124,7 @@ public class Action extends ContentElementBase {
 
     private boolean evaluateDisabledOnKeyUp;
 
-    private boolean primaryAction;
+    private boolean defaultEnterKeyAction;
 
     private boolean disabled;
     private String disabledReason;
@@ -415,8 +415,8 @@ public class Action extends ContentElementBase {
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
 
         // add data attribute if this is the primary action
-        if (this.isPrimaryAction()) {
-            this.addDataAttribute(UifConstants.DataAttributes.PRIMARY_ACTION, Boolean.toString(this.isPrimaryAction()));
+        if (this.isDefaultEnterKeyAction()) {
+            this.addDataAttribute(UifConstants.DataAttributes.DEFAULT_ENTER_KEY_ACTION, Boolean.toString(this.isDefaultEnterKeyAction()));
         }
     }
 
@@ -1368,22 +1368,22 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Evaluate if this action is the primary action for a page, view, group, or section.
+     * Evaluate if this action is the default action for a page, view, group, or section.
      *
-     * @return true if this action is primary, false otherwise
+     * @return true if this action is default, false otherwise
      */
-    @BeanTagAttribute(name = "primaryAction")
-    public boolean isPrimaryAction() {
-        return this.primaryAction;
+    @BeanTagAttribute(name = "defaultEnterKeyAction")
+    public boolean isDefaultEnterKeyAction() {
+        return this.defaultEnterKeyAction;
     }
 
     /**
-     * Setter for {@link #isPrimaryAction()}.
+     * Setter for {@link #isDefaultEnterKeyAction()}.
      *
-     * @param primaryAction property value
+     * @param defaultEnterKeyAction property value
      */
-    public void setPrimaryAction(boolean primaryAction) {
-        this.primaryAction = primaryAction;
+    public void setDefaultEnterKeyAction(boolean defaultEnterKeyAction) {
+        this.defaultEnterKeyAction = defaultEnterKeyAction;
     }
 
     /**

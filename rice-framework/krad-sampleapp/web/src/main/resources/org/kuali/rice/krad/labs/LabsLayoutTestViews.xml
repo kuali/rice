@@ -182,24 +182,24 @@
                 <property name="layoutManager.defaultItemColSpan" value="4"/>
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 1"
+                    <bean parent="Uif-InputField" p:label="Field 1"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField1" p:constraintText="Additional Info"/>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 2"
+                    <bean parent="Uif-InputField" p:label="Field 2"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField2" p:constraintText="Additional Info">
                       <property name="control">
                         <bean parent="Uif-TextAreaControl"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 3"
+                    <bean parent="Uif-InputField" p:label="Field 3"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField3" p:constraintText="Additional Info">
                       <property name="control">
                         <bean parent="Uif-TextAreaControl" p:textExpand="true"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 4"
+                    <bean parent="Uif-InputField" p:label="Field 4"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField4" p:constraintText="Additional Info">
                       <property name="control">
@@ -215,7 +215,7 @@
                         </bean>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 5"
+                    <bean parent="Uif-InputField" p:label="Field 5"
                           p:instructionalText="These are instructions"
                           p:propertyName="multiSelectField1" p:constraintText="Additional Info">
                       <property name="control">
@@ -231,7 +231,7 @@
                         </bean>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 6"
+                    <bean parent="Uif-InputField" p:label="Field 6"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField6" p:constraintText="Additional Info">
                       <property name="control">
@@ -247,7 +247,7 @@
                         </bean>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 7"
+                    <bean parent="Uif-InputField" p:label="Field 7"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField7" p:constraintText="Additional Info">
                       <property name="control">
@@ -255,7 +255,7 @@
                               p:checkboxLabel="Checkbox Label"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 8"
+                    <bean parent="Uif-InputField" p:label="Field 8"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField8" p:constraintText="Additional Info">
                       <property name="control">
@@ -271,21 +271,21 @@
                         </bean>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 9"
+                    <bean parent="Uif-InputField" p:label="Field 9"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField9" p:constraintText="Additional Info">
                       <property name="control">
                         <bean parent="Uif-DateControl"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 10"
+                    <bean parent="Uif-InputField" p:label="Field 10"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField10" p:constraintText="Additional Info">
                       <property name="control">
                         <bean parent="Uif-FileControl"/>
                       </property>
                     </bean>
-                    <bean parent="Uif-InputField-LabelTop" p:label="Field 11"
+                    <bean parent="Uif-InputField" p:label="Field 11"
                           p:instructionalText="These are instructions"
                           p:propertyName="inputField11" p:constraintText="Additional Info">
                       <property name="control">
@@ -543,11 +543,10 @@
                 </list>
               </property>
             </bean>
-
             <bean p:headerText="Section 5" parent="Uif-VerticalBoxSection" p:instructionalText="Section with button set to primary enter key button.">
               <property name="items">
                 <list>
-                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:id="primary_button" p:primaryAction="true"  p:actionScript="alert('primary button');"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:id="primary_button" p:defaultEnterKeyAction="true"  p:actionScript="alert('primary button');"/>
                 </list>
               </property>
             </bean>
@@ -612,7 +611,7 @@
                 <property name="lineActions">
                   <list>
                     <bean parent="Uif-PrimaryActionButton" p:actionLabel="button1" p:id="ST-DemoButton11" p:actionScript="alert('You clicked a button1');" />
-                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2 - primary" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2-primary');" p:primaryAction="true" />
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2 - primary" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2-primary');" p:defaultEnterKeyAction="true" />
                     <bean parent="Uif-PrimaryActionButton" p:actionLabel="button3" p:id="ST-DemoButton13" p:actionScript="alert('You clicked a button3');" />
                   </list>
                 </property>

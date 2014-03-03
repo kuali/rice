@@ -50,7 +50,7 @@
   <bean id="LookupSampleViewAdditionalParameters" parent="Uif-LookupView">
     <property name="viewName" value="LookupSampleViewAdditionalParameters"/>
     <property name="viewHelperServiceClass" value="edu.sampleu.travel.TravelLookupableImpl"/>
-    <property name="headerText" value="Lookup Sample Additional Parameters (minSubsidized:50)"/>
+    <property name="headerText" value="Lookup Sample Additional Parameters"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="criteriaFields">
       <list>
@@ -68,6 +68,15 @@
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
         <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
       </list>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Travel Accounts subsidized by 50% or more"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

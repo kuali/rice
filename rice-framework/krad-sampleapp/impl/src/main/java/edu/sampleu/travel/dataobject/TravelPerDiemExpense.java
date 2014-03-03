@@ -68,8 +68,21 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelPerDiemExpenseId;
 
-    @Column(name = "TRVL_AUTH_DOC_ID")
+    @Column(name="TRVL_AUTH_DOC_ID", length=40)
+    @Label("Travel Authorization Document Id")
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     private String travelAuthorizationDocumentId;
+
+    @Relationship(foreignKeyFields="travelAuthorizationDocumentId")
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+    @JoinColumn(name = "TRVL_AUTH_DOC_ID", referencedColumnName = "TRVL_AUTH_DOC_ID",  insertable = false, updatable = false)
+    @InheritProperties({
+            @InheritProperty(name="documentNumber",
+                    label=@Label("Travel Authorization Document"),
+                    displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
+    private TravelAuthorizationDocument travelAuthorizationDocument;
 
     @Column(name="TRVL_DEST_ID", length=40)
     @Label("Primary Destination")
@@ -149,6 +162,14 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
 
     public void setTravelAuthorizationDocumentId(String travelAuthorizationDocumentId) {
         this.travelAuthorizationDocumentId = travelAuthorizationDocumentId;
+    }
+
+    public TravelAuthorizationDocument getTravelAuthorizationDocument() {
+        return travelAuthorizationDocument;
+    }
+
+    public void setTravelAuthorizationDocument(TravelAuthorizationDocument travelAuthorizationDocument) {
+        this.travelAuthorizationDocument = travelAuthorizationDocument;
     }
 
     public Date getPerDiemDate() {

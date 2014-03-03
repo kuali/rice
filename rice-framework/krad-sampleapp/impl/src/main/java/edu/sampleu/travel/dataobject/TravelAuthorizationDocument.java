@@ -45,6 +45,8 @@ import org.kuali.rice.krad.data.jpa.converters.KualiDecimalConverter;
 import org.kuali.rice.krad.data.provider.annotation.Description;
 import org.kuali.rice.krad.data.provider.annotation.KeyValuesFinderClass;
 import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
@@ -71,6 +73,7 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
 	@AssociationOverride(name="pessimisticLocks",
                          joinColumns= {@JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)})
 })
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelAuthorizationDocument extends TransactionalDocumentBase {
 	private static final long serialVersionUID = -6609385831976630737L;
 
@@ -126,12 +129,10 @@ public class TravelAuthorizationDocument extends TransactionalDocumentBase {
     @Description("This is the contact phone number during the trip.")
     private String cellPhoneNumber;
 
-    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
-    @JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = true, updatable = true)
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL}, mappedBy = "travelAuthorizationDocument")
     private List<TravelPerDiemExpense> dailyExpenseEstimates = new ArrayList<TravelPerDiemExpense>();
 
-    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL})
-    @JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = true, updatable = true)
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL}, mappedBy = "travelAuthorizationDocument")
     private List<TravelExpenseItem> actualExpenseItems = new ArrayList<TravelExpenseItem>();
 
     public Date getTripBegin() {

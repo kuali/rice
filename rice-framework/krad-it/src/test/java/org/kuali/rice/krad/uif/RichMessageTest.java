@@ -577,7 +577,7 @@ public class RichMessageTest extends KRADTestCase {
      *
      * @param element
      */
-    private void performSimulatedLifecycle(final Component component) {
+    private void performSimulatedLifecycle(final LifecycleElement element) {
         if (model == null) {
             model = new SampleForm();
         }

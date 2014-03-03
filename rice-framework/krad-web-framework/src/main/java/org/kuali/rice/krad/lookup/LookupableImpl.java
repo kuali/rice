@@ -514,7 +514,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             InputField inputField = criteriaFieldMap.get(searchPropertyName);
 
             if (readOnlyFieldsList == null || !readOnlyFieldsList.contains(searchPropertyName)) {
-                if (inputField != null) {
+                if (inputField != null && inputField.getDefaultValue() != null  ) {
                     searchPropertyValue = inputField.getDefaultValue().toString();
                 } else {
                     searchPropertyValue = "";

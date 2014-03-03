@@ -409,8 +409,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected WebElement findElement(By by) {
         try {
             return WebDriverUtils.findElement(getDriver(), by);
-        } catch (Exception e) {
-            jiraAwareFail(by.toString(), e.getMessage(), e);
+        } catch (Throwable t) {
+            jiraAwareFail(by.toString(), t.getMessage(), t);
         }
         return null; // required by compiler, never reached
     }

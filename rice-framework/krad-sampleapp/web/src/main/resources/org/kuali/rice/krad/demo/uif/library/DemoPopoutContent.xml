@@ -44,16 +44,16 @@
           <property name="hidden" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField1"/>
                 <property name="label" value="Field 1"/>
                 <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField2"/>
                 <property name="label" value="Field 2"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField3"/>
                 <property name="label" value="Field 3"/>
                 <property name="required" value="true"/>
@@ -84,16 +84,16 @@
           <property name="hidden" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField1"/>
                 <property name="label" value="Field 1"/>
                 <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField2"/>
                 <property name="label" value="Field 2"/>
               </bean>
-              <bean parent="Uif-InputField-LabelTop">
+              <bean parent="Uif-InputField">
                 <property name="propertyName" value="dataField3"/>
                 <property name="label" value="Field 3"/>
                 <property name="required" value="true"/>

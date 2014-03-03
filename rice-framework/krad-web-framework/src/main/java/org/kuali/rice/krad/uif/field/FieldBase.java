@@ -58,8 +58,6 @@ public class FieldBase extends ComponentBase implements Field {
 
     private String shortLabel;
     private Label fieldLabel;
-
-    private Position labelPlacement;
     
     private boolean labelRendered;
 
@@ -67,7 +65,6 @@ public class FieldBase extends ComponentBase implements Field {
         super();
 
         labelRendered = false;
-        labelPlacement = Position.LEFT;
     }
 
     /**
@@ -103,13 +100,8 @@ public class FieldBase extends ComponentBase implements Field {
                 fieldLabel.setRenderRequiredIndicator(false);
             }
 
-            if (labelPlacement.equals(Position.RIGHT)) {
-                fieldLabel.setRenderColon(false);
-            }
+            fieldLabel.addStyleClass("uif-labelBlock");
 
-            if (labelPlacement.equals(Position.TOP) || labelPlacement.equals(Position.BOTTOM)) {
-                fieldLabel.addStyleClass("uif-labelBlock");
-            }
 
             fieldLabel.addDataAttribute(UifConstants.DataAttributes.LABEL_FOR, this.getId());
             if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
@@ -272,25 +264,6 @@ public class FieldBase extends ComponentBase implements Field {
         this.fieldLabel = fieldLabel;
     }
 
-    /**
-     * Indicates where the label is placed in relation to the field (valid options are LEFT, RIGHT,
-     * BOTTOM, and TOP
-     * 
-     * @return position of label
-     */
-    @BeanTagAttribute(name = "labelPlacement", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Position getLabelPlacement() {
-        return this.labelPlacement;
-    }
-
-    /**
-     * Setter for the label's position in relation to the field (control if editable)
-     * 
-     * @param labelPlacement
-     */
-    public void setLabelPlacement(Position labelPlacement) {
-        this.labelPlacement = labelPlacement;
-    }
 
     /**
      * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()

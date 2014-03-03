@@ -282,14 +282,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             InputField inputField = criteriaFields.get(searchPropertyName);
 
             String adjustedSearchPropertyPath = UifPropertyPaths.LOOKUP_CRITERIA + "[" + searchPropertyName + "]";
-            if (inputField == null && hiddenCriteria.contains(adjustedSearchPropertyPath)) {
+            //TODO: Currently the validation is called before the performLifeCycle is completed on the view and
+            // hence any additionalHiddenPropertyNames will not be set on the InputFields. For now if the
+            // inputField is not found for the criteria, it is treated as "Valid"
+            if (inputField == null || hiddenCriteria.contains(adjustedSearchPropertyPath)) {
                 return valid;
             }
 
-            // if there is not an input field, then this is invalid search criteria
-            if (inputField == null) {
-                throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
-            }
+            //            if (inputField == null) {
+            //                throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
+            //            }
 
             if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
                 GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
@@ -911,8 +913,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return criteriaFieldMap;
         }
 
-        List<InputField> fields = ComponentUtils.getNestedContainerComponents(lookupView.getCriteriaGroup(),
-                InputField.class);
+        List<InputField> fields = null;
+        if (lookupView.getCriteriaGroup().getItems().size() > 0) {
+            fields = ComponentUtils.getNestedContainerComponents(lookupView.getCriteriaGroup(), InputField.class);
+        } else if (lookupView.getCriteriaFields().size() > 0) {
+            // If criteriaGroup items are empty look to see if criteriaFields has any input components.
+            // This is to ensure that if initializeGroup hasn't been called on the view, the validations will still happen on criteriaFields
+            fields = ComponentUtils.getComponentsOfType(lookupView.getCriteriaFields(), InputField.class);
+        } else {
+            fields = new ArrayList<InputField>();
+        }
         for (InputField field : fields) {
             criteriaFieldMap.put(field.getPropertyName(), field);
         }

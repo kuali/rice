@@ -2780,7 +2780,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                         + " looking for "
                         + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
             try {
-                if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
+                if (isElementPresentByXpath("//span[@class='uif-headerText-span' and contains(text(),'SubCollection - (3 lines)')]"))
                 {
                     break;
                 }
@@ -2789,9 +2789,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
 
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH));
-        assertEquals("SubCollection - (2 lines)", getTextByXpath(
-                "//a[@id='subCollection1_line1_toggle']/span"));
+        waitForElementPresentByXpath("//section[@id='subCollection1_line0']/header/div/label/a/span[contains(text(),'SubCollection - (3 lines)')]]");
+        waitForElementPresentByXpath("//a[@id='subCollection1_line1_toggle']/span");
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
@@ -3191,8 +3190,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testDisplayOnlyTooltipHelp() throws Exception {
 
         // test tooltip help of sub-section header
-        fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
+        fireMouseOverEventByXpath("//section[@data-parent='ConfigurationTestView-Help-Section1']/header/h4");
+        waitForElementPresentByXpath("//td[contains(text(),'Sample text for sub-section help')]");
 
         // test tooltip help of display only data field
         fireMouseOverEventByXpath("//label[@for='display-field_control']");
@@ -3205,7 +3204,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testMissingTooltipHelp() throws Exception {
 
         // test tooltip help of section header
-        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
+        fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section2']/div");
         assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
 
         // test tooltip help of field

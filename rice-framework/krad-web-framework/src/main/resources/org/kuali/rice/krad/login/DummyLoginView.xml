@@ -57,6 +57,11 @@
               value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl"/>
     <property name="viewName" value="default"/>
 
+  <property name="additionalCssFiles">
+    <list>
+      <value>css/bootstrap/css/bootstrap-skinned.css</value>
+    </list>
+  </property>
   </bean>
 
   <!--

@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
@@ -55,8 +56,8 @@ import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
@@ -499,8 +500,13 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
                 String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
                         + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
-                LOG.error(errorMessage);
-                throw new RuntimeException(errorMessage);
+
+                if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KNSConstants.EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE, false)) {
+                    throw new RuntimeException(errorMessage);
+                } else {
+                    LOG.error(errorMessage);
+                    continue;
+                }
             }
 
 			 Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
@@ -852,8 +858,13 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
                 String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
                         + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
-                LOG.error(errorMessage);
-                throw new RuntimeException(errorMessage);
+
+                if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KNSConstants.EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE, false)) {
+                    throw new RuntimeException(errorMessage);
+                } else {
+                    LOG.error(errorMessage);
+                    continue;
+                }
             }
 
 			 Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);

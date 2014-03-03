@@ -587,4 +587,5 @@ public class KNSConstants extends JSTLConstants {
   	
   	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
 
+  	public static final String EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE = "rice.kns.exceptionOnMissingFieldConversionAttribute";
 }

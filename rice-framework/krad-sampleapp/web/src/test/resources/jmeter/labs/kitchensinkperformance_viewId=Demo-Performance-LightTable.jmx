@@ -144,7 +144,7 @@
             <boolProp name="UserParameters.per_iteration">false</boolProp>
           </UserParameters>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor formKey" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">FORM_KEY</stringProp>
             <stringProp name="RegexExtractor.regex">type=&quot;hidden&quot; name=&quot;formKey&quot; value=&quot;(.+)&quot;</stringProp>
@@ -153,7 +153,7 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor sessionId" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">SESSION_ID</stringProp>
             <stringProp name="RegexExtractor.regex">type=&quot;hidden&quot; name=&quot;sessionId&quot; value=&quot;(.+)&quot;</stringProp>
@@ -162,7 +162,7 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor cacheKey" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">CACHE_KEY</stringProp>
             <stringProp name="RegexExtractor.regex">type=&quot;hidden&quot; name=&quot;cacheKey&quot; value=&quot;(.+)&quot;</stringProp>
@@ -171,7 +171,7 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor lightTableId" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">LIGHT_TABLE_ID</stringProp>
             <stringProp name="RegexExtractor.regex">div id=&quot;(.+)_length&quot; class=&quot;dataTables_length&quot;</stringProp>
@@ -180,7 +180,7 @@
             <stringProp name="RegexExtractor.match_number">0</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor pageId" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">PAGE_ID</stringProp>
             <stringProp name="RegexExtractor.regex">input id=&quot;pageId&quot; type=&quot;hidden&quot; name=&quot;pageId&quot; value=&quot;(.+)&quot;</stringProp>
@@ -2341,7 +2341,7 @@
                     <elementProp name="${LIGHT_TABLE_ID}_length" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">${LIGHT_TABLE_ID}_length</stringProp>
-                      <stringProp name="Argument.value">10</stringProp>
+                      <stringProp name="Argument.value">100</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -2481,7 +2481,17 @@
                 <boolProp name="HTTPSampler.monitor">false</boolProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               </HTTPSamplerProxy>
-              <hashTree/>
+              <hashTree>
+                <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion CHEM" enabled="true">
+                  <collectionProp name="Asserion.test_strings">
+                    <stringProp name="2067405">CHEM</stringProp>
+                  </collectionProp>
+                  <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+                  <boolProp name="Assertion.assume_success">false</boolProp>
+                  <intProp name="Assertion.test_type">2</intProp>
+                </ResponseAssertion>
+                <hashTree/>
+              </hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
                 <collectionProp name="HeaderManager.headers">
                   <elementProp name="Content-Type" elementType="Header">

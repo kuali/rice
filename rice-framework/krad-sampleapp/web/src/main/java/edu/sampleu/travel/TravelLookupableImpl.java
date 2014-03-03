@@ -33,7 +33,7 @@ import java.util.Map;
  */
 public class TravelLookupableImpl extends LookupableImpl {
 
-    /*
+    /**
      * Override the performSearch method so that we can perform any additional filtering of results from the standard query.
      * Here we are getting the additional parameters being passed in and filtering on minSubsidized value.
      *

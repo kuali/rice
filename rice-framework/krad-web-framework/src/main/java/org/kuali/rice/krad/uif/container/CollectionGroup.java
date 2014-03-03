@@ -35,6 +35,12 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 public interface CollectionGroup extends Group, DataBinding {
 
     /**
+     * Sets a reference in the context map for all nested components in the collection group
+     * instance, and sets selected collection path and id data attributes on nested actions of this group.
+     */
+    void pushCollectionGroupToReference();
+
+    /**
      * New collection lines are handled in the framework by maintaining a map on
      * the form. The map contains as a key the collection name, and as value an
      * instance of the collection type. An entry is created here for the
@@ -380,6 +386,18 @@ public interface CollectionGroup extends Group, DataBinding {
     void setFilters(List<CollectionFilter> filters);
 
     /**
+     * List of property names that should be checked for duplicates in the collection.
+     *
+     * @return the list of property names that should be checked for duplicates in the collection
+     */
+    List<String> getDuplicateLinePropertyNames();
+
+    /**
+     * @see CollectionGroup#getDuplicateLinePropertyNames()
+     */
+    void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames);
+
+    /**
      *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
      */
     List<BindingInfo> getUnauthorizedLineBindingInfos();
@@ -719,18 +737,5 @@ public interface CollectionGroup extends Group, DataBinding {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     void completeValidation(ValidationTrace tracer);
-
-    /**
-     * This method ...
-     * 
-     */
-    void pushCollectionGroupToReference();
-    
-    /**
-     * This method ...
-     * 
-     * @return
-     */
-    List<String> getDuplicateLinePropertyNames();
 
 }

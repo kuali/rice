@@ -211,6 +211,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean skipLifecycle() {
+            return this.isRetrieveViaAjax();
+    }
+
+    /**
      * @see LifecycleElement#checkMutable(boolean)
      */
     public void checkMutable(boolean legalDuringInitialization) {
@@ -2365,14 +2373,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         viewStatus = UifConstants.ViewStatus.CACHED;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean skipLifecycle() {
-            return this.isRetrieveViaAjax();
     }
 
     /**

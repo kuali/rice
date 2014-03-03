@@ -274,7 +274,13 @@ public interface LifecycleElement extends Serializable, Copyable {
     void performFinalize(Object model, LifecycleElement parent);
 
     /**
-     * Return true if the lifecycle should be skipped for this component
+     * Return true if the lifecycle should be skipped for this component.
+     *
+     * <p>Skipping the lifecycle means do not invoke the performInitialize, performApplyModel, and
+     * performFinalize methods of this component and its children.  This means that content built
+     * by those lifecycle tasks will not be processed or applied.
+     * Skipping the lifecycle on a component helps initial load/setup performance by only performing
+     * the full lifecycle when the component is requested on subsequent requests (ajax retrievals).</p>
      *
      * @return true if lifecycle should be skipped for this component
      */

@@ -80,7 +80,8 @@ public class ExpressionUtils {
 
                 Object nestedObject = ObjectPropertyUtils.getPropertyValue(expressionConfigurable, configurablePath);
 
-                // skip missing expression object for components skipping their lifecycle
+                // skip missing expression object for components skipping their lifecycle because objects
+                // in these components may be missing (and are expected to be missing)
                 if (nestedObject == null
                         && expressionConfigurable instanceof LifecycleElement
                         && ((LifecycleElement) expressionConfigurable).skipLifecycle()) {

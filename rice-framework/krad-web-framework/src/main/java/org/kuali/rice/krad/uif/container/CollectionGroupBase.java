@@ -431,8 +431,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * Sets a reference in the context map for all nested components to the collection group
-     * instance, and sets name as parameter for an action fields in the group
+     * {@inheritDoc}
      */
     public void pushCollectionGroupToReference() {
         Collection<LifecycleElement> components = ViewLifecycleUtils.getElementsForLifecycle(this).values();
@@ -864,7 +863,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * List of property names that should be checked for duplicates in the collection.
+     * {@inheritDoc}
      */
     @BeanTagAttribute(name = "duplicateLinePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getDuplicateLinePropertyNames() {
@@ -872,7 +871,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * @see CollectionGroup#getDuplicateLinePropertyNames()
+     * {@inheritDoc}
      */
     public void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames) {
         this.duplicateLinePropertyNames = duplicateLinePropertyNames;

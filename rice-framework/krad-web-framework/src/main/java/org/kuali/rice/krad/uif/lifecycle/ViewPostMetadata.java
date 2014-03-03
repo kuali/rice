@@ -264,10 +264,18 @@ public class ViewPostMetadata implements Serializable {
         secureFieldPropertyEditors.put(propertyPath, propertyEditor);
     }
 
+    /**
+     * The set of all the ids of InputFields present on the View
+     *
+     * @return the InputField ids for this View
+     */
     public Set<String> getInputFieldIds() {
         return inputFieldIds;
     }
 
+    /**
+     * @see ViewPostMetadata#getInputFieldIds()
+     */
     public void setInputFieldIds(Set<String> inputFieldIds) {
         this.inputFieldIds = inputFieldIds;
     }

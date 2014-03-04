@@ -196,7 +196,7 @@
     <property name="breadcrumbOptions.prePageBreadcrumbs">
       <list>
         <bean parent="Uif-BreadcrumbItem" p:label="Previous Page"
-              p:url.viewId="Demo-Breadcrumbs" p:url.pageId="Demo-Breadcrumbs-Page1"
+              p:url.viewId="Demo-Breadcrumbs-View1" p:url.pageId="Demo-Breadcrumbs-Page1"
               p:url.controllerMapping="/kradsampleapp"/>
       </list>
     </property>

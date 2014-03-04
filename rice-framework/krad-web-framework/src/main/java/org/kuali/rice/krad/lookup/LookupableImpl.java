@@ -704,7 +704,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             returnKeys = getLegacyDataAdapter().listPrimaryKeyFieldNames(getDataObjectClass());
         }
 
-        return KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
+        List<String> secureReturnKeys = lookupView.getAdditionalSecurePropertyNames();
+
+        return KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, secureReturnKeys, dataObject);
     }
 
     /**

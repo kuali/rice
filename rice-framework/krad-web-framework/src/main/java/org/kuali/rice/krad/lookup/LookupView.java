@@ -109,6 +109,8 @@ public class LookupView extends FormView {
 
     private boolean autoAddActiveCriteria;
 
+    private List<String> additionalSecurePropertyNames;
+
     public LookupView() {
         super();
 
@@ -119,6 +121,8 @@ public class LookupView extends FormView {
         renderLookupCriteria = true;
         renderCriteriaActions = true;
         renderResultActions = true;
+
+        additionalSecurePropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -809,5 +813,24 @@ public class LookupView extends FormView {
      */
     public void setAutoAddActiveCriteria(boolean autoAddActiveCriteria) {
         this.autoAddActiveCriteria = autoAddActiveCriteria;
+    }
+
+    /**
+     * List of secure property names that are in addition to the
+     * {@link org.kuali.rice.krad.uif.component.ComponentSecurity} or
+     * {@link org.kuali.rice.krad.datadictionary.AttributeSecurity} attributes.
+     *
+     * @return list of secure property names
+     */
+    @BeanTagAttribute(name = "additionalSecurePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalSecurePropertyNames() {
+        return additionalSecurePropertyNames;
+    }
+
+    /**
+     * @see LookupView#getAdditionalSecurePropertyNames()
+     */
+    public void setAdditionalSecurePropertyNames(List<String> additionalSecurePropertyNames) {
+        this.additionalSecurePropertyNames = additionalSecurePropertyNames;
     }
 }

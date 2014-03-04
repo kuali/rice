@@ -21,11 +21,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
- * Base class for testing lookup security.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTransactionalBase {
+public class LabsLookupSecurityTravelAuthorizationDocumentAft extends LabsTransactionalBase {
 
     /**
      * /kr-krad/approval?methodToCall=docHandler&command=initiate&docTypeName=TravelAuthorization&viewName=LabsLookupSecurityTravelAuthorization
@@ -158,6 +156,54 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
 
         assertFalse("Secure field travelerType.code was placed in the non-secure field emailAddress and decrypted",
                 StringUtils.equals(emailAddress, TRAVELER_TYPE_CODE_DECRYPTED));
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddDataDictionaryConversionFieldBookmark() throws Exception {
+        testTransactionalLookupSecurityAddDataDictionaryConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddDataDictionaryConversionFieldNav() throws Exception {
+        testTransactionalLookupSecurityAddDataDictionaryConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddHiddenConversionFieldBookmark() throws Exception {
+        testTransactionalLookupSecurityAddHiddenConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddHiddenConversionFieldNav() throws Exception {
+        testTransactionalLookupSecurityAddHiddenConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddUifConversionFieldBookmark() throws Exception {
+        testTransactionalLookupSecurityAddUifConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityAddUifConversionFieldNav() throws Exception {
+        testTransactionalLookupSecurityAddUifConversionField();
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityBookmark() throws Exception {
+        testTransactionalLookupSecurity(false);
+        passed();
+    }
+
+    @Test
+    public void testTransactionalLookupSecurityNav() throws Exception {
+        testTransactionalLookupSecurity(false);
+        passed();
     }
 
 }

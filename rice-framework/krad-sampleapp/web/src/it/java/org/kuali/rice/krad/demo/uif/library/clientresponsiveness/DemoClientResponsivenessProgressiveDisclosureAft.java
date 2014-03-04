@@ -54,8 +54,9 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         waitAndClickByName("booleanField1");
         assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
         jiraAwareTypeByName("inputField2", "show");
+        waitForElementPresentByXpath("//input[@name='inputField3' and @disabled]");
         waitAndClickByLinkText("Documentation");
-        assertIsVisibleByXpath("//input[@name='inputField3']","Not Visible");
+        waitForElementPresentByXpath("//input[@name='inputField3']");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureAjaxRetrieval() throws Exception {
@@ -145,13 +146,29 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         checkForIncidentReport();
     }
     
+    protected void testClientResponsivenessProgressiveDisclosureFieldWithCheckBoxFieldset() throws Exception {
+    	waitAndClickByLinkText("Field Within a Checkbox Field Set");
+    	waitForElementPresentByXpath("//input[@name='inputField21' and @disabled]");
+    	waitAndClickByXpath("//input[@name='checkboxesField1' and @value='1']");
+    	waitForElementPresentByXpath("//input[@name='inputField21']");
+        checkForIncidentReport();
+    }
+    
+    protected void testClientResponsivenessProgressiveDisclosureFieldWithRadioFieldset() throws Exception {
+    	waitAndClickByLinkText("Field Within a Radio Field Set");
+    	waitForElementPresentByXpath("//input[@name='inputField23' and @disabled]");
+    	waitAndClickByXpath("//input[@name='checkboxesField2' and @value='X']");
+    	waitForElementPresentByXpath("//input[@name='inputField23']");
+        checkForIncidentReport();
+    }
+    
     @Test
     public void testClientResponsivenessProgressiveDisclosureBookmark() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAll();
         passed();
     }
 
-    @Test
+//    @Test
     public void testClientResponsivenessProgressiveDisclosureNav() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAll();
         passed();
@@ -163,7 +180,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-    @Test
+//    @Test
     public void testClientResponsivenessProgressiveDisclosureConditionalOptionsNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureConditionalOptions();
         passed();
@@ -175,7 +192,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-    @Test
+//    @Test
     public void testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefreshNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefresh();
         passed();
@@ -187,7 +204,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-    @Test
+//    @Test
     public void testClientResponsivenessProgressiveDisclosureConditionalRefreshNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureConditionalRefresh();
         passed();
@@ -203,5 +220,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
 //        testClientResponsivenessProgressiveDisclosureConditionalRefresh();
 //        testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefresh();
 //        testClientResponsivenessProgressiveDisclosureConditionalOptions();
+        testClientResponsivenessProgressiveDisclosureFieldWithCheckBoxFieldset();
+        testClientResponsivenessProgressiveDisclosureFieldWithRadioFieldset();
     }
 }

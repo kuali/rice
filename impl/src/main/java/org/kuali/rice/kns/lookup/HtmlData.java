@@ -183,12 +183,15 @@ public abstract class HtmlData implements Serializable {
 		while (keysIt.hasNext()) {
 			String fieldNm = (String) keysIt.next();
 			Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
-			
+
 			FieldRestriction fieldRestriction = null;
 			if (businessObjectRestrictions != null) {
 				fieldRestriction = businessObjectRestrictions.getFieldRestriction(fieldNm);
 			}
-			if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
+
+            if (KNSServiceLocator.getDataDictionaryService().getAttributeDefinition(bo.getClass().getName(), fieldNm) == null) {
+                fieldVal = KNSConstants.EMPTY_STRING;
+            } else if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
 				fieldVal = fieldRestriction.getMaskFormatter().maskValue(fieldVal);
 			} else if (fieldVal == null) {
 				fieldVal = KNSConstants.EMPTY_STRING;
@@ -216,9 +219,11 @@ public abstract class HtmlData implements Serializable {
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
 			
-			titleText.append(KNSServiceLocator.getDataDictionaryService()
-					.getAttributeLabel(element, key)
-					+ "=" + fieldVal.toString() + " ");
+			if (StringUtils.isNotBlank(fieldVal)) {
+                titleText.append(KNSServiceLocator.getDataDictionaryService()
+                        .getAttributeLabel(element, key)
+                        + "=" + fieldVal.toString() + " ");
+            }
 		}
 		return titleText.toString();
 	}

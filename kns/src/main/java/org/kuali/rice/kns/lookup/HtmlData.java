@@ -16,11 +16,13 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -184,12 +186,15 @@ public abstract class HtmlData implements Serializable {
 		while (keysIt.hasNext()) {
 			String fieldNm = (String) keysIt.next();
 			Object fieldVal = ObjectUtils.getPropertyValue(dataObject, fieldNm);
-			
+
 			FieldRestriction fieldRestriction = null;
 			if (businessObjectRestrictions != null) {
 				fieldRestriction = businessObjectRestrictions.getFieldRestriction(fieldNm);
 			}
-			if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
+
+            if (KNSServiceLocator.getDataDictionaryService().getAttributeDefinition(dataObject.getClass().getName(), fieldNm) == null) {
+                fieldVal = KRADConstants.EMPTY_STRING;
+            } else if (fieldRestriction != null && (fieldRestriction.isMasked() || fieldRestriction.isPartiallyMasked())) {
 				fieldVal = fieldRestriction.getMaskFormatter().maskValue(fieldVal);
 			} else if (fieldVal == null) {
 				fieldVal = KRADConstants.EMPTY_STRING;
@@ -215,10 +220,12 @@ public abstract class HtmlData implements Serializable {
 		StringBuffer titleText = new StringBuffer(prependText);
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
-			
-			titleText.append(KRADServiceLocatorWeb.getDataDictionaryService()
-					.getAttributeLabel(dataObjectClass, key)
-					+ "=" + fieldVal.toString() + " ");
+
+            if (StringUtils.isNotBlank(fieldVal)) {
+                titleText.append(KRADServiceLocatorWeb.getDataDictionaryService()
+                        .getAttributeLabel(dataObjectClass, key)
+                        + "=" + fieldVal.toString() + " ");
+            }
 		}
 		return titleText.toString();
 	}

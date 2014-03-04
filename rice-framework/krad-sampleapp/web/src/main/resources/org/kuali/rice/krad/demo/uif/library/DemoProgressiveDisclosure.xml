@@ -38,6 +38,7 @@
         <ref bean="Demo-ProgressiveDisclosure-Example8"/>
         <ref bean="Demo-ProgressiveDisclosure-Example9"/>
         <ref bean="Demo-ProgressiveDisclosure-Example10"/>
+        <ref bean="Demo-ProgressiveDisclosure-Example11"/>
       </list>
     </property>
   </bean>
@@ -308,6 +309,35 @@
           </property>
         </bean>
         <!-- ex:Demo-ProgressiveDisclosure-Example10 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressiveDisclosure-Example11" parent="Uif-VerticalBoxSection" p:headerText="Field Within a Radio Field Set">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressiveDisclosure-Example11 start-->
+        <bean parent="Uif-InputField" p:propertyName="checkboxesField2" p:label="How many items would you like to purchase?" p:width="auto">
+          <property name="control">
+            <bean parent="Uif-VerticalRadioControl">
+              <property name="inlineComponents">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField23" p:progressiveRender="@{#dp.checkboxesField2 ne null and #dp.checkboxesField2 eq 'X'}" />
+                </list>
+              </property>
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="1"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="5" p:value="5"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="10" p:value="10"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="20" p:value="20"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="X" p:value="Other: [0]"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressiveDisclosure-Example11 end-->
       </list>
     </property>
   </bean>

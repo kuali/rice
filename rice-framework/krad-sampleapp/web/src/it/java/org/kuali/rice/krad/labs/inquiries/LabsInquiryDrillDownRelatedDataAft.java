@@ -56,7 +56,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         String[][] LabeledText = {{"Id:", "10000"},
-                {"Travel Authorization Document Id:", "10000"},
+                {"Travel Authorization Document:", "10000"},
                 {"Primary Destination:", "10000"},
 //                {"Date of Use:", getDateToday()},
                 {"Breakfast Value:", "10"}, 

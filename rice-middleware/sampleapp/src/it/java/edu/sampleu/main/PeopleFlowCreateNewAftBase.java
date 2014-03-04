@@ -87,9 +87,9 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         Thread.sleep(5000);
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        Thread.sleep(5000);
-        finishBlanketApprovalTest(docId);
+        waitForTextPresent(DOC_STATUS_FINAL);
     }
 
     protected void testPeopleFlowCreateNew() throws Exception {
@@ -110,8 +110,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        Thread.sleep(5000);
-        finishBlanketApprovalTest(docId);
+        waitForTextPresent(DOC_STATUS_ENROUTE);
     }
 
     private String peopleFlowCreateNew() throws InterruptedException {

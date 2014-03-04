@@ -222,8 +222,18 @@ public interface DataField extends DataBinding, Helpable, Field {
      */
     void setDefaultValues(Object[] defaultValues);
 
+    /**
+     * For read only DataFields, if forcedValue has a value, the value of it will be used instead of the value
+     * received from the propertyName specified for this field;
+     * this can be combined with SpringEL to format a property value in some way, for example.
+     *
+     * @return the forced value
+     */
     String getForcedValue();
 
+    /**
+     * @see org.kuali.rice.krad.uif.field.DataField#setForcedValue(String)
+     */
     void setForcedValue(String forcedValue);
 
     /**

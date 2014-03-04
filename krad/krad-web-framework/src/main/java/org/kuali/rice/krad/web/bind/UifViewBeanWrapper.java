@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -26,6 +31,7 @@ import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -206,12 +212,50 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     @Override
     public void setPropertyValue(PropertyValue pv) throws BeansException {
         registerEditorFromView(pv.getName());
+        
+        if (pv != null && pv.getValue() instanceof String) {
+            String propertyValue = (String) pv.getValue();
+
+            if (propertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                propertyValue = org.apache.commons.lang.StringUtils.removeEnd(propertyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (isSecure(pv.getName())) {
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        pv = new PropertyValue(pv, CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue));
+                    }
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        
         super.setPropertyValue(pv);
     }
 
     @Override
     public void setPropertyValue(String propertyName, Object value) throws BeansException {
         registerEditorFromView(propertyName);
+        
+        if (value instanceof String) {
+            String propertyValue = (String) value;
+
+            if (propertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                propertyValue = org.apache.commons.lang.StringUtils.removeEnd(propertyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (isSecure(propertyName)) {
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        value = CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue);
+                    }
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        
         super.setPropertyValue(propertyName, value);
     }
 
@@ -267,6 +311,27 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             tokens.keys = StringUtils.toStringArray(keys);
         }
         return tokens;
+    }
+    
+    private boolean isSecure(String propertyName) {
+        return isSecure(getWrappedClass(), propertyName);
+    }
+
+    private boolean isSecure(Class<?> wrappedClass, String propertyPath) {
+        if (KRADServiceLocatorWeb.getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(wrappedClass, propertyPath)) {
+            return true;
+        }
+
+        BeanWrapperImpl beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
+
+        if (beanWrapper != null && org.apache.commons.lang.StringUtils.isNotBlank(beanWrapper.getNestedPath())) {
+            PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
+            String nestedPropertyPath = org.apache.commons.lang.StringUtils.removeStart(tokens.canonicalName, beanWrapper.getNestedPath());
+
+            return isSecure(beanWrapper.getWrappedClass(), nestedPropertyPath);
+        }
+
+        return false;
     }
 
     private static class PropertyTokenHolder {

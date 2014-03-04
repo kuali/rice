@@ -101,12 +101,16 @@ public class LookupView extends FormView {
     private String maintenanceUrlMapping;
 
     private FieldGroup rangeFieldGroupPrototype;
+    
+    private List<String> additionalSecurePropertyNames;
 
     public LookupView() {
         super();
 
         setViewTypeName(ViewType.LOOKUP);
         setApplyDirtyCheck(false);
+        
+        additionalSecurePropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -561,5 +565,24 @@ public class LookupView extends FormView {
      */
     public void setRangeFieldGroupPrototype(FieldGroup rangeFieldGroupPrototype) {
         this.rangeFieldGroupPrototype = rangeFieldGroupPrototype;
+    }
+    
+    /** 
+     * List of secure property names that are in addition to the
+     * {@link org.kuali.rice.krad.uif.component.ComponentSecurity} or
+     * {@link org.kuali.rice.krad.datadictionary.AttributeSecurity} attributes.
+     *
+     * @return list of secure property names
+     */
+    @BeanTagAttribute(name = "additionalSecurePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalSecurePropertyNames() {
+        return additionalSecurePropertyNames;
+    }
+
+    /**
+     * @see LookupView#getAdditionalSecurePropertyNames()
+     */
+    public void setAdditionalSecurePropertyNames(List<String> additionalSecurePropertyNames) {
+        this.additionalSecurePropertyNames = additionalSecurePropertyNames;
     }
 }

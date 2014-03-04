@@ -714,7 +714,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         returnLinkField.setLinkText(linkLabel);
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
-        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
+        List<String> secureReturnKeys = lookupView.getAdditionalSecurePropertyNames();
+        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, secureReturnKeys, dataObject);
 
         String title = LookupInquiryUtils.getLinkTitleText(linkLabel, getDataObjectClass(), returnKeyValues);
         returnLinkField.setTitle(title);

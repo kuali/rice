@@ -42,6 +42,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -510,6 +511,22 @@ public final class KRADUtils {
      */
     public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
             Object dataObject) {
+        return getPropertyKeyValuesFromDataObject(propertyNames, Collections.<String>emptyList(), dataObject);
+    }
+
+    /**
+     * Builds a Map containing a key/value pair for each property given in the property names list, general
+     * security is checked to determine if the value needs to be encrypted along with applying formatting to
+     * the value
+     *
+     * @param propertyNames - list of property names to get key/value pairs for
+     * @param securePropertyNames - list of secure property names to match for encryption
+     * @param dataObject - object instance containing the properties for which the values will be pulled
+     * @return Map<String, String> containing entry for each property name with the property name as the map key
+     * and the property value as the value
+     */
+    public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
+            List<String> securePropertyNames, Object dataObject) {
         Map<String, String> propertyKeyValues = new HashMap<String, String>();
 
         if (dataObject == null) {
@@ -523,8 +540,7 @@ public final class KRADUtils {
                 propertyValue = StringUtils.EMPTY;
             }
 
-            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
+            if (isSecure(propertyName, securePropertyNames, dataObject, propertyValue)) {
                 try {
                     if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
                         propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
@@ -540,6 +556,32 @@ public final class KRADUtils {
         }
 
         return propertyKeyValues;
+    }
+
+    /**
+     * Determines whether a property name should be secured, either based on installed sensitive data patterns, a list
+     * of secure property name patterns, or attributes in the Data Dictionary.
+     *
+     * @param propertyName The property name to check for security
+     * @param securePropertyNames The secure property name patterns to check
+     * @param dataObject The object containing this property
+     * @param propertyValue The value of the property
+     *
+     * @return true if the property needs to be secure, false otherwise
+     */
+    private static boolean isSecure(String propertyName, List<String> securePropertyNames, Object dataObject, Object propertyValue) {
+        if (propertyValue instanceof String && containsSensitiveDataPatternMatch((String) propertyValue)) {
+            return true;
+        }
+
+        for (String securePropertyName : securePropertyNames) {
+            if (Pattern.compile(securePropertyName).matcher(propertyName).find()) {
+                return true;
+            }
+        }
+
+        return KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName);
     }
 
     /**

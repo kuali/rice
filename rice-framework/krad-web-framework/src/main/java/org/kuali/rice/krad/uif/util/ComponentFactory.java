@@ -191,7 +191,15 @@ public class ComponentFactory {
 
         if (component != null) {
             component = ComponentUtils.copy(component);
-            component.setId(origComponent.getBaseId());
+
+            String baseId = origComponent.getBaseId();
+            if (StringUtils.contains(origComponent.getId(), UifConstants.IdSuffixes.COMPARE)) {
+                String defaultSuffix = StringUtils.substringAfter(origComponent.getId(), UifConstants.IdSuffixes.COMPARE);
+                String idSuffix = UifConstants.IdSuffixes.COMPARE + defaultSuffix;
+                baseId = baseId + idSuffix;
+            }
+
+            component.setId(baseId);
         }
 
         return component;

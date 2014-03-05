@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -37,6 +38,7 @@ import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
@@ -506,6 +508,19 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         for (Iterator iter = pkNames.iterator(); iter.hasNext();) {
             String fieldNm = (String) iter.next();
 
+            // If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+
+                if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KNSConstants.EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE, false)) {
+                    throw new RuntimeException(errorMessage);
+                } else {
+                    LOG.error(errorMessage);
+                    continue;
+                }
+            }
+
             Object fieldVal = ObjectUtils.getPropertyValue(businessObject, fieldNm);
             if (fieldVal == null) {
                 fieldVal = KRADConstants.EMPTY_STRING;
@@ -851,6 +866,19 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         Iterator returnKeysIt = getReturnKeys().iterator();
         while (returnKeysIt.hasNext()) {
             String fieldNm = (String) returnKeysIt.next();
+
+            // If we cannot find the attribute in the data dictionary, then we cannot determine whether it should be encrypted
+            if (getDataDictionaryService().getAttributeDefinition(businessObjectClass.getName(), fieldNm) == null) {
+                String errorMessage = "The field " + fieldNm + " could not be found in the data dictionary for class "
+                        + businessObjectClass.getName() + ", and thus it could not be determined whether it is a secure field.";
+
+                if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KNSConstants.EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE, false)) {
+                    throw new RuntimeException(errorMessage);
+                } else {
+                    LOG.error(errorMessage);
+                    continue;
+                }
+            }
 
             Object fieldVal = ObjectUtils.getPropertyValue(bo, fieldNm);
             if (fieldVal == null) {

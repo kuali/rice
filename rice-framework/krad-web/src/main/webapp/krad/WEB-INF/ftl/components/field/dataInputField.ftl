@@ -116,12 +116,14 @@
         <#-- render span and values for informational properties -->
         <span id="${field.id}_info_message"></span>
 
-        <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
-            <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
-                <@spring.bind path="KualiForm.${infoPropertyPath}"/>
-                 ${spring.status.value?default("")}
-            </span>
-        </#list>
+        <#if field.propertyNamesForAdditionalDisplay??>
+            <#list field.propertyNamesForAdditionalDisplay as infoPropertyPath>
+                <span id="${field.id}_info_${krad.cleanPath(infoPropertyPath)}" class="uif-informationalMessage">
+                    <@spring.bind path="KualiForm.${infoPropertyPath}"/>
+                     ${spring.status.value?default("")}
+                </span>
+            </#list>
+        </#if>
 
         <#-- render field suggest if field is editable -->
         <#if !readOnly>

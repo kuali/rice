@@ -1099,7 +1099,7 @@ public class View extends ContainerBase {
 
     /**
      * Setter for the List of additional CSS files to included with the
-     * <code>View</code>
+     * <code>View</code>.
      *
      * @param additionalCssFiles
      */
@@ -1113,15 +1113,8 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Declares additional link tags that should be included with the
-     * <code>View</code> in the <head></head>. These files are brought into the HTML page along with
-     * common CSS files configured for the Rice application. Each entry should
-     * contain the path to the CSS file, either a relative path, path from web
-     * root, or full URI
-     * <p>
-     * e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
-     * 'http://my.edu/web/stacked-view.css'
-     * </p>
+     *  List of additional link tags that should be included with the
+     * <code>View</code> in the <head></head>.
      *
      * @return headlink objects
      */
@@ -1131,10 +1124,8 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the List of additional <link> tags to included in the
-     * <head></head>
      *
-     * @param additionalHeadLinks
+     * @see View#getAdditionalHeadLinks()
      */
     public void setAdditionalHeadLinks(List<HeadLink> additionalHeadLinks) {
 
@@ -1142,6 +1133,8 @@ public class View extends ContainerBase {
     }
 
     /**
+     * List of additional meta tags that should be included with the
+     * <code>View</code> in the <head></head>.
      *
      * @return   additionalMetaTags
      */
@@ -1152,7 +1145,7 @@ public class View extends ContainerBase {
 
     /**
      *
-     * @param additionalMetaTags
+     * @see View#getAdditionalMetaTags()
      */
     public void setAdditionalMetaTags(List<MetaTag> additionalMetaTags) {
         this.additionalMetaTags = additionalMetaTags;

@@ -140,6 +140,13 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
+    	waitAndClickButtonByText("submit");
+    	String requiredMessage []={"Description: Required"};
+    	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("Save");
+    	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("blanket approve");
+    	assertTextPresent(requiredMessage);
     }
 
 //    @Test

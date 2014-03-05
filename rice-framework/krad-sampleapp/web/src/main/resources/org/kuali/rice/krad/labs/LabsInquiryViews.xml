@@ -74,7 +74,13 @@
           <property name="headerText" value="Account Type Information"/>
           <property name="items">
             <list>
-              <bean parent="Uif-DataField" p:propertyName="accountTypeCode" p:forcedValue="@{#dp.accountTypeCode} (Click for Example)"/>
+              <bean parent="Uif-DataField" p:propertyName="accountTypeCode" p:forcedValue="@{#dp.accountTypeCode} (Click for Example)">
+                <property name="inquiry">
+                  <bean parent="Uif-Inquiry">
+                    <property name="viewName" value="LabsInquiry-CustomLinkView"/>
+                  </bean>
+                </property>
+              </bean>
               <bean parent="Uif-DataField" p:propertyName="name"/>
               <bean parent="Uif-DataField" p:propertyName="codeAndDescription"/>
             </list>

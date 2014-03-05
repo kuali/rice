@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
@@ -121,6 +120,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
     
     protected void testEditFiscalOfficer() throws Exception {
+    	checkForRequiredFields();
     	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
@@ -130,6 +130,16 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	{
     		jiraAwareFail("Fiscal Officer Not Changed");
     	}
+    }
+    
+    private void checkForRequiredFields() throws Exception{
+    	waitForElementPresentByXpath("//label[contains(text(),'Description')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Name:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Type Code:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
     }
 
 //    @Test

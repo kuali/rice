@@ -109,6 +109,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         jGrowl("Document Search is " + docId + " present?");
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
+        jGrowl("Click search.");
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         waitForTextPresent(DOC_STATUS_ENROUTE);
     }

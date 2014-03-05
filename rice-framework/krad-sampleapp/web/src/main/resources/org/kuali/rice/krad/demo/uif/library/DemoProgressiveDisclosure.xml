@@ -295,8 +295,8 @@
             <bean parent="Uif-VerticalCheckboxesControl">
               <property name="inlineComponents">
                 <list>
-                  <bean parent="Uif-InputField" p:propertyName="inputField21" p:progressiveRender="@{#dp.checkboxesField1 ne null and (#dp.checkboxesField1 eq '1' or #dp.checkboxesField1 eq '1,2')}" />
-                  <bean parent="Uif-InputField" p:propertyName="inputField22" p:progressiveRender="@{#dp.checkboxesField1 ne null and (#dp.checkboxesField1 eq '2' or #dp.checkboxesField1 eq '1,2')}" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField21" p:progressiveRender="@{#dp.checkboxesField1 ne null and #listContains(checkboxesField1, '1')}" />
+                  <bean parent="Uif-InputField" p:propertyName="inputField22" p:progressiveRender="@{#dp.checkboxesField1 ne null and #listContains(checkboxesField1, '2')}" />
                 </list>
               </property>
               <property name="options">

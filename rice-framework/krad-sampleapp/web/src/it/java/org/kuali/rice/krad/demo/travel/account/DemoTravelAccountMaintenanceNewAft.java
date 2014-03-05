@@ -110,6 +110,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
+    	checkForRequiredFields();
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
@@ -126,6 +127,16 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         if(isAlertPresent())    {
             fail("XSS vulnerability identified.");
         }
+    }
+    
+    private void checkForRequiredFields() throws Exception{
+    	waitForElementPresentByXpath("//label[contains(text(),'Description')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Name:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Type Code:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
     }
 
     public boolean isAlertPresent()

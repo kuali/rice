@@ -27,8 +27,8 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para> Rice ${project.version} is a bug fix release with some documentation
-                updates.</para>
+            <para>This version of Rice is a patch release containing security fixes. There are no database changes and
+                it should be a drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
@@ -108,76 +108,14 @@
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6103'>KULRICE-6103</link>] - Ensure we don't have any remaining references to "edu.iu" in our documentation</para>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12059'>KULRICE-12059</link>] - Security Vulnerability CVE-2014-0050 FileUpload</para>
                     </listitem>
                     <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-7864'>KULRICE-7864</link>] - CONTRIB: do not ignore validation when ad hoc route for completion request is receiving positive action (complete, approve, blanket approve)</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8724'>KULRICE-8724</link>] - Make sure document explanation and description fields have no sensitive data entered</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8762'>KULRICE-8762</link>] - CONTRIB: "Approve &amp; Blanket Approve" button should be disabled for a person who is doing COMPLETE action and "CANCEL" button should be enabled</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9021'>KULRICE-9021</link>] - Impex tool does not import into mysql properly for MySQL 5.6.x and indexes on large columns</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9125'>KULRICE-9125</link>] - Readonly=true overridden in collections</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9369'>KULRICE-9369</link>] - Upgrade Script Error</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9411'>KULRICE-9411</link>] - KEN Web Service URL incorrect in 2.x TRG</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9563'>KULRICE-9563</link>] - Editing permission that has perm id prefixed by "KFS" - receive error message: "The Permission Identifier (Permission Identifier) may only consist of digits." </para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9683'>KULRICE-9683</link>] - Quartz link in system admin tab throws a stack trace.</para>
+                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11952'>KULRICE-11952</link>] - Stateless KNS architecture sends control information through the browser</para>
                     </listitem>
                 </itemizedlist>
             </para>
         </section>
-        
-        
-        <section>
-            <title>Improvement</title>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-8799'>KULRICE-8799</link>] - version compatibility integration test is over-sensitive</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </section>
-        
-        
-        <section>
-            <title>Task</title>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-6140'>KULRICE-6140</link>] - Document Delivery Types - User Guide</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9020'>KULRICE-9020</link>] - Update documentation to reflect mysql settings for the latest version (5.6.x)</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9137'>KULRICE-9137</link>] - Fix copyright plugin excludes and restore original headers on non-foundation authored files</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9438'>KULRICE-9438</link>] - Not able to edit rules that have attributes - the attribute disappears once the doc is saved or submitted</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9588'>KULRICE-9588</link>] - Correct KEW documentation on implementing a thin client</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9714'>KULRICE-9714</link>] - Update or remove incorrect directory information from README.txt</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </section>
+
     </section>
 </article>

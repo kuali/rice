@@ -42,7 +42,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
     	waitAndClickByLinkText("10000");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                 {"Travel Authorization Document Id:", "10000"},
+                 {"Travel Authorization Document:", "10000"},
                  {"Primary Destination:", "10000"},
 //                 {"Date of Use:", getDateToday()},
                  {"Breakfast Value:", "10"}, 
@@ -59,7 +59,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
          waitAndClickButtonByText(CLOSE);
          selectTopFrame();
          String[][] LabeledText = {{"Id:", "10000"},
-        		 {" Travel Authorization Document Id: ","10000"},
+        		 {" Travel Authorization Document","10000"},
                  {"Primary Destination:", "10000"},
 //                 {"Date of Use:", getDateToday()}
                  };

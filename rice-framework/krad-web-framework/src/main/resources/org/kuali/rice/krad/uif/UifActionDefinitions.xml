@@ -45,6 +45,8 @@
         p:onClickScript="writeCurrentPageToSession(this);" p:dirtyOnAction="true"
         p:loadingMessageText="Deleting Line..." p:id="@{#collectionGroup.id}_del@{#lineSuffix}"/>
 
+  <bean id="Uif-DeleteLineAction-IconOnly" parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-close"/>
+
   <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
         p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
         p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save@{#lineSuffix}"
@@ -55,6 +57,8 @@
       </list>
     </property>
   </bean>
+
+  <bean id="Uif-SaveLineAction-IconOnly" parent="Uif-SaveLineAction" p:actionLabel="" p:iconClass="icon-disk"/>
 
   <bean id="Uif-AddBlankLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine"
         p:actionLabel="Add Line" p:actionEvent="addBlankLine" p:id="@{#collectionGroup.id}_add"/>

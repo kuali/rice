@@ -770,6 +770,12 @@
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithGridItems"/>
     </property>
+    <property name="lineActions">
+      <list>
+        <bean parent="Uif-DeleteLineAction-IconOnly"/>
+        <bean parent="Uif-SaveLineAction-IconOnly"/>
+      </list>
+    </property>
     <property name="displayLength" value="5"/>
     <property name="displayStart" value="0"/>
   </bean>

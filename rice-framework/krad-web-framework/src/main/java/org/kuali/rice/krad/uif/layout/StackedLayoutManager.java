@@ -206,6 +206,19 @@ public interface StackedLayoutManager extends CollectionLayoutManager {
      * @param actionsInLineGroup
      */
     void setActionsInLineGroup(boolean actionsInLineGroup);
+
+    /**
+     * Render line actions specified in lineActions to the very right of the header (appears in the corner of the
+     * item)
+     *
+     * @return true if rendering actions at the header level, false otherwise
+     */
+    public boolean isRenderLineActionsAtHeader();
+
+    /**
+     * @see StackedLayoutManager#isRenderLineActionsAtHeader()
+     */
+    public void setRenderLineActionsAtHeader(boolean renderLineActionsAtHeader);
     
    /**
     * Get a string representation of all style classes defined by this layout manager.

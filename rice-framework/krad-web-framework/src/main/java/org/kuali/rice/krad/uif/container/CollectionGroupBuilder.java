@@ -305,7 +305,7 @@ public class CollectionGroupBuilder implements Serializable {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
 
-        List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
+        List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, null);
 
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         initializeActions(actions, collectionGroup, lineIndex);

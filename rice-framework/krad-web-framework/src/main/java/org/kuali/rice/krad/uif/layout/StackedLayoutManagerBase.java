@@ -41,6 +41,7 @@ import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -93,6 +94,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     private List<Group> stackedGroups;
 
     private boolean actionsInLineGroup;
+    private boolean renderLineActionsAtHeader;
 
     public StackedLayoutManagerBase() {
         super();
@@ -251,15 +253,31 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             groupFields.addAll(lineBuilderContext.getSubCollectionFields());
         }
 
-        // set line actions on group footer
-        if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
-            // add the actions to the line group if isActionsInLineGroup flag is true
-            if (isActionsInLineGroup()) {
-                groupFields.addAll(actions);
-                lineGroup.setRenderFooter(false);
-            } else {
-                lineGroup.getFooter().setItems(actions);
+        boolean showActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        if (showActions && this.renderLineActionsAtHeader && lineGroup.getHeader() != null
+                && !lineBuilderContext.isAddLine()) {
+            // add to header when the option is true
+            Group headerGroup = lineGroup.getHeader().getRightGroup();
+
+            if (headerGroup == null) {
+                headerGroup = ComponentFactory.getHorizontalBoxGroup();
             }
+
+            List<Component> items = new ArrayList<Component>();
+            items.addAll(headerGroup.getItems());
+            items.addAll(actions);
+
+            headerGroup.setItems(items);
+            lineGroup.getHeader().setRightGroup(headerGroup);
+        }
+        else if (showActions && isActionsInLineGroup()) {
+            // add the actions to the line group if isActionsInLineGroup flag is true
+            groupFields.addAll(actions);
+            lineGroup.setRenderFooter(false);
+        }
+        else if (showActions && (lineGroup.getFooter() != null)) {
+            // add to footer in the default case
+            lineGroup.getFooter().setItems(actions);
         }
 
         lineGroup.setItems(groupFields);
@@ -523,5 +541,19 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     @Override
     public void setActionsInLineGroup(boolean actionsInLineGroup) {
         this.actionsInLineGroup = actionsInLineGroup;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isRenderLineActionsAtHeader() {
+        return renderLineActionsAtHeader;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderLineActionsAtHeader(boolean renderLineActionsAtHeader) {
+        this.renderLineActionsAtHeader = renderLineActionsAtHeader;
     }
 }

@@ -191,7 +191,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             }
 
             // add enter key action
-            if (collectionGroup.getAddLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+            if (StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
                 String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
                 if (addLineEnterKeyAction.indexOf("@{") != -1) {
                     addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
@@ -203,7 +203,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
 
             // add enter key action
-            if (collectionGroup.getLineEnterKeyAction() != null && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
+            if (StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
                 String lineEnterKeyAction = collectionGroup.getLineEnterKeyAction();
                 if (lineEnterKeyAction.indexOf("@{") != -1) {
                     lineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getLineEnterKeyAction());

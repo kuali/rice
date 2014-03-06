@@ -262,15 +262,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
         }
-
-//        for (Field field : this.getAllRowFields()) {
-//            field.addDataAttribute("test", "test");
-//            
-//            if (field.getDataAttributes().get("addData") != null)
-//                field.addDataAttribute("addDataId", field.getId());
-//            if (field.getDataAttributes().get("lineData") != null)
-//                field.addDataAttribute("lineDataId", field.getId());
-//        }
     }
 
     /**
@@ -617,8 +608,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         // non add line
         if (isAddLine) {
-            if (collectionGroup.getAddLineEnterKeyAction() != null
-                    && StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+            if (StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
                 String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
                 if (addLineEnterKeyAction.indexOf("@{") != -1) {
                     addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
@@ -629,8 +619,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
         // add line
         else {
-            if (collectionGroup.getLineEnterKeyAction() != null
-                    && StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
+            if (StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
                 String lineEnterKeyAction = collectionGroup.getLineEnterKeyAction();
                 if (lineEnterKeyAction.indexOf("@{") != -1) {
                     lineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getLineEnterKeyAction());

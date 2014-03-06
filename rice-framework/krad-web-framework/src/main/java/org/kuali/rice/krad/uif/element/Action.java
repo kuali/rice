@@ -1378,9 +1378,7 @@ public class Action extends ContentElementBase {
     }
 
     /**
-     * Setter for {@link #isDefaultEnterKeyAction()}.
-     *
-     * @param defaultEnterKeyAction property value
+     * @see  #isDefaultEnterKeyAction()
      */
     public void setDefaultEnterKeyAction(boolean defaultEnterKeyAction) {
         this.defaultEnterKeyAction = defaultEnterKeyAction;

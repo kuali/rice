@@ -124,34 +124,30 @@ public interface CollectionGroup extends Group, DataBinding {
 
     /**
      * Get the id of the add line action to invoke when the enter key is pressed.
-     * Use '@PRIMARY' if supposed to use first action where 'primaryAction'
-     * property is set to true.
+     *
+     * <p>Use '@PRIMARY' if supposed to use first action where 'primaryAction'
+     * property is set to true.</p>
      * 
      * @return id or '@PRIMARY'
      */
     String getAddLineEnterKeyAction();
 
     /**
-     * Setter for add line default action.
-     * 
-     * @param addLineEnterKeyAction
      * @see #getAddLineEnterKeyAction()
      */
     void setAddLineEnterKeyAction(String addLineEnterKeyAction);
 
     /**
      * Get the id of nonAdd line action to invoke when the enter key is pressed.
-     * Use '@PRIMARY' if supposed to use first action where 'primaryAction'
-     * property is set to true.
+     *
+     * <p>Use '@PRIMARY' if supposed to use first action where 'primaryAction'
+     * property is set to true.</p>
      * 
      * @return id or '@PRIMARY'
      */
     String getLineEnterKeyAction();
 
     /**
-     * Setter for nonAdd line default action.
-     * 
-     * @param lineEnterKeyAction
      * @see #getLineEnterKeyAction()
      */
     void setLineEnterKeyAction(String lineEnterKeyAction);

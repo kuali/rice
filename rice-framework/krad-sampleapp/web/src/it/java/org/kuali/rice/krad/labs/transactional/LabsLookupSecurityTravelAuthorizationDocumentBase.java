@@ -31,6 +31,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     public static final String BOOKMARK_URL = "/kr-krad/approval?methodToCall=docHandler&command=initiate&docTypeName=TravelAuthorization&viewName=LabsLookupSecurityTravelAuthorization";
 
     private static final String PHONE_NUMBER_NAME = "document.travelerDetail.phoneNumber";
+    private static final String PHONE_NUMBER_SELECTOR = "div[data-label = 'Phone Number']";
     private static final String PHONE_NUMBER_MASKED = "(xxx)xxx-xxxx";
     private static final String PHONE_NUMBER_DECRYPTED = "8005551212";
 
@@ -67,9 +68,11 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
         waitAndClickReturnValue();
 
         if (authorized) {
+            assertElementPresentByName(PHONE_NUMBER_NAME);
             assertTextNotPresent(PHONE_NUMBER_MASKED);
             assertTextPresent(PHONE_NUMBER_DECRYPTED);
         } else {
+            assertElementPresent(PHONE_NUMBER_SELECTOR);
             assertTextPresent(PHONE_NUMBER_MASKED);
             assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
         }

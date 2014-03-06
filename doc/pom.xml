@@ -25,9 +25,9 @@
 
 
   <properties>
-    <reldate>June 1, 2012</reldate>
+    <reldate>March 6, 2014</reldate>
     <previous.version>1.0.4</previous.version>
-    <previous.reldate>September 9, 2011</previous.reldate>
+    <previous.reldate>June 1, 2012</previous.reldate>
   </properties>
 
   <build>

@@ -14,8 +14,6 @@
 -- limitations under the License.
 --
 
-DROP TABLE TRV_ATT_GRP_SAMPLE
-/
 
 CREATE TABLE TRV_ATT_GRP_SAMPLE  (
 	ATT_GRP_NUM      	VARCHAR2(10),

@@ -147,6 +147,10 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	assertTextPresent(requiredMessage);
     	waitAndClickButtonByText("blanket approve");
     	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("add");
+    	String addRequiredMessage [] ={"Travel Sub Account Number: Required","Sub Account Name: Required"};
+    	assertTextPresent(addRequiredMessage);
+    	waitForElementPresentByXpath("//div[@data-label='Date Created']");
     }
 
 //    @Test

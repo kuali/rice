@@ -145,6 +145,9 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	assertTextPresent(requiredMessage);
     	waitAndClickButtonByText("blanket approve");
     	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("add");
+    	String addRequiredMessage [] ={"Travel Sub Account Number: Required","Sub Account Name: Required"};
+    	assertTextPresent(addRequiredMessage);
     }
 
     public boolean isAlertPresent()

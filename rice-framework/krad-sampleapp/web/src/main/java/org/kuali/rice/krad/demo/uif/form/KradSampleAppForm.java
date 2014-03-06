@@ -107,6 +107,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private String dataField1 = "1001";
     private String dataField2;
     private String dataField3 = "My Book Title";
+    private String dataField4;
 
     //MessageField
     private String messageField1;
@@ -534,6 +535,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDataField3(String dataField3) {
         this.dataField3 = dataField3;
+    }
+
+    public String getDataField4() {
+        return dataField4;
+    }
+
+    public void setDataField4(String dataField4) {
+        this.dataField4 = dataField4;
     }
 
     public String getInputField1() {

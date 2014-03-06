@@ -227,7 +227,7 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
 
         ViewHelperService viewHelperService = ViewLifecycle.getView().getViewHelperService();
-        if (this.getDefaultValue()!=null) {
+        if ((this.getDefaultValue()!=null) || (this.getDefaultValueFinderClass() != null)) {
                viewHelperService.populateDefaultValueForField(model, this, this.getBindingInfo().getBindingPath());
         }
 

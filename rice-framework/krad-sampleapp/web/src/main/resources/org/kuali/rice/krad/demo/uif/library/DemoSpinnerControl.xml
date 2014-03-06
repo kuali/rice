@@ -55,14 +55,14 @@
     <property name="items">
       <list>
         <!-- ex:Demo-SpinnerControl-Example2 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField1">
+        <bean parent="Uif-InputField" p:propertyName="inputField2" p:defaultValue="5">
           <property name="control">
             <bean parent="Uif-SpinnerControl">
               <property name="spinner">
                 <bean parent="Uif-Spinner">
                   <property name="templateOptions">
                     <map merge="true">
-                      <entry key="start" value="5"/>
+                      <entry key="min" value="5"/>
                       <entry key="step" value="25"/>
                       <entry key="max" value="2500"/>
                       <entry key="numberFormat" value="C"/>
@@ -84,14 +84,13 @@
     <property name="items">
       <list>
         <!-- ex:Demo-SpinnerControl-Example3 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField1">
+        <bean parent="Uif-InputField" p:propertyName="inputField3">
           <property name="control">
             <bean parent="Uif-SpinnerControl">
               <property name="spinner">
                 <bean parent="Uif-Spinner">
                   <property name="templateOptions">
                     <map merge="true">
-                      <entry key="start" value="0.01"/>
                       <entry key="step" value="0.01"/>
                       <entry key="numberFormat" value="n"/>
                       <entry key="culture" value="en-EN"/>
@@ -112,7 +111,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-SpinnerControl-Example4 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField1" p:widgetInputOnly="true">
+        <bean parent="Uif-InputField" p:propertyName="inputField4" p:widgetInputOnly="true">
           <property name="control">
             <bean parent="Uif-SpinnerControl"/>
           </property>

@@ -52,14 +52,31 @@
     <property name="required" value="true"/>
   </bean>
 
+  <bean id="TravelAttachmentSample-travelAttachmentGroupNumber"
+        parent="TravelAttachmentSample-travelAttachmentGroupNumber-parentBean"/>
+  <bean id="TravelAttachmentSample-travelAttachmentGroupNumber-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Attachment Group ID"/>
+    <property name="maxLength" value="10"/>
+    <property name="constraintText" value="Must not be more than 10 characters"/>
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="10"/>
+    </property>
+    <property name="summary" value="attachment group identifier"/>
+    <property name="name" value="travelAttachmentGroupNumber"/>
+    <property name="label" value="Group ID"/>
+    <property name="description" value="The Attachment Group ID Field"/>
+    <property name="required" value="true"/>
+  </bean>
+
   <bean id="TravelAttachmentSample-description" parent="TravelAttachmentSample-description-parentBean"/>
   <bean id="TravelAttachmentSample-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="description"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="4000"/>
+      <bean parent="Uif-TextControl" p:size="100"/>
     </property>
     <property name="shortLabel" value="Description"/>
-    <property name="label" value="Sample Attachment Description"/>
+    <property name="label" value="Description"/>
     <property name="description" value="The description for the sample attachment."/>
     <property name="summary" value=""/>
   </bean>
@@ -77,6 +94,7 @@
           <property name="headerText" value="Travel Account Information"/>
           <property name="items">
             <list>
+              <bean parent="Uif-DataField" p:propertyName="id"/>
               <bean parent="Uif-DataField" p:propertyName="id"/>
               <bean parent="Uif-DataField" p:propertyName="description"/>
             </list>

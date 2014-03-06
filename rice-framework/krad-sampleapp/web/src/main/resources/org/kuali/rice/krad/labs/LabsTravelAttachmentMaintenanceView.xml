@@ -41,6 +41,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="travelAttachmentGroupNumber"/>
               <bean parent="Uif-InputField" p:propertyName="description">
                 <property name="control">
                   <bean parent="Uif-TextAreaControl" p:cols="100" p:rows="4"/>

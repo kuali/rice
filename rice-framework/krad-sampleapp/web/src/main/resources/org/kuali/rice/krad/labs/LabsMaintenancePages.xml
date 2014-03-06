@@ -257,6 +257,8 @@
             <list>
               <bean parent="Uif-Link" p:linkText="Sample BO Attachment"
                     p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachment"/>
+              <bean parent="Uif-Link" p:linkText="Sample BO Attachment Collection"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
             </list>
           </property>
         </bean>

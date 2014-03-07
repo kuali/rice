@@ -62,6 +62,7 @@ JavascriptKradVariables.prototype = {
     DISABLE_BROWSER_CACHE: "view.disableBrowserCache",
     DISABLED_CLASS: "disabled",
     DIALOG_PLACEHOLDER: "_dialogPlaceholder",
+    ENTER_KEY_SUFFIX: "enter_key",
     ENTER_KEY_PRIMARY: "@PRIMARY",
     ERROR_HIGHLIGHT_SECTION_CLASS: "uif-errorHighlight-section",
     ERROR_MESSAGE_ITEM_CLASS: "uif-errorMessageItem-field",

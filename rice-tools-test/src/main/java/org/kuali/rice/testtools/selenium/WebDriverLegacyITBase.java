@@ -306,7 +306,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     /**
      * ^[\s\S]*valid[\s\S]*$
      */
-    public static final String REGEX_VALID = "^.*\\bvalid\\b.*$";
+    public static final String REGEX_VALID = "^[\\s\\S]*valid[\\s\\S]*$";
 
     /**
      * return selected
@@ -866,6 +866,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireEvent(field, "blur");
         Thread.sleep(500);
         assertAttributeClassRegexMatches(field, REGEX_ERROR);
+        clearTextByName(field);
     }
 
     protected void assertFocusTypeBlurError(String field, String[] errorInputs) throws InterruptedException {
@@ -882,6 +883,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(200);
         assertAttributeClassRegexMatches(field, REGEX_VALID);
         assertAttributeClassRegexDoesntMatch(field, REGEX_ERROR);
+        clearTextByName(field);
     }
 
     protected void assertFocusTypeBlurValid(String field, String[] validInputs) throws InterruptedException {

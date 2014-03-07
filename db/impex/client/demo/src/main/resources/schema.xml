@@ -830,8 +830,15 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
+    <table name="TRV_ATT_GRP_SAMPLE">
+        <column name="ATT_GRP_NUM" primaryKey="true" size="10" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="ATT_GRP_NAME" size="40" type="VARCHAR"/>
+    </table>
     <table name="TRV_ATT_SAMPLE">
         <column name="ATTACHMENT_ID" primaryKey="true" size="30" type="VARCHAR"/>
+        <column name="ATT_GRP_NUM" primaryKey="true" size="30" type="VARCHAR"/>
         <column name="DESCRIPTION" size="4000" type="VARCHAR"/>
         <column name="ATTACHMENT_FILENAME" size="300" type="VARCHAR"/>
         <column name="ATTACHMENT_FILE_CONTENT_TYPE" size="255" type="VARCHAR"/>
@@ -853,19 +860,6 @@
     <table name="TRV_DOC_ACCT">
         <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
-    </table>
-    <table name="TRV_MULTI_ATT_SAMPLE">
-        <column name="GEN_ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column name="ATTACHMENT_ID" size="30" type="VARCHAR"/>
-        <column name="DESCRIPTION" size="4000" type="VARCHAR"/>
-        <column name="ATTACHMENT_FILENAME" size="300" type="VARCHAR"/>
-        <column name="ATTACHMENT_FILE_CONTENT_TYPE" size="255" type="VARCHAR"/>
-        <column name="ATTACHMENT_FILE" type="BLOB"/>
-        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
-        <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <foreign-key foreignTable="TRV_ATT_SAMPLE" name="SYS_C003453453">
-            <reference foreign="ATTACHMENT_ID" local="ATTACHMENT_ID"/>
-        </foreign-key>
     </table>
     <table name="TRV_SUB_ACCT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>

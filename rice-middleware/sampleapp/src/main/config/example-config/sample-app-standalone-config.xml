@@ -43,8 +43,9 @@
   <param name="rice.server.datasource.password"></param>
   -->
 
+  <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
+
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
-  <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
 </config>

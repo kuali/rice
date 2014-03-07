@@ -63,7 +63,7 @@ JavascriptKradVariables.prototype = {
     DISABLED_CLASS: "disabled",
     DIALOG_PLACEHOLDER: "_dialogPlaceholder",
     ENTER_KEY_SUFFIX: "enter_key",
-    ENTER_KEY_PRIMARY: "@PRIMARY",
+    ENTER_KEY_DEFAULT: "@DEFAULT",
     ERROR_HIGHLIGHT_SECTION_CLASS: "uif-errorHighlight-section",
     ERROR_MESSAGE_ITEM_CLASS: "uif-errorMessageItem-field",
     FIELD_CLASS: "uif-field",

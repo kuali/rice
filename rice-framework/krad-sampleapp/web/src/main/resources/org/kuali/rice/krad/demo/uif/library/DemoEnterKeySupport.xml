@@ -133,7 +133,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-EnterKeySupport-Example4 start-->
-        <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@PRIMARY" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
+        <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
           <property name="headerText" value="Table Layout Enter Key Support" />
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection1" />

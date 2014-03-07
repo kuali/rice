@@ -175,6 +175,10 @@ jQuery(document).ready(function () {
 
 });
 
+/**
+ * Sets up and initializes the handlers for enter key actions
+ * This function determines which button/action should fire when the enter key is pressed while focus is on a configured input.
+ */
 function initEnterKeyHandler(){
     jQuery(document).on("keyup", "[data-enter_key]", function(event) {
         // grab the keycode based on browser
@@ -192,9 +196,9 @@ function initEnterKeyHandler(){
             if(jQuery(event.target).is(":not(a, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'] )")){
 
                 // check to see if primary enter key action button is targeted
-                if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
+                if(enterKeyId === kradVariables.ENTER_KEY_DEFAULT){
 
-                    // find all primary action buttons on page with attribute data-primary_action='true'
+                    // find all primary action buttons on page with attribute data-default_enter_key_action='true'
                     var primaryButtons = jQuery(event.currentTarget).find("[data-default_enter_key_action='true']");
 
                     // filter the buttons only one parent section deep
@@ -209,7 +213,7 @@ function initEnterKeyHandler(){
                 }
 
                 // if enterKeyAction is still set to  ENTER_KEY_PRIMARY value, do nothing, button doesn't exist
-                if(enterKeyId === kradVariables.ENTER_KEY_PRIMARY){
+                if(enterKeyId === kradVariables.ENTER_KEY_DEFAULT){
                      return false;
                 }
 

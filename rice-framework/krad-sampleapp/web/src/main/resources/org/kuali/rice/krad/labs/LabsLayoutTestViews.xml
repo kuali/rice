@@ -489,11 +489,11 @@
     </property>
   </bean>
 
-  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@PRIMARY">
+  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="headerText" value="Enter Key Support"/>
     <property name="singlePageView" value="true" />
     <property name="page">
-      <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to @PRIMARY[br]Using this action will fire the primary action button.">
+      <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to @DEFAULT[br]Using this action will fire the primary action button.">
         <property name="items">
           <list>
             <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
@@ -564,7 +564,7 @@
         <bean p:headerText="Page Title" parent="Uif-Page">
           <property name="items">
             <list>
-              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@PRIMARY" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
                 <property name="headerText" value="Table Layout Enter Key Support" />
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
                 <property name="propertyName" value="collection1" />
@@ -591,7 +591,7 @@
         <bean p:headerText="Page Title" parent="Uif-Page">
           <property name="items">
             <list>
-              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="ST-DemoButton01@{#lineSuffix}" p:lineEnterKeyAction="@PRIMARY">
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="ST-DemoButton01@{#lineSuffix}" p:lineEnterKeyAction="@DEFAULT">
                 <property name="headerText" value="Table Layout Enter Key Support 2" />
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
                 <property name="propertyName" value="collection1" />
@@ -629,7 +629,7 @@
         <bean p:headerText="Page Title" parent="Uif-Page">
           <property name="items">
             <list>
-              <bean parent="Uif-StackedCollectionSection" p:addLineEnterKeyAction="@PRIMARY" p:lineEnterKeyAction="ST-DemoButton21@{#lineSuffix}">
+              <bean parent="Uif-StackedCollectionSection" p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="ST-DemoButton21@{#lineSuffix}">
                 <property name="headerText" value="Stack Layout Enter Key Support" />
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
                 <property name="propertyName" value="collection2" />

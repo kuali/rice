@@ -23,6 +23,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -36,7 +37,7 @@ public class TravelSubAccount extends DataObjectBase {
 
 	private static final long serialVersionUID = 5768156680246084251L;
 
-	@ManyToOne
+    @ManyToOne(targetEntity = TravelAccount.class, fetch = FetchType.EAGER, cascade = {})
     @JoinColumn(name = "ACCT_NUM" ,insertable=false, updatable=false)
     TravelAccount account;
 

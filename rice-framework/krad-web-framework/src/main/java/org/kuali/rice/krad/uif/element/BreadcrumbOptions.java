@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
+package org.kuali.rice.krad.uif.element;
 
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.HistoryFlow;
@@ -301,7 +303,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
 
     /**
      * @see Copyable#copy()
-     * @see CopyUtils#copy(Copyable)
+     * @see org.kuali.rice.krad.uif.util.CopyUtils#copy(Copyable)
      */
     public final <T> T copy() {
         return CopyUtils.copy(this);

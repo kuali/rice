@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import org.kuali.rice.krad.uif.util.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 
 import java.io.Serializable;
@@ -86,10 +86,18 @@ public class HistoryFlow implements Serializable {
         this.flowReturnPoint = flowReturnPoint;
     }
 
+    /**
+     * Represents the very first url in the flow, the "start point", the view that initiated this flow trail
+     *
+     * @return the very first url in the flow
+     */
     public String getFlowStartPoint() {
         return flowStartPoint;
     }
 
+    /**
+     * @see HistoryFlow#getFlowStartPoint()
+     */
     public void setFlowStartPoint(String flowStartPoint) {
         this.flowStartPoint = flowStartPoint;
     }

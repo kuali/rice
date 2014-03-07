@@ -27,9 +27,9 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
+import org.kuali.rice.krad.uif.element.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 

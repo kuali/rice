@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
-
-import java.util.Map;
+package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -23,8 +21,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * BreadcrumbOptions specific to page.  Render options are only available at the page level.

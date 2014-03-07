@@ -2125,6 +2125,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
+        if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
+            ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
+            defaultValue = defaultValueFinder.getValue();
+        }
+
         if (StringUtils.isBlank(defaultValue)) {
             String defaultValuesExpression = null;
 
@@ -2152,11 +2157,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValues);
             }
         } else {
-            if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
-                ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
-                defaultValue = defaultValueFinder.getValue();
-            }
-
             // check for expression in defaultValue
             if (dataField.getExpressionGraph() != null &&
                     dataField.getExpressionGraph().containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {

@@ -33,7 +33,7 @@ public class ConfigComponentCreateNewNavAft extends ConfigComponentCreateNewAftB
     }
     
     @Test
-    public void testConfigComponentCreateNewDuplicateEntry() throws Exception {
+    public void testConfigComponentCreateNewDuplicateEntryNav() throws Exception {
         super.testConfigComponentCreateNewDuplicateEntry();
     }
 }

@@ -53,8 +53,11 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     protected void testCollectionFeaturesDefaultAddViaLightbox() throws Exception {
         selectByName("exampleShown","Collection Add Via Lightbox");
         waitAndClickButtonByText("Add Line");
+        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input","");
+        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr[2]/td/div/input","");
+        fireMouseOverEventByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input");
+        waitForElementPresent("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs' and @style='margin: 0px 0px 0px 72.16666662693024px; opacity: 1; top: 61px; left: 834px; position: absolute; display: block;']");
         waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input","12");
-//        waitAndTypeByName("newCollectionLines['collection1_2'].field1", "12");
         waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr[2]/td/div/input","5");
         waitAndClickByXpath("//form[@id='kualiLightboxForm']/section/div/button");
         waitForElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='12']");
@@ -76,7 +79,7 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         passed();
     }
 
-    @Test
+//    @Test
     public void testCollectionFeaturesAddLineNav() throws Exception {
         testCollectionFeaturesDefaultAddLine();
         testCollectionFeaturesDefaultAddBlankLine();

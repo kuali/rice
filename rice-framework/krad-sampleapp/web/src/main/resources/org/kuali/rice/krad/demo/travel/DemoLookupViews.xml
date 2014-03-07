@@ -116,8 +116,8 @@
                   p:href="lookup?lookupCriteria['number']=a1?&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1|a6': account number is 'a1' or 'a6' "
                   p:href="lookup?lookupCriteria['number']=a1|a6&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
-            <bean parent="Uif-Link" p:linkText="'fr* &amp;&amp; *k': fiscal officer starts with 'fr' AND ends with 'k'"
-                  p:href="lookup?lookupCriteria['fiscalOfficer.principalName']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+            <bean parent="Uif-Link" p:linkText="'fr* &amp;&amp; *k': fiscal officer user id starts with 'fr' AND ends with 'k'"
+                  p:href="lookup?lookupCriteria['fiscalOfficer.principalId']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1..a3': account number is in the range 'a1' to 'a3' "
                   p:href="lookup?lookupCriteria['number']=a1..a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&gt;a3': account number greater than 'a3' "
@@ -139,16 +139,6 @@
     <property name="viewName" value="OperatorsLookupSampleView"/>
     <property name="headerText" value="Lookup Sample - Operators"/>
     <property name="renderCriteriaActions" value="true"/>
-    <property name="criteriaFields">
-      <list merge="true">
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list merge="true">
-        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
   </bean>
 
   <bean id="LookupSampleViewConditionalCriteria" parent="LookupSampleView">

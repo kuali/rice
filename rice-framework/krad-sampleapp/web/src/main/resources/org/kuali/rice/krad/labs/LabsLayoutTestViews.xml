@@ -303,7 +303,6 @@
                     </bean>
                     <bean parent="Uif-PrimaryActionButton" p:actionLabel="Action Button"
                           p:actionScript="alert('You clicked a button');"/>
-
                     <bean parent="Uif-ActionLink" p:actionLabel="Action Link"
                           p:actionScript="alert('You clicked a Link');"/>
                   </list>
@@ -322,7 +321,6 @@
         <bean p:headerText="Page Title" parent="Uif-Page">
           <property name="items">
             <list>
-
               <bean parent="Uif-TableCollectionSection">
                 <property name="headerText"
                           value="TableCollection inside the details itself"/>
@@ -368,7 +366,6 @@
                   </list>
                 </property>
               </bean>
-
               <bean parent="Uif-TableCollectionSection">
                 <property name="headerText"
                           value="TableCollection inside the details itself"/>
@@ -458,7 +455,6 @@
             </list>
           </property>
         </bean>
-
       </list>
     </property>
   </bean>
@@ -521,7 +517,6 @@
                   <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 2"/>
                   <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 3" p:id="button3"/>
                   <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 4" p:id="button4"/>
-
                 </list>
               </property>
             </bean>
@@ -557,7 +552,6 @@
     <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm" />
   </bean>
 
-
   <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">
     <property name="items">
       <list>
@@ -585,7 +579,6 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTables2" parent="Uif-FormView">
-
     <property name="items">
       <list>
         <bean p:headerText="Page Title" parent="Uif-Page">

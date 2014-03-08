@@ -39,7 +39,21 @@ public class InPredicateTest {
             <decimalValue>1.1</decimalValue>
             <decimalValue>2.5</decimalValue>
           </in>""";
-	private static final String INTEGER_XML =
+    private static final String KUALI_DECIMAL_XML =
+            """<in propertyPath="kualiDecimalValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <kualiDecimalValue>2.50</kualiDecimalValue>
+            <kualiDecimalValue>2.60</kualiDecimalValue>
+            <kualiDecimalValue>2.70</kualiDecimalValue>
+          </in>""";
+
+    private static final String KUALI_PERCENT_XML =
+            """<in propertyPath="kualiPercentValues.path" xmlns="http://rice.kuali.org/core/v2_0">
+            <kualiPercentValue>25.00</kualiPercentValue>
+            <kualiPercentValue>26.00</kualiPercentValue>
+            <kualiPercentValue>27.00</kualiPercentValue>
+          </in>""";
+
+    private static final String INTEGER_XML =
         """<in propertyPath="integerValues.path" xmlns="http://rice.kuali.org/core/v2_0">
             <integerValue>1</integerValue>
             <integerValue>2</integerValue>
@@ -119,6 +133,10 @@ public class InPredicateTest {
 		assertEquals("stringValues.path", expression.getPropertyPath());
 		expression = createWithDecimalCriteria();
 		assertEquals("decimalValues.path", expression.getPropertyPath());
+        expression = createWithKualiDecimalCriteria();
+        assertEquals("kualiDecimalValues.path", expression.getPropertyPath());
+        expression = createWithKualiPercentCriteria();
+        assertEquals("kualiPercentValues.path", expression.getPropertyPath());
 		expression = createWithIntegerCriteria();
 		assertEquals("integerValues.path", expression.getPropertyPath());
 		expression = createWithDateTimeCriteria();
@@ -141,6 +159,18 @@ public class InPredicateTest {
 		for (CriteriaValue<?> value : expression.getValues()) {
 			assertTrue("Expression should be CriteriaDecimalValue", value instanceof CriteriaDecimalValue);
 		}
+
+        expression = createWithKualiDecimalCriteria();
+        assertEquals(3, expression.getValues().size());
+        for (CriteriaValue<?> value : expression.getValues()) {
+            assertTrue("Expression should be CriteriaKualiDecimalValue", value instanceof CriteriaKualiDecimalValue);
+        }
+
+        expression = createWithKualiPercentCriteria();
+        assertEquals(3, expression.getValues().size());
+        for (CriteriaValue<?> value : expression.getValues()) {
+            assertTrue("Expression should be CriteriaKualiPercentValue", value instanceof CriteriaKualiPercentValue);
+        }
 		
 		expression = createWithIntegerCriteria();
 		assertEquals(5, expression.getValues().size());
@@ -166,6 +196,12 @@ public class InPredicateTest {
 		
 		expression = createWithDecimalCriteria();
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, InPredicate.class);
+
+        expression = createWithKualiDecimalCriteria();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, KUALI_DECIMAL_XML, InPredicate.class);
+
+        expression = createWithKualiPercentCriteria();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, KUALI_PERCENT_XML, InPredicate.class);
 		
 		expression = createWithIntegerCriteria();
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, InPredicate.class);
@@ -189,6 +225,22 @@ public class InPredicateTest {
 		valueList.add(new CriteriaDecimalValue(2.5));
 		return new InPredicate("decimalValues.path", valueList);
 	}
+
+    private static InPredicate createWithKualiDecimalCriteria() {
+        Set<CriteriaKualiDecimalValue> valueList = new LinkedHashSet<CriteriaKualiDecimalValue>();
+        valueList.add(new CriteriaKualiDecimalValue(2.5));
+        valueList.add(new CriteriaKualiDecimalValue(2.6));
+        valueList.add(new CriteriaKualiDecimalValue(2.7));
+        return new InPredicate("kualiDecimalValues.path", valueList);
+    }
+
+    private static InPredicate createWithKualiPercentCriteria() {
+        Set<CriteriaKualiPercentValue> valueList = new HashSet<CriteriaKualiPercentValue>();
+        valueList.add(new CriteriaKualiPercentValue(26.00));
+        valueList.add(new CriteriaKualiPercentValue(27.00));
+        valueList.add(new CriteriaKualiPercentValue(25.00));
+        return new InPredicate("kualiPercentValues.path", valueList);
+    }
 	
 	private static InPredicate createWithIntegerCriteria() {
 		Set<CriteriaIntegerValue> valueList = new HashSet<CriteriaIntegerValue>();

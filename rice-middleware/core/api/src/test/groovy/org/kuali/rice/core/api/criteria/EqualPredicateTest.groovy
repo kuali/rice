@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.criteria;
+package org.kuali.rice.core.api.criteria
 
+import org.kuali.rice.core.api.util.type.KualiDecimal
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
@@ -34,8 +36,10 @@ public class EqualPredicateTest {
 	private static final String DECIMAL_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></equal>";
 	private static final String INTEGER_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></equal>";
 	private static final String DATE_TIME_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></equal>";
+    private static final String KUALI_DECIMAL_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiDecimalValue>0.00</kualiDecimalValue></equal>";
+    private static final String KUALI_PERCENT_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiPercentValue>0.00</kualiPercentValue></equal>";
 	
-	
+
 	/**
 	 * Test method for {@link EqualPredicate#EqualPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
 	 * 
@@ -53,7 +57,17 @@ public class EqualPredicateTest {
 		equalExpression = new EqualPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(BigDecimal.ZERO, equalExpression.getValue().getValue());
-		
+
+        // Test that it can take a CriteriaKualiDecimalValue
+        equalExpression = new EqualPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        assertEquals("property.path", equalExpression.getPropertyPath());
+        assertEquals(KualiDecimal.ZERO, equalExpression.getValue().getValue());
+
+        // Test that it can take a CriteriaKualiPercentValue
+        equalExpression = new EqualPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        assertEquals("property.path", equalExpression.getPropertyPath());
+        assertEquals(KualiPercent.ZERO, equalExpression.getValue().getValue());
+
 		// Test that it can take a CriteriaIntegerValue
 		equalExpression = new EqualPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		assertEquals("property.path", equalExpression.getPropertyPath());
@@ -84,6 +98,12 @@ public class EqualPredicateTest {
 		
 		equalExpression = new EqualPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DECIMAL_XML, EqualPredicate.class);
+
+        equalExpression = new EqualPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, KUALI_DECIMAL_XML, EqualPredicate.class);
+
+        equalExpression = new EqualPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, KUALI_PERCENT_XML, EqualPredicate.class);
 		
 		equalExpression = new EqualPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, INTEGER_XML, EqualPredicate.class);

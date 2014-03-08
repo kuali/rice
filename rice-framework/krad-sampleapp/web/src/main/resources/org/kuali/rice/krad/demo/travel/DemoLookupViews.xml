@@ -58,6 +58,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:label="Fiscal Officer User ID"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent"/>
       </list>
     </property>
     <property name="resultFields">

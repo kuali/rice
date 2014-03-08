@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlElements;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 /**
  * A class which includes various utilities and constants for use within the criteria API.
@@ -175,7 +177,11 @@ final class CriteriaSupportUtils {
 			return new CriteriaDecimalValue((Float)object);
 		} else if (object instanceof Double) {
 			return new CriteriaDecimalValue((Double)object);
-		}
+		}  else if (object instanceof KualiPercent) {
+            return new CriteriaKualiPercentValue((KualiPercent)object);
+        }else if (object instanceof KualiDecimal) {
+            return new CriteriaKualiDecimalValue((KualiDecimal)object);
+        }
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}
 

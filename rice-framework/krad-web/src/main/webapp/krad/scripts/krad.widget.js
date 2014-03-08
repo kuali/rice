@@ -1622,13 +1622,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
 
     var queryParamLength = 0;
     for (var parameter in queryParameters) {
-        queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
+        queryData['queryParameters.' + queryParameters[parameter]] = coerceValue(parameter);
         queryParamLength++;
     }
 
     if (queryParamLength === 0) {
         for (var parameter in queryMethodArgs) {
-            queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
+            queryData['queryParameters.' + queryMethodArgs[parameter]] = coerceValue(parameter);
         }
     }
 

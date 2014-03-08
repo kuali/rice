@@ -1504,6 +1504,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected List<WebElement> findElements(By by, WebElement element) {
+        if (element == null) {
+            checkForIncidentReport();
+            throw new AssertionError("element to findElements on for " + by.toString() + " is null in class " + this.getClass().toString());
+        }
         List<WebElement> found = element.findElements(by);
         return found;
     }

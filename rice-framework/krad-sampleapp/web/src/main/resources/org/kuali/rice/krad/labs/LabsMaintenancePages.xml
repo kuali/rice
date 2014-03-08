@@ -309,11 +309,12 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR5C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Different Default Open/Close States"
+              p:instructionalText="Description of what is done to override default open/close tab states">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance different default open/close tab states"
+                    p:href="account?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-DifferentOpenCloseTabStates"/>
             </list>
           </property>
         </bean>

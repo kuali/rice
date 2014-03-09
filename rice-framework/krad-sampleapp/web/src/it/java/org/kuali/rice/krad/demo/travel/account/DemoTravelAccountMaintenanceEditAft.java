@@ -153,25 +153,25 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//div[@data-label='Date Created']");
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();

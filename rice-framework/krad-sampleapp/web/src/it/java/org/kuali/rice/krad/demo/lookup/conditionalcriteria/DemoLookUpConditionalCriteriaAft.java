@@ -36,29 +36,14 @@ public class DemoLookUpConditionalCriteriaAft extends WebDriverLegacyITBase {
     private static final String LOOKUP_CRITERIA_NUMBER_NAME="lookupCriteria[number]";
     
     /**
-     *  Search
-     */
-    private static final String SEARCH="Search";
-    
-    /**
      *  lookupCriteria[rangeLowerBoundKeyPrefix_createDate]
      */
-    private static final String LOOKUP_CRITERIA_DATE_NAME="lookupCriteria[rangeLowerBoundKeyPrefix_createDate]";
-    
+    private static final String LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME="lookupCriteria[rangeLowerBoundKeyPrefix_createDate]";
+
     /**
-     *  Not read only. Date input field present.
+     *  lookupCriteria[createDate]
      */
-    private static final String FAILURE_MESSAGE="Not read only. Date input field present.";
-    
-    /**
-     *  Date Created:
-     */
-    private static final String DATE_CREATED_MESSAGE="Date Created:";
-    
-    /**
-     *  Date Created is a required field.
-     */
-    private static final String DATE_REQUIRED_MESSAGE="Date Created is a required field.";
+    private static final String LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME="lookupCriteria[createDate]";
     
     @Override
     public String getBookmarkUrl() {
@@ -73,30 +58,35 @@ public class DemoLookUpConditionalCriteriaAft extends WebDriverLegacyITBase {
 
     protected void testLookUpConditionalCriteria() throws InterruptedException {
         //Case 1 - Date field required by number a1
-        //It requires "Search" to be clicked twice, for the date required message to show.
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
-        waitAndClickByName("lookupCriteria[name]");
-        waitForElementPresent(By.className("uif-requiredMessage"));
-        checkForIncidentReport();
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "blur");
+        waitAndClickSearch3();
+        assertTrue(isElementPresent(By.className("uif-requiredMessage")));
+        assertTrue(isElementPresentByName(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME));
+        assertTrue(isElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME));
+
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
 
         //Case 2 - Date field read only by number a2
-        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a2");
-        waitAndClickByName("lookupCriteria[name]");
-        Thread.sleep(3000);
-        checkForIncidentReport();
-        if(isElementPresentByName(LOOKUP_CRITERIA_DATE_NAME)) {
-            fail(FAILURE_MESSAGE);
-        }
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "blur");
+        waitAndClickSearch3();
+        assertFalse(isElementPresentByName(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME));
+        assertFalse(isElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME));
+
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         
         //Case 3 - Date field hide by number a3
-        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
-        waitAndClickByName("lookupCriteria[name]");
-        Thread.sleep(3000);
-        checkForIncidentReport();
-        assertTrue(isNotVisible(By.name(LOOKUP_CRITERIA_DATE_NAME)));
-        assertTrue(isNotVisible(By.name("lookupCriteria[createDate]")));
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
+        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "blur");
+        waitAndClickSearch3();
+        waitForElementPresentByName(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME);
+        assertTrue(isNotVisible(By.name(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME)));
+        waitForElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME);
+        assertTrue(isNotVisible(By.name(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME)));
     }
 
     @Test

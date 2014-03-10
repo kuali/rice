@@ -260,6 +260,7 @@ public class RecallActionTest extends KEWTestCase {
         assertTrue("Document should be approved", document.isApproved());
         assertFalse("Document should not be final", document.isFinal());
 
+        GlobalVariables.getMessageMap().clearErrorMessages();
     }
 
     @Test
@@ -302,6 +303,8 @@ public class RecallActionTest extends KEWTestCase {
         assertFalse("Document should not be processed", document.isProcessed());
         assertTrue("Document should be approved", document.isApproved());
         assertTrue("Document should be final", document.isFinal());
+
+        GlobalVariables.getMessageMap().clearErrorMessages();
     }
 
     @Test public void testRecallToActionListAsInitiatorBeforeAnyApprovals() throws Exception {

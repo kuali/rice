@@ -39,51 +39,51 @@ public class EmailAddressValidationPatternTest extends KRADTestCase {
 
 
     @Test public final void testMatches_valid1() {
-        assertTrue(pattern.matches("ww5@a.b.c.org"));
+        assertTrue("Valid email address did not pass the validation pattern", pattern.matches("ww5@a.b.c.org"));
     }
 
     @Test public final void testMatches_valid2() {
-        assertTrue(pattern.matches("something.else@a2.com"));
+        assertTrue("Valid email address did not pass the validation pattern", pattern.matches("something.else@a2.com"));
     }
 
     @Test public final void testMatches_valid3() {
-        assertTrue(pattern.matches("something_else@something.else.com"));
+        assertTrue("Valid email address did not pass the validation pattern", pattern.matches("something_else@something.else.com"));
     }
 
     @Test public final void testMatches_valid4() {
-        assertTrue(pattern.matches("something-else@et-tu.com"));
+        assertTrue("Valid email address did not pass the validation pattern", pattern.matches("something-else@et-tu.com"));
     }
 
 
     @Test public final void testMatches_invalid1() {
-        assertFalse(pattern.matches("@a.b.c.org"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("@a.b.c.org"));
     }
 
     @Test public final void testMatches_invalid2() {
-        assertFalse(pattern.matches("a"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("a"));
     }
 
     @Test public final void testMatches_invalid3() {
-        assertFalse(pattern.matches("1@org"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("1@org"));
     }
 
     @Test public final void testMatches_invalid4() {
-        assertFalse(pattern.matches("1@a"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("1@a"));
     }
 
     @Test public final void testMatches_invalid5() {
-        assertFalse(pattern.matches("_@a"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("_@a"));
     }
 
     @Test public final void testMatches_invalid6() {
-        assertFalse(pattern.matches(".@a.org"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches(".@a.org"));
     }
 
     @Test public final void testMatches_invalid7() {
-        assertFalse(pattern.matches("-@a.org"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("-@a.org"));
     }
 
     @Test public final void testMatches_invalid8() {
-        assertFalse(pattern.matches("something@a.o-rg"));
+        assertFalse("Invalid email address passed the validation pattern", pattern.matches("something@a.o-rg"));
     }
 }

@@ -25,6 +25,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
 import org.springframework.util.StringUtils;
@@ -322,9 +323,15 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return true;
         }
 
-        BeanWrapperImpl beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
+        BeanWrapperImpl beanWrapper;
+        try {
+            beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
+        } catch (NotReadablePropertyException nrpe) {
+            LOG.debug("Bean wrapper was not found for " + propertyPath + ", but since it cannot be accessed it will not be set as secure.", nrpe);
+            return false;
+        }
 
-        if (beanWrapper != null && org.apache.commons.lang.StringUtils.isNotBlank(beanWrapper.getNestedPath())) {
+        if (org.apache.commons.lang.StringUtils.isNotBlank(beanWrapper.getNestedPath())) {
             PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
             String nestedPropertyPath = org.apache.commons.lang.StringUtils.removeStart(tokens.canonicalName, beanWrapper.getNestedPath());
 

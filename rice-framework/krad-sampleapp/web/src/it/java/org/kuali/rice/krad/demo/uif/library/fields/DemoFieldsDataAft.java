@@ -106,7 +106,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 
     protected void testDataFieldDefaultValue() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example4", "DataField 2");
-        if(!"2012".equals(valueText)) {
+        if (!valueText.contains("2012")) {
             jiraAwareFail("Fields Data Field Default Value 2012 not displayed");
         }
     }

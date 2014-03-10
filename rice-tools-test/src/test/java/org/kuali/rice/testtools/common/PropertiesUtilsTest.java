@@ -92,6 +92,7 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testLoadPropertiesWithSystemAndOverridesIntoSystem() throws IOException {
+        Assert.fail();// test CI reporting
         Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
         Properties props = propUtils.loadPropertiesWithSystemAndOverridesIntoSystem("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
         Assert.assertTrue(System.getProperty("saucelabs.browser").equals("ff"));

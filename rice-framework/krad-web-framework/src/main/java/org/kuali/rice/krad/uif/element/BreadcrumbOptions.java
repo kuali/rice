@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -146,7 +147,7 @@ public class BreadcrumbOptions implements Serializable, Copyable {
         //add to breadcrumbItem to current items if it is set to use in path based
         if (model instanceof UifFormBase && ((UifFormBase) model).getHistoryFlow() != null) {
             // clean the breadcrumb item since it will be stored in session
-            ComponentUtils.cleanContextDeap(view.getBreadcrumbItem());
+            ContextUtils.cleanContextDeep(view.getBreadcrumbItem());
 
             ((UifFormBase) model).getHistoryFlow().setCurrentViewItem(view.getBreadcrumbItem());
         }

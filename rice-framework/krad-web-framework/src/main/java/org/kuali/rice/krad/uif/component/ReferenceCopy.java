@@ -40,7 +40,7 @@ public @interface ReferenceCopy {
 	 * @return boolean true if new collection instance should be made, false if
 	 *         the whole collection should be copied by reference
 	 */
-	public boolean newCollectionInstance() default false;
+	boolean newCollectionInstance() default false;
 
     /**
      * Indicates that a field should be omitted from copying.
@@ -48,6 +48,6 @@ public @interface ReferenceCopy {
      * @return true if the field should be omitted from copying, false to follow
      *         {@link #newCollectionInstance()} semantics.
      */
-    public boolean referenceTransient() default false;
+    boolean referenceTransient() default false;
 
 }

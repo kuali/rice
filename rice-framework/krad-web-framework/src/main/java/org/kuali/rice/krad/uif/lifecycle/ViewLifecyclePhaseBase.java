@@ -31,7 +31,6 @@ import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -352,7 +351,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         if (ViewLifecycle.isRefreshLifecycle() && (refreshPaths != null)) {
             String currentPath = getViewPath();
 
-            boolean withinRefreshComponent = currentPath.startsWith(ViewLifecycle.getRefreshComponentPhasePath(getViewPhase()));
+            boolean withinRefreshComponent = currentPath.startsWith(ViewLifecycle.getRefreshComponentPhasePath(
+                    getViewPhase()));
             if (withinRefreshComponent) {
                 initializeAllLifecycleSuccessors(successors);
             } else if (refreshPaths.contains(currentPath) || StringUtils.isBlank(currentPath)) {

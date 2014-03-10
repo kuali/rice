@@ -39,5 +39,5 @@ public @interface RequestParameter {
 	 *
 	 * @return String request parameter name
 	 */
-	public String parameterName() default "";
+	String parameterName() default "";
 }

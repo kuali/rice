@@ -46,4 +46,15 @@ public @interface ViewLifecycleRestriction {
      */
     String[] value() default {};
 
+    /**
+     * Lifecycle phase(s) at which to exclude the annotated bean property.
+     *
+     * <p>Note when this property is set by itself, all other phases not listed will be included. If value is
+     * set as well, only those phases within the value and not listed here will be included.</p>
+     *
+     * @return set of lifecycle phases at which to exclude the annotated property
+     * @see org.kuali.rice.krad.uif.UifConstants.ViewPhases
+     */
+    String[] exclude() default {};
+
 }

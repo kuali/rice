@@ -32,10 +32,10 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
-import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -107,7 +107,7 @@ public class CollectionGroupLineBuilder implements Serializable {
         adjustFieldBindingAndId(lineFields);
 
         // update contexts before add line fields are added to the index below
-        ComponentUtils.updateContextsForLine(lineFields, lineBuilderContext.getCollectionGroup(),
+        ContextUtils.updateContextsForLine(lineFields, lineBuilderContext.getCollectionGroup(),
                 lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex(),
                 lineBuilderContext.getIdSuffix());
 
@@ -121,8 +121,8 @@ public class CollectionGroupLineBuilder implements Serializable {
         setFocusOnIdForActions(actions, lineFields);
 
         boolean canEditLine = checkEditLineAuthorization();
-        ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
-        ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
+        ContextUtils.pushObjectToContextDeep(lineFields, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
+        ContextUtils.pushObjectToContextDeep(actions, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
 
         // check authorization for line fields
         applyLineFieldAuthorizationAndPresentationLogic(!canEditLine, lineFields, actions);
@@ -559,16 +559,16 @@ public class CollectionGroupLineBuilder implements Serializable {
                     idSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
             subCollectionFieldGroup.setGroup(subCollectionGroup);
 
-            ComponentUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup,
+            ContextUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup,
                     lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex(),
                     idSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
-            ComponentUtils.pushObjectToContext(subCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
+            ContextUtils.pushObjectToContextDeep(subCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
                     lineBuilderContext.getCurrentLine());
 
             subCollectionFields.add(subCollectionFieldGroup);
         }
 
-        ComponentUtils.pushObjectToContext(subCollectionFields, UifConstants.ContextVariableNames.PARENT_LINE,
+        ContextUtils.pushObjectToContextDeep(subCollectionFields, UifConstants.ContextVariableNames.PARENT_LINE,
                 lineBuilderContext.getCurrentLine());
 
         lineBuilderContext.setSubCollectionFields(subCollectionFields);

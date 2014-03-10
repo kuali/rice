@@ -606,7 +606,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      *
      * <p>
      * NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
-     * component. Instead you should call #pushAllToContext
+     * component. Instead you should call #pushAllToContextDeep
      * </p>
      *
      * @return Map<String, Object> context

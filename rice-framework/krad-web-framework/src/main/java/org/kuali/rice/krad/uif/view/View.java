@@ -527,6 +527,7 @@ public class View extends ContainerBase {
      *
      * @return page group instance
      */
+    @ViewLifecycleRestriction(exclude=UifConstants.ViewPhases.PRE_PROCESS)
     public PageGroup getCurrentPage() {
         for (Component item : this.getItems()) {
             if (!(item instanceof PageGroup)) {
@@ -539,6 +540,25 @@ public class View extends ContainerBase {
         }
 
         return null;
+    }
+
+    /**
+     * Getter for returning the view's items and page for inclusion in the pre-process phase.
+     *
+     * <p>Note this is necessary so we get IDs assigned for all the pages during the pre-process phase. For other
+     * phases, only the current page is picked up.</p>
+     *
+     * @return list of components to include for the pre-process phase
+     */
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
+    public List<Component> getPagesForPreprocessing() {
+        List<Component> items = (List<Component>) getItems();
+
+        if (getPage() != null) {
+            items.add(getPage());
+        }
+
+        return items;
     }
 
     /**
@@ -2183,6 +2203,11 @@ public class View extends ContainerBase {
 
             context.put(UifConstants.ContextVariableNames.VIEW, this);
             context.put(UifConstants.ContextVariableNames.VIEW_HELPER, viewHelperService);
+
+            ViewTheme theme = getTheme();
+            if (theme != null) {
+                context.put(UifConstants.ContextVariableNames.THEME_IMAGES, theme.getImageDirectory());
+            }
 
             Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
             context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);

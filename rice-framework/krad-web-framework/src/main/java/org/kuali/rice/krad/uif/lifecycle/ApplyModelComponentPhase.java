@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -35,8 +31,6 @@ import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
 import org.kuali.rice.krad.uif.lifecycle.model.RefreshStateModifyTask;
 import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewTheme;
 
 /**
  * Lifecycle phase processing task for applying the model to a component.
@@ -75,18 +69,12 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     private Set<String> visitedIds;
 
     /**
-     * Mapping of context variables inherited from the view.
-     */
-    private Map<String, Object> commonContext;
-
-    /**
      * {@inheritDoc}
      */
     @Override
     protected void recycle() {
         super.recycle();
         visitedIds = null;
-        commonContext = null;
     }
 
     /**
@@ -105,23 +93,6 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
         super.prepare(element, model, path, refreshPaths, parent, nextPhase);
 
         this.visitedIds = visitedIds;
-
-        Map<String, Object> commonContext = new HashMap<String, Object>();
-
-        View view = ViewLifecycle.getView();
-        Map<String, Object> viewContext = view.getContext();
-        if (viewContext != null) {
-            commonContext.putAll(viewContext);
-        }
-
-        ViewTheme theme = view.getTheme();
-        if (theme != null) {
-            commonContext.put(UifConstants.ContextVariableNames.THEME_IMAGES, theme.getImageDirectory());
-        }
-
-        commonContext.put(UifConstants.ContextVariableNames.COMPONENT, element instanceof Component ? element : parent);
-
-        this.commonContext = Collections.unmodifiableMap(commonContext);
     }
 
     /**
@@ -154,16 +125,6 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     public LifecycleEvent getEventToNotify() {
         return null;
-    }
-
-    /**
-     * Gets global objects for the context map and pushes them to the context for the component
-     *
-     * @return The common context elements to use while applying model elements to the view.
-     * @see #prepare(LifecycleElement, Object, String, Component, ViewLifecyclePhaseBase, Set)
-     */
-    public Map<String, Object> getCommonContext() {
-        return commonContext;
     }
 
     /**

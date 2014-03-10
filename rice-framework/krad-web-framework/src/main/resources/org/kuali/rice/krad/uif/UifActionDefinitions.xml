@@ -43,13 +43,13 @@
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
         p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
         p:onClickScript="writeCurrentPageToSession(this);" p:dirtyOnAction="true"
-        p:loadingMessageText="Deleting Line..." p:id="@{#collectionGroup.id}_del@{#lineSuffix}"/>
+        p:loadingMessageText="Deleting Line..." p:id="@{#collectionGroup.id}_del"/>
 
   <bean id="Uif-DeleteLineAction-IconOnly" parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-close"/>
 
   <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="save"
         p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
-        p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save@{#lineSuffix}"
+        p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save"
         p:onClickScript="writeCurrentPageToSession(this);">
     <property name="cssClasses">
       <list>

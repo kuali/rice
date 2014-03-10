@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -435,7 +435,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     public void pushCollectionGroupToReference() {
         Collection<LifecycleElement> components = ViewLifecycleUtils.getElementsForLifecycle(this).values();
-        ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
+        ContextUtils.pushObjectToContextDeep(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(components, Action.class);
         for (Action action : actions) {

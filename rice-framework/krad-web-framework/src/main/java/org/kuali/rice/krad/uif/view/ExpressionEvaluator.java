@@ -36,7 +36,7 @@ public interface ExpressionEvaluator {
      * Indicator that can be added to a property name to indicate the expression result should be added to the
      * property (assumed to be a collection) instead of replaced
      */
-    public static String EMBEDDED_PROPERTY_NAME_ADD_INDICATOR = ".add";
+    String EMBEDDED_PROPERTY_NAME_ADD_INDICATOR = ".add";
 
     /**
      * Initializes the expression context for the given expression context object
@@ -48,7 +48,7 @@ public interface ExpressionEvaluator {
      *
      * @param contextObject instance of an Object
      */
-    public void initializeEvaluationContext(Object contextObject);
+    void initializeEvaluationContext(Object contextObject);
 
     /**
      * Evaluates any el expressions that are found as a string property value
@@ -78,7 +78,7 @@ public interface ExpressionEvaluator {
      * key gives the parameter name that may appear in the expression, and the map value is the object that expression
      * should evaluate against when that name is found
      */
-    public void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable,
+    void evaluateExpressionsOnConfigurable(View view, UifDictionaryBean expressionConfigurable,
             Map<String, Object> evaluationParameters);
 
     /**
@@ -100,7 +100,7 @@ public interface ExpressionEvaluator {
      * @return String formed by replacing any el expressions in the original expression template with
      *         their corresponding evaluation results
      */
-    public String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate);
+    String evaluateExpressionTemplate(Map<String, Object> evaluationParameters, String expressionTemplate);
 
     /**
      * Evaluates the configured expression for the given property name (if not exists) on the given configurable
@@ -111,7 +111,7 @@ public interface ExpressionEvaluator {
      * @param propertyName name of the property whose expression should be evaluated
      * @param removeExpression boolean that indicates whether the expression should be removed after evaluation
      */
-    public void evaluatePropertyExpression(View view, Map<String, Object> evaluationParameters,
+    void evaluatePropertyExpression(View view, Map<String, Object> evaluationParameters,
             UifDictionaryBean expressionConfigurable, String propertyName, boolean removeExpression);
 
     /**
@@ -131,7 +131,7 @@ public interface ExpressionEvaluator {
      * @param expression el expression to evaluate
      * @return Object result of the expression evaluation
      */
-    public Object evaluateExpression(Map<String, Object> evaluationParameters, String expression);
+    Object evaluateExpression(Map<String, Object> evaluationParameters, String expression);
 
     /**
      * Indicates whether or not the given string contains the el placeholder
@@ -142,7 +142,7 @@ public interface ExpressionEvaluator {
      * @see org.kuali.rice.krad.uif.UifConstants#EL_PLACEHOLDER_PREFIX
      * @see org.kuali.rice.krad.uif.UifConstants#EL_PLACEHOLDER_SUFFIX
      */
-    public boolean containsElPlaceholder(String value);
+    boolean containsElPlaceholder(String value);
 
     /**
      * Adjusts the property expressions for a given object
@@ -161,7 +161,7 @@ public interface ExpressionEvaluator {
      * @param expression The expression to adjust
      * @return the adjusted expression String
      */
-    public String replaceBindingPrefixes(View view, Object object, String expression);
+    String replaceBindingPrefixes(View view, Object object, String expression);
 
     /**
      * Pulls expressions within the expressionConfigurable's expression graph and moves them to the property
@@ -183,7 +183,7 @@ public interface ExpressionEvaluator {
      * @param expressionConfigurable expressionConfigurable instance to process expressions for
      * @param buildRefreshGraphs indicates whether the expression graphs for component refresh should be built
      */
-    public void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable,
+    void populatePropertyExpressionsFromGraph(UifDictionaryBean expressionConfigurable,
             boolean buildRefreshGraphs);
 
     /**
@@ -209,7 +209,7 @@ public interface ExpressionEvaluator {
      * to add js change handlers)
      * @return the converted expression into an equivalent js condition
      */
-    public String parseExpression(String exp, List<String> controlNames, Map<String, Object> context);
+    String parseExpression(String exp, List<String> controlNames, Map<String, Object> context);
 
     /**
      * Find the control names (ie, propertyNames) used in the passed in expression
@@ -217,5 +217,5 @@ public interface ExpressionEvaluator {
      * @param exp the expression to search
      * @return the list of control names found (ie, propertyNames)
      */
-    public List<String> findControlNamesInExpression(String exp);
+    List<String> findControlNamesInExpression(String exp);
 }

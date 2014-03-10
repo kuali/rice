@@ -30,7 +30,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -53,6 +52,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -661,8 +661,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             allRowFields = new ArrayList<Field>();
 
             buildTableHeaderRows(collectionGroup, lineFields);
-            ComponentUtils.pushObjectToContext(headerLabels, UifConstants.ContextVariableNames.LINE, currentLine);
-            ComponentUtils.pushObjectToContext(headerLabels, UifConstants.ContextVariableNames.INDEX, new Integer(
+            ContextUtils.pushObjectToContextDeep(headerLabels, UifConstants.ContextVariableNames.LINE, currentLine);
+            ContextUtils.pushObjectToContextDeep(headerLabels, UifConstants.ContextVariableNames.INDEX, new Integer(
                     lineIndex));
             headerAdded = true;
         }
@@ -718,7 +718,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
             setCellAttributes(sequenceField);
 
-            ComponentUtils.updateContextForLine(sequenceField, collectionGroup, currentLine, lineIndex, idSuffix);
+            ContextUtils.updateContextForLine(sequenceField, collectionGroup, currentLine, lineIndex, idSuffix);
             allRowFields.add(sequenceField);
             
             extraColumns++;
@@ -733,7 +733,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             Field selectField = ComponentUtils.copy(getSelectFieldPrototype(), idSuffix);
             CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup, bindingPath, currentLine);
 
-            ComponentUtils.updateContextForLine(selectField, collectionGroup, currentLine, lineIndex, idSuffix);
+            ContextUtils.updateContextForLine(selectField, collectionGroup, currentLine, lineIndex, idSuffix);
             setCellAttributes(selectField);
 
             allRowFields.add(selectField);
@@ -855,7 +855,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             int rowSpan, List<? extends Component> actions) {
         FieldGroup lineActionsField = ComponentUtils.copy(getActionFieldPrototype(), idSuffix);
 
-        ComponentUtils.updateContextForLine(lineActionsField, collectionGroup, currentLine, lineIndex, idSuffix);
+        ContextUtils.updateContextForLine(lineActionsField, collectionGroup, currentLine, lineIndex, idSuffix);
 
         lineActionsField.setRowSpan(rowSpan);
         lineActionsField.setItems(actions);

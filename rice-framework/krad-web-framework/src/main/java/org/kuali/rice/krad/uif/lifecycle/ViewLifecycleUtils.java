@@ -452,6 +452,25 @@ public final class ViewLifecycleUtils {
                 if (restriction.value().length > 0) {
                     removedRestrictionsForPrecedingPhases(mutableLifecycleRestrictedProperties, restrictedPropertyName,
                             restriction.value()[0]);
+                } else if (restriction.exclude().length > 0) {
+                    // include all by default if a exclude is defined
+                    removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, restrictedPropertyName,
+                            UifConstants.ViewPhases.PRE_PROCESS);
+                    removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, restrictedPropertyName,
+                            UifConstants.ViewPhases.INITIALIZE);
+                    removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, restrictedPropertyName,
+                            UifConstants.ViewPhases.APPLY_MODEL);
+                    removedRestrictionsForPhase(mutableLifecycleRestrictedProperties, restrictedPropertyName,
+                            UifConstants.ViewPhases.FINALIZE);
+                }
+
+                // add back explicit exclusions
+                if (restriction.exclude().length > 0) {
+                    for (String excludePhase : restriction.exclude()) {
+                        Set<String> restrictedProperties = mutableLifecycleRestrictedProperties.get(excludePhase);
+
+                        restrictedProperties.add(restrictedPropertyName);
+                    }
                 }
             }
 

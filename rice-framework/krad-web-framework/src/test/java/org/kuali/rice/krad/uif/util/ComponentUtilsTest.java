@@ -477,7 +477,7 @@ public class ComponentUtilsTest {
     }
 
     /**
-     * Test {@link ComponentUtils#cleanContextDeap} using a BreadcrumbItem object
+     * Test {@link ContextUtils#cleanContextDeep} using a BreadcrumbItem object
      */
     @Test
     public void testCleanContextDeap() {
@@ -507,7 +507,7 @@ public class ComponentUtilsTest {
 
         breadcrumbItem.setToolTip(tooltip);
 
-        ComponentUtils.cleanContextDeap(breadcrumbItem);
+        ContextUtils.cleanContextDeep(breadcrumbItem);
 
         assertEquals(0, breadcrumbItem.getContext().size());
         assertEquals(0, inputField.getContext().size());

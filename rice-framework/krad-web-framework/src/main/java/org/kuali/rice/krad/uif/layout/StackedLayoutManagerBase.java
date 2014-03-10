@@ -43,6 +43,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -221,10 +222,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         List<Action> lineGroupActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineGroup, Action.class);
         if (lineGroupActions != null) {
             collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup, lineIndex);
-            ComponentUtils.updateContextsForLine(lineGroupActions, collectionGroup, currentLine, lineIndex, idSuffix);
+            ContextUtils.updateContextsForLine(lineGroupActions, collectionGroup, currentLine, lineIndex, idSuffix);
         }
 
-        ComponentUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
+        ContextUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
 
         // build header for the group
         if (lineBuilderContext.isAddLine()) {

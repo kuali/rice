@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +33,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -135,19 +135,19 @@ public class TreeGroup extends GroupBase implements DataBinding {
         NodePrototype prototype = getNodePrototype(nodeData);
 
         Message message = ComponentUtils.copy(prototype.getLabelPrototype(), parentNode);
-        ComponentUtils.pushObjectToContext(message, UifConstants.ContextVariableNames.NODE, nodeData);
+        ContextUtils.pushObjectToContextDeep(message, UifConstants.ContextVariableNames.NODE, nodeData);
         message.setMessageText(nodeData.getNodeLabel());
         node.setNodeLabel(message);
 
         Group nodeGroup = ComponentUtils.copyComponent(prototype.getDataGroupPrototype(), bindingPrefix + ".data",
                 parentNode);
-        ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE, nodeData);
+        ContextUtils.pushObjectToContextDeep(nodeGroup, UifConstants.ContextVariableNames.NODE, nodeData);
 
         String nodePath = bindingPrefix + ".data";
         if (StringUtils.isNotBlank(getBindingInfo().getBindingObjectPath())) {
             nodePath = getBindingInfo().getBindingObjectPath() + "." + nodePath;
         }
-        ComponentUtils.pushObjectToContext(nodeGroup, UifConstants.ContextVariableNames.NODE_PATH, nodePath);
+        ContextUtils.pushObjectToContextDeep(nodeGroup, UifConstants.ContextVariableNames.NODE_PATH, nodePath);
         node.setData(nodeGroup);
 
         List<Node<Group, Message>> nodeChildren = new ArrayList<Node<Group, Message>>();

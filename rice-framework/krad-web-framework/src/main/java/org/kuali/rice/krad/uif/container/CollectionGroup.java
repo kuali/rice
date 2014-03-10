@@ -125,10 +125,10 @@ public interface CollectionGroup extends Group, DataBinding {
     /**
      * Get the id of the add line action to invoke when the enter key is pressed.
      *
-     * <p>Use '@PRIMARY' if supposed to use first action where 'primaryAction'
+     * <p>Use '@DEFAULT' if supposed to use first action where 'defaultEnterKeyAction'
      * property is set to true.</p>
      * 
-     * @return id or '@PRIMARY'
+     * @return id or '@DEFAULT'
      */
     String getAddLineEnterKeyAction();
 
@@ -138,12 +138,14 @@ public interface CollectionGroup extends Group, DataBinding {
     void setAddLineEnterKeyAction(String addLineEnterKeyAction);
 
     /**
-     * Get the id of nonAdd line action to invoke when the enter key is pressed.
+     * Get the id of the nonAdd line action to invoke when the enter key is pressed.
      *
-     * <p>Use '@PRIMARY' if supposed to use first action where 'primaryAction'
-     * property is set to true.</p>
+     * <p>Use '@DEFAULT' if supposed to use first action where 'defaultEnterKeyAction'
+     * property is set to true. In a collection may have to use SpringEL to identify
+     * line ID values. Here is a sample value: DemoButton@{#lineSuffix}. Notice the use
+     * of '@{#lineSuffix}' to help append line suffix information.</p>
      * 
-     * @return id or '@PRIMARY'
+     * @return id or '@DEFAULT'
      */
     String getLineEnterKeyAction();
 

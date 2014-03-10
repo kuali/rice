@@ -112,7 +112,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         waitAndTypeByName("documentId", docId);
         jGrowl("Click search");
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        waitForTextPresent(DOC_STATUS_ENROUTE);
+        waitForTextPresent(DOC_STATUS_FINAL);
     }
 
     private String peopleFlowCreateNew() throws InterruptedException {

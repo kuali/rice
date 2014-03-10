@@ -56,23 +56,23 @@ public class EmailAddressValidationPatternTest extends KRADTestCase {
 
 
     @Test public final void testMatches_invalid1() {
-        assertFalse(pattern.matches("a"));
-    }
-
-    @Test public final void testMatches_invalid2() {
         assertFalse(pattern.matches("@a.b.c.org"));
     }
 
-    @Test public final void testMatches_invalid3() {
-        assertFalse(pattern.matches("1@a.b.c.org"));
+    @Test public final void testMatches_invalid2() {
+        assertFalse(pattern.matches("a"));
     }
 
-    @Test public final void testMatches_invalid4() {
+    @Test public final void testMatches_invalid3() {
         assertFalse(pattern.matches("1@org"));
     }
 
-    @Test public final void testMatches_invalid5() {
+    @Test public final void testMatches_invalid4() {
         assertFalse(pattern.matches("1@a"));
+    }
+
+    @Test public final void testMatches_invalid5() {
+        assertFalse(pattern.matches("_@a"));
     }
 
     @Test public final void testMatches_invalid6() {
@@ -80,7 +80,7 @@ public class EmailAddressValidationPatternTest extends KRADTestCase {
     }
 
     @Test public final void testMatches_invalid7() {
-        assertFalse(pattern.matches("_@a.org"));
+        assertFalse(pattern.matches("-@a.org"));
     }
 
     @Test public final void testMatches_invalid8() {

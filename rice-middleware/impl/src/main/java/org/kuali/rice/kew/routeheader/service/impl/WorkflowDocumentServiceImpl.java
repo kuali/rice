@@ -203,7 +203,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             action.performAction();
             indexForSearchAfterActionIfNecessary(routeHeader);
         } else {
-            GlobalVariables.getMessageMap().putInfo("document", RiceKeyConstants.MESSAGE_RECALL_NOT_SUPPORTED);
+            GlobalVariables.getMessageMap().putError("document", RiceKeyConstants.MESSAGE_RECALL_NOT_SUPPORTED);
         }
         return finish(routeHeader);
     }

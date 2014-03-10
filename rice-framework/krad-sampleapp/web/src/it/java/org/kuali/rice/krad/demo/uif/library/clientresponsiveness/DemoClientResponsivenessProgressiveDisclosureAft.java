@@ -169,7 +169,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-//    @Test
+    @Test
     public void testClientResponsivenessProgressiveDisclosureNav() throws Exception {
     	testClientResponsivenessProgressiveDisclosureAll();
         passed();
@@ -181,7 +181,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-//    @Test
+    @Test
     public void testClientResponsivenessProgressiveDisclosureConditionalOptionsNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureConditionalOptions();
         passed();
@@ -193,7 +193,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-//    @Test
+    @Test
     public void testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefreshNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefresh();
         passed();
@@ -205,7 +205,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         passed();
     }
 
-//    @Test
+    @Test
     public void testClientResponsivenessProgressiveDisclosureConditionalRefreshNav() throws Exception {
         testClientResponsivenessProgressiveDisclosureConditionalRefresh();
         passed();

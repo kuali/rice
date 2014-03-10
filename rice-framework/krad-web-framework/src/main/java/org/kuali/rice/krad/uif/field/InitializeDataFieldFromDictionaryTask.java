@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Performs initialization on data fields based on attributes found in the data dictionary.
@@ -279,6 +280,10 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
         if (StringUtils.isEmpty(dictionaryAttributePath)) {
             return null;
+        }
+
+        if (StringUtils.startsWith(dictionaryAttributePath, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+            dictionaryAttributePath = StringUtils.substringAfter(dictionaryAttributePath, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
         }
 
         AttributePathEntry attributePathEntry = new AttributePathEntry(fieldBindingPrefix);

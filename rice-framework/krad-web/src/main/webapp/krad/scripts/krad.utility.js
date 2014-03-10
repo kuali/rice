@@ -1089,7 +1089,7 @@ function showLightboxComponent(componentId, overrideOptions, alwaysAjax) {
         _showLightboxComponentHelper(componentId, overrideOptions);
     } else {
         if(jQuery('#' + componentId).length == 0) {
-           jQuery(".dialogs_div").append('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
+           jQuery("[data-role='View']").append('<span id="'+componentId+'"class="uif-placeholder" data-role="placeholder"></span>');
             retrieveComponent(componentId, undefined, function () {
                 _showLightboxComponentHelper(componentId, overrideOptions);}, {}, true);
         } else {

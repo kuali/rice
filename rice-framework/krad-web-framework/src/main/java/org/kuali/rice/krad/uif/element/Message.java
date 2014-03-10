@@ -158,9 +158,8 @@ public class Message extends ContentElementBase {
     /**
      * Text that makes up the message that will be displayed.
      *
-     * <p>If special characters [] are detected the message inserts special content at that location.
-     * The types of features supported are (note that &lt;&gt; are not part of the content below,
-     * they specify placeholders):
+     * <p>If special characters [] are detected the message is split at that location.  The types of features supported
+     * by the parse are (note that &lt;&gt; are not part of the content, they specify placeholders):
      * <ul>
      * <li>[id=&lt;component id&gt;] - insert component with id specified at that location in the message</li>
      * <li>[n] - insert component at index n from the inlineComponent list</li>
@@ -171,6 +170,23 @@ public class Message extends ContentElementBase {
      * in the message</li>
      * <li>[css=&lt;css classes&gt;][/css] - apply css classes specified to the wrapped content - same as wrapping
      * the content in span with class property set</li>
+     * <li>[link=&lt;href src&gt;][/link] - an easier way to create an anchor that will open in a new page to the
+     * href specified after =</li>
+     * <li>[action=&lt;href src&gt;][/action] - create an action link inline without having to specify a component by
+     * id or index.  The options for this are as follows and MUST be in a comma seperated list in the order specified
+     * (specify 1-4 always in this order):
+     * <ul>
+     * <li>methodToCall(String)</li>
+     * <li>validateClientSide(boolean) - true if not set</li>
+     * <li>ajaxSubmit(boolean) - true if not set</li>
+     * <li>successCallback(js function or function declaration) - this only works when ajaxSubmit is true</li>
+     * </ul>
+     * The tag would look something like this [action=methodToCall]Action[/action] in most common cases.  And in more
+     * complex cases [action=methodToCall,true,true,functionName]Action[/action].  <p>In addition to these settings,
+     * you can also specify data to send to the server in this fashion (space is required between settings and data):
+     * </p>
+     * [action=&lt;action settings&gt; data={key1: 'value 1', key2: value2}]
+     * </li>
      * </ul>
      * If the [] characters are needed in message text, they need to be declared with an escape character: \\[ \\]
      * </p>

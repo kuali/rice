@@ -1289,8 +1289,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             queryData.queryTerm = request.term;
             queryData.queryFieldId = queryFieldId;
 
+            //If no queryTerm, exit, onBlur event has been fired with no content in the field
+            if (queryData.queryTerm === '') {
+                return;
+            }
+
             for (var parameter in queryParameters) {
-                queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+                queryData['queryParameters.' + parameter] = coerceValue(queryParameters[parameter]);
             }
 
             jQuery.ajax({

@@ -94,8 +94,8 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
 
     private List<Group> stackedGroups;
 
-    private boolean actionsInLineGroup;
-    private boolean renderLineActionsAtHeader;
+    private boolean renderLineActionsInLineGroup;
+    private boolean renderLineActionsInHeader;
 
     public StackedLayoutManagerBase() {
         super();
@@ -154,7 +154,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         int lineIndex = lineBuilderContext.getLineIndex();
         String idSuffix = lineBuilderContext.getIdSuffix();
         Object currentLine = lineBuilderContext.getCurrentLine();
-        List<? extends Component> actions = lineBuilderContext.getLineActions();
+
         String bindingPath = lineBuilderContext.getBindingPath();
 
         Map<String, Object> lineContext = new HashMap<String, Object>();
@@ -254,10 +254,37 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             groupFields.addAll(lineBuilderContext.getSubCollectionFields());
         }
 
+        // Place actions in the appropriate location for the stacked group line
+        determineLineActionPlacement(lineGroup, collectionGroup, lineBuilderContext, groupFields);
+
+        lineGroup.setItems(groupFields);
+        
+        // Must evaluate the client-side state on the lineGroup's disclosure for PlaceholderDisclosureGroup processing
+        if (lineBuilderContext.getModel() instanceof ViewModel){
+            KRADUtils.syncClientSideStateForComponent(lineGroup.getDisclosure(),
+                    ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
+        }
+
+        stackedGroups.add(lineGroup);
+    }
+
+    /**
+     * Places actions in the appropriate location for the stacked group line based on placement
+     * flags set on this layout manager
+     *
+     * @param lineGroup the current line group
+     * @param collectionGroup the current collection group
+     * @param lineBuilderContext the line's building context
+     * @param groupFields the list of fields which will be added to the line group
+     */
+    protected void determineLineActionPlacement(Group lineGroup, CollectionGroup collectionGroup,
+            LineBuilderContext lineBuilderContext, List<Component> groupFields) {
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
         boolean showActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
-        if (showActions && this.renderLineActionsAtHeader && lineGroup.getHeader() != null
+
+        if (showActions && this.renderLineActionsInHeader && lineGroup.getHeader() != null
                 && !lineBuilderContext.isAddLine()) {
-            // add to header when the option is true
+            // add line actions to header when the option is true
             Group headerGroup = lineGroup.getHeader().getRightGroup();
 
             if (headerGroup == null) {
@@ -271,8 +298,8 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             headerGroup.setItems(items);
             lineGroup.getHeader().setRightGroup(headerGroup);
         }
-        else if (showActions && isActionsInLineGroup()) {
-            // add the actions to the line group if isActionsInLineGroup flag is true
+        else if (showActions && isRenderLineActionsInLineGroup()) {
+            // add the actions to the line group if isRenderLineActionsInLineGroup flag is true
             groupFields.addAll(actions);
             lineGroup.setRenderFooter(false);
         }
@@ -280,16 +307,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             // add to footer in the default case
             lineGroup.getFooter().setItems(actions);
         }
-
-        lineGroup.setItems(groupFields);
-        
-        // Must evaluate the client-side state on the lineGroup's disclosure for PlaceholderDisclosureGroup processing
-        if (lineBuilderContext.getModel() instanceof ViewModel){
-            KRADUtils.syncClientSideStateForComponent(lineGroup.getDisclosure(),
-                    ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
-        }
-
-        stackedGroups.add(lineGroup);
     }
 
     /**
@@ -532,29 +549,29 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * {@inheritDoc}
      */
     @Override
-    public boolean isActionsInLineGroup() {
-        return actionsInLineGroup;
+    public boolean isRenderLineActionsInLineGroup() {
+        return renderLineActionsInLineGroup;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setActionsInLineGroup(boolean actionsInLineGroup) {
-        this.actionsInLineGroup = actionsInLineGroup;
+    public void setRenderLineActionsInLineGroup(boolean renderLineActionsInLineGroup) {
+        this.renderLineActionsInLineGroup = renderLineActionsInLineGroup;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isRenderLineActionsAtHeader() {
-        return renderLineActionsAtHeader;
+    public boolean isRenderLineActionsInHeader() {
+        return renderLineActionsInHeader;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setRenderLineActionsAtHeader(boolean renderLineActionsAtHeader) {
-        this.renderLineActionsAtHeader = renderLineActionsAtHeader;
+    public void setRenderLineActionsInHeader(boolean renderLineActionsInHeader) {
+        this.renderLineActionsInHeader = renderLineActionsInHeader;
     }
 }

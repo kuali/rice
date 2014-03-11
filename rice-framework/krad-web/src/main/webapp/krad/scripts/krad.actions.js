@@ -523,6 +523,10 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
 
                 if (disableControl.is(".hasDatepicker")) {
                     disableControl.datepicker("disable");
+                    disableControl.next(".ui-datepicker-trigger").css("cursor", "not-allowed");
+                }
+                if (disableControl.is(".uif-spinnerControl")) {
+                    disableControl.spinner("disable");
                 }
             }
             else {
@@ -534,6 +538,10 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
 
                 if (disableControl.is(".hasDatepicker")) {
                     disableControl.datepicker("enable");
+                    disableControl.next(".ui-datepicker-trigger").css("cursor", "pointer");
+                }
+                if (disableControl.is(".uif-spinnerControl")) {
+                    disableControl.spinner("enable");
                 }
             }
         });

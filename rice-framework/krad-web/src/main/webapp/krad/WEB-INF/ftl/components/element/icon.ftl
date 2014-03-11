@@ -21,5 +21,12 @@
 
 
 <#macro uif_icon element>
-    <span class="${element.iconClass}"></span>
+<span class="${element.iconClass}"></span>
+
+    <#--<#if element.render>-->
+        <#--<span class="${element.iconClass}"></span>-->
+    <#--<#else>-->
+        <#--<span class="${element.iconClass} disabled"></span>-->
+    <#--</#if>-->
+
 </#macro>

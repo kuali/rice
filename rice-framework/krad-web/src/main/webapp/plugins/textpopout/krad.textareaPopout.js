@@ -22,7 +22,8 @@
 			options = $.extend({
 				label: "",
 				summary: "",
-				constraint: ""
+				constraint: "",
+                readOnly: ""
 			}, options);
 			
 			var id= $(this).attr("id");
@@ -38,6 +39,7 @@
 			var labelHtml="";
 			var summaryHtml="";
 			var constraintHtml="";
+            var readOnly=options.readOnly;
 			if(options.label){
 				labelHtml = "<label for='textarea_popout_control'>"+options.label+"</label>";
 			}
@@ -58,25 +60,49 @@
 					if(!value){
 						value = "";
 					}
-					var options = {
-						content: "<div class='textarea_popout'>"+labelHtml+summaryHtml
-							+"<textarea id='textarea_popout_control'>"+value+"</textarea>"
-							+constraintHtml
-							+"<input id='done_btn' class='btn btn-primary done' type='button' value='Done'/></div>",
-                        afterShow: function(){
-							context("textarea#textarea_popout_control").focus();
-			    			context("#done_btn").click(function(e){
-			    				e.preventDefault();
-			    				obj.val(context("textarea#textarea_popout_control").val());
-			    				context.fancybox.close();
-			    				obj.valid();
-			    				obj.focus();
-			    			});
-						},
-						autoDimensions: true,
-						hideOnOverlayClick: false,
-						centerOnScroll: true
-					};
+
+                    if (readOnly === true) {
+
+                        var options = {
+                            content: "<div class='textarea_popout'>"+labelHtml+summaryHtml
+                                +"<textarea id='textarea_popout_control' readonly>"+value+"</textarea>"
+                                +constraintHtml
+                                +"<input id='done_btn' class='btn btn-primary done' type='button' value='Done'/></div>",
+                            afterShow: function(){
+                                context("textarea#textarea_popout_control").focus();
+                                context("#done_btn").click(function(e){
+                                    e.preventDefault();
+                                    obj.val(context("textarea#textarea_popout_control").val());
+                                    context.fancybox.close();
+                                    obj.valid();
+                                    obj.focus();
+                                });
+                            },
+                            autoDimensions: true,
+                            hideOnOverlayClick: false,
+                            centerOnScroll: true
+                        };
+                    } else {
+                        var options = {
+                            content: "<div class='textarea_popout'>"+labelHtml+summaryHtml
+                                    +"<textarea id='textarea_popout_control'>"+value+"</textarea>"
+                                    +constraintHtml
+                                    +"<input id='done_btn' class='btn btn-primary done' type='button' value='Done'/></div>",
+                            afterShow: function(){
+                                context("textarea#textarea_popout_control").focus();
+                                context("#done_btn").click(function(e){
+                                    e.preventDefault();
+                                    obj.val(context("textarea#textarea_popout_control").val());
+                                    context.fancybox.close();
+                                    obj.valid();
+                                    obj.focus();
+                                });
+                            },
+                            autoDimensions: true,
+                            hideOnOverlayClick: false,
+                            centerOnScroll: true
+                        };
+                    }
 
 	        		context.fancybox(options);
 

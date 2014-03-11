@@ -287,8 +287,8 @@ function markActiveMenuLink() {
  * @param summary - summary to be used in popout
  * @param constraint - constraint to be used in popout
  */
-function setupTextPopout(id, label, summary, constraint) {
-    var options = {label: label, summary: summary, constraint: constraint};
+function setupTextPopout(id, label, summary, constraint, readOnly) {
+    var options = {label: label, summary: summary, constraint: constraint, readOnly: readOnly};
     jQuery("#" + id).initPopoutText(options);
 }
 
@@ -570,7 +570,7 @@ function cleanupClosedLightboxForms() {
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  */
-function createDatePicker(controlId, options) {
+function createDatePicker(controlId, options, disabled) {
     var fieldId = jQuery("#" + controlId).closest("div[data-role='InputField']").attr("id");
     jQuery(function () {
         var datePickerControl = jQuery("#" + controlId);
@@ -596,6 +596,10 @@ function createDatePicker(controlId, options) {
         //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
         if (options.dateFormat == "mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1) {
             datePickerControl.datepicker('setDate', new Date(datePickerControl[0].getAttribute("value")));
+        }
+        if (disabled === true) {
+            datePickerControl.datepicker('disable');
+            datePickerControl.next(".ui-datepicker-trigger").css("cursor", "not-allowed");
         }
     });
 

@@ -556,6 +556,7 @@ public class View extends ContainerBase {
         List<Component> items = (List<Component>) getItems();
 
         if (getPage() != null) {
+            items = new ArrayList<Component>();
             items.add(getPage());
         }
 

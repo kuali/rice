@@ -120,6 +120,7 @@ public class View extends ContainerBase {
     // application
     private Header applicationHeader;
     private Group applicationFooter;
+    private String applicationTitleText;
 
     // sticky flags
     private boolean stickyTopGroup;
@@ -718,6 +719,25 @@ public class View extends ContainerBase {
     public void setApplicationFooter(Group applicationFooter) {
         checkMutable(true);
         this.applicationFooter = applicationFooter;
+    }
+
+    /**
+     * <p>
+     * Title text to be displayed on browser tab.
+     * </p>
+     * @return
+     */
+    @BeanTagAttribute(name = "applicationTitleText")
+    public String getApplicationTitleText() {
+        return applicationTitleText;
+    }
+
+    /**
+     * setter for applicationTitleText
+     * @param applicationTitleText
+     */
+    public void setApplicationTitleText(String applicationTitleText) {
+        this.applicationTitleText = applicationTitleText;
     }
 
     /**

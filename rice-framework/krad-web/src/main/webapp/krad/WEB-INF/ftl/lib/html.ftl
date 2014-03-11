@@ -33,9 +33,8 @@
     </#list>
 
     <title>
-        <@spring.message "app.title"/>
-        <#if view.headerText?has_content>
-        :: ${view.headerText}
+        <#if view.applicationTitleText?has_content>
+            ${view.applicationTitleText}
         </#if>
     </title>
 

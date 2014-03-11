@@ -38,6 +38,7 @@
         <ref bean="Demo-TableLayoutManager-Example8"/>
         <ref bean="Demo-TableLayoutManager-Example9"/>
         <ref bean="Demo-TableLayoutManager-Example10"/>
+        <ref bean="Demo-TableLayoutManager-Example11"/>
       </list>
     </property>
   </bean>
@@ -420,6 +421,31 @@
           </property>
         </bean>
         <!-- ex:Demo-TableLayoutManager-Example10 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example11" parent="Uif-VerticalBoxSection" p:headerText="Separate Add Line">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example11 start-->
+        <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT">
+          <property name="headerText" value="Table Layout With Separate Add line"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection3"/>
+          <property name="layoutManager.separateAddLine" value="true"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example11 end-->
       </list>
     </property>
   </bean>

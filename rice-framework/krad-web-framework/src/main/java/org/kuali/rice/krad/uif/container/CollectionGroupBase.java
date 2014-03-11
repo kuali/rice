@@ -121,7 +121,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private BindingInfo addLineBindingInfo;
 
     private Message addLineLabel;
-    @DelayedCopy
+
     private List<? extends Component> addLineItems;
     private List<? extends Component> addLineActions;
 
@@ -728,7 +728,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * {@inheritDoc}
      */
     @Override
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "addLineItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getAddLineItems() {
         return this.addLineItems;

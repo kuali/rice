@@ -2651,22 +2651,24 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						}
 					}
 				}
-                for (DelegateMemberBo origMember : allOrigMembers) {
-                    if ((origMember.getDelegationMemberId() != null) &&
-                        (origMember.getDelegationMemberId().equals(delegationMember.getDelegationMemberId())) &&
-                        (origMember.getRoleMemberId() != null) &&
-                        (origMember.getRoleMemberId().equals(delegationMember.getRoleMemberId()))) {
-                            newDelegationMemberImpl.setVersionNumber(origMember.getVersionNumber());
-                            newDelegationMemberImpl.setObjectId(origMember.getObjectId());
-                            origDelegationMemberImplTemp = origMember;
+                if(ObjectUtils.isNotNull(allOrigMembers)){
+                    for (DelegateMemberBo origMember : allOrigMembers) {
+                        if ((origMember.getDelegationMemberId() != null) &&
+                            (origMember.getDelegationMemberId().equals(delegationMember.getDelegationMemberId())) &&
+                            (origMember.getRoleMemberId() != null) &&
+                            (origMember.getRoleMemberId().equals(delegationMember.getRoleMemberId()))) {
+                                newDelegationMemberImpl.setVersionNumber(origMember.getVersionNumber());
+                                newDelegationMemberImpl.setObjectId(origMember.getObjectId());
+                                origDelegationMemberImplTemp = origMember;
+                        }
                     }
                 }
-				origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributeDetails()==null)?
-						new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributeDetails();
-				newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
-				newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
-                newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
-                delegationsMembersList.add(newDelegationMemberImpl);
+                    origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributeDetails()==null)?
+                            new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributeDetails();
+                    newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
+                    newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
+                    newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
+                    delegationsMembersList.add(newDelegationMemberImpl);
 			}
 		}
 		return delegationsMembersList;

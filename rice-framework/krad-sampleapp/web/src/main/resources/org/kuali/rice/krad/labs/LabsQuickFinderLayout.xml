@@ -34,7 +34,7 @@
   <bean parent="Uif-Page" id="Page-QuickFinderLayout">
     <property name="items">
       <list>
-        <bean id="Demo-QuickFinderLayout-Example1" parent="Uif-VerticalBoxSection" p:headerText="Lookup">
+        <bean id="Demo-QuickFinderLayout-Example1" parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Input Field">

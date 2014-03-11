@@ -244,7 +244,7 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/stacked.ftl"/>
     <property name="templateName" value="uif_stacked"/>
-    <property name="renderLineActionsAtHeader" value="true"/>
+    <property name="renderLineActionsInHeader" value="true"/>
     <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>

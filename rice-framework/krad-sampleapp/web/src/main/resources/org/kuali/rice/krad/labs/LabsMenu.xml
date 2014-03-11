@@ -84,6 +84,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Meta-Tags"/>
                           <bean parent="Uif-Link" p:linkText="Refresh" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
+                          <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
                         </list>
                       </property>
                     </bean>

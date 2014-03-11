@@ -96,6 +96,10 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables2"/>
                           <bean parent="Uif-Link" p:linkText="Enter Key Support - Stacked" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyStacked"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Separate" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableSepAddLine"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Lightbox" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
                         </list>
                       </property>
                     </bean>
@@ -157,18 +161,6 @@
                   </list>
                 </property>
               </bean>
-              <bean parent="Uif-Link" p:linkText="Refresh" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
-              <bean parent="Uif-Link" p:linkText="Demo Performance Light Table" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-LightTable"/>
-              <bean parent="Uif-Link" p:linkText="Demo Performance Light Table Disabe Sort" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-LightTable-DisableSort"/>
-              <bean parent="Uif-Link" p:linkText="Demo Performance Basic Table Collection" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-BasicTableCollection"/>
-              <bean parent="Uif-Link" p:linkText="Demo Performance Rich Table Server Side Paging" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-RichTable-ServerSidePaging"/>
-              <bean parent="Uif-Link" p:linkText="Demo Performance Rich Table Without Server Side Paging" p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/coursesearchperformance?viewId=Demo-Performance-RichTable-NoServerSidePaging"/>
             </list>
           </property>
         </bean>

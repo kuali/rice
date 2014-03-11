@@ -606,7 +606,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         // create row data attributes
         String rowDataAttributes = "";
 
-        // non add line
+        // add line
         if (isAddLine) {
             if (StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
                 String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
@@ -617,7 +617,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                         + KRADUtils.convertToHTMLAttributeSafeString(addLineEnterKeyAction) + "\"";
             }
         }
-        // add line
+        // non add line
         else {
             if (StringUtils.isNotBlank(collectionGroup.getLineEnterKeyAction())) {
                 String lineEnterKeyAction = collectionGroup.getLineEnterKeyAction();
@@ -633,10 +633,20 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         // if separate add line prepare the add line group
         if (isAddLine && separateAddLine) {
-            if (StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
+            if (StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
+                String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
+                if (addLineEnterKeyAction.indexOf("@{") != -1) {
+                    addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
+                }
+
+                addLineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, KRADUtils.convertToHTMLAttributeSafeString(addLineEnterKeyAction));
+            }
+
+            if (addLineGroup.getHeader() != null && StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
                     addLineGroup.getHeader().getHeaderText())) {
                 addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
+
             addLineGroup.setItems(lineFields);
 
             List<Component> footerItems = new ArrayList<Component>(actions);

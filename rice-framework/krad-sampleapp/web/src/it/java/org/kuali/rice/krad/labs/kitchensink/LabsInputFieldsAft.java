@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,20 +50,25 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     
     protected void testInputFields() throws InterruptedException {
     	//Label
-    	assertElementPresentByXpath("//label[@class='uif-label uif-labelBlock uif-tooltip' and contains(text(),'Field Label')]");
-    	assertElementPresentByXpath("//label[@class='uif-label uif-labelBlock' and contains(text(),'Field Label:')]");
-    	assertElementPresentByXpath("//p[@class='uif-constraintMessage']");
+    	waitForElementPresentByXpath("//span[@class='labelTop uif-labelBlock']/label[contains(text(),'Field Label')]");
+    	waitForElementPresentByXpath("//span[@class='labelTop uif-labelBlock']/label[contains(text(),'Field Label:')]");
+    	waitForElementPresentByXpath("//span[@class='uif-label']/label[contains(text(),'Field Label:')]");
+    	waitForElementPresentByXpath("//span[@id='UifCompView-Field102_label_span']/label[contains(text(),'Field Label:')]");
+    	waitForElementPresentByXpath("//span[@id='UifCompView-Field102B_label_span']/label[contains(text(),'Field Label')]");
+    	waitForElementPresentByXpath("//span[contains(text(),'Constraint text')]");
     	
     	//TextBox
-    	assertElementPresentByXpath("//input[@placeholder and @size='30' and @maxlength='40']");
-    	assertElementPresentByXpath("//input[@size='60']");
-    	assertElementPresentByXpath("//a[@title='Expand']");
-    	assertElementPresentByXpath("//input[@disabled and @name='field109']");
-    	assertElementPresentByXpath("//input[@style='text-transform: uppercase;']");
+    	waitForElementPresentByXpath("//input[@placeholder and @size='30' and @maxlength='40']");
+    	waitForElementPresentByXpath("//input[@size='60']");
+    	waitAndClickByXpath("//a[@title='Expand']");
+    	waitForElementPresentByXpath("//textarea[@id='textarea_popout_control']");
+    	waitAndClickByXpath("//input[@id='done_btn']");
+    	waitForElementPresentByXpath("//input[@disabled and @name='field109']");
+    	waitForElementPresentByXpath("//input[@style='text-transform: uppercase;']");
     	
     	//TextArea
-    	assertElementPresentByXpath("//textarea[@placeholder='Watermark... ' and @rows='5' and @cols='40']");
-    	assertElementPresentByXpath("//textarea[@rows='10' and @cols='50']");
+    	waitForElementPresentByXpath("//textarea[@placeholder='Watermark... ' and @rows='5' and @cols='40']");
+    	waitForElementPresentByXpath("//textarea[@rows='10' and @cols='50']");
     	
     	//Date Input
     	waitAndTypeByName("date1","");
@@ -72,11 +78,11 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//input[@name='field133' and @placeholder='mm-dd-yyyy ']");
     	waitAndTypeByName("field133","asd");
     	waitAndTypeByName("date5","2");
-    	waitForElementPresentByXpath("//input[@name='field133' and @class='form-control input-sm uif-dateControl validChar-field1330 hasDatepicker dirty error']");
-    	waitAndTypeByName("date6","");
-    	assertElementPresentByXpath("//button[contains(text(),'Today')]");
-    	assertElementPresentByXpath("//input[@class='form-control input-sm uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
-    	assertElementPresentByXpath("//input[@name='date7' and @disabled]");
+    	waitForElementPresentByXpath("//input[@name='field133' and @class='uif-dateControl validChar-field1330 hasDatepicker dirty error']");
+    	waitAndClickByXpath("//input[@name='date6']");
+    	waitAndClickByXpath("//button[contains(text(),'Today')]");
+    	waitForElementPresentByXpath("//input[@class='uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
+    	waitForElementPresentByXpath("//input[@name='date7' and @disabled]");
     	
     	//Selection Control
     	//Checkbox and Radio

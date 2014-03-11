@@ -23,7 +23,6 @@ import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -36,10 +35,6 @@ import javax.validation.constraints.NotNull;
 public class TravelSubAccount extends DataObjectBase {
 
 	private static final long serialVersionUID = 5768156680246084251L;
-
-    @ManyToOne(targetEntity = TravelAccount.class, fetch = FetchType.EAGER, cascade = {})
-    @JoinColumn(name = "ACCT_NUM" ,insertable=false, updatable=false)
-    TravelAccount account;
 
     @Id
     @Column(name = "ACCT_NUM",length = 10)
@@ -58,12 +53,16 @@ public class TravelSubAccount extends DataObjectBase {
     @NotNull
 	private String subAccountName;
 
-    public TravelAccount getAccount() {
-        return account;
+    @ManyToOne
+    @JoinColumn(name = "ACCT_NUM" ,insertable=false, updatable=false)
+    TravelAccount account;
+
+    public String getTravelAccountNumber() {
+        return this.travelAccountNumber;
     }
 
-    public void setAccount(TravelAccount account) {
-        this.account = account;
+    public void setTravelAccountNumber(String travelAccountNumber) {
+        this.travelAccountNumber = travelAccountNumber;
     }
 
     public String getSubAccount() {
@@ -82,11 +81,11 @@ public class TravelSubAccount extends DataObjectBase {
         this.subAccountName = subAccountName;
     }
 
-    public String getTravelAccountNumber() {
-        return travelAccountNumber;
+    public TravelAccount getAccount() {
+        return this.account;
     }
 
-    public void setTravelAccountNumber(String travelAccountNumber) {
-        this.travelAccountNumber = travelAccountNumber;
+    public void setAccount(TravelAccount account) {
+        this.account = account;
     }
 }

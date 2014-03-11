@@ -104,6 +104,8 @@ public class KradLabsForm extends UifFormBase {
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
 
+    private List<UITestObject> emptyCollection = new ArrayList<UITestObject>();
+
     private List<UITestObject> mediumCollection1 = new ArrayList<UITestObject>();
     private List<UITestObject> mediumCollection2 = new ArrayList<UITestObject>();
 
@@ -611,6 +613,14 @@ public class KradLabsForm extends UifFormBase {
 
     public void setTestGroupId(String testGroupId) {
         this.testGroupId = testGroupId;
+    }
+
+    public List<UITestObject> getEmptyCollection() {
+        return emptyCollection;
+    }
+
+    public void setEmptyCollection(List<UITestObject> emptyCollection) {
+        this.emptyCollection = emptyCollection;
     }
 
     public List<UITestObject> getCollection1() {

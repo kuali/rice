@@ -123,7 +123,7 @@
             <list>
               <bean parent="Uif-InputField" p:propertyName="inputField6" p:width="auto" p:label="Select Control" p:instructionalText="Choose a background color">
                 <property name="control">
-                  <bean parent="Uif-DropdownControl" p:options-ref="color-options" p:size="3"
+                  <bean parent="Uif-DropdownControl" p:options-ref="color-options"
                         p:onChangeScript="var c=jq(this).val();jq('#'+'Demo-Events-Example2A').animate({backgroundColor:c});" />
                 </property>
               </bean>

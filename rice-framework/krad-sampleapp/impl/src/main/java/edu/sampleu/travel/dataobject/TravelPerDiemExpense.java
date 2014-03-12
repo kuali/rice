@@ -158,11 +158,6 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     }
 
     public String getTravelAuthorizationDocumentId() {
-        if (StringUtils.isBlank(travelAuthorizationDocumentId)
-                && this.travelAuthorizationDocument != null) {
-            return this.travelAuthorizationDocument.getDocumentNumber();
-        }
-
         return travelAuthorizationDocumentId;
     }
 

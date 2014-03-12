@@ -22,7 +22,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 /**
  * Renders a meta tag in the head of the html document.
  *
- * <p>The meta tag component can be used to create meta tags by defining the attributes: name, content and http_equiv</p>
+ * <p>The meta tag component can be used to create meta tags by defining the attributes:
+ * name, content and http_equiv</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

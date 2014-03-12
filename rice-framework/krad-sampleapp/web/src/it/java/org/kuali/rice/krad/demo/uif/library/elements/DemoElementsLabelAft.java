@@ -55,6 +55,7 @@ public class DemoElementsLabelAft extends WebDriverLegacyITBase {
     protected void testLibraryElementsLabelRequiredText() throws Exception {
         waitAndClickByLinkText("Required Message");
         assertLabelWithTextPresent("Label with required message:");
+        assertTextPresent("This is required.");
     }
 
     private void testLabels() throws Exception {

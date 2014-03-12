@@ -128,7 +128,7 @@
                     p:actionUrl.controllerMapping="/labs"
                     p:actionLabel="Doc Search"/>
 
-              <bean parent="Uif-DropdownToggleMenu" p:toggleText="User thclark">
+              <bean parent="Uif-DropdownToggleMenu" p:toggleText="Backdoor Login">
                 <property name="wrapperCssClasses">
                   <list merge="true">
                     <value>pull-right</value>

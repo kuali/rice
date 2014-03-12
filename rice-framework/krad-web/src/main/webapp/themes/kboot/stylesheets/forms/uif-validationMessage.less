@@ -1,0 +1,229 @@
+/** Validation Messages Framework **********************************************************************/
+.uif-correctedError {
+  text-decoration: line-through;
+  color: #a9a9a9;
+}
+.uif-messageCount {
+  font-size: 0.9em;
+  font-weight: normal;
+  padding-left: 1.3em;
+  vertical-align: bottom;
+  display: inline;
+}
+.uif-messageCount img {
+  width: 16px;
+  height: 16px;
+  vertical-align: bottom;
+}
+.uif-clientMessageItems {
+  max-width: 250px;
+  padding: 1px;
+}
+.uif-groupValidationMessages .uif-clientMessageItems ul {
+  margin-left: 1em;
+}
+.uif-serverMessageItems {
+  max-width: 250px;
+}
+.uif-groupValidationMessages .uif-serverMessageItems ul {
+  margin-left: 1em;
+}
+.uif-validationMessages {
+  /*background-image: url(../../images/validation/normal-stripe.png);*/
+  background-color: #F8F8F8;
+  background-repeat: repeat;
+  border: 1px solid #cbcbcb;
+  padding-top: .5em;
+  padding-bottom: .3em;
+  margin-bottom: 8px;
+}
+.uif-validationMessages, .uif-clientMessageItems, .uif-serverMessageItems {
+  color: black;
+}
+.uif-validationMessages ul {
+  list-style: none outside none;
+  margin: 0;
+  margin-left: 1em;
+}
+.uif-validationMessages li {
+  list-style: none outside none;
+  margin-left: 0;
+  line-height: 1.3em;
+  margin-bottom: .3em;
+  display: block;
+}
+.uif-validationMessages ul > li > ul {
+  margin-left: 2em;
+}
+
+
+// delete this after performance branch merge
+
+
+.uif-pageValidationMessages-error {
+  /*    background-image: url(../../images/validation/error-stripe.png);
+ background-repeat: repeat;*/
+  background-color: #FFEAF0;
+  border: 1px solid #ffa09c;
+}
+.uif-pageValidationMessages-warning {
+  /*    background-image: url(../../images/validation/warn-stripe.png);
+ background-repeat: repeat;*/
+  background-color: #FFFEDA;
+  border: 1px solid #FF9900;
+}
+.uif-pageValidationMessages-info {
+  /*    background-image: url(../../images/validation/info-stripe.png);
+ background-repeat: repeat;*/
+  background-color: #EEF7FE;
+  border: 1px solid #3366CC;
+}
+
+.uif-validationMessages.uif-groupValidationMessages.uif-pageValidationMessages-error {
+  .alert;
+  .alert-danger;
+}
+.uif-validationMessages.uif-groupValidationMessages.uif-pageValidationMessages-warning {
+  .alert;
+}
+.uif-validationMessages.uif-groupValidationMessages.uif-pageValidationMessages-info {
+  .alert;
+  .alert-info;
+}
+
+
+// end delete
+
+
+.uif-pageValidationHeader {
+  margin: 0 0 0.2em;
+  font-size: 18px;
+}
+
+
+
+
+
+.uif-hasInfo > fieldset[data-type="RadioSet"], .uif-hasWarning > fieldset[data-type="RadioSet"], .uif-hasInfo > fieldset[data-type="CheckboxSet"], .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
+  border: 1px solid gray !important;
+}
+
+.uif-hasError > [data-role="Control"], .uif-hasError > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasError > fieldset[data-type="RadioSet"], .uif-hasError > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #ff2300 !important;
+}
+
+.uif-hasInfo > [data-role="Control"], .uif-hasInfo > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasInfo > fieldset[data-type="RadioSet"], .uif-hasInfo > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #1150b0 !important;
+}
+
+.uif-hasWarning > [data-role="Control"], .uif-hasWarning > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasWarning > fieldset[data-type="RadioSet"], .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #f7941e !important;
+}
+
+
+
+
+
+
+.uif-hasError-modified > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="RadioSet"], .uif-hasError-modified > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid gray !important;
+}
+.uif-validationMessages li a {
+  white-space: normal;
+}
+.uif-validationMessagesList {
+  margin-left: 10px;
+}
+
+li.uif-errorMessageItem:before {
+  /* For a round bullet */
+  content: '\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0.25em;
+  color: #ff2300;
+  font-size: 20px;
+}
+li.uif-errorMessageItem-modified:before, li.uif-correctedError:before {
+  /* For a round bullet */
+  content: '\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0.25em;
+  color: gray;
+  font-size: 20px;
+}
+li.uif-warningMessageItem:before {
+  /* For a round bullet */
+  content: '\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0.25em;
+  color: #ffd700;
+  font-size: 20px;
+}
+li.uif-infoMessageItem:before {
+  /* For a round bullet */
+  content: '\2022';
+  display: block;
+  position: relative;
+  max-width: 0px;
+  max-height: 0px;
+  left: -10px;
+  top: -0.25em;
+  color: #3366CC;
+  font-size: 20px;
+}
+.uif-errorHighlight [data-role="Control"], .uif-errorHighlight > fieldset[data-type="RadioSet"], .uif-errorHighlight > fieldset[data-type="CheckboxSet"], .uif-errorHighlight .uif-checkboxControl + label {
+  background-color: #FFE1E9;
+}
+.uif-warningHighlight [data-role="Control"], .uif-warningHighlight > fieldset[data-type="RadioSet"], .uif-warningHighlight > fieldset[data-type="CheckboxSet"], .uif-warningHighlight .uif-checkboxControl + label {
+  background-color: #FFFEDA;
+}
+.uif-infoHighlight [data-role="Control"], .uif-infoHighlight > fieldset[data-type="RadioSet"], .uif-infoHighlight > fieldset[data-type="CheckboxSet"], .uif-infoHighlight .uif-checkboxControl + label {
+  background-color: #E7F3FE;
+}
+.uif-clientErrorDiv {
+  background-color: #FFE1E9;
+}
+.uif-clientWarningDiv {
+  background-color: #FFFEDA;
+}
+.uif-clientInfoDiv {
+  background-color: #E7F3FE;
+}
+/** true when rendering outside tooltip **/
+.uif-validationMessages > .uif-clientMessageItems {
+  background-color: transparent;
+}
+/** true when rendering outside tooltip **/
+.uif-validationMessages > .uif-clientMessageItems ul {
+  border: 1px dashed black;
+}
+.uif-applicationMessage {
+  font-size: 125%;
+  font-weight: bold;
+}
+.uif-pageValidationMessages .uif-validationImage {
+  vertical-align: bottom;
+  width: 16px;
+}
+ul.uif-pageValidationMessage-single {
+  margin-left: 1em;
+}
+.uif-pageValidationMessage-single li:before {
+  content: none;
+}
+.uif-hasError .uif-checkboxControl + label {
+  border: 2px solid red;
+  padding: .2em;
+}

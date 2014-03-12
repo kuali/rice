@@ -1,0 +1,53 @@
+/** Table layout styles *******************************************************************************/
+.uif-gridGroup-plain > table,
+.uif-gridGroup-plain > table > tbody > tr,
+.uif-gridGroup-plain > table > tbody > tr > th[scope="row"],
+.uif-gridGroup-plain > table > tbody > tr > td {
+  border: none;
+  background: none;
+  background-color: transparent;
+}
+
+table.uif-gridLayout {
+  width: 100%;
+  margin-bottom: 10px;
+  th[scope="col"] {
+    text-align: left;
+  }
+  th {
+    background: @gray-lighter;
+  }
+  & > tbody {
+    & > tr {
+      & > td.uif-inputField {
+        white-space: nowrap;
+      }
+    }
+  }
+  td.uif-inputField {
+    span.uif-instructionalMessage {
+      max-width: none !important;
+    }
+  }
+  .uif-group {
+    text-align: left;
+  }
+  th[scope="row"] {
+    label {
+      padding-top: 4px;
+      float: right;
+      white-space: pre-wrap;
+    }
+  }
+  td {
+    .uif-inputField {
+      input:first-child {
+        margin-bottom: 0px;
+      }
+      input {
+        margin-bottom: 0px;
+        margin-top: 2px;
+      }
+    }
+  }
+}

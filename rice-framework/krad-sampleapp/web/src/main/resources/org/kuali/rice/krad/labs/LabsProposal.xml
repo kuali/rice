@@ -55,12 +55,12 @@
     <property name="applicationFooter">
       <null/>
     </property>
-    <property name="additionalCssFiles">
-      <list merge="true">
-        <value>css/labsProposal.css</value>
-      </list>
-    </property>
-    <!--<property name="dialogs">-->
+    <!--<property name="additionalCssFiles">
+     <list merge="true">
+       <value>css/labsProposal.css</value>
+     </list>
+   </property> -->
+   <!--<property name="dialogs">-->
       <!--<list>-->
         <!--<ref bean="LabsProposal-wizard"/>-->
       <!--</list>-->
@@ -135,7 +135,7 @@
   <bean id="LabsProposal-DocInfo" parent="Uif-VerticalBoxGroup" p:additionalCssClasses="uif-documentInfo">
     <property name="items">
       <list>
-        <bean parent="Uif-Message" p:messageText="[strong]Document Info[/strong]"/>
+        <!--<bean parent="Uif-Message" p:messageText="[strong]Document Info[/strong]"/> -->
         <bean parent="Uif-MessageField" p:label="Doc Nbr" p:messageText="2743"/>
         <bean parent="Uif-MessageField" p:label="Initiator" p:messageText="thrclark"/>
         <bean parent="Uif-MessageField" p:label="Status" p:messageText="In Progress"/>
@@ -144,7 +144,7 @@
     </property>
   </bean>
 
-  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:toggleText="more..."
+  <bean id="LabsProposal-MoreDocInfo" parent="Uif-DropdownToggleMenu" p:toggleText="more info..."
         p:toggleCaretClass="">
     <property name="menuGroup">
       <bean parent="Uif-DropdownTable" p:layoutManager.libraryCssClasses="table,table-condensed"
@@ -646,11 +646,11 @@
         <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
       </list>
     </property>
-    <property name="additionalCssFiles">
+    <!--<property name="additionalCssFiles">
       <list merge="true">
         <value>css/labsLookup.css</value>
       </list>
-    </property>
+    </property>  -->
     <property name="additionalCssClasses" value="uif-lightbox"/>
     <property name="criteriaGroup">
       <bean id="Uif-LookupCriteriaGroup" parent="Uif-CssGridSection-1FieldLabelColumn" p:id="uLookupCriteria"

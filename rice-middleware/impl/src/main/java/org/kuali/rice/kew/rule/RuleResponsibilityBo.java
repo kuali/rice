@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
@@ -43,6 +32,16 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.List;
 
 
 /**
@@ -66,7 +65,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 	private String id;
     @Column(name="RSP_ID")
 	private String responsibilityId;
-    @Column(name="RULE_ID")
+    @Column(name="RULE_ID", insertable=false, updatable=false)
     private String ruleBaseValuesId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequestedCd;
@@ -80,7 +79,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 	private String approvePolicy;
 
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="RULE_ID", insertable = false, updatable = false)
+	@JoinColumn(name="RULE_ID")
 	private RuleBaseValues ruleBaseValues;
     //@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
     //        mappedBy="ruleResponsibility")
@@ -118,7 +117,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
     public String getRoleAttributeName() {
 	    return getRole().substring(0, getRole().indexOf("!"));
     }
-
+    
     public RoleAttribute resolveRoleAttribute() {
         if (isUsingRole()) {
             String attributeName = getRoleAttributeName();
@@ -158,7 +157,6 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
         this.ruleBaseValues = ruleBaseValues;
     }
 
-    @Override
     public String getActionRequestedCd() {
         return actionRequestedCd;
     }
@@ -167,7 +165,6 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
         this.actionRequestedCd = actionRequestedCd;
     }
 
-    @Override
     public String getId() {
         return id;
     }
@@ -175,7 +172,6 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
     public void setId(String ruleResponsibilityId) {
         this.id = ruleResponsibilityId;
     }
-    @Override
     public Integer getPriority() {
         return priority;
     }
@@ -184,7 +180,6 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
         this.priority = priority;
     }
 
-    @Override
     public String getApprovePolicy() {
         return approvePolicy;
     }
@@ -244,23 +239,21 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
         this.ruleResponsibilityType = ruleResponsibilityType;
     }
 
-    @Override
     public String getResponsibilityId() {
         return responsibilityId;
     }
     public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
     }
-
-    @Override
+    
     public List<RuleDelegationBo> getDelegationRules() {
     	return KEWServiceLocator.getRuleDelegationService().findByResponsibilityId(getResponsibilityId());
     }
-
+    
     public RuleDelegationBo getDelegationRule(int index) {
     	return getDelegationRules().get(index);
     }
-
+    
 //    public boolean isDelegating() {
 //        return !getDelegationRules().isEmpty();
 //    }
@@ -281,32 +274,27 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 //        }
 //        return (RuleDelegation) getDelegationRules().get(index);
 //    }
-
+    
     // convenience methods for the web-tier
-
+    
     public String getActionRequestedDisplayValue() {
     	return KewApiConstants.ACTION_REQUEST_CODES.get(getActionRequestedCd());
     }
-
+    
     public String getRuleResponsibilityTypeDisplayValue() {
     	return KewApiConstants.RULE_RESPONSIBILITY_TYPES.get(getRuleResponsibilityType());
     }
-
-    @Override
+    
     public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (!(o instanceof RuleResponsibilityBo)) {
-            return false;
-        }
+        if (o == null) return false;
+        if (!(o instanceof RuleResponsibilityBo)) return false;
         RuleResponsibilityBo pred = (RuleResponsibilityBo) o;
         return ObjectUtils.equals(ruleResponsibilityName, pred.getRuleResponsibilityName()) &&
                ObjectUtils.equals(actionRequestedCd, pred.getActionRequestedCd()) &&
                ObjectUtils.equals(priority, pred.getPriority()) &&
                ObjectUtils.equals(approvePolicy, pred.getApprovePolicy());
     }
-
+    
     /**
 	 * @see java.lang.Object#hashCode()
 	 */

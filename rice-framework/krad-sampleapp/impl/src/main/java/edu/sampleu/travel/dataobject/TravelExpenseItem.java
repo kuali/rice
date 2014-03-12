@@ -15,6 +15,7 @@
  */
 package edu.sampleu.travel.dataobject;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -127,6 +128,11 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     }
 
     public String getTravelAuthorizationDocumentId() {
+        if (StringUtils.isBlank(travelAuthorizationDocumentId)
+                && this.travelAuthorizationDocument != null) {
+            return this.travelAuthorizationDocument.getDocumentNumber();
+        }
+
         return travelAuthorizationDocumentId;
     }
 

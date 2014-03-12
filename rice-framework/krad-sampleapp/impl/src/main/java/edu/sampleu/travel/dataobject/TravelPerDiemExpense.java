@@ -17,6 +17,7 @@ package edu.sampleu.travel.dataobject;
 
 import edu.sampleu.travel.options.MileageRateKeyValues;
 import edu.sampleu.travel.options.TravelDestinationKeyValues;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
@@ -157,6 +158,11 @@ public class TravelPerDiemExpense extends DataObjectBase implements Serializable
     }
 
     public String getTravelAuthorizationDocumentId() {
+        if (StringUtils.isBlank(travelAuthorizationDocumentId)
+                && this.travelAuthorizationDocument != null) {
+            return this.travelAuthorizationDocument.getDocumentNumber();
+        }
+
         return travelAuthorizationDocumentId;
     }
 

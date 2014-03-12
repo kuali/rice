@@ -50,12 +50,10 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     
     protected void testInputFields() throws InterruptedException {
     	//Label
-    	waitForElementPresentByXpath("//span[@class='labelTop uif-labelBlock']/label[contains(text(),'Field Label')]");
-    	waitForElementPresentByXpath("//span[@class='labelTop uif-labelBlock']/label[contains(text(),'Field Label:')]");
-    	waitForElementPresentByXpath("//span[@class='uif-label']/label[contains(text(),'Field Label:')]");
-    	waitForElementPresentByXpath("//span[@id='UifCompView-Field102_label_span']/label[contains(text(),'Field Label:')]");
-    	waitForElementPresentByXpath("//span[@id='UifCompView-Field102B_label_span']/label[contains(text(),'Field Label')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'Constraint text')]");
+    	waitForElementPresentByXpath("//label[@class='uif-label uif-labelBlock uif-tooltip' and contains(text(),'Field Label')]");
+    	waitForElementPresentByXpath("//label[@class='uif-label uif-labelBlock' and contains(text(),'Field Label:')]");
+    	waitForElementPresentByXpath("//label[@class='uif-label uif-labelBlock' and contains(text(),'Field Label:')]");
+    	waitForElementPresentByXpath("//p[contains(text(),'Constraint text')]");
     	
     	//TextBox
     	waitForElementPresentByXpath("//input[@placeholder and @size='30' and @maxlength='40']");
@@ -78,12 +76,12 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	assertElementPresentByXpath("//input[@name='field133' and @placeholder='mm-dd-yyyy ']");
     	waitAndTypeByName("field133","asd");
     	waitAndTypeByName("date5","2");
-    	waitForElementPresentByXpath("//input[@name='field133' and @class='uif-dateControl validChar-field1330 hasDatepicker dirty error']");
+    	waitForElementPresentByXpath("//input[@name='field133' and @class='form-control input-sm uif-dateControl validChar-field1330 hasDatepicker dirty error']");
     	waitAndClickByXpath("//input[@name='date6']");
     	waitForElementPresentByXpath("//div[@class='ui-datepicker-group ui-datepicker-group-first']");
     	waitForElementPresentByXpath("//div[@class='ui-datepicker-group ui-datepicker-group-last']");
-//    	waitAndClickByXpath("//button[contains(text(),'Today')]");
-    	waitForElementPresentByXpath("//input[@class='uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
+    	waitAndClickByXpath("//button[@class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all']");//Today
+    	waitForElementPresentByXpath("//input[@class='form-control input-sm uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
     	waitForElementPresentByXpath("//input[@name='date7' and @disabled]");
     	
     	//Selection Control
@@ -105,15 +103,15 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	//Others
     	assertElementPresentByXpath("//input[@type='file']");
     	waitAndTypeByName("testPerson.principalName","fred");
-//    	waitAndTypeByName("field131","1");
-//    	Thread.sleep(3000);//Needed as the text wont appears else
-//    	waitForTextPresent("fred, fred");
-//    	clearTextByName("testPerson.principalName");
-//    	waitAndTypeByName("testPerson.principalName","deep");
-//    	waitAndTypeByName("field131","1");
-//       	Thread.sleep(3000);//Needed as the text wont appears else
-//    	waitForTextPresent("user control not found");
-    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only']");
-    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only']");
+    	waitAndTypeByName("field131","1");
+    	Thread.sleep(3000);//Needed as the text wont appears else
+    	waitForTextPresent("fred, fred");
+    	clearTextByName("testPerson.principalName");
+    	waitAndTypeByName("testPerson.principalName","deep");
+    	waitAndTypeByName("field131","1");
+       	Thread.sleep(3000);//Needed as the text wont appears else
+    	waitForTextPresent("user control not found");
+    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-up ui-corner-tr']");
+    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-down ui-corner-br']");
     }
 }

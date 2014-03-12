@@ -305,9 +305,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             if (viewModel instanceof UifFormBase) {
                 ((UifFormBase) viewModel).getAddedCollectionItems().add(newLine);
             }
+            processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
         }
-
-        processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
     }
 
     /**
@@ -508,7 +507,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         String duplicateLineLabelString = null;
         if (viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) == null) {
+                UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING) != null) {
             duplicateLineLabelString = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                     UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING);
         }

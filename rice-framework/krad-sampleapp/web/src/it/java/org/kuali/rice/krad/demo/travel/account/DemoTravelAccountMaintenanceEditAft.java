@@ -81,16 +81,38 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName(SUB_ACCOUNT_FIELD, "A1");
+
+        // Verify that adding a duplicate Sub Account is not allowed.
+        String subAccountDuplicate = "A";
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        waitAndClickButtonByText("add");
+        String errorMessage []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
+        assertTextPresent(errorMessage);
+
+        // Verify that adding a duplicate Sub Account and Sub Account Name is not allowed.
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account A");
+        waitAndClickButtonByText("add");
+        String errorMessage2 []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
+        assertTextPresent(errorMessage2);
+
+        // Add a new sub account
+        String subAccount = "A1" + RandomStringUtils.randomAlphabetic(2);
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccount);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']");
-        waitAndClickButtonByText("submit");
-        waitForElementPresentByXpath("//a[contains(text(),'A1')]");
+        waitAndClickButtonByText("add");
+        waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
+
         waitAndClickButtonByText("Save");
         waitForTextPresent("Document was successfully saved.");
-        waitAndClickButtonByText("blanket approve");
+        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("reload");
+        assertTextPresent("FINAL");
+
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

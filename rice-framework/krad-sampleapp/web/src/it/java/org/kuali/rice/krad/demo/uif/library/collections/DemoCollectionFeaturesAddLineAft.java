@@ -79,7 +79,7 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testCollectionFeaturesAddLineNav() throws Exception {
         testCollectionFeaturesDefaultAddLine();
         testCollectionFeaturesDefaultAddBlankLine();

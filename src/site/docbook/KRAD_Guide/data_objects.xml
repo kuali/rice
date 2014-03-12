@@ -368,9 +368,60 @@ QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicate
                    	                equal(CURRENT_INDICATOR, Boolean.TRUE)
                     	        );
 criteria.setCountFlag(CountFlag.ONLY);
-return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount();</programlisting>
-            <emphasis role="bold">Injecting the Shared Entity Manager</emphasis></para>
-        <programlisting>//Add the following to your Spring DAO implementation to assign the appropriate Persistence 
+return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount();</programlisting></para>
+        <para><emphasis role="bold">DataObjectService save</emphasis></para>
+            <programlisting>
+//Fetch by Compound Primary Key
+final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
+map.put("countryCode", countryCode);
+map.put("code", code);
+StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));
+
+// make the StateBo inactive
+stateBo.setActiveToDate(new Timestamp(System.currentTimeMillis());
+
+// save the StateBo and get the updated instance
+stateBo = getDataObjectService().save(stateBo);
+            </programlisting>
+        <para><emphasis role="bold">DataObjectService save with PersistenceOption</emphasis></para>
+            <programlisting>
+//Fetch by Compound Primary Key
+final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
+map.put("countryCode", countryCode);
+map.put("code", code);
+StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));
+
+// make the StateBo inactive
+stateBo.setActiveToDate(new Timestamp(System.currentTimeMillis());
+
+// save the StateBo, include a PersistenceOption, and get the updated instance
+stateBo = getDataObjectService().save(stateBo, PersistenceOption.FLUSH);
+            </programlisting>                
+        <para>
+            <emphasis>PersistenceOptions</emphasis>
+        </para>
+        <para>
+            One or more persistence options can be passed to indicate whether or not linking should be performed prior to
+            persistence.  By default, linking is performed.  Below is a list of PersistionOption values.
+        </para>
+        <orderedlist>
+            <listitem><para>FLUSH</para></listitem>
+            <listitem><para>LINK_KEYS</para></listitem>
+        </orderedlist>
+    <para><emphasis role="bold">DataObjectService delete</emphasis></para>
+    <programlisting>
+//Fetch by Compound Primary Key
+final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
+map.put("countryCode", countryCode);
+map.put("code", code);
+StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));
+
+// delete the StateBo
+getDataObjectService().delete(stateBo);
+    </programlisting>
+        <para>
+            <emphasis role="bold">Injecting the Shared Entity Manager</emphasis>
+            <programlisting>//Add the following to your Spring DAO implementation to assign the appropriate Persistence 
 //Unit to your DAO
 
 public class DocumentTypeDAOJpa implements DocumentTypeDAO {
@@ -378,7 +429,7 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 @PersistenceContext(unitName="kew")
 private EntityManager entityManager;
 
-}</programlisting>
+}</programlisting></para>
         <para>
             <emphasis role="bold"> Simple example of Named Query in Rice</emphasis>
             <programlisting>//Fetch Application Document ID by Document ID
@@ -556,6 +607,118 @@ public class RouteNodeInstance implements Serializable {
                 </para>
             </tip>
         </para>
+    </section>
+    <section>
+        <title>Java Persistence Api Entity Attribute Converters and Kuali Rice</title>
+        <para>Entity Attribute Converters - Converts the current state of the entity attribute value
+            into a data store representation and back again. </para>
+        <para><emphasis role="bold">Auto Apply</emphasis></para>
+        <para>
+            The autoApply attribute of a converter may be set to 'true' or 'false'.  When set to true
+            the JPA provider will use the converter to convert all entity attributes of the given type.
+            If autoApply is set to false then a javax.persistence.Convert annotation will need to be added
+            to all attributes that shall be converted, along with the Converter class.
+        </para>
+        <para> The table below shows a list of attribute converters available in Kuali Rice.</para>
+        <table frame="all" tabstyle="striped">
+            <title>Kuali Rice Standard Converters</title>
+            <tgroup cols="3">
+                <colspec colnum="1" colname="name"/>
+                <colspec colnum="2" colname="desc"/>
+                <colspec colnum="3" colname="autoApply"/>
+                <thead>
+                    <row>
+                        <entry>JPA Field Converter Class</entry>
+                        <entry>Description</entry>
+                        <entry>Auto Apply</entry>
+                    </row>
+                </thead>
+                <tbody>
+                    <row>
+                        <entry>BooleanYNConverter</entry>
+                        <entry>Converts java.lang.Boolean True or False values to java.lang.String
+                            characters 'Y' or 'N' to be persisted to the datasource.  Datasource
+                            values are converted back to java.lang.Boolean True or False when
+                            injected back into a data object.</entry>
+                        <entry>YES</entry>
+                    </row>
+                    <row>
+                        <entry>Boolean01BigDecimalConverter</entry>
+                        <entry>Converts 0/1 Boolean values to java.math.BigDecimal to be persisted
+                            to the datasource.  Datasource values are converted back to 0/1 Boolean
+                            values when injected back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>Boolean01Converter</entry>
+                        <entry>Converts java.lang.Boolean True or False values to
+                            java.math.BigInteger to be persisted to the datasource.  Datasource
+                            values are converted back to java.lang.Boolean True or False values when
+                            injected back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>BooleanAIConverter</entry>
+                        <entry>Converts java.lang.Boolean True or False to java.lang.String
+                            characters 'A' or 'I' (A - active, I - inactive) to be persisted to the
+                            datasource.  Datasource values are converted back to java.lang.Boolean
+                            True or False values when injected back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>BooleanTFConverter</entry>
+                        <entry>Converts java.lang.Boolean True or False  to java.lang.String
+                            characters 'T' or 'F' (T - true, F - false) to be persisted to the
+                            datasource.  Datasource values are converted back to java.lang.Boolean
+                            True or False values when injected back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>EncryptionConverter</entry>
+                        <entry>Calls the core service to encrypt/decrypt values being persisted to
+                            and from the datasource.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>HashConverter</entry>
+                        <entry>Calls the core service to hash values being persisted to the
+                            datasource.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>InverseBooleanYNConverter</entry>
+                        <entry>Converts the java.lang.Boolean True or False value to it's inverse
+                            java.lang.String character representation to be persisted to the
+                            datasource.  Datasource values are converted back to their inverse
+                            java.lang.Boolean True or False values when injected back into a data
+                            object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry>KualiDecimalConverter</entry>
+                        <entry>Converts KualiDecimal values to BigDecimals to be persisted to the
+                            datasource.  Datasource values are converted back to KualiDecimals when
+                            injected back into a data object.</entry>
+                        <entry>YES</entry>
+                    </row>
+                    <row>
+                        <entry>KualiIntegerConverter</entry>
+                        <entry>Converts KualiIntegers to java.lang.Longs to be persisted to the
+                            datasouce.  Datasource values are converted back to KualiIngeters when
+                            injected back into a data object.</entry>
+                        <entry>YES</entry>
+                    </row>
+                    <row>
+                        <entry>KualiPercentConverter</entry>
+                        <entry>converts KualiPercents to java.math.BigDecimal to be persisted to the
+                            datasource.  Datasource values are convert back to KualiPercents when
+                            injected back into a data object.</entry>
+                        <entry>YES</entry>
+                    </row>
+                </tbody>
+            </tgroup>
+        </table>
+        
     </section>
 <!-- TODO
     <section>

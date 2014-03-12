@@ -20,14 +20,12 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
- * Renders a <link> tag in the <head> of the html document.
- *
+ * Renders a link tag in the head of the html document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "view-headLink", parent = "Uif-HeadLink")})
+@BeanTag(name = "view-headLink", parent = "Uif-HeadLink")
 public class HeadLink extends ContentElementBase  {
-
     private static final long serialVersionUID = -2295905449114970348L;
 
     private String media;
@@ -36,16 +34,14 @@ public class HeadLink extends ContentElementBase  {
     private String type;
     private String includeCondition;
 
-
     public HeadLink() {
         super();
     }
 
-
     /**
-     * Media attribute for link tag
+     * Media attribute for link tag.
      *
-     * <p>Media attribute to be rendered on this link tag.</p>
+     * <p>Media attribute to be rendered on this link tag</p>
      *
      * @return  media attribute of link tag
      */
@@ -62,9 +58,9 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     * Href attribute for link tag
+     * Href attribute for link tag.
      *
-     * <p>Href attribute to be rendered on this link tag.</p>
+     * <p>Href attribute to be rendered on this link tag</p>
      *
      * @return  href attribute of link tag
      */
@@ -81,9 +77,9 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     * Rel attribute for link tag
+     * Rel attribute for link tag.
      *
-     * <p>Rel attribute to be rendered on this link tag.</p>
+     * <p>Rel attribute to be rendered on this link tag</p>
      *
      * @return  rel attribute of link tag
      */
@@ -101,9 +97,9 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     * Type attribute for link tag
+     * Type attribute for link tag.
      *
-     * <p>Type attribute to be rendered on this link tag.</p>
+     * <p>Type attribute to be rendered on this link tag</p>
      *
      * @return  type attribute of link tag
      */
@@ -121,7 +117,7 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     * IncludeCondition wraps custom html comments around link tags
+     * IncludeCondition wraps custom html comments around link tags.
      *
      * <p>IncludeCondition wraps conditional html comments for
      * choosing css files based on browser info.
@@ -133,7 +129,7 @@ public class HeadLink extends ContentElementBase  {
      *      <![endif]-->
      *  }
      *
-     *  the includeCondition would be   "if  ie 9".</p>
+     *  the includeCondition would be  "if  ie 9"</p>
      *
      * @return  includeCondition
      */

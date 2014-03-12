@@ -19,33 +19,29 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
-
 /**
- * Renders a <meta> tag in the <head> of the html document.
+ * Renders a meta tag in the head of the html document.
  *
- * <p>The meta tag component can be used to create meta tags by defining the attributes: name, content and http_equiv. </p>
+ * <p>The meta tag component can be used to create meta tags by defining the attributes: name, content and http_equiv</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "view-MetaTag", parent = "Uif-MetaTag")})
+@BeanTag(name = "view-MetaTag", parent = "Uif-MetaTag")
 public class MetaTag extends ContentElementBase {
-
     private static final long serialVersionUID = -3479173950568700937L;
 
     private String name;
     private String content;
     private String http_equiv;
 
-
     public MetaTag() {
         super();
     }
 
     /**
-     * Name attribute for meta tag
+     * Name attribute for meta tag.
      *
-     * <p>
-     * Name attribute to be rendered on this meta tag</p>
+     * <p>Name attribute to be rendered on this meta tag</p>
      *
      * @return  name attribute of meta tag
      */
@@ -62,10 +58,9 @@ public class MetaTag extends ContentElementBase {
     }
 
     /**
-     * Content attribute for meta tag
+     * Content attribute for meta tag.
      *
-     * <p>
-     * Content attribute to be rendered on this meta tag</p>
+     * <p>Content attribute to be rendered on this meta tag</p>
      *
      * @return  content attribute of meta tag
      */
@@ -82,10 +77,9 @@ public class MetaTag extends ContentElementBase {
     }
 
     /**
-     * Http_equiv attribute for meta tag
+     * Http_equiv attribute for meta tag.
      *
-     * <p>
-     * Http_equiv attribute to be rendered on this meta tag</p>
+     * <p>Http_equiv attribute to be rendered on this meta tag</p>
      *
      * @return  http_equiv attribute of meta tag
      */

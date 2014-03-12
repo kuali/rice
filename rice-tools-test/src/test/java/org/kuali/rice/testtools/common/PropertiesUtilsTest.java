@@ -49,15 +49,15 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testLoadPropertiesResource() throws IOException {
-        Properties props = propUtils.loadProperties(null, "JiraAwareRegexFailures.properties");
+        Properties props = propUtils.loadProperties(null, "JiraAwareContainsFailures.properties");
         Assert.assertTrue(props.keySet().size() > 0);
     }
 
     @Test
     public void testLoadPropertiesFile() throws IOException {
-        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null); // intellij
+        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareContainsFailures.properties", null); // intellij
         if (props == null) { // mvn
-            props = propUtils.loadProperties("src/main/resources/JiraAwareRegexFailures.properties", null);
+            props = propUtils.loadProperties("src/main/resources/JiraAwareContainsFailures.properties", null);
         }
         Assert.assertNotNull(props);
         Assert.assertTrue(props.keySet().size() > 0);

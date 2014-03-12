@@ -40,17 +40,6 @@ import java.util.List;
  */
 //@Transactional
 public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
-    /**
-     * Default date/time formats
-     */
-    private static final String STRING_TO_DATE_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
-    private static final String STRING_TO_TIME_FORMATS = "hh:mm aa";
-    private static final String STRING_TO_TIMESTAMP_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
-    private static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy";
-    private static final String TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE = "hh:mm aa";
-    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy hh:mm a";
-    private static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd";
-    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd-HH-mm-ss-S";
 
 	protected String[] stringToDateFormats;
     protected String[] stringToTimeFormats;
@@ -316,35 +305,35 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (stringToDateFormats == null) {
-            stringToDateFormats = loadAndValidateFormats(CoreConstants.STRING_TO_DATE_FORMATS, STRING_TO_DATE_FORMATS);
+            stringToDateFormats = loadAndValidateFormats(CoreConstants.STRING_TO_DATE_FORMATS, CoreConstants.STRING_TO_DATE_FORMATS_DEFAULT);
 		}
 
         if (stringToTimeFormats == null) {
-            stringToTimeFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIME_FORMATS, STRING_TO_TIME_FORMATS);
+            stringToTimeFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIME_FORMATS, CoreConstants.STRING_TO_TIME_FORMATS_DEFAULT);
         }
 
 		if (stringToTimestampFormats == null) {
-            stringToTimestampFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIMESTAMP_FORMATS, STRING_TO_TIMESTAMP_FORMATS);
+            stringToTimestampFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIMESTAMP_FORMATS, CoreConstants.STRING_TO_TIMESTAMP_FORMATS_DEFAULT);
 		}
 
 		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE, DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			dateToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
 		}
 
         if (timeToStringFormatForUserInterface == null) {
-            timeToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE, TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+            timeToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
         }
 
 		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE, TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			timestampToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
 		}
 
 		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME, DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			dateToStringFormatForFileName = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME, CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT);
 		}
 
 		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME, TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			timestampToStringFormatForFileName = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME, CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT);
 		}
 	}
 

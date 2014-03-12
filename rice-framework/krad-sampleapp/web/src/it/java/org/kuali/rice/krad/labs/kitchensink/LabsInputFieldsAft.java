@@ -80,7 +80,9 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	waitAndTypeByName("date5","2");
     	waitForElementPresentByXpath("//input[@name='field133' and @class='uif-dateControl validChar-field1330 hasDatepicker dirty error']");
     	waitAndClickByXpath("//input[@name='date6']");
-    	waitAndClickByXpath("//button[contains(text(),'Today')]");
+    	waitForElementPresentByXpath("//div[@class='ui-datepicker-group ui-datepicker-group-first']");
+    	waitForElementPresentByXpath("//div[@class='ui-datepicker-group ui-datepicker-group-last']");
+//    	waitAndClickByXpath("//button[contains(text(),'Today')]");
     	waitForElementPresentByXpath("//input[@class='uif-dateControl validChar-date50 hasDatepicker dirty error' and @name='date5']");
     	waitForElementPresentByXpath("//input[@name='date7' and @disabled]");
     	
@@ -93,11 +95,25 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	
     	//Select and Dropdown
     	selectByName("field119","Option 1");
+    	waitForElementPresentByXpath("//select[@name='field119']");
+    	waitForElementPresentByXpath("//div[@data-label='Dropdown Navigation']/select[@class='uif-dropdownControl valid']");
+    	waitForElementPresentByXpath("//ul/li/a[contains(text(),'Kuali.org')]");
+    	waitForElementPresentByXpath("//div[@data-label='Option List Nav - UrlInfo configured']/ul/li/a[contains(text(),'Other Fields')]");
+    	waitForElementPresentByXpath("//ul/li/a[contains(text(),'Kuali.org')]");
     	assertElementPresentByXpath("//select[@name='field120' and @multiple and @size='3']");
     	
     	//Others
     	assertElementPresentByXpath("//input[@type='file']");
-    	waitAndClickByXpath("//a[@class='ui-spinner-button ui-spinner-up ui-corner-tr']");
-    	assertElementPresentByXpath("//input[@name='field131' and @aria-valuenow='1']");
+    	waitAndTypeByName("testPerson.principalName","fred");
+//    	waitAndTypeByName("field131","1");
+//    	Thread.sleep(3000);//Needed as the text wont appears else
+//    	waitForTextPresent("fred, fred");
+//    	clearTextByName("testPerson.principalName");
+//    	waitAndTypeByName("testPerson.principalName","deep");
+//    	waitAndTypeByName("field131","1");
+//       	Thread.sleep(3000);//Needed as the text wont appears else
+//    	waitForTextPresent("user control not found");
+    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only']");
+    	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only']");
     }
 }

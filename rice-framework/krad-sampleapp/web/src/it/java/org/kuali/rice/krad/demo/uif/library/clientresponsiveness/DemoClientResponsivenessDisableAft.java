@@ -83,9 +83,9 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
     
     protected void testClientResponsivenessDisableInCollections() throws Exception {
         selectByName("exampleShown","In Collections");
-        WebElement element = findElement(By.name("newCollectionLines['collection1'].field2"));
+        WebElement element = findElement(By.name("newCollectionLines['collection1'].field3"));
         assertTrue(element.getAttribute("class").contains("ignoreValid"));
-        selectByName("newCollectionLines['collection1'].field1","Disable");
+        selectByName("newCollectionLines['collection1'].field2","Disable");
         Thread.sleep(1000);
         assertElementPresentByXpath("//input[@disabled]");
      }

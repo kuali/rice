@@ -142,18 +142,29 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
     
     protected void testEditFiscalOfficer() throws Exception {
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']")) {
+            jiraAwareFail("Fiscal Officer at start of test is not fran");
+        }
+
     	checkForRequiredFields();
-    	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
-        clearTextByName("document.newMaintainableObject.dataObject.foId");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
-    	waitAndClickButtonByText("blanket approve");
-    	navigate();
-    	if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='eric']"))
-    	{
-    		jiraAwareFail("Fiscal Officer Not Changed");
-    	}
+
+        changeFiscalOfficer("eric");
+
+        // change eric back to fran
+        changeFiscalOfficer("fran");
     }
-    
+
+    private void changeFiscalOfficer(String newUser) throws Exception {
+        waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer to " + newUser + " "  + RandomStringUtils.randomAlphabetic(2));
+        clearTextByName("document.newMaintainableObject.dataObject.foId");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
+        waitAndClickButtonByText("blanket approve");
+        navigate();
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
+            jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
+        }
+    }
+
     private void checkForRequiredFields() throws Exception{
     	waitForElementPresentByXpath("//label[contains(text(),'Description')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Number:')]/span[contains(text(),'*')]");
@@ -162,6 +173,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
+        jGrowl("Verify required messages are displayed");
     	waitAndClickButtonByText("submit");
     	String requiredMessage []={"Description: Required"};
     	assertTextPresent(requiredMessage);
@@ -202,6 +214,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     @Test
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
     	testEditFiscalOfficer();
+        passed();
     }
 
 }

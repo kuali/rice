@@ -43,9 +43,9 @@
       </inputField-bean>
       <inputField-bean maxLength="1" parent="GenericTextField" progressiveRenderAndRefresh="true"
                        propertyName="field47"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[aA]$'"
+      <inputField-bean parent="GenericTextField" progressiveRender="field47 ne null and field47 matches '^[aA]$'"
                        progressiveRenderAndRefresh="true" propertyName="field48"/>
-      <inputField-bean parent="GenericTextField" progressiveRender="field47 matches '^[bB]$'"
+      <inputField-bean parent="GenericTextField" progressiveRender="field47 ne null and field47 matches '^[bB]$'"
                        progressiveRenderAndRefresh="true" propertyName="field49"/>
     </items>
   </verticalBoxSection-bean>

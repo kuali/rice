@@ -930,12 +930,16 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         return collection5;
     }
 
+    public void setCollection5(List<UITestObject> collection5) {
+        this.collection5 = collection5;
+    }
+
     public List<UITestObject> getCollection6() {
         return collection6;
     }
 
-    public void setCollection5(List<UITestObject> collection5) {
-        this.collection5 = collection5;
+    public void setCollection6(List<UITestObject> collection6) {
+        this.collection6 = collection6;
     }
 
     public List<UIInactivatableTestObject> getInactivatableCollection() {

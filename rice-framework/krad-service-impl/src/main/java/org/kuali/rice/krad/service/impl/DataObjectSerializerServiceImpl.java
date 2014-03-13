@@ -16,60 +16,58 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
-import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.service.BusinessObjectSerializerService;
-import org.kuali.rice.krad.service.DocumentDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
-import org.kuali.rice.krad.util.documentserializer.DataObjectPropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
+import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluatorBase;
 import org.kuali.rice.krad.util.documentserializer.SerializationState;
+
+import javax.persistence.Transient;
+import java.lang.reflect.Field;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
 
-    private DocumentDictionaryService documentDictionaryService;
-
     /**
-     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
+     * {@inheritDoc}
      */
-    public String serializeBusinessObjectToXml(Object businessObject) {
-        PropertySerializabilityEvaluator propertySerizabilityEvaluator =
-                getPropertySerizabilityEvaluator(businessObject);
-        evaluators.set(propertySerizabilityEvaluator);
-        SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
-        serializationStates.set(state);
-
-        //Object xmlWrapper = null;//wrapDocumentWithMetadata(document);
-        String xml;
-        if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
-            xml = getXmlObjectSerializerService().toXml(businessObject);
-        } else {
-            xml = xstream.toXML(businessObject);
-        }
-
-        evaluators.set(null);
-        serializationStates.set(null);
-        return xml;
-    }
-
+    @Override
     public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
-        PropertySerializabilityEvaluator evaluator = new DataObjectPropertySerializabilityEvaluator(
-                SerializationContext.MAINTENANCE);
+        // Avoiding AlwaysTruePropertySerializibilityEvaluator otherwise SerializerServiceBase uses the
+        // getXmlObjectSerializerService instead of it's own XStream instance, and our ignoreField method isn't used.
+        PropertySerializabilityEvaluator evaluator = new PropertySerializabilityEvaluatorBase() {
+            @Override
+            public boolean isPropertySerializable(SerializationState state, Object containingObject,
+                    String childPropertyName, Object childPropertyValue) {
+                return true;
+            }
+        };
 
         return evaluator;
     }
 
-    protected DocumentDictionaryService getDocumentDictionaryService() {
-        if (documentDictionaryService == null) {
-            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
-        }
-        return documentDictionaryService;
-    }
+    /**
+     * Examines {@link Serialized} and {@link Transient} annotations to determine if the field should not be serialized.
+     *
+     * <p>{@inheritDoc}</p>
+     */
+    @Override
+    protected boolean ignoreField(Field field) {
+        Serialized serialized = field.getAnnotation(Serialized.class);
 
-    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
-        this.documentDictionaryService = documentDictionaryService;
+        // if we have a @Serialized annotation that is relevant to serializationContext, let it determine serializability
+        if (serialized != null && SerializationContext.MAINTENANCE.matches(serialized.forContexts())) {
+            return !serialized.enabled(); // note the ! operator, since ignore=true is equiv to serialized=false
+        }
+
+        // otherwise, if the field is marked as javax.persistence.Transient, ignore it
+        if (field.getAnnotation(Transient.class) != null) {
+            return true;
+        }
+
+        // by default we don't want to ignore it
+        return false;
     }
 }

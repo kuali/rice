@@ -79,6 +79,51 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream.registerConverter(new DateTimeConverter());
     }
 
+    /**
+     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
+     */
+    public String serializeBusinessObjectToXml(Object businessObject) {
+        PropertySerializabilityEvaluator propertySerizabilityEvaluator =
+                getPropertySerizabilityEvaluator(businessObject);
+        evaluators.set(propertySerizabilityEvaluator);
+        SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
+        serializationStates.set(state);
+
+        //Object xmlWrapper = null;//wrapDocumentWithMetadata(document);
+        String xml;
+        if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
+            xml = getXmlObjectSerializerService().toXml(businessObject);
+        } else {
+            xml = xstream.toXML(businessObject);
+        }
+
+        evaluators.set(null);
+        serializationStates.set(null);
+        return xml;
+    }
+
+    /**
+     * Method called by the ProxyAndStateAwareJavaReflectionProvider during serialization to determine if a field
+     * should be omitted from the serialized form.
+     *
+     * <p>This is a short circuit check that will avoid more expensive calls in to the PropertySerializabilityEvaluator
+     * if it returns true.</p>
+     *
+     * @param field the field
+     * @return true if the field should be omitted
+     */
+    protected boolean ignoreField(Field field) {
+        return false;
+    }
+
+    /**
+     * Get the appropriate {@link PropertySerializabilityEvaluator} for the given dataObject.
+     *
+     * @param dataObject the data object
+     * @return the evaluator
+     */
+    protected abstract PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object dataObject);
+
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
@@ -151,10 +196,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
             }
         }
 
-        protected boolean ignoreField(Field field) {
-            return false;
-        }
-
         protected void initializeField(Object object, Field field) {
         }
     }
@@ -171,7 +212,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
 
     }
-
 
     protected XmlObjectSerializerService getXmlObjectSerializerService() {
         return this.xmlObjectSerializerService;

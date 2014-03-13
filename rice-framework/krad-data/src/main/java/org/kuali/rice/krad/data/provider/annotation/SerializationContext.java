@@ -31,11 +31,29 @@ public enum SerializationContext {
     /**
      * The context for serializing within the maintenance document framework.
      */
-    MAINTENANCE,
+    MAINTENANCE;
 
 // TODO: implement respect for @Serialized in workflow doc serialization
 //    /**
 //     * The context for serializing to workflow document contents.
 //     */
 //    WORKFLOW;
+
+    /**
+     * Does the given array of serializationContexts match this one?
+     *
+     * <p>Either an exact match, or SerializationContext.ALL will suffice</p>
+     *
+     * @param serializationContexts the serializationContexts to test against
+     * @return true if there is a matching context
+     */
+    public boolean matches(SerializationContext [] serializationContexts) {
+        if (serializationContexts != null) for (SerializationContext serializationContext : serializationContexts) {
+            if (serializationContext == this || serializationContext == SerializationContext.ALL) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

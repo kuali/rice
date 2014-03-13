@@ -18,15 +18,11 @@ package org.kuali.rice.krad.service.impl;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoaderTestUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.metadata.impl.MetadataRepositoryImpl;
 import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
 import org.kuali.rice.krad.data.provider.annotation.Serialized;
-import org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProviderImpl;
-import org.kuali.rice.krad.data.provider.impl.ProviderRegistryImpl;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -35,7 +31,6 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 
 import javax.persistence.Transient;
 import java.io.Serializable;
-import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
@@ -60,27 +55,18 @@ public class MaintenanceDocumentSerializationTest {
      */
     @BeforeClass
     public static void setupServices() {
-        // Wire together a MetadataRepository that will have the processed metadata for the annotations
-        AnnotationMetadataProviderImpl annotationMetadataProvider = new AnnotationMetadataProviderImpl();
-        // this gets the metadata for out test classes into the provider
-        annotationMetadataProvider.provideMetadataForTypes(Arrays.<Class<?>>asList(TestKradDataObj.class, TestKradChildOjb.class));
-
-        ProviderRegistryImpl providerRegistry = new ProviderRegistryImpl();
-        providerRegistry.registerProvider(annotationMetadataProvider);
-        MetadataRepositoryImpl metadataRepository = new MetadataRepositoryImpl();
-        metadataRepository.setProviderRegistry(providerRegistry);
-
         // create a mock LegacyDataAdapter that will answer all the questions it is asked appropriately
         mockLegacyDataAdapter = mock(LegacyDataAdapter.class);
         when(mockLegacyDataAdapter.areNotesSupported(any(Class.class))).thenReturn(Boolean.FALSE);
         when(mockLegacyDataAdapter.isProxied(anyObject())).thenReturn(Boolean.FALSE);
+
+        xmlObjectSerializerServiceImpl.setLegacyDataAdapter(mockLegacyDataAdapter);
 
         // create a DataObjectSerializerServiceImpl that will be used in KRAD to determine whether a given field is serialized
         DataObjectSerializerServiceImpl dataObjectSerializerService = new DataObjectSerializerServiceImpl();
         dataObjectSerializerService.setLegacyDataAdapter(mockLegacyDataAdapter);
 
         // put needed mock and hand wired services into the GRL
-        GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.KD_METADATA_REPOSITORY, metadataRepository);
         GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocatorWeb.LEGACY_DATA_ADAPTER, mockLegacyDataAdapter);
         GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.KRAD_SERIALIZER_SERVICE, dataObjectSerializerService);
         GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.XML_OBJECT_SERIALIZER_SERVICE, xmlObjectSerializerServiceImpl);
@@ -90,7 +76,6 @@ public class MaintenanceDocumentSerializationTest {
      * Run the serialization / deserialization cycle on the maintenance doc and verify that the annotations properly
      * control which fields are serialized (and thus survive that cycle).
      */
-    @Ignore // TODO: un-ignore when the @Transient metadata fighting w/ the DD issue is fixed.
     @Test
     public void kradSerializationAnnotationTest() {
         // rig our maintainable up with the minimal parts needed to test serialization
@@ -141,14 +126,14 @@ public class MaintenanceDocumentSerializationTest {
 class TestKradDataObj extends PersistableBusinessObjectBase implements Serializable {
 
     // annotated, but for a different SerializationType -- should be ignored
-    @Serialized(enabled = false, forContext = { /* SerializationContext.WORKFLOW */ })
+    @Serialized(enabled = false, forContexts = { /* SerializationContext.WORKFLOW */ })
     private String name;
 
     // a child object without any special annotations.  Should survive.
     private TestKradChildOjb child1;
 
     // a child object that is annotated to not be serialized in our specific SerializationType.  Should not survive.
-    @Serialized(enabled = false, forContext = { SerializationContext.MAINTENANCE })
+    @Serialized(enabled = false, forContexts = { SerializationContext.MAINTENANCE })
     private TestKradChildOjb child2;
 
 
@@ -167,7 +152,7 @@ class TestKradDataObj extends PersistableBusinessObjectBase implements Serializa
 
     // a child object that is marked JPA transient, and is annotated to be serialized for all SerializationTypes (which
     // is the default SerializationType).  Should survive.
-    @Serialized(enabled = true, forContext = { SerializationContext.ALL })
+    @Serialized(enabled = true, forContexts = { SerializationContext.ALL })
     @Transient
     private TestKradChildOjb child6;
 

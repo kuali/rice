@@ -45,5 +45,5 @@ public @interface Serialized {
      *
      * @return the serialization contexts
      */
-    SerializationContext[] forContext() default { SerializationContext.ALL };
+    SerializationContext[] forContexts() default { SerializationContext.ALL };
 }

@@ -47,7 +47,6 @@ public class PropertiesUtilsTest {
         System.setProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY, "true");
         System.setProperty(PROPERTY_DOESNT_EXIST_IN_FILE, "true");
         propUtils = new PropertiesUtils();
-
 //        printSystemProperties();
     }
 

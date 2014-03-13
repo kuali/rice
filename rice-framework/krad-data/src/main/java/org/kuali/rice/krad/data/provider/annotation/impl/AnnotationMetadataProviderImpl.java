@@ -340,10 +340,10 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
             attr.setSerializeds(serializeds);
             return true;
         }
-        if (a instanceof Transient) {
-            attr.setPersistenceTransient(true);
-            return true;
-        }
+//        if (a instanceof Transient) {
+//            attr.setPersistenceTransient(true);
+//            return true;
+//        }
 		if (a instanceof UifDisplayHints) {
 			attr.setDisplayHints(new HashSet<UifDisplayHint>(Arrays.asList(((UifDisplayHints) a).value())));
 			return true;

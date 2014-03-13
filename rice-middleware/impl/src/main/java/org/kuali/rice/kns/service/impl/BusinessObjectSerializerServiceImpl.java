@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.util.documentserlializer.MaintenanceDocumentPropertySerializibilityEvaluator;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.krad.service.impl.DataObjectSerializerServiceImpl;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BusinessObjectSerializerServiceImpl extends org.kuali.rice.krad.service.impl.BusinessObjectSerializerServiceImpl {
+public class BusinessObjectSerializerServiceImpl extends DataObjectSerializerServiceImpl {
 
     @Override
     public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {

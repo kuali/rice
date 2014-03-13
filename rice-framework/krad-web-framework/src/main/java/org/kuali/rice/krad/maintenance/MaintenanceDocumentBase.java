@@ -41,6 +41,7 @@ import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
+import org.kuali.rice.krad.service.BusinessObjectSerializerService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -490,8 +491,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             // hack to resolve XStream not dealing well with Proxies
             KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(oldBo);
 
-            docContentBuffer.append(
-                    KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
+            docContentBuffer.append(getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
 
             // add the maintainable's maintenanceAction
             docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -506,8 +506,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(newBo);
 
-        docContentBuffer.append(KRADServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(
-                newBo));
+        docContentBuffer.append(getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
 
         // add the maintainable's maintenanceAction
         docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -1111,6 +1110,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         return documentService;
     }
 
+    /**
+     * @return the service used for serializing maintained business / data objects
+     */
+    protected BusinessObjectSerializerService getBusinessObjectSerializerService() {
+        return KRADServiceLocator.getDataObjectSerializerService();
+    }
 
     //for issue KULRice3070
     protected boolean checkAllowsRecordDeletion() {

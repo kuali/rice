@@ -16,12 +16,15 @@
 package org.kuali.rice.krad.data.metadata.impl;
 
 import java.beans.PropertyEditor;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
@@ -57,6 +60,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	protected Boolean required;
 	protected Boolean persisted;
 	protected Boolean sensitive;
+    protected Set<Serialized> serializeds;
+    protected Boolean persistenceTransient;
 	protected Long maxLength;
 	protected Long minLength;
 	protected String validCharactersConstraintBeanName;
@@ -390,7 +395,87 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		this.sensitive = sensitive;
 	}
 
-	@Override
+    /**
+     * Should this attribute be serialized in the given {@link SerializationContext}.
+     *
+     * @param serializationContext the serialization context
+     */
+    @Override
+    public boolean isSerialized(SerializationContext serializationContext) {
+
+        // find the annotation that applies to this serializationContext
+        Serialized serializedThatApplies = null;
+
+        for (Serialized serializedAnnotation : getSerializeds()) {
+            // an exact SerializationContext match overrides an "ALL" match
+            if (Arrays.asList(serializedAnnotation.forContext()).contains(serializationContext)) {
+                serializedThatApplies = serializedAnnotation;
+                break;
+            }
+
+            // an "ALL" match will suffice if there is not an exact match
+            if (Arrays.asList(serializedAnnotation.forContext()).contains(SerializationContext.ALL)) {
+                serializedThatApplies = serializedAnnotation;
+            }
+        }
+
+        // if we have an applicable annotation, return that value
+        if (serializedThatApplies != null) {
+            return serializedThatApplies.enabled();
+        }
+
+        // if serialized hasn't been set, but the field is @Transient, don't serialize
+        if (isPersistenceTransient() != null) {
+            return false;
+        }
+
+        // serialize by default
+        return true;
+    }
+
+    /**
+     * Set the {@link Serialized} annotations for this attribute.
+     * @param serializeds
+     */
+    public void setSerializeds(Set<Serialized> serializeds) {
+        this.serializeds = serializeds;
+    }
+
+    /**
+     * Get the set of {@link Serialized} annotations for this attribute.
+     * @return
+     */
+    @Override
+    public Set<Serialized> getSerializeds() {
+        if (serializeds != null) {
+            return Collections.unmodifiableSet(serializeds);
+        }
+
+        if (embeddedAttribute != null) {
+            return embeddedAttribute.getSerializeds();
+        }
+
+        return Collections.emptySet();
+    }
+
+    /**
+     * Is the attribute marked as transient for persistence (meaning it is un-mapped by ORM)?
+     */
+    public Boolean isPersistenceTransient() {
+        return persistenceTransient;
+    }
+
+    /**
+     * Sets whether this attribute is considered transient for persistence.
+     *
+     * @param persistenceTransient the value to set
+     * @see #isPersistenceTransient()
+     */
+    public void setPersistenceTransient(Boolean persistenceTransient) {
+        this.persistenceTransient = persistenceTransient;
+    }
+
+    @Override
 	public Set<UifDisplayHint> getDisplayHints() {
 		if (displayHints != null) {
 			return displayHints;

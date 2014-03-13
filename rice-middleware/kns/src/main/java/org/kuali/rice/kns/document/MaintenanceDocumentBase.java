@@ -26,6 +26,8 @@ import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentBase;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.service.BusinessObjectSerializerService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Transient;
@@ -348,6 +350,14 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
             }
 
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected BusinessObjectSerializerService getBusinessObjectSerializerService() {
+        return KRADServiceLocator.getBusinessObjectSerializerService();
     }
 
 }

@@ -15,24 +15,25 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-
-import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
 import org.kuali.rice.krad.service.BusinessObjectSerializerService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
+import org.kuali.rice.krad.util.documentserializer.DataObjectPropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.SerializationState;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
+public class DataObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
 
     private DocumentDictionaryService documentDictionaryService;
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXml(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
      */
     public String serializeBusinessObjectToXml(Object businessObject) {
         PropertySerializabilityEvaluator propertySerizabilityEvaluator =
@@ -55,14 +56,8 @@ public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase i
     }
 
     public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
-        PropertySerializabilityEvaluator evaluator = null;
-
-        String docTypeName = getDocumentDictionaryService().getMaintenanceDocumentTypeName(businessObject.getClass());
-        MaintenanceDocumentEntry maintenanceDocumentEntry =
-                getDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-
-        // TODO: need to determine view properties to serialize
-        evaluator = new AlwaysTruePropertySerializibilityEvaluator();
+        PropertySerializabilityEvaluator evaluator = new DataObjectPropertySerializabilityEvaluator(
+                SerializationContext.MAINTENANCE);
 
         return evaluator;
     }

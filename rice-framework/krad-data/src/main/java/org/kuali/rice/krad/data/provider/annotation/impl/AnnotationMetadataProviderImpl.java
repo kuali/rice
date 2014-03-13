@@ -51,6 +51,7 @@ import org.kuali.rice.krad.data.provider.annotation.PropertyEditorClass;
 import org.kuali.rice.krad.data.provider.annotation.ReadOnly;
 import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.Sensitive;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.data.provider.annotation.ShortLabel;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
@@ -58,6 +59,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Annotation;
@@ -71,6 +73,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence
@@ -330,6 +333,17 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 			attr.setSensitive(true);
 			return true;
 		}
+        if (a instanceof Serialized) {
+            // there could be more than one, so we will add it to the existing set.
+            Set<Serialized> serializeds = new HashSet<Serialized>(attr.getSerializeds());
+            serializeds.add((Serialized)a);
+            attr.setSerializeds(serializeds);
+            return true;
+        }
+        if (a instanceof Transient) {
+            attr.setPersistenceTransient(true);
+            return true;
+        }
 		if (a instanceof UifDisplayHints) {
 			attr.setDisplayHints(new HashSet<UifDisplayHint>(Arrays.asList(((UifDisplayHints) a).value())));
 			return true;

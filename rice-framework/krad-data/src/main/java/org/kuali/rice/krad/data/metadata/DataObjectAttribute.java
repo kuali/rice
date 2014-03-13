@@ -21,6 +21,9 @@ import java.util.Set;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
@@ -121,6 +124,20 @@ public interface DataObjectAttribute extends MetadataCommon {
 	 * Whether this attribute is inherited from a different data object.
 	 */
 	boolean isInherited();
+
+    /**
+     * Is this attribute serialized for the given serialization type.
+     *
+     * @param serializationType the serialization type
+     */
+    boolean isSerialized(SerializationContext serializationType);
+
+    /**
+     * Gets the Set of {@link Serialized}s for this attribute.
+     *
+     * <p>May return an empty set, but will not return null</p>
+     */
+    Set<Serialized> getSerializeds();
 
 	/**
 	 * Obtains the "original" data object attribute in a chain of embedded attribute definitions.

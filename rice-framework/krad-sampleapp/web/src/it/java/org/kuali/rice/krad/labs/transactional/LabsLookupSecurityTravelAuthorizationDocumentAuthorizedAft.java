@@ -25,17 +25,8 @@ import org.junit.Test;
 public class LabsLookupSecurityTravelAuthorizationDocumentAuthorizedAft extends LabsLookupSecurityTravelAuthorizationDocumentBase {
 
     @Override
-    public void testSetUp() {
-        user = "dev1";
-
-        super.testSetUp();
-    }
-
-    @Override
-    public void tearDown() {
-        super.tearDown();
-
-        user = "admin";
+    public String getUserName() {
+        return "dev1";
     }
 
     @Test

@@ -565,7 +565,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
             WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
-            loginKradOrKns(driver, user, this);
+            loginKradOrKns(driver, getUserName(), this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 

@@ -991,4 +991,59 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
     }
+
+    /**
+     * Creates a copy of this {@code LookupableImpl}.
+     *
+     * @return a copy of this {@code LookupableImpl}
+     */
+    public LookupableImpl copy() {
+        LookupableImpl lookupableImplCopy = KRADUtils.createNewObjectFromClass(getClass());
+
+        if (this.getDataObjectClass() != null) {
+            lookupableImplCopy.setDataObjectClass(this.getDataObjectClass());
+        }
+
+        if (this.getConfigurationService() != null) {
+            lookupableImplCopy.setConfigurationService(this.getConfigurationService());
+        }
+
+        if (this.getDataDictionaryService() != null) {
+            lookupableImplCopy.setDataDictionaryService(this.getDataDictionaryService());
+        }
+
+        if (this.getDataObjectAuthorizationService() != null) {
+            lookupableImplCopy.setDataObjectAuthorizationService(this.getDataObjectAuthorizationService());
+        }
+
+        if (this.getDataObjectService() != null) {
+            lookupableImplCopy.setDataObjectService(this.getDataObjectService());
+        }
+
+        if (this.getDocumentDictionaryService() != null) {
+            lookupableImplCopy.setDocumentDictionaryService(this.getDocumentDictionaryService());
+        }
+
+        if (this.getEncryptionService() != null) {
+            lookupableImplCopy.setEncryptionService(this.getEncryptionService());
+        }
+
+        if (this.getExpressionEvaluatorFactory() != null) {
+            lookupableImplCopy.setExpressionEvaluatorFactory(this.getExpressionEvaluatorFactory());
+        }
+
+        if (this.getLegacyDataAdapter() != null) {
+            lookupableImplCopy.setLegacyDataAdapter(this.getLegacyDataAdapter());
+        }
+
+        if (this.getLookupService() != null) {
+            lookupableImplCopy.setLookupService(this.getLookupService());
+        }
+
+        if (this.getViewDictionaryService() != null) {
+            lookupableImplCopy.setViewDictionaryService(this.getViewDictionaryService());
+        }
+
+        return lookupableImplCopy;
+    }
 }

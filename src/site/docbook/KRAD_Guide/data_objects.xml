@@ -16,7 +16,7 @@
     limitations under the License.
 
 -->
-<chapter xml:id="data_objects" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+<chapter xml:id="data_objects" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title> Data Objects and Persistence </title>
     <note>
         <para>This document outlines the KRAD Data Framework as of Kuali Rice 2.4+. If you are
@@ -610,8 +610,18 @@ public class RouteNodeInstance implements Serializable {
     </section>
     <section>
         <title>Java Persistence Api Entity Attribute Converters and Kuali Rice</title>
-        <para>Entity Attribute Converters - Converts the current state of the entity attribute value
-            into a data store representation and back again. </para>
+        <para>
+            Entity Attribute Converters - Converts the current state of the entity attribute value
+            into a data store representation and back again.
+        </para>
+        <note>
+          <para>
+            When the KradEclipseLinkEntityManagerFactoryBean or the KradEntityManagerFactoryBean classes
+            are used the Kuali Rice entity attribute converters are automatically registered within the
+            persistence context.
+          </para>
+        </note>
+
         <para><emphasis role="bold">Auto Apply</emphasis></para>
         <para>
             The autoApply attribute of a converter may be set to 'true' or 'false'.  When set to true
@@ -619,13 +629,14 @@ public class RouteNodeInstance implements Serializable {
             If autoApply is set to false then a javax.persistence.Convert annotation will need to be added
             to all attributes that shall be converted, along with the Converter class.
         </para>
-        <para> The table below shows a list of attribute converters available in Kuali Rice.</para>
-        <table frame="all" tabstyle="striped">
+      </section>
+      <section>
+        <para> The current attribute converters available in Kuali Rice: <table frame="all" tabstyle="striped" pgwide="1">
             <title>Kuali Rice Standard Converters</title>
             <tgroup cols="3">
-                <colspec colnum="1" colname="name"/>
-                <colspec colnum="2" colname="desc"/>
-                <colspec colnum="3" colname="autoApply"/>
+                <colspec colnum="1" colname="name" colwidth="2.5*" align="left"/>
+                <colspec colnum="2" colname="desc" colwidth="6.0*" align="left"/>
+                <colspec colnum="3" colname="autoApply" colwidth="1.0*" align="center"/>
                 <thead>
                     <row>
                         <entry>JPA Field Converter Class</entry>
@@ -635,90 +646,105 @@ public class RouteNodeInstance implements Serializable {
                 </thead>
                 <tbody>
                     <row>
-                        <entry>BooleanYNConverter</entry>
-                        <entry>Converts java.lang.Boolean True or False values to java.lang.String
-                            characters 'Y' or 'N' to be persisted to the datasource.  Datasource
-                            values are converted back to java.lang.Boolean True or False when
-                            injected back into a data object.</entry>
+                        <entry>
+                          <link xlink:show="new"
+                                xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanYNConverter.html">
+                            BooleanYNConverter
+                          </link>
+                        </entry>
+                      <entry>Converts java.lang.Boolean True or False values
+                          to java.lang.String characters 'Y' or 'N' to be
+                          persisted to the data store.  Data store values are
+                          converted back to java.lang.Boolean True or False when
+                          injected back into a data object.</entry>
                         <entry>YES</entry>
                     </row>
                     <row>
-                        <entry>Boolean01BigDecimalConverter</entry>
-                        <entry>Converts 0/1 Boolean values to java.math.BigDecimal to be persisted
-                            to the datasource.  Datasource values are converted back to 0/1 Boolean
-                            values when injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01BigDecimalConverter.html">Boolean01BigDecimalConverter</link></entry>
+                        <entry>Converts 0/1 Boolean values to java.math.BigDecimal
+                          to be persisted to the data store.  Data store values
+                          are converted back to 0/1 Boolean values when injected
+                          back into a data object.</entry>
                         <entry>NO</entry>
                     </row>
                     <row>
-                        <entry>Boolean01Converter</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01Converter.html">Boolean01Converter</link></entry>
                         <entry>Converts java.lang.Boolean True or False values to
-                            java.math.BigInteger to be persisted to the datasource.  Datasource
-                            values are converted back to java.lang.Boolean True or False values when
+                            java.math.BigInteger to be persisted to the data store.
+                            Data store values are converted back to
+                            java.lang.Boolean True or False values when injected
+                            back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanAIConverter.html">BooleanAIConverter</link></entry>
+                        <entry>Converts java.lang.Boolean True or False to
+                            java.lang.String characters 'A' or 'I' (A - active,
+                            I - inactive) to be persisted to the data store.
+                            Data store values are converted back to
+                            java.lang.Boolean True or False values when injected
+                            back into a data object.</entry>
+                        <entry>NO</entry>
+                    </row>
+                    <row>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanTFConverter.html">BooleanTFConverter</link></entry>
+                        <entry>Converts java.lang.Boolean True or False
+                            to java.lang.String characters 'T' or 'F'
+                            (T - true, F - false) to be persisted to the
+                            data store.  Data store values are converted back
+                            to java.lang.Boolean True or False values when
                             injected back into a data object.</entry>
                         <entry>NO</entry>
                     </row>
                     <row>
-                        <entry>BooleanAIConverter</entry>
-                        <entry>Converts java.lang.Boolean True or False to java.lang.String
-                            characters 'A' or 'I' (A - active, I - inactive) to be persisted to the
-                            datasource.  Datasource values are converted back to java.lang.Boolean
-                            True or False values when injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/EncryptionConverter.html">EncryptionConverter</link></entry>
+                        <entry>Calls the core service to encrypt/decrypt
+                          values being persisted to and from the data store.</entry>
                         <entry>NO</entry>
                     </row>
                     <row>
-                        <entry>BooleanTFConverter</entry>
-                        <entry>Converts java.lang.Boolean True or False  to java.lang.String
-                            characters 'T' or 'F' (T - true, F - false) to be persisted to the
-                            datasource.  Datasource values are converted back to java.lang.Boolean
-                            True or False values when injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/HashConverter.html">HashConverter</link></entry>
+                        <entry>Calls the core service to hash values
+                          being persisted to the data store.</entry>
                         <entry>NO</entry>
                     </row>
                     <row>
-                        <entry>EncryptionConverter</entry>
-                        <entry>Calls the core service to encrypt/decrypt values being persisted to
-                            and from the datasource.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/InverseBooleanYNConverter.html">InverseBooleanYNConverter</link></entry>
+                        <entry>Converts the java.lang.Boolean True or
+                          False value to it's inverse java.lang.String
+                          character representation to be persisted to the data store.
+                          Data store values are converted back to their inverse
+                          java.lang.Boolean True or False values when injected
+                          back into a data object.</entry>
                         <entry>NO</entry>
                     </row>
                     <row>
-                        <entry>HashConverter</entry>
-                        <entry>Calls the core service to hash values being persisted to the
-                            datasource.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry>InverseBooleanYNConverter</entry>
-                        <entry>Converts the java.lang.Boolean True or False value to it's inverse
-                            java.lang.String character representation to be persisted to the
-                            datasource.  Datasource values are converted back to their inverse
-                            java.lang.Boolean True or False values when injected back into a data
-                            object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry>KualiDecimalConverter</entry>
-                        <entry>Converts KualiDecimal values to BigDecimals to be persisted to the
-                            datasource.  Datasource values are converted back to KualiDecimals when
-                            injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiDecimalConverter.html">KualiDecimalConverter</link></entry>
+                        <entry>Converts KualiDecimal values to BigDecimals
+                          to be persisted to the datasource.  Data store
+                          values are converted back to KualiDecimals when
+                          injected back into a data object.</entry>
                         <entry>YES</entry>
                     </row>
                     <row>
-                        <entry>KualiIntegerConverter</entry>
-                        <entry>Converts KualiIntegers to java.lang.Longs to be persisted to the
-                            datasouce.  Datasource values are converted back to KualiIngeters when
-                            injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiIntegerConverter.html">KualiIntegerConverter</link></entry>
+                        <entry>Converts KualiIntegers to java.lang.Longs
+                          to be persisted to the data store.  Data store
+                          values are converted back to KualiIngeters when
+                          injected back into a data object.</entry>
                         <entry>YES</entry>
                     </row>
                     <row>
-                        <entry>KualiPercentConverter</entry>
-                        <entry>converts KualiPercents to java.math.BigDecimal to be persisted to the
-                            datasource.  Datasource values are convert back to KualiPercents when
-                            injected back into a data object.</entry>
+                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiPercentConverter.html">KualiPercentConverter</link></entry>
+                        <entry>converts KualiPercents to java.math.BigDecimal
+                          to be persisted to the data store.  Data store
+                          values are convert back to KualiPercents when
+                          injected back into a data object.</entry>
                         <entry>YES</entry>
                     </row>
                 </tbody>
             </tgroup>
-        </table>
-        
+        </table></para>
     </section>
 <!-- TODO
     <section>

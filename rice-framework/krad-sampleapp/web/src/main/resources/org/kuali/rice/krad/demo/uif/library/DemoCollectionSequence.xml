@@ -69,7 +69,7 @@
           <property name="headerText" value="Field Sequence" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="propertyName" value="collection2" />
           <property name="layoutManager.generateAutoSequence" value ="false"/>
           <property name="layoutManager.sequencePropertyName" value="field3"/>
           <property name="layoutManager.sequenceFieldPrototype">
@@ -97,7 +97,7 @@
           <property name="headerText" value="No Sequence" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="propertyName" value="collection3" />
           <property name="layoutManager.renderSequenceField" value="false" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="items">

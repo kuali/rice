@@ -62,56 +62,97 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     protected void testOtherFields() throws InterruptedException {
     	//Field Group
     	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup1' and @class='uif-verticalFieldGroup uif-boxLayoutVerticalItem clearfix']");
-    	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup2' and @class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/span/label[contains(text(),'Field 1:')]");
+    	assertElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/input");
+    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/span/label[contains(text(),'Field 2:')]");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup2']/fieldset/div[@class='uif-horizontalBoxGroup']");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/div/div/input");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/div/button");
     	
     	//Message View
-    	assertElementPresentByXpath("//p[@id='UifCompView-MessageField1']");
-    	assertElementPresentByXpath("//p[@id='UifCompView-MessageFieldWithExpression']");
+    	waitForElementPresentByXpath("//span[@id='UifCompView-MessageField1_span']");
+    	waitForElementPresentByXpath("//span[@id='UifCompView-MessageFieldWithExpression_span']");
     	
     	//Syntax Highliter
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter1']/div[@class='uif-syntaxHighlighter']");
-    	assertElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter1_syntaxHighlightCopy']");
+    	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter1_syntaxHighlightCopy']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter2']/div[@class='uif-syntaxHighlighter']");
-    	assertElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter2_syntaxHighlightCopy']");
+    	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter2_syntaxHighlightCopy']");
+    	acceptAlertIfPresent();
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter3']/div[@class='uif-syntaxHighlighter']");
     	if(isElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter3_syntaxHighlightCopy']")) {
     		fail("Copy is allowed.");
     	}
 
+    	//Security Fields
+    	waitForElementPresentByXpath("//span[contains(text(),'*********')]");
+    	waitForElementPresentByXpath("//span[contains(text(),'*****tInfo111')]");
+    	
         //testAttributeSecurity(); // currently failing commented out till fixed and the attribute security test methods removed
 
         //Image Fields
-    	assertElementPresentByXpath("//img[@alt='pdf image']");
+    	waitForElementPresentByXpath("//img[@alt='pdf image']");
     	assertTextPresent("Image cutline text here ");
-    	assertElementPresentByXpath("//div[@id='UifCompView-ImageField2' and @title='computer programming']");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-ImageField2' and @title='computer programming']");
     	
     	//Action Fields
     	waitAndClickByXpath("//button[@id='submitButton1']");
-    	assertElementPresentByXpath("//div[@id='UifCompView-PopoverContent-1' and @style='margin-bottom: 0px; padding-left: 10px; display: block;']");
-    	assertElementPresentByXpath("//a[@id='UifCompView-ActionField9']/img[@class='actionImage rightActionImage uif-image']");
-    	assertElementPresentByXpath("//a[@id='UifCompView-ActionField11']/img[@class='actionImage leftActionImage uif-image']");
-    	assertElementPresentByXpath("//button[@id='UifCompView-ActionField15']/span/img[@class='actionImage bottomActionImage uif-image']");
-    	assertElementPresentByXpath("//button[@id='UifCompView-ActionField16']/span/img[@class='actionImage topActionImage uif-image']");
-    	assertElementPresentByXpath("//button[@id='UifCompView-ActionField20' and @disabled]");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-PopoverContent-1' and @style='margin-bottom: 0px; padding-left: 10px; display: block;']");
+    	waitForElementPresentByXpath("//a[@id='UifCompView-ActionField9']/img[@class='actionImage rightActionImage uif-image']");
+    	waitForElementPresentByXpath("//a[@id='UifCompView-ActionField11']/img[@class='actionImage leftActionImage uif-image']");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField presubmit call true')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField presubmit call false')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField ajaxSubmit call false')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField sucessCallBack')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField validate')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField errorCallBack')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'ActionLinkField ajax redirect')]");
+    	waitForElementPresentByXpath("//input[@type='image' and @id='UifCompView-ActionField13']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField14']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField15']/span/img[@class='actionImage bottomActionImage uif-image']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField16']/span/img[@class='actionImage topActionImage uif-image']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField17']/img[@class='actionImage leftActionImage uif-image']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField18']/img[@class='actionImage rightActionImage uif-image']");
+    	waitForElementPresentByXpath("//button[@id='UifCompView-ActionField20' and @disabled]");
+    	waitForElementPresentByXpath("//button/img[@alt='Image Only button']");
     	
     	//Link Fields
-    	assertElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_self']");
-    	assertElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_blank']");
+    	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_self']");
+    	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_blank']");
+    	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField4']");
+    	acceptAlertIfPresent();
+    	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField5']");
+    	acceptAlertIfPresent();
+    	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField6']");
+    	acceptAlertIfPresent();
     	
     	//Miscellaneous Fields and Groups
-    	assertElementPresentByXpath("//ul[@id='UifCompView-Accordion1_accordList']/li/a");
+    	waitForElementPresentByXpath("//ul[@id='UifCompView-Accordion1_accordList']/li/a");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-SubList1' and @style='display: none;']");
+    	waitAndClickByXpath("//ul[@id='UifCompView-Accordion1_accordList']/li/a");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-SubList1' and @style='display: block;']");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-List1']/ul");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-List2']/ul");
     	
     	//Tabs
-    	assertElementPresentByXpath("//ul[@id='UifCompView-OtherField1_tabList']/li/a[contains(text(),'Text Control Options')]");
-    	assertElementPresentByXpath("//ul[@id='UifCompView-OtherField1_tabList']/li/a[contains(text(),'TextArea Control Options')]");
+    	waitForElementPresentByXpath("//input[@placeholder and @size='30' and @maxlength='40']");
+    	waitForElementPresentByXpath("//input[@size='60']");
+    	waitAndClickByXpath("//a[@title='Expand']");
+    	waitForElementPresentByXpath("//textarea[@id='textarea_popout_control']");
+    	waitAndClickByXpath("//input[@id='done_btn']");
+    	waitForElementPresentByXpath("//input[@disabled and @name='field109']");
+    	waitForElementPresentByXpath("//input[@style='text-transform: uppercase;']");
+    	waitForElementPresentByXpath("//ul[@id='UifCompView-OtherField1_tabList']/li/a[contains(text(),'Text Control Options')]");
+    	waitForElementPresentByXpath("//ul[@id='UifCompView-OtherField1_tabList']/li/a[contains(text(),'TextArea Control Options')]");
     
     	//Basic String Data tree and Tree with Data Group
-    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField2_tree']/ul/li/a/p[contains(text(),'Item 1 ')]");
-    	assertElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-horizontalFieldGroup uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-OtherField2_tree']/ul/li/a/span[contains(text(),'Item 1 ')]");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-OtherField3_tree']/ul/li/div/div[@class='uif-verticalBoxLayout clearfix']");
+    	waitForElementPresentByXpath("//iframe[@src='http://www.kuali.org']");
     
     	//Scrollable Groups
-    	assertElementPresentByXpath("//section[@id='UifCompView-ScrollableGroup1' and @style='width: 30%;height: 100px;overflow: auto;']");
-    	assertElementPresentByXpath("//div[@id='UifCompView-ScrollableGroup4' and @style='width: 30%;height: 100px;overflow: auto;']");
+    	waitForElementPresentByXpath("//div[@style='height: 100px;overflow: auto;']");
     }
 
     private void testAttributeSecurity() throws InterruptedException { //Attribute Security

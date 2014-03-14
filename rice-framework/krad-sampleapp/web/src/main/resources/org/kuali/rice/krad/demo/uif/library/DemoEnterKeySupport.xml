@@ -75,26 +75,39 @@
 
   <bean id="Demo-EnterKeySupport-View2" parent="Uif-FormView" >
     <property name="headerText" value="Default Page Key"/>
+    <property name="navigation">
+      <ref bean="Demo-EnterKeySupport-Example2-Menu"/>
+    </property>
     <property name="items">
       <list>
         <!-- ex:Demo-EnterKeySupport-Example2 start-->
-        <bean parent="Uif-Page" p:instructionalText="Uif-Page enterKeyAction is set to button 2" p:enterKeyAction="button2">
+        <bean id="Demo-EnterKeySupport-Example2-Page1" parent="Uif-Page" p:instructionalText="Uif-Page 1 enterKeyAction is set to button 1" p:enterKeyAction="button1">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" />
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1 was clicked');"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-EnterKeySupport-Example2-Page2" parent="Uif-Page" p:instructionalText="Uif-Page 2 enterKeyAction is set to button 2" p:enterKeyAction="button2">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" />
               <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2 was clicked');"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to button 3" p:enterKeyAction="button3">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" />
-              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 3" p:id="button3" p:actionScript="alert('button 3 was clicked');"/>
-            </list>
-          </property>
-        </bean>
         <!-- ex:Demo-EnterKeySupport-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-EnterKeySupport-Example2-Menu" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId= "Demo-EnterKeySupport-Example2-Page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="Demo-EnterKeySupport-Example2-Page2"/>
       </list>
     </property>
   </bean>

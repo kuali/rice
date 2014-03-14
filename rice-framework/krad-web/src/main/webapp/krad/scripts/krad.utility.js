@@ -1063,7 +1063,7 @@ function showLightboxComponent(componentId, overrideOptions) {
  */
 function _showLightboxComponentHelper(componentId, overrideOptions) {
     var component = jQuery("#" + componentId);
-    var cssDisplay = "none";
+    var cssDisplay = component.css("display");
 
     // suppress scrollbar when not needed, undo the div.clearfix hack (KULRICE-7467)
     if (component.attr("class")) {

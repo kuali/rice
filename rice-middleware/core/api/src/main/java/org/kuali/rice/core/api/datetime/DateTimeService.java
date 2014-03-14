@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.core.api.datetime;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -33,15 +32,6 @@ import java.util.Date;
      * @return formatted string version of the specified date
      */
      String toDateString(Date date);
-
-    /**
-     * Translates the specified time into a string without a date component, formatted according to "stringTimeFormat" that the
-     * service is configured with
-     *
-     * @param time
-     * @return formatted string version of the specified time
-     */
-    String toTimeString(Time time);
 
     /**
      * Translates the specified date into a string with a time component, formatted according to the "stringDateTimeFormat" that the
@@ -143,16 +133,6 @@ import java.util.Date;
      * @throws ParseException if the string cannot be converted
      */
      java.sql.Date convertToSqlDate(String dateString) throws ParseException;
-
-    /**
-     * Converts the given String into a java.sql.Time instance
-     *
-     * @param timeString
-     * @return java.sql.Time
-     * @throws IllegalArgumentException if the given string is null or blank
-     * @throws ParseException if the string cannot be converted
-     */
-    java.sql.Time convertToSqlTime(String timeString) throws ParseException;
 
     /**
      * Converts a Timestamp into a sql Date.

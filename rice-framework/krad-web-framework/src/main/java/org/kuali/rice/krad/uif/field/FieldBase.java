@@ -102,11 +102,7 @@ public class FieldBase extends ComponentBase implements Field {
             fieldLabel.setLabelForComponentId(this.getId());
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
-                if (view.getViewTypeName() != null && view.getViewTypeName().equals(UifConstants.ViewType.MAINTENANCE)) {
-                    fieldLabel.getRequiredMessage().setRender(!view.isReadOnly());
-                } else {
-                    fieldLabel.getRequiredMessage().setRender(!isReadOnly());
-                }
+                fieldLabel.getRequiredMessage().setRender(!isReadOnly());
             } else {
                 setRequired(new Boolean(false));
                 fieldLabel.getRequiredMessage().setRender(true);

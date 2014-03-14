@@ -1866,11 +1866,30 @@ function _handleColData(rowObject, type, colName, newVal) {
         return;
     } else if (type === "display") {
         return colObj.render;
-    } else if (type === "sort" && colObj.val == null) {
-        return colObj.render;
+    } else if (type === "sort") {
+        var sortValue = colObj.val;
+        if (sortValue == null) {
+            sortValue = colObj.render;
+        }
+
+        if (colObj.render) {
+            var field = jQuery(colObj.render);
+            var isInput = field.is("[data-role='InputField']");
+
+            if (isInput) {
+                var id = field.attr("id");
+                var control = field.find("[data-control_for='" + id + "']");
+                if (control.length) {
+                    sortValue = coerceValue(control.attr("name"));
+                }
+            }
+        }
+
+        return sortValue;
     }
 
     return colObj.val;
+
 }
 
 function normalizeGroupString(sGroup) {

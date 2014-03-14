@@ -381,7 +381,7 @@
         <bean parent="Uif-Link" p:linkText="Action"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionView"/>
         <bean parent="Uif-Link" p:linkText="Dropdown Menu"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenuView"/>
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DropdownMenu-View"/>
         <bean parent="Uif-Link" p:linkText="Header"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HeaderView"/>
         <bean parent="Uif-Link" p:linkText="Image"

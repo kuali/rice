@@ -65,5 +65,9 @@ public class DocumentSerializerServiceImpl extends SerializerServiceBase impleme
     protected Object wrapDocumentWithMetadata(Document document) {
         return document.wrapDocumentWithMetadataForXmlSerialization();
     }
-    
+
+    @Override
+    protected PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object dataObject) {
+        return null;
+    }
 }

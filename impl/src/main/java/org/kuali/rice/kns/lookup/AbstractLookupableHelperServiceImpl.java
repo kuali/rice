@@ -522,16 +522,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				 }
 			 }
 
-			 // Encrypt value if it is a secure field
+			 // secure values are not passed in urls
 			 if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
-				 try {
-					 fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
-				 }
-				 catch (GeneralSecurityException e) {
-					 LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-					 throw new RuntimeException(e);
-				 }
-
+                                 LOG.warn("field name " + fieldNm + " is a secure value and not included in pk parameter results");
+                                 continue;
 			 }
 
 			 parameters.put(fieldNm, fieldVal.toString());
@@ -873,13 +867,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 }
 
 			 if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
-				 try {
-					 fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
-				 }
-				 catch (GeneralSecurityException e) {
-					 LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-					 throw new RuntimeException(e);
-				 }
+                                 LOG.warn("field name " + fieldNm + " is a secure value and not included in parameter results");
+                                 continue;
 			 }
 
 			 //need to format date in url

@@ -638,6 +638,18 @@ private String id;</programlisting>
 @Column(name = "TABLE_ID")
 private String id;</programlisting>
       </para>
+      <para>
+          Some situations call for being able to access the sequences in Spring beans.  The <emphasis role="keyword">MaxValueIncrementerFactoryBean</emphasis>
+          allows for this.  These sequences can then be used in situations where automatically placing them on data
+          objects is not possible or desirable.
+          <programlisting>&lt;bean id="tableIncrementer" class="org.kuali.rice.krad.data.platform.MaxValueIncrementerFactoryBean">
+  &lt;property name="dataSource" ref="dataSource" />
+  &lt;property name="incrementerName" value="TABLE_S" />
+&lt;/bean></programlisting>
+          This returns a <emphasis role="keyword">DataFieldMaxValueIncrementer</emphasis> which can be used to access
+          the next values of the sequence, either through <emphasis role="keyword">nextIntValue</emphasis>, <emphasis role="keyword">nextLongValue</emphasis>,
+          or <emphasis role="keyword">nextStringValue</emphasis>.
+      </para>
     </section>
     <section>
         <title>Java Persistence Api Entity Attribute Converters and Kuali Rice</title>

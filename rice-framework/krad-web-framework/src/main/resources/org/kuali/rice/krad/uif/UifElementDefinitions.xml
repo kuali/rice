@@ -276,7 +276,7 @@
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-primaryActionButton</value>
+        <value>btn btn-primary</value>
       </list>
     </property>
   </bean>
@@ -290,7 +290,7 @@
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-secondaryActionButton</value>
+        <value>btn btn-default</value>
       </list>
     </property>
   </bean>
@@ -304,7 +304,7 @@
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-smallActionButton</value>
+        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>
@@ -318,7 +318,7 @@
     </property>
     <property name="cssClasses">
       <list>
-        <value>uif-smallActionButton</value>
+        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>

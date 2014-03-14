@@ -2275,14 +2275,14 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
 &lt;bean id="Uif-PrimaryActionButton" ... 
     &lt;property name="styleClasses">
         &lt;list merge="true">
-            &lt;value>uif-primaryActionButton&lt;/value>
+            &lt;value>btn btn-primary&lt;/value>
         &lt;/list>
     &lt;/property>
 
 &lt;bean id="Uif-SecondaryActionButton" ...
     &lt;property name="styleClasses">
         &lt;list merge="true">
-            &lt;value>uif-secondaryActionButton&lt;/value>
+            &lt;value>btn btn-default&lt;/value>
         &lt;/list>   
     &lt;/property>      
 

@@ -30,3 +30,8 @@
 .kr-page-section-title,.uif-header
 .uif-headerGroup,.uif-lowerHeaderGroup
 .uif-messageField,.uif-message
+.uif-primaryActionButton,btn btn-primary
+.uif-secondaryActionButton,btn btn-default
+.uif-smallActionButton,btn btn-default btn-xs
+.uif-expandDisclosuresButton,btn btn-default btn-xs
+.uif-collapseDisclosuresButton,btn btn-default btn-xs

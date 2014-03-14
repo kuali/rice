@@ -52,4 +52,22 @@ public class KRADUtilsTest {
         result = KRADUtils.hydrateAttributeValue(null, "Yes");
         assertTrue(result == null);
     }
+
+    @Test
+    public void testContainsSecurePropertyName() throws Exception {
+        String propertyName = "vendorHeader.vendorSupplierDiversities[22].vendorHeader.vendorTaxNumber";
+
+        boolean firstTermResult = KRADUtils.containsSecurePropertyName(propertyName, ["vendorHeader"]);
+        boolean arrayTermResult = KRADUtils.containsSecurePropertyName(propertyName, ["vendorSupplierDiversities"]);
+        boolean invalidTermResult = KRADUtils.containsSecurePropertyName(propertyName, ["invalid"]);
+        boolean partialFirstTermResult = KRADUtils.containsSecurePropertyName(propertyName, ["vendor"]);
+        boolean partialLastTermResult = KRADUtils.containsSecurePropertyName(propertyName, ["TaxNumber"]);
+
+        assertTrue("first term should return true", firstTermResult);
+        assertTrue("array term should return true", arrayTermResult);
+        assertTrue("invalid term should return false", !invalidTermResult)
+        assertTrue("partial first term should return false", !partialFirstTermResult);
+        assertTrue("partial last term should return false", !partialLastTermResult);
+    }
+
 }

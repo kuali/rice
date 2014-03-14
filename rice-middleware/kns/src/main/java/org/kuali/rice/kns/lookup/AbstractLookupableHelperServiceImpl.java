@@ -533,10 +533,17 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 }
             }
 
-            // secure values are not passed in urls
+            // Encrypt value if it is a secure field
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
-                LOG.warn("field name " + fieldNm + " is a secure value and not included in pk parameter results");
-                continue;
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
+                } catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+
             }
 
             parameters.put(fieldNm, fieldVal.toString());
@@ -786,8 +793,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @see LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
      */
     public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
-        Properties parameters = getParameters(
-                businessObject, lookupForm.getFieldConversions(), lookupForm.getLookupableImplServiceName(), returnKeys);
+        Properties parameters = getParameters(businessObject, lookupForm.getFieldConversions(),
+                lookupForm.getLookupableImplServiceName(), returnKeys);
         if (StringUtils.isEmpty(lookupForm.getHtmlDataType()) || HtmlData.ANCHOR_HTML_DATA_TYPE.equals(lookupForm.getHtmlDataType()))
             return getReturnAnchorHtmlData(businessObject, parameters, lookupForm, returnKeys, businessObjectRestrictions);
         else
@@ -878,8 +885,15 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             }
 
             if (getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, fieldNm)) {
-                LOG.warn("field name " + fieldNm + " is a secure value and not included in parameter results");
-                continue;
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldVal = getEncryptionService().encrypt(fieldVal) + EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
+                } catch (GeneralSecurityException e) {
+                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
+                    throw new RuntimeException(e);
+                }
+
             }
 
             //need to format date in url

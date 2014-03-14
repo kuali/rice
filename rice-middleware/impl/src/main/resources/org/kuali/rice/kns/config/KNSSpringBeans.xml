@@ -126,7 +126,7 @@
   <bean id="knsDictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl" parent="dictionaryValidationService" />
 
   <bean id="dataDictionaryService" parent="dataDictionaryService-parent"/>
-  <bean id="dataDictionaryService-parent" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl"
+  <bean id="dataDictionaryService-parent" abstract="true" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl"
         scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>

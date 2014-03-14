@@ -94,4 +94,16 @@ public class CssConstants {
         public static final String IGNORE_VALID = "ignoreValid";
         public static final String NEW_COLLECTION_ITEM = "uif-newCollectionItem";
     }
+
+    public static class ProgressBar {
+        public static final String VERTICAL_STEP_PROGRESS_BAR = "uif-stepProgressBar-vertical";
+        public static final String PROGRESS_BAR = "progress-bar";
+        public static final String SUCCESS_PROGRESS_BAR = "progress-bar-success";
+        public static final String WARNING_PROGRESS_BAR = "progress-bar-warning";
+        public static final String INFO_PROGRESS_BAR = "progress-bar-info";
+        public static final String EMPTY_PROGRESS_BAR = "progress-bar-empty";
+        public static final String STEP_LABEL = "uif-step";
+        public static final String ACTIVE = "active";
+        public static final String COMPLETE = "complete";
+    }
 }

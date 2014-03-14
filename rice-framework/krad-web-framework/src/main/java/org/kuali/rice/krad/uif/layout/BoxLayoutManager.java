@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -29,7 +26,11 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.ProgressBar;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Layout manager that organizes components in a single row (horizontal) or
@@ -96,22 +97,25 @@ public class BoxLayoutManager extends LayoutManagerBase {
                     c.addStyleClass("uif-boxLayoutHorizontalItem");
 
                     ((Component) container).addStyleClass("clearfix");
-                    
+
                     for (String styleClass : this.getItemStyleClasses()) {
                         c.addStyleClass(styleClass);
                     }
-                    
+
                 } else {
                     c.addStyleClass("uif-boxLayoutVerticalItem");
 
-                    if (!(c instanceof Header || c instanceof Container || c instanceof Message)) {
+                    if (!(c instanceof Header
+                            || c instanceof Container
+                            || c instanceof Message
+                            || c instanceof ProgressBar)) {
                         c.addStyleClass("pull-left");
                     }
 
                     for (String styleClass : this.getItemStyleClasses()) {
                         addStyleClass(styleClass);
                     }
-                    
+
                     c.addStyleClass("clearfix");
                 }
 

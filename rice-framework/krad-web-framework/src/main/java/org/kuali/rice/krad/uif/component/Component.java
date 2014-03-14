@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Component defines basic properties and methods that all rendering element implement
@@ -66,7 +66,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return String type name
      */
     String getComponentTypeName();
-    
+
     /**
      * Indicates whether the component has been fully rendered.
      *
@@ -76,7 +76,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
 
     /**
      * Set the view lifecycle processing status for this component, explicitly.
-     * 
+     *
      * @param status The view status for this component.
      */
     void setViewStatus(String status);
@@ -104,16 +104,16 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @param template
      */
     void setTemplate(String template);
-    
+
     /**
      * Gets additional templates that will be required during the rendering of this component.
-     * 
+     *
      * <p>
      * If a parent or sibling component is referred to by this component's template,
      * include that component's template here to ensure that it has been compiled already during
      * bottom-up inline rendering.
      * </p>
-     * 
+     *
      * @return additional templates required during rendering
      */
     List<String> getAdditionalTemplates();
@@ -205,7 +205,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return boolean true if the component should be rendered, false if it
-     *         should not be
+     * should not be
      */
     boolean isRender();
 
@@ -232,7 +232,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * as well, which also relies on the placeholder being present.</p>
      *
      * @return true if this component is being rendered as a placeholder for use in replacement during and ajax call,
-     *         false otherwise
+     * false otherwise
      */
     public boolean isRetrieveViaAjax();
 
@@ -261,7 +261,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return boolean true if the component should be hidden, false if it
-     *         should be visible
+     * should be visible
      */
     boolean isHidden();
 
@@ -288,7 +288,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return boolean true if the component should be readOnly, false if is
-     *         allows editing
+     * allows editing
      */
     boolean isReadOnly();
 
@@ -311,7 +311,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return boolean true if the component is required, false if it is not
-     *         required
+     * required
      */
     Boolean getRequired();
 
@@ -788,7 +788,7 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * </p>
      *
      * @return boolean true if component is self rendered, false if not (renders
-     *         through template)
+     * through template)
      */
     boolean isSelfRendered();
 
@@ -1126,7 +1126,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      */
     Map<String, String> getScriptDataAttributes();
 
-
     /**
      * Add a data attribute to the dataAttributes map
      *
@@ -1156,6 +1155,46 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return html string for the js required to add the script data attributes
      */
     String getScriptDataAttributesJs();
+
+    /**
+     * The role attribute of this component, use to define aria roles
+     *
+     * @return the role attribute
+     */
+    String getRole();
+
+    /**
+     * @see Component#getRole()
+     */
+    void setRole(String role);
+
+    /**
+     * The aria attributes of this component and their values
+     * (without "aria-", this is automatically appended during rendering)
+     *
+     * @return the aria attributes of this component
+     */
+    Map<String, String> getAriaAttributes();
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getAriaAttributes()
+     */
+    void setAriaAttributes(Map<String, String> ariaAttributes);
+
+    /**
+     * Add an aria attribute to the ariaAttributes list
+     *
+     * @param key the attribute (no "aria-" prefix)
+     * @param value the attribute's value
+     */
+    void addAriaAttribute(String key, String value);
+
+    /**
+     * Get the aria attributes as a String that can be used during template output
+     *
+     * @return the aria attributes as a string
+     */
+    String getAriaAttributesAsString();
 
     /**
      * Validates different requirements of component compiling a series of reports detailing information on errors
@@ -1195,14 +1234,14 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
 
     /**
      * Gets the method to call on refresh.
-     * 
+     *
      * @return method to call
      */
     String getMethodToCallOnRefresh();
 
     /**
      * Gets a string representing all CSS style classes.
-     * 
+     *
      * @return string representation of CSS classes
      */
     String getStyleClassesAsString();

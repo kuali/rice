@@ -371,6 +371,18 @@ public class FreeMarkerInlineRenderUtils {
             out.write(s);
             out.write("\"");
         }
+
+        s = component.getRole();
+        if (StringUtils.hasText(s)) {
+            out.write(" role=\"");
+            out.write(s);
+            out.write("\"");
+        }
+
+        s = component.getAriaAttributesAsString();
+        if (StringUtils.hasText(s)) {
+            out.write(s);
+        }
     }
 
     /**

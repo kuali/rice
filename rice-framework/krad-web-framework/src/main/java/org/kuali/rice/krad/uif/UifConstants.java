@@ -475,6 +475,17 @@ public class UifConstants {
         public static final String JUMP_TO_NAME = "jumpToName";
     }
 
+    public static final class AriaAttributes {
+        public static final String VALUE_NOW= "valuenow";
+        public static final String VALUE_MAX = "valuemax";
+        public static final String VALUE_MIN = "valuemin";
+        public static final String VALUE_TEXT = "valuetext";
+    }
+
+    public static final class AriaRoles {
+        public static final String PROGRESS_BAR = "progressbar";
+    }
+
     public static final class CaseConstraintOperators {
         public static final String HAS_VALUE = "has_value";
         public static final String EQUALS = "equals";

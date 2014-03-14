@@ -174,6 +174,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private Map<String, String> dataAttributes;
     private Map<String, String> scriptDataAttributes;
+    
+    private String role;
+    private Map<String, String> ariaAttributes;
 
     @ReferenceCopy(referenceTransient = true)
     private transient Map<String, Component> componentsForLifecycle;
@@ -203,6 +206,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
         scriptDataAttributes = Collections.emptyMap();
+        ariaAttributes = Collections.emptyMap();
         templateOptions = Collections.emptyMap();
 
         cssClasses = Collections.emptyList();
@@ -2299,6 +2303,81 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         return script;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "ariaAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getAriaAttributes() {
+        if (ariaAttributes == Collections.EMPTY_MAP) {
+            ariaAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+
+        return ariaAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAriaAttributes(Map<String, String> ariaAttributes) {
+        checkMutable(true);
+        if (ariaAttributes == null) {
+            this.ariaAttributes = Collections.emptyMap();
+        } else {
+            this.ariaAttributes = new LifecycleAwareMap<String, String>(this, ariaAttributes);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAriaAttribute(String key, String value) {
+        checkMutable(true);
+
+        if (ariaAttributes == Collections.EMPTY_MAP) {
+            ariaAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+
+        ariaAttributes.put(key, value);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAriaAttributesAsString() {
+        String attributes = "";
+
+        if (getAriaAttributes() == null) {
+            return attributes;
+        }
+
+        for (Map.Entry<String, String> aria : getAriaAttributes().entrySet()) {
+            if (aria != null && aria.getValue() != null) {
+                attributes = attributes + " " + "aria-" + aria.getKey() + "=\"" +
+                        KRADUtils.convertToHTMLAttributeSafeString(aria.getValue()) + "\"";
+            }
+        }
+
+        return attributes;
     }
 
     /**

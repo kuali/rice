@@ -477,61 +477,23 @@ public final class KRADUtils {
                 propertyValue = StringUtils.EMPTY;
             }
 
-            // secure values are not returned
-            if (!isSecure(propertyName, securePropertyNames, dataObject, propertyValue)) {
-                propertyKeyValues.put(propertyName, propertyValue.toString());
+            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
+                try {
+                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue) +
+                                EncryptionService.ENCRYPTION_POST_PREFIX;
+                    }
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
+                }
             }
-
+ 
+            // TODO: need to apply formatting to return value once util class is ready
+            propertyKeyValues.put(propertyName, propertyValue.toString());
         }
 
         return propertyKeyValues;
-    }
-
-    /**
-     * Determines whether a property name should be secured, either based on installed sensitive data patterns, a list
-     * of secure property name patterns, or attributes in the Data Dictionary.
-     *
-     * @param propertyName The property name to check for security
-     * @param securePropertyNames The secure property name patterns to check
-     * @param dataObject The object containing this property
-     * @param propertyValue The value of the property
-     * @return true if the property needs to be secure, false otherwise
-     */
-    private static boolean isSecure(String propertyName, List<String> securePropertyNames, Object dataObject, Object propertyValue) {
-        if (propertyValue instanceof String && containsSensitiveDataPatternMatch((String) propertyValue)) {
-            return true;
-        }
-
-        if (containsSecurePropertyName(propertyName, securePropertyNames)) {
-            return true;
-        }
-
-        return KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName);
-    }
-
-    /**
-     * Helper method to identify if propertyName contains a secure property name element.
-     * Check handles simple or compound names and ignores partial matches.
-     *
-     * @param propertyName property name as a single term or compound term (i.e. items[0].propertyName)
-     * @param securePropertyNames list of secure property names to match
-     * @return true if any of the secure property names are found in the property name, false otherwise
-     */
-    private static boolean containsSecurePropertyName(String propertyName, List<String> securePropertyNames) {
-        if (securePropertyNames == null) {
-            return false;
-        }
-
-        for (String securePropertyName : securePropertyNames) {
-            // pattern prefix and suffix used to handle compound names and ignore partial name matches
-            if (Pattern.compile("(?:\\.|^)" + Pattern.quote(securePropertyName) + "(?:\\.|\\[|$)").matcher(propertyName)
-                    .find()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

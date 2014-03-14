@@ -4061,6 +4061,13 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeEb
     
     @Column(name = "ACTV_IND")
     boolean active;</programlisting>
+      <para>If using an automatically generated ID from a sequence, use the <emphasis role="keyword">@GeneratedValue</emphasis>
+        and <emphasis role="keyword">@PortableSequenceGenerator</emphasis> annotations.</para>
+      <programlisting>@PortableSequenceGenerator(name = "KRLC_PSTL_CD_S")
+@GeneratedValue(generator = "KRLC_PSTL_CD_S")
+@Id
+@Column(name = "PSTL_CD_ID")
+private String id;</programlisting>
       <para>The active indicator used an OJB converter to handle the Y/N conversion into boolean.
         This is done with a customized EclipseLink Converter now.</para>
       <programlisting>@IdClass(PostalCodeId.class)

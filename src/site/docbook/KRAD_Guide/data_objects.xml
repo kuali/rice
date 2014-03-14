@@ -609,6 +609,37 @@ public class RouteNodeInstance implements Serializable {
         </para>
     </section>
     <section>
+      <title>Java Persistence Api Sequences and Kuali Rice</title>
+      <para>
+          For automatically generating values for identifier fields, JPA provides <emphasis role="keyword">@GeneratedValue</emphasis>
+          to place on any field or method.  While this works for many databases like Oracle that have their own concepts
+          of sequence objects, some databases like MySQL do not have sequence objects and need additional support.
+          Kuali Rice uses the standard of "sequence tables" in MySQL that use the MyISAM auto increment feature to
+          simulate sequences.  This has prompted the creation of <emphasis role="keyword">@PortableSequenceGenerator</emphasis>
+          to work alongside <emphasis role="keyword">@GeneratedValue</emphasis> to provide automatic application support
+          for both Oracle and MySQL.
+      </para>
+      <para>
+          To use this feature, place it with any <emphasis role="keyword">@GeneratedValue</emphasis> annotation.
+          <programlisting>@PortableSequenceGenerator(name = "TABLE_S")
+@GeneratedValue(generator = "TABLE_S")
+@Id
+@Column(name = "TABLE_ID")
+private String id;</programlisting>
+          In this example, <emphasis role="keyword">TABLE_S</emphasis> is the name of the portable sequence generator,
+          and by default, it is taken as the sequence name in the database.  In order to specify a separate generator
+          name from the database sequence name, use the <emphasis role="keyword">name</emphasis> attribute for the
+          generator name instead and add the <emphasis role="keyword">sequenceName</emphasis> attribute for the database
+          sequence name.  Also, the generator can be configured to start at a specified value by using <emphasis role="keyword">initialValue</emphasis>.
+          By default, it starts at 1000.
+          <programlisting>@PortableSequenceGenerator(name = "TABLE_S_GEN", sequenceName = "TABLE_S", initialValue = 1)
+@GeneratedValue(generator = "TABLE_S")
+@Id
+@Column(name = "TABLE_ID")
+private String id;</programlisting>
+      </para>
+    </section>
+    <section>
         <title>Java Persistence Api Entity Attribute Converters and Kuali Rice</title>
         <para>
             Entity Attribute Converters - Converts the current state of the entity attribute value

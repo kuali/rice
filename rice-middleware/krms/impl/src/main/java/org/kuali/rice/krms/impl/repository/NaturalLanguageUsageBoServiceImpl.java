@@ -68,11 +68,20 @@ public final class NaturalLanguageUsageBoServiceImpl
     @Override
     public NaturalLanguageUsage createNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) {
         incomingParamCheck(naturalLanguageUsage , "naturalLanguageUsage");
-        final String naturalLanguageUsageIdKey = naturalLanguageUsage.getId();
-        final NaturalLanguageUsage existing = getNaturalLanguageUsage(naturalLanguageUsageIdKey);
+        if (StringUtils.isNotEmpty(naturalLanguageUsage.getId())) {
+            final String naturalLanguageUsageIdKey = naturalLanguageUsage.getId();
+            final NaturalLanguageUsage existing = getNaturalLanguageUsage(naturalLanguageUsageIdKey);
 
-        if (existing != null) {
-            throw new IllegalStateException("the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
+            if (existing != null) {
+                throw new IllegalStateException("the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
+            }
+        } else {
+            final NaturalLanguageUsage existing =
+                getNaturalLanguageUsageByName(naturalLanguageUsage.getNamespace(), naturalLanguageUsage.getName());
+
+            if (existing != null) {
+                throw new IllegalStateException("the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
+            }
         }
 
         NaturalLanguageUsageBo bo = dataObjectService.save(from(naturalLanguageUsage), PersistenceOption.FLUSH);

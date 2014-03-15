@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -256,8 +257,9 @@ public class NaturalLanguageTemplateBo implements NaturalLanguageTemplateContrac
         naturalLanguageTemplateBo.setId(naturalLanguageTemplate.getId());
         naturalLanguageTemplateBo.setActive(naturalLanguageTemplate.isActive());
         naturalLanguageTemplateBo.setVersionNumber(naturalLanguageTemplate.getVersionNumber());
-        naturalLanguageTemplateBo.setAttributeBos(buildAttributeBoSet(naturalLanguageTemplate));
-
+        if (StringUtils.isNotBlank(naturalLanguageTemplate.getId())) {
+           naturalLanguageTemplateBo.setAttributeBos(buildAttributeBoSet(naturalLanguageTemplate));
+        }
         return naturalLanguageTemplateBo;
     }
 

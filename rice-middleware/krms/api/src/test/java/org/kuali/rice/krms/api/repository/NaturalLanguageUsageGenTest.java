@@ -150,4 +150,10 @@ public final class NaturalLanguageUsageGenTest {
         return naturalLanguageUsage;
     }
 
+    public static NaturalLanguageUsage buildFullNaturalLanguageUsageNoId() {
+        NaturalLanguageUsage.Builder builder = NaturalLanguageUsage.Builder.create(NAME, NAMESPACE);
+        NaturalLanguageUsage naturalLanguageUsage = builder.build();
+        return naturalLanguageUsage;
+    }
+
 }

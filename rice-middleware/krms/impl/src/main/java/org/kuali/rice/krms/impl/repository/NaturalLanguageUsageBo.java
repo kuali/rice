@@ -40,8 +40,8 @@ public class NaturalLanguageUsageBo implements NaturalLanguageUsageContract, Ser
 
     private static final long serialVersionUID = 1l;
 
-    @PortableSequenceGenerator(name = "NL_USAGE_S")
-    @GeneratedValue(generator = "NL_USAGE_S")
+    @PortableSequenceGenerator(name = "KRMS_NL_USAGE_S")
+    @GeneratedValue(generator = "KRMS_NL_USAGE_S")
     @Id
     @Column(name = "NL_USAGE_ID")
     private String id;

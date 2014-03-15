@@ -176,4 +176,9 @@ public final class TypeTypeRelationGenTest {
         return typeTypeRelation;
     }
 
+    public static TypeTypeRelation buildFullFKTypeTypeRelationNoId(KrmsTypeDefinition fromType, KrmsTypeDefinition toType) {
+        TypeTypeRelation.Builder builder = TypeTypeRelation.Builder.create(fromType.getId(), RELATIONSHIP_TYPE, SEQUENCE_NUMBER, toType.getId());
+        TypeTypeRelation typeTypeRelation = builder.build();
+        return typeTypeRelation;
+    }
 }

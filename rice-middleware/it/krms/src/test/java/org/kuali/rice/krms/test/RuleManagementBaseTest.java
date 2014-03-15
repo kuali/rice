@@ -630,8 +630,9 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      * @return {@link NaturalLanguageTemplate} for the created Template
      */
     protected NaturalLanguageTemplate createTestNaturalLanguageTemplate(String namespace, String langCode,
-            String nlObjectName, String template) {
-        return createTestNaturalLanguageTemplate(namespace, langCode, nlObjectName, template, "krms.nl." + nlObjectName);
+            String nlObjectName, String template, boolean createIdFromLangCodeAndNlObjectName) {
+        return createTestNaturalLanguageTemplate(namespace, langCode,
+                nlObjectName, template, "krms.nl." + nlObjectName, createIdFromLangCodeAndNlObjectName);
     }
 
     /**
@@ -646,7 +647,7 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      * @return {@link NaturalLanguageTemplate} for the created Template
      */
     protected NaturalLanguageTemplate createTestNaturalLanguageTemplate(String namespace, String langCode,
-            String nlObjectName, String template, String nlUsage) {
+            String nlObjectName, String template, String nlUsage, boolean createIdFromLangCodeAndNlObjectName) {
         KrmsTypeDefinition  krmsType = createKrmsTypeDefinition(null, namespace, nlObjectName, null);
 
         // create NaturalLanguageUsage if it does not exist
@@ -671,7 +672,9 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(
                 langCode, naturalLanguageUsageId, template, typeId);
         naturalLanguageTemplateBuilder.setActive(true);
-        naturalLanguageTemplateBuilder.setId(langCode + "-" + nlObjectName);
+        if (createIdFromLangCodeAndNlObjectName) {
+            naturalLanguageTemplateBuilder.setId(langCode + "-" + nlObjectName);
+        }
         naturalLanguageTemplateBuilder.setAttributes(nlAttributes);
 
         return ruleManagementService.createNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());

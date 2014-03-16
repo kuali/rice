@@ -16,6 +16,7 @@
 package edu.sampleu.kim.api.location;
 
 import edu.sampleu.admin.AdminTmplMthdAftNavBase;
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -59,4 +60,20 @@ public abstract class LocationCampusBlanketAppAftBase extends AdminTmplMthdAftNa
         testLocationCampusBlanketApprove();
         passed();
     }
+
+    protected void testLocationCampusBlanketApprove() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = waitForDocId();
+        String twoLetters = RandomStringUtils.randomAlphabetic(2);
+        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
+        assertBlanketApproveButtonsPresent();
+        waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + AutomatedFunctionalTestUtils
+                .createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
+        selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
+        blanketApproveTest(docId);
+    }
+
 }

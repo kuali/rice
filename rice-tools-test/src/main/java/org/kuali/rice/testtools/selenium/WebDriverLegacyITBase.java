@@ -1024,6 +1024,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void blanketApproveCheck() throws InterruptedException {
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
+        checkForIncidentReport();
     }
 
     /**
@@ -1038,7 +1039,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
-
+        checkForIncidentReport();
         blanketApproveAssert(docId);
     }
 
@@ -1972,7 +1973,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testCreateDocType() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
+        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","submit button does not exist on the page");
 
         //waitForElementPresentByXpath(DOC_ID_XPATH);
         //String docId = findElement(By.xpath(DOC_ID_XPATH)).getText();
@@ -1993,6 +1994,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "Label for " + docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
+        jGrowl("Click Submit button");
         waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
         checkForIncidentReport();
         waitForPageToLoad();
@@ -2364,21 +2366,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickReturnValue();
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
         waitForPageToLoad();
-        blanketApproveTest(docId);
-    }
-
-    protected void testLocationCampusBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String twoLetters = RandomStringUtils.randomAlphabetic(2);
-        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
-        assertBlanketApproveButtonsPresent();
-        waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + AutomatedFunctionalTestUtils
-                .createUniqueDtsPlusTwoRandomChars());
-        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
-        selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
         blanketApproveTest(docId);
     }
 

@@ -68,8 +68,8 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "TestDocument Label");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']", "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
-        // TODO wait for save confirmation
-        //checkForIncidentReport();
+        Thread.sleep(2000); // TODO wait for save confirmation
+        checkForIncidentReport();
         selectTopFrame();
     }
     @Test
@@ -86,7 +86,8 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndTypeByName("documentId", docId);
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
         //waitAndTypeByName("dateCreated", "10/13/2010");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitAndClickMethodToCallSearchButton();
+        selectFrameIframePortlet();
         assertEquals(docId, waitFor(By.xpath("//table[@id='row']/tbody/tr[1]/td[1]/a")).getText());
         //Thread.sleep(2000);
         waitAndClickByXpath("//input[@name='methodToCall.clearValues' and @alt='clear']");
@@ -107,7 +108,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "1/1/1900"); // remove default today's date
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitAndClickMethodToCallSearchButton();
         waitForTextPresent("Export options:");
     }
 
@@ -133,8 +134,8 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         //waitAndTypeByName("viewerPrincipalName", "superviser");
         assertElementPresentByXpath("//select[@id='statusCode']", "Document Status select field is not there in the detailed search");
         selectByXpath("//select[@id='statusCode']", "- SAVED");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
-        waitForPageToLoad();
+        waitAndClickMethodToCallSearchButton();
+        assertTextNotPresent("No values match this search.");
         assertTrue(driver.findElement(By.id("row")).getText().contains("SAVED"));
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[1]/td[contains(a,'admin')]");
         //Thread.sleep(2000);
@@ -158,8 +159,11 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
-        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']", "DocSearchAft.testSuperUserSearch");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']",
+                "DocSearchAft.testSuperUserSearch");
+        waitAndClickMethodToCallSearchButton();
+        Thread.sleep(3000);
+        selectFrameIframePortlet();
         waitAndClickByXpath("//table[@id='row']/tbody/tr[1]/td[1]/a");
         selectTopFrame();
         Thread.sleep(3000);
@@ -168,17 +172,23 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         //Thread.sleep(4000);
 
         waitAndClickByXpath("//input[@src='images/buttonsmall_complete.gif']");
-        waitForElementPresentByName("methodToCall.approve","approve button does not exist on the page");
-        assertElementPresentByName("methodToCall.disapprove","disapprove button does not exist on the page");
-        assertElementPresentByName("methodToCall.cancel","cancel button does not exist on the page");
-        waitAndClickByName("methodToCall.approve","approve button does not exist on the page");
+        waitForElementPresentByName("methodToCall.approve", "approve button does not exist on the page");
+        assertElementPresentByName("methodToCall.disapprove", "disapprove button does not exist on the page");
+        assertElementPresentByName("methodToCall.cancel", "cancel button does not exist on the page");
+        waitAndClickByName("methodToCall.approve", "approve button does not exist on the page");
+        jGrowl("Click Cancel Button");
         waitAndClickByXpath("//a[@href='DocumentSearch.do']/img[@alt='cancel']");
-        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+        waitAndClickMethodToCallSearchButton();
         waitForPageToLoad();
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());
         passed();
     }
-    
+
+    protected void waitAndClickMethodToCallSearchButton() throws InterruptedException {
+        jGrowl("Click Search Button");
+        waitAndClickByXpath("//input[@name='methodToCall.search' and @alt='search']");
+    }
+
     @Test
     public void testClearSavedSearchesBookmark() throws Exception{
         waitAndClickByXpath("//a/img[@alt='doc search']");
@@ -206,7 +216,6 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitForElementPresentByXpath("//select[@id='savedSearchToLoadAndExecute']");
         waitAndTypeByName("documentTypeName", "KualiNotification");
-        Thread.sleep(2000);
         fireEvent("documentTypeName", "blur");
         waitForElementPresentByName("documentAttribute.notificationContentType");
         assertElementPresentByName("documentAttribute.notificationChannel");

@@ -141,7 +141,7 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
 
     protected void testActionFieldButtons() throws Exception {
         WebElement exampleDiv = navigateToExample("Demo-ActionField-Example6");
-        List<WebElement> fields = exampleDiv.findElements(By.cssSelector("button.uif-primaryActionButton"));
+        List<WebElement> fields = exampleDiv.findElements(By.cssSelector("button.btn-primary"));
 
         assertEquals(7, fields.size());
 

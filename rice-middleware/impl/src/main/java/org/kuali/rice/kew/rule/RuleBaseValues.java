@@ -59,6 +59,8 @@ import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 
 /*import org.kuali.rice.kim.api.group.Group;*/
 
@@ -166,10 +168,13 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     @Transient
     private MyColumns myColumns;
     @Transient
+    @Serialized(enabled=true,forContexts=SerializationContext.MAINTENANCE)
     private List<PersonRuleResponsibility> personResponsibilities = new ArrayList<PersonRuleResponsibility>();
     @Transient
+    @Serialized(enabled=true,forContexts=SerializationContext.MAINTENANCE)
     private List<GroupRuleResponsibility> groupResponsibilities = new ArrayList<GroupRuleResponsibility>();
     @Transient
+    @Serialized(enabled=true,forContexts=SerializationContext.MAINTENANCE)
     private List<RoleRuleResponsibility> roleResponsibilities = new ArrayList<RoleRuleResponsibility>();
     @Transient
     private Map<String, String> fieldValues;
@@ -708,7 +713,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         }
         return org.kuali.rice.kew.api.rule.Rule.Builder.create(bo).build();
     }
-    
+
     @Override
     public void refresh() {
     }

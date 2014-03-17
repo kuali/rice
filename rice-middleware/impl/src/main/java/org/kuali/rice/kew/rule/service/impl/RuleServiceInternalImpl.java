@@ -15,6 +15,21 @@
  */
 package org.kuali.rice.kew.rule.service.impl;
 
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,10 +39,10 @@ import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -62,7 +77,6 @@ import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
@@ -72,26 +86,10 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.cache.Cache;
-
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 
 public class RuleServiceInternalImpl implements RuleServiceInternal {
@@ -108,10 +106,12 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return ruleResponsibilityDAO;
     }
 
+    @Override
     public RuleBaseValues getRuleByName(String name) {
         return ruleDAO.findRuleBaseValuesByName(name);
     }
 
+    @Override
     public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId){
         return this.ruleDAO.findDefaultRuleByRuleTemplateId(ruleTemplateId);
     }
@@ -119,6 +119,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         this.ruleResponsibilityDAO = ruleResponsibilityDAO;
     }
 
+    @Override
     public void save2(RuleBaseValues ruleBaseValues) throws Exception {
         save2(ruleBaseValues, null, true);
     }
@@ -154,6 +155,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         getRuleDAO().save(ruleBaseValues);
     }
 
+    @Override
     public void makeCurrent(String documentId) {
         makeCurrent(findByDocumentId(documentId));
     }
@@ -315,10 +317,12 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      * Maintenance document.  Because of the changes in the data model and the front end here,
      * this method can be much less complicated than the previous 2!
      */
+    @Override
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
     	makeCurrent(null, rule, isRetroactiveUpdatePermitted);
     }
 
+    @Override
     public void makeCurrent(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted) {
         clearCache(RuleDelegation.Cache.NAME);
     	makeCurrent(ruleDelegation, ruleDelegation.getDelegationRule(), isRetroactiveUpdatePermitted);
@@ -373,7 +377,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
 
 
-               
+
         // now save the new rule
         rule = getRuleDAO().save(rule);
       	performanceLogger.log("Saved rule: " + rule.getId());
@@ -386,14 +390,14 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         	ruleDelegation.setDelegateRuleId(rule.getId());
         	getRuleDelegationService().save(ruleDelegation);
         }
-        
+
         if (isGenerateRuleArs
                 && org.apache.commons.collections.CollectionUtils.isNotEmpty(responsibilityIds)) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
         performanceLogger.log("Time to make current");
     }
-    
+
     private void clearCache(String cacheName) {
         DistributedCacheManagerDecorator distributedCacheManagerDecorator =
                 GlobalResourceLoader.getService(KewImplConstants.KEW_DISTRIBUTED_CACHE_MANAGER);
@@ -404,6 +408,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @Override
     public RuleBaseValues getParentRule(String ruleBaseValuesId) {
         return getRuleDAO().getParentRule(ruleBaseValuesId);
     }
@@ -466,6 +471,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return oldDelegations;
     }
 
+    @Override
     public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, PrincipalContract principal, String annotation, boolean blanketApprove) throws Exception {
         if (parentRule == null) {
             throw new IllegalArgumentException("Cannot route a delegate without a parent rule.");
@@ -591,6 +597,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @Override
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegationBo ruleDelegation, List errors) {
         if (errors == null) {
             errors = new ArrayList();
@@ -671,16 +678,19 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @Override
     public List<RuleBaseValues> findByDocumentId(String documentId) {
         return getRuleDAO().findByDocumentId(documentId);
     }
 
+    @Override
     public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
             Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         return getRuleDAO().search(docTypeName, ruleId, ruleTemplateId, ruleDescription, groupId, principalId, delegateRule,
                 activeInd, extensionValues, workflowIdDirective);
     }
 
+    @Override
     public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
 
@@ -728,29 +738,35 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 delegateRule,activeInd, extensionValues, actionRequestCodes);
     }
 
+    @Override
     public void delete(String ruleBaseValuesId) {
         getRuleDAO().delete(ruleBaseValuesId);
     }
 
+    @Override
     public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
         return getRuleDAO().findRuleBaseValuesById(ruleBaseValuesId);
     }
 
+    @Override
     public RuleResponsibilityBo findRuleResponsibility(String responsibilityId) {
         return getRuleDAO().findRuleResponsibility(responsibilityId);
     }
 
+    @Override
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType) {
         	String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getId();
             return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType));
     }
 
+    @Override
     public List fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate){
         String ruleTemplateId = getRuleTemplateService().findByRuleTemplateName(ruleTemplateName).getId();
         PerformanceLogger performanceLogger = new PerformanceLogger();
         performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " not caching.");
         return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType), effectiveDate);
     }
+    @Override
     public List fetchAllRules(boolean currentRules) {
         return getRuleDAO().fetchAllRules(currentRules);
     }
@@ -789,6 +805,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      *
      * In the case of a new delegate rule or a delegate rule edit, this method will take the id of it's parent.
      */
+    @Override
     public String isLockedForRouting(String currentRuleBaseValuesId) {
         // checks for any other versions of the given rule, essentially, if this is a rule edit we want to see how many other
         // pending edits are out there
@@ -859,6 +876,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      *
      * TODO this method ended up being a mess, we should get rid of this as soon as we can
      */
+    @Override
     public String getRuleDocumentTypeName(List rules) {
         if (rules.size() == 0) {
             throw new IllegalArgumentException("Cannot determine rule DocumentType for an empty list of rules.");
@@ -906,18 +924,22 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return ruleDAO;
     }
 
+    @Override
     public void deleteRuleResponsibilityById(String ruleResponsibilityId) {
         getDataObjectService().delete(ruleResponsibilityId);
     }
 
+    @Override
     public RuleResponsibilityBo findByRuleResponsibilityId(String ruleResponsibilityId) {
         return getDataObjectService().find(RuleResponsibilityBo.class,ruleResponsibilityId);
     }
 
+    @Override
     public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
         return getRuleDAO().findRuleBaseValuesByResponsibilityReviewer(reviewerName, type);
     }
 
+    @Override
     public List findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type) {
         return getRuleDAO().findRuleBaseValuesByResponsibilityReviewerTemplateDoc(ruleTemplateName, documentType, reviewerName, type);
     }
@@ -954,6 +976,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      * A comparator implementation which compares RuleBaseValues and puts all delegate rules first.
      */
     public class RuleDelegationSorter implements Comparator {
+        @Override
         public int compare(Object arg0, Object arg1) {
             RuleBaseValues rule1 = (RuleBaseValues) arg0;
             RuleBaseValues rule2 = (RuleBaseValues) arg1;
@@ -966,6 +989,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     }
 
 
+    @Override
     public void loadXml(InputStream inputStream, String principalId) {
         RuleXmlParser parser = new RuleXmlParser();
         try {
@@ -978,11 +1002,12 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @Override
     public Element export(ExportDataSet dataSet) {
         RuleXmlExporter exporter = new RuleXmlExporter(XmlConstants.RULE_NAMESPACE);
         return exporter.export(dataSet);
     }
-    
+
     @Override
 	public boolean supportPrettyPrint() {
 		return true;
@@ -1032,8 +1057,8 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     protected void hookUpDelegateRuleToParentRule(RuleBaseValues newParentRule, RuleBaseValues newDelegationRule, RuleDelegationBo existingRuleDelegation) {
         // hook up parent rule to new rule delegation
         boolean foundDelegation = false;
-        outer:for (RuleResponsibilityBo responsibility : (List<RuleResponsibilityBo>)newParentRule.getRuleResponsibilities()) {
-            for (RuleDelegationBo ruleDelegation : (List<RuleDelegationBo>)responsibility.getDelegationRules()) {
+        outer:for (RuleResponsibilityBo responsibility : newParentRule.getRuleResponsibilities()) {
+            for (RuleDelegationBo ruleDelegation : responsibility.getDelegationRules()) {
                 if (ruleDelegation.getDelegationRule().getId().equals(existingRuleDelegation.getDelegationRule().getId())) {
                     ruleDelegation.setDelegationRule(newDelegationRule);
                     foundDelegation = true;
@@ -1055,19 +1080,19 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         rule.setId(null);
         rule.setActivationDate(null);
         rule.setDeactivationDate(null);
-        rule.setVersionNumber(0L);
+        rule.setVersionNumber(null);
         rule.setDocumentId(documentId);
 
         // TODO: FIXME: need to copy the rule expression here too?
 
-        rule.setRuleResponsibilities(new ArrayList());
-        for (RuleResponsibilityBo existingResponsibility : (List<RuleResponsibilityBo>)existingRule.getRuleResponsibilities()) {
+        rule.setRuleResponsibilities(new ArrayList<RuleResponsibilityBo>());
+        for (RuleResponsibilityBo existingResponsibility : existingRule.getRuleResponsibilities()) {
             RuleResponsibilityBo responsibility = new RuleResponsibilityBo();
             PropertyUtils.copyProperties(responsibility, existingResponsibility);
             responsibility.setRuleBaseValues(rule);
             responsibility.setRuleBaseValuesId(null);
             responsibility.setId(null);
-            responsibility.setVersionNumber(0L);
+            responsibility.setVersionNumber(null);
             rule.getRuleResponsibilities().add(responsibility);
 //            responsibility.setDelegationRules(new ArrayList());
 //            for (RuleDelegation existingDelegation : (List<RuleDelegation>)existingResponsibility.getDelegationRules()) {
@@ -1083,7 +1108,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 //            }
         }
         rule.setRuleExtensions(new ArrayList());
-        for (RuleExtensionBo existingExtension : (List<RuleExtensionBo>)existingRule.getRuleExtensions()) {
+        for (RuleExtensionBo existingExtension : existingRule.getRuleExtensions()) {
             RuleExtensionBo extension = new RuleExtensionBo();
             PropertyUtils.copyProperties(extension, existingExtension);
             extension.setVersionNumber(new Long(0));
@@ -1153,6 +1178,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @Override
     public String getDuplicateRuleId(RuleBaseValues rule) {
 
     	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
@@ -1197,6 +1223,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     	}
     }
 
+    @Override
     public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
     	rule.setPreviousRuleId(rule.getId());
 		rule.setPreviousVersion(null);
@@ -1205,6 +1232,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 		return getRuleDAO().findRuleBaseValuesByName(rule.getName());
     }
 
+    @Override
     public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted) {
     	List<RuleBaseValues> savedRules = new ArrayList<RuleBaseValues>();
     	for (RuleBaseValues rule : rulesToSave) {
@@ -1214,6 +1242,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     	return savedRules;
     }
 
+    @Override
     public RuleDelegationBo saveRuleDelegation(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted) {
     	RuleBaseValues rule = ruleDelegation.getDelegationRule();
         //rule = (RuleBaseValues)SerializationUtils.deepCopy(rule);
@@ -1227,6 +1256,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 		return ruleDelegation;
     }
 
+    @Override
     public List<RuleDelegationBo> saveRuleDelegations(List<RuleDelegationBo> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted) {
     	List<RuleDelegationBo> savedRuleDelegations = new ArrayList<RuleDelegationBo>();
     	for (RuleDelegationBo ruleDelegation : ruleDelegationsToSave) {
@@ -1236,6 +1266,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     	return savedRuleDelegations;
     }
 
+    @Override
     public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
     	return getRuleDAO().findResponsibilityIdForRule(ruleName, ruleResponsibilityName, ruleResponsibilityType);
     }

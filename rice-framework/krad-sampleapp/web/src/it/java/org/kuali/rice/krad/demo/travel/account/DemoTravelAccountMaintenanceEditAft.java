@@ -98,7 +98,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         assertTextPresent(errorMessage2);
 
         // Add a new sub account
-        String subAccount = "A1" + RandomStringUtils.randomAlphabetic(2);
+        String subAccount = "Z1" + RandomStringUtils.randomAlphabetic(2);
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccount);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");

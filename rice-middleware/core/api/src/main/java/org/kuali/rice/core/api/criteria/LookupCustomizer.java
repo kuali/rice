@@ -44,7 +44,10 @@ import java.io.Serializable;
  * </p>
  *
  * <p>transformers should not have to deal with null items</p>
+ *
+ * @deprecated Use {@link org.kuali.rice.core.api.criteria.Transform} directly
  */
+@Deprecated
 public class LookupCustomizer<T> {
 
     //FIXME: add wilcards to make predicate transform more flexible ie. EqualsPredicate to AndPredicate
@@ -64,6 +67,7 @@ public class LookupCustomizer<T> {
         return resultTransform;
     }
 
+    @Deprecated
     public static final class Builder<T> implements ModelBuilder, Serializable {
 
         private Transform<Predicate, Predicate> predicateTransform;
@@ -98,6 +102,8 @@ public class LookupCustomizer<T> {
             return new LookupCustomizer<T>(this);
         }
     }
+
+    @Deprecated
     public interface Transform<P, R> {
         R apply(P input);
     }
@@ -107,6 +113,7 @@ public class LookupCustomizer<T> {
      *
      * @param <I> the type the function acts on.
      */
+    @Deprecated
     private static final class IndentityTransform<I> implements Transform<I, I> {
 
         @SuppressWarnings("unchecked")

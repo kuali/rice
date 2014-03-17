@@ -34,7 +34,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
@@ -381,10 +380,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     public GroupQueryResults findGroups(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        LookupCustomizer.Builder<GroupBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<GroupBo> results = dataObjectService.findMatching(GroupBo.class, queryByCriteria, lc.build());
+        QueryResults<GroupBo> results = dataObjectService.findMatching(GroupBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         GroupQueryResults.Builder builder = GroupQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

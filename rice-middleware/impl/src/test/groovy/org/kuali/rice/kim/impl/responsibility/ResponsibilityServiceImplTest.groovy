@@ -22,7 +22,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.core.api.criteria.AndPredicate
 import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.core.api.criteria.LookupCustomizer
 import org.kuali.rice.core.api.criteria.Predicate
 import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.exception.RiceIllegalStateException
@@ -1142,7 +1141,7 @@ class ResponsibilityServiceImplTest {
         GenericQueryResults<ResponsibilityBo> results = genericQueryResults.build();
 
         mockDataObjectService.demand.findMatching(1..1) {
-            Class<ResponsibilityBo> queryClass, QueryByCriteria criteria, LookupCustomizer<ResponsibilityBo> customizer -> return results;
+            Class<ResponsibilityBo> queryClass, QueryByCriteria criteria -> return results;
         }
 
         injectDataObjectServiceIntoResponsibilityService();

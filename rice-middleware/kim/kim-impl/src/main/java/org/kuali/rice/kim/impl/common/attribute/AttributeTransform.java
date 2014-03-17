@@ -16,11 +16,12 @@
 package org.kuali.rice.kim.impl.common.attribute;
 
 import org.kuali.rice.core.api.criteria.CriteriaValue;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
+import org.kuali.rice.core.api.criteria.Transform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,9 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  * this is an internal class used by kim service implementations that have generic lookup methods for classes
  * with "attributes".
  */
-public final class AttributeTransform implements LookupCustomizer.Transform<Predicate, Predicate> {
+public final class AttributeTransform implements Transform<QueryByCriteria, QueryByCriteria> {
 
-    private static final LookupCustomizer.Transform<Predicate, Predicate> INSTANCE = new AttributeTransform();
+    private static final Transform<QueryByCriteria, QueryByCriteria> INSTANCE = new AttributeTransform();
     private static final String ATTRIBUTE_DETAILS_ATTRIBUTE_VALUE = "attributeDetails.attributeValue";
     private static final String ATTRIBUTE_DETAILS_ATTRIBUTE_NAME = "attributeDetails.kimAttribute.attributeName";
     private static final String ATTRIBUTES_REGEX = "^attributes\\[\\w*\\]$";
@@ -47,7 +48,13 @@ public final class AttributeTransform implements LookupCustomizer.Transform<Pred
     }
 
     @Override
-    public Predicate apply(final Predicate input) {
+    public QueryByCriteria apply(final QueryByCriteria input) {
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create(input);
+        builder.setPredicates(applyPredicate(input.getPredicate()));
+        return builder.build();
+    }
+
+    private Predicate applyPredicate(final Predicate input) {
         if (input instanceof PropertyPathPredicate) {
             String pp = ((PropertyPathPredicate) input).getPropertyPath();
             if (isAttributesPredicate(pp)) {
@@ -80,7 +87,7 @@ public final class AttributeTransform implements LookupCustomizer.Transform<Pred
         return matcher.matches();
     }
 
-    public static LookupCustomizer.Transform<Predicate, Predicate> getInstance() {
+    public static Transform<QueryByCriteria, QueryByCriteria> getInstance() {
         return INSTANCE;
     }
 }

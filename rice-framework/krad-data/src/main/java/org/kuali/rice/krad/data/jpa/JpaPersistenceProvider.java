@@ -18,7 +18,6 @@ package org.kuali.rice.krad.data.jpa;
 import com.google.common.collect.Sets;
 import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -186,17 +185,6 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
 			public QueryResults<T> call() {
                 return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria);
-            }
-        });
-    }
-
-    @Override
-    public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria,
-            final LookupCustomizer<T> lookupCustomizer) {
-        return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
-            @Override
-			public QueryResults<T> call() {
-                return new JpaCriteriaQuery(sharedEntityManager).lookup(type, queryByCriteria, lookupCustomizer);
             }
         });
     }

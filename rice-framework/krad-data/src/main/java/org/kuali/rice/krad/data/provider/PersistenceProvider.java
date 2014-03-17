@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.data.provider;
 
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -83,26 +82,6 @@ public interface PersistenceProvider extends Provider {
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
-
-    /**
-     * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
-     * all data objects for the given type will be returned. Depending on the given criteria and the
-     * implementation for the query execution, not all matching results may be returned. The QueryResults
-     * will contain information on whether or not there are additional results which can be used for paging
-     * and similar functionality.
-     *
-     * @param type the type of the data objects to query
-     * @param queryByCriteria query object, can contain sorting and page request configuration
-     * @param lookupCustomizer predication transformation
-     * @param <T> the data object class type
-     *
-     * @return the results of the query, will never return null but may return empty results
-     *
-     * @throws IllegalArgumentException if {@code type} does not denote a data object type
-     * @throws org.springframework.dao.DataAccessException if data access fails
-     */
-    <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer);
-
 
     /**
      * Deletes a given data object.

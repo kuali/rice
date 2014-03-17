@@ -18,7 +18,6 @@ package org.kuali.rice.kew.impl.rule;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
@@ -154,11 +153,8 @@ public class RuleServiceImpl implements RuleService {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        LookupCustomizer.Builder<RuleBaseValues> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<RuleBaseValues> results = dataObjectService.findMatching(RuleBaseValues.class, queryByCriteria,
-                lc.build());
+        QueryResults<RuleBaseValues> results = dataObjectService.findMatching(RuleBaseValues.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         RuleQueryResults.Builder builder = RuleQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -225,11 +221,8 @@ public class RuleServiceImpl implements RuleService {
             throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
-        LookupCustomizer.Builder<RuleTemplateBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<RuleTemplateBo> results = dataObjectService.findMatching(RuleTemplateBo.class, queryByCriteria,
-                lc.build());
+        QueryResults<RuleTemplateBo> results = dataObjectService.findMatching(RuleTemplateBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         RuleTemplateQueryResults.Builder builder = RuleTemplateQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

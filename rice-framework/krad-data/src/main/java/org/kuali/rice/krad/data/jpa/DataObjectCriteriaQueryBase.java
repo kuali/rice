@@ -17,7 +17,6 @@ package org.kuali.rice.krad.data.jpa;
 
 import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 import java.util.ArrayList;
@@ -37,11 +36,6 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
 
     @Override
     public <T> GenericQueryResults<T> lookup(Class<T> queryClass, QueryByCriteria criteria) {
-        return lookup(queryClass, criteria, LookupCustomizer.Builder.<T>create().build());
-    }
-
-    @Override
-    public <T> GenericQueryResults<T> lookup(final Class<T> queryClass, final QueryByCriteria criteria, LookupCustomizer<T> customizer) {
         if (queryClass == null) {
             throw new IllegalArgumentException("queryClass is null");
         }
@@ -50,25 +44,21 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             throw new IllegalArgumentException("criteria is null");
         }
 
-        if (customizer == null) {
-            throw new IllegalArgumentException("customizer is null");
-        }
-
-        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria.getPredicate(), customizer);
+        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria.getPredicate());
 
         switch (criteria.getCountFlag()) {
             case ONLY:
                 return forCountOnly(queryClass, criteria, parent);
             case NONE:
-                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag(), customizer.getResultTransform());
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             case INCLUDE:
-                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag(), customizer.getResultTransform());
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             default: throw new UnsupportedCountFlagException(criteria.getCountFlag());
         }
     }
 
     /** gets results where the actual rows are requested. */
-    protected <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final C ojbCriteria, CountFlag flag, LookupCustomizer.Transform<T, T> transform) {
+    protected <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final C ojbCriteria, CountFlag flag) {
         final Q query = getQueryTranslator().createQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
@@ -85,7 +75,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             rows.remove(criteria.getMaxResults().intValue());
         }
 
-        results.setResults(transformResults(rows, transform));
+        results.setResults(rows);
         return results.build();
     }
 
@@ -95,14 +85,6 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
         results.setTotalRowCount(getRowCount(query));
         return results.build();
-    }
-
-    protected static <T> List<T> transformResults(List<T> results, LookupCustomizer.Transform<T, T> transform) {
-        final List<T> list = new ArrayList<T>();
-        for (T r : results) {
-            list.add(transform.apply(r));
-        }
-        return list;
     }
 
     /** this is a fatal error since this implementation should support all known count flags. */

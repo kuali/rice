@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.data.provider.impl;
 
 import com.google.common.collect.Sets;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.CompoundKey;
@@ -72,11 +71,6 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     @Override
     public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria) {
         return persistenceProviderForType(type).findMatching(type, queryByCriteria);
-    }
-
-    @Override
-    public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer) {
-        return persistenceProviderForType(type).findMatching(type, queryByCriteria, lookupCustomizer);
     }
 
     @Override

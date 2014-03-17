@@ -40,7 +40,6 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -165,11 +164,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleMemberQueryResults findRoleMembers(QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        //KULRICE-8972 lookup customizer for attribute transform
-        LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         RoleMemberQueryResults.Builder builder = RoleMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -230,11 +226,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public DelegateMemberQueryResults findDelegateMembers(QueryByCriteria queryByCriteria) throws RiceIllegalStateException  {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        //KULRICE-8972 lookup customizer for attribute transform
-        LookupCustomizer.Builder<DelegateMemberBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<DelegateMemberBo> results = getDataObjectService().findMatching(DelegateMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<DelegateMemberBo> results = getDataObjectService().findMatching(DelegateMemberBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         DelegateMemberQueryResults.Builder builder = DelegateMemberQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());
@@ -679,11 +672,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public RoleMembershipQueryResults findRoleMemberships( QueryByCriteria queryByCriteria) throws RiceIllegalStateException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        //KULRICE-8972 lookup customizer for attribute transform
-        LookupCustomizer.Builder<RoleMemberBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class, queryByCriteria, lc.build());
+        QueryResults<RoleMemberBo> results = getDataObjectService().findMatching(RoleMemberBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         RoleMembershipQueryResults.Builder builder = RoleMembershipQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

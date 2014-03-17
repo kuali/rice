@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.LessThanPredicate;
 import org.kuali.rice.core.api.criteria.LikeIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.NotEqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotEqualPredicate;
@@ -96,20 +95,18 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
     }
 
     @Override
-    public C translateCriteria(Class queryClazz, Predicate predicate, LookupCustomizer customizer) {
+    public C translateCriteria(Class queryClazz, Predicate predicate) {
         final C parent = createCriteria(queryClazz);
 
         if (predicate != null) {
-            addPredicate(predicate, parent, customizer.getPredicateTransform());
+            addPredicate(predicate, parent);
         }
 
         return parent;
     }
 
     /** adds a predicate to a Criteria.*/
-    protected void addPredicate(Predicate p, C parent, LookupCustomizer.Transform<Predicate, Predicate> transform) {
-        p = transform.apply(p);
-
+    protected void addPredicate(Predicate p, C parent) {
         if (p instanceof PropertyPathPredicate) {
             final String pp = ((PropertyPathPredicate) p).getPropertyPath();
             if (p instanceof NotNullPredicate) {
@@ -124,7 +121,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
                 throw new UnsupportedPredicateException(p);
             }
         } else if (p instanceof CompositePredicate) {
-            addCompositePredicate((CompositePredicate) p, parent, transform);
+            addCompositePredicate((CompositePredicate) p, parent);
         } else {
             throw new UnsupportedPredicateException(p);
         }
@@ -183,10 +180,10 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
     }
 
     /** adds a composite predicate to a Criteria. */
-    protected void addCompositePredicate(final CompositePredicate p, final C parent,  LookupCustomizer.Transform<Predicate, Predicate> transform) {
+    protected void addCompositePredicate(final CompositePredicate p, final C parent) {
         for (Predicate ip : p.getPredicates()) {
             final C inner = createInnerCriteria(parent);
-            addPredicate(ip, inner, transform);
+            addPredicate(ip, inner);
             if (p instanceof AndPredicate) {
                 addAnd(parent, inner);
             } else if (p instanceof OrPredicate) {

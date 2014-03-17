@@ -148,10 +148,8 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                     if (value != null && lda.isProxied(value)) {
                         value = lda.resolveProxy(value);
                     }
-                } catch (IllegalArgumentException e) {
-                    throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
-                } catch (IllegalAccessException e) {
-                    throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName(), e);
+                } catch (Exception e) {
+                    throw new ObjectAccessException("Could not get field " + field.getClass() + "." + field.getName() + " on " + object, e);
                 }
                 visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
             }

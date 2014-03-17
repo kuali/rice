@@ -9,9 +9,6 @@
             <email>rice.collab@kuali.org</email>
         </author>
         <pubdate>${reldate}</pubdate>
-        <releaseinfo>This document contains a cumulative list of work accomplished between versions
-            ${previous.version} and ${pom.version}. It also contains the steps necessary in upgrading from
-            release ${previous.version} to ${pom.version} </releaseinfo>
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
@@ -19,17 +16,9 @@
             Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. There are no
             database or impacting changes between Rice ${previous.version} and ${pom.version} and ${pom.version}
             should be a drop-in replacement.</para>
+        <para>The scope of changes for Rice ${pom.version} are critical security fixes.</para>
         <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
-
-        <itemizedlist>
-            <listitem>
-                <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12059'>KULRICE-12059</link>] - Security Vulnerability CVE-2014-0050 FileUpload</para>
-            </listitem>
-            <listitem>
-                <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11952'>KULRICE-11952</link>] - Stateless KNS architecture sends control information through the browser</para>
-            </listitem>
-        </itemizedlist>
 
         <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link
                 xlink:href="http://kuali.org/rice/download"

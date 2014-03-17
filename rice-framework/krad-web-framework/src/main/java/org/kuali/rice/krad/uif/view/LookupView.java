@@ -898,6 +898,10 @@ public class LookupView extends FormView {
         }
 
         lookupViewCopy.setAutoAddActiveCriteria(this.autoAddActiveCriteria);
+
+        if (this.additionalSecurePropertyNames != null) {
+            lookupViewCopy.setAdditionalSecurePropertyNames(additionalSecurePropertyNames);
+        }
     }
 
 }

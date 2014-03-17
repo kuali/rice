@@ -402,11 +402,21 @@ stateBo = getDataObjectService().save(stateBo, PersistenceOption.FLUSH);
         </para>
         <para>
             One or more persistence options can be passed to indicate whether or not linking should be performed prior to
-            persistence.  By default, linking is performed.  Below is a list of PersistionOption values.
+            persistence.  By default, linking foreign key values on the wrapped data object is performed.  Below is a
+            list of PersistionOption values.
         </para>
         <orderedlist>
-            <listitem><para>FLUSH</para></listitem>
-            <listitem><para>LINK_KEYS</para></listitem>
+            <listitem>
+              <para>
+                FLUSH - Synchronize the persistence context to the underlying data store.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                LINK_KEYS - Synchronize the persistence context to the underlying data store, and
+                link values into foreign keys that are "read-only" according to the metadata of the data object.
+              </para>
+            </listitem>
         </orderedlist>
     <para><emphasis role="bold">DataObjectService delete</emphasis></para>
     <programlisting>
@@ -672,8 +682,17 @@ private String id;</programlisting>
             If autoApply is set to false then a javax.persistence.Convert annotation will need to be added
             to all attributes that shall be converted, along with the Converter class.
         </para>
-      </section>
-      <section>
+        <para>Converters are typically specified on a mapping using the @Convert annotation</para>
+        <programlisting>
+          @Entity
+          public class Channel {
+          ...
+          @Convert(converter = BooleanTFConverter.class)
+          @Column(name = "SUBSCRB_IND", nullable = false)
+          private boolean subscribable;
+          ...
+          }
+        </programlisting>
         <para> The current attribute converters available in Kuali Rice: <table frame="all" tabstyle="striped" pgwide="1">
             <title>Kuali Rice Standard Converters</title>
             <tgroup cols="3">
@@ -704,9 +723,9 @@ private String id;</programlisting>
                     </row>
                     <row>
                         <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01BigDecimalConverter.html">Boolean01BigDecimalConverter</link></entry>
-                        <entry>Converts 0/1 Boolean values to java.math.BigDecimal
+                        <entry>Converts java.lang.Boolean True or False values to java.math.BigDecimal
                           to be persisted to the data store.  Data store values
-                          are converted back to 0/1 Boolean values when injected
+                          are converted back to java.lang.Boolean True or False values when injected
                           back into a data object.</entry>
                         <entry>NO</entry>
                     </row>

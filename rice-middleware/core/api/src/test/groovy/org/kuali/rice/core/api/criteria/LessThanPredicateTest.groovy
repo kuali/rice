@@ -18,6 +18,8 @@ package org.kuali.rice.core.api.criteria;
 
 import org.joda.time.DateTime
 import org.junit.Test
+import org.kuali.rice.core.api.util.type.KualiDecimal
+import org.kuali.rice.core.api.util.type.KualiPercent
 import org.kuali.rice.core.test.JAXBAssert
 
 import static org.junit.Assert.assertEquals
@@ -33,6 +35,8 @@ public class LessThanPredicateTest {
 	private static final String DECIMAL_XML = "<lessThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></lessThan>";
 	private static final String INTEGER_XML = "<lessThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></lessThan>";
 	private static final String DATE_TIME_XML = "<lessThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></lessThan>";
+    private static final String KUALI_DECIMAL_XML = "<lessThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiDecimalValue>0.00</kualiDecimalValue></lessThan>";
+    private static final String KUALI_PERCENT_XML = "<lessThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiPercentValue>0.00</kualiPercentValue></lessThan>";
 	
 	/**
 	 * Test method for {@link GreaterThanPredicate#GreaterThanPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
@@ -46,8 +50,19 @@ public class LessThanPredicateTest {
         LessThanPredicate lessThanExpression = new LessThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		assertEquals("property.path", lessThanExpression.getPropertyPath());
 		assertEquals(BigDecimal.ZERO, lessThanExpression.getValue().getValue());
-		
-		// Test that it can take a CriteriaIntegerValue
+
+        // Test that it can take a CriteriaKualiDecimalValue
+        lessThanExpression = new LessThanPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        assertEquals("property.path", lessThanExpression.getPropertyPath());
+        assertEquals(KualiDecimal.ZERO, lessThanExpression.getValue().getValue());
+
+        // Test that it can take a CriteriaKualiPercentValue
+        lessThanExpression = new LessThanPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        assertEquals("property.path", lessThanExpression.getPropertyPath());
+        assertEquals(KualiPercent.ZERO, lessThanExpression.getValue().getValue());
+
+
+        // Test that it can take a CriteriaIntegerValue
 		lessThanExpression = new LessThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		assertEquals("property.path", lessThanExpression.getPropertyPath());
 		assertEquals(BigInteger.ZERO, lessThanExpression.getValue().getValue());
@@ -82,6 +97,12 @@ public class LessThanPredicateTest {
 		
 		LessThanPredicate lessThanExpression = new LessThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(lessThanExpression, DECIMAL_XML, LessThanPredicate.class);
+
+        lessThanExpression = new LessThanPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(lessThanExpression, KUALI_DECIMAL_XML, LessThanPredicate.class);
+
+        lessThanExpression = new LessThanPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(lessThanExpression, KUALI_PERCENT_XML, LessThanPredicate.class);
 
         lessThanExpression = new LessThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(lessThanExpression, INTEGER_XML, LessThanPredicate.class);

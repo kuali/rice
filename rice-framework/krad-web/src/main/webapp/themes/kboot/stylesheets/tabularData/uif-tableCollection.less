@@ -1,0 +1,88 @@
+.uif-tableCollectionLayout {
+  .table;
+  .table-bordered;
+  .table-condensed;
+  .table-hover;
+  margin-bottom: 6px;
+}
+
+.uif-tableCollectionLayout {
+  th {
+    background: @gray-lighter;
+  }
+}
+
+
+.uif-tableCollectionLayout thead th.sorting,
+.uif-tableCollectionLayout thead th.sorting_asc,
+.uif-tableCollectionLayout thead th.sorting_desc,
+.uif-tableCollectionLayout thead th.sorting label,
+.uif-tableCollectionLayout thead th.sorting_asc label,
+.uif-tableCollectionLayout thead th.sorting_desc label {
+  cursor: pointer;
+}
+
+.uif-tableCollectionLayout input[type="text"] {
+  margin-bottom: 0px;
+  width: 120px;
+}
+
+
+.uif-tableCollectionLayout .uif-hasInfo > [data-role="Control"],
+.uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="InputSet"] > [data-role="Control"],
+.uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="RadioSet"],
+.uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #3366CC !important;
+}
+.uif-tableCollectionLayout .uif-hasWarning > [data-role="Control"],
+.uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="InputSet"] > [data-role="Control"],
+.uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="RadioSet"],
+.uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #FF9900 !important;
+}
+
+
+
+tr.uif-collectionAddItem td.sorting_1 {
+  background-color: #F2F2F2;
+}
+tr.uif-groupRow.addline, tr.uif-groupTotalRow[data-groupvalue="addline"] {
+  display: none !important;
+}
+tr.uif-totalRow {
+  background-color: #F9F9F9;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+tr.uif-totalRow .uif-boxLayoutVerticalItem, tr.uif-groupTotalRow .uif-boxLayoutVerticalItem {
+  margin: 0;
+}
+tr.uif-groupRow {
+  background-color: #F9F9F9;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black !important;
+}
+tr.uif-groupRow td {
+  font-weight: bolder;
+}
+tr.uif-groupTotalRow {
+  background-color: #F4F4F4;
+  border-bottom: 1px solid black !important;
+}
+tr.uif-groupTotalRow td {
+  border: none !important;
+  margin-right: 10px;
+}
+tr.uif-groupTotalRow td, tr.uif-totalRow th {
+  text-align: right;
+}
+div.uif-calculationField, div.uif-calculationField input {
+  text-align: right;
+}
+[data-role='totalValue'] {
+  display: inline;
+}
+
+.show-footer {
+  display: table-cell !important;
+}

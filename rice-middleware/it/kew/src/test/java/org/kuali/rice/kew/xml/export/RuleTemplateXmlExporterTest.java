@@ -36,6 +36,9 @@ import static org.junit.Assert.*;
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {
 
     @Test public void testExport() throws Exception {
+        // Previous tests may not have forced a full clear of the tables,
+        new ClearDatabaseLifecycle(getPerTestTablesToClear(), getPerTestTablesNotToClear()).start();
+
         loadXmlFile("RuleTemplateExportConfig.xml");
         assertExport();
     }

@@ -97,7 +97,9 @@ public class InquiryView extends FormView {
     }
 
     /**
-     * This overridden method returns a clone of the InquiryView
+     * Clones the {@code InquiryView} with a deep copy so that a nested inquiry can be called within an inquiry.
+     *
+     * @return a clone of the current {@code InquiryView}
      *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
@@ -105,9 +107,8 @@ public class InquiryView extends FormView {
     public InquiryView clone() throws CloneNotSupportedException {
         InquiryView inquiryViewCopy = (InquiryView) super.clone();
 
-        // use deep copy method to ensure non reference copy of viewHelperService
-        if (this.getViewHelperService() != null) {
-            inquiryViewCopy.setViewHelperService( ((InquirableImpl) this.getViewHelperService()).copy());
+        if (getViewHelperService() != null) {
+            inquiryViewCopy.setViewHelperService(((InquirableImpl) getViewHelperService()).copy());
         }
 
         return inquiryViewCopy;

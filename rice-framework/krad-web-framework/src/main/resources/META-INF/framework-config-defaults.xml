@@ -93,7 +93,7 @@
   <param name="validationPatternRegex.time24" override="false">(2[0-3]|1[0-9]|0?[0-9]):([0-5][0-9])(:[0-5][0-9])?</param>
   <param name="validationPatternRegex.url" override="false">(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*</param>
   <param name="validationPatternRegex.timestamp" override="false">(19|2[0-9])[0-9]{2}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])\\s+[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]+</param>
-  <param name="validationPatternRegex.emailAddress" override="false">[A-Za-z0-9][A-Za-z0-9_.\-]*[A-Za-z0-9]@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}</param>
+  <param name="validationPatternRegex.emailAddress" override="false">[A-Za-z0-9]+([_.\-][A-Za-z0-9]+)*@([A-Za-z0-9][A-Za-z0-9_-]*\\.)+[A-Za-z]{2,}</param>
   <param name="validationPatternRegex.floatingPoint" override="false">([0-9]*\\.)?[0-9]+</param>
   <param name="validationPatternRegex.javaClass" override="false">[A-Za-z_$][_$a-zA-Z0-9]*(\\.[_$a-zA-Z0-9]+)*</param>
   <param name="validationPatternRegex.month" override="false">(0?[1-9]|1[012])</param>

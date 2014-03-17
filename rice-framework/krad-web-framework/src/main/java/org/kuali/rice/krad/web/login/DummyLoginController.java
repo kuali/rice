@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.web.login;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -35,9 +36,8 @@ import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Properties;
 
-
 /**
- * Basic controller KRAD dummy login
+ * Basic controller KRAD dummy login.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -54,7 +54,6 @@ public class DummyLoginController extends UifControllerBase {
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
-
         // check view authorization
         if (form.getView() != null) {
             String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
@@ -65,32 +64,46 @@ public class DummyLoginController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submit")
-    public ModelAndView submit(@ModelAttribute("KualiForm") DummyLoginForm uifForm, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-
-        String returnUrl = decode(uifForm.getReturnLocation()) ;
+    public ModelAndView submit(@ModelAttribute("KualiForm") DummyLoginForm uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String returnUrl = decode(uifForm.getReturnLocation());
         if (StringUtils.isBlank(returnUrl)) {
             returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
         }
 
         Properties props = new Properties();
         String user = uifForm.getLogin_user();
-        if (StringUtils.isNotBlank(user)){
+        if (StringUtils.isNotBlank(user)) {
             props.put("__login_user", user);
         }
 
         String password = uifForm.getLogin_pw();
-        if (StringUtils.isNotBlank(password)){
+        if (StringUtils.isNotBlank(password)) {
             props.put("__login_pw", password);
         }
 
         return performRedirect(uifForm, returnUrl, props);
     }
 
-    private String decode( String encodedUrl ) {
+    @RequestMapping(params = "methodToCall=logout")
+    public ModelAndView logout(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
+            HttpServletResponse response) {
+        UserSession userSession = GlobalVariables.getUserSession();
+
+        if (userSession.isBackdoorInUse()) {
+            userSession.clearBackdoorUser();
+        } else {
+            request.getSession().invalidate();
+        }
+
+        return returnToHub(form);
+    }
+
+    private String decode(String encodedUrl) {
         try {
-            return URLDecoder.decode(encodedUrl,"UTF-8") ;
+            return URLDecoder.decode(encodedUrl, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException( "Unable to decode value: " + encodedUrl, e );
+            throw new RuntimeException("Unable to decode value: " + encodedUrl, e);
         }
     }
 

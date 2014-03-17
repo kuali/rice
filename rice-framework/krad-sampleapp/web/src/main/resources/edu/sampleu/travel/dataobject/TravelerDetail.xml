@@ -267,8 +267,8 @@
     <property name="maxLength" value="1" />
     <property name="summary" value="Liability Insurance" />
     <property name="description" value="Liability Insurance" />
-    <property name="control">
-      <bean parent="CheckboxControlDefinition" />
+    <property name="controlField">
+      <bean parent="Uif-CheckboxControl" />
     </property>
   </bean>
 

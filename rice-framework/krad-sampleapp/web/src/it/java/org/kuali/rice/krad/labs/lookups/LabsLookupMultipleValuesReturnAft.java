@@ -23,9 +23,9 @@ import org.junit.Test;
 public class LabsLookupMultipleValuesReturnAft extends LabsLookupBase {
 
     /**
-     * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-MultipleValuesReturnView
+     * /kr-krad/labs?methodToCall=start&viewId=LabsLookup-MultipleValuesReturnView
      */
-    public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LabsLookup-MultipleValuesReturnView";
+    public static final String BOOKMARK_URL = "/kr-krad/labs?methodToCall=start&viewId=LabsLookup-MultipleValuesReturnView";
 
     @Override
     protected String getBookmarkUrl() {
@@ -59,5 +59,11 @@ public class LabsLookupMultipleValuesReturnAft extends LabsLookupBase {
         waitAndClickByXpath("//input[@type='checkbox' and @value='CAT:Travel Account 10:a10']");
         waitAndClickByXpath("//input[@type='checkbox' and @value='EAT:Travel Account 11:a11']");
         waitAndClickButtonByText("return selected");
+        waitForTextPresent("CAT");
+        waitForTextPresent("Travel Account 10");
+        waitForTextPresent("a10");
+        waitForTextPresent("EAT");
+        waitForTextPresent("Travel Account 11");
+        waitForTextPresent("a11");
     }
 }

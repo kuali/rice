@@ -86,6 +86,15 @@ public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest
         assert(naturalLanguageUsage.getId() != null);
     }
 
+    @Test
+    public void test_createNaturalLanguageUsageGeneratedId() {
+        NaturalLanguageUsageBoServiceImplGenTest test = NaturalLanguageUsageBoServiceImplGenTest.create(naturalLanguageUsageBoServiceImpl);
+        test.test_createNaturalLanguageUsageGeneratedId();
+        naturalLanguageUsage = test.getNaturalLanguageUsage();
+        assert(naturalLanguageUsage != null);
+        assert(naturalLanguageUsage.getId() != null);
+    }
+
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void test_createNaturalLanguageUsage_null_fail() {
         (NaturalLanguageUsageBoServiceImplGenTest.create(naturalLanguageUsageBoServiceImpl)).test_createNaturalLanguageUsage_null_fail();
@@ -144,4 +153,16 @@ public final class NaturalLanguageUsageIntegrationGenTest extends AbstractBoTest
         (NaturalLanguageUsageBoServiceImplGenTest.create(naturalLanguageUsageBoServiceImpl)).test_deleteNaturalLanguageUsage_null_fail();
     }
 
+    @Test(expected = java.lang.IllegalStateException.class)
+    public void test_createNaturalLanguageUsageDuplicateNamespaceAndName() {
+        NaturalLanguageUsageBoServiceImplGenTest test = NaturalLanguageUsageBoServiceImplGenTest.create(naturalLanguageUsageBoServiceImpl);
+        test.test_createNaturalLanguageUsageGeneratedId();
+        naturalLanguageUsage = test.getNaturalLanguageUsage();
+        assert(naturalLanguageUsage != null);
+        assert(naturalLanguageUsage.getId() != null);
+
+        NaturalLanguageUsageBoServiceImplGenTest test2 = NaturalLanguageUsageBoServiceImplGenTest.create(naturalLanguageUsageBoServiceImpl);
+        test2.test_createNaturalLanguageUsageGeneratedId();
+        naturalLanguageUsage = test2.getNaturalLanguageUsage();
+    }
 }

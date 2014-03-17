@@ -41,7 +41,6 @@ import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -108,6 +107,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private String dataField1 = "1001";
     private String dataField2;
     private String dataField3 = "My Book Title";
+    private String dataField4;
 
     //MessageField
     private String messageField1;
@@ -414,16 +414,15 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             tree2.setRootElement(root);
         }
         
-        List<DocumentSearchResult> results;
+        List<DocumentSearchResult> results = Collections.emptyList();
         try {
 			DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
 			builder.setDocumentTypeName("TravelAuthorization");
-			DocumentSearchService documentSearchService =
-					org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
-			results = documentSearchService == null ? Collections.<DocumentSearchResult> emptyList() :
-					documentSearchService.lookupDocuments(
-							GlobalVariables.getUserSession().getPrincipalId(),
-							builder.build()).getSearchResults();
+            DocumentSearchService documentSearchService =
+				org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
+            if (documentSearchService != null) {
+                results = documentSearchService.lookupDocuments(null, builder.build()).getSearchResults();
+            }
         } catch (NoClassDefFoundError e) {
         	results = Collections.emptyList();
         }
@@ -444,7 +443,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 	                if (!travelDestinations.isEmpty()) {
 	                    newTravelAuthorizationDocument.setTripDestinationId(travelDestinations.get(0).getTravelDestinationId());
 	                }
-	
+
 	                Document document
 	                        = KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
 	                setDocumentNumber(document.getDocumentNumber());
@@ -536,6 +535,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDataField3(String dataField3) {
         this.dataField3 = dataField3;
+    }
+
+    public String getDataField4() {
+        return dataField4;
+    }
+
+    public void setDataField4(String dataField4) {
+        this.dataField4 = dataField4;
     }
 
     public String getInputField1() {
@@ -923,12 +930,16 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         return collection5;
     }
 
+    public void setCollection5(List<UITestObject> collection5) {
+        this.collection5 = collection5;
+    }
+
     public List<UITestObject> getCollection6() {
         return collection6;
     }
 
-    public void setCollection5(List<UITestObject> collection5) {
-        this.collection5 = collection5;
+    public void setCollection6(List<UITestObject> collection6) {
+        this.collection6 = collection6;
     }
 
     public List<UIInactivatableTestObject> getInactivatableCollection() {

@@ -125,7 +125,7 @@
         p:actionLabel="Expand All">
     <property name="cssClasses">
       <list>
-        <value>uif-expandDisclosuresButton</value>
+        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>
@@ -135,7 +135,7 @@
         p:actionLabel="Collapse All">
     <property name="cssClasses">
       <list>
-        <value>uif-collapseDisclosuresButton</value>
+        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>

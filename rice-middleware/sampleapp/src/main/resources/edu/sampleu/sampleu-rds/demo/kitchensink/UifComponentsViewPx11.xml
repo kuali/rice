@@ -132,7 +132,7 @@
         <control>
           <dropdownControl-bean
                   onChangeScript="var c=jq(this).val();jq('#'+'UifCompView-WindowEvents-Group2').animate({backgroundColor:c});"
-                  options-ref="color-options" size="3"/>
+                  options-ref="color-options"/>
         </control>
       </inputField-bean>
       <inputField-bean fieldLabel.cssClasses="labelTop" fieldLabel.renderColon="false"

@@ -16,11 +16,16 @@
 package org.kuali.rice.krad.web.bind;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.PropertyValue;
@@ -28,6 +33,7 @@ import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -219,6 +225,24 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             pv = new PropertyValue(pv, null);
         }
 
+        if (pv != null && pv.getValue() instanceof String) {
+            String propertyValue = (String) pv.getValue();
+
+            if (propertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                propertyValue = org.apache.commons.lang.StringUtils.removeEnd(propertyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (isSecure(pv.getName())) {
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        pv = new PropertyValue(pv, CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue));
+                    }
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         // save off the original value if we are change tracking
         boolean originalValueSaved = true;
         Object originalValue = null;
@@ -259,6 +283,24 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             value = null;
         }
 
+        if (value instanceof String) {
+            String propertyValue = (String) value;
+
+            if (propertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                propertyValue = org.apache.commons.lang.StringUtils.removeEnd(propertyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            }
+
+            if (isSecure(propertyName)) {
+                try {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        value = CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue);
+                    }
+                } catch (GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         // save off the original value
         boolean originalValueSaved = true;
         Object originalValue = null;
@@ -286,6 +328,33 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             }
         }
 
+    }
+
+    private boolean isSecure(String propertyName) {
+        return isSecure(getWrappedClass(), propertyName);
+    }
+
+    private boolean isSecure(Class<?> wrappedClass, String propertyPath) {
+        if (KRADServiceLocatorWeb.getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(wrappedClass, propertyPath)) {
+            return true;
+        }
+
+        BeanWrapperImpl beanWrapper;
+        try {
+            beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
+        } catch (NotReadablePropertyException nrpe) {
+            LOG.debug("Bean wrapper was not found for " + propertyPath + ", but since it cannot be accessed it will not be set as secure.", nrpe);
+            return false;
+        }
+
+        if (org.apache.commons.lang.StringUtils.isNotBlank(beanWrapper.getNestedPath())) {
+            PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
+            String nestedPropertyPath = org.apache.commons.lang.StringUtils.removeStart(tokens.canonicalName, beanWrapper.getNestedPath());
+
+            return isSecure(beanWrapper.getWrappedClass(), nestedPropertyPath);
+        }
+
+        return false;
     }
 
     @Override

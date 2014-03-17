@@ -110,11 +110,11 @@ public class EmailAddressPatternConstraintTest {
 		invalidEmailEmployeeEmpty.setContactEmail("");
 		invalidEmailEmployee.setContactEmail("@a.b.c.org");
 		invalidEmailEmployee1.setContactEmail("a");
-		invalidEmailEmployee2.setContactEmail("1@a.b.c.org");
-		invalidEmailEmployee3.setContactEmail("1@org");
-		invalidEmailEmployee4.setContactEmail("1@a");
+		invalidEmailEmployee2.setContactEmail("1@org");
+		invalidEmailEmployee3.setContactEmail("1@a");
+		invalidEmailEmployee4.setContactEmail("_@a");
 		invalidEmailEmployee5.setContactEmail(".@a.org");
-		invalidEmailEmployee6.setContactEmail("_@a.org");
+		invalidEmailEmployee6.setContactEmail("-@a.org");
 		invalidEmailEmployee7.setContactEmail("something@a.o-rg");
 
 		contactEmailAddressPatternConstraint = new ConfigurationBasedRegexPatternConstraint();

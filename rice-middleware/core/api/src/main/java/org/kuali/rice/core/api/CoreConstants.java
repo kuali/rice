@@ -106,11 +106,22 @@ public final class CoreConstants {
     }
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
+    public static final String STRING_TO_TIME_FORMATS = "STRING_TO_TIME_FORMATS";
     public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
     public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";
+    public static final String TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
+
+    public static final String STRING_TO_DATE_FORMATS_DEFAULT = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
+    public static final String STRING_TO_TIME_FORMATS_DEFAULT = "hh:mm aa";
+    public static final String STRING_TO_TIMESTAMP_FORMATS_DEFAULT = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
+    public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT = "MM/dd/yyyy";
+    public static final String TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT = "hh:mm aa";
+    public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT = "MM/dd/yyyy hh:mm a";
+    public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT = "yyyyMMdd";
+    public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT = "yyyyMMdd-HH-mm-ss-S";
 
     public static final String DATA_TYPE_STRING = "string";
     public static final String DATA_TYPE_DATE = "datetime";

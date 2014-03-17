@@ -171,7 +171,7 @@
           <list>
             <bean parent="Uif-InputField" p:propertyName="field119" p:width="auto">
               <property name="control">
-                <bean parent="Uif-DropdownControl" p:options-ref="color-options" p:size="3"
+                <bean parent="Uif-DropdownControl" p:options-ref="color-options"
                       p:onChangeScript="var c=jq(this).val();jq('#'+'UifCompView-WindowEvents-Group2').animate({backgroundColor:c});" />
               </property>
             </bean>

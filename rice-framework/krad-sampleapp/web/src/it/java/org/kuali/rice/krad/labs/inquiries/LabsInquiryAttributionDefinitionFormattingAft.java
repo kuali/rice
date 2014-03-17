@@ -46,7 +46,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
         waitAndClickLinkContainingText("10000");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                                          {"Travel Authorization Document Id:", "10000"},
+                                          {"Travel Authorization Document:", "10000"},
                                           {"Travel Company Name:", "Discount Travel"},
                                           {"Expense Type:", "ME"},
                                           {"Expense Description:", "Family Related"}, 

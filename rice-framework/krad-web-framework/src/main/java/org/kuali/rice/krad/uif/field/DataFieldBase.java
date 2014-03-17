@@ -38,6 +38,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -198,8 +200,14 @@ public class DataFieldBase extends FieldBase implements DataField {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
 
-        if (isRender()) {
-            ViewLifecycle.getViewPostMetadata().addRenderedPropertyPath(getBindingInfo().getBindingPath());
+        ViewHelperService viewHelperService = ViewLifecycle.getView().getViewHelperService();
+        if ((this.getDefaultValue()!=null) || (this.getDefaultValueFinderClass() != null)) {
+               viewHelperService.populateDefaultValueForField(model, this, this.getBindingInfo().getBindingPath());
+        }
+        
+        ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
+        if (isRender() && viewPostMetadata != null) {
+            viewPostMetadata.addRenderedPropertyPath(getBindingInfo().getBindingPath());
         }
     }
 

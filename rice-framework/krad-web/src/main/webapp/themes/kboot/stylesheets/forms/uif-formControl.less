@@ -1,0 +1,144 @@
+
+.uif-inputField input[type="text"], .uif-inputField .uif-textAreaControl {
+  //width: 100%;
+}
+
+.uif-inputField .form-control {
+  //width: 100%;
+}
+
+.uif-inputField input[type="text"].form-control {
+ height: 32px;
+}
+
+.input-group-addon, .input-group-btn {
+  width: 1%;
+  vertical-align: top;
+}
+
+
+/** this is necessary because controls have 2px margin, and the group button is display table cell **/
+.input-group-addon, .input-group-btn {
+  padding-bottom: 2px;
+  width: inherit;
+}
+
+
+
+.input-group-msg {
+  width: 1%;
+}
+
+
+
+.input-group {
+  //width: 100%;
+}
+
+
+
+.input-group-btn > a {
+  display: inline-block;
+  border-top: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+  color: #1150b0;
+  border-color: #cccccc;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(20%, #ffffff), color-stop(50%, #ffffff), color-stop(52%, #f2f2f2), color-stop(100%, #e6e6e6));
+  background: -webkit-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+  background: -moz-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+  background: -o-linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+  background: linear-gradient(top, #ffffff 20%, #ffffff 50%, #f2f2f2 52%, #e6e6e6 100%);
+  background-clip: padding-box;
+  margin-left: 0px;
+}
+
+
+.input-group-btn > a[class*='icon-'] {
+  padding: 9px 7px 8px 7px;
+}
+
+
+
+
+
+.input-group-msg {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 8px;
+}
+
+.input-group-msg > .uif-message {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.input-group-btn > a {
+  //margin-left: 4px;
+}
+
+
+
+/** Spinner control *********************************************************************************/
+.uif-spinnerControl {
+  padding-left: .5em;
+
+}
+span.ui-spinner {
+  margin-bottom: 2px;
+}
+span.ui-spinner input {
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+  box-shadow: none;
+  height: 24px;
+  margin: 0px;
+  -moz-box-shadow: none;
+  -moz-transition: none;
+  -o-transition: none;
+  padding: 0px;
+  transition: none;
+  -webkit-box-shadow: none;
+  -webkit-transition: none;
+
+}
+
+/** InputField specific styles **************************************************************************/
+
+/* positioning for input field control images (calendar, validation icons, etc) */
+.uif-inputField > img,
+.uif-inputField > a > img,
+.uif-inputField > fieldset > img,
+.uif-inputField input[type="image"] {
+  margin: 3px 0 0 3px;
+  vertical-align: top;
+}
+
+
+/** when field has a watermark **/
+.watermark {
+  color: #999;
+}
+
+
+.uif-verticalRadioFieldset + .input-group-btn a,
+.uif-verticalCheckboxesFieldset + .input-group-btn a,
+.uif-horizontalCheckboxesFieldset  + .input-group-btn a,
+.uif-horizontalRadioFieldset + .input-group-btn a,
+.uif-textAreaControl + .input-group-btn a,
+.uif-dropdownControl + .input-group-btn a, {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #000;
+  margin-left: 8px;
+  font-size: 16px
+}

@@ -82,6 +82,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -547,6 +548,22 @@ public final class KRADUtils {
      */
     public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
             Object dataObject) {
+        return getPropertyKeyValuesFromDataObject(propertyNames, Collections.<String>emptyList(), dataObject);
+    }
+
+    /**
+     * Builds a Map containing a key/value pair for each property given in the property names list, general
+     * security is checked to determine if the value needs to be encrypted along with applying formatting to
+     * the value
+     *
+     * @param propertyNames - list of property names to get key/value pairs for
+     * @param securePropertyNames - list of secure property names to match for encryption
+     * @param dataObject - object instance containing the properties for which the values will be pulled
+     * @return Map<String, String> containing entry for each property name with the property name as the map key
+     * and the property value as the value
+     */
+    public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
+            List<String> securePropertyNames, Object dataObject) {
         Map<String, String> propertyKeyValues = new HashMap<String, String>();
 
         if (dataObject == null) {
@@ -560,23 +577,62 @@ public final class KRADUtils {
                 propertyValue = StringUtils.EMPTY;
             }
 
-            if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName)) {
-                try {
-                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        propertyValue = CoreApiServiceLocator.getEncryptionService().encrypt(propertyValue)
-                                + EncryptionService.ENCRYPTION_POST_PREFIX;
-                    }
-                } catch (GeneralSecurityException e) {
-                    throw new RuntimeException("Exception while trying to encrypt value for key/value map.", e);
-                }
+            // secure values are not returned
+            if (!isSecure(propertyName, securePropertyNames, dataObject, propertyValue)) {
+                propertyKeyValues.put(propertyName, propertyValue.toString());
             }
 
-            // TODO: need to apply formatting to return value once util class is ready
-            propertyKeyValues.put(propertyName, propertyValue.toString());
         }
 
         return propertyKeyValues;
+    }
+
+    /**
+     * Determines whether a property name should be secured, either based on installed sensitive data patterns, a list
+     * of secure property name patterns, or attributes in the Data Dictionary.
+     *
+     * @param propertyName The property name to check for security
+     * @param securePropertyNames The secure property name patterns to check
+     * @param dataObject The object containing this property
+     * @param propertyValue The value of the property
+     * @return true if the property needs to be secure, false otherwise
+     */
+    private static boolean isSecure(String propertyName, List<String> securePropertyNames, Object dataObject,
+            Object propertyValue) {
+        if (propertyValue instanceof String && containsSensitiveDataPatternMatch((String) propertyValue)) {
+            return true;
+        }
+
+        if (containsSecurePropertyName(propertyName, securePropertyNames)) {
+            return true;
+        }
+
+        return KRADServiceLocatorWeb.getDataObjectAuthorizationService()
+                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName);
+    }
+
+    /**
+     * Helper method to identify if propertyName contains a secure property name element.
+     * Check handles simple or compound names and ignores partial matches.
+     *
+     * @param propertyName property name as a single term or compound term (i.e. items[0].propertyName)
+     * @param securePropertyNames list of secure property names to match
+     * @return true if any of the secure property names are found in the property name, false otherwise
+     */
+    private static boolean containsSecurePropertyName(String propertyName, List<String> securePropertyNames) {
+        if (securePropertyNames == null) {
+            return false;
+        }
+
+        for (String securePropertyName : securePropertyNames) {
+            // pattern prefix and suffix used to handle compound names and ignore partial name matches
+            if (Pattern.compile("(?:\\.|^)" + Pattern.quote(securePropertyName) + "(?:\\.|\\[|$)").matcher(propertyName)
+                    .find()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -623,7 +679,8 @@ public final class KRADUtils {
     }
 
     /**
-     * This method converts request parameters coming in as String to native types in case of Boolean, Number or java.sql.Date.
+     * This method converts request parameters coming in as String to native types in case of Boolean, Number or
+     * java.sql.Date.
      * For boolean the conversion is performed only if an @Converter annotation is set on the JPA entity field.
      *
      * @param dataObjectClass - business object class
@@ -675,8 +732,8 @@ public final class KRADUtils {
     /**
      * Checks to see if the specified field from the list of allFields has the @Convert annotation set on it
      *
-     * @param allFields  List of all fields on the entity
-     * @param fieldName  Field name to check for @Convert annotation
+     * @param allFields List of all fields on the entity
+     * @param fieldName Field name to check for @Convert annotation
      * @return true if annotation is present else false
      */
     private static boolean isConvertAnnotationPresent(List<java.lang.reflect.Field> allFields, String fieldName) {
@@ -909,7 +966,8 @@ public final class KRADUtils {
     /**
      * Builds the message for a given entry in the messageMap. The entry could have multiple messages for a given key.
      * The messages are appended separated by a ;
-     * @param e  Map entry of property and errors for that property
+     *
+     * @param e Map entry of property and errors for that property
      * @return logMessage
      */
     private static StringBuffer buildMessage(Map.Entry<String, List<ErrorMessage>> e) {

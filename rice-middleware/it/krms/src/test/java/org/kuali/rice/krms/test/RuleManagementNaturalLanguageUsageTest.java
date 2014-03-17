@@ -339,7 +339,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t6.object0, t6.namespaceName,
                 "proposition");
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t6.namespaceName, "sw", "proposition",
-                "Detta ändamål får inte vara inaktiv");
+                "Detta ändamål får inte vara inaktiv", true);
 
         // test translateNaturalLanguageForObject call
         String translation = ruleManagementService.translateNaturalLanguageForObject(
@@ -449,7 +449,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
 
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t7.object0, t7.namespaceName, "proposition" );
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t7.namespaceName, "tr", "proposition",
-                "Bu nesne inaktif olmamalidir");
+                "Bu nesne inaktif olmamalidir", true);
 
         String translation = ruleManagementService.translateNaturalLanguageForProposition(template.getNaturalLanguageUsageId(),propositionDefinition,"tr");
 
@@ -515,7 +515,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         // build SIMPLE proposition
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t8.object0, t8.namespaceName, "proposition" );
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t8.namespaceName, "cy", "proposition",
-                "Ni ddylai hyn fod yn segur, Gwrthrych");
+                "Ni ddylai hyn fod yn segur, Gwrthrych", true);
 
         NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
                 template.getNaturalLanguageUsageId(), propositionDefinition, "cy");
@@ -547,13 +547,13 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         // Build the templates for the tree
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t9.namespaceName, "ms",
                 krmsTypeRepository.getTypeById(propositionDefinition.getTypeId()).getName(),
-                "Objek ini tidak boleh aktif");
+                "Objek ini tidak boleh aktif", true);
         PropositionDefinition child1 = propositionDefinition.getCompoundComponents().get(0);
         createTestNaturalLanguageTemplate(t9.namespaceName, "ms", "Account", "Objek ini tidak boleh aktif",
-                "krms.nl.proposition");
+                "krms.nl.proposition", true);
         PropositionDefinition child2 = propositionDefinition.getCompoundComponents().get(1);
         createTestNaturalLanguageTemplate(t9.namespaceName, "ms", "Occasion", "Objek ini tidak boleh aktif",
-                "krms.nl.proposition");
+                "krms.nl.proposition", true);
 
         // test the call to translateNaturalLanguageTreeForProposition
         NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
@@ -625,7 +625,7 @@ public class RuleManagementNaturalLanguageUsageTest extends RuleManagementBaseTe
         // build SIMPLE proposition
         PropositionDefinition propositionDefinition = createTestPropositionForTranslation(t10.object0, t10.namespaceName, "proposition2" );
         NaturalLanguageTemplate template = createTestNaturalLanguageTemplate(t10.namespaceName, "cy", "proposition2",
-                "Ddylai hyn fod yn segur, Gwrthrych");
+                "Ddylai hyn fod yn segur, Gwrthrych", true);
 
         NaturalLanguageTree naturalLanguageTree = ruleManagementService.translateNaturalLanguageTreeForProposition(
                 template.getNaturalLanguageUsageId(), propositionDefinition, "en");

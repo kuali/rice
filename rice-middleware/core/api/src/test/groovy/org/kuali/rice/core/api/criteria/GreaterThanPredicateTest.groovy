@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.api.criteria;
+package org.kuali.rice.core.api.criteria
 
+import org.kuali.rice.core.api.util.type.KualiDecimal
+import org.kuali.rice.core.api.util.type.KualiPercent;
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
@@ -32,7 +34,9 @@ public class GreaterThanPredicateTest {
 
 	private static final String DECIMAL_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>0</decimalValue></greaterThan>";
 	private static final String INTEGER_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>0</integerValue></greaterThan>";
-	private static final String DATE_TIME_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></greaterThan>";
+    private static final String KUALI_DECIMAL_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiDecimalValue>0.00</kualiDecimalValue></greaterThan>";
+    private static final String KUALI_PERCENT_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiPercentValue>0.00</kualiPercentValue></greaterThan>";
+    private static final String DATE_TIME_XML = "<greaterThan propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></greaterThan>";
 	
 	/**
 	 * Test method for {@link GreaterThanPredicate#GreaterThanPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
@@ -46,8 +50,19 @@ public class GreaterThanPredicateTest {
 		GreaterThanPredicate greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(BigDecimal.ZERO, greaterThanExpression.getValue().getValue());
-		
-		// Test that it can take a CriteriaIntegerValue
+
+        // Test that it can take a CriteriaKualiDecimalValue
+        greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        assertEquals("property.path", greaterThanExpression.getPropertyPath());
+        assertEquals(KualiDecimal.ZERO, greaterThanExpression.getValue().getValue());
+
+        // Test that it can take a CriteriaKualiPercentValue
+        greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        assertEquals("property.path", greaterThanExpression.getPropertyPath());
+        assertEquals(KualiPercent.ZERO, greaterThanExpression.getValue().getValue());
+
+
+        // Test that it can take a CriteriaIntegerValue
 		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(BigInteger.ZERO, greaterThanExpression.getValue().getValue());
@@ -82,6 +97,12 @@ public class GreaterThanPredicateTest {
 		
 		GreaterThanPredicate greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDecimalValue(BigDecimal.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, DECIMAL_XML, GreaterThanPredicate.class);
+
+        greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaKualiDecimalValue(KualiDecimal.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, KUALI_DECIMAL_XML, GreaterThanPredicate.class);
+
+        greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaKualiPercentValue(KualiPercent.ZERO));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, KUALI_PERCENT_XML, GreaterThanPredicate.class);
 		
 		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(greaterThanExpression, INTEGER_XML, GreaterThanPredicate.class);

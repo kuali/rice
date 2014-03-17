@@ -29,6 +29,8 @@ public class NotInPredicateTest {
 
 	private static final String STRING_XML = "<notIn propertyPath=\"stringValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><stringValue>abcdefg</stringValue><stringValue>gfedcabc</stringValue><stringValue>should have failed by now!</stringValue></notIn>";
 	private static final String DECIMAL_XML = "<notIn propertyPath=\"decimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><decimalValue>1.0</decimalValue><decimalValue>1.1</decimalValue><decimalValue>2.5</decimalValue></notIn>";
+    private static final String KUALI_DECIMAL_XML = "<notIn propertyPath=\"kualiDecimalValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiDecimalValue>2.50</kualiDecimalValue><kualiDecimalValue>2.60</kualiDecimalValue><kualiDecimalValue>2.70</kualiDecimalValue></notIn>";
+    private static final String KUALI_PERCENT_XML = "<notIn propertyPath=\"kualiPercentValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiPercentValue>25.00</kualiPercentValue><kualiPercentValue>26.00</kualiPercentValue><kualiPercentValue>27.00</kualiPercentValue></notIn>";
 	private static final String INTEGER_XML = "<notIn propertyPath=\"integerValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><integerValue>1</integerValue><integerValue>2</integerValue><integerValue>3</integerValue><integerValue>10</integerValue><integerValue>4</integerValue></notIn>";
 	private static final String DATE_TIME_XML = "<notIn propertyPath=\"dateTimeValues.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></notIn>";
 	
@@ -83,6 +85,10 @@ public class NotInPredicateTest {
 		assertNotNull(expression);
 		expression = createWithDecimalCriteria();
 		assertNotNull(expression);
+        expression = createWithKualiDecimalCriteria();
+        assertNotNull(expression);
+        expression = createWithKualiPercentCriteria();
+        assertNotNull(expression);
 		expression = createWithIntegerCriteria();
 		assertNotNull(expression);
 		expression = createWithDateTimeCriteria();
@@ -99,6 +105,10 @@ public class NotInPredicateTest {
 		assertEquals("stringValues.path", expression.getPropertyPath());
 		expression = createWithDecimalCriteria();
 		assertEquals("decimalValues.path", expression.getPropertyPath());
+        expression = createWithKualiDecimalCriteria();
+        assertEquals("kualiDecimalValues.path", expression.getPropertyPath());
+        expression = createWithKualiPercentCriteria();
+        assertEquals("kualiPercentValues.path", expression.getPropertyPath());
 		expression = createWithIntegerCriteria();
 		assertEquals("integerValues.path", expression.getPropertyPath());
 		expression = createWithDateTimeCriteria();
@@ -121,6 +131,18 @@ public class NotInPredicateTest {
 		for (CriteriaValue<?> value : expression.getValues()) {
 			assertTrue("Expression should be CriteriaDecimalValue", value instanceof CriteriaDecimalValue);
 		}
+
+        expression = createWithKualiDecimalCriteria();
+        assertEquals(3, expression.getValues().size());
+        for (CriteriaValue<?> value : expression.getValues()) {
+            assertTrue("Expression should be CriteriaDecimalValue", value instanceof CriteriaKualiDecimalValue);
+        }
+
+        expression = createWithKualiPercentCriteria();
+        assertEquals(3, expression.getValues().size());
+        for (CriteriaValue<?> value : expression.getValues()) {
+            assertTrue("Expression should be CriteriaKualiPercentValue", value instanceof CriteriaKualiPercentValue);
+        }
 		
 		expression = createWithIntegerCriteria();
 		assertEquals(5, expression.getValues().size());
@@ -146,8 +168,14 @@ public class NotInPredicateTest {
 		
 		expression = createWithDecimalCriteria();
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, DECIMAL_XML, NotInPredicate.class);
-		
-		expression = createWithIntegerCriteria();
+
+        expression = createWithKualiDecimalCriteria();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, KUALI_DECIMAL_XML, NotInPredicate.class);
+
+        expression = createWithKualiPercentCriteria();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, KUALI_PERCENT_XML, NotInPredicate.class);
+
+        expression = createWithIntegerCriteria();
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(expression, INTEGER_XML, NotInPredicate.class);
 		
 		expression = createWithDateTimeCriteria();
@@ -169,7 +197,22 @@ public class NotInPredicateTest {
 		valueList.add(new CriteriaDecimalValue(2.5));
 		return new NotInPredicate("decimalValues.path", valueList);
 	}
-	
+
+    private static NotInPredicate createWithKualiDecimalCriteria() {
+        Set<CriteriaKualiDecimalValue> valueList = new HashSet<CriteriaKualiDecimalValue>();
+        valueList.add(new CriteriaKualiDecimalValue(2.50));
+        valueList.add(new CriteriaKualiDecimalValue(2.60));
+        valueList.add(new CriteriaKualiDecimalValue(2.70));
+        return new NotInPredicate("kualiDecimalValues.path", valueList);
+    }
+
+    private static NotInPredicate createWithKualiPercentCriteria() {
+        Set<CriteriaKualiPercentValue> valueList = new HashSet<CriteriaKualiPercentValue>();
+        valueList.add(new CriteriaKualiPercentValue(25.00));
+        valueList.add(new CriteriaKualiPercentValue(26));
+        valueList.add(new CriteriaKualiPercentValue(27.00));
+        return new NotInPredicate("kualiPercentValues.path", valueList);
+    }
 	private static NotInPredicate createWithIntegerCriteria() {
 		Set<CriteriaIntegerValue> valueList = new HashSet<CriteriaIntegerValue>();
 		valueList.add(new CriteriaIntegerValue(1));

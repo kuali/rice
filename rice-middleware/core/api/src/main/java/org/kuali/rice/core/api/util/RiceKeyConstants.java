@@ -28,6 +28,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_REQUIRED = "error.required";
     public static final String ERROR_REQUIRED_FOR_US = "error.requiredForUs";
     public static final String ERROR_DATE = "error.invalidDate";
+    public static final String ERROR_TIME = "error.invalidTime";
     public static final String ERROR_DATE_TIME = "error.invalidDateTime";
     public static final String ERROR_NUMBER = "error.invalidNumber";
     public static final String ERROR_BOOLEAN = "error.invalidBoolean";
@@ -168,6 +169,7 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
     public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
+    public static final String MESSAGE_RECALL_NOT_SUPPORTED= "message.recall.not.supported";
 
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ALL = "lookup.results.found.display.all";
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ONE = "lookup.results.found.display.one";

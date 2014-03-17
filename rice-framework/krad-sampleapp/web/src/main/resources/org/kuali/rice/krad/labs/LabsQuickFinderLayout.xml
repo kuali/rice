@@ -1,0 +1,142 @@
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-QuickFinderLayout" parent="Uif-FormView" p:instructionalText="View for testing page form">
+    <property name="headerText" value="QuickFinder layout"/>
+    <property name="items">
+      <list>
+        <ref bean="Page-QuickFinderLayout"/>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"></bean>
+    </property>
+  </bean>
+
+
+  <bean parent="Uif-Page" id="Page-QuickFinderLayout">
+    <property name="items">
+      <list>
+        <bean id="Demo-QuickFinderLayout-Example1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Input Field">
+                <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:inputField12"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="checkboxesField1" p:label="Vertical Checkbox Group Control"
+                    p:width="auto">
+                <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+                <property name="control">
+                  <bean parent="Uif-VerticalCheckboxesControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <!-- uses this option finder class to supply options generated from the server -->
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                </property>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:checkboxesField1"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="checkboxesField2" p:label="Horizontal Checkbox Group Control"
+                    p:width="auto">
+                <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+                <property name="control">
+                  <bean parent="Uif-HorizontalCheckboxesControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <!-- uses this option finder class to supply options generated from the server -->
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                </property>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:checkboxesField2"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="inputField3" p:label="Vertical Radio Group Control"
+                    p:width="auto">
+                <property name="control">
+                  <bean parent="Uif-VerticalRadioControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                </property>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:inputField3"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Horizontal Radio Group Control"
+                    p:width="auto">
+                <property name="control">
+                  <bean parent="Uif-HorizontalRadioControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                </property>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:inputField4"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="inputField5" p:label="Textarea control">
+              <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+              <property name="control">
+                <bean parent="Uif-TextAreaControl"/>
+              </property>
+              <property name="quickfinder">
+                <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                      p:fieldConversions="number:inputField5"/>
+              </property>
+            </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="inputField6" p:label="Select control">
+                <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+                <property name="control">
+                  <bean parent="Uif-DropdownControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                </property>
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:inputField6"/>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

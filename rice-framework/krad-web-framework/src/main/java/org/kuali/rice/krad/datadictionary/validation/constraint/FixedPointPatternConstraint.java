@@ -129,7 +129,7 @@ public class FixedPointPatternConstraint extends ValidDataPatternConstraint {
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrNegative"));
             } else {
                 validationMessageParams.add(messageService.getMessageText(
-                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positive"));
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "positiveOrZero"));
             }
 
             validationMessageParams.add(Integer.toString(precision));

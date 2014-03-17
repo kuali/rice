@@ -343,15 +343,15 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
     }
 
     /**
-     * Returns a clone of the InquirableImpl.
+     * Creates a copy of this {@code InquirableImpl}.
      *
-     * @return InquirableImpl clone
+     * @return a copy of this {@code InquirableImpl}
      */
     public InquirableImpl copy() {
-        InquirableImpl inquirableImplCopy = new InquirableImpl();
+        InquirableImpl inquirableImplCopy = KRADUtils.createNewObjectFromClass(getClass());
 
-        if (this.dataObjectClass != null) {
-            inquirableImplCopy.dataObjectClass = this.dataObjectClass;
+        if (this.getDataObjectClass() != null) {
+            inquirableImplCopy.setDataObjectClass(this.getDataObjectClass());
         }
 
         if (this.getConfigurationService() != null) {

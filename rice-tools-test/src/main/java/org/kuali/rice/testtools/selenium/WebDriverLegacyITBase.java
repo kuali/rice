@@ -306,7 +306,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     /**
      * ^[\s\S]*valid[\s\S]*$
      */
-    public static final String REGEX_VALID = "^.*\\bvalid\\b.*$";
+    public static final String REGEX_VALID = "^[\\s\\S]*valid[\\s\\S]*$";
 
     /**
      * return selected
@@ -565,7 +565,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);
             WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
-            loginKradOrKns(driver, user, this);
+            loginKradOrKns(driver, getUserName(), this);
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 
@@ -840,6 +840,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void assertDocSearch(String docId, String docStatus) throws InterruptedException {
         docSearch(docId);
         waitForElementPresentByXpath(DOC_ID_XPATH_3);
+        jGrowl("Is doc status for docId: " + docId + " " + docStatus + "?");
         assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
     }
@@ -865,6 +866,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireEvent(field, "blur");
         Thread.sleep(500);
         assertAttributeClassRegexMatches(field, REGEX_ERROR);
+        clearTextByName(field);
     }
 
     protected void assertFocusTypeBlurError(String field, String[] errorInputs) throws InterruptedException {
@@ -881,6 +883,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         Thread.sleep(200);
         assertAttributeClassRegexMatches(field, REGEX_VALID);
         assertAttributeClassRegexDoesntMatch(field, REGEX_ERROR);
+        clearTextByName(field);
     }
 
     protected void assertFocusTypeBlurValid(String field, String[] validInputs) throws InterruptedException {
@@ -1021,6 +1024,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void blanketApproveCheck() throws InterruptedException {
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
+        checkForIncidentReport();
     }
 
     /**
@@ -1035,7 +1039,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
         Thread.sleep(2000);
-
+        checkForIncidentReport();
         blanketApproveAssert(docId);
     }
 
@@ -1501,6 +1505,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected List<WebElement> findElements(By by, WebElement element) {
+        if (element == null) {
+            checkForIncidentReport();
+            throw new AssertionError("element to findElements on for " + by.toString() + " is null in class " + this.getClass().toString());
+        }
         List<WebElement> found = element.findElements(by);
         return found;
     }
@@ -1965,7 +1973,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testCreateDocType() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
-        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
+        assertElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","submit button does not exist on the page");
 
         //waitForElementPresentByXpath(DOC_ID_XPATH);
         //String docId = findElement(By.xpath(DOC_ID_XPATH)).getText();
@@ -1986,6 +1994,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         //waitAndTypeByXpath("//input[@id='document.newMaintainableObject.actualNotificationFromAddress']", "NFA");
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']", "Label for " + docTypeName);
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']","default.htm?turl=WordDocuments%2Fdocumenttype.htm");
+        jGrowl("Click Submit button");
         waitAndClickByXpath("//*[@name='methodToCall.route' and @alt='submit']");
         checkForIncidentReport();
         waitForPageToLoad();
@@ -2360,21 +2369,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         blanketApproveTest(docId);
     }
 
-    protected void testLocationCampusBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String twoLetters = RandomStringUtils.randomAlphabetic(2);
-        waitAndTypeByName("document.documentHeader.documentDescription", "Validation Test Campus " + twoLetters);
-        assertBlanketApproveButtonsPresent();
-        waitAndTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName("document.newMaintainableObject.name", "Validation Test Campus" + AutomatedFunctionalTestUtils
-                .createUniqueDtsPlusTwoRandomChars());
-        waitAndTypeByName("document.newMaintainableObject.shortName", "VTC " + twoLetters);
-        selectByName("document.newMaintainableObject.campusTypeCode", "B - BOTH");
-        blanketApproveTest(docId);
-    }
-
     protected void testLocationCountryBlanketApprove() throws InterruptedException {
         selectFrameIframePortlet();
         String randomCode = searchForAvailableCode(2);
@@ -2390,7 +2384,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         finishBlanketApprovalTest(docId);
     }
 
-    private void finishBlanketApprovalTest(String docId) throws InterruptedException {
+    protected void finishBlanketApprovalTest(String docId) throws InterruptedException {
         assertBlanketApproveButtonsPresent();
         blanketApproveCheck();
         if (!hasDocError("same primary key already exists")) { // don't fail as to still have the same key after 25 sequential attempts we've created many today already
@@ -2534,93 +2528,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         params.add(parameterName);
 
         return params;
-    }
-
-    protected void testPeopleFlowBlanketApprove() throws Exception {
-        String docId = peopleFlowCreateNew();
-
-        waitAndClickButtonByText("blanket approve");
-        Thread.sleep(3000);
-        checkForIncidentReport();
-        jGrowl("Blanket Approve");
-        Thread.sleep(5000);
-
-        //Close the Doc
-        //findElement(By.id("uif-close")).click();
-        //Thread.sleep(3000);
-        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
-        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Document Search is " + docId + " present?");
-        selectFrameIframePortlet();
-        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Is doc status final?");
-        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
-        driver.switchTo().defaultContent();
-        findElement(By.name("imageField")).click();
-        Thread.sleep(5000);
-        // TODO open the document and verify data is as we expect.
-    }
-
-    protected void testPeopleFlowCreateNew() throws Exception {
-        String docId = peopleFlowCreateNew();
-
-        waitAndClickButtonByText("submit");
-        Thread.sleep(3000);
-        checkForDocError();
-        checkForIncidentReport();
-
-        //Close the Doc
-        //findElement(By.id("uif-close")).click();
-        //Thread.sleep(3000);
-        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
-        findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Document Search is " + docId + " present?");
-        selectFrameIframePortlet();
-        waitAndTypeByName("documentId", docId);
-        findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
-        Thread.sleep(5000);
-        jGrowl("Is doc status final?");
-        assertEquals(DOC_STATUS_FINAL, findElement(By.xpath("//table[@id='row']/tbody/tr/td[4]")).getText());
-        driver.switchTo().defaultContent();
-        findElement(By.name("imageField")).click();
-        Thread.sleep(5000);
-        // TODO open the document and verify data is as we expect.
-    }
-
-    private String peopleFlowCreateNew() throws InterruptedException {
-        selectFrameIframePortlet();
-
-        waitAndClickByLinkText("Create New");
-
-        //Save docId
-        waitForElementPresent("div[data-label='Document Number']");
-        String docId = getText("div[data-label='Document Number']");
-        assertTrue(docId != null);
-        jGrowlSticky("Doc Id is " + docId);
-
-        findElement(By.name("document.documentHeader.documentDescription")).clear();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
-        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
-        findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" +
-                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars());
-
-        jGrowl("Add Member kr");
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "kr");
-        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
-        Thread.sleep(3000);
-        checkForIncidentReport();
-
-        jGrowl("Add Member admin");
-        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
-        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
-        Thread.sleep(3000);
-        return docId;
     }
 
     protected void testTermLookupAssertions() throws Exception {
@@ -2866,7 +2773,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                         + " looking for "
                         + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
             try {
-                if (getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH).equals("SubCollection - (3 lines)"))
+                if (isElementPresentByXpath("//span[@class='uif-headerText-span' and contains(text(),'SubCollection - (3 lines)')]"))
                 {
                     break;
                 }
@@ -2875,9 +2782,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         }
 
         // verify that sub collection sizes are displayed as expected
-        assertEquals("SubCollection - (3 lines)", getText(SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH));
-        assertEquals("SubCollection - (2 lines)", getTextByXpath(
-                "//a[@id='subCollection1_line1_toggle']/span"));
+        waitForElementPresentByXpath("//section[@id='subCollection1_line0']/header/div/label/a/span[contains(text(),'SubCollection - (3 lines)')]]");
+        waitForElementPresentByXpath("//a[@id='subCollection1_line1_toggle']/span");
     }
 
     protected void testConfigurationTestView(String idPrefix) throws Exception {
@@ -3164,139 +3070,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertEquals(componentCode, getTextByXpath("//div[@class='tab-container']/table//span[@id='code.div']").trim());
         waitAndClickCloseWindow();
         switchToWindow("null");
-    }
-
-    /**
-     * Test the tooltip and external help on the page
-     */
-    protected void testPageHelp() throws Exception {
-        // test tooltip help
-        fireMouseOverEventByXpath("//a/span[@class='uif-headerText-span']");
-        waitForTextPresent("Sample text for section help - tooltip help");
-
-        // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
-        Thread.sleep(5000);
-        switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);
-        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
-    }
-
-    /**
-     * Test the tooltip help on the section and fields
-     */
-    protected void testTooltipHelp() throws Exception {
-        // verify that no tooltips are displayed initially
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
-        }
-
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-        }
-
-        // test tooltip help of section header
-        fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
-
-        // verify that no external help exist
-        assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
-
-        // test tooltip help of field with label to the left
-        fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
-
-        // test tooltip help of field with label to the right
-        fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
-
-        // test tooltip help of field with label to the top
-        fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-
-        // verify that standalone help with tooltip is not rendered
-        assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
-
-        // test tooltip help when it overrides a tooltip
-        fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
-        if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
-        }
-
-        // test tooltip help in conjunction with a focus event tooltip
-        fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
-        fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
-
-        // test tooltip help against a check box - help contains html
-        fireMouseOverEventByXpath("//label[@id='checkbox_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
-    }
-
-    /**
-     * Test the tooltip help on the sub-section and fields that are display only
-     */
-    protected void testDisplayOnlyTooltipHelp() throws Exception {
-
-        // test tooltip help of sub-section header
-        fireMouseOverEventByXpath("//span[contains(text(),'Display only fields')]");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for sub-section help')]"));
-
-        // test tooltip help of display only data field
-        fireMouseOverEventByXpath("//label[@for='display-field_control']");
-        waitForElementPresentByXpath("//td[contains(text(),'Sample text for read only field help')]");
-    }
-
-    /**
-     * Test the tooltip help on the section and fields with no content
-     */
-    protected void testMissingTooltipHelp() throws Exception {
-
-        // test tooltip help of section header
-        fireMouseOverEventByXpath("//div[@id='ConfigurationTestView-Help-Section2']/div");
-        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
-
-        // test tooltip help of field
-        fireMouseOverEventByXpath("//label[@id='missing-tooltip-help_label']");
-        assertFalse(isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-black' and @style='opacity: 0; top: 627px; left: 2px; position: absolute; display: block;']"));
     }
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
@@ -3628,23 +3401,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue("img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
                 isElementPresent("img[src*=\"error.png\"]"));
         passed();
-    }
-
-    /**
-     * Test the tooltip and external help on the view
-     */
-    protected void testViewHelp() throws Exception {
-        // test tooltip help
-        fireEvent("field102", "blur");
-        fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
-        waitForTextPresent("Sample text for field help - label left");
-        
-        // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
-        Thread.sleep(5000);
-        switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);
-        switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 
     /**

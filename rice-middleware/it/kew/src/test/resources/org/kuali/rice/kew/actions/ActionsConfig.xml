@@ -468,6 +468,7 @@
       <name>RecallTestOnlyAdhoc</name>
       <label>RecallTestOnlyAdhoc</label>
       <postProcessorName>org.kuali.rice.kew.actions.RecallActionTest$RecallTestPostProcessor</postProcessorName>
+      <docHandler>${application.url}</docHandler>
       <routePaths>
         <routePath>
           <start name="AdHoc"/>

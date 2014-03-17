@@ -100,6 +100,12 @@ public final class NaturalLanguageUsageBoServiceImplGenTest {
         }
     }
 
+    @Test
+    public void test_createNaturalLanguageUsageGeneratedId() {
+        NaturalLanguageUsage def = NaturalLanguageUsageGenTest.buildFullNaturalLanguageUsageNoId();
+        naturalLanguageUsage = naturalLanguageUsageBoServiceImpl.createNaturalLanguageUsage(def);
+    }
+
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void test_createNaturalLanguageUsage_null_fail() {
         naturalLanguageUsageBoServiceImpl.createNaturalLanguageUsage(null);

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
-import java.beans.PropertyEditor;
-import java.util.Collections;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+
+import java.beans.PropertyEditor;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Base implementation class for attribute metadata for data object classes.
@@ -390,7 +390,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		this.sensitive = sensitive;
 	}
 
-	@Override
+    @Override
 	public Set<UifDisplayHint> getDisplayHints() {
 		if (displayHints != null) {
 			return displayHints;

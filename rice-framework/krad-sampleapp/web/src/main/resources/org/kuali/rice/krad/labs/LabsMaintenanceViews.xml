@@ -96,4 +96,8 @@
     </property>
   </bean>
 
+  <bean id="LabsMaintenance-DifferentOpenCloseTabStates" parent="LabsMaintenance-DefaultView">
+    <property name="viewName" value="LabsMaintenance-DifferentOpenCloseTabStates"/>
+  </bean>
+
 </beans>

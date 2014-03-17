@@ -1,43 +1,61 @@
 
+// Core bootstrap
+@import "../../bootstrap/stylesheets/bootstrap.less";
 
+//---------------- UIF --------------------
 
-@import "variables.less"; // Modify this for custom colors, font-sizes, etc
-@import "mixins.less";
-
-//----------------from bootstrap base library--------------------
-
-@import "normalize.less";
-@import "../../bootstrap/stylesheets/buttons.less";
-@import "../../bootstrap/stylesheets/tables.less";
-@import "../../bootstrap/stylesheets/alerts.less";
-@import "../../bootstrap/stylesheets/forms.less";
-@import "../../bootstrap/stylesheets/scaffolding.less";
-@import "../../bootstrap/stylesheets/type.less";
-@import "../../bootstrap/stylesheets/panels.less";
-
-
-
-
-
-
-
-  //----------------from theme library--------------------
 @import "uif-base.less";
 
-@import "uif-pagelayout.less";
-@import "uif-fontface.less";
-@import "uif-footer.less";
-@import "uif-navigation.less";
-@import "uif-unifiedViewHeader.less"; //Unified Header - uses current uif styles
-@import "bs-unifiedViewHeader.less";  //Unified Header - uses prototype styles  (eventually to replace uif styles)
-@import "uif-applicationHeader.less"; //Application header - uses prototype styles
-@import "uif-portaltoolbar.less";
-@import "uif-actionBar.less";
-@import "uif-documentInfo.less";
-@import "uif-tabMenu.less";
-@import "uif-stackedCollectionLayout.less";
-@import "uif-buttons.less";
+@import "typography/uif-fontface.less";
+@import "typography/uif-header.less";
+@import "typography/uif-lists.less";
 
-@import "icons.less"; //font based icon set
+@import "helpCallouts/uif-helpMessaging.less";
+@import "helpCallouts/uif-autocomplete.less";
+@import "helpCallouts/uif-timeline.less";
+//@import "helpCallouts/uif-tooltips.less";
+
+@import "buttons/uif-buttons.less";
+
+@import "forms/uif-message.less";
+@import "forms/uif-validationMessage.less";
+
+@import "forms/uif-datepicker.less";
+
+@import "pageLayout/uif-pagelayout.less";
+@import "pageLayout/uif-gridLayout.less";
+@import "pageLayout/uif-boxLayout.less";
+@import "pageLayout/uif-viewStructure.less";
+@import "pageLayout/uif-actionBar.less";
+@import "pageLayout/uif-footer.less";
+@import "pageLayout/uif-unifiedViewHeader.less";
+@import "pageLayout/uif-cssGridLayout.less";
+
+@import "tabularData/uif-tableCollection.less";
+@import "tabularData/uif-dataTable.less";
+@import "tabularData/uif-rowDetails.less";
+@import "tabularData/uif-stackedCollections.less";
+
+@import "iconography/uif-icons.less";
+
+@import "navigation/uif-applicationHeader.less";
+@import "navigation/uif-documentInfo.less";
+@import "navigation/uif-portaltoolbar.less";
+@import "navigation/uif-breadcrumbs.less";
+@import "navigation/uif-navigation.less";
+//@import "navigation/uif-navigation-old.less";        //appears to be not used??
+@import "navigation/uif-sticky.less";
+@import "navigation/uif-pagination.less";
+
+@import "contentSections/uif-stackedCollection.less";
+@import "contentSections/uif-stackedCollectionLayout.less";
+@import "contentSections/uif-syntaxHighlighter.less";
+@import "contentSections/uif-tabGroup.less";
+@import "contentSections/uif-modal.less";
 
 
+
+
+@import "forms/uif-formControl.less";
+
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc

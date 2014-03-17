@@ -885,6 +885,10 @@ public final class ObjectPropertyUtils {
          * @param beanClass The bean class.
          */
         private ObjectPropertyMetadata(Class<?> beanClass) {
+            if (beanClass == null) {
+                throw new RuntimeException("Class to retrieve property from was null");
+            }
+
             BeanInfo beanInfo;
             try {
                 beanInfo = Introspector.getBeanInfo(beanClass);

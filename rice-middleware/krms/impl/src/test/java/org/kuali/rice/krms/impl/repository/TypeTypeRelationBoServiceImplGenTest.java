@@ -121,4 +121,8 @@ public final class TypeTypeRelationBoServiceImplGenTest {
         typeTypeRelation = typeTypeRelationBoServiceImpl.createTypeTypeRelation(def);
     }
 
+    void createTypeTypeRelationGeneratedId(KrmsTypeDefinition fromType, KrmsTypeDefinition toType) {
+        TypeTypeRelation def = TypeTypeRelationGenTest.buildFullFKTypeTypeRelationNoId(fromType, toType);
+        typeTypeRelation = typeTypeRelationBoServiceImpl.createTypeTypeRelation(def);
+    }
 }

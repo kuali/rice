@@ -1,0 +1,72 @@
+/***** Syntax Highlighter *********************************************************************/
+div.uif-syntaxHighlighter {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.uif-syntaxHighlighter li {
+  list-style: decimal outside none;
+}
+.uif-syntaxHighlighter pre {
+  background-color: #F5F5F5;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px 4px 4px 4px;
+  display: block;
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0 0 10px;
+  padding: 9.5px;
+  width: 2000px;
+}
+.uif-syntaxHighlighter pre.prettyprint {
+  margin-bottom: 0;
+}
+.uif-syntaxHighlighter pre code {
+  background-color: transparent;
+  border: 0 none;
+  color: inherit;
+  padding: 0;
+}
+.uif-syntaxHighlighter .prettyprint.linenums {
+  box-shadow: 40px 0 0 #FBFBFC inset, 41px 0 0 #ECECF0 inset;
+}
+.uif-syntaxHighlighter ol.linenums {
+  margin: 0;
+}
+.uif-syntaxHighlighter ol.linenums li {
+  color: #BEBEC5;
+  line-height: 20px;
+  padding-left: 12px;
+  text-shadow: 0 1px 0 #FFFFFF;
+}
+.uif-syntaxHighlighter .prettyprint.linenums {
+  box-shadow: 40px 0 0 #F6F6F6 inset, 41px 0 0 #E5E5E5 inset;
+}
+ol.linenums li:nth-of-type(2n+1) {
+  background: none repeat scroll 0 0 #FFFFFF;
+}
+
+
+.uif-syntaxHighlighter .uif-copyPaste {
+  background: url("../images/icon-copypaste.png") repeat scroll 0 0 #FFFFFF;
+  cursor: pointer;
+  display: none;
+  height: 26px;
+  overflow: hidden;
+  position: absolute;
+  right: 18px;
+  width: 26px;
+}
+.uif-syntaxHighlighter:hover .uif-copyPaste {
+  display: block;
+}
+
+
+.prettyprint {
+  font-size: 0.8em;
+}
+.prettyprint {
+  background-color: #F6F6F6;
+  border: 1px solid #CCCCCC;
+  padding-right: 0 !important;
+}

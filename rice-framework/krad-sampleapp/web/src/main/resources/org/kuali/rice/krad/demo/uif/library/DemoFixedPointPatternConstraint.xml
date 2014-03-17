@@ -40,7 +40,8 @@
       <list>
         <!-- ex:Demo-FixedPointPatternConstraint-Example1 start-->
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"
-              p:constraintText="Maximum 5 numbers total, minimum 2 decimal places (3 max before decimal)">
+              p:constraintText="Must be a non-negative fixed point number, with no more than 5 total digits and 2
+              digits to the right of the decimal point">
           <property name="validCharactersConstraint">
             <bean parent="FixedPointPatternConstraint" p:precision="5"
                   p:scale="2"/>

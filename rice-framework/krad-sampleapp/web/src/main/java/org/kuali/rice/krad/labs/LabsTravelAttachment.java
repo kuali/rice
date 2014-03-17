@@ -31,14 +31,17 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Entity
-@Table(name="TRV_ATT_SAMPLE")
+@Table(name="trv_att_sample")
 @UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
 public class LabsTravelAttachment extends DataObjectBase implements PersistableAttachment, Serializable {
 
@@ -49,7 +52,17 @@ public class LabsTravelAttachment extends DataObjectBase implements PersistableA
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String id;
 
-    @Column(name="DESCRIPTION",length=4000)
+    @ManyToOne
+    @JoinColumn(name = "ATT_GRP_NUM" ,insertable=false, updatable=false)
+    LabsTravelAttachmentGroup labsTravelAttachmentGroup;
+
+    @Id
+    @Column(name = "ATT_GRP_NUM",length = 10)
+    @Label("Travel Attachment Group Number")
+    @NotNull
+    private String travelAttachmentGroupNumber;
+
+    @Column(name="DESCRIPTION",length=100)
     @Label("Description")
     @Description("Descriptor for the attachment")
     @UifDisplayHints({
@@ -142,5 +155,21 @@ public class LabsTravelAttachment extends DataObjectBase implements PersistableA
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public LabsTravelAttachmentGroup getLabsTravelAttachmentGroup() {
+        return labsTravelAttachmentGroup;
+    }
+
+    public void setLabsTravelAttachmentGroup(LabsTravelAttachmentGroup labsTravelAttachmentGroup) {
+        this.labsTravelAttachmentGroup = labsTravelAttachmentGroup;
+    }
+
+    public String getTravelAttachmentGroupNumber() {
+        return travelAttachmentGroupNumber;
+    }
+
+    public void setTravelAttachmentGroupNumber(String travelAttachmentGroupNumber) {
+        this.travelAttachmentGroupNumber = travelAttachmentGroupNumber;
     }
 }

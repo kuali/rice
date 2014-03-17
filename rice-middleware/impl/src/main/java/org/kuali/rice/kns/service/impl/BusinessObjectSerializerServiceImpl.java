@@ -19,6 +19,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.util.documentserlializer.MaintenanceDocumentPropertySerializibilityEvaluator;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.krad.service.BusinessObjectSerializerService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.impl.SerializerServiceBase;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
@@ -27,7 +31,9 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BusinessObjectSerializerServiceImpl extends org.kuali.rice.krad.service.impl.BusinessObjectSerializerServiceImpl {
+public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
+
+    private DocumentDictionaryService documentDictionaryService;
 
     @Override
     public PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object businessObject) {
@@ -52,5 +58,16 @@ public class BusinessObjectSerializerServiceImpl extends org.kuali.rice.krad.ser
         }
 
         return evaluator;
+    }
+
+    protected DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
+    }
+
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
     }
 }

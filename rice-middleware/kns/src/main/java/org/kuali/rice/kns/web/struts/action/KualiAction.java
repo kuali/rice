@@ -424,9 +424,8 @@ public abstract class KualiAction extends DispatchAction {
         }
         
         if (value != null && boClass != null && getBusinessObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(boClass, parameterName)) {
-            if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                value = getEncryptionService().encrypt(value) + EncryptionService.ENCRYPTION_POST_PREFIX;
-            }
+            LOG.warn("field name " + parameterName + " is a secure value and not returned in parameter result value");
+            value = null;
         }
         return value;
     }

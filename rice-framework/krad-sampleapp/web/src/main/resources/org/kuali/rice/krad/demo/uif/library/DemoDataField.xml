@@ -29,6 +29,7 @@
       <list>
         <ref bean="Demo-DataField-Example1"/>
         <ref bean="Demo-DataField-Example4"/>
+        <ref bean="Demo-DataField-Example12"/>
         <ref bean="Demo-DataField-Example5"/>
         <ref bean="Demo-DataField-Example6"/>
         <ref bean="Demo-DataField-Example7"/>
@@ -171,6 +172,18 @@
           </property>
         </bean>
         <!-- ex:Demo-DataField-Example11 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default Value Finder Class -->
+  <bean id="Demo-DataField-Example12" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DataField-Example12 start-->
+        <bean parent="Uif-DataField" p:label="DataField 2" p:propertyName="dataField4"
+              p:defaultValueFinderClass="org.kuali.rice.krad.demo.uif.library.DemoValuesFinder"/>
+        <!-- ex:Demo-DataField-Example12 end-->
       </list>
     </property>
   </bean>

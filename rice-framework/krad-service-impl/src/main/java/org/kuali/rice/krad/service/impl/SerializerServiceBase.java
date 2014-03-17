@@ -15,14 +15,17 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.Transient;
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.converters.collections.CollectionConverter;
+import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
+import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -36,17 +39,10 @@ import org.kuali.rice.krad.util.documentserializer.SerializationState;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.AutoPopulatingList;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.collections.CollectionConverter;
-import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.mapper.Mapper;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
@@ -82,6 +78,51 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
         xstream.registerConverter(new DateTimeConverter());
     }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
+     */
+    public String serializeBusinessObjectToXml(Object businessObject) {
+        PropertySerializabilityEvaluator propertySerizabilityEvaluator =
+                getPropertySerizabilityEvaluator(businessObject);
+        evaluators.set(propertySerizabilityEvaluator);
+        SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
+        serializationStates.set(state);
+
+        //Object xmlWrapper = null;//wrapDocumentWithMetadata(document);
+        String xml;
+        if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
+            xml = getXmlObjectSerializerService().toXml(businessObject);
+        } else {
+            xml = xstream.toXML(businessObject);
+        }
+
+        evaluators.set(null);
+        serializationStates.set(null);
+        return xml;
+    }
+
+    /**
+     * Method called by the ProxyAndStateAwareJavaReflectionProvider during serialization to determine if a field
+     * should be omitted from the serialized form.
+     *
+     * <p>This is a short circuit check that will avoid more expensive calls in to the PropertySerializabilityEvaluator
+     * if it returns true.</p>
+     *
+     * @param field the field
+     * @return true if the field should be omitted
+     */
+    protected boolean ignoreField(Field field) {
+        return false;
+    }
+
+    /**
+     * Get the appropriate {@link PropertySerializabilityEvaluator} for the given dataObject.
+     *
+     * @param dataObject the data object
+     * @return the evaluator
+     */
+    protected abstract PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object dataObject);
 
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
@@ -155,15 +196,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
             }
         }
 
-        protected boolean ignoreField(Field field) {
-        	// Ignore @Transient annotated fields when saving to XML
-        	Annotation transientAnnotation = field.getAnnotation(Transient.class);
-        	if ( transientAnnotation != null ) {
-        		return true;
-        	}
-            return false;
-        }
-
         protected void initializeField(Object object, Field field) {
         }
     }
@@ -180,7 +212,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
 
     }
-
 
     protected XmlObjectSerializerService getXmlObjectSerializerService() {
         return this.xmlObjectSerializerService;

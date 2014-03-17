@@ -22,12 +22,12 @@ import org.junit.Test;
  */
 public class PeopleFlowCreateNewNavAft extends PeopleFlowCreateNewAftBase {
 
-//    @Test
+    @Test
     public void testPeopleFlowBlanketApproveNav() throws Exception {
         testPeopleFlowBlanketApproveNav(this);
     }
 
-//    @Test
+    @Test
     public void testPeopleFlowCreateNewNav() throws Exception {
         testPeopleFlowCreateNew();
     }

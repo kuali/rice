@@ -538,7 +538,7 @@
     <keyLabelPair-bean key="2" value="Select 2"/>
     <keyLabelPair-bean key="3" value="Select 3"/>
     <keyLabelPair-bean key="4" value="Select 4"/>
-    <keyLabelPair-bean key="4" value="Select 5"/>
+    <keyLabelPair-bean key="5" value="Select 5"/>
   </util:list>
   <verticalBoxSection-bean id="UifCompView-OtherControls">
     <items>

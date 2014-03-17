@@ -27,7 +27,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -85,7 +84,11 @@ public class Label extends ContentElementBase {
      * The following finalization is performed:
      *
      * <ul>
+     * <li>Set the requiredIndicator</li>
      * <li>If label text is blank, set render to false for field</li>
+     * <li>Set the label text on the label field from the field's label property</li>
+     * <li>Set the render property on the label's required message field if this field is marked as required</li>
+     * </ul>
      *
      * {@inheritDoc}
      */
@@ -102,9 +105,12 @@ public class Label extends ContentElementBase {
 
         if (requiredIndicator != null && !requiredIndicator.equals(defaultRequiredIndicator)) {
             this.addDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, requiredIndicator);
-        }
-        else if (requiredIndicator == null) {
+        } else if (requiredIndicator == null) {
             requiredIndicator = defaultRequiredIndicator;
+        }
+
+        if ((getRequired() != null) && getRequired().booleanValue()) {
+            setRenderRequiredIndicator(true);
         }
     }
 

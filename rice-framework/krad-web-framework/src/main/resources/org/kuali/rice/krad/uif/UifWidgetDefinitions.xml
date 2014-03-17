@@ -211,8 +211,8 @@
         scope="prototype" parent="Uif-WidgetBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/disclosure.ftl"/>
     <property name="templateName" value="uif_disclosure"/>
-    <property name="collapsedIconClass" value="icon-angle-right"/>
-    <property name="expandedIconClass" value="icon-angle-down"/>
+    <property name="collapsedIconClass" value="icon-caret-right"/>
+    <property name="expandedIconClass" value="icon-caret-down"/>
     <property name="animationSpeed" value="500"/>
     <property name="defaultOpen" value="true"/>
   </bean>

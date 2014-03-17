@@ -104,7 +104,15 @@
               p:instructionalText="Click the quickfinder to select a value, TravelAccount number will be returned">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
-                  p:fieldConversions="number:inputField7"/>
+                  p:fieldConversions="number:inputField7">
+              <property name="quickfinderAction">
+                <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
+                  <property name="actionImage">
+                    <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}custom_searchicon.png"/>
+                  </property>
+                </bean>
+               </property>
+            </bean>
           </property>
         </bean>
         <!-- ex:Demo-InputField-Example7 end-->

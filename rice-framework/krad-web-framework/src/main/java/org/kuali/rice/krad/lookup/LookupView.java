@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
@@ -26,6 +27,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -41,12 +43,15 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.FormView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -109,6 +114,8 @@ public class LookupView extends FormView {
 
     private boolean autoAddActiveCriteria;
 
+    private List<String> additionalSecurePropertyNames;
+
     public LookupView() {
         super();
 
@@ -119,6 +126,8 @@ public class LookupView extends FormView {
         renderLookupCriteria = true;
         renderCriteriaActions = true;
         renderResultActions = true;
+
+        additionalSecurePropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -360,7 +369,12 @@ public class LookupView extends FormView {
      * @see LookupView#rangedToMessage
      */
     protected FieldGroup createDateRangeFieldGroup(LookupInputField toDate) {
-        FieldGroup rangeFieldGroup = ComponentUtils.copy(getRangeFieldGroupPrototype(), toDate.getId());
+        // Generate an ID when the "to date" field is out of the normal lifecycle flow
+        if (toDate.getId() == null) {
+            toDate.setId(AssignIdsTask.generateId(toDate, ViewLifecycle.getView()));
+        }
+
+        FieldGroup rangeFieldGroup = ComponentUtils.copy(getRangeFieldGroupPrototype());
 
         // Copy some properties from the "to date" field to the field group
         rangeFieldGroup.setFieldLabel(ComponentUtils.copy(toDate.getFieldLabel()));
@@ -809,5 +823,42 @@ public class LookupView extends FormView {
      */
     public void setAutoAddActiveCriteria(boolean autoAddActiveCriteria) {
         this.autoAddActiveCriteria = autoAddActiveCriteria;
+    }
+
+    /**
+     * List of secure property names that are in addition to the
+     * {@link org.kuali.rice.krad.uif.component.ComponentSecurity} or
+     * {@link org.kuali.rice.krad.datadictionary.AttributeSecurity} attributes.
+     *
+     * @return list of secure property names
+     */
+    @BeanTagAttribute(name = "additionalSecurePropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getAdditionalSecurePropertyNames() {
+        return additionalSecurePropertyNames;
+    }
+
+    /**
+     * @see LookupView#getAdditionalSecurePropertyNames()
+     */
+    public void setAdditionalSecurePropertyNames(List<String> additionalSecurePropertyNames) {
+        this.additionalSecurePropertyNames = additionalSecurePropertyNames;
+    }
+
+    /**
+     * Clones the {@code LookupView} with a deep copy.
+     *
+     * @return a clone of the current {@code LookupView}
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     */
+    @Override
+    public LookupView clone() throws CloneNotSupportedException {
+        LookupView lookupViewCopy = (LookupView) super.clone();
+
+        if (getViewHelperService() != null) {
+            lookupViewCopy.setViewHelperService(((LookupableImpl) getViewHelperService()).copy());
+        }
+
+        return lookupViewCopy;
     }
 }

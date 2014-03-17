@@ -39,6 +39,7 @@ public class LabsInquiryCollectionOfInactivaTablesAft extends LabsInquiryBase {
     }
 
     protected void testInquiryCollectionOfInactivaTables() throws InterruptedException {
+        assertTextNotPresent("No records found for the given parameters.");
     	waitAndClickByLinkText("Link to Inquiry with a collection of inactivatable elements");
         String[][] lightBoxLabeledText = {{"Id:", "10001"},
                 {"Company Name:", "AAA Travel"},

@@ -39,9 +39,10 @@
   <param name="ksb.url">${rice.server.url}/ksb</param>
   <param name="ken.url">${rice.server.url}/ken</param>
 
+  <param name="project.home">${external.config.home}/${project.artifactId}</param>
+  <param name="version">${project.name} :: ${project.version} :: #${env.BUILD_NUMBER} :: ${kuali.build.timestamp}</param>
+
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
-  <param name="project.home">${external.config.home}/${project.artifactId}</param>
-  <param name="version">${project.name} :: ${project.version} :: #${env.BUILD_NUMBER} :: ${kuali.build.timestamp}</param>
 </config>

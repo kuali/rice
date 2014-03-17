@@ -3284,11 +3284,11 @@ public class QueryUtils {
       on the image element.</para>
     <para>Uif-PrimaryActionButton – Action component that is configured to render a button. The
       button element can include text (the label) along with an image. This bean adds the CSS style
-      'uif-primaryActionButton' on the button element.</para>
+      'btn' and 'btn-primary' on the button element.</para>
     <para>Uif-SecondaryActionButton – Action component that is configured to render a button. This
-      bean sets the CSS style 'uif-secondaryActionButton' on the button element.</para>
+      bean sets the CSS style 'btn' and 'btn-default' on the button element.</para>
     <para>Uif-PrimaryActionButton-Small – Action component that is configured to render a button.
-      This bean sets the CSS style 'uif-primaryActionButton' and 'uif-smallActionButton' on the
+      This bean sets the CSS style 'btn', 'btn-default' and 'btn-xs' on the
       button element.</para>
     <para>Uif-SecondaryActionButton-Small – Action component that is configured to render a button.
       This bean sets the CSS style 'uif-secondaryActionButton' and 'uif-smallActionButton' on the

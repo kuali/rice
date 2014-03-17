@@ -71,6 +71,5 @@ public class LabsValidationRegexAft extends LabsKitchenSinkBase {
         assertFocusTypeBlurError("field66","sdfa");
         assertFocusTypeBlurError("field67","1234-a");
         assertFocusTypeBlurError("field68","4.a");
-        assertFocusTypeBlurError("field67","");
     }
 }

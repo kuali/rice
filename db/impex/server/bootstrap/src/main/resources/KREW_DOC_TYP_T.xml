@@ -253,7 +253,17 @@
         DOC_TYP_NM="TravelAccountTypeMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Account Type MaintenanceDocument"
-        OBJ_ID="dbc17810-f056-4c95-9054-a5b12ddf5cb5" PARNT_ID="2681"
+        OBJ_ID="e832ad9a-0301-49e6-9fbd-42d7cf966629" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a New Travel Attachment Group Sample Maintenance Document"
+        DOC_TYP_ID="3011"
+        DOC_TYP_NM="TravelAttachmentGroupSampleMaintenanceDocument"
+        DOC_TYP_VER_NBR="0" GRP_ID="1"
+        LBL="Travel Attachment Group Sample Maintenance Document"
+        OBJ_ID="61e02c8e-2028-48f3-9c27-adfce82d8309" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
 </dataset>

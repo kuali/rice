@@ -122,6 +122,7 @@
                            ${readOnlyDisplay}
                        </#if>
                    </span>
+
                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
                        <div class="input-group inlineBlock">
                    </#if>
@@ -145,12 +146,12 @@
                    </#if>
                 <#else>
 
+                    <#-- render field instructional text -->
+                    <@krad.template component=field.instructionalMessage/>
+
                     <#if field.postInputAddons?? || field.renderInputAddonGroup>
                         <div class="input-group">
                     </#if>
-
-                    <#-- render field instructional text -->
-                    <@krad.template component=field.instructionalMessage/>
 
                     <#-- render control for input -->
                     <@krad.template component=field.control field=field/>

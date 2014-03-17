@@ -1387,8 +1387,6 @@
     <inspection_tool class="LocalCanBeFinal" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="REPORT_VARIABLES" value="true" />
       <option name="REPORT_PARAMETERS" value="true" />
-      <option name="REPORT_CATCH_PARAMETERS" value="true" />
-      <option name="REPORT_FOREACH_PARAMETERS" value="true" />
     </inspection_tool>
     <inspection_tool class="LocalVariableHidingMemberVariable" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="m_ignoreInvisibleFields" value="true" />

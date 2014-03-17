@@ -62,7 +62,6 @@
           <property name="duplicateLinePropertyNames">
             <list>
               <value>subAccount</value>
-              <value>subAccountName</value>
             </list>
           </property>
           <property name="lineActions">

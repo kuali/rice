@@ -41,26 +41,46 @@ public class DemoControlSpinnerAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryControlSpinnerDefault() throws Exception {
-        assertElementPresentByXpath("//input[@name='inputField1' and @size='10']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/a[@tabindex='-1']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/input");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/a[contains(@class,'ui-spinner-up')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/a[contains(@class,'ui-spinner-down')]");
+
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/input[@value='']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/a[contains(@class,'ui-spinner-up')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/input[@aria-valuenow='1']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/a[contains(@class,'ui-spinner-down')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example1']/span/input[@aria-valuenow='0']");
     }
     
     protected void testLibraryControlSpinnerCurrency() throws Exception {
         waitAndClickByLinkText("Currency option");
-        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/a[@tabindex='-1']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='25']");
+
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@value='5']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/a[contains(@class,'ui-spinner-up')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='30']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/a[contains(@class,'ui-spinner-down')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='5']");
     }
     
     protected void testLibraryControlSpinnerDecimal() throws Exception {
         waitAndClickByLinkText("Decimal option");
-        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/a[@tabindex='-1']");
+
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/input[@value='']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/a[contains(@class,'ui-spinner-up')]");
         assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/input[@aria-valuenow='0.01']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/a[contains(@class,'ui-spinner-down')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example3']/span/input[@aria-valuenow='0']");
     }
     
     protected void testLibraryControlSpinnerWidgetInput() throws Exception {
         waitAndClickByLinkText("Widget Input Only");
-        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/a[@tabindex='-1']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/input[@readonly='readonly']");
+
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/input[@value='']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/a[contains(@class,'ui-spinner-up')]");
         assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/input[@aria-valuenow='1']");
+        waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/a[contains(@class,'ui-spinner-down')]");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example4']/span/input[@aria-valuenow='0']");
     }
     
     @Test

@@ -1292,8 +1292,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             queryData.queryTerm = request.term;
             queryData.queryFieldId = queryFieldId;
 
+            //If no queryTerm, exit, onBlur event has been fired with no content in the field
+            if (queryData.queryTerm === '') {
+                return;
+            }
+
             for (var parameter in queryParameters) {
-                queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+                queryData['queryParameters.' + parameter] = coerceValue(queryParameters[parameter]);
             }
 
             jQuery.ajax({
@@ -1625,13 +1630,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
 
     var queryParamLength = 0;
     for (var parameter in queryParameters) {
-        queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
+        queryData['queryParameters.' + queryParameters[parameter]] = coerceValue(parameter);
         queryParamLength++;
     }
 
     if (queryParamLength === 0) {
         for (var parameter in queryMethodArgs) {
-            queryData['queryParameter.' + queryMethodArgs[parameter]] = coerceValue(parameter);
+            queryData['queryParameters.' + queryMethodArgs[parameter]] = coerceValue(parameter);
         }
     }
 

@@ -47,6 +47,7 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
 
         binder.registerCustomEditor(KualiPercent.class, new UifPercentageEditor());
 
+        binder.registerCustomEditor(java.sql.Time.class, new UifTimeEditor());
         binder.registerCustomEditor(java.sql.Date.class, new UifDateEditor());
         binder.registerCustomEditor(java.util.Date.class, new UifDateEditor());
         binder.registerCustomEditor(Timestamp.class, new UifTimestampEditor());

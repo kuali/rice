@@ -18,6 +18,7 @@ package edu.sampleu.admin;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

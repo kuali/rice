@@ -51,9 +51,9 @@
         </bean>
 				<bean parent="GenericTextField" p:progressiveRenderAndRefresh="true" p:maxLength="1" p:propertyName="field47" />
 				<bean parent="GenericTextField" p:progressiveRenderAndRefresh="true"
-          p:progressiveRender="field47 matches '^[aA]$'" p:propertyName="field48" />
+          p:progressiveRender="field47 ne null and field47 matches '^[aA]$'" p:propertyName="field48" />
 				<bean parent="GenericTextField" p:progressiveRenderAndRefresh="true"
-          p:progressiveRender="field47 matches '^[bB]$'" p:propertyName="field49" />
+          p:progressiveRender="field47 ne null and field47 matches '^[bB]$'" p:propertyName="field49" />
 			</list>
 		</property>
 	</bean>

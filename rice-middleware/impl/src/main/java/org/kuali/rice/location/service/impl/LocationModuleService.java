@@ -99,14 +99,17 @@ public class LocationModuleService extends ModuleServiceBase {
                         LocationConstants.PrimaryKeyConstants.CODE));
 
                 CountyBo countyBo = CountyBo.from(county);
-                // get referenced objects too
-                StateBo stateBo = StateBo.from(getStateService().getState(countyBo.getCountryCode(), countyBo.getStateCode()));
-                CountryBo countryBo = CountryBo.from(getCountryService().getCountry(countyBo.getCountryCode()));
 
-                countyBo.setState(stateBo);
-                countyBo.setCountry(countryBo);
+                if(countyBo !=null) {
+                    // get referenced objects too
+                    StateBo stateBo = StateBo.from(getStateService().getState(countyBo.getCountryCode(), countyBo.getStateCode()));
+                    CountryBo countryBo = CountryBo.from(getCountryService().getCountry(countyBo.getCountryCode()));
 
-                return (T) countyBo;
+                    countyBo.setState(stateBo);
+                    countyBo.setCountry(countryBo);
+
+                    return (T) countyBo;
+                }
             }
         } else if (PostalCodeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (isNonBlankValueForKey(fieldValues, LocationConstants.PrimaryKeyConstants.CODE)

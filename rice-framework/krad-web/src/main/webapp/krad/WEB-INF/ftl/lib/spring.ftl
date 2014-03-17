@@ -328,14 +328,16 @@
     <#local controlId="${id}_${option_index}">
     <#local isSelected = contains(status.actualValue?default([""]), option.key)>
     <span class="uif-tooltip">
-    <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
-    <#if option.message.richMessage>
-        <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
-    <#else>
-        <label for="${controlId}">${option.value!}</label>
-    </#if>
+        <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
+        <#if option.message.richMessage>
+            <label onclick="handleCheckboxLabelClick('${controlId}',event); return false;" for="${controlId}"><@krad.template component=option.message/></label>
+        <#else>
+            <label for="${controlId}">${option.value!}</label>
+        </#if>
     </span>
-    ${separator}
+        <#if option_has_next>
+            ${separator}
+        </#if>
     </#list>
     <input type="hidden" name="_${status.expression}" value="on"/>
     <#-- End Kuali enhancements and changes -->

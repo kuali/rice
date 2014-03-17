@@ -50,9 +50,15 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
     
     protected void testValidationRegexBasedConstraintsEmail() throws Exception {
         waitAndClickByLinkText("Email");
-        
-        //Scenario-1
-        assertFocusTypeBlurError("inputField2","s1!@f.xoh");
+
+        assertFocusTypeBlurValid("inputField2", "a@kuali.org");
+        assertFocusTypeBlurValid("inputField2", "aa@kuali.org");
+        assertFocusTypeBlurValid("inputField2", "a.a@kuali.org");
+        assertFocusTypeBlurValid("inputField2", "a.aa@kuali.org");
+        assertFocusTypeBlurValid("inputField2", "aa.a@kuali.org");
+        assertFocusTypeBlurValid("inputField2", "aa.aa@kuali.org");
+
+        assertFocusTypeBlurError("inputField2", "s1!@f.xoh");
     }
     
     protected void testValidationRegexBasedConstraintsUrl() throws Exception {

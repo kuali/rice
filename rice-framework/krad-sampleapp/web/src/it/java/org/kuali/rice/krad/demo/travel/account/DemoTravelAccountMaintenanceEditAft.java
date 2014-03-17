@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
@@ -82,16 +81,38 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountMaintenanceEdit() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
-        waitAndTypeByName(SUB_ACCOUNT_FIELD, "A1");
+
+        // Verify that adding a duplicate Sub Account is not allowed.
+        String subAccountDuplicate = "A";
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
+        waitAndClickButtonByText("add");
+        String errorMessage []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
+        assertTextPresent(errorMessage);
+
+        // Verify that adding a duplicate Sub Account and Sub Account Name is not allowed.
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account A");
+        waitAndClickButtonByText("add");
+        String errorMessage2 []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
+        assertTextPresent(errorMessage2);
+
+        // Add a new sub account
+        String subAccount = "Z1" + RandomStringUtils.randomAlphabetic(2);
+        waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccount);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']");
-        waitAndClickButtonByText("submit");
-        waitForElementPresentByXpath("//a[contains(text(),'A1')]");
+        waitAndClickButtonByText("add");
+        waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
+
         waitAndClickButtonByText("Save");
         waitForTextPresent("Document was successfully saved.");
-        waitAndClickButtonByText("blanket approve");
+        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("reload");
+        assertTextPresent("FINAL");
+
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
@@ -121,36 +142,70 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
     
     protected void testEditFiscalOfficer() throws Exception {
-    	waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer "+RandomStringUtils.randomAlphabetic(2));
-        clearTextByName("document.newMaintainableObject.dataObject.foId");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","eric");
-    	waitAndClickButtonByText("blanket approve");
-    	navigate();
-    	if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='eric']"))
-    	{
-    		jiraAwareFail("Fiscal Officer Not Changed");
-    	}
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']")) {
+            jiraAwareFail("Fiscal Officer at start of test is not fran");
+        }
+
+    	checkForRequiredFields();
+
+        changeFiscalOfficer("eric");
+
+        // change eric back to fran
+        changeFiscalOfficer("fran");
     }
 
-//    @Test
+    private void changeFiscalOfficer(String newUser) throws Exception {
+        waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer to " + newUser + " "  + RandomStringUtils.randomAlphabetic(2));
+        clearTextByName("document.newMaintainableObject.dataObject.foId");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
+        waitAndClickButtonByText("blanket approve");
+        navigate();
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
+            jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
+        }
+    }
+
+    private void checkForRequiredFields() throws Exception{
+    	waitForElementPresentByXpath("//label[contains(text(),'Description')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Name:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Type Code:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
+    	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
+        jGrowl("Verify required messages are displayed");
+    	waitAndClickButtonByText("submit");
+    	String requiredMessage []={"Description: Required"};
+    	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("Save");
+    	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("blanket approve");
+    	assertTextPresent(requiredMessage);
+    	waitAndClickButtonByText("add");
+    	String addRequiredMessage [] ={"Travel Sub Account Number: Required","Sub Account Name: Required"};
+    	assertTextPresent(addRequiredMessage);
+    	waitForElementPresentByXpath("//div[@data-label='Date Created']");
+    }
+
+    @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
@@ -159,6 +214,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     @Test
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
     	testEditFiscalOfficer();
+        passed();
     }
 
 }

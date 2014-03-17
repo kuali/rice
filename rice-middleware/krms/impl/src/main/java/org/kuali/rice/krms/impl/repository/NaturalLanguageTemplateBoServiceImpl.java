@@ -82,17 +82,30 @@ public final class NaturalLanguageTemplateBoServiceImpl implements NaturalLangua
 
     @Override
     public NaturalLanguageTemplate createNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate) {
-        incomingParamCheck(naturalLanguageTemplate , "naturalLanguageTemplate");
-        final String naturalLanguageTemplateIdKey = naturalLanguageTemplate.getId();
-        final NaturalLanguageTemplate existing = getNaturalLanguageTemplate(naturalLanguageTemplateIdKey);
+        incomingParamCheck(naturalLanguageTemplate, "naturalLanguageTemplate");
+        NaturalLanguageTemplateBo bo;
+        if (StringUtils.isNotBlank(naturalLanguageTemplate.getId())) {
+            final String naturalLanguageTemplateIdKey = naturalLanguageTemplate.getId();
+            final NaturalLanguageTemplate existing = getNaturalLanguageTemplate(naturalLanguageTemplateIdKey);
 
-        if (existing != null) {
-            throw new IllegalStateException("the NaturalLanguageTemplate to create already exists: " + naturalLanguageTemplate);
+            if (existing != null) {
+                throw new IllegalStateException(
+                        "the NaturalLanguageTemplate to create already exists: " + naturalLanguageTemplate);
+            }
+            bo = dataObjectService.save(from(naturalLanguageTemplate), PersistenceOption.FLUSH);
+        } else {
+            Map<String, String> attributes = new HashMap<String, String>(naturalLanguageTemplate.getAttributes());
+            bo = dataObjectService.save(from(naturalLanguageTemplate), PersistenceOption.FLUSH);
+
+            NaturalLanguageTemplate.Builder naturalLanguageTemplateBuilder = NaturalLanguageTemplate.Builder.create(
+                    bo.getLanguageCode(), bo.getNaturalLanguageUsageId(), bo.getTemplate(), bo.getTypeId());
+            naturalLanguageTemplateBuilder.setActive(bo.isActive());
+            naturalLanguageTemplateBuilder.setId(bo.getId());
+            naturalLanguageTemplateBuilder.setVersionNumber(bo.getVersionNumber());
+            naturalLanguageTemplateBuilder.setAttributes(attributes);
+            updateNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
         }
-
-        NaturalLanguageTemplateBo bo = dataObjectService.save(from(naturalLanguageTemplate), PersistenceOption.FLUSH);
-
-        return NaturalLanguageTemplateBo.to(bo);
+        return getNaturalLanguageTemplate(bo.getId());
     }
 
     @Override

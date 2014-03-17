@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -39,19 +40,12 @@ import java.util.List;
  */
 //@Transactional
 public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
-    /**
-     * Default date/time formats
-     */
-    private static final String STRING_TO_DATE_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
-    private static final String STRING_TO_TIMESTAMP_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
-    private static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy";
-    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy hh:mm a";
-    private static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd";
-    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd-HH-mm-ss-S";
 
 	protected String[] stringToDateFormats;
+    protected String[] stringToTimeFormats;
 	protected String[] stringToTimestampFormats;
 	protected String dateToStringFormatForUserInterface;
+    protected String timeToStringFormatForUserInterface;
 	protected String timestampToStringFormatForUserInterface;
 	protected String dateToStringFormatForFileName;
 	protected String timestampToStringFormatForFileName;
@@ -63,6 +57,13 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	public String toDateString(Date date) {
 		return toString(date, dateToStringFormatForUserInterface);
 	}
+
+    /**
+     * @see org.kuali.rice.core.api.datetime.DateTimeService#toTimeString(java.sql.Time)
+     */
+    public String toTimeString(Time time) {
+        return toString(time, timeToStringFormatForUserInterface);
+    }
 
 	/**
 	 * @see org.kuali.rice.core.api.datetime.DateTimeService#toDateTimeString(java.util.Date)
@@ -169,11 +170,23 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	public java.sql.Date convertToSqlDate(String dateString)
 			throws ParseException {
 		if (StringUtils.isBlank(dateString)) {
-			throw new IllegalArgumentException("invalid (blank) timeString");
+			throw new IllegalArgumentException("invalid (blank) dateString");
 		}
 		Date date = parseAgainstFormatArray(dateString, stringToDateFormats);
 		return new java.sql.Date(date.getTime());
 	}
+
+    /**
+     * @see org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlTime(java.lang.String)
+     */
+    public java.sql.Time convertToSqlTime(String timeString)
+            throws ParseException {
+        if (StringUtils.isBlank(timeString)) {
+            throw new IllegalArgumentException("invalid (blank) dateString");
+        }
+        Date date = parseAgainstFormatArray(timeString, stringToTimeFormats);
+        return new java.sql.Time(date.getTime());
+    }
 
 	protected Date parseAgainstFormatArray(String dateString, String[] formats) throws ParseException {
 		dateString = dateString.trim();
@@ -292,27 +305,35 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (stringToDateFormats == null) {
-            stringToDateFormats = loadAndValidateFormats(CoreConstants.STRING_TO_DATE_FORMATS, STRING_TO_DATE_FORMATS);
+            stringToDateFormats = loadAndValidateFormats(CoreConstants.STRING_TO_DATE_FORMATS, CoreConstants.STRING_TO_DATE_FORMATS_DEFAULT);
 		}
 
+        if (stringToTimeFormats == null) {
+            stringToTimeFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIME_FORMATS, CoreConstants.STRING_TO_TIME_FORMATS_DEFAULT);
+        }
+
 		if (stringToTimestampFormats == null) {
-            stringToTimestampFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIMESTAMP_FORMATS, STRING_TO_TIMESTAMP_FORMATS);
+            stringToTimestampFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIMESTAMP_FORMATS, CoreConstants.STRING_TO_TIMESTAMP_FORMATS_DEFAULT);
 		}
 
 		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE, DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			dateToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
 		}
 
+        if (timeToStringFormatForUserInterface == null) {
+            timeToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
+        }
+
 		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE, TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			timestampToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE, CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE_DEFAULT);
 		}
 
 		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME, DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			dateToStringFormatForFileName = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME, CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT);
 		}
 
 		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME, TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			timestampToStringFormatForFileName = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME, CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME_DEFAULT);
 		}
 	}
 

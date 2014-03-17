@@ -89,6 +89,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
        
         //Scenario-3
         clearTextByName("inputField1");
+        waitAndTypeByName("inputField4","a");
         waitAndTypeByName("inputField2", "a");
         waitAndTypeByName("inputField1","");
         String id = findElement(By.name("inputField4")).getAttribute("id");
@@ -123,6 +124,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
         //Scenario-3
         clearTextByName("inputField5");
         waitAndTypeByName("inputField6","a");
+        waitAndTypeByName("inputField8","a");
         waitAndTypeByName("inputField5","");
         String id = findElement(By.name("inputField8")).getAttribute("id");
         assertTrue(findElement(By.id(id)).getAttribute("class").contains("error"));

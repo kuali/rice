@@ -91,6 +91,19 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         assert(typeTypeRelation.getId() != null);
     }
 
+    @Test
+    public void test_createTypeTypeRelationGeneratedId() {
+        KrmsTypeIntegrationGenTest krmsTypeTest = new KrmsTypeIntegrationGenTest();
+        krmsTypeTest.setup();
+        krmsTypeTest.test_createKrmsType();
+        KrmsTypeDefinition krmsType = krmsTypeTest.getKrmsType();
+        TypeTypeRelationBoServiceImplGenTest test = TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl);
+        test.createTypeTypeRelationGeneratedId(krmsType, krmsType);
+        typeTypeRelation = test.getTypeTypeRelation();
+        assert(typeTypeRelation != null);
+        assert(typeTypeRelation.getId() != null);
+    }
+
     @Test(expected = java.lang.IllegalStateException.class)
     public void test_createTypeTypeRelation_fail_existing() {
         test_createTypeTypeRelation();

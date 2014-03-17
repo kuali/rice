@@ -59,7 +59,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Label-Example3 start-->
-        <bean parent="Uif-Label" p:labelText="Label with required message">
+        <bean parent="Uif-Label" p:labelText="Label with required message" p:required="true">
           <property name="requiredIndicator" value="This is required."/>
         </bean>
         <!-- ex:Demo-Label-Example3 end-->

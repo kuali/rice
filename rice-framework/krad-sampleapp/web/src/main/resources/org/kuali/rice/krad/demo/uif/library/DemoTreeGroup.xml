@@ -64,16 +64,16 @@
                       <bean parent="Uif-HorizontalFieldGroup">
                         <property name="items">
                           <list>
-                            <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                            <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1"
                                   p:instructionalText="Instructions 1"
                                   p:required="true"/>
-                            <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                            <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2"
                                   p:instructionalText="Instructions 2"
                                   p:required="true"/>
-                            <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                            <bean parent="Uif-InputField" p:propertyName="inputField3" p:label="Field 3"
                                   p:instructionalText="Instructions 3"
                                   p:required="true"/>
-                            <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"
+                            <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Field 4"
                                   p:instructionalText="Instructions 4"
                                   p:required="true"/>
                           </list>

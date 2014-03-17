@@ -39,6 +39,8 @@
 
 	<bean id="testAttributeQueryService" class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl"/>
 
+  <bean id="dataObjectAuthorizationService" class="org.kuali.rice.krad.service.TestDataObjectAuthorizationService"/>
+
 	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService">
 		<property name="resourceBundleNames">
 			<map>

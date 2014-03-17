@@ -552,6 +552,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                     member.setRoleMemberId(incrementer.nextStringValue());
                 }
                 for (KimDocumentRoleQualifier qualifier : member.getQualifiers()) {
+                    qualifier.setDocumentNumber(member.getDocumentNumber());
                     qualifier.setKimTypId(getKimType().getId());
                 }
                 for (KimDocumentRoleResponsibilityAction roleRespAction : member.getRoleRspActions()) {

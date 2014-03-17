@@ -62,7 +62,8 @@ public class Inquiry extends WidgetBase {
     private static final long serialVersionUID = -2154388007867302901L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);
 
-    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
+    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.actiontext";
+    public static final String INQUIRY_TITLE_POSTFIX = "title.inquiry.url.value.prependtext";
 
     private String baseInquiryUrl;
 
@@ -236,6 +237,7 @@ public class Inquiry extends WidgetBase {
             Map<String, String> inquiryParams) {
 
         Properties urlParameters = new Properties();
+        Map<String,String> inquiryKeyValues = new HashMap<String, String>();
 
         urlParameters.setProperty(UifParameters.DATA_OBJECT_CLASS_NAME, inquiryObjectClass.getName());
         urlParameters.setProperty(UifParameters.METHOD_TO_CALL, UifConstants.MethodToCallNames.START);
@@ -283,6 +285,8 @@ public class Inquiry extends WidgetBase {
 
                 // add inquiry parameter to URL
                 urlParameters.put(inquiryParameter.getValue(), parameterValue);
+
+                inquiryKeyValues.put(inquiryParameter.getValue(), parameterValue.toString());
             }
 
             /* build inquiry URL */
@@ -301,9 +305,7 @@ public class Inquiry extends WidgetBase {
             getInquiryLink().setHref(inquiryUrl);
 
             // set inquiry title
-            String linkTitle = createTitleText(inquiryObjectClass);
-            linkTitle = KRADUtils.buildAttributeTitleString(linkTitle, inquiryObjectClass, getInquiryParameters());
-            getInquiryLink().setTitle(linkTitle);
+            getInquiryLink().setTitle(createTitleText(inquiryObjectClass, inquiryKeyValues));
 
             setRender(true);
         }
@@ -359,15 +361,20 @@ public class Inquiry extends WidgetBase {
      * Gets text to prepend to the inquiry link title
      *
      * @param dataObjectClass data object class being inquired into
-     * @return title prepend text
+     * @return inquiry link title
      */
-    public String createTitleText(Class<?> dataObjectClass) {
+    public String createTitleText(Class<?> dataObjectClass, Map<String,String> inquiryKeyValues) {
+        // use manually configured title if exists
+        if (StringUtils.isNotBlank(getTitle())) {
+            return getTitle();
+        }
+
         String titleText = "";
 
-        String titlePrefixProp = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+        String titlePrefix = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 INQUIRY_TITLE_PREFIX);
-        if (StringUtils.isNotBlank(titlePrefixProp)) {
-            titleText += titlePrefixProp + " ";
+        if (StringUtils.isNotBlank(titlePrefix)) {
+            titleText += titlePrefix + " ";
         }
 
         String objectLabel = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
@@ -376,8 +383,16 @@ public class Inquiry extends WidgetBase {
             titleText += objectLabel + " ";
         }
 
-        return titleText;
-    }
+        if (StringUtils.isNotBlank(titleText)){
+            String titlePostfix = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                    INQUIRY_TITLE_POSTFIX);
+            if (StringUtils.isNotBlank(titlePostfix)) {
+                titleText += titlePostfix + " ";
+            }
+        }
+
+        return KRADUtils.buildAttributeTitleString(titleText, dataObjectClass, inquiryKeyValues);
+   }
 
     /**
      * Returns the URL for the inquiry for which parameters will be added

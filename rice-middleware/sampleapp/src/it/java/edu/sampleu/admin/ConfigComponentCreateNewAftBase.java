@@ -98,7 +98,7 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         waitAndTypeByName("document.newMaintainableObject.name","Component Name "+tempValue);
         waitAndClickByXpath("//input[@name='methodToCall.route']");
         waitForTextPresent("This document cannot be Saved or Routed because a record with the same primary key already exists.");
-        
+        passed();
     }
     
     public void testConfigComponentCreateNewSave() throws Exception {

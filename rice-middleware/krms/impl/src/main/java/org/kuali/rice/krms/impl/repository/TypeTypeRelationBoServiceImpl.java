@@ -66,11 +66,13 @@ public final class TypeTypeRelationBoServiceImpl
     @Override
     public TypeTypeRelation createTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
         incomingParamCheck(typeTypeRelation , "typeTypeRelation");
-        final String typeTypeRelationIdKey = typeTypeRelation.getId();
-        final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelationIdKey);
+        if (StringUtils.isNotEmpty(typeTypeRelation.getId())) {
+            final String typeTypeRelationIdKey = typeTypeRelation.getId();
+            final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelationIdKey);
 
-        if (existing != null) {
-            throw new IllegalStateException("the TypeTypeRelation to create already exists: " + typeTypeRelation);
+            if (existing != null) {
+                throw new IllegalStateException("the TypeTypeRelation to create already exists: " + typeTypeRelation);
+            }
         }
 
         TypeTypeRelationBo bo = dataObjectService.save(from(typeTypeRelation), PersistenceOption.FLUSH);

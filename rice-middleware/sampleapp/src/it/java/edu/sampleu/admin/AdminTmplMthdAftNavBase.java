@@ -57,19 +57,17 @@ public abstract class AdminTmplMthdAftNavBase extends NavTemplateMethodAftBase {
 
     public void testSearchEditBack(JiraAwareFailable failable) throws Exception {
         waitAndClickSearch2();
-        String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
         waitAndClickByLinkText("edit");
         waitFor(By.name(BLANKET_APPROVE_NAME));
         back();
-        assertTextPresent("Going back from Edit Search results not available https://jira.kuali.org/browse/KULRICE-9709", pageBannerText);
+        waitForTextPresent(getTextByXpath(SPAN_CLASS_PAGEBANNER));
     }
 
     public void testSearchSearchBack(JiraAwareFailable failable, String fieldName, String searchText) throws Exception {
         waitAndClickSearch2();
-        String pageBannerText = getTextByXpath(SPAN_CLASS_PAGEBANNER);
         waitAndTypeByName(fieldName, searchText);
         waitAndClickSearch2();
         back();
-        assertTextPresent("Going back from Search to Search results not available https://jira.kuali.org/browse/KULRICE-9710", pageBannerText);
+        waitForTextPresent(getTextByXpath(SPAN_CLASS_PAGEBANNER));
     }
 }

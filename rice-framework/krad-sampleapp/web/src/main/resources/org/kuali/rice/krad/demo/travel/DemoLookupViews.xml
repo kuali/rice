@@ -50,7 +50,7 @@
   <bean id="LookupSampleViewAdditionalParameters" parent="Uif-LookupView">
     <property name="viewName" value="LookupSampleViewAdditionalParameters"/>
     <property name="viewHelperServiceClass" value="edu.sampleu.travel.TravelLookupableImpl"/>
-    <property name="headerText" value="Lookup Sample Additional Parameters (minSubsidized:50)"/>
+    <property name="headerText" value="Lookup Sample Additional Parameters"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="criteriaFields">
       <list>
@@ -58,6 +58,7 @@
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName" p:label="Fiscal Officer User ID"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent"/>
       </list>
     </property>
     <property name="resultFields">
@@ -68,6 +69,15 @@
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
         <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
       </list>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-HeaderLowerGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Travel Accounts subsidized by 50% or more"/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 
@@ -107,8 +117,8 @@
                   p:href="lookup?lookupCriteria['number']=a1?&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1|a6': account number is 'a1' or 'a6' "
                   p:href="lookup?lookupCriteria['number']=a1|a6&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
-            <bean parent="Uif-Link" p:linkText="'fr* &amp;&amp; *k': fiscal officer starts with 'fr' AND ends with 'k'"
-                  p:href="lookup?lookupCriteria['fiscalOfficer.principalName']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
+            <bean parent="Uif-Link" p:linkText="'fr* &amp;&amp; *k': fiscal officer user id starts with 'fr' AND ends with 'k'"
+                  p:href="lookup?lookupCriteria['fiscalOfficer.principalId']=fr* %26%26 *k&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'a1..a3': account number is in the range 'a1' to 'a3' "
                   p:href="lookup?lookupCriteria['number']=a1..a3&amp;methodToCall=search&amp;viewId=OperatorsLookupSampleView&amp;hideReturnLink=true" />
             <bean parent="Uif-Link" p:linkText="'&gt;a3': account number greater than 'a3' "
@@ -130,16 +140,6 @@
     <property name="viewName" value="OperatorsLookupSampleView"/>
     <property name="headerText" value="Lookup Sample - Operators"/>
     <property name="renderCriteriaActions" value="true"/>
-    <property name="criteriaFields">
-      <list merge="true">
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list merge="true">
-        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
-      </list>
-    </property>
   </bean>
 
   <bean id="LookupSampleViewConditionalCriteria" parent="LookupSampleView">

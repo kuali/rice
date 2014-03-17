@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +179,19 @@ public class ResponsibilityBo extends DataObjectBase implements ResponsibilityCo
 
     private KimTypeInfoService getTypeInfoService() {
         return KimApiServiceLocator.getKimTypeInfoService();
+    }
+
+    /*
+    This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
+    still available after the object has been detached, or serialized. For most JPA providers, after serialization
+    any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
+    or return null.
+     */
+
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+        attributeDetails.size();
+        roleResponsibilities.size();
+        stream.defaultWriteObject();
     }
 
     @Override

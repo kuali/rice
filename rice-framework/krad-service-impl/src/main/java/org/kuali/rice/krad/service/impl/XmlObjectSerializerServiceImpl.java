@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -131,9 +128,6 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 
     public class ProxyAwareJavaReflectionProvider extends PureJavaReflectionProvider {
 
-    	public ProxyAwareJavaReflectionProvider() {
-    		super();
-    	}
         /**
          * @see com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider#visitSerializableFields(java.lang.Object, com.thoughtworks.xstream.converters.reflection.ReflectionProvider.Visitor)
          */
@@ -162,22 +156,11 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                 visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
             }
         }
+
         protected boolean ignoreField(Field field) {
-        	// Ignore @Transient annotated fields when saving to XML
-        	Annotation transientAnnotation = field.getAnnotation(Transient.class);
-        	if ( transientAnnotation != null ) {
-        		return true;
-        	}
             return false;
         }
 
     }
-
-//	public PersistenceService getPersistenceService() {
-//		if ( persistenceService == null ) {
-//			persistenceService = KRADServiceLocator.getPersistenceService();
-//		}
-//		return persistenceService;
-//	}
 
 }

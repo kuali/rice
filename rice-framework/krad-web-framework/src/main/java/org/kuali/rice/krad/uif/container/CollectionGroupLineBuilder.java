@@ -208,6 +208,10 @@ public class CollectionGroupLineBuilder implements Serializable {
                 fieldCollectionGroup.setSubCollectionSuffix(lineBuilderContext.getIdSuffix());
             }
         }
+
+        if (lineBuilderContext.isBindToForm()) {
+            ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
+        }
     }
 
     /**

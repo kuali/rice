@@ -89,7 +89,7 @@ public class DemoLookUpOperatorsAft extends WebDriverLegacyITBase {
          waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
          if(assertPresentStringValue!=null) {
         	 for(int i=0; i<assertPresentStringValue.length ; i++) {
-        		 waitForElementPresentByXpath("//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
+        		 waitForElementPresentByXpath("//table[@id='uLookupResults_layout']/*//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
         	 }
          }
          if(assertNotPresentStringValue!=null) {
@@ -103,7 +103,7 @@ public class DemoLookUpOperatorsAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
         if(assertPresentStringValue!=null) {
         	for(int i=0; i<assertPresentStringValue.length ; i++) {
-	       		 waitForElementPresentByXpath("//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
+	       		 waitForElementPresentByXpath("//table[@id='uLookupResults_layout']/*//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
 	       	 }
         }
         if(assertNotPresentStringValue!=null) {

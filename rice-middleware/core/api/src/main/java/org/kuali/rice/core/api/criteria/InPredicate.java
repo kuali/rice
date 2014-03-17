@@ -57,6 +57,8 @@ public final class InPredicate extends AbstractPredicate implements MultiValuedP
             @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
             @XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
             @XmlElement(name = CriteriaIntegerValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaIntegerValue.class, required = true),
+            @XmlElement(name = CriteriaKualiDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaKualiDecimalValue.class, required = true),
+            @XmlElement(name = CriteriaKualiPercentValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaKualiPercentValue.class, required = true),
             @XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true)
 	})
 	private final Set<? extends CriteriaValue<?>> values;

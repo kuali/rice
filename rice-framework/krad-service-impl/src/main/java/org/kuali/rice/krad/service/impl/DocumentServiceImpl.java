@@ -346,10 +346,14 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException {
         checkForNulls(document);
+        WorkflowDocument workflowDocument = KRADServiceLocatorWeb.getDocumentService().
+                getByDocumentHeaderId(document.getDocumentNumber()).getDocumentHeader().getWorkflowDocument();
 
-        Note note = createNoteFromDocument(document, annotation);
-        document.addNote(note);
-        getNoteService().save(note);
+        if (!workflowDocument.isFinal() && !workflowDocument.isProcessed()) {
+            Note note = createNoteFromDocument(document, annotation);
+            document.addNote(note);
+            getNoteService().save(note);
+        }
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().recall(document.getDocumentHeader().getWorkflowDocument(), annotation, cancel);

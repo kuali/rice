@@ -90,11 +90,53 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         }   // catch
     }   // isAlertPresent()
 
+    private void testTravelAccountLookUpDocumentLocking() throws Exception {
+    	waitAndClickButtonByText(SEARCH);
+    	waitAndClickByLinkText("edit");
+    	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
+    	waitAndClickByLinkText("Ad Hoc Recipients");
+    	waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span/a");
+    	gotoLightBox();
+    	waitAndClickButtonByText(SEARCH);
+    	waitAndClickByLinkText("return value");
+    	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
+    	waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/span/a");
+    	gotoLightBox();
+    	waitAndClickButtonByText(SEARCH);
+    	waitAndClickByLinkText("return value");
+    	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
+    	waitAndClickButtonByText("submit");
+    	Thread.sleep(5000);  //Need sleep as we dont have method which waits and returns true or false.
+    	if(isTextPresent("Document was successfully submitted."))
+    	{
+    		navigate();
+    		waitAndClickButtonByText(SEARCH);
+        	waitAndClickByLinkText("edit");
+        	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
+        	waitAndClickByLinkText("Ad Hoc Recipients");
+        	waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span/a");
+        	gotoLightBox();
+        	waitAndClickButtonByText(SEARCH);
+        	waitAndClickByLinkText("return value");
+        	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
+        	waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/span/a");
+        	gotoLightBox();
+        	waitAndClickButtonByText(SEARCH);
+        	waitAndClickByLinkText("return value");
+        	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
+        	waitAndClickButtonByText("submit");
+    		waitForTextPresent(" This document cannot be Saved or Routed");
+    	}
+    	else{
+    		waitForElementPresent(" This document cannot be Saved or Routed");
+    	}
+    }
 
     @Test
     public void testTravelAccountLookUpBookmark() throws Exception {
         testTravelAccountLookUp();
         testXss();
+        testTravelAccountLookUpDocumentLocking();
         passed();
     }
 

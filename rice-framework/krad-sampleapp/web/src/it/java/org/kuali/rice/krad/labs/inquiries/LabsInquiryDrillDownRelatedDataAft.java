@@ -41,7 +41,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
     	waitAndClickByLinkText("KRAD Inquiry TravelPerDiemExpense = 10000");
         
     	// Lightbox
-        waitAndClickByXpath("//a[@title='Travel Destination ']");
+        waitAndClickByXpath("//a[@title='Display Travel Destination with Id=10000']");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Id:", "10000"},
                                           {"Destination:", "Colorado"},
@@ -56,7 +56,7 @@ public class LabsInquiryDrillDownRelatedDataAft extends LabsInquiryBase {
         waitAndClickButtonByText(CLOSE);
         selectTopFrame();
         String[][] LabeledText = {{"Id:", "10000"},
-                {"Travel Authorization Document Id:", "10000"},
+                {"Travel Authorization Document:", "10000"},
                 {"Primary Destination:", "10000"},
 //                {"Date of Use:", getDateToday()},
                 {"Breakfast Value:", "10"}, 

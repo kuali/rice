@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.document;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
@@ -149,13 +150,13 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		boolean isValid = true;
 
 		if (getDocumentTypeService().findByName(ruleBaseValues.getDocTypeName()) == null) {
-            this.putFieldError("docTypeName", "doctype.documenttypeservice.doctypename.required");
-            isValid &= false;
+            putFieldError("docTypeName", "doctype.documenttypeservice.doctypename.required");
+            isValid = false;
         }
         if(ruleBaseValues.getName() != null){
         	if(ruleExists(ruleBaseValues)){
-        		this.putFieldError("name", "routetemplate.ruleservice.name.unique");
-            	isValid &= false;
+        		putFieldError("name", "routetemplate.ruleservice.name.unique");
+            	isValid = false;
         	}
         }
 
@@ -164,29 +165,36 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
          */
         if(ruleBaseValues.getToDateValue() != null && ruleBaseValues.getFromDateValue() != null){
         	if (ruleBaseValues.getToDateValue().before(ruleBaseValues.getFromDateValue())) {
-    			this.putFieldError("toDate", "error.document.maintainableItems.toDate");
-    			isValid &= false;
+    			putFieldError("toDate", "error.document.maintainableItems.toDate");
+    			isValid = false;
             }
         }
 
 		if(!setRuleAttributeErrors(ruleBaseValues)){
-			isValid &= false;
+			isValid = false;
 		}
 
 		// This doesn't map directly to a single field. It's either the person or the group tab
-        if (ruleBaseValues.getRuleResponsibilities().isEmpty()) {
-        	this.putFieldError("Responsibilities", "error.document.responsibility.required");
-        	isValid &= false;
+		if ( ruleBaseValues.getPersonResponsibilities().isEmpty()
+		        && ruleBaseValues.getGroupResponsibilities().isEmpty()
+		        && ruleBaseValues.getRoleResponsibilities().isEmpty() ) {
+            putFieldError("Persons", "error.document.responsibility.required");
+            isValid = false;		    
         } else {
-            for (RuleResponsibilityBo responsibility : ruleBaseValues.getRuleResponsibilities()) {
-                if (responsibility.getRuleResponsibilityName() != null && KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
-                    if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
-                    	this.putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");
-                    	isValid &= false;
-                    }
-                } else if (responsibility.getPrincipal() == null && responsibility.getRole() == null) {
-                	this.putFieldError("Persons", "routetemplate.ruleservice.user.invalid");
-                	isValid &= false;
+            for (PersonRuleResponsibility responsibility : ruleBaseValues.getPersonResponsibilities()) {
+                if ( StringUtils.isBlank( responsibility.getPrincipalName() ) || KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(responsibility.getPrincipalName()) == null ) {
+                    putFieldError("Persons", "routetemplate.ruleservice.user.invalid");
+                    isValid = false;
+                    break;
+                }
+            }
+            for (GroupRuleResponsibility responsibility : ruleBaseValues.getGroupResponsibilities()) {
+                if ( StringUtils.isBlank( responsibility.getNamespaceCode() ) 
+                        || StringUtils.isBlank( responsibility.getName() )
+                        || getGroupService().getGroupByNamespaceCodeAndName(responsibility.getNamespaceCode(), responsibility.getName() ) == null ) {
+                	putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");
+                	isValid = false;
+                	break;
                 }
             }
         }

@@ -28,15 +28,38 @@ import java.util.Properties;
  */
 public class PropertiesUtilsTest {
 
+    private static final String JIRA_AWARE_CONTAINS_FAILURES_PROPERTIES = "JiraAwareContainsFailures.properties";
+
+    private static final String PATH_TO_TEST_PROPERTIES_FILE = "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties";
+
+    private static final String PROPERTIES_DIR_INTELLIJ = "rice-tools-test/src/main/resources/";
+
+    private static final String PROPERTIES_DIR_MAVEN = "src/main/resources/";
+
+    private static final String PROPERTY_DOESNT_EXIST_IN_FILE = "PROPERTY_DOESNT_EXIST_IN_FILE";
+
+    private static final String REMOTE_DRIVER_SAUCELABS_PROPERTY = "remote.driver.saucelabs";
+
     protected static PropertiesUtils propUtils;
 
     @BeforeClass
     public static void setUp() {
-        System.setProperty("remote.driver.saucelabs", "true");
-        System.setProperty("PROPERTY_DOESNT_EXIST", "true");
+        System.setProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY, "true");
+        System.setProperty(PROPERTY_DOESNT_EXIST_IN_FILE, "true");
         propUtils = new PropertiesUtils();
-
 //        printSystemProperties();
+    }
+
+    private void assertPropertiesKeysCountNotZero(Properties props) {
+        Assert.assertTrue(props.keySet().size() > 0);
+    }
+
+    private void assertProperityDoesntExistInFilePropertyTrue(Properties props) {
+        Assert.assertTrue(props.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY).equals("true"));
+    }
+
+    private void assertRemoteDriverSaucelabsPropertyTrue(Properties props) {
+        Assert.assertTrue(props.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY).equals("true"));
     }
 
     private static void printSystemProperties() {
@@ -49,51 +72,56 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testLoadPropertiesResource() throws IOException {
-        Properties props = propUtils.loadProperties(null, "JiraAwareRegexFailures.properties");
-        Assert.assertTrue(props.keySet().size() > 0);
+        Properties props = propUtils.loadProperties(null, JIRA_AWARE_CONTAINS_FAILURES_PROPERTIES);
+        assertPropertiesKeysCountNotZero(props);
     }
 
     @Test
     public void testLoadPropertiesFile() throws IOException {
-        Properties props = propUtils.loadProperties("rice-tools-test/src/main/resources/JiraAwareRegexFailures.properties", null); // intellij
+        Properties props = propUtils.loadProperties(PROPERTIES_DIR_INTELLIJ + JIRA_AWARE_CONTAINS_FAILURES_PROPERTIES, null); // intellij
         if (props == null) { // mvn
-            props = propUtils.loadProperties("src/main/resources/JiraAwareRegexFailures.properties", null);
+            props = propUtils.loadProperties(PROPERTIES_DIR_MAVEN + JIRA_AWARE_CONTAINS_FAILURES_PROPERTIES, null);
         }
         Assert.assertNotNull(props);
-        Assert.assertTrue(props.keySet().size() > 0);
+        assertPropertiesKeysCountNotZero(props);
     }
 
     @Test
     public void testLoadProperties() throws IOException {
-        Properties props = propUtils.loadProperties(null, "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
-        Assert.assertTrue(props.keySet().size() > 0);
-        Assert.assertTrue(props.keySet().contains("remote.driver.saucelabs"));
-        Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals(""));
+        Properties props = propUtils.loadProperties(null, PATH_TO_TEST_PROPERTIES_FILE);
+        assertPropertiesKeysCountNotZero(props);
+        Assert.assertTrue(props.keySet().contains(REMOTE_DRIVER_SAUCELABS_PROPERTY));
+        Assert.assertTrue(props.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY).equals(""));
     }
 
     @Test
     public void testSystemPropertiesOverrides() throws IOException {
-        Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = propUtils.loadPropertiesWithSystemOverrides("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
-        Assert.assertTrue(props.keySet().size() > 0);
-        Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals("true"));
-        Assert.assertFalse(props.containsKey("PROPERTY_DOESNT_EXIST"));
+        assertProperityDoesntExistInFilePropertyTrue(System.getProperties());
+        assertRemoteDriverSaucelabsPropertyTrue(System.getProperties());
+        Properties props = propUtils.loadPropertiesWithSystemOverrides(PATH_TO_TEST_PROPERTIES_FILE);
+        assertPropertiesKeysCountNotZero(props);
+        assertRemoteDriverSaucelabsPropertyTrue(props);
+        // PROPERTY_DOESNT_EXIST_IN_FILE but was set in System should not be in props
+        Assert.assertFalse(props.containsKey(PROPERTY_DOESNT_EXIST_IN_FILE));
     }
 
     @Test
     public void testSystemPropertiesAndOverrides() throws IOException {
-        Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = propUtils.loadPropertiesWithSystemAndOverrides(
-                "org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
-        Assert.assertTrue(props.keySet().size() > 0);
-        Assert.assertTrue(props.getProperty("remote.driver.saucelabs").equals("true"));
-        Assert.assertTrue(props.getProperty("PROPERTY_DOESNT_EXIST").equals("true"));
+        assertProperityDoesntExistInFilePropertyTrue(System.getProperties());
+        assertRemoteDriverSaucelabsPropertyTrue(System.getProperties());
+        Properties props = propUtils.loadPropertiesWithSystemAndOverrides(PATH_TO_TEST_PROPERTIES_FILE);
+        assertPropertiesKeysCountNotZero(props);
+        assertRemoteDriverSaucelabsPropertyTrue(props);
+        // PROPERTY_DOESNT_EXIST_IN_FILE but was set in System should be in props
+        assertProperityDoesntExistInFilePropertyTrue(props);
     }
 
     @Test
     public void testLoadPropertiesWithSystemAndOverridesIntoSystem() throws IOException {
-        Assert.assertTrue(System.getProperty("remote.driver.saucelabs").equals("true"));
-        Properties props = propUtils.loadPropertiesWithSystemAndOverridesIntoSystem("org/kuali/rice/testtools/common/PropertiesUtilsTest.properties");
+        Assert.assertNull(System.getProperty("saucelabs.browser"));
+        assertRemoteDriverSaucelabsPropertyTrue(System.getProperties());
+        Properties props = propUtils.loadPropertiesWithSystemAndOverridesIntoSystem(PATH_TO_TEST_PROPERTIES_FILE);
+        //saucelabs.browser=ff defined in PATH_TO_TEST_PROPERTIES_FILE should now be in System properties
         Assert.assertTrue(System.getProperty("saucelabs.browser").equals("ff"));
     }
 }

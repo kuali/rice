@@ -83,8 +83,8 @@
 
   <bean id="TravelAccount-foId" parent="AttributeDefinition">
     <property name="name" value="foId"/>
-    <property name="shortLabel" value="Fiscal Officer"/>
-    <property name="label" value="Fiscal Officer"/>
+    <property name="shortLabel" value="Fiscal Officer User ID"/>
+    <property name="label" value="Fiscal Officer User ID"/>
     <property name="description" value="Fiscal Officer User ID"/>
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="10"/>

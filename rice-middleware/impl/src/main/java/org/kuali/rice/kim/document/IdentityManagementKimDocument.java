@@ -69,9 +69,10 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 			delegation = getSecondaryDelegation();
 		}
 		delegationMember.setDelegationId(delegation.getDelegationId());
-		delegation.getMembers().add(delegationMember);
+    	delegation.getMembers().add(delegationMember);
 		delegation.setRoleId(delegationMember.getRoleBo().getId());
 		delegation.setKimTypeId(delegationMember.getRoleBo().getKimTypeId());
+
 	}
 
 	protected RoleDocumentDelegation getPrimaryDelegation(){
@@ -85,6 +86,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 			primaryDelegation = new RoleDocumentDelegation();
 			primaryDelegation.setDelegationId(getDelegationId());
 			primaryDelegation.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+            primaryDelegation.setDocumentNumber(getDocumentNumber());
 			getDelegations().add(primaryDelegation);
 		}
 		return primaryDelegation;
@@ -106,6 +108,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 			secondaryDelegation = new RoleDocumentDelegation();
 			secondaryDelegation.setDelegationId(getDelegationId());
 			secondaryDelegation.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
+            secondaryDelegation.setDocumentNumber(getDocumentNumber());
 			getDelegations().add(secondaryDelegation);
 		}
 		return secondaryDelegation;

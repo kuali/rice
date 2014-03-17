@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.routeheader.service.impl;
 
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -66,6 +67,7 @@ import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -194,10 +196,15 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     public DocumentRouteHeaderValue recallDocument(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, boolean cancel) throws InvalidActionTakenException {
         // init(routeHeader);
-        Principal principal = loadPrincipal(principalId);
-        RecallAction action = new RecallAction(routeHeader, principal, annotation, cancel);
-        action.performAction();
-        indexForSearchAfterActionIfNecessary(routeHeader);
+        // Documents that are PROCESSED or FINAL cannot be recalled
+        if (!routeHeader.isFinal() && !routeHeader.isProcessed()) {
+            Principal principal = loadPrincipal(principalId);
+            RecallAction action = new RecallAction(routeHeader, principal, annotation, cancel);
+            action.performAction();
+            indexForSearchAfterActionIfNecessary(routeHeader);
+        } else {
+            GlobalVariables.getMessageMap().putError("document", RiceKeyConstants.MESSAGE_RECALL_NOT_SUPPORTED);
+        }
         return finish(routeHeader);
     }
 	

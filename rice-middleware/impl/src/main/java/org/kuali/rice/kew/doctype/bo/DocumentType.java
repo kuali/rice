@@ -1807,4 +1807,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         this.workgroupId = workgroupId;
     }
 
+    @Override
+    public void refresh() {
+        // do nothing - this is an EBO - and this method is not safe to call on EBO-extending JPA-bytecode-weaved objects
+        // See org.kuali.rice.krad.service.impl.PersistenceServiceImpl.retrieveNonKeyFields(Object)
+    }
 }

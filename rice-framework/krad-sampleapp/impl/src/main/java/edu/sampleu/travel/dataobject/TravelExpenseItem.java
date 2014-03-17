@@ -15,20 +15,31 @@
  */
 package edu.sampleu.travel.dataobject;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
+import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.Relationship;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
+import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -56,8 +67,21 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
     private String travelExpenseItemId;
 
-    @Column(name = "TRVL_AUTH_DOC_ID")
+    @Column(name="TRVL_AUTH_DOC_ID", length=40)
+    @Label("Travel Authorization Document Id")
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT),
+            @UifDisplayHint(UifDisplayHintType.NO_INQUIRY)})
     private String travelAuthorizationDocumentId;
+
+    @Relationship(foreignKeyFields="travelAuthorizationDocumentId")
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+    @JoinColumn(name = "TRVL_AUTH_DOC_ID", referencedColumnName = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)
+    @InheritProperties({
+            @InheritProperty(name="documentNumber",
+                    label=@Label("Travel Authorization Document"),
+                    displayHints=@UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA)))})
+    private TravelAuthorizationDocument travelAuthorizationDocument;
 
     @Column(name = "TRVL_CO_NM")
     private String travelCompanyName;
@@ -104,11 +128,24 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
     }
 
     public String getTravelAuthorizationDocumentId() {
+        if (StringUtils.isBlank(travelAuthorizationDocumentId)
+                && this.travelAuthorizationDocument != null) {
+            return this.travelAuthorizationDocument.getDocumentNumber();
+        }
+
         return travelAuthorizationDocumentId;
     }
 
     public void setTravelAuthorizationDocumentId(String travelAuthorizationDocumentId) {
         this.travelAuthorizationDocumentId = travelAuthorizationDocumentId;
+    }
+
+    public TravelAuthorizationDocument getTravelAuthorizationDocument() {
+        return travelAuthorizationDocument;
+    }
+
+    public void setTravelAuthorizationDocument(TravelAuthorizationDocument travelAuthorizationDocument) {
+        this.travelAuthorizationDocument = travelAuthorizationDocument;
     }
 
     public String getTravelCompanyName() {

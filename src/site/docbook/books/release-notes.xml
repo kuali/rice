@@ -57,22 +57,4 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
-    <section xml:id="items_addressed_in_rice">
-        <title>Items Addressed in Rice ${project.version}</title>
-
-        <section>
-            <title>Bug Fix</title>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12059'>KULRICE-12059</link>] - Security Vulnerability CVE-2014-0050 FileUpload</para>
-                    </listitem>
-                    <listitem>
-                        <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11952'>KULRICE-11952</link>] - Stateless KNS architecture sends control information through the browser</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </section>
-
-    </section>
 </article>

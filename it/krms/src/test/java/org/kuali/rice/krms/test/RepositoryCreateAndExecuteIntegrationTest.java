@@ -69,8 +69,11 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
     static final String PREREQ_TERM_VALUE = "prereqValue";
     static final String NAMESPACE_CODE = "namespaceCode";
 
+    static boolean localInitNeeded = true;
+
+    @Override
     @Before
-    public void setUp() throws Exception {
+    public void setup() {
         // Reset TestActionTypeService
         TestActionTypeService.resetActionsFired();
 
@@ -87,7 +90,9 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
         ContextDefinition contextDefintion1 = contextRepository.getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
 
         // only set this stuff up if we don't already have Context1 (we don't clear out KRMS tables between test methods)
-        if (contextDefintion1 == null) {
+        // run at least once in case previous tests have used this context and to ensure correct values
+        if (contextDefintion1 == null || localInitNeeded) {
+            localInitNeeded = false;
             PerformanceLogger perfLog = new PerformanceLogger();
             perfLog.log("starting agenda creation");
 

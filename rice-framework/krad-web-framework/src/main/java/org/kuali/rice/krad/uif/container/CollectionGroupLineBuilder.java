@@ -84,6 +84,10 @@ public class CollectionGroupLineBuilder implements Serializable {
         if (hasLineFields || hasSubCollections) {
             lineBuilderContext.getLayoutManager().buildLine(lineBuilderContext);
         }
+
+        // After the lines have been processed and correct value set for readOnly and other properties
+        // set the script for enabling/disabling save button
+        applyOnChangeForSave(lineBuilderContext.getLineFields());
     }
 
     /**
@@ -126,8 +130,6 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         // check authorization for line fields
         applyLineFieldAuthorizationAndPresentationLogic(!canEditLine, lineFields, actions);
-
-        applyOnChangeForSave(lineFields);
 
         // remove fields from the line that have render false
         lineFields = removeNonRenderLineFields(lineFields);
@@ -248,7 +250,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                 lineBuilderContext.getCurrentLine());
         boolean saveLineEnabled = lineBuilderContext.getCollectionGroup().isRenderSaveLineActions();
 
-        if (!isLineNewlyAdded || !saveLineEnabled) {
+        if (!isLineNewlyAdded && !saveLineEnabled) {
             return;
         }
 
@@ -260,11 +262,11 @@ public class CollectionGroupLineBuilder implements Serializable {
 
             ControlBase control = (ControlBase) ((InputField) field).getControl();
 
-            String onChangeScript = UifConstants.JsFunctions.COLLECTION_LINE_CHANGED + "(this, '" +
+            String onBlurScript = UifConstants.JsFunctions.COLLECTION_LINE_CHANGED + "(this, '" +
                     CssConstants.Classes.NEW_COLLECTION_ITEM + "');";
-            onChangeScript = ScriptUtils.appendScript(control.getOnChangeScript(), onChangeScript);
+            onBlurScript = ScriptUtils.appendScript(control.getOnBlurScript(), onBlurScript);
 
-            control.setOnChangeScript(onChangeScript);
+            control.setOnBlurScript(onBlurScript);
         }
     }
 

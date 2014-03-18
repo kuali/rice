@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.transactional;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -31,8 +30,6 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     public static final String BOOKMARK_URL = "/kr-krad/approval?methodToCall=docHandler&command=initiate&docTypeName=TravelAuthorization&viewName=LabsLookupSecurityTravelAuthorization";
 
     private static final String PHONE_NUMBER_NAME = "document.travelerDetail.phoneNumber";
-    private static final String PHONE_NUMBER_SELECTOR = "div[data-label = 'Phone Number']";
-    private static final String PHONE_NUMBER_MASKED = "(xxx)xxx-xxxx";
     private static final String PHONE_NUMBER_DECRYPTED = "8005551212";
 
     private static final String CUSTOMER_NUMBER_NAME = "document.travelerDetail.customerNumber";
@@ -41,7 +38,6 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     private static final String EMAIL_ADDRESS_NAME = "document.travelerDetail.emailAddress";
 
     private static final String TRAVELER_TYPE_CODE_NAME = "travelerType.code";
-    private static final String TRAVELER_TYPE_CODE_DECRYPTED = StringUtils.EMPTY;
 
     private static final String CONVERSION_FIELDS = "conversionFields=";
     private static final String ERRANT_CONVERSION_FIELD = TRAVELER_TYPE_CODE_NAME + "%3A" + EMAIL_ADDRESS_NAME + "%2C";
@@ -58,24 +54,21 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     }
 
     /**
-     * Tests the basic case in which the phone number is masked and does not appear anywhere on the page decrypted.
+     * Tests the basic case in which the phone number does not appear anywhere on the page decrypted.
      *
      * @throws Exception
      */
-    protected void testTransactionalLookupSecurity(boolean authorized) throws Exception {
+    protected void testTransactionalLookupSecurity() throws Exception {
         waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
-        if (authorized) {
-            assertElementPresentByName(PHONE_NUMBER_NAME);
-            assertTextNotPresent(PHONE_NUMBER_MASKED);
-            assertTextPresent(PHONE_NUMBER_DECRYPTED);
-        } else {
-            assertElementPresent(PHONE_NUMBER_SELECTOR);
-            assertTextPresent(PHONE_NUMBER_MASKED);
-            assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
-        }
+        assertElementPresentByName(PHONE_NUMBER_NAME);
+        WebElement element = findElement(By.name(PHONE_NUMBER_NAME));
+        String phoneNumber = element.getAttribute("value");
+
+        assertTrue("Secure field phoneNumber was not empty", StringUtils.isBlank(phoneNumber));
+        assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
     }
 
     /**
@@ -99,9 +92,8 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
         WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
         String emailAddress = element.getAttribute("value");
 
-        assertTrue("Non-secure field emailAddress was empty", StringUtils.isNotBlank(emailAddress));
-        assertFalse("Secure field phoneNumber was placed in the non-secure field emailAddress and decrypted",
-                StringUtils.equals(emailAddress, PHONE_NUMBER_DECRYPTED));
+        assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
+        assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
     }
 
     /**
@@ -125,10 +117,8 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
         WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
         String emailAddress = element.getAttribute("value");
 
-        assertTrue("Non-secure field emailAddress was empty", StringUtils.isNotBlank(emailAddress));
-
-        assertFalse("Secure field customerNumber was placed in the non-secure field emailAddress and decrypted",
-                StringUtils.equals(emailAddress, CUSTOMER_NUMBER_DECRYPTED));
+        assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
+        assertTextNotPresent(CUSTOMER_NUMBER_DECRYPTED);
     }
 
     /**
@@ -155,10 +145,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
         WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
         String emailAddress = element.getAttribute("value");
 
-        assertTrue("Non-secure field emailAddress was empty", StringUtils.isNotBlank(emailAddress));
-
-        assertFalse("Secure field travelerType.code was placed in the non-secure field emailAddress and decrypted",
-                StringUtils.equals(emailAddress, TRAVELER_TYPE_CODE_DECRYPTED));
+        assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
     }
 
 }

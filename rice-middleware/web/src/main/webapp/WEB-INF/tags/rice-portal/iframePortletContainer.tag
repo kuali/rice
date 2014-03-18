@@ -85,7 +85,8 @@
       }
     },
     onMessage: function(message, origin) {
-      var availableHeight = jQuery(window).height() - 250;
+      // Why 250px?!? Seems like too much. How about 65px?
+      var availableHeight = jQuery(window).height() - 65;
       if (availableHeight > message) {
         this.container.getElementsByTagName("iframe")[0].style.height = availableHeight + "px";
       } else {

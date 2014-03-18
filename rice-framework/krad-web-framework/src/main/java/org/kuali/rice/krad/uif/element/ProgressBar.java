@@ -24,27 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Element which shows a visual progress bar based on percentageValue passed in or barPercentages passed in
+ * Element which shows a visual progress bar based on percentageValue passed in or segmentPercentages passed in
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ProgressBar extends ContentElementBase {
+    private static final long serialVersionUID = -2643777398164666573L;
+
     private Integer percentComplete;
 
-    private List<Integer> barPercentages;
-    private List<String> barSizes;
-    private List<String> barClasses;
+    private List<Integer> segmentPercentages;
+    private List<String> segmentSizes;
+    private List<String> segmentClasses;
 
     private boolean vertical;
 
     public ProgressBar() {
-        barSizes = new ArrayList<String>();
-        barClasses = new ArrayList<String>();
+        segmentSizes = new ArrayList<String>();
+        segmentClasses = new ArrayList<String>();
         this.setRole(UifConstants.AriaRoles.PROGRESS_BAR);
     }
 
     /**
-     * Sets the appropriate classes and bar widths based on values in percentComplete or barPercentages
+     * Sets the appropriate classes and bar widths based on values in percentComplete or segmentPercentages
      *
      * {@inheritDoc}
      */
@@ -58,15 +60,16 @@ public class ProgressBar extends ContentElementBase {
             cssDimension = CssConstants.HEIGHT;
         }
 
-        boolean explicitlySetSizes = barPercentages != null && !getBarPercentages().isEmpty();
+        boolean explicitlySetSizes = segmentPercentages != null && !getSegmentPercentages().isEmpty();
 
         // Simply use the percentage if set, and no explicitly set sizes (use those instead if set)
         if (!explicitlySetSizes && percentComplete != null) {
-            barClasses = new ArrayList<String>();
+            segmentClasses = new ArrayList<String>();
 
             // Add appropriate style string based on dimension and percentage
-            barSizes.add(cssDimension + percentComplete + "%");
-            barClasses.add(CssConstants.ProgressBar.PROGRESS_BAR + " " + CssConstants.ProgressBar.SUCCESS_PROGRESS_BAR);
+            segmentSizes.add(cssDimension + percentComplete + "%");
+            segmentClasses.add(
+                    CssConstants.ProgressBar.PROGRESS_BAR + " " + CssConstants.ProgressBar.SUCCESS_PROGRESS_BAR);
 
             this.setTitle(percentComplete.toString() + "%");
 
@@ -75,16 +78,17 @@ public class ProgressBar extends ContentElementBase {
             this.addAriaAttribute(UifConstants.AriaAttributes.VALUE_MAX, "100");
             this.addAriaAttribute(UifConstants.AriaAttributes.VALUE_NOW, percentComplete.toString());
         } else if (explicitlySetSizes && !(this instanceof StepProgressBar)) {
-            if (barClasses != null && barClasses.size() != barPercentages.size()) {
-                throw new RuntimeException("If barPercentages are set on a base ProgressBar type, barClasses must "
-                        + "also be explicitly set and contain the same number of items");
+            if (segmentClasses == null || segmentClasses.size() != segmentPercentages.size()) {
+                throw new RuntimeException(
+                        "If segmentPercentages are set on a base ProgressBar type, segmentClasses must "
+                                + "also be explicitly set and contain the same number of items");
             }
 
             // Add appropriate style string based on dimension and percentage
             percentComplete = 0;
-            for (int index = 0; index < barPercentages.size(); index++) {
-                barSizes.add(cssDimension + barPercentages.get(index) + "%");
-                percentComplete = percentComplete + barPercentages.get(index);
+            for (int index = 0; index < segmentPercentages.size(); index++) {
+                segmentSizes.add(cssDimension + segmentPercentages.get(index) + "%");
+                percentComplete = percentComplete + segmentPercentages.get(index);
             }
 
             // Set aria attributes
@@ -115,20 +119,20 @@ public class ProgressBar extends ContentElementBase {
      * List of bar classes to use for each bar "section" for coloring or styling purposes, only settable for
      * full configuration purposes and should not normally be set
      *
-     * <p>These are normally set automatically by the framework, but can be explicitly defined if barPercentages
-     * are also explicitly set.  When setting barClasses, it's list size MUST equal barPercentages.</p>
+     * <p>These are normally set automatically by the framework, but can be explicitly defined if segmentPercentages
+     * are also explicitly set.  When setting segmentClasses, it's list size MUST equal segmentPercentages.</p>
      *
      * @return the list of bar classes
      */
-    public List<String> getBarClasses() {
-        return barClasses;
+    public List<String> getSegmentClasses() {
+        return segmentClasses;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.ProgressBar#getBarClasses()
+     * @see org.kuali.rice.krad.uif.element.ProgressBar#getSegmentClasses()
      */
-    public void setBarClasses(List<String> barClasses) {
-        this.barClasses = barClasses;
+    public void setSegmentClasses(List<String> segmentClasses) {
+        this.segmentClasses = segmentClasses;
     }
 
     /**
@@ -143,21 +147,21 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return the bar percentages to use
      */
-    public List<Integer> getBarPercentages() {
-        return barPercentages;
+    public List<Integer> getSegmentPercentages() {
+        return segmentPercentages;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.element.ProgressBar#getBarPercentages()
+     * @see org.kuali.rice.krad.uif.element.ProgressBar#getSegmentPercentages()
      */
-    public void setBarPercentages(List<String> barPercentages) {
+    public void setSegmentPercentages(List<String> segmentPercentages) {
         // Note: This is purposely taking in a list of String to make bean configuration easier
-        if (this.barPercentages == null) {
-            this.barPercentages = new ArrayList<Integer>();
+        if (this.segmentPercentages == null) {
+            this.segmentPercentages = new ArrayList<Integer>();
         }
 
-        for (String percentage : barPercentages) {
-            this.barPercentages.add(new Integer(percentage));
+        for (String percentage : segmentPercentages) {
+            this.segmentPercentages.add(new Integer(percentage));
         }
     }
 
@@ -167,8 +171,8 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return the bar sizes as String css style properties
      */
-    public List<String> getBarSizes() {
-        return barSizes;
+    public List<String> getSegmentSizes() {
+        return segmentSizes;
     }
 
     /**

@@ -26,7 +26,7 @@
         <#-- when not vertical put the step label text first, otherwise after -->
         <#if !element.vertical>
             <div class="progress-details" ${vHeight!}>
-                <#list element.barSizes as size>
+                <#list element.segmentSizes as size>
                         <div style="${size!};" class="${element.stepLabelClasses[size_index]!}">
                             <span class="sr-only">${element.accessibilityText[size_index]!}</span>
                             ${element.stepCollection[size_index]!}
@@ -41,7 +41,7 @@
 
         <#if element.vertical>
             <div class="progress-details" ${vHeight!}>
-                <#list element.barSizes as size>
+                <#list element.segmentSizes as size>
                         <div style="${size!};" class="${element.stepLabelClasses[size_index]!}">
                             <span class="sr-only">${element.accessibilityText[size_index]!}</span>
                             <span>${element.stepCollection[size_index]!}</span>

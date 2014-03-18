@@ -149,7 +149,7 @@
               <entry key="3" value="Medium Step"/>
             </map>
           </property>
-          <property name="barPercentages">
+          <property name="segmentPercentages">
             <list>
               <value>20</value>
               <value>50</value>
@@ -159,14 +159,14 @@
         </bean>
 
         <bean parent="Uif-ProgressBar">
-          <property name="barPercentages">
+          <property name="segmentPercentages">
             <list>
               <value>20</value>
               <value>20</value>
               <value>30</value>
             </list>
           </property>
-          <property name="barClasses">
+          <property name="segmentClasses">
             <list>
               <value>progress-bar progress-bar-info</value>
               <value>progress-bar progress-bar-warning</value>

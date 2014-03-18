@@ -38,6 +38,8 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StepProgressBar extends ProgressBar {
+    private static final long serialVersionUID = 1053164737424481519L;
+
     private Map<String, String> steps;
     private List<String> stepLabelClasses;
     private List<String> accessibilityText;
@@ -55,8 +57,8 @@ public class StepProgressBar extends ProgressBar {
     }
 
     /**
-     * Populates the stepLabelClasses, accessibilityText, barSizes, and barClasses lists based on the settings of this
-     * StepProgressBar.
+     * Populates the stepLabelClasses, accessibilityText, segmentSizes, and segmentClasses lists based on the settings
+     * of this StepProgressBar.
      *
      * {@inheritDoc}
      */
@@ -88,12 +90,13 @@ public class StepProgressBar extends ProgressBar {
                             .getId());
         }
 
-        boolean explicitlySetPercentages = CollectionUtils.isNotEmpty(getBarPercentages());
-        boolean explicitlySetClasses = CollectionUtils.isNotEmpty(this.getBarClasses());
-        if (explicitlySetPercentages && explicitlySetClasses && this.getBarClasses().size() != this.getBarPercentages()
-                .size()) {
-            throw new RuntimeException("If barPercentages are set on a StepProgressBar type, and barClasses are also "
-                    + "set, the lists MUST contain the same number of items");
+        boolean explicitlySetPercentages = CollectionUtils.isNotEmpty(getSegmentPercentages());
+        boolean explicitlySetClasses = CollectionUtils.isNotEmpty(this.getSegmentClasses());
+        if (explicitlySetPercentages && explicitlySetClasses && this.getSegmentClasses().size() != this
+                .getSegmentPercentages().size()) {
+            throw new RuntimeException(
+                    "If segmentPercentages are set on a StepProgressBar type, and segmentClasses are also "
+                            + "set, the lists MUST contain the same number of items");
         }
 
         // Populate the information used by the template based on settings of this StepProgressBar
@@ -102,7 +105,7 @@ public class StepProgressBar extends ProgressBar {
         // Explicitly set the vertical height for vertical cases where the verticalHeight is not set using
         // verticalStepHeight
         if (this.isVertical() && getVerticalHeight() == null) {
-            setVerticalHeight(getBarSizes().size() * verticalStepHeight);
+            setVerticalHeight(getSegmentSizes().size() * verticalStepHeight);
         }
 
         // If the step is considered complete, set the aria attributes appropriately
@@ -175,7 +178,7 @@ public class StepProgressBar extends ProgressBar {
 
             // Retrieve/calculate the current stepPercentage and current percentageTotal of bars being processed
             if (explicitlySetPercentages) {
-                Integer percentageValue = getBarPercentages().get(step);
+                Integer percentageValue = getSegmentPercentages().get(step);
                 stepPercentage = percentageValue;
                 percentTotal += percentageValue;
             } else {
@@ -215,10 +218,11 @@ public class StepProgressBar extends ProgressBar {
                 srText = messageService.getMessageText("accessibility.progressBar.futureStep");
             }
 
-            this.getBarSizes().add(cssDimension + dimensionValue);
+            this.getSegmentSizes().add(cssDimension + dimensionValue);
+
             // Don't add default classes if custom classes have been set for the bars
             if (!explicitlySetClasses) {
-                this.getBarClasses().add(cssClasses);
+                this.getSegmentClasses().add(cssClasses);
             }
 
             this.getStepLabelClasses().add(labelCssClasses);

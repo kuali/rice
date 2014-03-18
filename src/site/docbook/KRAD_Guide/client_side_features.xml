@@ -590,7 +590,7 @@
   	  </programlisting>
   	</para>
   	<para>
-      Using the enter key support properties the determination of what button to submit can be controled. This is done by defining at a group
+      Using the enter key support properties the determination of what button to submit can be controlled. This is done by defining at a group
       component level the ID of the action component to act on when the enter key is pressed within that group. If no ID is defined at the immediate
       group level then the search will move out to the next level. This will continue until no other group components are found. If the outer most group
       has no ID set then default browser enter key support will be used. In this modified example, the 'Add' button will be submitted if in the
@@ -689,6 +689,51 @@
   		setups as well. Such as perhaps specifing an action component in the footer as the 'defaultEnterKeyAction'. Then if the outer most page component
   		had an 'enterKeyAction' value of '@DEFAULT', all non-caught enter key presses would go to the footer action component.
   	</para>
+    <para>
+      As a design principle, it might be good to define one default button on each page within a view. Then any uncaught '@DEFAULT' values will find
+      a button to invoke on the page. For example:
+      <programlisting>
+  &lt;bean id="View1" parent="Uif-FormView">
+    &lt;property name="headerText" value="Enter Key Support"/>
+    &lt;property name="singlePageView" value="true"/>
+    &lt;property name="page">
+      &lt;bean parent="Uif-Page" p:enterKeyAction="@DEFAULT"
+            p:instructionalText="Uif-Page enterKeyAction is set to @DEFAULT[br]Using this action will fire the primary action button.">
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1"
+                  p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 2"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1');"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            &lt;bean p:headerText="Section 2" parent="Uif-VerticalBoxSection"
+                  p:instructionalText="enterKeyAction is not set.[br]Press the enter key to fire primary enter key action button.">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 1"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 2"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2');"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:defaultEnterKeyAction="true" p:actionScript="alert('primary button');"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+    &lt;property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  &lt;/bean>
+      </programlisting>
+      In this example notice that the enclosing Uif-Page has p:enterKeyAction="@DEFAULT". If the user presses the enter key in section one then the button
+      within it will fire since that button is explicitly defined in the section one group. However if the user presses enter in section two it will move up
+      to the page level and see that it has the enterKeyAction property set, therefore Uif-PrimaryActionButton will fire. If the page did not have the property
+      set then the default browser implementation would have been used. 
+    </para>
   	<section role="NotInToc">
   		<title>RECAP</title>
   		<itemizedlist>

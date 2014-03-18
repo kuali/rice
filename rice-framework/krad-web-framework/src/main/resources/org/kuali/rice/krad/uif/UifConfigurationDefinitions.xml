@@ -102,6 +102,8 @@
     </property>
   </bean>
 
+  <bean id="Uif-OptionGroupLabel" class="org.kuali.rice.krad.uif.util.UifOptionGroupLabel" scope="prototype"/>
+
   <bean id="Uif-ColumnCalculationInfo" class="org.kuali.rice.krad.uif.util.ColumnCalculationInfo" scope="prototype"
         abstract="true">
     <property name="showTotal" value="true"/>

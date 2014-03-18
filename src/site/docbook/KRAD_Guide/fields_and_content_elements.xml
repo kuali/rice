@@ -1938,6 +1938,33 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
           &lt;/property>
         &lt;/bean></programlisting></para>
         </section>
+        <section>
+          <title>Grouped Select</title>
+          <para>A grouped select is one that has 'grouping' elements within the drop down of options.
+            The grouping element cannot be selected. This is setup the same way a normal Select control would
+            be set up, except instead of using UifKeyValue object, a UifOptionGroupLabel object is used for the group headers.
+            Here is a sample configuration:
+            <programlisting>
+            &lt;bean parent="Uif-DropdownControl">
+              &lt;property name="options">
+                &lt;list>
+                  &lt;bean parent="Uif-OptionGroupLabel" p:label="American"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>
+                  &lt;bean parent="Uif-OptionGroupLabel" p:label="Japan"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            </programlisting>
+            This would be rendered like this:
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/OptGroup.png"/>
+            </imageobject>
+          </para>
+        </section>
       </section>
       <section>
         <title>OptionList</title>

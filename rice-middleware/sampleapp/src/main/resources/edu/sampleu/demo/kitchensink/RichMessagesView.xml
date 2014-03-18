@@ -43,7 +43,7 @@
     <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
   </bean>
 
-  <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='fl-text-underline']Functionality[/css]"
+  <bean id="Demo-BasicMessagesSection" p:headerText="Basic [css='uif-text-underline']Functionality[/css]"
         parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
@@ -78,11 +78,11 @@
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Message with [css='fl-text-underline fl-text-larger']css class[/css] option"/>
+                    value="Message with [css='uif-text-underline uif-text-larger']css class[/css] option"/>
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="[b]Message[/b] using a [color=#F78C00] [css='fl-text-underline']combination[/css] [0] of different options[/color] [id=Demo-SampleMessageInput2] inside its [1] content"/>
+                    value="[b]Message[/b] using a [color=#F78C00] [css='uif-text-underline']combination[/css] [0] of different options[/color] [id=Demo-SampleMessageInput2] inside its [1] content"/>
           <property name="inlineComponents">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
@@ -126,7 +126,7 @@
 
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Getting message content from a value with [css=fl-text-underline]no formatting [/css]- [b]@{#dp.testValueField}[/b] - and applying rich message around it"/>
+                    value="Getting message content from a value with [css=uif-text-underline]no formatting [/css]- [b]@{#dp.testValueField}[/b] - and applying rich message around it"/>
         </bean>
         <bean parent="Uif-Message">
           <property name="messageText"
@@ -178,7 +178,7 @@
 
   <bean id="Demo-RadioCheckboxMessageSection" p:headerText="[color=red]Radio[/color] and
   [color=blue]Checkbox[/color] groups rich messages"
-        p:instructionalText="Testing [css='fl-text-underline']checkbox and radio groups[/css] below"
+        p:instructionalText="Testing [css='uif-text-underline']checkbox and radio groups[/css] below"
         parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
@@ -230,7 +230,7 @@
   </bean>
 
   <bean id="Demo-RichMessageLinks" p:headerText="Link Declarations"
-        p:instructionalText="Testing [css='fl-text-underline'][/css] below"
+        p:instructionalText="Testing below"
         parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>

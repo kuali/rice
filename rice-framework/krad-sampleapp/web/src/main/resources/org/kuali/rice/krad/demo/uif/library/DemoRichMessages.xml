@@ -137,7 +137,7 @@
         <!-- ex:Demo-RichMessages-Example5 start-->
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="Message with [css='fl-text-underline fl-text-larger']css class[/css] option"/>
+                    value="Message with [css='uif-text-underline uif-text-larger']css class[/css] option"/>
         </bean>
         <!-- ex:Demo-RichMessages-Example5 end-->
       </list>
@@ -151,7 +151,7 @@
         <!-- ex:Demo-RichMessages-Example6 start-->
         <bean parent="Uif-Message">
           <property name="messageText"
-                    value="[b]Message[/b] using a [color=#F78C00] [css='fl-text-underline']combination[/css] [0] of different options[/color] inside its [1] content"/>
+                    value="[b]Message[/b] using a [color=#F78C00] [css='uif-text-underline']combination[/css] [0] of different options[/color] inside its [1] content"/>
           <property name="inlineComponents">
             <list>
               <bean parent="Uif-InputField" p:propertyName="inputField3"/>

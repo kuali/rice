@@ -3692,7 +3692,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertTrue(isElementPresentByXpath("//span[@style='color: blue;']"));
 
         //Css class
-        assertTrue(isElementPresentByXpath("//span[@class='fl-text-underline fl-text-larger']"));
+        assertTrue(isElementPresentByXpath("//span[@class='uif-text-underline uif-text-larger']"));
 
         //Combinations
         assertTrue(isElementPresentByXpath("//input[@type='text' and @name='field3']"));

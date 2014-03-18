@@ -40,7 +40,7 @@
       <classicKnsTheme-bean/>
     </theme>
   </formView-bean>
-  <verticalBoxSection-bean headertext="Basic [css='fl-text-underline']Functionality[/css]"
+  <verticalBoxSection-bean headertext="Basic [css='uif-text-underline']Functionality[/css]"
                            id="Demo-BasicMessagesSection">
     <items>
       <message-bean messageText="Message with [b]bold[/b], break,[br/]and [i]italics[/i] inline"/>
@@ -56,9 +56,9 @@
   <verticalBoxSection-bean headertext="Advanced Functionality" id="Demo-AdvancedMessagesSection">
     <items>
       <message-bean messageText="Message with [color=green]color[/color] [color=blue]option[/color]"/>
-      <message-bean messageText="Message with [css='fl-text-underline fl-text-larger']css class[/css] option"/>
+      <message-bean messageText="Message with [css='uif-text-underline uif-text-larger']css class[/css] option"/>
       <message-bean
-              messageText="[b]Message[/b] using a [color=#F78C00] [css='fl-text-underline']combination[/css] [0] of different options[/color] [id=Demo-SampleMessageInput2] inside its [1] content">
+              messageText="[b]Message[/b] using a [color=#F78C00] [css='uif-text-underline']combination[/css] [0] of different options[/color] [id=Demo-SampleMessageInput2] inside its [1] content">
         <inlineComponents>
           <inputField-bean propertyName="field3" required="true"/>
           <primaryActionButton-small-bean actionLabel="Action Button" actionScript="alert('Inline Button')"/>
@@ -80,7 +80,7 @@
       <inputField-labelTop-bean label="Label With [id=Demo-RichMessagesImage]Image" propertyName="field102"/>
       <message-bean messageText="Getting message content from a value on the form (springEL): @{#dp.richMessageField}"/>
       <message-bean
-              messageText="Getting message content from a value with [css=fl-text-underline]no formatting [/css]- [b]@{#dp.testValueField}[/b] - and applying rich message around it"/>
+              messageText="Getting message content from a value with [css=uif-text-underline]no formatting [/css]- [b]@{#dp.testValueField}[/b] - and applying rich message around it"/>
       <message-bean
               messageText="Getting a message from the form that mixes inlineComponents and id specified content into its value: @{#dp.richMessageField2}">
         <inlineComponents>
@@ -107,7 +107,7 @@
   </verticalBoxSection-bean>
   <verticalBoxSection-bean headertext="[color=red]Radio[/color] and   [color=blue]Checkbox[/color] groups rich messages"
                            id="Demo-RadioCheckboxMessageSection"
-                           instructionalText="Testing [css='fl-text-underline']checkbox and radio groups[/css] below">
+                           instructionalText="Testing [css='uif-text-underline']checkbox and radio groups[/css] below">
     <items>
       <inputField-labelTop-bean label="Favorite Color" propertyName="field24" width="auto">
         <control>
@@ -145,7 +145,7 @@
     </items>
   </verticalBoxSection-bean>
   <verticalBoxSection-bean headertext="Link Declarations" id="Demo-RichMessageLinks"
-                           instructionalText="Testing [css='fl-text-underline'][/css] below">
+                           instructionalText="Testing below">
     <items>
       <message-bean messageText="Testing link tag [link='http://www.kuali.org']Kuali Site[/link]"/>
       <message-bean messageText="Testing methodToCall action [action=addErrors]addErrors[/action]"/>

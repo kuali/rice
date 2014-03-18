@@ -123,13 +123,13 @@
       <list>
         <!-- ex:Demo-ProgressBar-Example5 start-->
         <bean parent="Uif-StepProgressBar">
-          <property name="currentStep" value="2"/>
+          <property name="currentStep" value="B"/>
           <property name="vertical" value="true"/>
           <property name="steps">
             <map>
-              <entry key="1" value="Step 1"/>
-              <entry key="2" value="Step 2"/>
-              <entry key="3" value="Step 3"/>
+              <entry key="A" value="Step A"/>
+              <entry key="B" value="Step B"/>
+              <entry key="C" value="Step C"/>
             </map>
           </property>
         </bean>

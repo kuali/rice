@@ -16,6 +16,9 @@
 
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -28,6 +31,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTags({@BeanTag(name = "progressBar-bean", parent = "Uif-ProgressBar"),
+        @BeanTag(name = "progressBarVertical-bean", parent = "Uif-ProgressBar-Vertical")})
 public class ProgressBar extends ContentElementBase {
     private static final long serialVersionUID = -2643777398164666573L;
 
@@ -104,6 +109,7 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return the Integer value representing perecent complete for this ProgressBar
      */
+    @BeanTagAttribute(name = "percentComplete")
     public Integer getPercentComplete() {
         return percentComplete;
     }
@@ -124,6 +130,7 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return the list of bar classes
      */
+    @BeanTagAttribute(name = "segmentClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getSegmentClasses() {
         return segmentClasses;
     }
@@ -147,6 +154,7 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return the bar percentages to use
      */
+    @BeanTagAttribute(name = "segmentPercentages", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<Integer> getSegmentPercentages() {
         return segmentPercentages;
     }
@@ -181,6 +189,7 @@ public class ProgressBar extends ContentElementBase {
      *
      * @return true if this
      */
+    @BeanTagAttribute(name = "vertical")
     public boolean isVertical() {
         return vertical;
     }

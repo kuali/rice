@@ -175,6 +175,21 @@
           </property>
         </bean>
 
+        <bean parent="Uif-ProgressBarField" p:label="Current Progress">
+          <property name="progressBar.percentComplete" value="80"/>
+        </bean>
+
+        <bean parent="Uif-StepProgressBarField" p:label="Step Progress">
+          <property name="progressBar.currentStep" value="C"/>
+          <property name="progressBar.steps">
+            <map>
+              <entry key="A" value="Step A"/>
+              <entry key="B" value="Step B"/>
+              <entry key="C" value="Step C"/>
+            </map>
+          </property>
+        </bean>
+
       </list>
     </property>
   </bean>

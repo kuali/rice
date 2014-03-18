@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ProgressBar;
+import org.kuali.rice.krad.uif.field.ProgressBarField;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 import java.util.ArrayList;
@@ -108,7 +109,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
                     if (!(c instanceof Header
                             || c instanceof Container
                             || c instanceof Message
-                            || c instanceof ProgressBar)) {
+                            || c instanceof ProgressBar
+                            || c instanceof ProgressBarField)) {
                         c.addStyleClass("pull-left");
                     }
 

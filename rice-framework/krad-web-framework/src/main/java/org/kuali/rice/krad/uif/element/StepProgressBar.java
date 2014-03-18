@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.element;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
@@ -37,6 +39,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "stepProgressBar-bean", parent = "Uif-StepProgressBar")
 public class StepProgressBar extends ProgressBar {
     private static final long serialVersionUID = 1053164737424481519L;
 
@@ -235,6 +238,7 @@ public class StepProgressBar extends ProgressBar {
      *
      * @return the map of steps for this StepProgressBar
      */
+    @BeanTagAttribute(name = "steps", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getSteps() {
         return steps;
     }
@@ -279,6 +283,7 @@ public class StepProgressBar extends ProgressBar {
      *
      * @return the current step (by key)
      */
+    @BeanTagAttribute(name = "currentStep")
     public String getCurrentStep() {
         return currentStep;
     }
@@ -296,6 +301,7 @@ public class StepProgressBar extends ProgressBar {
      *
      * @return the completeStep key for showing this bar as fully complete
      */
+    @BeanTagAttribute(name = "completeStep")
     public String getCompleteStep() {
         return completeStep;
     }
@@ -313,6 +319,7 @@ public class StepProgressBar extends ProgressBar {
      *
      * @return the verticalHeight of the progress bar
      */
+    @BeanTagAttribute(name = "verticalHeight")
     public Integer getVerticalHeight() {
         return verticalHeight;
     }
@@ -330,6 +337,7 @@ public class StepProgressBar extends ProgressBar {
      *
      * @return the vertical step height used to calculate verticalHeight
      */
+    @BeanTagAttribute(name = "verticalStepHeight")
     public Integer getVerticalStepHeight() {
         return verticalStepHeight;
     }

@@ -27,8 +27,9 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para>This version of Rice is a patch release containing security fixes. There are no database changes and
-                it should be a drop-in replacement.</para>
+            <para>This version of Rice is a patch release consisting of bug fixes and small items
+        needed by Kuali application partners. There are no database changes and it should be a
+        drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
@@ -56,5 +57,97 @@
                 our public collaboration mailing list at <email>rice.collab@kuali.org</email>.
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
+    </section>
+    <section xml:id="items_addressed_in_rice">
+        <title>Items Addressed in Rice ${project.version}</title>
+      
+      <section>
+        <title>Bug Fix</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10505'>KULRICE-10505</link>] - Fix Tomcat 7 jsp compilation errors in WorkgroupTab.jsp &amp; RemoveReplaceDisplay.jsp</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10507'>KULRICE-10507</link>] - ENABLE_FIELD_LEVEL_HELP_IND in KualiForm</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10602'>KULRICE-10602</link>] - Collection Totaling   table page information does not display if full table information has been displayed.</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10652'>KULRICE-10652</link>] - PeopleFlow members of type Group should not be able to set the action request policy</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10762'>KULRICE-10762</link>] - KRAD Demo Library Collections Auto Sequence adds commas to Input Fields</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10777'>KULRICE-10777</link>] - KRAD Demo Library Sticky Header Example 5 JS error</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10893'>KULRICE-10893</link>] - PeopleFlow add Group/Role oddity</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11043'>KULRICE-11043</link>] - Person document goes into exception when attempting to deactivate a Person with a single group membership</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11045'>KULRICE-11045</link>] - Delegations throws exception when selecting role in Person Maintenance</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11166'>KULRICE-11166</link>] - Incorrect handling of null compares in RulesManagmentServiceImpl</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11197'>KULRICE-11197</link>] - DirtyCheck should not be performed on dialog return.</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11226'>KULRICE-11226</link>] - Delete Agenda does not cascade and leaves orphaned data and integrity constraints</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11293'>KULRICE-11293</link>] - MySQL scripts for 2.1.3 - 2.2.1  and 2.1 - 2.2 upgrade do not work</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11295'>KULRICE-11295</link>] - Unable to change rule action from Validation to Route to Peopleflow / Notify PeopleFlow</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11406'>KULRICE-11406</link>] - Cannot create peopleFlow docs on rice env2 or env8</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11409'>KULRICE-11409</link>] - KRMS - Cannot delete or update additional False rule from rule editor</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11415'>KULRICE-11415</link>] - KRMS: Rules: cannot save more than 2 rules</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11416'>KULRICE-11416</link>] - Internet Explorer 11 &amp; possible JavaScript issue - links not working "resize_intermediate.html was not found on this server"</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      
+      
+      <section>
+        <title>Task</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10818'>KULRICE-10818</link>] - Add custom operators to KRMS documentation</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10975'>KULRICE-10975</link>] - KEW Routing Problem in Distributed where the data exists but trying to route can't load the document</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11264'>KULRICE-11264</link>] - KRMS does not allow null or blank NL templates</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11265'>KULRICE-11265</link>] - update in AgendaBoServiceImpl and RuleBoServiceImpl not updating actionAttributes</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11278'>KULRICE-11278</link>] - Add caching annotations to translate Natural Language methods in the KRMS RuleManagementService</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      
+      
+      
     </section>
 </article>

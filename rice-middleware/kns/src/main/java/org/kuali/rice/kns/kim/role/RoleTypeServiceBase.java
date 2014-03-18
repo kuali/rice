@@ -18,12 +18,15 @@ package org.kuali.rice.kns.kim.role;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
 
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -174,7 +177,6 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 */
     @Override
 	public Map<String, String> convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, Map<String, String> qualification) {
-
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
         }
@@ -192,13 +194,28 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
         }
 
         if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification was null or blank");
+            throw new RiceIllegalArgumentException("qualification was null");
         }
 
         return Collections.unmodifiableMap(new HashMap<String, String>(qualification));
 	}
-		
-	/**
+
+    @Override
+    public Map<String, String> convertQualificationForMemberRolesAndMemberAttributes(
+            @WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "roleName") String roleName,
+            @WebParam(name = "memberRoleNamespaceCode") String memberRoleNamespaceCode,
+            @WebParam(name = "memberRoleName") String memberRoleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(
+            value = MapStringStringAdapter.class) Map<String, String> qualification, @WebParam(name = "memberQualification") @XmlJavaTypeAdapter(
+            value = MapStringStringAdapter.class) Map<String, String> memberQualification) throws RiceIllegalArgumentException {
+
+        if (memberQualification == null) {
+            throw new RiceIllegalArgumentException("memberQualification was null");
+        }
+
+        return convertQualificationForMemberRoles(namespaceCode, roleName, memberRoleNamespaceCode, memberRoleName, qualification);
+    }
+
+    /**
 	 * Performs a simple check that the qualifier on the delegation matches the qualification.
 	 * Extra qualification attributes are ignored.
 	 *

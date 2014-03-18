@@ -36,7 +36,7 @@
 --%>
 
 <c:set var="textAreaAttributes"
-    value="${DataDictionary.AttributeReferenceElements.attributes}" />
+    value="${DataDictionary.AttributeReference.attributes}" />
 
 <%
 Object incident=request.getAttribute("org.kuali.rice.kns.web.struts.pojo.KualiExceptionIncident");

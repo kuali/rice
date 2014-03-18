@@ -42,7 +42,7 @@ if (textAreaFieldLabel == null) {
 <c:set var="parameters"	value="<%=request.getParameterMap()%>" />
 
 <c:set var="textAreaAttributes"
-	value="${DataDictionary.AttributeReferenceElements.attributes}" />
+	value="${DataDictionary.AttributeReference.attributes}" />
 <c:if test="${empty textAreaFieldName}">
 	<c:set var="textAreaFieldName"
 		value="<%=request.getAttribute(KualiAction.TEXT_AREA_FIELD_NAME)%>" />

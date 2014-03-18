@@ -47,6 +47,11 @@ public final class CoreConstants {
     	public static final String VERSION_2_0 = "v2_0";
 
         /**
+         *  Name for complete version 2.0.0 of Kuali Rice which is used to compare against the version of callback services to ensure
+         *  that backwards compatibility is not broken
+         */
+        public static final String VERSION_2_0_0 = "2.0.0";
+        /**
          *  Name for complete version 2.1.2 of Kuali Rice which is used to compare against the version of callback services to ensure
          *  that backwards compatibility is not broken
          */
@@ -57,6 +62,12 @@ public final class CoreConstants {
          *  that backwards compatibility is not broken
          */
         public static final String VERSION_2_3_0 = "2.3.0";
+
+        /**
+         *  Name for complete version 2.3.4 of Kuali Rice which is used to compare against the version of callback services to ensure
+         *  that backwards compatibility is not broken
+         */
+        public static final String VERSION_2_3_4 = "2.3.4";
     	
     }
     
@@ -94,8 +105,10 @@ public final class CoreConstants {
     }
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
+    public static final String STRING_TO_TIME_FORMATS = "STRING_TO_TIME_FORMATS";
     public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
     public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";
+    public static final String TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIME_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";

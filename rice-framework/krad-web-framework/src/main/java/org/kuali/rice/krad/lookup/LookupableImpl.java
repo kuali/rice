@@ -860,8 +860,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         List<String> returnKeys = getReturnKeys(lookupView, lookupForm, dataObject);
-        List<String> secureReturnKeys = lookupView.getAdditionalSecurePropertyNames();
-        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, secureReturnKeys, dataObject);
+        Map<String, String> returnKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(returnKeys, dataObject);
 
         for (String returnKey : returnKeyValues.keySet()) {
             String returnValue = returnKeyValues.get(returnKey);

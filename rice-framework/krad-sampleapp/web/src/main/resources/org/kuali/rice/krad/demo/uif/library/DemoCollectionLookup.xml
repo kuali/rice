@@ -163,7 +163,7 @@
     <property name="resultsGroup.layoutManager.richTable.templateOptions">
       <map>
         <entry key="bAutoWidth" value="false"/>
-        <entry key="sDom" value="fTlrtip"/>
+        <entry key="sDom" value="Tlrtip"/>
         <entry key="bRetrieve" value="true"/>
         <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"
@@ -240,7 +240,7 @@
     <property name="resultsGroup.layoutManager.richTable.templateOptions">
       <map>
         <entry key="bAutoWidth" value="false"/>
-        <entry key="sDom" value="fTlrtip"/>
+        <entry key="sDom" value="Tlrtip"/>
         <entry key="bRetrieve" value="true"/>
         <entry key="sPaginationType" value="full_numbers"/>
         <entry key="oTableTools"

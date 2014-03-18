@@ -1116,7 +1116,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     }
 
     /**
-     * @param tree1 the tree2 to set
+     * @param tree2 the tree2 to set
      */
     public void setTree2(Tree<UITestObject, String> tree2) {
         this.tree2 = tree2;

@@ -138,7 +138,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
         Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label righ')]"));
+        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");

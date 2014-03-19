@@ -37,17 +37,20 @@ public class LookupServiceImpl implements LookupService {
     private LegacyDataAdapter legacyDataAdapter;
 
     @Override
+    @Deprecated
     public <T> Collection<T> findCollectionBySearchUnbounded(Class<T> example,
             Map<String, String> formProps) {
         return findCollectionBySearchHelper(example, formProps, true);
     }
 
     @Override
+    @Deprecated
     public <T> Collection<T> findCollectionBySearch(Class<T> type, Map<String, String> formProps) {
         return findCollectionBySearchHelper(type, formProps, false);
     }
 
     @Override
+    @Deprecated
     public <T> Collection<T> findCollectionBySearchHelper(Class<T> type,
             Map<String, String> formProps, boolean unbounded) {
         return findCollectionBySearchHelper(type, formProps, unbounded, null);

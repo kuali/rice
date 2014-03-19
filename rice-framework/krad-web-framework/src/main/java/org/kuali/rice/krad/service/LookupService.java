@@ -36,14 +36,18 @@ public interface LookupService {
      * @param formProps a map of attributes against which to query
      *
      * @return an unbounded collection of results from the search
+     * @deprecated please use {@link #findCollectionBySearchHelper(Class, java.util.Map, java.util.List, boolean, Integer)} instead
      */
+    @Deprecated
     <T> Collection<T> findCollectionBySearchUnbounded(Class<T> type, Map<String, String> formProps);
 
     /**
      * Returns a collection of objects based on the given search parameters.
      *
      * @return Collection returned from the search
+     * @deprecated please use {@link #findCollectionBySearchHelper(Class, java.util.Map, java.util.List, boolean, Integer)} instead
      */
+    @Deprecated
     <T> Collection<T> findCollectionBySearch(Class<T> type, Map<String, String> formProps);
 
     /**
@@ -52,7 +56,9 @@ public interface LookupService {
      * retrieved from the KNS version of LookupUtils in the LookupDao.
      *
      * @since 2.3
+     * @deprecated please use {@link #findCollectionBySearchHelper(Class, java.util.Map, java.util.List, boolean, Integer)} instead
      */
+    @Deprecated
     <T> Collection<T> findCollectionBySearchHelper(Class<T> type, Map<String, String> formProperties,
             boolean unbounded);
 

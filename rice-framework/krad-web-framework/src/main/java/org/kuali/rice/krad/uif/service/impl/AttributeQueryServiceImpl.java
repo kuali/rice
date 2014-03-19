@@ -34,7 +34,6 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -449,7 +448,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         }
 
         // run query
-        results = getLookupService().findCollectionBySearchUnbounded(queryClass, queryCriteria);
+        results = getLookupService().findCollectionBySearchHelper(queryClass, queryCriteria, new ArrayList(), true, null);
 
         // sort results
         if (!attributeQuery.getSortPropertyNames().isEmpty() && (results != null) && (results.size() > 1)) {

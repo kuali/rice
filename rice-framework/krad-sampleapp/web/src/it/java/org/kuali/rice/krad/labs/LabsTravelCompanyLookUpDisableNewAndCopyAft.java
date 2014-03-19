@@ -50,7 +50,6 @@ public class LabsTravelCompanyLookUpDisableNewAndCopyAft extends WebDriverLegacy
     	waitAndClickButtonByText("Search");
     	waitForElementPresentByXpath("//a[contains(text(),'10001')]");
     	waitForTextPresent("AAA Travel");
-    	waitForElementNotPresent(By.xpath("//a[contains(text(),'edit')]"));
     	waitForElementNotPresent(By.xpath("//a[contains(text(),'copy')]"));
     	waitForElementNotPresent(By.xpath("//a[contains(text(),'create new')]"));
     }

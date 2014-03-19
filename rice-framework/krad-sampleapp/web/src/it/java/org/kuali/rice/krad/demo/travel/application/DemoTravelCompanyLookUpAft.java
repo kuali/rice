@@ -71,6 +71,12 @@ public class DemoTravelCompanyLookUpAft extends WebDriverLegacyITBase {
     	String activeResults [] ={"10000","Value Rentals","true"};
     	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
     	assertTextPresent(activeResults);
+    	waitAndClickButtonByText(CLEAR_VALUES);
+    	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+    	waitAndClickButtonByText(SEARCH);
+    	String activeResultsNo [] ={"10001","AAA Travel","false"};
+    	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
+    	assertTextPresent(activeResultsNo);
     }
 
     @Test

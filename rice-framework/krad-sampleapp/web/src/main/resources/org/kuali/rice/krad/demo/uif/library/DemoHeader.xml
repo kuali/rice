@@ -126,7 +126,9 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Header-Example14 start-->
-        <bean parent="Uif-ImageCaptionHeader"/>
+        <bean parent="Uif-Image"
+              p:source="@{#ConfigProperties['krad.externalizable.images.url']}computer_programming.jpg"
+              p:altText="Computer programming"/>
         <!-- ex:Demo-Header-Example14 end-->
       </list>
     </property>

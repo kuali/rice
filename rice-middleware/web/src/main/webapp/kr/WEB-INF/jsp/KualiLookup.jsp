@@ -150,7 +150,6 @@
 					</c:if>	
 					
 					<c:if test="${KualiForm.formKey!=''}">
-						<!-- KULRICE-8092: Enter key won't return values in Parameter Component in IE-->
 						<input name="" type="t" value="" style="display:none"/>
 						
 						<c:if test="${!empty KualiForm.backLocation}"><a

@@ -323,6 +323,71 @@
     <section>
         <title>Java Persistence API</title>
         <section>
+            <title>Persistence Providers</title>
+            <para>Persistence providers are implementations of the Java Persistence API (JPA) specification.</para>
+            <note><para>Currently Kuali Rice only has support for the EclipseLink JPA vendor.</para></note>
+            <para>When creating a new instance of the JpaPersistenceProvider, a reference to a "shared" entity manager like that created by
+                Spring's org.springframework.orm.jpa.support.SharedEntityManagerBean must be injected. Additionally, a reference to a 
+                DataObjectService must be injected as well.</para>
+            <para><emphasis role="bold">Spring JpaPersistenceProvider Setup</emphasis></para>
+            <programlisting>
+<![CDATA[
+<util:list id="location.managedClassNames">
+   <value>org.kuali.rice.foo.FooBo</value>
+   <value>org.kuali.rice.foo.BarBo</value>
+</util:list>
+
+<bean id="location.entityManagerFactory" class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+    p:jtaDataSource-ref="locationDataSource" p:persistenceUnitName="rice.location"
+    p:managedClassNames-ref="location.managedClassNames"/>
+
+<bean id="dataObjectService" class="org.kuali.rice.krad.data.KradDataFactoryBean"/>
+            
+<bean id="sharedEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+    p:entityManagerFactory-ref="entityManagerFactory" />
+
+<bean id="jpaPersistenceProvider" class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+    p:dataObjectService-ref="dataObjectService" p:sharedEntityManager-ref="sharedEntityManager"/>
+]]>
+        </programlisting>
+            <para>The JpaPersistenceProvider must then be registered with the Provider Registry in one of two ways:</para>
+            <orderedlist>
+                <listitem><para>Use a ProviderRegistar bean</para></listitem>
+                <listitem><para>Inject into the ModuleConfiguration</para></listitem>
+            </orderedlist>
+            <para><emphasis role="bold">Inject into ProviderRegistar bean</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="location.providerRegistrar" class="org.kuali.rice.krad.data.provider.ProviderRegistrar">
+    <property name="providerRegistry" ref="providerRegistry" />
+    <property name="providers">
+      <util:list>
+        <ref bean="location.jpaPersistenceProvider" />
+        <ref bean="location.metadataProvider" />
+      </util:list>
+    </property>
+  </bean>
+ ]]>
+        </programlisting>
+            <para><emphasis role="bold">Inject into the ModuleConfiguration</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="location"/>
+    <property name="dataSourceName" value="locationDataSource"/>
+    ...
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
+    </property>
+    ...
+</bean>      
+]]>
+        </programlisting>
+        </section>
+        <section>
             <title>Metadata Provider</title>
             <para>
                 To assist with the processing and displaying of information, Kuali Rice comes with a JPA-based

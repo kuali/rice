@@ -24,7 +24,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.Provider;

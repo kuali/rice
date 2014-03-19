@@ -415,6 +415,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param attributeQuery attribute query instance to perform query for
      * @param queryParameters map of parameters that will be used in the query criteria
      * @param additionalCriteria map of additional name/value pairs to add to the critiera
+     * @param wildcardAsLiteralPropertyNames - List of property names with wildcards disabled
      * @return results of query
      */
     protected Collection<?> executeAttributeQueryCriteria(AttributeQuery attributeQuery,

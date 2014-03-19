@@ -292,6 +292,7 @@ public class RuleTemplateXmlParser {
     
             // set simple values
             ruleDefaults.setRuleTemplate(updatedRuleTemplate);
+            ruleDefaults.setRuleTemplateId(updatedRuleTemplate.getId());
             ruleDefaults.setDocTypeName(DUMMY_DOCUMENT_TYPE);
             ruleDefaults.setTemplateRuleInd(Boolean.TRUE);
             ruleDefaults.setCurrentInd(Boolean.TRUE);

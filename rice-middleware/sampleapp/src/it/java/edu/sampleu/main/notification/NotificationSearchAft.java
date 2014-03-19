@@ -52,9 +52,9 @@ public class NotificationSearchAft extends WebDriverLegacyITBase {
     
     private void testNotificationSearch() throws Exception{
         selectFrameIframePortlet();
-        clearTextByName("documentTypeName");
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
-        waitForTextPresent("items retrieved, displaying all items.");
+        checkForIncidentReport();
+        // No results
     }
     
     @Test

@@ -27,17 +27,18 @@ public class LabsTravelCompanyLookUpDisableNewAndCopyAft extends WebDriverLegacy
     /**
      * /kr-krad/uicomponents?viewId=Lab-NativeAutocomplete-DisableField
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=KradMaintenanceSample-PageR1C2&formKey=baada552-384f-42b9-be02-11e86a72b165&cacheKey=u8vxw39te7rmg81wu62fv011qb";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=KradMaintenanceSample-PageR1C2";
 
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
-//    @Override
-//    protected void navigate() throws Exception {
-//    	waitAndClickByLinkText("Native Autocomplete Field Disabled");
-//    }
+    @Override
+    protected void navigate() throws Exception {
+        waitAndClickByLinkText("Maintenance");
+    	waitAndClickByLinkText("Maintenance Sample - Disable New and Copy");
+    }
 
     protected void testTravelCompanyLookUpDisableNewAndCopy() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Disable New and Copy");
@@ -60,9 +61,9 @@ public class LabsTravelCompanyLookUpDisableNewAndCopyAft extends WebDriverLegacy
         passed();
     }
 
-//    @Test
-//    public void testTravelCompanyLookUpDisableNewAndCopyNav() throws Exception {
-//    	testTravelCompanyLookUpDisableNewAndCopy();
-//        passed();
-//    }
+    @Test
+    public void testTravelCompanyLookUpDisableNewAndCopyNav() throws Exception {
+    	testTravelCompanyLookUpDisableNewAndCopy();
+        passed();
+    }
 }

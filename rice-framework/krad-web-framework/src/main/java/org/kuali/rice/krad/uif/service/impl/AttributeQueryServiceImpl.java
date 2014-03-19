@@ -91,7 +91,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 results = (Collection<?>) queryMethodResult;
             }
         } else {
-            results = executeAttributeQueryCriteria(suggestQuery, queryParameters, additionalCriteria);
+            results = executeAttributeQueryCriteria(suggestQuery, queryParameters, additionalCriteria, new ArrayList<String>());
         }
 
         // build list of suggest data from result records
@@ -295,7 +295,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             }
         } else {
             // execute field query as object lookup
-            Collection<?> results = executeAttributeQueryCriteria(fieldQuery, queryParameters, null);
+            Collection<?> results = executeAttributeQueryCriteria(fieldQuery, queryParameters, null, new ArrayList<String>(queryParameters.keySet()));
 
             if ((results != null) && !results.isEmpty()) {
                 // expect only one returned row for field query
@@ -418,7 +418,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @return results of query
      */
     protected Collection<?> executeAttributeQueryCriteria(AttributeQuery attributeQuery,
-            Map<String, String> queryParameters, Map<String, String> additionalCriteria) {
+            Map<String, String> queryParameters, Map<String, String> additionalCriteria,
+            List<String> wildcardAsLiteralPropertyNames) {
         Collection<?> results = null;
 
         // build criteria for query
@@ -448,7 +449,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         }
 
         // run query
-        results = getLookupService().findCollectionBySearchHelper(queryClass, queryCriteria, new ArrayList(), true, null);
+        results = getLookupService().findCollectionBySearchHelper(queryClass, queryCriteria, wildcardAsLiteralPropertyNames, true, null);
 
         // sort results
         if (!attributeQuery.getSortPropertyNames().isEmpty() && (results != null) && (results.size() > 1)) {

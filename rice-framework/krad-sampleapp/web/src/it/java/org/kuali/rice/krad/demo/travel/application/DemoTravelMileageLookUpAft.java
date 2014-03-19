@@ -62,6 +62,14 @@ public class DemoTravelMileageLookUpAft extends WebDriverLegacyITBase {
     	String activeResults [] ={"10000","DO","Domestic","0.305","true"};
     	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
     	assertTextPresent(activeResults);
+    	waitAndClickButtonByText(CLEAR_VALUES);
+    	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+    	waitAndClickButtonByText(SEARCH);
+    	waitForTextPresent("No values match this search.");
+    	//No value present so asserting the message.
+		//    	String activeResults [] ={"10000","DO","Domestic","0.305","true"};
+		//    	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
+		//    	assertTextPresent(activeResults);
     }
 
     @Test

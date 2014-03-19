@@ -100,12 +100,25 @@
     <!-- ex:Demo-StickyFooter-Example2 start-->
     <property name="items">
       <list>
-        <bean parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
-        <bean parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View7-Page1" parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View7-Page2" parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
       </list>
     </property>
     <!-- ex:Demo-StickyFooter-Example2 end-->
     <property name="header.metadataText" value="Sticky Footer: page footer"/>
+    <property name="navigation">
+      <bean parent="Uif-MenuNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View7-Page1"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View7-Page2"/>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Demo-StickyHeaderFooter-View8" parent="Demo-StickyHeaderFooter-BaseView">
@@ -122,14 +135,27 @@
     <!-- ex:Demo-StickyFooter-Example4 start-->
     <property name="items">
       <list>
-        <bean parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
-        <bean parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View9-Page1" parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View9-Page2" parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
       </list>
     </property>
     <property name="stickyApplicationFooter" value="true"/>
     <property name="stickyFooter" value="true"/>
     <!-- ex:Demo-StickyFooter-Example4 end-->
     <property name="header.metadataText" value="Sticky Footer: All"/>
+    <property name="navigation">
+      <bean parent="Uif-MenuNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View9-Page1"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View9-Page2"/>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
   <bean id="Demo-StickyHeaderFooter-View10" parent="Demo-StickyHeaderFooter-BaseView">
@@ -137,13 +163,26 @@
     <!-- ex:Demo-StickyFooter-Example5 start-->
     <property name="items">
       <list>
-        <bean parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
-        <bean parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View10-Page1" parent="Demo-StickyHeaderFooter-Page1" p:stickyFooter="true"/>
+        <bean id="Demo-StickyHeaderFooter-View10-Page2" parent="Demo-StickyHeaderFooter-Page2" p:stickyFooter="true"/>
       </list>
     </property>
     <property name="stickyFooter" value="true"/>
     <!-- ex:Demo-StickyFooter-Example5 end-->
     <property name="header.metadataText" value="Sticky Footer: Page and View"/>
+    <property name="navigation">
+      <bean parent="Uif-MenuNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View10-Page1"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-View10-Page2"/>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
 </beans>

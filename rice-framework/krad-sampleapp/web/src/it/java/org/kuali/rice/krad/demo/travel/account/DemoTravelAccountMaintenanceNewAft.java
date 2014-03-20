@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 /**
@@ -105,8 +106,13 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountMaintenanceNew() throws Exception {
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.number","a1");
-        assertTextPresent("Travel Account Maintenance");
+        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
+        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='IAT']");
+        clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
+        waitAndClickButtonByText("submit");
+        waitForTextPresent("Document was successfully submitted.");
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

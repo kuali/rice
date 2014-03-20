@@ -713,7 +713,12 @@ function setupPage(validate) {
     var headerUpdateDiv = jQuery("#" + kradVariables.VIEW_HEADER_UPDATE);
     var viewHeaderUpdate = headerUpdateDiv.find(".uif-viewHeader").detach();
     if (viewHeaderUpdate.length && !initialViewLoad) {
+        var currentHeader = jQuery(".uif-viewHeader");
+        if (currentHeader.data("offset")) {
+            viewHeaderUpdate.data("offset", currentHeader.data("offset"));
+        }
         jQuery(".uif-viewHeader").replaceWith(viewHeaderUpdate);
+        stickyContent = jQuery("[data-sticky='true']:visible");
     }
     headerUpdateDiv.remove();
 

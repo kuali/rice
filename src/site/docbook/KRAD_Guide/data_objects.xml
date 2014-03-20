@@ -323,6 +323,142 @@
     <section>
         <title>Java Persistence API</title>
         <section>
+            <title>KRAD Entity Manager Factories</title>
+            <para><emphasis role="bold">KradEntityManagerFactoryBean</emphasis></para>
+            <para>
+                The KradEntitymanagerFactory is a KRAD-managed entity manager factory bean which can be used to configure a JPA
+                persistence unit using the Spring Framework. This implementation does not support the use of a custom
+                PersistenceUnitManager, but rather stores and manages one internally. This is intended to be an alternative to
+                direct usage of Spring's LocalContainerEntityManagerFactoryBean in order to make JPA configuration with
+                KRAD simpler.
+            </para>
+            <para><emphasis role="bold">Configuration</emphasis></para>
+            <para>
+                The minimal configuration for the KRADEntityManagerFactory is a persistence unit name, JTA or non-JTA datasource,
+                and JPA vendor adapter.
+            </para>
+            <note><para>Persistence unit names must be unique</para></note>
+            
+            <para><emphasis role="bold">Behavior</emphasis></para>
+            <para> When leveraging this class, persistence.xml files are not used. Rather,
+                persistence unit configuration is loaded via the various settings provided on this
+                factory bean which contain everything needed to create the desired persistence unit
+                configuration in the majority of cases. If a KRAD application needs more control
+                over the configuration of the persistence unit or wants to use persistence.xml and
+                JPA's default bootstrapping and classpath scanning behavior, an EntityManagerFactory
+                can be configured using the other classes provided by the Spring framework or by
+                other means as needed. See the LocalContainerEntityManagerFactoryBean class for an
+                alternative approach. </para>
+            <para> Only one of JTA or non-JTA datasource can be set. Depending on which one is set,
+                the underlying persistence unit will have it's
+                javax.persistence.spi.PersistenceUnitTransactionType set to either RESOURCE_LOCAL or
+                JTA. If both of these are set, then this class will throw an IllegalStateException
+                when the afterPropertiesSet method is invoked by the Spring Framework. </para>
+            <para> Elsewhere, this class delegates to implementations of
+                LocalContainerEntityManagerFactoryBean and DefaultPersistenceUnitManager, so
+                information on the specific behavior of some of the settings and methods on this
+                class can be found on the javadoc for those classes as well. </para>
+            <para><emphasis role="bold">JPA Property Defaults</emphasis></para>
+            <para>
+                When the afterPropertiesSet method is invoked, this class will scan the current config context for JPA
+                properties and make them available to the persistence unit. It will combine these with any properties that were set
+                directly on this factory bean via the setJpaProperties(java.util.Properties) or the setJpaPropertyMap(java.util.Map)
+                methods.
+            </para>
+            <para>
+                This scanning occurs in the following order, items later in the list will override any properties from earlier if
+                they happen to set the same effective property value:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        Scan ConfigContext for properties that begin with "rice.krad.jpa.global." For any found, strip off this prefix
+                        prior to placing it into the JPA property map.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para> Scan ConfigContext for properties that begin with
+                        "rice.krad.jpa.&lt;persistence-unit-name&gt;" where "persistence-unit-name"
+                        is the configured name of this persistence unit. For any found, strip off
+                        this prefix prior to placing it into the JPA property map. </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Invoke loadCustomJpaDefaults(java.util.Map) method to allow for possible subclass customization of JPA
+                        property defaults.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Load the JPA properties configured via setJpaPropertyMap(java.util.Map) method and
+                        setJpaProperties(java.util.Properties) method. It is potentially non-deterministic which of these setters will
+                        take precedence over the other, so it is recommended to only invoke one of them on a given instance of this
+                        factory bean.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para><emphasis role="bold">KradEclipseLinkEntityManagerFactoryBean</emphasis></para>
+            <para>
+                The KradEclipseLinkEntityManagerFactory is a KRAD-managed enitity manager factory which can be used to configure an
+                EclipseLink persistence unit using JPA. This class inherits from the KradEntityManagerFactoryBean class, but adds the
+                following behavior:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>Sets the jpa vendor adapter to an EclipsLink vendor adapter</para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Detects if Java Transation API (JTA) is being used and, if so sets a JPA property value accordingly to allow
+                        EclipseLink integration with the Java Transation API
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Configures an EclipsLink customizer to allow a configurable sequence management strategy.</para>
+                </listitem>
+                <listitem>
+                    <para>Disables the shared cache.</para>
+                </listitem>
+            </orderedlist>
+            <para><emphasis role="bold">Typical KradEclipsLinkEntityManagerFactoryBean Configuration</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="sampleApplicationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<property name="preferredDataSourceParams">
+		<list>
+			<value>sampleApplication.datasource</value>
+		</list>
+	</property>
+	<property name="preferredDataSourceJndiParams">
+		<list>
+			<value>sampleApplication.datasource.jndi.location</value>
+		</list>
+	</property>
+	<property
+		name="serverDataSource"
+		value="false" />
+</bean>
+
+<bean id="jpaPersistenceUnitName" class="java.lang.String">
+		<constructor-arg value="sample-application" />
+</bean>
+
+<util:list id="sampleJpaPackagesToScan">
+	<value>org.kuali.rice.krad.sampleapp.jpa</value>
+	<value>org.kuali.rice.krad.sampleapp.bo</value>
+</util:list>
+
+// empty since we are doing package scans
+<util:list id="managedClassNames" />
+
+<bean id="entityManagerFactory" class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+    p:jtaDataSource-ref="sampleApplicationDataSource" p:persistenceUnitName-ref="jpaPersistenceUnitName"
+    p:packagesToScan-ref="sampleJpaPackagesToScan" p:managedClassNames-ref="managedClassNames" />
+]]>
+            </programlisting>
+
+        </section>
+        <section>
             <title>Persistence Providers</title>
             <para>Persistence providers are implementations of the Java Persistence API (JPA) specification.</para>
             <note><para>Currently Kuali Rice only has support for the EclipseLink JPA vendor.</para></note>

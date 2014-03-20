@@ -81,23 +81,27 @@ public class RuleDAOJpa implements RuleDAO {
 		"where newRsp.rule_id=? and "+
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
-	@Override
+    @Override
     public RuleBaseValues save(RuleBaseValues ruleBaseValues) {
-	    if ( ruleBaseValues == null ) {
-	        return null;
-	    }
-	    if ( StringUtils.isBlank( ruleBaseValues.getId() ) ) {
-	        String ruleId = MaxValueIncrementerFactory.getIncrementer(KEWServiceLocator.getDataSource(), "KREW_RTE_TMPL_S" ).nextStringValue();
-	        ruleBaseValues.setId(ruleId);
-	    }
+        if ( ruleBaseValues == null ) {
+            return null;
+        }
+
+        ruleBaseValues = getDataObjectService().save(ruleBaseValues);
+
         if ( ruleBaseValues.getRoleResponsibilities() != null ) {
             for ( RuleResponsibilityBo resp : ruleBaseValues.getRuleResponsibilities() ) {
                 resp.setRuleBaseValues(ruleBaseValues);
                 resp.setRuleBaseValuesId(ruleBaseValues.getId());
             }
         }
-        return getDataObjectService().save(ruleBaseValues);
-	}
+
+        if ( ruleBaseValues.getRuleResponsibilities() != null && ruleBaseValues.getRuleResponsibilities().size() > 0 ) {
+            return getDataObjectService().save(ruleBaseValues);
+        } else {
+            return ruleBaseValues;
+        }
+    }
 
 	@Override
     public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {

@@ -20,12 +20,20 @@ import javax.persistence.Converter;
 import java.math.BigDecimal;
 
 /**
- * Used to convert 0/1 boolean where the field is stored as a Decimal numeric type
+ * Converts values of 0 or 1 to and from false or true where the field is stored as a Decimal numeric type.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class Boolean01BigDecimalConverter implements AttributeConverter<Boolean, BigDecimal> {
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The conversion treats the values as follows: 1 is true and 0 is false.</p>
+     *
+     * This implementation will convert from a false or true value to a 0 or 1 Decimal numeric type value.
+     */
     @Override
     public BigDecimal convertToDatabaseColumn(Boolean objectValue) {
         if (objectValue == null) {
@@ -34,6 +42,11 @@ public class Boolean01BigDecimalConverter implements AttributeConverter<Boolean,
         return objectValue ? BigDecimal.ONE : BigDecimal.ZERO;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a 0 or 1 Decimal numeric type value to a false or true value.
+     */
     @Override
     public Boolean convertToEntityAttribute(BigDecimal dataValue){
         if(dataValue == null){

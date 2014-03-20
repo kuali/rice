@@ -23,13 +23,18 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 
 /**
- * This class calls core service to hash values going to the database.
+ * Calls the core service to hash values going to the database.
  * 
  *  @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class HashConverter implements AttributeConverter<String, String> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation hashes the value going to the database.
+     */
 	@Override
 	public String convertToDatabaseColumn(String objectValue) {
 		// don't attempt to encrypt nulls or empty strings
@@ -51,6 +56,11 @@ public class HashConverter implements AttributeConverter<String, String> {
 		}
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation directly returns the hash value coming from the database.
+     */
 	@Override
 	public String convertToEntityAttribute(String dataValue) {
 		// don't attempt to decrypt nulls or empty strings

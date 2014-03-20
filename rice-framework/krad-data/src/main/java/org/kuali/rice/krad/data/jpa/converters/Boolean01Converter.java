@@ -20,13 +20,20 @@ import javax.persistence.Converter;
 import java.math.BigInteger;
 
 /**
- * A JPA converter that converts integer types of 0 or 1 to and from Boolean false and true.
+ * Converts values of 0 or 1 to and from false or true.
+ *
+ * <p>The conversion treats the values as follows: 1 is true and 0 is false.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class Boolean01Converter implements AttributeConverter<Boolean, BigInteger> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a false or true value to a 0 or 1 value.
+     */
 	@Override
 	public BigInteger convertToDatabaseColumn(Boolean objectValue) {
 		if (objectValue == null) {
@@ -35,6 +42,11 @@ public class Boolean01Converter implements AttributeConverter<Boolean, BigIntege
 		return objectValue ? BigInteger.valueOf(1) : BigInteger.valueOf(0);
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a false or true value to a 0 or 1 value.
+     */
 	@Override
 	public Boolean convertToEntityAttribute(BigInteger dataValue) {
 		if (dataValue == null) {

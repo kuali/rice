@@ -19,13 +19,20 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * Converts true/false represented by the characters "T" and "F" to and from boolean.
+ * Converts true/false represented by the characters "T" and "F" to and from true and false.
+ *
+ * <p>The conversion treats the values as follows: "T" is true and "F" is false.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class BooleanTFConverter implements AttributeConverter<Boolean, String> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a false or true value to an "F" or "T" value.
+     */
 	@Override
 	public String convertToDatabaseColumn(Boolean objectValue) {
 		if (objectValue == null) {
@@ -34,6 +41,11 @@ public class BooleanTFConverter implements AttributeConverter<Boolean, String> {
 		return objectValue ? "T" : "F";
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a "F" or "T" value to a false or true.
+     */
 	@Override
 	public Boolean convertToEntityAttribute(String dataValue) {
 		if (dataValue == null) {

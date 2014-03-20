@@ -22,7 +22,9 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * Converts true/false represented by the characters "Y" and "N" to and from boolean.
+ * Converts true/false represented by a set of yes characters and the character "N" to and from true and false.
+ *
+ * <p>The conversion treats the values as follows: "Y", "y", "true", and "TRUE" are all true and "N" is false.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -30,6 +32,9 @@ import javax.persistence.Converter;
 		autoApply = true)
 public class BooleanYNConverter implements AttributeConverter<Boolean, String> {
 
+    /**
+     * Defines the set of values that all correspond to yes.
+     */
 	protected static final Set<String> YES_VALUES = new HashSet<String>();
 	static {
 		YES_VALUES.add("Y");
@@ -38,6 +43,11 @@ public class BooleanYNConverter implements AttributeConverter<Boolean, String> {
 		YES_VALUES.add("TRUE");
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a false or true value to an "N" or "Y" value.
+     */
 	@Override
 	public String convertToDatabaseColumn(Boolean objectValue) {
 		if (objectValue == null) {
@@ -46,6 +56,11 @@ public class BooleanYNConverter implements AttributeConverter<Boolean, String> {
 		return objectValue ? "Y" : "N";
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a "F" or any of the yes values to a false or true.
+     */
 	@Override
 	public Boolean convertToEntityAttribute(String dataValue) {
 		if (dataValue == null) {

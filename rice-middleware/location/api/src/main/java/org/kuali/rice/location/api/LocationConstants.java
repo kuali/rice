@@ -24,6 +24,8 @@ import org.kuali.rice.core.api.CoreConstants;
  */
 public final class LocationConstants {
 
+    public static final String NAMESPACE_CODE = "KR-LOC";
+
     public final static class PrimaryKeyConstants {
 		public static final String CODE = "code";
         public static final String COUNTRY_CODE = "countryCode";
@@ -48,5 +50,9 @@ public final class LocationConstants {
         private Namespaces() {
 		    throw new UnsupportedOperationException("do not call");
 	    }
+    }
+
+    public static class ParameterKey {
+        public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
     }
 }

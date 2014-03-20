@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel;
+package edu.sampleu.krad.configview;
 
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DirtyFieldsCheckBkMrkAft extends DirtyFieldsAftBase {
+public class ConfigurationTestViewBkMrkAft extends ConfigurationTestViewAftBase {
 
     @Test
-    public void testDirtyFieldsCheckBookmark() throws Exception {
-        testDirtyFieldsCheckBookmark(this);
+    public void testConfigurationTestViewBookmark() throws Exception {
+        testConfigurationTestViewBookmark(this);
     }
-
 }

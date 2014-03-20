@@ -69,7 +69,7 @@ public class DialogTestViewAft extends WebDriverLegacyITBase {
         validateDialogWithExtended();
         waitAndClickButtonByText("Displays Response in LightBox");
         validateDialogWithDisplayResponseInLightBox();
-        waitAndClickButtonByText("Tell Me a Story");
+        waitAndClickButtonByText("Tell Me A Story");
         waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
         waitAndClickButtonByText("Close");
         waitAndClickLinkContainingText("Cancel");

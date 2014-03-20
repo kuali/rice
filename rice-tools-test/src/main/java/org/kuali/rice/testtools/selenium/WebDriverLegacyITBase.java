@@ -1013,6 +1013,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void back() {
+        jGrowl("Click browser back button");
         driver.navigate().back();
     }
 

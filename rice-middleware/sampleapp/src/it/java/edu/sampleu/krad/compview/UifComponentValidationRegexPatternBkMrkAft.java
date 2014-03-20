@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel;
+package edu.sampleu.krad.compview;
 
 import org.junit.Test;
 
 /**
- * tests that regex validation works as expected on input fields where it is configured
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifComponentValidationRegexPatternNavAft extends UifComponentValidationRegexPatternAftBase {
+public class UifComponentValidationRegexPatternBkMrkAft extends UifComponentValidationRegexPatternAftBase {
 
     @Test
-    public void testValidCharacterConstraintNav() throws Exception {
-        testValidCharacterConstraintNav(this);
+    public void testValidCharacterConstraintBookmark() throws Exception {
+        testValidCharacterConstraintBookmark(this);
     }
 }
+

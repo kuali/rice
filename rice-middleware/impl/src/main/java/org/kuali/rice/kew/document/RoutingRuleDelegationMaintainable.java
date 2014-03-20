@@ -172,7 +172,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	@Override
 	public void prepareForSave() {
 		super.prepareForSave();
-		WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
+//		WebRuleUtils.translateResponsibilitiesForSave(getThisRule());
 	}
 	
 

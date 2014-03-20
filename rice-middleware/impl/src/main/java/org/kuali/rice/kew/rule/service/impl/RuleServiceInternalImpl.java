@@ -34,6 +34,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -92,6 +93,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.cache.Cache;
 
 
+@SuppressWarnings("deprecation")
 public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     private static final String XML_PARSE_ERROR = "general.error.parsexml";
@@ -160,6 +162,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         makeCurrent(findByDocumentId(documentId));
     }
 
+    @SuppressWarnings("unchecked")
     public void makeCurrent(List<RuleBaseValues> rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
@@ -249,6 +252,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      * aren't being added or removed.  This is why it doesn't perform some of the functions like checking
      * for delegation rules that were removed from a parent rule.
      */
+    @SuppressWarnings("unchecked")
     public void makeCurrent2(List<RuleBaseValues> rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
@@ -347,7 +351,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         generateRuleNameIfNeeded(rule);
         assignResponsibilityIds(rule);
         rule.setCurrentInd(Boolean.TRUE);
-        Timestamp date = new Timestamp(System.currentTimeMillis());
+        Timestamp date = CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp();
         rule.setActivationDate(date);
         rule.setDeactivationDate(null);
         rule.setVersionNumber(null);
@@ -374,6 +378,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
             if(StringUtils.isBlank(ruleResponsibilityBo.getId())){
                 ruleResponsibilityBo.setVersionNumber(null);
             }
+            ruleResponsibilityBo.setRuleBaseValues(rule);
         }
 
 
@@ -413,6 +418,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return getRuleDAO().getParentRule(ruleBaseValuesId);
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     private Set getResponsibilityIdsFromGraph(RuleBaseValues rule, boolean isRuleCollecting) {
         Set responsibilityIds = new HashSet();
         for (Object element : rule.getRuleResponsibilities()) {
@@ -464,6 +470,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      * This method will find any old delegation rules on the previous version of the parent rule which are not on the
      * new version of the rule so that they can be marked non-current.
      */
+    @SuppressWarnings("unchecked")
     private List<RuleBaseValues> findOldDelegationRules(RuleBaseValues oldRule, RuleBaseValues newRule, PerformanceLogger performanceLogger) {
         performanceLogger.log("Begin to get delegation rules.");
         List<RuleBaseValues> oldDelegations = getRuleDAO().findOldDelegations(oldRule, newRule);
@@ -515,7 +522,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         if (documentId != null) {
             workflowDocument = WorkflowDocumentFactory.loadDocument(principal.getPrincipalId(), documentId);
         } else {
-            List rules = new ArrayList();
+            List<RuleBaseValues> rules = new ArrayList<RuleBaseValues>();
             rules.add(delegateRule);
             rules.add(parentRule);
             workflowDocument = WorkflowDocumentFactory.createDocument(principal.getPrincipalId(), getRuleDocumentTypeName(
@@ -565,6 +572,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return title.toString();
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void validate(RuleBaseValues ruleBaseValues, List errors) {
         if (errors == null) {
             errors = new ArrayList();
@@ -597,6 +605,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegationBo ruleDelegation, List errors) {
         if (errors == null) {
@@ -683,6 +692,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return getRuleDAO().findByDocumentId(documentId);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId,
             Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
@@ -690,6 +700,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 activeInd, extensionValues, workflowIdDirective);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List<RuleBaseValues> searchByTemplate(String docTypeName, String ruleTemplateName, String ruleDescription, String groupId, String principalId,
             Boolean workgroupMember, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection<String> actionRequestCodes) {
@@ -766,13 +777,15 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         performanceLogger.log("Time to fetchRules by template " + ruleTemplateName + " not caching.");
         return getRuleDAO().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateId, getDocGroupAndTypeList(documentType), effectiveDate);
     }
+    @SuppressWarnings("unchecked")
     @Override
     public List fetchAllRules(boolean currentRules) {
         return getRuleDAO().fetchAllRules(currentRules);
     }
 
+    @SuppressWarnings("rawtypes")
     private List getDocGroupAndTypeList(String documentType) {
-        List docTypeList = new ArrayList();
+        List<String> docTypeList = new ArrayList<String>();
         DocumentTypeService docTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
         DocumentType docType = docTypeService.findByName(documentType);
         while (docType != null) {
@@ -782,8 +795,9 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         return docTypeList;
     }
 
+    @SuppressWarnings("rawtypes")
     private Integer getNextVersionNumber(RuleBaseValues currentRule) {
-        List candidates = new ArrayList();
+        List<Integer> candidates = new ArrayList<Integer>();
         candidates.add(currentRule.getVersionNbr());
         List pendingRules = ruleDAO.findByPreviousRuleId(currentRule.getId());
         for (Iterator iterator = pendingRules.iterator(); iterator.hasNext();) {

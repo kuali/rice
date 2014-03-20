@@ -206,7 +206,7 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
 
     public GroupBo getGroupBo() {
         GroupBo groupBo = null;
-        if (StringUtils.isNotBlank(getGroupReviewerName())) {
+        if (StringUtils.isNotBlank(getGroupReviewerName()) && StringUtils.isNotBlank(getGroupReviewerNamespace()) ) {
             if ( groupBo == null ) {
                 groupBo = GroupBo.from(KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(
                         getGroupReviewerNamespace(), getGroupReviewerName()));
@@ -219,27 +219,27 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
         return new PersonImpl();
     }
 
-        /**
-       * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property
-       * becomes null as a result of the refresh() method on the PersistableBusinessObjectBase superclass, an attempt is made to retrieve
-       * it by calling refreshReferenceObject() for the property. If that also fails, then the RuleBaseValues instance that was in-place
-       * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
-       * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
-       *
-       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refresh()
-       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
-       */
-	@Override
-	public void refresh() {
-		RuleBaseValues oldRuleBaseValues = this.getDelegationRule();
-		super.refresh();
-		if (this.getDelegationRule() == null) {
-			this.refreshReferenceObject("delegationRuleBaseValues");
-			if (this.getDelegationRule() == null) {
-				this.setDelegationRule(oldRuleBaseValues);
-			}
-		}
-	}
+//        /**
+//       * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property
+//       * becomes null as a result of the refresh() method on the PersistableBusinessObjectBase superclass, an attempt is made to retrieve
+//       * it by calling refreshReferenceObject() for the property. If that also fails, then the RuleBaseValues instance that was in-place
+//       * prior to the refresh() superclass call will be used as the delegationRuleBaseValues property's value. This override is necessary
+//       * in order to prevent certain exceptions during the cancellation of a rule delegation maintenance document.
+//       *
+//       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refresh()
+//       * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
+//       */
+//	@Override
+//	public void refresh() {
+//		RuleBaseValues oldRuleBaseValues = this.getDelegationRule();
+//		super.refresh();
+//		if (this.getDelegationRule() == null) {
+//			this.refreshReferenceObject("delegationRuleBaseValues");
+//			if (this.getDelegationRule() == null) {
+//				this.setDelegationRule(oldRuleBaseValues);
+//			}
+//		}
+//	}
 
     public static org.kuali.rice.kew.api.rule.RuleDelegation to(RuleDelegationBo bo) {
         if (bo == null) {

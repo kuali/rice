@@ -2339,7 +2339,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             roleMemberAttrBo.setKimTypeId(kimTypeId);
             roleMemberAttrBo.setAssignedToId(roleMember.getId());
             // look up the attribute ID
-            roleMemberAttrBo.setKimAttributeId(getKimAttributeId(entry.getKey()));
+            roleMemberAttrBo.setKimAttributeId(getKimAttributeId(kimTypeId, entry.getKey()));
 
             Map<String, String> criteria = new HashMap<String, String>();
             criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, roleMemberAttrBo.getKimAttributeId());
@@ -2366,7 +2366,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             delegateMemberAttrBo.setKimTypeId(kimTypeId);
             delegateMemberAttrBo.setAssignedToId(delegationMember.getDelegationMemberId());
             // look up the attribute ID
-            delegateMemberAttrBo.setKimAttributeId(getKimAttributeId(entry.getKey()));
+            delegateMemberAttrBo.setKimAttributeId(getKimAttributeId(kimTypeId, entry.getKey()));
             Map<String, String> criteria = new HashMap<String, String>();
             criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, delegateMemberAttrBo.getKimAttributeId());
             criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());

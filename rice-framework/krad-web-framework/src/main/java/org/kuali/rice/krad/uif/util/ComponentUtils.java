@@ -280,11 +280,11 @@ public class ComponentUtils {
                     continue;
                 }
 
-                if (component instanceof DataBinding) {
+                if (currentElement instanceof DataBinding) {
                     if (LOG.isDebugEnabled()) {
-                        LOG.info("setting nested binding prefix '" + addBindingPrefix + "' on " + component);
+                        LOG.info("setting nested binding prefix '" + addBindingPrefix + "' on " + currentElement);
                     }
-                    prefixBindingPath((DataBinding) component, addBindingPrefix);
+                    prefixBindingPath((DataBinding) currentElement, addBindingPrefix);
                 }
 
                 elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());

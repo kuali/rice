@@ -279,6 +279,72 @@
                     allow new codes to be created quickly (without the need for a table and
                     mapping). </para></tip>
         </section>
+        <section>
+        	<title>Extending Data Objects</title>
+        	<para>At times, there is a need to add additional attributes to existing objects in Rice or 
+        	in a Rice-based client application.  Since not all objects can be subclassed safely (as some
+        	code may instantiate the base classes directly, we recommend creating an &quot;extension&quot;
+        	object with the additional attributes.  This object will need to have the same primary key 
+        	field(s) as the class being extended.</para>
+        	<para>Rice helps to faciltate this through two additional features.
+        	</para>
+       		<itemizedlist>
+               	<listitem><para>The base class used for KRAD data objects 
+               	(<emphasis role="keyword">org.kuali.rice.krad.bo.DataObjectBase</emphasis>) contains a placeholder
+               	extensionObject property that can be used to traverse to your extension object.</para></listitem>
+               	<listitem><para>A special annotation <emphasis role="keyword">@ExtensionFor</emphasis> which is used
+               	on your extension class in order to link it to the base system data object.  It links the objects
+               	automatically within the JPA layer and sets the extension object to JOIN-fetch with the
+               	extended object.</para></listitem>
+            </itemizedlist>
+            <section>
+            	<title>Usage</title>
+            	<para>To make use of this feature, you need to do a few things.</para>
+            	<orderedlist>
+            		<listitem><para>Create a table for your extension attributes.  This table's primary key
+            			must have the same fields and datatypes as the data object you are extending.</para>
+            			<tip><para><emphasis role="bold">Warning</emphasis></para>
+            				<para>Do NOT add a referential integrity constraint back to the main table.
+            					While that is a logically correct relationship, we do not have full control
+            					over the order in which the ORM tools insert the records in this case.
+            					As such, the system may attempt to insert your extension record first.
+            					(Which would fail if such a constraint were in place.)</para></tip>
+            		</listitem>
+            		<listitem><para>Create a Java class to represent the extension and annotate normally for JPA.</para></listitem>
+            		<listitem><para>Add the <emphasis role="keyword">@ExtensionFor</emphasis> to the class.  
+            		See below for examples.</para></listitem>
+            	</orderedlist>
+            </section>
+            <section>
+            	<title>@ExtensionFor Annotation</title>
+            	<para>There are two properties on the <emphasis role="keyword">@ExtensionFor</emphasis> annoation.</para>
+            	<itemizedlist>
+            		<listitem><para><emphasis role="bold">value (default)</emphasis> : The class to which this extension 
+            		should be attached.</para></listitem>
+            		<listitem><para><emphasis role="bold">extensionPropertyName</emphasis> : On the above class, 
+            		the property with this name should be used to make the attachment.  This property must
+            		be a superclass of your actual extension object.  (Baseline setup simply has the property
+            		set up as an Object.)</para></listitem>
+            	</itemizedlist>
+	            <section role="NotInToc">
+	            	<title>Examples</title>
+	            	<para><emphasis role="bold">Using Default Extension Property</emphasis></para>
+	            	<programlisting>
+@Entity
+@Table(name="TRV_ACCT_EXT")
+@ExtensionFor(Account.class)
+public class AccountExtension { ...} 
+	            	</programlisting>
+	            	<para><emphasis role="bold">Using Custom Extension Property</emphasis></para>
+	            	<programlisting>
+@Entity
+@Table(name="TRV_ACCT_EXT")
+@ExtensionFor(value=Account.class,extensionPropertyName="extensionObject")
+public class AccountExtension { ...} 
+	            	</programlisting>
+	            </section>
+            </section>
+        </section>
         <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
@@ -316,6 +382,10 @@
                 <listitem>
                     <para>KualiCode represents a business object that has a code and name property.
                     </para>
+                </listitem>
+                <listitem>
+                    <para>The @ExtensionFor annotation allows for extending baseline data objects without
+                    making any changes to the baseline system code or configuration.</para>
                 </listitem>
             </itemizedlist>
         </section>

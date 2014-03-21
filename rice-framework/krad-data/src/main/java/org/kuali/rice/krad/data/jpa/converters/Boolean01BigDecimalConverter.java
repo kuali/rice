@@ -30,8 +30,6 @@ public class Boolean01BigDecimalConverter implements AttributeConverter<Boolean,
     /**
      * {@inheritDoc}
      *
-     * <p>The conversion treats the values as follows: 1 is true and 0 is false.</p>
-     *
      * This implementation will convert from a false or true value to a 0 or 1 Decimal numeric type value.
      */
     @Override

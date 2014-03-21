@@ -1246,7 +1246,10 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
 
     // Open the light box
     jQuery.fancybox(options);
-    setupLightboxForm();
+    //stop external content from being wrapped with kualiForm tag
+    if (!(contentOptions.type === "iframe")) {
+        setupLightboxForm();
+    }
 }
 
 /**

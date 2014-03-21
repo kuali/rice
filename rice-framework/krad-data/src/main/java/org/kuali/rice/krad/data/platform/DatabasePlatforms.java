@@ -29,7 +29,8 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * Contains constants and utilities related to the supported database platforms.
  *
- * <p>We use a String to represent the platform name as opposed to an Enum because this allows for the potential to
+ * <p>
+ * We use a String to represent the platform name as opposed to an Enum because this allows for the potential to
  * configure and use custom platforms at runtime without requiring internal code modification to support a new platform.
  * </p>
  *
@@ -37,12 +38,25 @@ import java.util.concurrent.ConcurrentMap;
  */
 public final class DatabasePlatforms {
 
+    /**
+     * The name of the Oracle platform.
+     */
     public static final String ORACLE = "Oracle";
+
+    /**
+     * The name of the MySQL platform.
+     */
     public static final String MYSQL = "MySQL";
 
     private static final ConcurrentMap<DataSource, DatabasePlatformInfo> platformCache =
             new ConcurrentHashMap<DataSource, DatabasePlatformInfo>();
 
+    /**
+     * Gets the platform information from the {@link DataSource}.
+     *
+     * @param dataSource the {@link DataSource} to consult.
+     * @return the platform information from the {@link DataSource}.
+     */
     public static DatabasePlatformInfo detectPlatform(DataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException("DataSource must not be null.");
@@ -68,6 +82,9 @@ public final class DatabasePlatforms {
         return platformInfo;
     }
 
+    /**
+     * No-op constructor for final class.
+     */
     private DatabasePlatforms() {}
 
 }

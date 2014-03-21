@@ -22,26 +22,43 @@ import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer
 
 import javax.sql.DataSource;
 
+/**
+ * A factory bean for putting a {@link DataFieldMaxValueIncrementer} in the Spring context.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class MaxValueIncrementerFactoryBean implements FactoryBean<DataFieldMaxValueIncrementer>, InitializingBean {
 
     private DataSource dataSource;
     private String incrementerName;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFieldMaxValueIncrementer getObject() throws Exception {
         return MaxValueIncrementerFactory.getIncrementer(dataSource, incrementerName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<DataFieldMaxValueIncrementer> getObjectType() {
         return DataFieldMaxValueIncrementer.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSingleton() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         if (dataSource == null) {
@@ -53,18 +70,38 @@ public class MaxValueIncrementerFactoryBean implements FactoryBean<DataFieldMaxV
         }
     }
 
+    /**
+     * Gets the {@link DataSource} for which to retrieve the incrementer.
+     *
+     * @return the {@link DataSource} for which to retrieve the incrementer.
+     */
     public DataSource getDataSource() {
         return dataSource;
     }
 
+    /**
+     * Setter for the {@link DataSource}.
+     *
+     * @param dataSource the {@link DataSource} for which to retrieve the incrementer.
+     */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * Gets the name of the incrementer.
+     *
+     * @return the name of the incrementer.
+     */
     public String getIncrementerName() {
         return incrementerName;
     }
 
+    /**
+     * Setter for the incrementer name.
+     *
+     * @param incrementerName the name of the incrementer.
+     */
     public void setIncrementerName(String incrementerName) {
         this.incrementerName = incrementerName;
     }

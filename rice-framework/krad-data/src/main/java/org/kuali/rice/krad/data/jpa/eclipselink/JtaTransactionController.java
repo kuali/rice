@@ -22,19 +22,27 @@ import javax.transaction.TransactionManager;
 
 /**
  * An implementation of EclipseLink's {@link org.eclipse.persistence.sessions.ExternalTransactionController} which will
- * utilize the JTA TransactionManager being used by the KRAD application. It locates this via a call to
- * {@link org.kuali.rice.core.framework.persistence.jta.Jta#getTransactionManager()}. So the application must ensure
- * that it has configured and setup JTA properly within it's application environment.
+ * utilize the JTA TransactionManager being used by the KRAD application.
  *
- * <p>The superclass for this class, which is part of EclipseLink, attempts to invoke the
+ * <p>
+ * It locates this via a call to {@link org.kuali.rice.core.framework.persistence.jta.Jta#getTransactionManager()}.  So
+ * the application must ensure that it has configured and setup JTA properly within it's application environment.
+ * </p>
+ *
+ * <p>
+ * The superclass for this class, which is part of EclipseLink, attempts to invoke the
  * {@link #acquireTransactionManager()} from the default contructor. So an attempt will be made to acquire the JTA
  * transaction manager as soon as an instance of this object is created. This means that it must be ensured that JPA is
- * enabled prior to the creation of an instance of this controller class.</p>
+ * enabled prior to the creation of an instance of this controller class.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JtaTransactionController extends JTATransactionController {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected TransactionManager acquireTransactionManager() throws Exception {
         if (!Jta.isEnabled()) {

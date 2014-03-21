@@ -15,8 +15,16 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
- *  Defines a filter generator that will alter the query for an annotated field
+ *  Defines a filter generator that will alter the query for an annotated field.
  *
  * <pre>
  *   Examples:
@@ -26,44 +34,51 @@ package org.kuali.rice.krad.data.jpa;
  *         private TestRelatedExtension accountExtension;
  * </pre>
  *
- * <p>Current, in order for this annotation to work properly, the {@link KradEclipseLinkCustomizer} must be configured
- * for the EclipseLink persistence unit. This can be done manually using
+ * <p>
+ * Currently, in order for this annotation to work properly, the
+ * {@link org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkCustomizer} must be configured for the EclipseLink
+ * persistence unit. This can be done manually using
  * {@link org.eclipse.persistence.config.PersistenceUnitProperties#SESSION_CUSTOMIZER}, or it will be done automatically
- * when using {@link KradEclipseLinkEntityManagerFactoryBean}</p>
+ * when using {@link org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean}.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  **/
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 @Target({TYPE, METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface FilterGenerator {
 
     /**
-     * (Required) The attribute name to have the customization applied in the query
+     * (Required) The attribute name to have the customization applied in the query.
+     *
+     * @return the attribute name to have the customization applied in the query.
      */
     String attributeName();
 
     /**
-     * (Optional) Operator that will be used for this fragment expression
+     * (Optional) The operator that will be used for this fragment expression.
+     *
+     * <p>Defaults to EQUAL.</p>
+     *
+     * @return the operator that will be used for this fragment expression.
      */
     FilterOperators operator() default FilterOperators.EQUAL;
 
     /**
-     * (Optional) The value that the attribute named will be used to build expression fragment
+     * (Optional) The value that the attribute named will be used to build expression fragment.
+     *
+     * <p>Defaults to an empty string.</p>
+     *
+     * @return the value that the attribute named will be used to build expression fragment.
      */
     String attributeValue() default "";
 
     /**
-     * (Optional) The class that resolves the value that the attribute named will be used to build expression
-     * fragment
+     * (Optional) The class that resolves the value that the attribute named will be used to build expression fragment.
+     *
+     * <p>Defaults to the Void class.</p>
+     *
+     * @return the class that resolves the value that the attribute named will be used to build expression fragment.
      */
     Class<?> attributeResolverClass() default Void.class;
 }

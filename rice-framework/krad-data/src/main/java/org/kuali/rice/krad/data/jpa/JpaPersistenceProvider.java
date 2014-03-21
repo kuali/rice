@@ -48,14 +48,18 @@ import java.util.concurrent.Callable;
 /**
  * Java Persistence API (JPA) implementation of {@link PersistenceProvider}.
  *
- * <p>When creating a new instance of this provider, a reference to a "shared" entity manager (like that created by
+ * <p>
+ * When creating a new instance of this provider, a reference to a "shared" entity manager (like that created by
  * Spring's {@link org.springframework.orm.jpa.support.SharedEntityManagerBean} must be injected. Additionally, a
- * reference to the {@link DataObjectService} must be injected as well.</p>
+ * reference to the {@link DataObjectService} must be injected as well.
+ * </p>
  *
- * <p>This class will perform persistence exception translation (converting JPA exceptions to
+ * <p>
+ * This class will perform persistence exception translation (converting JPA exceptions to
  * {@link org.springframework.dao.DataAccessException}s. It will scan the
  * {@link org.springframework.beans.factory.BeanFactory} in which it was created to find beans which implement
- * {@link org.springframework.dao.support.PersistenceExceptionTranslator} and use those translators for translation.</p>
+ * {@link org.springframework.dao.support.PersistenceExceptionTranslator} and use those translators for translation.
+ * </p>
  *
  * @see org.springframework.orm.jpa.support.SharedEntityManagerBean
  * @see org.springframework.dao.support.PersistenceExceptionTranslator
@@ -70,8 +74,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
     /**
      * Indicates if a JPA {@code EntityManager} flush should be automatically executed when calling
      * {@link org.kuali.rice.krad.data.DataObjectService#save(Object, org.kuali.rice.krad.data.PersistenceOption...)}
-     * using a JPA provider. This is recommended for testing only since the change is global and would affect all
-     * persistence units.
+     * using a JPA provider.
+     *
+     * <p>This is recommended for testing only since the change is global and would affect all persistence units.</p>
      */
     public static final String AUTO_FLUSH = "rice.krad.data.jpa.autoFlush";
 
@@ -87,26 +92,45 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         private static final boolean autoFlush = ConfigContext.getCurrentContextConfig().getBooleanProperty(AUTO_FLUSH, false);
     }
 
+    /**
+     * Gets the shared {@link EntityManager}.
+     *
+     * @return The shared {@link EntityManager}.
+     */
     public EntityManager getSharedEntityManager() {
         return sharedEntityManager;
     }
 
+    /**
+     * Setter for the shared {@link EntityManager}.
+     *
+     * @param sharedEntityManager The shared {@link EntityManager} to set.
+     */
     public void setSharedEntityManager(EntityManager sharedEntityManager) {
         this.sharedEntityManager = sharedEntityManager;
     }
 
+    /**
+     * Setter for the {@link DataObjectService}.
+     *
+     * @param dataObjectService The {@link DataObjectService} to set.
+     */
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
     }
 
     /**
-     * Returns the {@link org.kuali.rice.krad.data.DataObjectService}
-     * @return a {@link org.kuali.rice.krad.data.DataObjectService}
+     * Returns the {@link DataObjectService}.
+     *
+     * @return a {@link DataObjectService}
      */
     public DataObjectService getDataObjectService() {
         return this.dataObjectService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         if (!(beanFactory instanceof ListableBeanFactory)) {
@@ -116,6 +140,12 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         this.persistenceExceptionTranslator = detectPersistenceExceptionTranslators((ListableBeanFactory)beanFactory);
     }
 
+    /**
+     * Gets any {@link PersistenceExceptionTranslator}s from the {@link BeanFactory}.
+     *
+     * @param beanFactory The {@link BeanFactory} to use.
+     * @return A {@link PersistenceExceptionTranslator} from the {@link BeanFactory}.
+     */
     protected PersistenceExceptionTranslator detectPersistenceExceptionTranslators(ListableBeanFactory beanFactory) {
         // Find all translators, being careful not to activate FactoryBeans.
         Map<String, PersistenceExceptionTranslator> pets = BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory,
@@ -129,6 +159,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         return cpet;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T save(final T dataObject, final PersistenceOption... options) {
         return doWithExceptionTranslation(new Callable<T>() {
@@ -156,6 +189,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T find(final Class<T> type, final Object id) {
         return doWithExceptionTranslation(new Callable<T>() {
@@ -179,6 +215,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
@@ -189,6 +228,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete(final Object dataObject) {
         doWithExceptionTranslation(new Callable<Object>() {
@@ -201,6 +243,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T copyInstance(final T dataObject) {
         return doWithExceptionTranslation(new Callable<T>() {
@@ -211,6 +256,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean handles(final Class<?> type) {
         return doWithExceptionTranslation(new Callable<Boolean>() {
@@ -231,6 +279,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         }).booleanValue();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush(final Class<?> type) {
         doWithExceptionTranslation(new Callable<Object>() {
@@ -242,6 +293,11 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         });
     }
 
+    /**
+     * Verifies that the data object can be written to.
+     *
+     * @param dataObject The data object to check.
+     */
     protected void verifyDataObjectWritable(Object dataObject) {
         DataObjectMetadata metaData = dataObjectService.getMetadataRepository().getMetadata(dataObject.getClass());
         if (metaData == null) {
@@ -252,6 +308,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         }
     }
 
+    /**
+     * Surrounds the transaction with a try/catch block that can use the {@link PersistenceExceptionTranslator} to
+     * translate the exception if necessary.
+     *
+     * @param callable The data operation to invoke.
+     * @param <T> The type of the data operation.
+     * @return The result from the data operation, if successful.
+     */
     protected <T> T doWithExceptionTranslation(Callable<T> callable) {
         try {
             return callable.call();
@@ -264,8 +328,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
         }
     }
 
+    /**
+     * Defines a default {@link PersistenceExceptionTranslator} if no others exist.
+     */
     private static final class DefaultPersistenceExceptionTranslator implements PersistenceExceptionTranslator {
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public DataAccessException translateExceptionIfPossible(RuntimeException ex) {
             return EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(ex);

@@ -24,10 +24,17 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for chaining multiple filter generators
+ * Chains multiple filter generators.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  **/
 @Target({TYPE, METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface FilterGenerators {
+    /**
+     * Gets a list of filter generations.
+     *
+     * @return A list of filter generations.
+     */
     FilterGenerator[] value();
 }

@@ -65,10 +65,13 @@ import java.util.Properties;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure a JPA
- * persistence unit using the Spring Framework. This implementation does not support the use of a custom
- * PersistenceUnitManager, but rather stores and manages one internally. This is intended to be an alternative to direct
- * usage of Spring's {@link LocalContainerEntityManagerFactoryBean} in order to make JPA configuration with KRAD
- * simpler.
+ * persistence unit using the Spring Framework.
+ *
+ * <p>
+ * This implementation does not support the use of a custom PersistenceUnitManager, but rather stores and manages one
+ * internally. This is intended to be an alternative to direct usage of Spring's
+ * {@link LocalContainerEntityManagerFactoryBean} in order to make JPA configuration with KRAD simpler.
+ * </p>
  *
  * <h1>Minimal Configuration</h1>
  *
@@ -80,37 +83,49 @@ import java.util.Properties;
  *     <li>{@code persistenceProvider} or {@code jpaVendorAdapter}</li>
  * </ul>
  *
- * <p></p>Note that persistence unit names must be unique, so choose a name which is unlikely to clash
- * with any potential persistence units configured within the runtime environment.</p>
+ * <p>
+ * Note that persistence unit names must be unique, so choose a name which is unlikely to clash with any potential
+ * persistence units configured within the runtime environment.
+ * </p>
  *
  * <h1>Behavior</h1>
  *
- * <p>When leveraging this class, persistence.xml files are not used. Rather, persistence unit configuration is loaded
+ * <p>
+ * When leveraging this class, persistence.xml files are not used. Rather, persistence unit configuration is loaded
  * via the various settings provided on this factory bean which contain everything needed to create the desired
  * persistence unit configuration in the majority of cases. If a KRAD application needs more control over the
  * configuration of the persistence unit or wants to use persistence.xml and JPA's default bootstrapping and classpath
  * scanning behavior, an EntityManagerFactory can be configured using the other classes provided by the Spring
  * framework or by other means as needed. See {@link LocalContainerEntityManagerFactoryBean} for an alternative
- * approach.</p>
+ * approach.
+ * </p>
  *
- * <p>Only one of JTA or non-JTA datasource can be set. Depending on which one is set, the underlying persistence unit
+ * <p>
+ * Only one of JTA or non-JTA datasource can be set. Depending on which one is set, the underlying persistence unit
  * will have it's {@link javax.persistence.spi.PersistenceUnitTransactionType} set to either RESOURCE_LOCAL or JTA. If
  * both of these are set, then this class will throw an {@code IllegalStateException} when the
- * {@link #afterPropertiesSet()} method is invoked by the Spring Framework.</p>
+ * {@link #afterPropertiesSet()} method is invoked by the Spring Framework.
+ * </p>
  *
- * <p>Elsewhere, this class delegates to implementations of {@link LocalContainerEntityManagerFactoryBean} and
+ * <p>
+ * Elsewhere, this class delegates to implementations of {@link LocalContainerEntityManagerFactoryBean} and
  * {@link DefaultPersistenceUnitManager}, so information on the specific behavior of some of the settings and methods on
- * this class can be found on the javadoc for those classes as well.</p>
+ * this class can be found on the javadoc for those classes as well.
+ * </p>
  *
  * <h1>JPA Property Defaults</h1>
  *
- * <p>When {@link #afterPropertiesSet()} is invoked, this class will scan the current {@link ConfigContext} for JPA
+ * <p>
+ * When {@link #afterPropertiesSet()} is invoked, this class will scan the current {@link ConfigContext} for JPA
  * properties and make them available to the persistence unit. It will combine these with any properties that were set
  * directly on this factory bean via the {@link #setJpaProperties(java.util.Properties)} or
- * {@link #setJpaPropertyMap(java.util.Map)} methods.</p
+ * {@link #setJpaPropertyMap(java.util.Map)} methods.
+ * </p
  *
- * <p>This scanning occurs in the following order, items later in the list will override any properties from earlier if
- * they happen to set the same effective property value:</p>
+ * <p>
+ * This scanning occurs in the following order, items later in the list will override any properties from earlier if
+ * they happen to set the same effective property value:
+ * </p>
  *
  * <ol>
  *   <li>Scan ConfigContext for properties that begin with "rice.krad.jpa.global." For any found, strip off this prefix
@@ -128,8 +143,10 @@ import java.util.Properties;
  *
  * <h1>Subclassing</h1>
  *
+ * <p>
  * This class can be subclassed to provide additional specialized implementations of this factory bean. A potential use
  * for this might be to provide a factory bean that defaults certain values as part of it's default setup.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -143,9 +160,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     /**
      * Prefix for property names that are passed to the JPA persistence context as JPA properties.
      *
-     * <p>To use this, concatenate this prefix with the persistence context name. The total prefix (including the
+     * <p>
+     * To use this, concatenate this prefix with the persistence context name. The total prefix (including the
      * persistence context) will then be stripped before being passed to the JPA entity manager factory when using
-     * the {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.</p>
+     * the {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.
+     * </p>
      *
      * @see org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean
      */
@@ -154,8 +173,10 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     /**
      * Prefix for property names that are passed to *all* JPA persistence contexts as JPA properties.
      *
-     * <p>The total prefix will then be stripped before being passed to all JPA entity manager factories that use the
-     * {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.</p>
+     * <p>
+     * The total prefix will then be stripped before being passed to all JPA entity manager factories that use the
+     * {@link org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean}.
+     * </p>
      *
      * @see org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean
      */
@@ -171,6 +192,9 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     private List<String> managedClassNames;
 	private List<String> converterPackageNames;
 
+    /**
+     * Creates a default KRAD-managed factory bean.
+     */
     public KradEntityManagerFactoryBean() {
         this.persistenceUnitPostProcessors = new ArrayList<PersistenceUnitPostProcessor>();
         this.managedClassNames = new ArrayList<String>();
@@ -183,7 +207,9 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     /**
      * Retrieve a reference to the internal {@link LocalContainerEntityManagerFactoryBean} which is used by this factory
-     * bean. Primarily intended to allow subclasses to access this internal factory bean when needed.
+     * bean.
+     *
+     * <p>Primarily intended to allow subclasses to access this internal factory bean when needed.</p>
      *
      * @return the internal {@link LocalContainerEntityManagerFactoryBean} managed by this bean
      */
@@ -191,6 +217,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return this.internalFactoryBean;
     }
 
+    /**
+     * Creates a persistence unit manager.
+     *
+     * @return a persistence unit manager.
+     */
     protected DefaultPersistenceUnitManager createPersistenceUnitManager() {
         DefaultPersistenceUnitManager pum = new DefaultPersistenceUnitManager();
         // IMPORTANT! - setting these to empty String arrays, this triggers the DefaultPersistenceUnitManager to
@@ -205,12 +236,21 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return pum;
     }
 
+    /**
+     * Creates a JPA-specific entity manager factory bean.
+     *
+     * @param manager the persistence unit manager to use.
+     * @return a JPA-specific entity manager factory bean.
+     */
     protected LocalContainerEntityManagerFactoryBean createInternalFactoryBean(PersistenceUnitManager manager) {
         LocalContainerEntityManagerFactoryBean delegate = new LocalContainerEntityManagerFactoryBean();
         delegate.setPersistenceUnitManager(manager);
         return delegate;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void afterPropertiesSet() throws PersistenceException {
         if (persistenceUnitManager.getDefaultJtaDataSource() != null &&
@@ -226,6 +266,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         internalFactoryBean.afterPropertiesSet();
     }
 
+    /**
+     * Creates default JPA properties.
+     *
+     * @return a map of default JPA properties.
+     */
     private Map<String, ?> createDefaultJpaProperties() {
         Map<String, String> jpaProperties = new HashMap<String, String>();
         loadGlobalJpaDefaults(jpaProperties);
@@ -235,6 +280,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return jpaProperties;
     }
 
+    /**
+     * Gets the default JPA properties and merges them with the configured JPA properties.
+     *
+     * @return a map of merged JPA properties.
+     */
     private Map<String, ?> defaultAndMergeJpaProperties() {
         Map<String, Object> jpaProperties = new HashMap<String, Object>(createDefaultJpaProperties());
         Map<String, Object> configuredJpaPropertyMap = this.internalFactoryBean.getJpaPropertyMap();
@@ -248,30 +298,53 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     /**
      * Allows for loading of custom JPA defaults by subclasses, default implementation does nothing so subclasses need
-     * not call super.loadCustomJpaDefaults. Subclasses are free to override this method as they see fit. This method is
-     * executed after other defaults are loaded. A reference to the current Map of JPA properties is passed. Subclasses
-     * should take care if removing or overwriting any of the values which already exist in the given Map.
+     * not call super.loadCustomJpaDefaults.
      *
-     * @param jpaProperties the current Map of JPA property defaults
+     * <p>
+     * Subclasses are free to override this method as they see fit. This method is executed after other defaults are
+     * loaded. A reference to the current Map of JPA properties is passed. Subclasses should take care if removing or
+     * overwriting any of the values which already exist in the given Map.
+     * </p>
+     *
+     * @param jpaProperties the current Map of JPA property defaults.
      */
     protected void loadCustomJpaDefaults(Map<String, String> jpaProperties) {
         // subclass can override
     }
 
+    /**
+     * Loads the global JPA defaults from the config.
+     *
+     * @param jpaProperties the current Map of JPA property defaults.
+     */
     protected void loadGlobalJpaDefaults(Map<String, String> jpaProperties) {
         jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(GLOBAL_JPA_PROPERTY_PREFIX,
                 true));
     }
 
+    /**
+     * Loads the persistence unit JPA defaults from the config.
+     *
+     * @param jpaProperties the current Map of JPA property defaults.
+     */
     protected void loadPersistenceUnitJpaDefaults(Map<String, String> jpaProperties) {
         jpaProperties.putAll(ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix(
                 constructPersistenceUnitJpaPropertyPrefix(), true));
     }
 
+    /**
+     * Builds a persistence unit JPA property prefix.
+     * @return a persistence unit JPA property prefix.
+     */
     protected String constructPersistenceUnitJpaPropertyPrefix() {
         return JPA_PROPERTY_PREFIX + getPersistenceUnitName() + ".";
     }
 
+    /**
+     * Assembles the {@link PersistenceUnitPostProcessor}s into an array.
+     *
+     * @return an array of the {@link PersistenceUnitPostProcessor}s.
+     */
     protected PersistenceUnitPostProcessor[] assemblePersistenceUnitPostProcessors() {
         this.persistenceUnitPostProcessors = new ArrayList<PersistenceUnitPostProcessor>(this.persistenceUnitPostProcessors);
         this.persistenceUnitPostProcessors.add(new InternalPersistenceUnitPostProcessor());
@@ -279,8 +352,9 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Returns the list of all managed class names which have been configured on this factory bean. This list is
-     * modifiable, so the returned list may be modified directly if desired.
+     * Returns the list of all managed class names which have been configured on this factory bean.
+     *
+     * <p>This list is modifiable, so the returned list may be modified directly if desired.</p>
      *
      * @return list of all managed class names, may be an empty list but will never return null
      */
@@ -307,76 +381,121 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         return persistenceUnitManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void destroy() {
         internalFactoryBean.destroy();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends EntityManagerFactory> getObjectType() {
         return internalFactoryBean.getObjectType();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSingleton() {
         return internalFactoryBean.isSingleton();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityManagerFactory getObject() {
         return internalFactoryBean.getObject();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityManagerFactory getNativeEntityManagerFactory() {
         return internalFactoryBean.getNativeEntityManagerFactory();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBeanName(String name) {
         internalFactoryBean.setBeanName(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBeanFactory(BeanFactory beanFactory) {
         internalFactoryBean.setBeanFactory(beanFactory);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClassLoader getBeanClassLoader() {
         return internalFactoryBean.getBeanClassLoader();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
         internalFactoryBean.setBeanClassLoader(classLoader);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<? extends EntityManager> getEntityManagerInterface() {
         return internalFactoryBean.getEntityManagerInterface();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
         persistenceUnitManager.setLoadTimeWeaver(loadTimeWeaver);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         persistenceUnitManager.setResourceLoader(resourceLoader);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PersistenceUnitInfo getPersistenceUnitInfo() {
         return internalFactoryBean.getPersistenceUnitInfo();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPersistenceUnitName() {
         return internalFactoryBean.getPersistenceUnitName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataSource getDataSource() {
         PersistenceUnitInfo pui = internalFactoryBean.getPersistenceUnitInfo();
@@ -390,16 +509,25 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
                 this.persistenceUnitManager.getDefaultDataSource());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpaDialect getJpaDialect() {
         return internalFactoryBean.getJpaDialect();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PersistenceProvider getPersistenceProvider() {
         return internalFactoryBean.getPersistenceProvider();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataAccessException translateExceptionIfPossible(RuntimeException ex) {
         return internalFactoryBean.translateExceptionIfPossible(ex);
@@ -422,12 +550,13 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Specify the (potentially vendor-specific) EntityManager interface
-     * that this factory's EntityManagers are supposed to implement.
+     * Specify the (potentially vendor-specific) EntityManager interface that this factory's EntityManagers are supposed
+     * to implement.
      *
-     * <p>The default will be taken from the specific JpaVendorAdapter, if any,
-     * or set to the standard {@code javax.persistence.EntityManager}
-     * interface else.</p>
+     * <p>
+     * The default will be taken from the specific JpaVendorAdapter, if any, or set to the standard
+     * {@code EntityManager} interface else.
+     * </p>
      *
      * @param emInterface the {@link EntityManager} interface to use
      *
@@ -442,8 +571,10 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
      * Specify the (potentially vendor-specific) EntityManagerFactory interface that this EntityManagerFactory proxy is
      * supposed to implement.
      *
-     * <p>The default will be taken from the specific JpaVendorAdapter, if any, or set to the standard
-     * {@code javax.persistence.EntityManagerFactory} interface else.</p>
+     * <p>
+     * The default will be taken from the specific JpaVendorAdapter, if any, or set to the standard
+     * {@code EntityManagerFactory} interface else.
+     * </p>
      *
      * @param emfInterface the {@link EntityManagerFactory} interface to use
      *
@@ -454,11 +585,10 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Allow Map access to the JPA properties to be passed to the persistence
-     * provider, with the option to add or override specific entries.
+     * Allow Map access to the JPA properties to be passed to the persistence provider, with the option to add or
+     * override specific entries.
      *
-     * <p>Useful for specifying entries directly, for example via
-     * "jpaPropertyMap[myKey]".</p>
+     * <p>Useful for specifying entries directly, for example via "jpaPropertyMap[myKey]".</p>
      *
      * @return the map of JPA properties
      */
@@ -483,8 +613,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     /**
      * Specify JPA properties, to be passed into {@code Persistence.createEntityManagerFactory} (if any).
      *
-     * <p>Can be populated with a String "value" (parsed via PropertiesEditor) or a "props" element in XML bean
-     * definitions.</p>
+     * <p>Can be populated with a String "value" (parsed via PropertiesEditor) or a "props" element in XML bean definitions.</p>
      *
      * @param jpaProperties the properties to set
      *
@@ -498,8 +627,10 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     /**
      * Specify the name of the EntityManagerFactory configuration.
      *
-     * <p>Default is none, indicating the default EntityManagerFactory configuration. The persistence provider will
-     * throw an exception if ambiguous EntityManager configurations are found.</p>
+     * <p>
+     * Default is none, indicating the default EntityManagerFactory configuration. The persistence provider will throw
+     * an exception if ambiguous EntityManager configurations are found.
+     * </p>
      *
      * @param persistenceUnitName the name of the persistence unit
      *
@@ -512,12 +643,18 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     /**
      * Set whether to use Spring-based scanning for entity classes in the classpath instead of using JPA's standard
-     * scanning of jar files with {@code persistence.xml} markers in them. In case of Spring-based scanning, no
-     * {@code persistence.xml} is necessary; all you need to do is to specify base packages to search here.
+     * scanning of jar files with {@code persistence.xml} markers in them.
      *
-     * <p>Default is none. Specify packages to search for autodetection of your entity classes in the classpath. This is
+     * <p>
+     * In case of Spring-based scanning, no {@code persistence.xml} is necessary; all you need to do is to specify base
+     * packages to search here.
+     * </p>
+     *
+     * <p>
+     * Default is none. Specify packages to search for autodetection of your entity classes in the classpath. This is
      * analogous to Spring's component-scan feature
-     * ({@link org.springframework.context.annotation.ClassPathBeanDefinitionScanner}).</p>
+     * ({@link org.springframework.context.annotation.ClassPathBeanDefinitionScanner}).
+     * </p>
      *
      * @param packagesToScan one or more base packages to search, analogous to Spring's component-scan configuration for
      *        regular Spring components
@@ -535,11 +672,17 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     /**
      * Specify one or more mapping resources (equivalent to {@code &lt;mapping-file&gt;} entries in
-     * {@code persistence.xml}) for the default persistence unit. Can be used on its own or in combination with entity\
-     * scanning in the classpath, in both cases avoiding {@code persistence.xml}.
+     * {@code persistence.xml}) for the default persistence unit.
      *
-     * <p>Note that mapping resources must be relative to the classpath root, e.g. "META-INF/mappings.xml" or
-     * "com/mycompany/repository/mappings.xml", so that they can be loaded through {@code ClassLoader.getResource}.</p>
+     * <p>
+     * Can be used on its own or in combination with entity scanning in the classpath, in both cases avoiding
+     * {@code persistence.xml}.
+     * </p>
+     *
+     * <p>
+     * Note that mapping resources must be relative to the classpath root, e.g. "META-INF/mappings.xml" or
+     * "com/mycompany/repository/mappings.xml", so that they can be loaded through {@code ClassLoader.getResource}.
+     * </p>
      *
      * @param mappingResources one or more mapping resources to use
      *
@@ -550,14 +693,19 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database. This
-     * is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
-     * DataSource instead.
+     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database.
      *
-     * <p>In JPA speak, a DataSource passed in here will be used as "nonJtaDataSource" on the PersistenceUnitInfo passed
+     * <p>
+     * This is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
+     * DataSource instead.
+     * </p>
+     *
+     * <p>
+     * In JPA speak, a DataSource passed in here will be used as "nonJtaDataSource" on the PersistenceUnitInfo passed
      * to the PersistenceProvider, as well as overriding data source configuration in {@code persistence.xml} (if any).
      * Note that this variant typically works for JTA transaction management as well; if it does not, consider using the
-     * explicit {@link #setJtaDataSource} instead.</p>
+     * explicit {@link #setJtaDataSource} instead.
+     * </p>
      *
      * @param dataSource the DataSource to use for this EntityManagerFactory
      *
@@ -569,12 +717,17 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database. This
-     * is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
-     * DataSource instead.
+     * Specify the JDBC DataSource that the JPA persistence provider is supposed to use for accessing the database.
      *
-     * <p>In JPA speak, a DataSource passed in here will be used as "jtaDataSource" on the PersistenceUnitInfo passed to
-     * the PersistenceProvider, as well as overriding data source configuration in {@code persistence.xml} (if any).</p>
+     * <p>
+     * This is an alternative to keeping the JDBC configuration in {@code persistence.xml}, passing in a Spring-managed
+     * DataSource instead.
+     * </p>
+     *
+     * <p>
+     * In JPA speak, a DataSource passed in here will be used as "jtaDataSource" on the PersistenceUnitInfo passed to
+     * the PersistenceProvider, as well as overriding data source configuration in {@code persistence.xml} (if any).
+     * </p>
      *
      * @param jtaDataSource the JTA-enabled DataSource to use for this EntityManagerFactory
      *
@@ -586,9 +739,12 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Set the PersistenceProvider instance to use for creating the EntityManagerFactory. If not specified, the
-     * persistence provider will be taken from the JpaVendorAdapter (if any) or determined by the persistence unit
-     * deployment descriptor (as far as possible).
+     * Set the PersistenceProvider instance to use for creating the EntityManagerFactory.
+     *
+     * <p>
+     * If not specified, the persistence provider will be taken from the JpaVendorAdapter (if any) or determined by the
+     * persistence unit deployment descriptor (as far as possible).
+     * </p>
      *
      * @param persistenceProvider the PersistenceProvider to set
      *
@@ -601,9 +757,12 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Specify the vendor-specific JpaDialect implementation to associate with this EntityManagerFactory. This will be
-     * exposed through the EntityManagerFactoryInfo interface, to be picked up as default dialect by accessors that
-     * intend to use JpaDialect functionality.
+     * Specify the vendor-specific JpaDialect implementation to associate with this EntityManagerFactory.
+     *
+     * <p>
+     * This will be exposed through the EntityManagerFactoryInfo interface, to be picked up as default dialect by
+     * accessors that intend to use JpaDialect functionality.
+     * </p>
      *
      * @param jpaDialect the JPA dialect to set
      *
@@ -614,9 +773,12 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     }
 
     /**
-     * Specify the JpaVendorAdapter implementation for the desired JPA provider, if any. This will initialize
-     * appropriate defaults for the given provider, such as persistence provider class and JpaDialect, unless locally
-     * overridden in this FactoryBean.
+     * Specify the JpaVendorAdapter implementation for the desired JPA provider, if any.
+     *
+     * <p>
+     * This will initialize appropriate defaults for the given provider, such as persistence provider class and
+     * JpaDialect, unless locally overridden in this FactoryBean.
+     * </p>
      *
      * @param jpaVendorAdapter the JpaVendorAdapter to set
      */
@@ -626,12 +788,17 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
     /**
      * Set the PersistenceUnitPostProcessors to be applied to the * PersistenceUnitInfo used for creating this
-     * EntityManagerFactory. Note that if executed before {@link #afterPropertiesSet()} then this factory bean may
-     * introduce it's own post processor instances. If invoked after, then this method will override internally
-     * configured post processors.
+     * EntityManagerFactory.
      *
-     * <p>Such post-processors can, for example, register further entity classes and jar files, in addition to the
-     * metadata read from {@code persistence.xml}.</p>
+     * <p>
+     * Note that if executed before {@link #afterPropertiesSet()} then this factory bean may introduce its own post
+     * processor instances. If invoked after, then this method will override internally configured post processors.
+     * </p>
+     *
+     * <p>
+     * Such post-processors can, for example, register further entity classes and jar files, in addition to the metadata
+     * read from {@code persistence.xml}.
+     * </p>
      *
      * @param postProcessors one or more post processors to set
      */
@@ -641,12 +808,18 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         this.persistenceUnitPostProcessors = new ArrayList<PersistenceUnitPostProcessor>(Arrays.asList(postProcessors));
     }
 
+    /**
+     * A {@link PersistenceUnitPostProcessor} to handle {@link Converter} annotations.
+     */
     private final class InternalPersistenceUnitPostProcessor implements PersistenceUnitPostProcessor {
 
 		private final TypeFilter converterAnnotationTypeFilter = new AnnotationTypeFilter(Converter.class);
 		private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		private static final String ENTITY_CLASS_RESOURCE_PATTERN = "/**/*.class";
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo pui) {
             pui.setExcludeUnlistedClasses(DEFAULT_EXCLUDE_UNLISTED_CLASSES);
@@ -656,6 +829,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
             }
         }
 
+        /**
+         * Determines whether the managed classes contain {@link Converter} annotations and adds them if necessary.
+         *
+         * @param pui the list of current list of managed classes.
+         */
 		private void processConverterPackages(MutablePersistenceUnitInfo pui) {
 			if (converterPackageNames != null) {
 				for (String converterPackage : converterPackageNames) {

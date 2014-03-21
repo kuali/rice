@@ -19,7 +19,9 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
- * Simple interface that abstracts ORM query by criteria logic
+ * Simple interface that abstracts ORM query by criteria logic.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 interface CriteriaQuery {
     /**

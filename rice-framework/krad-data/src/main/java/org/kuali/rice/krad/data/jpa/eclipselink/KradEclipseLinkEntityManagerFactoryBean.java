@@ -40,10 +40,16 @@ import java.util.Map;
  */
 public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFactoryBean {
 
+    /**
+     * Creates a KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean.
+     */
     public KradEclipseLinkEntityManagerFactoryBean() {
         super.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadCustomJpaDefaults(Map<String, String> jpaProperties) {
         if (getPersistenceUnitManager().getDefaultJtaDataSource() != null) {

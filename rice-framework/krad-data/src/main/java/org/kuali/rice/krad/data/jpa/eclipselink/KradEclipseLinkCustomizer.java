@@ -50,13 +50,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * EclipseLink Session Customizer which understands {@link org.kuali.rice.krad.data.jpa.PortableSequenceGenerator} annotations and automatically
- * registers custom EclipseLink Sequences.
+ * EclipseLink Session Customizer which understands {@link org.kuali.rice.krad.data.jpa.PortableSequenceGenerator}
+ * annotations and automatically registers custom EclipseLink Sequences.
  *
- * <p>Since SessionCustomizers are stateless instances, and because concrete
+ * <p>
+ * Since SessionCustomizers are stateless instances, and because concrete
  * {@link org.eclipse.persistence.sequencing.Sequence} objects must be registered individually with the EclipseLink
  * session, we lazy generate the Sequence objects using annotation inspection and then register them on each new
- * session using this customizer.</p>
+ * session using this customizer.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -71,6 +73,9 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     private static ConcurrentMap<String, List<FilterGenerator>> queryCustomizerMap =
             new ConcurrentHashMap<String, List<FilterGenerator>>();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void customize(Session session) throws Exception {
         String sessionName = session.getName();
@@ -96,9 +101,9 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     }
 
     /**
-     * Load Query Customizer based on annotations on fields and call customizer to
-     * modify descriptor
-     * @param session
+     * Load Query Customizer based on annotations on fields and call customizer to modify descriptor.
+     *
+     * @param session the EclipseLink session.
      */
     protected void loadQueryCustomizers(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
@@ -117,10 +122,11 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
     }
 
     /**
-     * Build and populate map of QueryCustomizer annotations
-     * @param entityClass
-     * @param field
-     * @param key
+     * Build and populate map of QueryCustomizer annotations.
+     *
+     * @param entityClass the type of the entity.
+     * @param field the field to process.
+     * @param key the id to store the customizer under.
      */
     protected void buildQueryCustomizers(Class<?> entityClass,Field field, String key){
         FilterGenerators customizers = field.getAnnotation(FilterGenerators.class);
@@ -175,7 +181,7 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
      * Checks class descriptors for {@link @DisableVersioning} annotations at the class level and removes the version
      * database mapping for optimistic locking.
      *
-     * @param session the current session
+     * @param session the current session.
      */
     protected void handleDisableVersioning(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
@@ -197,10 +203,9 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
 
     /**
      * Checks class descriptors for {@link @RemoveMapping} and {@link RemoveMappings} annotations at the class level
-     * and
-     * removes any specified mappings from the ClassDescriptor.
+     * and removes any specified mappings from the ClassDescriptor.
      *
-     * @param session the current session
+     * @param session the current session.
      */
     protected void handleRemoveMapping(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
@@ -230,6 +235,12 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         }
     }
 
+    /**
+     * Gets any {@link RemoveMapping}s out of the given {@link ClassDescriptor}.
+     *
+     * @param classDescriptor the {@link ClassDescriptor} to scan.
+     * @return a list of {@link RemoveMapping}s from the given {@link ClassDescriptor}.
+     */
     protected List<RemoveMapping> scanForRemoveMappings(ClassDescriptor classDescriptor) {
         List<RemoveMapping> removeMappings = new ArrayList<RemoveMapping>();
         RemoveMappings removeMappingsAnnotation = AnnotationUtils.findAnnotation(classDescriptor.getJavaClass(),
@@ -248,6 +259,12 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         return removeMappings;
     }
 
+    /**
+     * Gets any {@link Sequence} from the session.
+     *
+     * @param session the current session.
+     * @return a list of {@link Sequence}s.
+     */
     protected List<Sequence> loadSequences(Session session) {
         Map<Class, ClassDescriptor> descriptors = session.getDescriptors();
         List<PortableSequenceGenerator> sequenceGenerators = new ArrayList<PortableSequenceGenerator>();
@@ -274,6 +291,12 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         return sequences;
     }
 
+    /**
+     * Loads any field-based sequences from the given type.
+     *
+     * @param entityClass the type of the entity.
+     * @param sequenceGenerators the current list of sequence generators.
+     */
     protected void loadFieldSequences(Class<?> entityClass, List<PortableSequenceGenerator> sequenceGenerators) {
         for (Field field : entityClass.getDeclaredFields()) {
             PortableSequenceGenerator fieldSequenceGenerator = field.getAnnotation(PortableSequenceGenerator.class);
@@ -287,12 +310,20 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         }
     }
 
+    /**
+     * Translates our {@link PortableSequenceGenerator} into an EclipseLink {@link Sequence}.
+     */
     private static final class MaxValueIncrementerSequenceWrapper extends Sequence {
 
         private static final long serialVersionUID = 2375805962996574386L;
 
         private final String sequenceName;
 
+        /**
+         * Creates a sequence wrapper for our {@link PortableSequenceGenerator}.
+         *
+         * @param sequenceGenerator the {@link PortableSequenceGenerator} to process.
+         */
         MaxValueIncrementerSequenceWrapper(PortableSequenceGenerator sequenceGenerator) {
             super(sequenceGenerator.name(), 0);
             // default sequenceName to the name of the sequence generator if the sequence name was not provided
@@ -303,21 +334,33 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean shouldAcquireValueAfterInsert() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean shouldUseTransaction() {
             return true;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean shouldUsePreallocation() {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Object getGeneratedValue(Accessor accessor, AbstractSession writeSession, String seqName) {
             DataSource dataSource = ((JNDIConnector) writeSession.getLogin().getConnector()).getDataSource();
@@ -326,18 +369,30 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
             return Long.valueOf(incrementer.nextLongValue());
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public Vector<?> getGeneratedVector(Accessor accessor, AbstractSession writeSession, String seqName, int size) {
             // we're not in the business of pre-fetching/allocating ids
             throw new UnsupportedOperationException(getClass().getName() + " does pre-generate sequence ids");
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onConnect() {}
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onDisconnect() {}
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public MaxValueIncrementerSequenceWrapper clone() {
             return (MaxValueIncrementerSequenceWrapper) super.clone();

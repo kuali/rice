@@ -29,7 +29,7 @@
      <property name="layoutManager.sequenceFieldPrototype">
        <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
      </property>
-     <property name="layoutManager.richTable.render" value="false"/>
+     <property name="layoutManager.richTable.render" value="true"/>
      <property name="items">
        <list>
          <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>

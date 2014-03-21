@@ -624,9 +624,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                     lineContext, expressionEvaluator);
         }
 
-        rowCss = StringUtils.removeStart(rowCss, " ");
-        this.getRowCssClasses().add(rowCss);
-
         // if separate add line prepare the add line group
         if (isAddLine && separateAddLine) {
             if (StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
@@ -648,8 +645,12 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                 addLineGroup.setStyle("display: none");
             }
 
+            // Note that a RowCssClass was not added to the LayoutManager for the collection for the separateAddLine
             return;
         }
+
+        rowCss = StringUtils.removeStart(rowCss, " ");
+        this.getRowCssClasses().add(rowCss);
 
         // TODO: implement repeat header
         if (!headerAdded) {

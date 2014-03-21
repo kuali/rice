@@ -59,7 +59,6 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RecallActionTest extends KEWTestCase {
     /**
      * test postprocessor for testing afterActionTaken hook

@@ -151,6 +151,13 @@ abstract class RoleServiceBase {
      */
     protected List<RoleMemberBo> getRoleMemberBoList(RoleDaoAction daoActionToTake, Collection<String> roleIds, String principalId,
                                                      Collection<String> groupIds, String memberTypeCode, Map<String, String> qualification) {
+        if (roleIds == null || roleIds.isEmpty()) {
+            roleIds = Collections.emptyList();
+        }
+        if (groupIds == null || groupIds.isEmpty()) {
+            groupIds = Collections.emptyList();
+        }
+
         Map<String, String> validAttributeIds = new HashMap<String, String>();
 
         for (String roleId : roleIds) {
@@ -163,13 +170,6 @@ abstract class RoleServiceBase {
         }
 
         Map<String, String> convertedQualification = convertQualifierKeys(qualification, validAttributeIds);
-
-        if (roleIds == null || roleIds.isEmpty()) {
-            roleIds = Collections.emptyList();
-        }
-        if (groupIds == null || groupIds.isEmpty()) {
-            groupIds = Collections.emptyList();
-        }
 
         switch (daoActionToTake) {
             case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS: // Search for principal role members only.
@@ -615,7 +615,7 @@ abstract class RoleServiceBase {
             for (KimTypeAttribute attribute : type.getAttributeDefinitions()) {
                 if (attribute.getKimAttribute() != null
                         && StringUtils.equals(attributeName, attribute.getKimAttribute().getAttributeName())) {
-                    return attribute.getId();
+                    return attribute.getKimAttribute().getId();
                 }
             }
         }

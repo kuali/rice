@@ -38,21 +38,28 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RecallActionTest extends KEWTestCase {
     /**
      * test postprocessor for testing afterActionTaken hook
@@ -69,6 +76,7 @@ public class RecallActionTest extends KEWTestCase {
     }
 
     public static class RecallTestDocumentTypeAuthorizer extends KimDocumentTypeAuthorizer {
+        public static String CUSTOM_RECALL_KIM_TYPE_NAME = "Dynamic Type";
         public static String CUSTOM_RECALL_QUALIFIER_NAME = "Dynamic Qualifier";
         public static String CUSTOM_RECALL_QUALIFIER_VALUE = "Dynamic Qualifier Value";
         // we have to use a detail already defined for the recall permission - app doc status seems the most application-controlled
@@ -522,26 +530,32 @@ public class RecallActionTest extends KEWTestCase {
      * @param recallPerm the pre-created Recall permission
      * @return the new recall-capable Role
      */
-    protected Role createRoleWithRecallPermission(String ns, String name, Permission recallPerm, String roleQualifierName) {
+    protected Role createRoleWithRecallPermission(String ns, String name, Permission recallPerm, String kimTypeName, String roleQualifierName) {
+        // create a custom attribute for role qualification
+        KimAttribute.Builder attribute = KimAttribute.Builder.create("org.kuali.rice.kim.bo.impl.KimAttributes", roleQualifierName, "KR-SYS");
+        attribute.setAttributeLabel(roleQualifierName);
+        attribute.setActive(true);
+        KimAttributeBo customAttribute = KRADServiceLocator.getBusinessObjectService().save(KimAttributeBo.from(attribute.build()));
+
+        // create a custom kim type for the custom attribute
+        KimType.Builder kimType = KimType.Builder.create();
+        kimType.setNamespaceCode("KR-SYS");
+        kimType.setName(kimTypeName);
+        kimType.setActive(true);
+        KimTypeAttribute.Builder kimTypeAttribute = KimTypeAttribute.Builder.create();
+        kimTypeAttribute.setKimAttribute(KimAttribute.Builder.create(customAttribute));
+        kimTypeAttribute.setActive(true);
+        kimType.setAttributeDefinitions(Collections.singletonList(kimTypeAttribute));
+        KimTypeBo customKimType = KRADServiceLocator.getBusinessObjectService().save(KimTypeBo.from(kimType.build()));
+
         // create a new role
         Role.Builder role = Role.Builder.create();
         role.setActive(true);
         role.setDescription("RecallTest custom recall role");
         role.setName(ns);
         role.setNamespaceCode(name);
-        role.setKimTypeId(KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME).getId());
+        role.setKimTypeId(customKimType.getId());
         Role customRole = KimApiServiceLocator.getRoleService().createRole(role.build());
-
-        // create a custom attribute for role qualification
-        Long chartAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
-        KimAttributeBo chartAttribute = new KimAttributeBo();
-        chartAttribute.setId("" + chartAttributeId);
-        chartAttribute.setAttributeName(roleQualifierName);
-        chartAttribute.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
-        chartAttribute.setNamespaceCode("KR-SYS");
-        chartAttribute.setAttributeLabel(roleQualifierName);
-        chartAttribute.setActive(true);
-        KRADServiceLocator.getBusinessObjectService().save(chartAttribute);
 
         KimApiServiceLocator.getRoleService().assignPermissionToRole(recallPerm.getId(), customRole.getId());
 
@@ -590,7 +604,7 @@ public class RecallActionTest extends KEWTestCase {
 
         // assign permission triggered by dynamic, custom permission details
         Permission recallPerm = createRecallPermission(RECALL_TEST_DOC, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_DETAIL_VALUE, null, null);
-        Role recallRole = createRoleWithRecallPermission(RECALL_ROLE_NM, RECALL_ROLE_NS, recallPerm, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME);
+        Role recallRole = createRoleWithRecallPermission(RECALL_ROLE_NM, RECALL_ROLE_NS, recallPerm, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_KIM_TYPE_NAME, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME);
         assignUserQualifiedRole(ARH14, recallRole, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_NAME, RecallTestDocumentTypeAuthorizer.CUSTOM_RECALL_QUALIFIER_VALUE);
 
         Map<String, String> d = new HashMap<String, String>();

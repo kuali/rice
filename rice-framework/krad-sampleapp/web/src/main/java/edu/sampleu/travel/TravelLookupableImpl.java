@@ -15,16 +15,8 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.lookup.LookupForm;
 import org.kuali.rice.krad.lookup.LookupableImpl;
-import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.MessageMap;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -41,34 +33,12 @@ public class TravelLookupableImpl extends LookupableImpl {
      */
     @Override
     public Collection<?> performSearch(LookupForm form, Map<String, String> searchCriteria, boolean bounded) {
-        Collection<org.kuali.rice.krad.demo.travel.dataobject.TravelAccount> results =
-                (Collection<org.kuali.rice.krad.demo.travel.dataobject.TravelAccount>) super.performSearch(form,
-                        searchCriteria, bounded);
-
         // get additional parameter
         String minSubsidized = form.getInitialRequestParameters().get("minSubsidized")[0];
 
-        // filter results
-        Collection<TravelAccount> finalResults = new ArrayList();
-        for (TravelAccount travelAccount : results) {
-            if (travelAccount.getSubsidizedPercent() != null && travelAccount.getSubsidizedPercent().isGreaterEqual(
-                    new KualiDecimal(minSubsidized))) {
-                finalResults.add(travelAccount);
-            }
-        }
+        searchCriteria.put("subsidizedPercent", ">=" + minSubsidized);
 
-        // over write the default search message that was set
-        MessageMap messageMap = GlobalVariables.getMessageMap();
-        messageMap.getInfoMessages().remove(UifConstants.MessageKeys.LOOKUP_RESULT_MESSAGES);
-        messageMap.putInfoForSectionId(UifConstants.MessageKeys.LOOKUP_RESULT_MESSAGES,
-                RiceKeyConstants.INFO_LOOKUP_RESULTS_DISPLAY_ALL, finalResults.size() + "");
-
-        // NOTE: an alternative to the above is to add the new value as a part of the searchCriteria passed in
-        // then database can filter results and would not have to over write default search message
-        // however KualiPercent is broke at time of this example
-        //searchCriteria.put("subsidizedPercent", ">=" + minSubsidized);
-
-        return finalResults;
+        return super.performSearch(form, searchCriteria,bounded);
     }
 
 }

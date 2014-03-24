@@ -36,6 +36,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.springframework.util.AutoPopulatingList;
 
 @Entity
 @Table(name = "KRIM_TYP_T")
@@ -59,7 +60,7 @@ public class KimTypeBo extends DataObjectBase implements KimTypeContract, Busine
 
     @OneToMany(targetEntity = KimTypeAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "KIM_TYP_ID", referencedColumnName = "KIM_TYP_ID", insertable = false, updatable = false)
-    private List<KimTypeAttributeBo> attributeDefinitions;
+    private List<KimTypeAttributeBo> attributeDefinitions = new AutoPopulatingList<KimTypeAttributeBo>(KimTypeAttributeBo.class);
 
     @Column(name = "ACTV_IND")
     @Convert(converter = BooleanYNConverter.class)

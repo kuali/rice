@@ -26,6 +26,8 @@ jQuery(function () {
     }
     jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
         handleTabSwap("input#Demo-CurrentExampleIndex_control");
+    });
+    jQuery(document).on(kradVariables.EVENTS.PAGE_UPDATE_COMPLETE, function(){
         updateHtmlViewer();
     });
 });
@@ -144,9 +146,17 @@ function handleTabSwap(control) {
     var tab = jQuery(control);
     var tabValue = tab.val();
     if (tabValue != undefined && tabValue != "") {
-        var tabDom = tab[0];
-        var tabNum = tabDom.selectedIndex;
-        jQuery("#ComponentLibrary-TabGroup_tabs").tabs("option", "active", tabNum);
+        var tabIndex = parseInt(tabValue);
+        jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+
+        //main source code viewer
+        var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
+        if (source != null && source.length) {
+            jQuery("#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+        }
+
+        showAdditionalSource(tabIndex);
+        updateHtmlViewer();
     }
     else{
         showAdditionalSource(0);

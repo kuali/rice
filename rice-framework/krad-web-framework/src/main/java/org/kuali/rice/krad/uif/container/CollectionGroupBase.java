@@ -41,6 +41,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -167,8 +168,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     private String addLinePlacement;
 
     private boolean renderSaveLineActions;
-    private boolean addViaLightBox;
-    private Action addViaLightBoxAction;
+
+    private boolean addWithDialog;
+    private Action addWithDialogAction;
+    private DialogGroup addLineDialog;
 
     private boolean useServerPaging = false;
     private int pageSize;
@@ -196,17 +199,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     }
 
     /**
-     * Do not process remote field holders for collections. Collection items will be processed as
-     * the lines are built
-     *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#isProcessRemoteFieldHolders()
-     */
-    @Override
-    public boolean isProcessRemoteFieldHolders() {
-        return false;
-    }
-
-    /**
      * @{inheritDoc}
      */
     @Override
@@ -226,40 +218,25 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             if (StringUtils.isNotBlank(addLinePropertyName)) {
                 addLineBindingInfo.setDefaults(view, getPropertyName());
                 addLineBindingInfo.setBindingName(addLinePropertyName);
+
                 if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
                     addLineBindingInfo.setBindByNamePrefix(getFieldBindByNamePrefix());
                 }
             }
         }
 
-        for (Component item : getItems()) {
-            if (item instanceof DataField) {
-                DataField field = (DataField) item;
-
-                if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
-                    field.setDictionaryObjectEntry(collectionObjectClass.getName());
-                }
-            }
-        }
-
         if ((addLineItems == null) || addLineItems.isEmpty()) {
             addLineItems = getItems();
-        } else {
-            for (Component addLineField : addLineItems) {
-                if (!(addLineField instanceof DataField)) {
-                    continue;
-                }
+        }
 
-                DataField field = (DataField) addLineField;
+        if (addWithDialog && (addLineDialog == null)) {
+            addLineDialog = (DialogGroup) ComponentFactory.getNewComponentInstance(ComponentFactory.ADD_LINE_DIALOG);
 
-                if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
-                    field.setDictionaryObjectEntry(collectionObjectClass.getName());
-                }
-            }
+            ((CollectionLayoutManager) getLayoutManager()).setAddLineGroup(addLineDialog);
         }
 
         // if active collection filter not set use default
-        if (this.activeCollectionFilter == null) {
+        if (activeCollectionFilter == null) {
             activeCollectionFilter = new ActiveCollectionFilter();
         }
 
@@ -274,14 +251,18 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         collectionPath += getBindingInfo().getBindingName();
 
         List<DataField> collectionFields = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), DataField.class);
-        for (DataField collectionField : collectionFields) {
-            collectionField.getBindingInfo().setCollectionPath(collectionPath);
-        }
-
         List<DataField> addLineCollectionFields = ViewLifecycleUtils.getElementsOfTypeDeep(addLineItems,
                 DataField.class);
-        for (DataField collectionField : addLineCollectionFields) {
+        if (addLineCollectionFields != null) {
+            collectionFields.addAll(addLineCollectionFields);
+        }
+
+        for (DataField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
+
+            if (StringUtils.isBlank(collectionField.getDictionaryObjectEntry())) {
+                collectionField.setDictionaryObjectEntry(collectionObjectClass.getName());
+            }
         }
 
         for (CollectionGroup collectionGroup : getSubCollections()) {
@@ -351,17 +332,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             } else {
                 this.addBlankLineAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
             }
-        } else if (this.addViaLightBox) {
-            if (this.addViaLightBoxAction == null) {
-                this.addViaLightBoxAction = (Action) ComponentFactory.getNewComponentInstance(
-                        ComponentFactory.ADD_VIA_LIGHTBOX_ACTION);
-            }
-
-            if (this.addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
-                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'last');");
-            } else {
-                this.addViaLightBoxAction.setOnClickScript("writeCurrentPageToSession(this, 'first');");
-            }
+        } else if (this.addWithDialog) {
+            setupAddLineDialog();
         }
 
         pushCollectionGroupToReference();
@@ -370,6 +342,31 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         if (isRender()) {
             getCollectionGroupBuilder().build(view, model, this);
         }
+    }
+
+    /**
+     * When add via dialog is true, initialize the add with dialog action (if necessary) and sets up the
+     * action script for opening the dialog.
+     */
+    protected void setupAddLineDialog() {
+        if (addWithDialogAction == null) {
+            addWithDialogAction = (Action) ComponentFactory.getNewComponentInstance(
+                    ComponentFactory.ADD_WITH_DIALOG_ACTION);
+        }
+
+        String sessionPage = "first";
+        if (addLinePlacement.equals(UifConstants.Position.BOTTOM.name())) {
+            sessionPage = "last";
+        }
+
+        String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION +
+                "(this, '" + sessionPage + "');";
+        actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
+
+        actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
+                UifConstants.JsFunctions.SHOW_DIALOG, addLineDialog.getId()));
+
+        addWithDialogAction.setActionScript(actionScript);
     }
 
     /**
@@ -503,6 +500,17 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             boolean clearExistingLine) {
         getCollectionGroupBuilder().initializeNewCollectionLine(view, model, collectionGroup, clearExistingLine);
+    }
+
+    /**
+     * Do not process remote field holders for collections. Collection items will be processed as
+     * the lines are built.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isProcessRemoteFieldHolders() {
+        return false;
     }
 
     /**
@@ -1197,34 +1205,51 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addViaLightBox")
-    public boolean isAddViaLightBox() {
-        return addViaLightBox;
+    @BeanTagAttribute(name = "addWithDialog")
+    public boolean isAddWithDialog() {
+        return addWithDialog;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setAddViaLightBox(boolean addViaLightBox) {
-        this.addViaLightBox = addViaLightBox;
+    public void setAddWithDialog(boolean addWithDialog) {
+        this.addWithDialog = addWithDialog;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addViaLightBoxAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Action getAddViaLightBoxAction() {
-        return addViaLightBoxAction;
+    @BeanTagAttribute(name = "addWithDialogAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Action getAddWithDialogAction() {
+        return addWithDialogAction;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setAddViaLightBoxAction(Action addViaLightBoxAction) {
-        this.addViaLightBoxAction = addViaLightBoxAction;
+    public void setAddWithDialogAction(Action addWithDialogAction) {
+        this.addWithDialogAction = addWithDialogAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "addLineDialog", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public DialogGroup getAddLineDialog() {
+        return addLineDialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAddLineDialog(DialogGroup addLineDialog) {
+        this.addLineDialog = addLineDialog;
     }
 
     /**

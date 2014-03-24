@@ -233,3 +233,41 @@ function showItemOutlines(button) {
     }
 }
 
+function demoDialogResponse1(event) {
+    if (event.response === 'true') {
+        alert('You selected true. Totals have been calculated.');
+    }
+    else {
+        alert('You selected false. Totals were not calculated.');
+    }
+}
+
+function demoDialogResponse2(event) {
+    alert('Your favorite book is: ' + event.response);
+}
+
+function handleTimeoutWarningResponse(event) {
+    if (event.response === 'continue') {
+        alert('Session had been reestablished.');
+    }
+    else if (event.response === 'logout') {
+        alert('You have been logged out.');
+    }
+}
+
+function displayCountdown(targetId, until, overrideOptions) {
+    var options = {until: until, format: 'MS', compact: true};
+
+    jQuery.extend(true, options, overrideOptions);
+
+    var target = jQuery('#' + targetId);
+
+    if (target.length > 0) {
+        // in the case of redisplaying a countdown we need to clear the target's contents
+        target.removeClass(kradVariables.COUNTDOWN_CLASS);
+        target.empty();
+
+        target.countdown(options);
+    }
+}
+

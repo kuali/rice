@@ -73,7 +73,7 @@ public class ComponentBaseTest {
         View view = mock(View.class);
         ViewHelperService helper = mock(ViewHelperService.class);
         when(view.getViewHelperService()).thenReturn(helper);
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(view, null, null, new Runnable(){
             @Override
             public void run() {
                 Component copy = component.copy();

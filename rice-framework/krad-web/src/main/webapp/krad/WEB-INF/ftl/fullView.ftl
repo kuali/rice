@@ -84,8 +84,6 @@
         </#if>
     </@krad.form>
 
-    <@krad.script value="${KualiForm.lightboxScript!}"/>
-
     <#-- set focus and perform jump to -->
     <#if KualiForm.view.currentPage?has_content>
         <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){

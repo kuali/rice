@@ -354,7 +354,7 @@ public class CollectionGroupBuilder implements Serializable {
             // if marked for validation, add call to validate the line and set validation flag to false
             // so the entire form will not be validated
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "var valid=validateLine('" +
+                String preSubmitScript = "var valid=" + UifConstants.JsFunctions.VALIDATE_LINE + "('" +
                         collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
                         ");";
 
@@ -390,9 +390,22 @@ public class CollectionGroupBuilder implements Serializable {
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
+
         List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(
                 collectionGroup.getAddLineActions(), lineSuffix);
+
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineActionComponents, Action.class);
+
+        if (collectionGroup.isAddWithDialog() && (collectionGroup.getAddLineDialog().getFooter() != null) &&
+                !collectionGroup.getAddLineDialog().getFooter().getItems().isEmpty()) {
+            List<Action> addLineDialogActions = ViewLifecycleUtils.getElementsOfTypeDeep(
+                    collectionGroup.getAddLineDialog().getFooter().getItems(), Action.class);
+
+            if (addLineDialogActions != null) {
+                actions.addAll(addLineDialogActions);
+            }
+        }
+
         for (Action action : actions) {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
@@ -403,12 +416,8 @@ public class CollectionGroupBuilder implements Serializable {
             action.setRefreshId(collectionGroup.getId());
 
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "var valid=";
-                if (collectionGroup.isAddViaLightBox()) {
-                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true);";
-                } else {
-                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
-                }
+                String preSubmitScript = "var valid=" + UifConstants.JsFunctions.VALIDATE_ADD_LINE + "('" +
+                        collectionGroup.getId() + "');";
 
                 // prepend custom presubmit script which should evaluate to a boolean
                 if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
@@ -416,9 +425,6 @@ public class CollectionGroupBuilder implements Serializable {
                             "if(valid){valid=function(){" + action.getPreSubmitCall() + "}();}");
                 }
 
-                if (collectionGroup.isAddViaLightBox()) {
-                    preSubmitScript += " if(valid){closeLightbox();}";
-                }
                 preSubmitScript += "return valid;";
 
                 action.setPreSubmitCall(preSubmitScript);

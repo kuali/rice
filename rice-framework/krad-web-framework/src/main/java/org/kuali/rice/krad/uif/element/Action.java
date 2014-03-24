@@ -32,8 +32,10 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
@@ -107,8 +109,12 @@ public class Action extends ContentElementBase {
     private boolean dirtyOnAction;
 
     private String preSubmitCall;
-    private boolean ajaxSubmit;
+    private String confirmationPromptText;
+    private DialogGroup confirmationDialog;
 
+    private String dialogDismissOption;
+
+    private boolean ajaxSubmit;
     private String ajaxReturnType;
     private String refreshId;
     private String refreshPropertyName;
@@ -180,6 +186,18 @@ public class Action extends ContentElementBase {
             ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(actionUrl, false);
             ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(ViewLifecycle.getView(),
                     actionUrl, this.getContext());
+        }
+
+        // if confirmation text has been set for the action, initialize a confirmation dialog (if necessary), and
+        // set the confirmation text on the dialog
+        if (StringUtils.isNotBlank(confirmationPromptText)) {
+            if (confirmationDialog == null) {
+                confirmationDialog = ComponentFactory.getActionConfirmationDialog();
+            }
+
+            if (StringUtils.isBlank(confirmationDialog.getPromptText())) {
+                confirmationDialog.setPromptText(confirmationPromptText);
+            }
         }
     }
 
@@ -357,6 +375,15 @@ public class Action extends ContentElementBase {
                 UifConstants.ActionDataAttributes.PERFORM_DIRTY_VALIDATION, Boolean.toString(
                 this.performDirtyValidation));
 
+        if (confirmationDialog != null) {
+            addActionDataSettingsValue(actionDataAttributes, dataDefaults,
+                    UifConstants.ActionDataAttributes.CONFIRM_DIALOG_ID, confirmationDialog.getId());
+        }
+
+        if (StringUtils.isNotBlank(dialogDismissOption)) {
+            addDataAttribute(UifConstants.DataAttributes.DISMISS_DIALOG_OPTION, dialogDismissOption);
+        }
+
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
         for (String key : actionParameters.keySet()) {
@@ -416,7 +443,8 @@ public class Action extends ContentElementBase {
 
         // add data attribute if this is the primary action
         if (this.isDefaultEnterKeyAction()) {
-            this.addDataAttribute(UifConstants.DataAttributes.DEFAULT_ENTER_KEY_ACTION, Boolean.toString(this.isDefaultEnterKeyAction()));
+            this.addDataAttribute(UifConstants.DataAttributes.DEFAULT_ENTER_KEY_ACTION,
+                    Boolean.toString(this.isDefaultEnterKeyAction()));
         }
     }
 
@@ -1107,6 +1135,73 @@ public class Action extends ContentElementBase {
      */
     public void setPreSubmitCall(String preSubmitCall) {
         this.preSubmitCall = preSubmitCall;
+    }
+
+    /**
+     * Text to display as a confirmation of the action.
+     *
+     * <p>When this text is displayed the user will receive a confirmation when the action is taken. The user
+     * can then cancel the action, or continue. This uses {@link Action#getConfirmationDialog()} to build the dialog.
+     * If not set, the default 'Uif-ActionConfirmation' dialog bean is used.</p>
+     *
+     * @return text to display in a confirmation for the action
+     */
+    public String getConfirmationPromptText() {
+        return confirmationPromptText;
+    }
+
+    /**
+     * @see Action#getConfirmationPromptText()
+     */
+    public void setConfirmationPromptText(String confirmationPromptText) {
+        this.confirmationPromptText = confirmationPromptText;
+    }
+
+    /**
+     * Dialog to use an a confirmation for the action.
+     *
+     * <p>Note when this is empty and {@link Action#getConfirmationPromptText()} is set, this will be defaulted. For
+     * custom confirmation dialogs this can be set to any valid dialog group. It is expected that the dialog have
+     * at least one action with the dialog response of 'true' to continue the action.</p>
+     *
+     * @return dialog group instance to use an a confirmation
+     */
+    public DialogGroup getConfirmationDialog() {
+        return confirmationDialog;
+    }
+
+    /**
+     * @see Action#getConfirmationDialog()
+     */
+    public void setConfirmationDialog(DialogGroup confirmationDialog) {
+        this.confirmationDialog = confirmationDialog;
+    }
+
+    /**
+     * If the action is within a {@link org.kuali.rice.krad.uif.container.DialogGroup} it can be configured to
+     * dismiss the dialog using this property.
+     *
+     * <p>A dialog can be dismissed at various points of the action using the values:
+     *    IMMEDIATE - dismiss dialog right away (and do nothig further)
+     *    PRESUBMIT - run the action presubmit (which can include validation), if successful close the dialog and
+     *                do nothing further
+     *    REQUEST - carry out the action request as usual and dismiss the dialog when the server request is made
+     * </p>
+     *
+     * <p>Note the id for the dialog that will be dismissed is automatically associated with the action when
+     * the dialog is shown.</p>
+     *
+     * @return String option for dismissing a dialog
+     */
+    public String getDialogDismissOption() {
+        return dialogDismissOption;
+    }
+
+    /**
+     * @see Action#getDialogDismissOption()
+     */
+    public void setDialogDismissOption(String dialogDismissOption) {
+        this.dialogDismissOption = dialogDismissOption;
     }
 
     /**

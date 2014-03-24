@@ -34,7 +34,7 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <#if manager.separateAddLine>
+    <#if manager.separateAddLine && !container.addWithDialog>
         <@krad.template component=manager.addLineGroup/>
     </#if>
 

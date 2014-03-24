@@ -107,9 +107,12 @@ KradResponse.prototype = {
         var $dialog = jQuery("#" + id);
         if ($dialog.length) {
             $dialog.replaceWith(component.html());
-
-            $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
         }
+        else {
+            jQuery('#' + kradVariables.IDS.DIALOGS).append(component.html());
+        }
+
+        $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         runHiddenScripts(id);
     },
@@ -148,12 +151,7 @@ KradResponse.prototype = {
 
         // replace component
         if ($componentInDom.length) {
-            // only do highlighting if the is the first time the content is being displayed, and it is not
-            // a dialog
-            var componentInDialog = jQuery('#' + kradVariables.IDS.DIALOGS + ' #' + id).length > 0;
-            if (!componentInDialog && $componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
-                var isNewlyDisclosed = true;
-            }
+            var wasPlaceholder = $componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER);
 
             $componentInDom.replaceWith(component.html());
 
@@ -186,7 +184,10 @@ KradResponse.prototype = {
             }
 
             $componentInDom.unblock({onUnblock: function () {
-                if (isNewlyDisclosed) {
+                var isDialog = $componentInDom.hasClass(kradVariables.CLASSES.MODAL);
+
+                // if this is the first time the content is being shown, and it is not a dialog, add highlighting
+                if (wasPlaceholder && !isDialog) {
                     $componentInDom.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
                     $componentInDom.animate({backgroundColor: "transparent"}, 6000);
                 }
@@ -261,7 +262,5 @@ KradResponse.prototype = {
         // update form action with content
 
         jQuery("form#" + kradVariables.KUALI_FORM).attr('action', jQuery.trim(action));
-
-
     }
 }

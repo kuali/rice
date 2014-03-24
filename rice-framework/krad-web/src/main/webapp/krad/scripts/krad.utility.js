@@ -1057,6 +1057,39 @@ function collectionLineChanged(inputField, highlightItemClass) {
 }
 
 /**
+ * Takes a string argument that contains javascript code and wraps in a function that accepts an
+ * event argument.
+ *
+ * @param source string containing event script
+ * @returns {Object} event handler function
+ */
+function wrapAsHandler(source) {
+    var script = "(function (e) { " + source + "})"
+
+    return eval(script);
+}
+
+/**
+ * Helper method to check whether the element represented by the given jQuery object has the given
+ * attribute.
+ *
+ * @param $jQueryObject jquery object representing the element to check
+ * @param attrName name of the attribute to check for
+ * @returns {boolean} true if the element contains the attribute, false if not
+ */
+function hasAttribute($jQueryObject, attrName) {
+    var attr = $jQueryObject.attr(attrName);
+
+    // For some browsers, `attr` is undefined; for others,
+    // `attr` is false.  Check for both.
+    if (typeof attr !== 'undefined' && attr !== false) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
  * Display the component of the id in a light box.
  *
  * <p>The specified component is used as the content of the fancy box.
@@ -1084,20 +1117,13 @@ function showLightboxComponent(componentId, overrideOptions, alwaysRefresh) {
         }});
     }
 
-    if (jQuery('#' + componentId).length > 0 && !alwaysRefresh && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
+    if (jQuery('#' + componentId).length > 0 && !alwaysRefresh
+            && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         _showLightboxComponentHelper(componentId, overrideOptions);
     } else {
-        var placeholderSpan = '<span id="' + componentId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
-                '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
-        if (jQuery('#' + componentId).length == 0) {
-            jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
-        } else {
-            jQuery('#' + componentId).replaceWith(placeholderSpan);
-        }
-
-        retrieveComponent(componentId, undefined, function () {
+        createPlaceholderAndRetrieve(componentId, function () {
             _showLightboxComponentHelper(componentId, overrideOptions);
-            }, {}, true);
+        });
     }
 }
 

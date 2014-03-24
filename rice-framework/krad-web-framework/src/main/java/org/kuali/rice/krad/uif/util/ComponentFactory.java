@@ -118,6 +118,7 @@ public class ComponentFactory {
     public static final String LOOKUP_INPUT_FIELD = "Uif-LookupCriteriaInputField";
     public static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
     public static final String ACTION = "Uif-PrimaryActionButton";
+    public static final String SECONDARY_ACTION = "Uif-SecondaryActionButton";
     public static final String ACTION_LINK = "Uif-ActionLink";
     public static final String LINK_FIELD = "Uif-LinkField";
     public static final String IFRAME = "Uif-Iframe";
@@ -168,10 +169,12 @@ public class ComponentFactory {
     public static final String INQUIRY = "Uif-Inquiry";
 
     public static final String ADD_BLANK_LINE_ACTION = "Uif-AddBlankLineAction";
-    public static final String ADD_VIA_LIGHTBOX_ACTION = "Uif-AddViaLightBoxAction";
+    public static final String ADD_WITH_DIALOG_ACTION = "Uif-AddWithDialogAction";
+    public static final String ADD_LINE_DIALOG = "Uif-AddLineDialog";
 
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
+    public static final String ACTION_CONFIRMATION_DIALOG = "Uif-ActionConfirmation";
 
     public static final String INQUIRY_VIEW = "Uif-InquiryView";
     public static final String LOOKUP_VIEW = "Uif-LookupView";
@@ -794,6 +797,15 @@ public class ComponentFactory {
     }
 
     /**
+     * Returns an instance of a secondary action component.
+     *
+     * @return action
+     */
+    public static Action getSecondaryAction() {
+        return (Action) getNewComponentInstance(SECONDARY_ACTION);
+    }
+
+    /**
      * Gets the action link
      *
      * @return action link
@@ -1191,6 +1203,15 @@ public class ComponentFactory {
      */
     public static DialogGroup getSessionTimeoutDialog() {
         return (DialogGroup) getNewComponentInstance(SESSION_TIMEOUT_DIALOG);
+    }
+
+    /**
+     * Gets an instance of the action confirmation dialog
+     *
+     * @return instance of action confirmation dialog
+     */
+    public static DialogGroup getActionConfirmationDialog() {
+        return (DialogGroup) getNewComponentInstance(ACTION_CONFIRMATION_DIALOG);
     }
 
     /**

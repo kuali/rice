@@ -530,7 +530,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         collectionBindingInfo.setBindingPath("foo.bar");
         collectionGroup.setBindingInfo(collectionBindingInfo);
 
-        ViewLifecycle.encapsulateLifecycle(view, form, null, null, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, form, null, new Runnable() {
             @Override
             public void run() {
                 collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());

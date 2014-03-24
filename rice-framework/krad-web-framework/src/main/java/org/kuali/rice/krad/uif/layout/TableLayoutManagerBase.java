@@ -46,6 +46,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.layout.collections.CollectionLayoutManagerBase;
 import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -76,8 +77,17 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "tableCollectionLayout-bean", parent = "Uif-TableCollectionLayout")
-public class TableLayoutManagerBase extends GridLayoutManagerBase implements TableLayoutManager {
+public class TableLayoutManagerBase extends CollectionLayoutManagerBase implements TableLayoutManager {
     private static final long serialVersionUID = 3622267585541524208L;
+
+    private int numberOfColumns;
+    private boolean suppressLineWrapping;
+
+    private boolean applyAlternatingRowStyles;
+    private boolean applyDefaultCellWidths;
+
+    private List<String> rowCssClasses;
+    private List<String> rowDataAttributes;
 
     private boolean useShortLabels;
     private boolean repeatHeader;
@@ -88,11 +98,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     private Field sequenceFieldPrototype;
 
     private FieldGroup actionFieldPrototype;
-    private FieldGroup subCollectionFieldGroupPrototype;
-    private Field selectFieldPrototype;
 
     private boolean separateAddLine;
-    private Group addLineGroup;
 
     // internal counter for the data columns (not including sequence, action)
     private int numberOfDataColumns;
@@ -101,7 +108,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     private List<Field> allRowFields;
     private List<Field> firstRowFields;
 
-    private Pager pagerWidget;
     private RichTable richTable;
     private boolean headerAdded;
 
@@ -148,6 +154,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         separateAddLine = false;
         rowDetailsOpen = false;
 
+        rowCssClasses = new ArrayList<String>();
+        rowDataAttributes = new ArrayList<String>();
         headerLabels = new ArrayList<Label>();
         allRowFields = new ArrayList<Field>();
         firstRowFields = new ArrayList<Field>();
@@ -164,14 +172,14 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
         
         if (collectionGroup.isReadOnly()) {
-            addLineGroup.setReadOnly(true);
+            getAddLineGroup().setReadOnly(true);
             actionFieldPrototype.setReadOnly(true);
         }
 
         this.setupDetails(collectionGroup);
         this.setupGrouping(model, collectionGroup);
 
-        if (collectionGroup.isAddViaLightBox()) {
+        if (collectionGroup.isAddWithDialog()) {
             setSeparateAddLine(true);
         }
 
@@ -260,7 +268,7 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         if ((this.getRichTable() == null || !this.getRichTable().isRender()) &&
                 collectionGroup.isUseServerPaging() && this.getPagerWidget() != null) {
             // Set the appropriate page, total pages, and link script into the Pager
-            CollectionLayoutUtils.setupPagerWidget(pagerWidget, collectionGroup, model);
+            CollectionLayoutUtils.setupPagerWidget(getPagerWidget(), collectionGroup, model);
         }
     }
 
@@ -636,30 +644,25 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             if (StringUtils.isNotBlank(collectionGroup.getAddLineEnterKeyAction())) {
                 String addLineEnterKeyAction = collectionGroup.getAddLineEnterKeyAction();
                 if (addLineEnterKeyAction.indexOf("@{") != -1) {
-                    addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext, collectionGroup.getAddLineEnterKeyAction());
+                    addLineEnterKeyAction = expressionEvaluator.evaluateExpressionTemplate(lineContext,
+                            collectionGroup.getAddLineEnterKeyAction());
                 }
 
-                addLineGroup.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, KRADUtils.convertToHTMLAttributeSafeString(addLineEnterKeyAction));
+                getAddLineGroup().addDataAttribute(UifConstants.DataAttributes.ENTER_KEY,
+                        KRADUtils.convertToHTMLAttributeSafeString(addLineEnterKeyAction));
             }
 
-            if (addLineGroup.getHeader() != null && StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
-                    addLineGroup.getHeader().getHeaderText())) {
-                addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLabel());
+            if (getAddLineGroup().getHeader() != null
+                    && StringUtils.isBlank(getAddLineGroup().getTitle())
+                    && StringUtils.isBlank(getAddLineGroup().getHeader().getHeaderText())) {
+                getAddLineGroup().getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
 
-            addLineGroup.setItems(lineFields);
+            getAddLineGroup().setItems(lineFields);
 
-            List<Component> footerItems = new ArrayList<Component>(actions);
-            footerItems.addAll(addLineGroup.getFooter().getItems());
-            addLineGroup.getFooter().setItems(footerItems);
-
-            if (collectionGroup.isAddViaLightBox()) {
-                String actionScript = "showLightboxComponent('" + addLineGroup.getId() + "');";
-                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
-                    actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
-                }
-                collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
-                addLineGroup.setStyle("display: none");
+            if ((getAddLineGroup().getFooter() != null) && ((getAddLineGroup().getFooter().getItems() == null)
+                    || getAddLineGroup().getFooter().getItems().isEmpty())) {
+                getAddLineGroup().getFooter().setItems(new ArrayList<Component>(actions));
             }
 
             return;
@@ -1079,6 +1082,41 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
+     * Moves the width, align, and valign settings of the component to the corresponding cell properties (if not
+     * already configured)
+     *
+     * @param component instance to adjust settings for
+     */
+    protected void setCellAttributes(Component component) {
+        if (StringUtils.isNotBlank(component.getWidth()) && StringUtils.isBlank(component.getCellWidth())) {
+            component.setCellWidth(component.getWidth());
+            component.setWidth("");
+        }
+
+        if (StringUtils.isNotBlank(component.getAlign()) && !StringUtils.contains(component.getWrapperStyle(),
+                CssConstants.TEXT_ALIGN)) {
+            if (component.getWrapperStyle() == null) {
+                component.setWrapperStyle("");
+            }
+
+            component.setWrapperStyle(
+                    component.getWrapperStyle() + CssConstants.TEXT_ALIGN + component.getAlign() + ";");
+            component.setAlign("");
+        }
+
+        if (StringUtils.isNotBlank(component.getValign()) && !StringUtils.contains(component.getWrapperStyle(),
+                CssConstants.VERTICAL_ALIGN)) {
+            if (component.getWrapperStyle() == null) {
+                component.setWrapperStyle("");
+            }
+
+            component.setWrapperStyle(
+                    component.getWrapperStyle() + CssConstants.VERTICAL_ALIGN + component.getValign() + ";");
+            component.setValign("");
+        }
+    }
+
+    /**
      * Invokes instance of {@link org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper} to carry out
      * the paging request using data tables API.
      *
@@ -1131,7 +1169,109 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         }
         return components;
     }
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "numberOfColumns")
+    public int getNumberOfColumns() {
+        return numberOfColumns;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "suppressLineWrapping")
+    public boolean isSuppressLineWrapping() {
+        return suppressLineWrapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSuppressLineWrapping(boolean suppressLineWrapping) {
+        this.suppressLineWrapping = suppressLineWrapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "applyAlternatingRowStyles")
+    public boolean isApplyAlternatingRowStyles() {
+        return applyAlternatingRowStyles;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
+        this.applyAlternatingRowStyles = applyAlternatingRowStyles;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "applyDefaultCellWidths")
+    public boolean isApplyDefaultCellWidths() {
+        return applyDefaultCellWidths;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
+        this.applyDefaultCellWidths = applyDefaultCellWidths;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "rowCssClasses")
+    public List<String> getRowCssClasses() {
+        return rowCssClasses;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRowCssClasses(List<String> rowCssClasses) {
+        this.rowCssClasses = rowCssClasses;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "rowDataAttributes")
+    public List<String> getRowDataAttributes() {
+        return rowDataAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRowDataAttributes(List<String> rowDataAttributes) {
+        this.rowDataAttributes = rowDataAttributes;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -1289,42 +1429,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * {@inheritDoc}
      */
     @Override
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public FieldGroup getSubCollectionFieldGroupPrototype() {
-        return this.subCollectionFieldGroupPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
-        this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Field getSelectFieldPrototype() {
-        return selectFieldPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSelectFieldPrototype(Field selectFieldPrototype) {
-        this.selectFieldPrototype = selectFieldPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @BeanTagAttribute(name = "separateAddLine")
     public boolean isSeparateAddLine() {
         return separateAddLine;
@@ -1342,23 +1446,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Group getAddLineGroup() {
-        return addLineGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAddLineGroup(Group addLineGroup) {
-        this.addLineGroup = addLineGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Field> getAllRowFields() {
         return this.allRowFields;
     }
@@ -1370,22 +1457,6 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     @ViewLifecycleRestriction
     public List<Field> getFirstRowFields() {
         return firstRowFields;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Pager getPagerWidget() {
-        return pagerWidget;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPagerWidget(Pager pagerWidget) {
-        this.pagerWidget = pagerWidget;
     }
 
     /**

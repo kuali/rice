@@ -62,7 +62,7 @@ public class FieldBaseTest {
         //        when(mockView.copy()).thenReturn(mockView);
         //        when(mockView.clone()).thenReturn(mockView);
 
-        ViewLifecycle.encapsulateLifecycle(view, null, null, null, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, null, null, new Runnable() {
             @Override
             public void run() {
                 Object nullModel = null;

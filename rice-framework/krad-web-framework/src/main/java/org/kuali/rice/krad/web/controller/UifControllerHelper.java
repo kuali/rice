@@ -18,7 +18,6 @@ package org.kuali.rice.krad.web.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -114,17 +113,13 @@ public class UifControllerHelper {
     }
 
     /**
-     * After the controller logic is executed, the form is placed into session
-     * and the corresponding view is prepared for rendering
+     * After the controller logic is executed, the form is placed into session and the corresponding view
+     * is prepared for rendering.
      *
      * @param request servlet request
-     * @param response servlet response
-     * @param handler handler instance
      * @param modelAndView model and view
-     * @throws Exception
      */
-    public static void postControllerHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
+    public static void prepareView(HttpServletRequest request, ModelAndView modelAndView) {
         if (modelAndView == null) {
             return;
         }
@@ -137,7 +132,7 @@ public class UifControllerHelper {
         UifFormBase form = (UifFormBase) model;
 
         if (!form.isRequestRedirected()) {
-            prepareViewForRendering(request, response, form);
+            invokeViewLifecycle(request, form);
         }
 
         // expose additional objects to the templates
@@ -155,40 +150,40 @@ public class UifControllerHelper {
      * Prepares the {@link org.kuali.rice.krad.uif.view.View} instance contained on the form for rendering.
      *
      * @param request servlet request
-     * @param response servlet response
      * @param form form instance containing the data and view instance
      */
-    public static void prepareViewForRendering(HttpServletRequest request, HttpServletResponse response,
-            UifFormBase form) {
+    public static void invokeViewLifecycle(HttpServletRequest request, UifFormBase form) {
         // for component refreshes only lifecycle for component is performed
         if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest() || (form.isJsonRequest() && StringUtils
                 .isNotBlank(form.getUpdateComponentId()))) {
             String refreshComponentId = form.getUpdateComponentId();
 
-            Component updateComponent = ViewLifecycle.performComponentLifecycle(form.getView(), form, request, response,
+            Component updateComponent = ViewLifecycle.performComponentLifecycle(form.getView(), form, request,
                     form.getViewPostMetadata(), refreshComponentId);
             form.setUpdateComponent(updateComponent);
         } else {
             // full view build
             View view = form.getView();
-            if (view != null) {
-                Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
-                parameterMap.putAll(form.getViewRequestParameters());
-
-                // build view which will prepare for rendering
-                ViewPostMetadata postMetadata = ViewLifecycle.buildView(view, form, request, response, parameterMap);
-                form.setViewPostMetadata(postMetadata);
-
-                if (form.isUpdatePageRequest()) {
-                    Component updateComponent = form.getView().getCurrentPage();
-                    form.setUpdateComponent(updateComponent);
-                }
-
-                // update the page on the form to reflect the current page of the view
-                form.setPageId(view.getCurrentPageId());
-            } else {
+            if (view == null) {
                 LOG.warn("View in form was null: " + form);
+
+                return;
             }
+
+            Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+            parameterMap.putAll(form.getViewRequestParameters());
+
+            // build view which will prepare for rendering
+            ViewPostMetadata postMetadata = ViewLifecycle.buildView(view, form, request, parameterMap);
+            form.setViewPostMetadata(postMetadata);
+
+            if (form.isUpdatePageRequest()) {
+                Component updateComponent = form.getView().getCurrentPage();
+                form.setUpdateComponent(updateComponent);
+            }
+
+            // update the page on the form to reflect the current page of the view
+            form.setPageId(view.getCurrentPageId());
         }
     }
 

@@ -30,4 +30,4 @@
 <#include "template.ftl" parse=true/>
 <#include "tooltip.ftl" parse=true/>
 <#include "treeNode.ftl" parse=true/>
-<#include "wrappingTag.ftl" parse=true/>
+<#include "wrap.ftl" parse=true/>

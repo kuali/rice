@@ -131,4 +131,7 @@
 
     <@krad.disable control=element type="action"/>
 
+    <#-- render confirmation dialog for action -->
+    <@krad.template component=element.confirmationDialog/>
+
 </#macro>

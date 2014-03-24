@@ -23,6 +23,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.HistoryManager;
@@ -84,7 +85,14 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
-        UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
+        if (request.getAttribute(UifParameters.Attributes.VIEW_LIFECYCLE_COMPLETE) == null) {
+            UifControllerHelper.prepareView(request, modelAndView);
+        }
+
+        Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+        if (model instanceof ViewModel) {
+            ((ViewModel) model).preRender(request);
+        }
 
         ProcessLogger.trace("post-handle");
     }

@@ -58,7 +58,7 @@ public class DemoLookupViewTest extends ProcessLoggingUnitTest {
         request.setParameter(UifParameters.VIEW_ID, "LookupSampleView");
         new UifServletRequestDataBinder(lookupForm).bind(request);
         // TODO: tie in mock data service
-        //        UifControllerHelper.prepareViewForRendering(request, response, lookupForm);
+        //        UifControllerHelper.invokeViewLifecycle(request, response, lookupForm);
         //        View dummyLogin = lookupForm.getView();
         //        assertEquals(UifConstants.ViewStatus.RENDERED, dummyLogin.getViewStatus());
         //        ViewCleaner.cleanView(dummyLogin);

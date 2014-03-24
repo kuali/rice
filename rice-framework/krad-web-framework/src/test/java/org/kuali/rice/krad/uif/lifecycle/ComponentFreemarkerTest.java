@@ -122,7 +122,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
         View view = mock(View.class);
-        ViewLifecycle.encapsulateLifecycle(view, new Object(), request, response, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, new Object(), request, new Runnable() {
             @Override
             public void run() {
                 Message msg = ComponentFactory.getMessage().copy();

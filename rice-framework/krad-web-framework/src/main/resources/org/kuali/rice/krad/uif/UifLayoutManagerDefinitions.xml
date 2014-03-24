@@ -185,7 +185,6 @@
     </property>
     <property name="applyAlternatingRowStyles" value="true"/>
     <property name="applyDefaultCellWidths" value="false"/>
-    <property name="renderAlternatingHeaderColumns" value="false"/>
     <property name="headerLabelPrototype">
       <bean parent="Uif-Label" p:renderColon="false" p:cssClasses="infoline"/>
     </property>
@@ -233,7 +232,6 @@
     </property>
     <property name="showPageTotal" value="true"/>
     <property name="showTotal" value="true"/>
-
   </bean>
 
   <!--Stacked Collection Layout Managers-->

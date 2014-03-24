@@ -23,7 +23,6 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.controller.UifControllerHelper;
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see ViewLifecycle#encapsulateLifecycle(View, Object, javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse, Runnable)
- * @see UifControllerHelper#prepareViewForRendering(javax.servlet.http.HttpServletRequest,
+ * @see UifControllerHelper#invokeViewLifecycle(javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse, UifFormBase)
  */
 public class ViewLifecycleBuild implements Runnable {

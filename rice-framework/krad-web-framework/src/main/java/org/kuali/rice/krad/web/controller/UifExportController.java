@@ -129,7 +129,7 @@ public class UifExportController extends UifControllerBase {
         String contentType = getContentType(formatType);
 
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.performComponentLifecycle(form.getView(),
-                form, request, response, form.getViewPostMetadata(), form.getUpdateComponentId());
+                form, request, form.getViewPostMetadata(), form.getUpdateComponentId());
 
         // set update none to prevent the lifecycle from being run after the controller finishes
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATENONE.getKey());

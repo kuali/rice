@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/** Navigation */
 
 /**
  * Setup the breadcrumbs for this view by replacing the old breadcrumbs with the newest from the page

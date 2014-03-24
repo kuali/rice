@@ -236,8 +236,8 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
         if (renderContext == null) {
             // Create a new rendering context if a pooled instance is not available.
             ViewLifecycle lifecycle = getLifecycle();
-            renderContext = new LifecycleRenderingContext(
-                    lifecycle.model, lifecycle.request, lifecycle.response);
+//            renderContext = new LifecycleRenderingContext(
+//                    lifecycle.model, lifecycle.request, lifecycle.response);
         }
 
         // Ensure that all view templates have been imported on the new/reused context

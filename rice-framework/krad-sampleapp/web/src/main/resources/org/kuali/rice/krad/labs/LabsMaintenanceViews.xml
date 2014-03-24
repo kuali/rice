@@ -88,7 +88,7 @@
     <property name="viewName" value="LabsMaintenance-PromptBeforeRoutingView"/>
     <property name="dialogs">
       <list>
-        <bean id="TravelAccount-RouteConfirmationDialog" parent="Uif-Yes-No-DialogGroup">
+        <bean id="TravelAccount-RouteConfirmationDialog" parent="Uif-DialogGroup-YesNo">
           <property name="headerText" value="Submit Travel Account?"/>
           <property name="promptText" value="Are you really sure you want to submit the travel account?"/>
         </bean>

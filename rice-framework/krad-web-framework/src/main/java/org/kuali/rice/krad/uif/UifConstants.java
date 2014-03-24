@@ -137,6 +137,10 @@ public class UifConstants {
         _blank, _self, _parent, _top
     }
 
+    public static enum DialogDismissOption {
+        IMMEDIATE, PRESUBMIT, REQUEST
+    }
+
     public static class ControllerMappings {
         public static final String EXPORT = "export";
     }
@@ -434,6 +438,7 @@ public class UifConstants {
         public static final String SECTIONS = "sections";
         public static final String ORDER = "order";
         public static final String RETURN = "return";
+        public static final String RESPONSE = "response";
         public static final String SERVER_ERRORS = "serverErrors";
         public static final String SERVER_WARNINGS = "serverWarnings";
         public static final String SERVER_INFO = "serverInfo";
@@ -453,12 +458,18 @@ public class UifConstants {
         public static final String CHECKED = "checked";
         public static final String ENTER_KEY = "enter_key";
         public static final String DEFAULT_ENTER_KEY_ACTION = "default_enter_key_action";
+        public static final String DISMISS = "dismiss";
+        public static final String DISMISS_DIALOG_OPTION = "dismissdialogoption";
+        public static final String DIALOG_RESPONSE_HANDLER = "response_handler";
+        public static final String DIALOG_SHOW_HANDLER = "show_handler";
+        public static final String DIALOG_HIDE_HANDLER = "hide_handler";
     }
 
     public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");
 
     public static final class ActionDataAttributes {
         public static final String AJAX_SUBMIT = "ajaxSubmit";
+        public static final String CONFIRM_DIALOG_ID = "confirmDialogId";
         public static final String SUCCESS_CALLBACK = "successCallback";
         public static final String ERROR_CALLBACK = "errorCallback";
         public static final String PRE_SUBMIT_CALL = "preSubmitCall";
@@ -500,23 +511,23 @@ public class UifConstants {
     public static final class JsFunctions {
         public static final String COLLECTION_LINE_CHANGED = "collectionLineChanged";
         public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
+        public static final String HANDLE_SERVER_DIALOG_RESPONSE = "handleServerDialogResponse";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String REDIRECT = "redirect";
         public static final String SET_CONFIG_PARM = "setConfigParam";
         public static final String SET_VALUE = "setValue";
         public static final String SHOW_GROWL = "showGrowl";
+        public static final String SHOW_DIALOG = "showDialog";
+        public static final String VALIDATE_ADD_LINE = "validateAddLine";
+        public static final String VALIDATE_LINE = "validateLine";
+        public static final String WRITE_CURRENT_PAGE_TO_SESSION = "writeCurrentPageToSession";
     }
 
     public static final String EVENT_NAMESPACE = "uif";
     
     public static final String BOX_LAYOUT_HORIZONTAL_ITEM_CSS = "uif-boxLayoutHorizontalItem";
     public static final String BOX_LAYOUT_VERTICAL_ITEM_CSS = "uif-boxLayoutVerticalItem";
-
-    public static final class JsEvents {
-        public static final String DIALOG_RESPONSE = "dialogresponse." + EVENT_NAMESPACE;
-        public static final String SHOW_DIALOG = "showdialog." + EVENT_NAMESPACE;
-    }
 
     public static final class ConfigProperties {
         public static final String KRAD_IMAGES_URL = "krad.externalizable.images.url";

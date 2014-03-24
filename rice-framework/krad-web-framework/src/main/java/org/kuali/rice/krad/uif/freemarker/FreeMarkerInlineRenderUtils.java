@@ -459,10 +459,6 @@ public class FreeMarkerInlineRenderUtils {
         Writer out = env.getOut();
         renderTemplate(env, group.getHeader(), null, false, false, null);
 
-        if (!StringUtils.isEmpty(group.getHeaderText())) {
-
-        }
-
         if (group.isRenderLoading()) {
             out.write("<div id=\"");
             out.write(group.getId());
@@ -544,8 +540,8 @@ public class FreeMarkerInlineRenderUtils {
                 renderTemplate(env, group.getAddBlankLineAction(), null, false, false, null);
             }
 
-            if (group.isAddViaLightBox()) {
-                renderTemplate(env, group.getAddViaLightBoxAction(), null, false, false, null);
+            if (group.isAddWithDialog()) {
+                renderTemplate(env, group.getAddWithDialogAction(), null, false, false, null);
             }
         }
 
@@ -574,9 +570,13 @@ public class FreeMarkerInlineRenderUtils {
                 renderTemplate(env, group.getAddBlankLineAction(), null, false, false, null);
             }
 
-            if (group.isAddViaLightBox()) {
-                renderTemplate(env, group.getAddViaLightBoxAction(), null, false, false, null);
+            if (group.isAddWithDialog()) {
+                renderTemplate(env, group.getAddWithDialogAction(), null, false, false, null);
             }
+        }
+
+        if (group.isAddWithDialog()) {
+            renderTemplate(env, group.getAddLineDialog(), null, false, false, null);
         }
 
         renderCloseGroupWrap(env, group);

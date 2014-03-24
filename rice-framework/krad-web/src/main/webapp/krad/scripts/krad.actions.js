@@ -143,19 +143,6 @@ function redirect(url) {
 }
 
 /**
- * Default handler for dialog responses
- *
- * <p>
- * Simply closes the dialog and makes server call to handle the response
- * </p>
- */
-function submitDialogResponse() {
-    closeLightbox();
-
-    ajaxSubmitForm(kradVariables.RETURN_FROM_LIGHTBOX_METHOD_TO_CALL);
-}
-
-/**
  * Runs client side validation on the entire form and returns the result (an alert is also given
  * if errors are encountered)
  */
@@ -209,7 +196,9 @@ function validateForm() {
         });
 
         jumpToTop();
+
         showClientSideErrorNotification();
+
         jQuery(".uif-pageValidationMessages li.uif-errorMessageItem:first > a").focus();
     }
 
@@ -217,6 +206,27 @@ function validateForm() {
     pauseTooltipDisplay = false;
 
     return validForm;
+}
+
+/**
+ * Creates the placeholder span necessary to place the retrieved component (or if the component exists in the
+ * dom it is replaced by the placeholder span), then retrieves the component.
+ *
+ * @param componentId id for the component to create placeholder for and retrieve
+ * @param callback function callback to invoke after the component has been retrieved
+ * @param additionalData data to add to the retrieve ajax request
+ */
+function createPlaceholderAndRetrieve(componentId, callback, additionalData) {
+    var placeholderSpan = '<span id="' + componentId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
+            '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
+
+    if (jQuery('#' + componentId).length == 0) {
+        jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
+    } else {
+        jQuery('#' + componentId).replaceWith(placeholderSpan);
+    }
+
+    retrieveComponent(componentId, undefined, callback, additionalData, true);
 }
 
 /**
@@ -271,26 +281,19 @@ function retrieveComponent(id, methodToCall, successCallback, additionalData, di
 }
 
 /**
- * Performs client side validation against the controls present in a collection add line
+ * Performs client side validation against the controls present in a collection add line.
  *
- * @param collectionGroupId - id for the collection whose add line should be validated
- * @param addViaLightbox - (optional) flag to indicate if add controls are in a lightbox
+ * @param collectionGroupId id for the collection whose add line should be validated
  */
-function validateAddLine(collectionGroupId, addViaLightbox) {
+function validateAddLine(collectionGroupId) {
     var collectionGroup = jQuery("#" + collectionGroupId);
     var addControls = collectionGroup.data(kradVariables.ADD_CONTROLS);
-
-    if (addViaLightbox) {
-        collectionGroup = jQuery("#kualiLightboxForm");
-    }
 
     var controlsToValidate = jQuery(addControls, collectionGroup);
 
     var valid = validateLineFields(controlsToValidate);
     if (!valid) {
-        if (!addViaLightbox) {
-            showClientSideErrorNotification();
-        }
+        showClientSideErrorNotification();
 
         return false;
     }

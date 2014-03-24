@@ -714,7 +714,7 @@
                 <property name="propertyName" value="collection2"/>
                 <property name="layoutManager.renderSequenceField" value="true"/>
                 <property name="layoutManager.generateAutoSequence" value="true"/>
-                <property name="addViaLightBox" value="true"/>
+                <property name="addWithDialog" value="true"/>
                 <property name="layoutManager.richTable.render" value="true"/>
                 <property name="items">
                   <list>

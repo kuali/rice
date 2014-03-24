@@ -27,8 +27,6 @@
 
         <@krad.template componentUpdate=true component=KualiForm.updateComponent/>
 
-        <@krad.script value="${KualiForm.lightboxScript!}" component=KualiForm.updateComponent/>
-
         <#-- show added growls -->
         <@krad.script value="${KualiForm.growlScript!}" component=KualiForm.updateComponent/>
 

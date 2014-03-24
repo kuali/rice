@@ -640,28 +640,45 @@ public interface CollectionGroup extends Group, DataBinding {
      *
      * @return boolean
      */
-    boolean isAddViaLightBox();
+    boolean isAddWithDialog();
 
     /**
      * Setter for the flag to indicate that add groups should be displayed in a light box
      *
      * @param addViaLightBox
      */
-    void setAddViaLightBox(boolean addViaLightBox);
+    void setAddWithDialog(boolean addViaLightBox);
 
     /**
      * The {@link Action} that will be displayed that will open the add line group in a lightbox
      *
      * @return Action
      */
-    Action getAddViaLightBoxAction();
+    Action getAddWithDialogAction();
 
     /**
      * Setter for the add line via lightbox {@link Action}
      *
      * @param addViaLightBoxAction
      */
-    void setAddViaLightBoxAction(Action addViaLightBoxAction);
+    void setAddWithDialogAction(Action addViaLightBoxAction);
+
+    /**
+     * Dialog group to use for the add line when {@link CollectionGroup#isAddWithDialog()} is true.
+     *
+     * <p>If dialog group is not set by add with dialog is true, a default dialog group will be created.</p>
+     *
+     * <p>The add line items and actions are still used as usual, unless the items and footer items have been
+     * explicity set in the dialog group</p>
+     *
+     * @return dialog group instance for add line
+     */
+    DialogGroup getAddLineDialog();
+
+    /**
+     * @see CollectionGroup#getAddLineDialog()
+     */
+    void setAddLineDialog(DialogGroup addLineDialog);
 
     /**
      * Gets useServerPaging, the flag that indicates whether server side paging is enabled.  Defaults to false.

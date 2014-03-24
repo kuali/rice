@@ -2021,7 +2021,7 @@
         normal collection setup would do, and not allow the user to add invalid content.
       </para>
       <para>To enable this feature, the
-        <emphasis role="keyword">addViaLightBox</emphasis>
+        <emphasis role="keyword">addWithDialog</emphasis>
         property on
         CollectionGroup must be set to true. This can be set on stacked as well as table collection
         layouts. This will cause the default add line actions not to be rendered inside the items
@@ -2044,7 +2044,7 @@
         &lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot;
         p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
         ...
-        &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
+        &lt;property name=&quot;addWithDialog&quot; value=&quot;true&quot; /&gt;
         &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
         ...
         &lt;/bean&gt;
@@ -2557,7 +2557,7 @@
         <listitem>
           <para>Collections can be configured to allow the user to add items to the collection via a
             modal dialog. To enable this feature the
-            <emphasis role="keyword">addViaLightBox</emphasis>
+            <emphasis role="keyword">addWithDialog</emphasis>
             property on CollectionGroup must be set to true
           </para>
         </listitem>

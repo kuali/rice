@@ -28,15 +28,23 @@ JavascriptKradVariables.prototype = {
     APP_ID: "Uif-Application",
     APPLICATION_URL: "applicationUrl",
     ATTRIBUTES: {
+        ID: "id",
         DATA_OPEN: "data-open",
-        DATA_RETURN: "data-return"
+        DATA_RETURN: "data-return",
+        DATA_RESPONSE: "data-response",
+        DATA_RESPONSE_HANDLER: "data-response_handler",
+        DATA_SHOW_HANDLER: "data-show_handler",
+        DATA_HIDE_HANDLER: "data-hide_handler",
+        DISMISS_DIALOG_OPTION: "data-dismissdialogoption",
+        DIALOG_ID: "data-dismissdialogid"
     },
 
     CACHE_KEY: "cacheKey",
     CHANGED_HEADER_ICON_CLASS: "uif-changedHeaderIcon",
     CHANGE_COMPONENT_PROPERTIES: "changeProperties",
     CLASSES: {
-        PLACEHOLDER: "uif-placeholder"
+        PLACEHOLDER: "uif-placeholder",
+        MODAL: "modal"
     },
 
     CLEAR_FORM_METHOD_TO_CALL: "clearForm",
@@ -56,6 +64,12 @@ JavascriptKradVariables.prototype = {
         DISCLOSURE_LINK: "disclosureLink",
         PLACEHOLDER: "placeholder",
         ACTION: "Action"
+    },
+
+    DIALOG_DISMISS_OPTIONS: {
+        IMMEDIATE: "IMMEDIATE",
+        PRESUBMIT: "PRESUBMIT",
+        REQUEST: "REQUEST"
     },
 
     DIRTY_CLASS: "dirty",
@@ -201,8 +215,9 @@ JavascriptKradVariables.prototype = {
         ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
         ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
-        SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
-        UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE
+        UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE,
+        SHOW_MODAL : "show.bs.modal",
+        HIDE_MODAL : "hide.bs.modal"
     }
 }
 

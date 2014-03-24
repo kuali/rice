@@ -15,8 +15,12 @@
  */
 package org.kuali.rice.kim.impl.common.attribute;
 
+import com.google.common.collect.Iterables;
+import org.kuali.rice.core.api.criteria.AndPredicate;
+import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
+import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -24,6 +28,7 @@ import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.criteria.Transform;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -77,6 +82,26 @@ public final class AttributeTransform implements Transform<QueryByCriteria, Quer
                 }
                 return and(equal(ATTRIBUTE_DETAILS_ATTRIBUTE_NAME, attributeName), attrValue);
             }
+        } else if (input instanceof CompositePredicate) {
+            return applyCompositePredicate((CompositePredicate) input);
+        }
+
+        return input;
+    }
+
+    private Predicate applyCompositePredicate(final CompositePredicate input) {
+        Set<Predicate> appliedPredicates = new HashSet<Predicate>();
+
+        for (Predicate predicate : input.getPredicates()) {
+            appliedPredicates.add(applyPredicate(predicate));
+        }
+
+        Predicate[] appliedPredicatesArray = Iterables.toArray(appliedPredicates, Predicate.class);
+
+        if (input instanceof AndPredicate) {
+            return and(appliedPredicatesArray);
+        } else if (input instanceof OrPredicate) {
+            return or(appliedPredicatesArray);
         }
 
         return input;

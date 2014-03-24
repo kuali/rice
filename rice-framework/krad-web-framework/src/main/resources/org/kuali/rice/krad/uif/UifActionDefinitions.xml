@@ -117,24 +117,11 @@
     </property>
   </bean>
 
-  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:actionScript="expandDisclosures();"
-        p:actionLabel="Expand All">
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-default btn-xs</value>
-      </list>
-    </property>
-  </bean>
+  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
+        p:actionScript="expandDisclosures();"/>
 
   <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
-        p:actionScript="collapseDisclosures();"
-        p:actionLabel="Collapse All">
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-default btn-xs</value>
-      </list>
-    </property>
-  </bean>
+        p:actionScript="collapseDisclosures();" p:actionLabel="Collapse All"/>
 
   <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
         p:methodToCall="refresh" p:actionLabel="show inactive" p:refreshId="@{#collectionGroup.id}"

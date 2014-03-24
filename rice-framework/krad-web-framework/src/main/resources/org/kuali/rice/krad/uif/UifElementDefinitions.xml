@@ -274,11 +274,6 @@
         <value>btn-primary</value>
       </list>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-primary</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-SecondaryActionButton" parent="Uif-SecondaryActionButton-parentBean"/>
@@ -286,11 +281,6 @@
     <property name="libraryCssClasses">
       <list merge="true">
         <value>btn-default</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-default</value>
       </list>
     </property>
   </bean>
@@ -302,11 +292,6 @@
         <value>btn-sm</value>
       </list>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-default btn-xs</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-SecondaryActionButton-Small" parent="Uif-SecondaryActionButton-Small-parentBean"/>
@@ -314,11 +299,6 @@
     <property name="libraryCssClasses">
       <list merge="true">
         <value>btn-sm</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>
@@ -330,11 +310,6 @@
         <value>btn-xs</value>
       </list>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-miniActionButton</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-SecondaryActionButton-Mini" parent="Uif-SecondaryActionButton-Mini-parentBean"/>
@@ -342,11 +317,6 @@
     <property name="libraryCssClasses">
       <list merge="true">
         <value>btn-xs</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-miniActionButton</value>
       </list>
     </property>
   </bean>
@@ -358,11 +328,6 @@
         <value>btn-lg</value>
       </list>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-largeActionButton</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-SecondaryActionButton-Large" parent="Uif-SecondaryActionButton-Large-parentBean"/>
@@ -370,11 +335,6 @@
     <property name="libraryCssClasses">
       <list merge="true">
         <value>btn-lg</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-largeActionButton</value>
       </list>
     </property>
   </bean>

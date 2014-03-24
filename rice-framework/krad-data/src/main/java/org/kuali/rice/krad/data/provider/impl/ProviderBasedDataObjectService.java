@@ -41,10 +41,24 @@ public class ProviderBasedDataObjectService implements DataObjectService {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(ProviderBasedDataObjectService.class);
 
+    /**
+     * The provider registry.
+     */
 	protected ProviderRegistry providerRegistry;
+
+    /**
+     * The metadata repository.
+     */
 	protected MetadataRepository metadataRepository;
+
+    /**
+     * The reference linker.
+     */
     protected ReferenceLinker referenceLinker;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T find(Class<T> type, Object id) {
         return persistenceProviderForType(type).find(type, reduceCompoundKey(id));
@@ -68,11 +82,17 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria) {
         return persistenceProviderForType(type).findMatching(type, queryByCriteria);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T findUnique(Class<T> type, QueryByCriteria queryByCriteria) {
         QueryResults<T> results = findMatching(type, queryByCriteria);
@@ -86,11 +106,17 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete(Object dataObject) {
         persistenceProviderForObject(dataObject).delete(dataObject);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria) {
         QueryResults<T> results = findMatching(type, queryByCriteria);
@@ -99,6 +125,9 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
 	public <T> T save(T dataObject, PersistenceOption... options) {
         Set<PersistenceOption> optionSet = Sets.newHashSet(options);
@@ -110,16 +139,25 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         return saved;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetadataRepository getMetadataRepository() {
         return metadataRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> T copyInstance(T dataObject) {
         return persistenceProviderForObject(dataObject).copyInstance(dataObject);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> DataObjectWrapper<T> wrap(T dataObject) {
         if (dataObject == null) {
@@ -136,14 +174,20 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         return new DataObjectWrapperImpl<T>(dataObject, metadata, this, referenceLinker);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> boolean supports(Class<T> type) {
         return providerRegistry.getPersistenceProvider(type) != null;
     }
 
     /**
-     * @return PersistenceProvider returned by the ProviderRegistry for the given type
-     * @throws RuntimeException if not PersistenceProvider handles given type
+     * Gets the PersistenceProvider returned by the ProviderRegistry for the given type.
+     *
+     * @param type the type for which to get the provider.
+     * @return the PersistenceProvider returned by the ProviderRegistry for the given type.
+     * @throws RuntimeException if not PersistenceProvider handles given type.
      */
     protected PersistenceProvider persistenceProviderForType(Class<?> type) {
         PersistenceProvider provider = providerRegistry.getPersistenceProvider(type);
@@ -154,11 +198,12 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     }
 
     /**
-	 * @return PersistenceProvider returned by the ProviderRegistry for the given object
-	 * @throws RuntimeException
-	 *             if not PersistenceProvider handles given type
-	 * @throws IllegalArgumentException
-	 *             if null object passed in
+	 * Gets the PersistenceProvider returned by the ProviderRegistry for the given object.
+     *
+     * @param object the object for which to get the provider.
+     * @return the PersistenceProvider returned by the ProviderRegistry for the given object.
+	 * @throws RuntimeException if not PersistenceProvider handles given type.
+	 * @throws IllegalArgumentException if null object passed in.
 	 */
     protected PersistenceProvider persistenceProviderForObject(Object object) {
 		if (object == null) {
@@ -167,6 +212,9 @@ public class ProviderBasedDataObjectService implements DataObjectService {
 		return persistenceProviderForType(object.getClass());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush(Class<?> type){
         PersistenceProvider persistenceProvider = persistenceProviderForType(type);
@@ -176,26 +224,59 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         persistenceProvider.flush(type);
     }
 
+    /**
+     * Setter for the provider registry.
+     *
+     * @param providerRegistry the provider registry to set.
+     */
     @Required
     public void setProviderRegistry(ProviderRegistry providerRegistry) {
         this.providerRegistry = providerRegistry;
     }
 
+    /**
+     * Setter for the metadata repository.
+     *
+     * @param metadataRepository the metadata repository to set.
+     */
     @Required
     public void setMetadataRepository(MetadataRepository metadataRepository) {
         this.metadataRepository = metadataRepository;
     }
 
+    /**
+     * Gets the reference linker.
+     *
+     * @return the reference linker.
+     */
     public ReferenceLinker getReferenceLinker() {
         return referenceLinker;
     }
 
+    /**
+     * Setter for the reference linker.
+     *
+     * @param referenceLinker the reference linker to set.
+     */
     @Required
     public void setReferenceLinker(ReferenceLinker referenceLinker) {
         this.referenceLinker = referenceLinker;
     }
 
+    /**
+     * Defines a very basic implementation for {@link DataObjectWrapperBase}.
+     * @param <T> the type of the data object to wrap.
+     */
     private static final class DataObjectWrapperImpl<T> extends DataObjectWrapperBase<T> {
+
+        /**
+         * Creates a data object wrapper.
+         *
+         * @param dataObject the data object to wrap.
+         * @param metadata the metadata of the data object.
+         * @param dataObjectService the data object service to use.
+         * @param referenceLinker the reference linker implementation.
+         */
         private DataObjectWrapperImpl(T dataObject, DataObjectMetadata metadata, DataObjectService dataObjectService,
                 ReferenceLinker referenceLinker) {
             super(dataObject, metadata, dataObjectService, referenceLinker);

@@ -22,8 +22,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the field forms part of the business key for the data object. (Usually a field or set of fields which
- * form the user-visible unique key for the data object.)
+ * Indicates that the field forms part of the business key for the data object.
+ *
+ * <p>(Usually a field or set of fields which form the user-visible unique key for the data object.)</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

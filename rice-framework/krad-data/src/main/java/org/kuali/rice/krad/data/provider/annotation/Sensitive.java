@@ -24,6 +24,8 @@ import java.lang.annotation.Target;
 /**
  * Indicates that the attribute contents could be sensitive and should be protected (masked) by default when included in
  * user interfaces.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

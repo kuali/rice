@@ -17,6 +17,8 @@ package org.kuali.rice.krad.data.provider.annotation;
 
 /**
  * Enum representing the types which can be auto-generated.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum UifAutoCreateViewType {
 	/**

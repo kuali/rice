@@ -22,16 +22,35 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Represents a property which should be inherited from another data object class. Allows for the label to be
- * overridden, but nothing else.
+ * Represents a property which should be inherited from another data object class.
+ *
+ * <p>Allows for the label to be overridden, but nothing else.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface InheritProperty {
+
+    /**
+     * Gets the name of the property to be inherited.
+     *
+     * @return the name of the property to be inherited.
+     */
 	String name();
 
+    /**
+     * Gets the label to override.
+     *
+     * @return the label to override.
+     */
 	Label label() default @Label("");
 
+    /**
+     * Gets the hints which can be passed through when auto-generating the input fields for an attribute.
+     *
+     * @return the hints which can be passed through when auto-generating the input fields for an attribute.
+     */
 	UifDisplayHints displayHints() default @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NONE));
 }

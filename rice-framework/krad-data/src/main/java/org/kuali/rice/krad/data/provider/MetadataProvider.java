@@ -21,9 +21,13 @@ import java.util.Map;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 
 /**
- * Defines metadata SPI for data providers. These providers extract data from their sources (JPA Annotations, Custom
- * krad-data anotations, Spring configuration, Message Services) to provide comprehensive information to the application
- * and UIF layers to help with presentation of information.
+ * Defines metadata SPI for data providers.
+ *
+ * <p>
+ * These providers extract data from their sources (JPA Annotations, Custom krad-data anotations, Spring configuration,
+ * Message Services) to provide comprehensive information to the application and UIF layers to help with presentation of
+ * information.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -32,21 +36,22 @@ public interface MetadataProvider extends Provider {
     /**
      * Provides the metadata available from this provider for all of it's data objects.
      *
-     * @return the metadata provided by this provider
+     * @return the metadata provided by this provider.
      */
 	Map<Class<?>, DataObjectMetadata> provideMetadata();
 
 	/**
 	 * Provides the metadata for the given types.
 	 * 
-	 * @param types
-	 * @return a Map of the data object types to their metadata
+	 * @param types the list of types for which to get the metadata.
+	 * @return a Map of the data object types to their metadata.
 	 */
 	Map<Class<?>, DataObjectMetadata> provideMetadataForTypes(Collection<Class<?>> types);
 
     /**
      * Obtains the metadata for a specific data type.
      *
+     * @param dataObjectType the type for which to get the metadata.
      * @return The metadata for the given data object or null if no metadata is available for the given type.
      * @throws IllegalArgumentException if the data object type is null.
      */
@@ -55,8 +60,7 @@ public interface MetadataProvider extends Provider {
 	/**
 	 * Indicates whether or not this provider handles metadata for the given data object type.
 	 * 
-	 * @param type the data object type to check
-	 * 
+	 * @param type the data object type to check.
 	 * @return true if this provider will return any data for the given type, false otherwise
 	 */
 	boolean handles(Class<?> type);
@@ -70,7 +74,11 @@ public interface MetadataProvider extends Provider {
 
 	/**
 	 * Flag which allows the service to indicate that it requires knowledge of previously discovered persistable
-	 * entities. That is, the service is designed only to process existing objects and not to create new ones.
+	 * entities.
+     *
+     * <p>
+     * That is, the service is designed only to process existing objects and not to create new ones.
+     * </p>
 	 * 
 	 * @return true if this provider will fail when passed an empty list of entity types
 	 */

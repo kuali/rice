@@ -24,10 +24,18 @@ import java.lang.annotation.Target;
 /**
  * Defines a bean name (from the UIF data dictionary) which should be used when validating characters entered into this
  * property.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface UifValidCharactersConstraintBeanName {
+
+    /**
+     * Gets the bean name which should be used to validate characters for this property.
+     *
+     * @return the bean name which should be used to validate characters for this property.
+     */
 	String value();
 }

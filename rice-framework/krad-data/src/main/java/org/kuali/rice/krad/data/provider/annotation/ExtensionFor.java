@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
 /**
  * Identifies the annotated class as an extension object for the given baseline class.
  * 
- * Inclusion of this annotation will perform the necessary wiring within JPA.
+ * <p>Inclusion of this annotation will perform the necessary wiring within JPA.</p>
  * 
- * @author jonathan
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 @Target(ElementType.TYPE)
@@ -34,9 +34,17 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ExtensionFor {
 
-	/** (Required) The class for which this one is an extension. */
+	/**
+     * (Required) The class for which this one is an extension.
+     *
+     * @return the class for which this one is an extension.
+     */
 	Class<?> value();
 
-	/** (Optional) The name of the property on the source object which will hold the extension object. */
+	/**
+     * (Optional) The name of the property on the source object which will hold the extension object.
+     *
+     * @return the name of the property on the source object which will hold the extension object.
+     */
 	String extensionPropertyName() default "extension";
 }

@@ -21,9 +21,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Defines the data dictionary attribute 'label' that provides the primary label for the property on a field.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Target({ ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Label {
+
+    /**
+     * Gets the label of the property.
+     *
+     * @return the label of the property.
+     */
 	String value();
 }

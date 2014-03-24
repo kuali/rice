@@ -21,9 +21,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Defines the data dictionary attribute 'description', which gives a longer description of the object than its label.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 @Target({ ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Description {
+
+    /**
+     * Gets the text of the description.
+     * @return the text of the description.
+     */
 	String value();
 }

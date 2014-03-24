@@ -24,46 +24,77 @@ import java.lang.annotation.Target;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 
 /**
- * Defines that the associated Collection field contains a collection of DataObjects. Analog to the
- * {@link DataObjectCollection} metadata.
+ * Defines that the associated Collection field contains a collection of DataObjects.
+ *
+ * <p>Analog to the {@link DataObjectCollection} metadata.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface CollectionRelationship {
 	/**
-	 * The element type of the collection. If the collection contains Generics, it will be derived automatically.
+	 * The element type of the collection.
+     *
+     * <p>If the collection contains Generics, it will be derived automatically.</p>
+     *
+     * @return the element type of the collection.
 	 */
 	Class<?> collectionElementClass() default Object.class;
 
 	/**
 	 * The list of attribute relationships linking the parent object and the collection objects.
+     *
+     * @return list of attribute relationships linking the parent object and the collection objects.
 	 */
 	AttributeRelationship[] attributeRelationships();
 
 	/**
-	 * Default sort order for the collection.
+	 * The default sort order for the collection.
+     *
+     * @return the default sort order for the collection.
 	 */
 	CollectionSortAttribute[] sortAttributes() default {};
 
+    /**
+     * The minimum items that can appear in the collection.
+     *
+     * @return lhe minimum items that can appear in the collection.
+     */
 	long minItemsInCollection() default 0L;
 
+    /**
+     * The maximum items that can appear in the collection.
+     *
+     * @return lhe maximum items that can appear in the collection.
+     */
 	long maxItemsInCollection() default Long.MAX_VALUE;
 
 	/**
-	 * Whether this collection uses an indirection table between the parent and collection objects. This has no function
-	 * at present, but is here for informational purposes.
+	 * Whether this collection uses an indirection table between the parent and collection objects.
+     *
+     * <p>This has no function at present, but is here for informational purposes.</p>
+     *
+     * @return whether this collection uses an indirection table between the parent and collection objects.
 	 */
 	boolean indirectCollection() default false;
 
 	/**
-	 * When needed, how to label each element of the collection. (Usually singular) Will default to the label of the
-	 * contained element type.
+	 * When needed, how to label each element of the collection.
+     *
+     * <p>This is usually singular.  Will default to the label of the contained element type.</p>
+     *
+     * @return how to label each element of the collection.
 	 */
 	String elementLabel() default "";
 
 	/**
-	 * The label of the collection itself. (Usually plural)
+	 * The label of the collection itself.
+     *
+     * <p>This is usually plural.</p>
+     *
+     * @return the label of the collection itself.
 	 */
 	String label() default "";
 }

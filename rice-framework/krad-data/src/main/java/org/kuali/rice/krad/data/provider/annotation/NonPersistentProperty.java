@@ -22,8 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the property as one which should be picked up by the metadata. Properties which were not extracted by the
- * persistence metadata (e.g., Transients) without this annotation will be ignored.
+ * Defines the property as one which should be picked up by the metadata.
+ *
+ * <p>
+ * Properties which were not extracted by the persistence metadata (e.g., Transients) without this annotation will be
+ * ignored.
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

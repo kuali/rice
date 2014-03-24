@@ -35,10 +35,19 @@ public class ProviderRegistrar implements InitializingBean {
 
     private static final Logger LOG = Logger.getLogger(ProviderRegistrar.class);
 
+    /**
+     * The provider registry.
+     */
     protected ProviderRegistry providerRegistry;
 
+    /**
+     * The providers currently assigned to the registry.
+     */
     protected List<Provider> providers = Collections.unmodifiableList(Collections.<Provider>emptyList());
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         if ( getProviders() != null ) {
@@ -54,17 +63,28 @@ public class ProviderRegistrar implements InitializingBean {
     }
 
     /**
-     * Sets the list of providers for this module
+     * Sets the list of providers for this module.
+     *
      * @param providers list of providers
      */
     public void setProviders(List<Provider> providers) {
         this.providers = Collections.unmodifiableList(new ArrayList<Provider>(providers));
     }
 
+    /**
+     * Gets the list of providers for this module.
+     *
+     * @return the list of providers for this module.
+     */
     public List<Provider> getProviders() {
         return providers;
     }
 
+    /**
+     * Gets the provider registry.
+     *
+     * @return the provider registry.
+     */
     public ProviderRegistry getProviderRegistry() {
         if(this.providerRegistry == null){
             return KradDataServiceLocator.getProviderRegistry();
@@ -72,6 +92,11 @@ public class ProviderRegistrar implements InitializingBean {
         return this.providerRegistry;
     }
 
+    /**
+     * Setter for the provider registry.
+     *
+     * @param providerRegistry the provider registry to set.
+     */
     public void setProviderRegistry(ProviderRegistry providerRegistry) {
         this.providerRegistry = providerRegistry;
     }

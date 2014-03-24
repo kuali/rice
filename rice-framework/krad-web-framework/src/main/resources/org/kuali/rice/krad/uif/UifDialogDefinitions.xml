@@ -30,6 +30,7 @@
     <property name="libraryCssClasses">
       <list>
         <value>modal</value>
+        <value>fade</value>
       </list>
     </property>
 

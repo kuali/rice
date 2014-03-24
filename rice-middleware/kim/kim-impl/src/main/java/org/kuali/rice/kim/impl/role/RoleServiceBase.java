@@ -48,15 +48,16 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
+import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -89,15 +90,16 @@ abstract class RoleServiceBase {
      * Converts the Qualifier Name/Value Role qualification set into Qualifier AttributeID/Value set
      *
      * @param qualification The original role qualification attribute set
+     * @param validAttributeIds The mapping of attribute names to their matching attribute ids
      * @return Converted Map<String, String> containing ID/value pairs
      */
-    protected Map<String, String> convertQualifierKeys(Map<String, String> qualification) {
+    protected Map<String, String> convertQualifierKeys(Map<String, String> qualification, Map<String, String> validAttributeIds) {
         Map<String, String> convertedQualification = new HashMap<String, String>();
         if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
             for (Map.Entry<String, String> entry : qualification.entrySet()) {
-                String kimAttributeId = getKimAttributeId(entry.getKey());
-                if (StringUtils.isNotEmpty(kimAttributeId)) {
-                    convertedQualification.put(kimAttributeId, entry.getValue());
+                String attributeId = validAttributeIds.get(entry.getKey());
+                if (StringUtils.isNotEmpty(attributeId)) {
+                    convertedQualification.put(attributeId, entry.getValue());
                 }
             }
         }
@@ -178,14 +180,25 @@ abstract class RoleServiceBase {
      */
     protected List<RoleMemberBo> getRoleMemberBoList(RoleDaoAction daoActionToTake, Collection<String> roleIds, String principalId,
                                                      Collection<String> groupIds, String memberTypeCode, Map<String, String> qualification) {
-        Map<String, String> convertedQualification = convertQualifierKeys(qualification);
-
         if (roleIds == null || roleIds.isEmpty()) {
             roleIds = Collections.emptyList();
         }
         if (groupIds == null || groupIds.isEmpty()) {
             groupIds = Collections.emptyList();
         }
+
+        Map<String, String> validAttributeIds = new HashMap<String, String>();
+
+        for (String roleId : roleIds) {
+            RoleBoLite role = getRoleBoLite(roleId);
+            if (role != null && role.getKimRoleType() != null) {
+                for (KimTypeAttributeBo attr : role.getKimRoleType().getAttributeDefinitions()) {
+                    validAttributeIds.put(attr.getKimAttribute().getAttributeName(), attr.getKimAttributeId());
+                }
+            }
+        }
+
+        Map<String, String> convertedQualification = convertQualifierKeys(qualification, validAttributeIds);
 
         switch (daoActionToTake) {
             case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS: // Search for principal role members only.
@@ -782,13 +795,20 @@ abstract class RoleServiceBase {
     }
 
     // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
-    protected String getKimAttributeId(String attributeName) {
-        QueryResults<KimAttributeBo> defs = getDataObjectService().findMatching(KimAttributeBo.class, QueryByCriteria.Builder.forAttribute("attributeName", attributeName).build());
-        String result = null;
-        if ( !defs.getResults().isEmpty() ) {
-            result = defs.getResults().get(0).getId();
+    // TODO: KULRICE-12100: Most of the time there should be only one result for the kimTypeId and attributeName, but it is not guaranteed, which it should be.
+    protected String getKimAttributeId(String kimTypeId, String attributeName) {
+        KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
+
+        if (type != null) {
+            for (KimTypeAttribute attribute : type.getAttributeDefinitions()) {
+                if (attribute.getKimAttribute() != null
+                        && StringUtils.equals(attributeName, attribute.getKimAttribute().getAttributeName())) {
+                    return attribute.getKimAttribute().getId();
+                }
+            }
         }
-        return result;
+
+        return null;
     }
 
 

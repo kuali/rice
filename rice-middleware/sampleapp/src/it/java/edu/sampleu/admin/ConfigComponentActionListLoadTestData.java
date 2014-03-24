@@ -17,6 +17,8 @@ package edu.sampleu.admin;
  */
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.openqa.selenium.By;
 
 /**
  * Test name does not end in Aft so this test isn't normally run, created to provide load test data
@@ -25,10 +27,23 @@ import org.junit.Test;
  */
 public class ConfigComponentActionListLoadTestData extends ConfigComponentActionListAftBase {
 
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
     @Test
-    public void testCreate1000ApprovalComponentBkMrk() throws InterruptedException {
-        for (int i = 0; i < 1000; i++) {
-            testCreateActionRequestPerson("eric", "A");
+    public void testCreate1000ApprovalComponentBookmark() throws InterruptedException {
+//        String[] users = {"eric", "fran", "frank", "erin", "fred", "earl", "doug", "edna"};
+        String[] users = {"eric"};
+        for (String user: users) {
+            for (int i = 0; i < 1000; i++) {
+                System.out.println(user + " " + i);
+                testCreateActionRequestPerson(user, "A");
+                uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+                open(getBaseUrlString() + getTestUrl());
+                waitForElementPresent(By.xpath("//iframe"));
+            }
         }
     }
 }

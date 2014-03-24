@@ -400,6 +400,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataTableView"/>
         <bean parent="Uif-Link" p:linkText="Message"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageView"/>
+        <bean parent="Uif-Link" p:linkText="Progress Bar"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressBarView"/>
       </list>
     </property>
   </bean>

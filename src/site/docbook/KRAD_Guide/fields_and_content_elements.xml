@@ -4309,6 +4309,52 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     </section>
   </section>
   <section>
+    <title>Toggle Menu</title>
+    <para>The toggle menu component can be used to build context menus or full application menus.
+      The toggle menu has two main components, the toggle element, which is used as an entry point,
+      and the menu items, used to display data, redirect, or perform an action. Here is an example
+      of a standard toggle menu and the resulting display:</para>
+    <programlisting linenumbering = "numbered">
+      &lt;bean parent="Uif-DropdownToggleMenu" p:toggleText="Select Action"&gt;
+      &lt;property name="menuItems"&gt;
+      &lt;list&gt;
+      &lt;bean parent="Uif-MenuAction" p:actionLabel="Approve"/&gt;
+      &lt;bean parent="Uif-MenuAction" p:actionLabel="Disapprove" p:disabled="true"/&gt;
+      &lt;/list&gt;
+      &lt;/property&gt;
+      &lt;/bean&gt;
+    </programlisting>
+    <figure>
+      <title>Toggle Menu Component Example</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/KRAD_Guide/toggleMenuComponentExample.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Menu Action Components make up the majority of menu items. These can be configured to
+      display information as well as redirect a user to the appropriate location. </para>
+    <programlisting linenumbering = "numbered">
+      &lt;bean parent="Uif-MenuAction"
+      p:actionUrl.viewId="DestinationView" p:wrapperCssClasses="pull-right"
+      p:actionUrl.controllerMapping="/destination"
+      p:actionLabel="Approve"/&gt;
+    </programlisting>
+    <section role="NotInToc">
+      <title>Recap</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+          <para>Menus are found within the application's applicationNavigation or a view's navigation property</para>
+        </listitem>
+          <listitem>
+            <para>Default options include drop down (Uif-DropDownToggleMenu) and Sidebar (Uif-SidebarToggleMenu)</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+  <section>
     <title>Message Field</title>
     <para>The last component we will look at in this chapter is the Message Field. In this case,
       there is no corresponding HTML element tag. Instead, the message field is used to render

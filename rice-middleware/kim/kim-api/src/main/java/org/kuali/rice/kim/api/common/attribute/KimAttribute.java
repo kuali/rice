@@ -158,7 +158,7 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
         private String namespaceCode;
         private String attributeLabel;
         private boolean active;
-        private Long versionNumber = 1L;
+        private Long versionNumber;
         private String objectId;
 
         private Builder(String componentName, String attributeName, String namespaceCode) {
@@ -256,10 +256,6 @@ public final class KimAttribute extends AbstractDataTransferObject implements Ki
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber <= 0) {
-                throw new IllegalArgumentException("versionNumber is invalid");
-            }
-
             this.versionNumber = versionNumber;
         }
 

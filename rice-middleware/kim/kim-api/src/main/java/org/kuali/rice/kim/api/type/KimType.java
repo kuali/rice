@@ -228,7 +228,7 @@ public final class KimType extends AbstractDataTransferObject implements KimType
         private String name;
         private List<KimTypeAttribute.Builder> attributeDefinitions = new ArrayList<KimTypeAttribute.Builder>();
         private boolean active;
-        private Long versionNumber = 1L;
+        private Long versionNumber;
         private String objectId;
 
         private Builder() {
@@ -335,10 +335,6 @@ public final class KimType extends AbstractDataTransferObject implements KimType
         }
 
         public void setVersionNumber(final Long versionNumber) {
-            if (versionNumber != null && versionNumber <= 0) {
-                throw new IllegalArgumentException("versionNumber is invalid");
-            }
-
             this.versionNumber = versionNumber;
         }
 

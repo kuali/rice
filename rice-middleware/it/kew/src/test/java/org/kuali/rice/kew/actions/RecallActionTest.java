@@ -59,6 +59,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -590,11 +591,20 @@ public class RecallActionTest extends KEWTestCase {
         kimType.setNamespaceCode("KR-SYS");
         kimType.setName(kimTypeName);
         kimType.setActive(true);
+        KimTypeBo customKimType = KRADServiceLocator.getDataObjectService().save(KimTypeBo.from(kimType.build()));
+
         KimTypeAttribute.Builder kimTypeAttribute = KimTypeAttribute.Builder.create();
+        kimTypeAttribute.setKimTypeId(customKimType.getId());
         kimTypeAttribute.setKimAttribute(KimAttribute.Builder.create(customAttribute));
         kimTypeAttribute.setActive(true);
+        KimTypeAttributeBo customKimTypeAttribute = KRADServiceLocator.getDataObjectService().save(KimTypeAttributeBo.from(kimTypeAttribute.build()));
+
+        kimType = KimType.Builder.create(customKimType);
+        kimTypeAttribute = KimTypeAttribute.Builder.create(customKimTypeAttribute);
         kimType.setAttributeDefinitions(Collections.singletonList(kimTypeAttribute));
-        KimTypeBo customKimType = KRADServiceLocator.getDataObjectService().save(KimTypeBo.from(kimType.build()));
+        customKimType = KRADServiceLocator.getDataObjectService().save(KimTypeBo.from(kimType.build()));
+
+        KRADServiceLocator.getDataObjectService().flush(KimTypeBo.class);
 
         // create a new role
         Role.Builder role = Role.Builder.create();

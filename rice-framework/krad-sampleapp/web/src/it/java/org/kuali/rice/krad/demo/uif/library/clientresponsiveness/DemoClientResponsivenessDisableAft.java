@@ -65,20 +65,20 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
         selectByName("exampleShown","On change");
         
         //Scenario-1
-        assertElementPresentByXpath("//button[@class='btn btn-primary btn btn-primary uif-boxLayoutHorizontalItem disabled']");
+        assertElementPresentByXpath("//button[@class='btn btn-primary uif-boxLayoutHorizontalItem disabled']");
         waitAndTypeByName("inputField10","a");
         waitAndTypeByName("inputField11","a");
         waitAndTypeByName("inputField10", "");
-        assertElementPresentByXpath("//button[@class='btn btn-primary btn btn-primary uif-boxLayoutHorizontalItem disabled']");
+        assertElementPresentByXpath("//button[@class='btn btn-primary uif-boxLayoutHorizontalItem disabled']");
       }
     
     protected void testClientResponsivenessDisableOnKeyUp() throws Exception {
         selectByName("exampleShown","On keyup");
         waitAndTypeByName("inputField13","disable");
-        assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary btn btn-primary uif-boxLayoutHorizontalItem disabled']");
+        assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-boxLayoutHorizontalItem disabled']");
         fireEvent("inputField13", "blur");
         waitAndClickByLinkText("<< Close Library Navigation");
-        assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary btn btn-primary uif-boxLayoutHorizontalItem disabled']");
+        assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-boxLayoutHorizontalItem disabled']");
      }
     
     protected void testClientResponsivenessDisableInCollections() throws Exception {

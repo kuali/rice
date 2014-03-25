@@ -20,6 +20,9 @@ import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
 
 /**
+ * Uses to locate services for the given service name.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KradDataServiceLocator {
     static <T> T getService(String serviceName) {

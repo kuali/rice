@@ -21,33 +21,33 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Specifies paths which should be linked during automatic reference linking processes.
- *
- * <p>If specified on a class, the path(s) will be relative to the class. If specified on a field, the path(s) will be
- * relative to the field. If no paths are specified, then the linking will start at the class or field that is
- * annotated.</p>
- *
- * <p>To prevent cascading of reference linking, this annotation can be specified with {@code cascade = false}.</p>
- *
- * @author Kuali Rice Rice (rice.collab@kuali.org)
- */
+* Specifies paths which should be linked during automatic reference linking processes.
+*
+* <p>If specified on a class, the path(s) will be relative to the class. If specified on a field, the path(s) will be
+* relative to the field. If no paths are specified, then the linking will start at the class or field that is
+* annotated.</p>
+*
+* <p>To prevent cascading of reference linking, this annotation can be specified with {@code cascade = false}.</p>
+*
+* @author Kuali Rice Rice (rice.collab@kuali.org)
+*/
 @Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Link {
 
     /**
-     * Indicates whether or not linking should cascade through the specified path(s).
-     *
-     * @return true if reference linking should be cascaded, false otherwise
-     */
+    * Indicates whether or not linking should cascade through the specified path(s).
+    *
+    * @return true if reference linking should be cascaded, false otherwise
+    */
     boolean cascade() default true;
 
     /**
-     * Specify the path or paths (relative to the annotated class or field) at which to start the reference linking
-     * process. If no path specified, then linking will be performed on the annotated element and cascaded from there.
-     *
-     * @return the path or paths at which to start reference linking
-     */
+    * Specify the path or paths (relative to the annotated class or field) at which to start the reference linking
+    * process. If no path specified, then linking will be performed on the annotated element and cascaded from there.
+    *
+    * @return the path or paths at which to start reference linking
+    */
     String[] path() default {};
 
 }

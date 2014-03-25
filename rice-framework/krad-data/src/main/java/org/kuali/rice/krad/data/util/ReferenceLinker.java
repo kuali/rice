@@ -43,26 +43,34 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The ReferenceLinker provides functionality that allows for ensuring that relationships and foreign key state are
- * populated and kept in sync as changes are made to a data object.
- *
- * <p>This may include fetching relationships as keys are changed that would necessitate updating the object graph, and
- * may also ensure that foreign key values are kept in sync in situations where a data object may have more than one
- * field or object that stores the same foreign key.</p>
- *
- * <p>This class has a single method {@link #linkChanges(Object, java.util.Set)} which takes a data object and a list
- * of property paths for fields which have been modified. It then uses this information determine how to link up
- * relationships and foreign key fields, recursing through the object graph as needed.</p>
- *
- * <p>Linking occurs from the bottom up, such that this class will attempt to perform a post-order traversal to visit
- * the modified objects furthest from the root first, and then backtracking and linking back to the root. The linking
- * algorithm handles circular references as well to ensure that the linking process terminates successfully.</p>
- *
- * <p>The ReferenceLinker requires access to the {@link DataObjectService} so it must be injected using the
- * provided {@link #setDataObjectService(org.kuali.rice.krad.data.DataObjectService)} method.</p>
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
+* The ReferenceLinker provides functionality that allows for ensuring that relationships and foreign key state are
+* populated and kept in sync as changes are made to a data object.
+*
+* <p>
+*     This may include fetching relationships as keys are changed that would necessitate updating the object graph, and
+*     may also ensure that foreign key values are kept in sync in situations where a data object may have more than one
+*     field or object that stores the same foreign key.
+* </p>
+*
+* <p>
+*     This class has a single method {@link #linkChanges(Object, java.util.Set)} which takes a data object and a list
+*     of property paths for fields which have been modified. It then uses this information determine how to link up
+*     relationships and foreign key fields, recursing through the object graph as needed.
+* </p>
+*
+* <p>
+*     Linking occurs from the bottom up, such that this class will attempt to perform a post-order traversal to visit
+*     the modified objects furthest from the root first, and then backtracking and linking back to the root. The linking
+*     algorithm handles circular references as well to ensure that the linking process terminates successfully.
+* </p>
+*
+* <p>
+*     The ReferenceLinker requires access to the {@link DataObjectService} so it must be injected using the
+*     provided {@link #setDataObjectService(org.kuali.rice.krad.data.DataObjectService)} method.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public class ReferenceLinker {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceLinker.class);
@@ -70,21 +78,23 @@ public class ReferenceLinker {
     private DataObjectService dataObjectService;
 
     /**
-     * Returns the DataObjectService used by this class
-     *
-     * @return the DataObjectService used by this class
-     */
+    * Returns the DataObjectService used by this class
+    *
+    * @return the DataObjectService used by this class
+    */
     public DataObjectService getDataObjectService() {
         return dataObjectService;
     }
 
     /**
-     * Specify the DataObjectService to be used during linking.
-     *
-     * <p>The linker will use the DataObjectService to fetch relationships and query metadata.</p>
-     *
-     * @param dataObjectService the DataObjectService to inject
-     */
+    * Specify the DataObjectService to be used during linking.
+    *
+    * <p>
+    *     The linker will use the DataObjectService to fetch relationships and query metadata.
+    * </p>
+    *
+    * @param dataObjectService the DataObjectService to inject
+    */
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
     }
@@ -93,11 +103,14 @@ public class ReferenceLinker {
      * Performs linking of references and keys for the given root object based on the given set of changed property
      * paths that should be considered during the linking process.
      *
-     * <p>The root object should be non-null and also a valid data object (such that
-     * {@link DataObjectService#supports(Class)} returns true for it). If neither of these conditions is true, this
-     * method will return immediately.</p>
-     *
-     * <p>See class-level documentation for specifics on how the linking algorithm functions.</p>
+     * <p>
+     *     The root object should be non-null and also a valid data object (such that
+     *     {@link DataObjectService#supports(Class)} returns true for it). If neither of these conditions is true, this
+     *     method will return immediately.
+     * </p>
+     * <p>
+     *     See class-level documentation for specifics on how the linking algorithm functions.
+     * </p>
      *
      * @param rootObject the root object from which to perform the linking
      * @param changedPropertyPaths the set of property paths relative to the root object that should be considered
@@ -146,12 +159,12 @@ public class ReferenceLinker {
     }
 
     /**
-     * Link changes for relationships on the given wrapped data object.
-     *
-     * @param wrapped the wrapped data object
-     * @param decomposedPaths the decomposed map of changed property paths
-     * @param linked a set containing objects which have already been linked
-     */
+    * Link changes for relationships on the given wrapped data object.
+    *
+    * @param wrapped the wrapped data object
+    * @param decomposedPaths the decomposed map of changed property paths
+    * @param linked a set containing objects which have already been linked
+    */
     protected void linkRelationshipChanges(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
             Set<Object> linked) {
         List<DataObjectRelationship> relationships = wrapped.getMetadata().getRelationships();
@@ -200,12 +213,12 @@ public class ReferenceLinker {
     }
 
     /**
-     * Link changes for collections on the given wrapped data object.
-     *
-     * @param wrapped the wrapped data object
-     * @param decomposedPaths the decomposed map of changed property paths
-     * @param linked a set containing objects which have already been linked
-     */
+    * Link changes for collections on the given wrapped data object.
+    *
+    * @param wrapped the wrapped data object
+    * @param decomposedPaths the decomposed map of changed property paths
+    * @param linked a set containing objects which have already been linked
+    */
     protected void linkCollectionChanges(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
             Set<Object> linked) {
         List<DataObjectCollection> collections = wrapped.getMetadata().getCollections();
@@ -244,9 +257,13 @@ public class ReferenceLinker {
     }
 
     /**
-     * Performs bi-directional collection linking, ensuring that for bi-directional collection relationships that both
-     * sides of the relationship are properly populated.
-     */
+    * Performs bi-directional collection linking, ensuring that for bi-directional collection relationships that both
+    * sides of the relationship are properly populated.
+    *
+    * @param collectionMetadata collection
+    * @param elementWrapper element
+    * @param parentWrapper parent
+    */
     protected void linkBiDirectionalCollection(DataObjectWrapper<?> parentWrapper,
             DataObjectWrapper<?> elementWrapper, DataObjectCollection collectionMetadata) {
         MetadataChild inverseRelationship = collectionMetadata.getInverseRelationship();
@@ -260,10 +277,16 @@ public class ReferenceLinker {
     }
 
     /**
-     * Returns a set of indexes which have been modified in the given collection. If the returned set contains
-     * {@link java.lang.Integer#MAX_VALUE} then it means that it should be treated as if all items in the collection
-     * have been modified.
-     */
+    * Gets indexes that have been modified.
+    *
+    * <p>
+    *     Returns a set of indexes which have been modified in the given collection. If the returned set contains
+    *     {@link java.lang.Integer#MAX_VALUE} then it means that it should be treated as if all items in the collection
+    *     have been modified.
+    * </p>
+    *
+    * @return indexes which have been modified in the given collection
+    */
     private Set<Integer> extractModifiedIndicies(DataObjectCollection collectionMetadata,
             Map<String, Set<String>> decomposedPaths) {
         String relationshipName = collectionMetadata.getName();
@@ -283,6 +306,16 @@ public class ReferenceLinker {
         return modifiedIndicies;
     }
 
+    /**
+    * Gets index of property name.
+    *
+    * <p>
+    *     Returns the index number of the location of the given property name.
+    * </p>
+    *
+    * @param propertyName name of property to find index of.
+    * @return index number representing location of property name.
+    */
     private Integer extractIndex(String propertyName) {
         int firstIndex = propertyName.indexOf(PropertyAccessor.PROPERTY_KEY_PREFIX_CHAR);
         int lastIndex = propertyName.lastIndexOf(PropertyAccessor.PROPERTY_KEY_SUFFIX_CHAR);
@@ -298,6 +331,11 @@ public class ReferenceLinker {
         return null;
     }
 
+    /**
+    * Checks if primary key can be modified.
+    *
+    * @return whether primary key can be modified.
+    */
     protected boolean isPrimaryKeyModified(DataObjectMetadata metadata, Set<String> modifiedPropertyPaths) {
         Set<String> primaryKeyAttributeNames = new HashSet<String>(metadata.getPrimaryKeyAttributeNames());
         for (String modifiedPropertyPath : modifiedPropertyPaths) {
@@ -308,6 +346,17 @@ public class ReferenceLinker {
         return false;
     }
 
+    /**
+    * Gets indexes that have been modified.
+    *
+    * <p>
+    *     Returns a list of cascade links in the field names that are also in the decomposed paths.
+    * </p>
+    *
+    * @param decomposedPaths contains field names to be used.
+    * @param linked
+    * @param wrapped used to get all field names.
+    */
     protected void cascadeLinkingAnnotations(DataObjectWrapper<?> wrapped, Map<String, Set<String>> decomposedPaths,
             Set<Object> linked) {
         Field[] fields = FieldUtils.getAllFields(wrapped.getWrappedClass());
@@ -340,6 +389,12 @@ public class ReferenceLinker {
         }
     }
 
+    /**
+    * Returns a list of link paths based on provided link.
+    *
+    * @param link used get paths from.
+    * @return list of paths
+    */
     protected List<String> assembleLinkingPaths(Link link) {
         List<String> linkingPaths = new ArrayList<String>();
         if (ArrayUtils.isEmpty(link.path())) {
@@ -352,10 +407,23 @@ public class ReferenceLinker {
         return linkingPaths;
     }
 
+    /**
+    * Returns decomposed property paths based on changedPropertyPaths
+    *
+    * @param changedPropertyPaths changes to property paths
+    * @return map decomposed property paths with changedPropertyPaths
+    */
     protected Map<String, Set<String>> decomposePropertyPaths(Set<String> changedPropertyPaths) {
         return decomposePropertyPaths(changedPropertyPaths, "");
     }
 
+    /**
+    * Returns decomposed property paths that start with the provide prefix
+    *
+    * @param changedPropertyPaths changes to property paths
+    * @param prefix filter that paths must start with
+    * @return map decomposed property paths with changedPropertyPaths
+    */
     protected Map<String, Set<String>> decomposePropertyPaths(Set<String> changedPropertyPaths, String prefix) {
         // strip the prefix off any changed properties
         Set<String> processedProperties = new HashSet<String>();

@@ -20,23 +20,30 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * PersistenceOption is used when saving through the data object service to configure how the data will be stored
+ * PersistenceOption is used when saving through the data object service to configure how the data will be stored.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PersistenceOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
     /**
-     * Used to link references and synchronize foreign keys in the data object
+     * Used to link references and synchronize foreign keys in the data object.
      */
     public static PersistenceOption LINK_KEYS = new PersistenceOption("org.kuali.rice.krad.data.LINK_KEYS");
 
     /**
-     * Used to synchronize the data object with the database
+     * Used to synchronize the data object with the database.
      */
     public static PersistenceOption FLUSH = new PersistenceOption("org.kuali.rice.krad.data.FLUSH");
 
     private final String optionId;
 
+    /**
+    * Sets the option Id
+    *
+    * @param optionId cannot be null or blank.
+    */
     public PersistenceOption(String optionId) {
         if (StringUtils.isBlank(optionId)) {
             throw new IllegalArgumentException("optionId must not be a null or blank value");
@@ -44,6 +51,11 @@ public class PersistenceOption implements Serializable {
         this.optionId = optionId;
     }
 
+    /**
+    * Gets the option id.
+    *
+    * @return not null or blank.
+    */
     public String getOptionId() {
         return this.optionId;
     }

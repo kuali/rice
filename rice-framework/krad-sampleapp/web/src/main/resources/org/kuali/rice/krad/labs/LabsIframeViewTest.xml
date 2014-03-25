@@ -38,4 +38,17 @@
     </property>
   </bean>
 
+  <bean id="Lab-PreferencesView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/kew/Preferences.do">
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+  </bean>
+
+  <bean id="Lab-LogoutView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/logout.do">
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+  </bean>
 </beans>

@@ -137,11 +137,11 @@
                 <property name="menuItems">
                   <list>
                     <bean parent="Uif-MenuAction"
-                          p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                          p:actionUrl.viewId="Lab-PreferencesView" p:actionUrl.controllerMapping="/labs"
                           p:actionLabel="Preferences"/>
 
                     <bean parent="Uif-MenuAction"
-                          p:actionUrl.viewId="Lab-BootstrapComponents" p:actionUrl.controllerMapping="/labs"
+                          p:actionUrl.viewId="Lab-LogoutView" p:actionUrl.controllerMapping="/labs"
                           p:actionLabel="Logout"/>
                   </list>
                 </property>

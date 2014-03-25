@@ -130,8 +130,11 @@ public class LookupInputField extends InputFieldBase {
             setControl(control);
         }
 
-        // overwrite maxLength to allow for wildcards and ranges
+        // overwrite maxLength to allow for wildcards and ranges; set a minimum max length unless it is greater than 100
         setMaxLength(100);
+        if ( attributeDefinition.getMaxLength()!=null && (attributeDefinition.getMaxLength() > 100)) {
+            setMaxLength(attributeDefinition.getMaxLength());
+        }
 
         // set default value for active field to true
         if (getDefaultValue() == null || (getDefaultValue() instanceof String && StringUtils.isEmpty((String)getDefaultValue()))) {

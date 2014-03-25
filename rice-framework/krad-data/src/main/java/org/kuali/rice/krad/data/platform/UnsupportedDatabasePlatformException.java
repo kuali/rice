@@ -22,20 +22,44 @@ package org.kuali.rice.krad.data.platform;
  */
 public class UnsupportedDatabasePlatformException extends RuntimeException {
 
+    /**
+     * Creates an unsupported database platform exception.
+     */
     public UnsupportedDatabasePlatformException() {}
 
+    /**
+     * Creates an unsupported database platform exception.
+     *
+     * @param platformInfo the platform that was in exception.
+     */
     public UnsupportedDatabasePlatformException(DatabasePlatformInfo platformInfo) {
         super("Unsupported database platform " + platformInfo.toString());
     }
 
+    /**
+     * Creates an unsupported database platform exception.
+     *
+     * @param message the message to throw.
+     */
     public UnsupportedDatabasePlatformException(String message) {
         super(message);
     }
 
+    /**
+     * Creates an unsupported database platform exception.
+     *
+     * @param message the message to throw.
+     * @param cause the underlying stacktrace.
+     */
     public UnsupportedDatabasePlatformException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * Creates an unsupported database platform exception.
+     *
+     * @param cause the underlying stacktrace.
+     */
     public UnsupportedDatabasePlatformException(Throwable cause) {
         super(cause);
     }

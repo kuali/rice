@@ -27,7 +27,9 @@ import org.kuali.rice.krad.data.provider.PersistenceProvider;
  * Indicates that this attribute should be forced to upper case by the UIF layers before being sent to the
  * {@link PersistenceProvider}.
  * 
- * This is a *hint* only, visible to the system metadata. The KRAD Data module does not enforce it.
+ * <p>This is a *hint* only, visible to the system metadata. The KRAD Data module does not enforce it.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

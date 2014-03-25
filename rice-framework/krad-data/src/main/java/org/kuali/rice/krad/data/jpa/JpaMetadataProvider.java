@@ -20,12 +20,14 @@ import org.kuali.rice.krad.data.provider.MetadataProvider;
 
 /**
  * Subclass of the {@link MetadataProvider} which contains the additional methods needed.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface JpaMetadataProvider extends MetadataProvider {
 
 	/**
-	 * This method needs to, given the parameters, inject into the JPA repository a 1:1 relationship between the parent
-	 * entity and the extension entity via the given property name. (Which must exist on the entityClass.)
+	 * Given the parameters, injects into the JPA repository a 1:1 relationship between the parent entity and the
+     * extension entity via the given property name (which must exist on the entityClass).
 	 * 
 	 * @param entityClass
 	 *            The parent (owning) class which must be already known to the JPA persistence unit. This one's metadata
@@ -35,6 +37,7 @@ public interface JpaMetadataProvider extends MetadataProvider {
 	 *            type of the extension entity or a superclass. (Object will work.)
 	 * @param extensionEntity
 	 *            The child/extension class which needs to be linked. It must also already be known to JPA.
+     * @return A 1:1 relationship between the parent entry and the extension entity via the given property name.
 	 */
 	DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName, Class<?> extensionEntity);
 

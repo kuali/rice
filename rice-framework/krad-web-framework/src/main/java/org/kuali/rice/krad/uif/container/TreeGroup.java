@@ -331,6 +331,8 @@ public class TreeGroup extends GroupBase implements DataBinding {
             return null;
         }
 
+        nodeCopy.setNodeType(node.getNodeType());
+
         if (node.getData() != null) {
             nodeCopy.setData((Group) node.getData().copy());
         }

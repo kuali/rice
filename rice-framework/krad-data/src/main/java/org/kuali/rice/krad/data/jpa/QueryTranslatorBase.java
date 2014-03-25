@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.LessThanPredicate;
 import org.kuali.rice.core.api.criteria.LikeIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.NotEqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotEqualPredicate;
@@ -49,67 +48,228 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Base QueryTranslator impl
+ * Base {@link QueryTranslator} implementation.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
+
+    /**
+     * Creates a criteria from the given type.
+     *
+     * @param entityClass the type to create the criteria from.
+     * @return a criteria created from the given type.
+     */
     protected abstract C createCriteria(Class entityClass);
+
+    /**
+     * Creates a critera from the given parent critiera.
+     *
+     * @param parent the parent critera to create a criteria from.
+     * @return a critera created from a given parent criteria.
+     */
     protected abstract C createInnerCriteria(C parent);
 
     /**
-     * Generate the uppercase function form of the property
+     * Generates the uppercase function form of the property.
+     *
+     * @param pp the property to modify.
+     * @return the uppercase function form of the property.
      */
     protected abstract String genUpperFunc(String pp);
 
+    /**
+     * Adds a NOT NULL clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     */
     protected abstract void addNotNull(C criteria, String propertyPath);
+
+    /**
+     * Adds an IS NULL clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     */
     protected abstract void addIsNull(C criteria, String propertyPath);
+
+    /**
+     * Adds a "=" clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addEqualTo(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a ">=" clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addGreaterOrEqualTo(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a ">" clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addGreaterThan(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a "<=" clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addLessOrEqualTo(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a "<" clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addLessThan(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a LIKE clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addLike(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a != clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addNotEqualTo(C criteria, String propertyPath, Object value);
+
+    /**
+     * Adds a NOT LIKE clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected abstract void addNotLike(C criteria, String propertyPath, Object value);
 
+    /**
+     * Adds an IN clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param values the values to compare.
+     */
     protected abstract void addIn(C criteria, String propertyPath, Collection values);
+
+    /**
+     * Adds a NOT IN clause to the property.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param values the values to compare.
+     */
     protected abstract void addNotIn(C criteria, String propertyPath, Collection values);
 
+    /**
+     * Adds an AND clause between criteria.
+     *
+     * @param criteria the criteria to add to.
+     * @param inner the criteria to AND.
+     */
     protected abstract void addAnd(C criteria, C inner);
+
+    /**
+     * Adds an OR clause between criteria.
+     *
+     * @param criteria the criteria to add to.
+     * @param inner the criteria to OR.
+     */
     protected abstract void addOr(C criteria, C inner);
 
+    /**
+     * Adds a "=" clause to the property, ignoring case.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected void addEqualToIgnoreCase(C criteria, String propertyPath, String value) {
         addEqualTo(criteria, genUpperFunc(propertyPath), value.toUpperCase());
     }
+
+    /**
+     * Adds a != clause to the property, ignoring case.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected void addNotEqualToIgnoreCase(C criteria, String propertyPath, String value) {
         addNotEqualTo(criteria, genUpperFunc(propertyPath), value.toUpperCase());
     }
 
+    /**
+     * Adds a LIKE clause to the property, ignoring case.
+     *
+     * @param criteria the criteria to add to.
+     * @param propertyPath the property to add to.
+     * @param value the value to compare.
+     */
     protected void addLikeIgnoreCase(C criteria, String propertyPath, String value){
         addLike(criteria, genUpperFunc(propertyPath),value.toUpperCase());
     }
 
-    /** this is a fatal error since this implementation should support all known predicates. */
+    /**
+     * An error to throw when the {@link Predicate} is not recognized.
+     *
+     * <p>This is a fatal error since this implementation should support all known predicates.</p>
+     */
     protected static class UnsupportedPredicateException extends RuntimeException {
+
+        /**
+         * Creates an exception for if the {@link Predicate} is not recognized.
+         * @param predicate the {@link Predicate} in error.
+         */
         protected UnsupportedPredicateException(Predicate predicate) {
             super("Unsupported predicate [" + String.valueOf(predicate) + "]");
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public C translateCriteria(Class queryClazz, Predicate predicate, LookupCustomizer customizer) {
+    public C translateCriteria(Class queryClazz, Predicate predicate) {
         final C parent = createCriteria(queryClazz);
 
         if (predicate != null) {
-            addPredicate(predicate, parent, customizer.getPredicateTransform());
+            addPredicate(predicate, parent);
         }
 
         return parent;
     }
 
-    /** adds a predicate to a Criteria.*/
-    protected void addPredicate(Predicate p, C parent, LookupCustomizer.Transform<Predicate, Predicate> transform) {
-        p = transform.apply(p);
-
+    /**
+     * Adds a predicate to a criteria.
+     *
+     * @param p the {@link Predicate} to add.
+     * @param parent the parent criteria to add to.
+     */
+    protected void addPredicate(Predicate p, C parent) {
         if (p instanceof PropertyPathPredicate) {
             final String pp = ((PropertyPathPredicate) p).getPropertyPath();
             if (p instanceof NotNullPredicate) {
@@ -124,13 +284,18 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
                 throw new UnsupportedPredicateException(p);
             }
         } else if (p instanceof CompositePredicate) {
-            addCompositePredicate((CompositePredicate) p, parent, transform);
+            addCompositePredicate((CompositePredicate) p, parent);
         } else {
             throw new UnsupportedPredicateException(p);
         }
     }
 
-    /** adds a single valued predicate to a Criteria. */
+    /**
+     * Adds a single valued predicate to a criteria.
+     *
+     * @param p the single valued predicate to add.
+     * @param parent the parent criteria to add to.
+     */
     protected void addSingleValuePredicate(SingleValuedPredicate p, C parent) {
         final Object value = getVal(p.getValue());
         final String pp = p.getPropertyPath();
@@ -162,7 +327,12 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         }
     }
 
-    /** adds a multi valued predicate to a Criteria. */
+    /**
+     * Adds a multi-valued predicate to a criteria.
+     *
+     * @param p the multi-valued predicate to add.
+     * @param parent the parent criteria to add to.
+     */
     protected void addMultiValuePredicate(MultiValuedPredicate p, C parent) {
         final String pp = p.getPropertyPath();
         if (p instanceof InPredicate) {
@@ -182,11 +352,16 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         }
     }
 
-    /** adds a composite predicate to a Criteria. */
-    protected void addCompositePredicate(final CompositePredicate p, final C parent,  LookupCustomizer.Transform<Predicate, Predicate> transform) {
+    /**
+     * Adds a composite predicate to a criteria.
+     *
+     * @param p the composite predicate to add.
+     * @param parent the parent criteria to add to.
+     */
+    protected void addCompositePredicate(final CompositePredicate p, final C parent) {
         for (Predicate ip : p.getPredicates()) {
             final C inner = createInnerCriteria(parent);
-            addPredicate(ip, inner, transform);
+            addPredicate(ip, inner);
             if (p instanceof AndPredicate) {
                 addAnd(parent, inner);
             } else if (p instanceof OrPredicate) {
@@ -197,6 +372,13 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         }
     }
 
+    /**
+     * Converts any {@link DateTime} values to {@link Timestamp}s.
+     *
+     * @param toConv the {@link CriteriaValue} to convert.
+     * @param <U> the type of the {@link CriteriaValue}.
+     * @return the {@link CriteriaValue} converted.
+     */
     protected static <U extends CriteriaValue<?>> Object getVal(U toConv) {
         Object o = toConv.getValue();
         if (o instanceof DateTime) {
@@ -205,12 +387,27 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         return o;
     }
 
-    //this is unsafe b/c values could be converted resulting in a classcast exception
+    /**
+     * Converts a set of {@link CriteriaValue}s.
+     *
+     * <p>This is unsafe because values could be converted resulting in a class cast exception.</p>
+     *
+     * @param toConv the {@link CriteriaValue} to convert.
+     * @param <U> the initial type of the {@link CriteriaValue} set.
+     * @param <T> the final type of the {@link CriteriaValue} set.
+     * @return the {@link CriteriaValue} set converted.
+     */
     @SuppressWarnings("unchecked")
     protected static <T, U extends CriteriaValue<T>> Set<T> getValsUnsafe(Set<? extends U> toConv) {
         return (Set<T>) getVals(toConv);
     }
 
+    /**
+     * Converts a set of {@link CriteriaValue}s to an undefined type.
+     *
+     * @param toConv the {@link CriteriaValue} to convert.
+     * @return a set of {@link CriteriaValue}s as an undefined type.
+     */
     protected static Set<?> getVals(Set<? extends CriteriaValue<?>> toConv) {
         final Set<Object> values = new HashSet<Object>();
         for (CriteriaValue<?> value : toConv) {
@@ -219,7 +416,14 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
         return values;
     }
 
-    //eliding performance for function composition....
+    /**
+     * Converts a set of strings to upper case.
+     *
+     * <p>Here we are eliding performance for function composition.</p>
+     *
+     * @param strs the set of strings to convert.
+     * @return a set of uppercase strings.
+     */
     private static Set<String> toUpper(Set<String> strs) {
         final Set<String> values = new HashSet<String>();
         for (String value : strs) {

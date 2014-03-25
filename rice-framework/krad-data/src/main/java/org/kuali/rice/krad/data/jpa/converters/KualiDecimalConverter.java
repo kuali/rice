@@ -23,12 +23,19 @@ import javax.persistence.Converter;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 
 /**
- * Converts our custom {@link KualiDecimal} objects for OJB by converting them to/from {@link BigDecimal}.
+ * Converts the custom {@link KualiDecimal} objects for OJB by converting them to/from {@link BigDecimal}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter(
 		autoApply = true)
 public class KualiDecimalConverter implements AttributeConverter<KualiDecimal, BigDecimal> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a {@link KualiDecimal} to a {@link BigDecimal}.
+     */
 	@Override
 	public BigDecimal convertToDatabaseColumn(KualiDecimal objectValue) {
 		if (objectValue == null) {
@@ -37,6 +44,11 @@ public class KualiDecimalConverter implements AttributeConverter<KualiDecimal, B
 		return objectValue.bigDecimalValue();
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a {@link BigDecimal} to a {@link KualiDecimal}.
+     */
 	@Override
 	public KualiDecimal convertToEntityAttribute(BigDecimal dataValue) {
 		if (dataValue == null) {

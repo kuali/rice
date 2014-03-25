@@ -15,15 +15,18 @@
  */
 package org.kuali.rice.krad.data.provider;
 
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
- * Defines persistence SPI for data providers.  PersistenceProviders are responsible for creating, updating, querying,
- * copying and deleting data objects.  DataObjectTypes the PersistenceProvider supports must be queried through
- * {@link #handles(Class)} before interaction with the PersistenceProvider.
+ * Defines persistence SPI for data providers.
+ *
+ * <p>
+ * PersistenceProviders are responsible for creating, updating, querying, copying and deleting data objects.
+ * DataObjectTypes the PersistenceProvider supports must be queried through {@link #handles(Class)} before interaction
+ * with the PersistenceProvider.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -33,9 +36,11 @@ public interface PersistenceProvider extends Provider {
      * Saves the given data object, determining whether or not this is a new data object which is being created, or an
      * existing one which should be updated.
      *
-     * <p>Optional persistence options can be passed to indicate whether or not linking should be performed prior to
+     * <p>
+     * Optional persistence options can be passed to indicate whether or not linking should be performed prior to
      * persistence and whether or not validation should be performed. By default, linking is performed as well as
-     * validation.</p>
+     * validation.
+     * </p>
      *
      * @param dataObject the data object to save
      * @param options the options to use when saving the data object
@@ -50,9 +55,11 @@ public interface PersistenceProvider extends Provider {
     <T> T save(T dataObject, PersistenceOption... options);
 
     /**
-     * Invoked to retrieve a data object instance by a single primary key field or id object. In the
-     * case of a compound primary key consisting of multiple attributes on the data object, a
-     * CompoundKey can be passed in order to encapsulate these into a single argument.
+     * Invoked to retrieve a data object instance by a single primary key field or id object.
+     *
+     * <p>In the case of a compound primary key consisting of multiple attributes on the data object, a CompoundKey can
+     * be passed in order to encapsulate these into a single argument.
+     * </p>
      *
      * @param type the type of the data object to find
      * @param id the id representing the primary key of the data object to find
@@ -67,11 +74,14 @@ public interface PersistenceProvider extends Provider {
     <T> T find(Class<T> type, Object id);
 
     /**
-     * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
-     * all data objects for the given type will be returned. Depending on the given criteria and the
-     * implementation for the query execution, not all matching results may be returned. The QueryResults
-     * will contain information on whether or not there are additional results which can be used for paging
-     * and similar functionality.
+     * Executes a query for the given data object.
+     *
+     * <p>
+     * If the given QueryByCriteria is empty or null, then all data objects for the given type will be returned.
+     * Depending on the given criteria and the implementation for the query execution, not all matching results may be
+     * returned. The QueryResults will contain information on whether or not there are additional results which can be
+     * used for paging and similar functionality.
+     * </p>
      *
      * @param type the type of the data objects to query
      * @param queryByCriteria query object, can contain sorting and page request configuration
@@ -83,26 +93,6 @@ public interface PersistenceProvider extends Provider {
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
-
-    /**
-     * Executes a query for the given data object. If the given QueryByCriteria is empty or null, then
-     * all data objects for the given type will be returned. Depending on the given criteria and the
-     * implementation for the query execution, not all matching results may be returned. The QueryResults
-     * will contain information on whether or not there are additional results which can be used for paging
-     * and similar functionality.
-     *
-     * @param type the type of the data objects to query
-     * @param queryByCriteria query object, can contain sorting and page request configuration
-     * @param lookupCustomizer predication transformation
-     * @param <T> the data object class type
-     *
-     * @return the results of the query, will never return null but may return empty results
-     *
-     * @throws IllegalArgumentException if {@code type} does not denote a data object type
-     * @throws org.springframework.dao.DataAccessException if data access fails
-     */
-    <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer);
-
 
     /**
      * Deletes a given data object.
@@ -117,8 +107,9 @@ public interface PersistenceProvider extends Provider {
     /**
      * Returns a copy of the given data object instance.
      *
-     * <p>The method of copying is provider dependent, and will handle instances (including nested) using whatever
-     * measures might be required to deal with the quirks of said provider (e.g. fetching lazy loaded relations).
+     * <p>
+     * The method of copying is provider dependent, and will handle instances (including nested) using whatever measures
+     * might be required to deal with the quirks of said provider (e.g. fetching lazy loaded relations).
      * </p>
      *
      * @param dataObject the data object to copy
@@ -129,8 +120,11 @@ public interface PersistenceProvider extends Provider {
 
     /**
      * Indicates whether or not this provider handles persistence for the given data object type.
-     * Responsibility on with the caller to call prior to invocation of any other PersistenceProvider methods
-     * to ensure the data objects of the right type are passed.
+     *
+     * <p>
+     * Responsibility on with the caller to call prior to invocation of any other PersistenceProvider methods to ensure
+     * the data objects of the right type are passed.
+     * </p>
      *
      * @param type the data object type to check
      *
@@ -142,8 +136,10 @@ public interface PersistenceProvider extends Provider {
      * Flush any outstanding changes within the current context for the provider pertaining to the given data object
      * Class type.
      *
-     * <p>If an implementation of this interface does not support or require the concept of "flushing", this method can
-     * be ignored.</p>
+     * <p>
+     * If an implementation of this interface does not support or require the concept of "flushing", this method can be
+     * ignored.
+     * </p>
      *
      * @param type the type of the data object for which to perform the flush. This shoul be used to identify the
      * context in which to perform the flush.

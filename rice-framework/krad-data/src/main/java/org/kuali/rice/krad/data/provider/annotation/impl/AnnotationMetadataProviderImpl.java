@@ -74,11 +74,15 @@ import java.util.List;
 
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence
- * metadata provider which should have run before this one. At the moment, it will only process classes which were
- * previously identified by the JPA implementation.
- * 
- * TODO: Addition of a new Annotation which will need to be scanned for in order to process non-persistent classes as
- * data objects.
+ * metadata provider which should have run before this one.
+ *
+ * <p>
+ * At the moment, it will only process classes which were previously identified by the JPA implementation.
+ * </p>
+ *
+ * <p>
+ * TODO: Addition of a new Annotation which will need to be scanned for in order to process non-persistent classes as data objects.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -89,11 +93,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	private boolean initializationAttempted = false;
     private DataObjectService dataObjectService;
 
-
-	/**
-	 * Perform the primary initialization of data based on the passed in collection of already known
-	 * data object types.
-	 */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected void initializeMetadata(Collection<Class<?>> types) {
 		if (initializationAttempted) {
@@ -136,7 +138,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 
 	/**
 	 * Handle annotations made at the class level and add their data to the given metadata object.
-	 * 
+     *
+     * @param clazz the class to process.
+	 * @param metadata the metadata for the class.
 	 * @return <b>true</b> if any annotations are found.
 	 */
 	protected boolean processClassLevelAnnotations(Class<?> clazz, DataObjectMetadataImpl metadata) {
@@ -178,7 +182,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 
 	/**
 	 * Handle annotations made at the field level and add their data to the given metadata object.
-	 * 
+     *
+	 * @param clazz the class to process.
+     * @param metadata the metadata for the class.
 	 * @return <b>true</b> if any annotations are found.
 	 */
 	protected boolean processFieldLevelAnnotations(Class<?> clazz, DataObjectMetadataImpl metadata) {
@@ -246,7 +252,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 
 	/**
 	 * Helper method to process the annotations which can be present on attributes or classes.
-	 * 
+     *
+     * @param a the annotation to process.
+     * @param metadata the metadata for the class.
 	 * @return <b>true</b> if a valid annotation is found
 	 */
 	protected boolean processAnnotationsforCommonMetadata(Annotation a, MetadataCommonBase metadata) {
@@ -268,8 +276,13 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	}
 
 	/**
-	 * Helper method to process the annotations which can be present on attributes. Used to abstract the logic so it can
-	 * be applied to both field and method-level annotations.
+	 * Helper method to process the annotations which can be present on attributes.
+     *
+     * <p>Used to abstract the logic so it can be applied to both field and method-level annotations.</p>
+     *
+     * @param a the annotation to process.
+     * @param attr the attribute for the field.
+     * @param metadata the metadata for the class.
 	 * 
 	 * @return true if any annotations were processed, false if not
 	 */
@@ -349,7 +362,10 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	/**
 	 * Used to find the property name from a getter method.
 	 * 
-	 * (Not using PropertyUtils since it required an instance of the class.)
+	 * <p>(Not using PropertyUtils since it required an instance of the class.)</p>
+     *
+     * @param m the method from which to get the property name.
+     * @return the property name.
 	 */
 	protected String getPropertyNameFromGetterMethod(Method m) {
 		String propertyName = "";
@@ -363,6 +379,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 
 	/**
 	 * Handle annotations made at the method level and add their data to the given metadata object.
+     *
+     * @param clazz the class to process.
+     * @param metadata the metadata for the class.
 	 * 
 	 * @return <b>true</b> if any annotations are found.
 	 */
@@ -435,6 +454,13 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		return fieldAnnotationsFound;
 	}
 
+    /**
+     * Adds a relationship for a field to the metadata object.
+     *
+     * @param metadata the metadata for the class.
+     * @param f the field to process.
+     * @param a the relationship to add.
+     */
 	protected void addDataObjectRelationship(DataObjectMetadataImpl metadata, Field f, Relationship a) {
 		List<DataObjectRelationship> relationships = new ArrayList<DataObjectRelationship>(metadata.getRelationships());
 		DataObjectRelationshipImpl relationship = new DataObjectRelationshipImpl();
@@ -470,6 +496,13 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		metadata.setRelationships(relationships);
 	}
 
+    /**
+     * Adds a collection relationship for a field to the metadata object.
+     *
+     * @param metadata the metadata for the class.
+     * @param f the field to process.
+     * @param a the collection relationship to add.
+     */
 	protected void addDataObjectCollection(DataObjectMetadataImpl metadata, Field f, CollectionRelationship a) {
 		List<DataObjectCollection> collections = new ArrayList<DataObjectCollection>(metadata.getCollections());
 		DataObjectCollectionImpl collection = new DataObjectCollectionImpl();
@@ -527,6 +560,14 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		metadata.setCollections(collections);
 	}
 
+    /**
+     * Handle inherited properties and add their data to the given metadata object.
+     *
+     * @param clazz the class to process.
+     * @param metadata the metadata for the class.
+     *
+     * @return <b>true</b> if any annotations are found.
+     */
 	protected boolean processInheritedAttributes(Class<?> clazz, DataObjectMetadataImpl metadata) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Processing InheritProperties field Annotations on " + clazz);
@@ -608,7 +649,11 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	 * Used to find the property type of a given attribute regardless of whether the attribute exists as a field or only
 	 * as a getter method.
 	 * 
-	 * (Not using PropertyUtils since it required an instance of the class.)
+	 * <p>(Not using PropertyUtils since it required an instance of the class.)</p>
+     *
+     * @param clazz the class that contains the property.
+     * @param propertyName the name of the property.
+     * @return the type of the property.
 	 */
 	protected Class<?> getTypeOfProperty(Class<?> clazz, String propertyName) {
 		try {
@@ -633,7 +678,9 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 	}
 
 	/**
-	 * Returns true in this implementation. This tells the composite metadata provider to pass in all known metadata to
+	 * {@inheritDoc}
+     *
+     * Returns true in this implementation. This tells the composite metadata provider to pass in all known metadata to
 	 * the initializeMetadata method.
 	 */
 	@Override
@@ -641,10 +688,19 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 		return true;
 	}
 
+    /**
+     * Gets whether initialization was attempted.
+     *
+     * @return whether initialization was attempted.
+     */
     public boolean isInitializationAttempted() {
         return initializationAttempted;
     }
 
+    /**
+     * Gets the {@link DataObjectService}.
+     * @return the {@link DataObjectService}.
+     */
     public DataObjectService getDataObjectService() {
         if (dataObjectService == null) {
             dataObjectService = KradDataServiceLocator.getDataObjectService();
@@ -652,6 +708,11 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
         return dataObjectService;
     }
 
+    /**
+     * Setter for the the {@link DataObjectService}.
+     *
+     * @param dataObjectService the the {@link DataObjectService} to set.
+     */
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
     }

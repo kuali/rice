@@ -216,6 +216,7 @@ JavascriptKradVariables.prototype = {
         ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE,
+        PAGE_UPDATE_COMPLETE : "pageUpdateComplete" + JavascriptKradVariables.EVENT_NAMESPACE,
         SHOW_MODAL : "show.bs.modal",
         HIDE_MODAL : "hide.bs.modal"
     }

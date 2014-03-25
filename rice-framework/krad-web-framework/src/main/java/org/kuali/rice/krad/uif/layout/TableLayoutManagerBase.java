@@ -608,9 +608,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                     lineContext, expressionEvaluator);
         }
 
-        rowCss = StringUtils.removeStart(rowCss, " ");
-        this.getRowCssClasses().add(rowCss);
-
         // create row data attributes
         String rowDataAttributes = "";
 
@@ -665,8 +662,12 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                 getAddLineGroup().getFooter().setItems(new ArrayList<Component>(actions));
             }
 
+            // Note that a RowCssClass was not added to the LayoutManager for the collection for the separateAddLine
             return;
         }
+
+        rowCss = StringUtils.removeStart(rowCss, " ");
+        this.getRowCssClasses().add(rowCss);
 
         // TODO: implement repeat header
         if (!headerAdded) {

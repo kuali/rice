@@ -31,7 +31,9 @@ import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * This class is the maintainable implementation for Routing Rules
@@ -50,9 +52,18 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
-		List<Section> sections = super.getSections(document, oldMaintainable);
-		return WebRuleUtils.customizeSections(getThisRule(), sections, false);
+	    // since the child lists are not repopulated upon loading the objects, we need to re-load them manually so the section
+	    // generation functions.
+        if ( getNewRule(document) != null ) {   
+            getNewRule(document).setRuleTemplate( getDataObjectService().find(RuleTemplateBo.class, getNewRule(document).getRuleTemplateId() ) );
+        }
+        
+        if ( getOldRule(document) != null ) {   
+            getOldRule(document).setRuleTemplate( getDataObjectService().find(RuleTemplateBo.class, getOldRule(document).getRuleTemplateId() ) );
+        }
 
+	    List<Section> sections = super.getSections(document, oldMaintainable);
+		return WebRuleUtils.customizeSections(getThisRule(), sections, false);
 	}
 
 	/**
@@ -87,7 +98,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
     	WebRuleUtils.translateFieldValuesForSave(getThisRule());
     	KEWServiceLocator.getRuleService().makeCurrent(getThisRule(), true);
     }
-
+    
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
     	WebRuleUtils.processRuleForCopy(document.getDocumentNumber(), getOldRule(document), getNewRule(document));

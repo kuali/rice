@@ -35,7 +35,7 @@ public @interface Serialized {
      * If true, this indicates that the marked field should be serialized for the indicated contexts, and if false
      * then the marked field should not.
      *
-     * @return enabled
+     * @return whether the marked field should be serialized
      */
     boolean enabled() default true;
 

@@ -23,6 +23,8 @@ import java.lang.annotation.Target;
 
 /**
  * Marks the property as read-only for the purposes of any interfaces.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

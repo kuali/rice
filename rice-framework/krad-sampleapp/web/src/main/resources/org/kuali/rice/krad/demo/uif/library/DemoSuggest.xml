@@ -141,6 +141,9 @@
               </property>
             </bean>
           </property>
+          <property name="validCharactersConstraint">
+            <bean parent="CharsetPatternConstraint" p:validChars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXWYZ12345678 "/>
+          </property>
         </bean>
         <!-- ex:Demo-Suggest-Example5 end-->
       </list>

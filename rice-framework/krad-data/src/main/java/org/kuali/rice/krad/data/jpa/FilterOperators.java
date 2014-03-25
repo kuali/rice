@@ -16,17 +16,33 @@
 package org.kuali.rice.krad.data.jpa;
 
 /**
- * Operators used in the FilterGenerator annotation
+ * Operators used in the FilterGenerator annotation.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum FilterOperators {
+
+    /**
+     * The equal ("=") operator.
+     */
     EQUAL("=");
 
     private String value;
+
+    /**
+     * Creates a filter operator.
+     *
+     * @param value the value of the operator.
+     */
     FilterOperators(String value){
         this.value = value;
     }
 
+    /**
+     * Gets the value of the operator.
+     *
+     * @return the value of the operator.
+     */
     public String getValue(){
         return this.value;
     }

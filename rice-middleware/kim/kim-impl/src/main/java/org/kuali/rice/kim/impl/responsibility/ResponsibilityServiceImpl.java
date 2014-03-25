@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
@@ -386,11 +385,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     public ResponsibilityQueryResults findResponsibilities(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        LookupCustomizer.Builder<ResponsibilityBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<ResponsibilityBo> results = getDataObjectService().
-                findMatching(ResponsibilityBo.class, queryByCriteria, lc.build());
+        QueryResults<ResponsibilityBo> results = getDataObjectService().findMatching(ResponsibilityBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         ResponsibilityQueryResults.Builder builder = ResponsibilityQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

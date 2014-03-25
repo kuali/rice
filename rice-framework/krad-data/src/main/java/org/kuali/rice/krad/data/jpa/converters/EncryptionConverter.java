@@ -22,14 +22,18 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 
 /**
- * This class calls core service to encrypt values going to the database and decrypt values coming back from the
- * database.
+ * Calls the core service to encrypt values going to the database and decrypt values coming back from the database.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Converter
 public class EncryptionConverter implements AttributeConverter<String, String> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation encrypts the value going to the database.
+     */
 	@Override
 	public String convertToDatabaseColumn(String objectValue) {
 		// don't attempt to encrypt nulls or empty strings
@@ -50,6 +54,11 @@ public class EncryptionConverter implements AttributeConverter<String, String> {
 		return objectValue;
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation decrypts the value coming from the database.
+     */
 	@Override
 	public String convertToEntityAttribute(String dataValue) {
 		// don't attempt to decrypt nulls or empty strings

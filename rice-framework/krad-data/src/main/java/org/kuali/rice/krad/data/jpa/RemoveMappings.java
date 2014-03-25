@@ -31,7 +31,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface RemoveMappings {
 
     /**
-     * The mappings to remove.
+     * A list of the mappings to remove.
+     *
+     * @return a list of the mappings to remove.
      */
     RemoveMapping[] value();
 

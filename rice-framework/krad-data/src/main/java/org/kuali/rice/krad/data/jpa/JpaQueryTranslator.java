@@ -22,23 +22,46 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.Collection;
 
+/**
+ * Translates queries to JPA specific classes.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
+
+    /**
+     * The entity manager used in interacting with the database.
+     */
     protected EntityManager entityManager;
 
+    /**
+     * Creates a JPA query translator.
+     *
+     * @param entityManager the entity manager used in interacting with the database.
+     */
     JpaQueryTranslator(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Query createQuery(Class queryClazz, Criteria criteria) {
         return new QueryByCriteria(entityManager, criteria).toQuery();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Criteria createCriteria(Class entityClass) {
         return new Criteria(entityClass.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Criteria createInnerCriteria(Criteria parent) {
         try {
@@ -48,6 +71,9 @@ class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void convertQueryFlags(org.kuali.rice.core.api.criteria.QueryByCriteria qbc, Query query) {
         //ojb's is 1 based, our query api is zero based
@@ -64,76 +90,121 @@ class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addNotNull(Criteria criteria, String propertyPath) {
         criteria.notNull(propertyPath);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addIsNull(Criteria criteria, String propertyPath) {
         criteria.isNull(propertyPath);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addEqualTo(Criteria criteria, String propertyPath, Object value) {
         criteria.eq(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addGreaterOrEqualTo(Criteria criteria, String propertyPath, Object value) {
         criteria.gte(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addGreaterThan(Criteria criteria, String propertyPath, Object value) {
         criteria.gt(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addLessOrEqualTo(Criteria criteria, String propertyPath, Object value) {
         criteria.lte(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addLessThan(Criteria criteria, String propertyPath, Object value) {
         criteria.lt(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addLike(Criteria criteria, String propertyPath, Object value) {
         criteria.like(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addNotEqualTo(Criteria criteria, String propertyPath, Object value) {
         criteria.ne(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addNotLike(Criteria criteria, String propertyPath, Object value) {
         criteria.notLike(propertyPath, value);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addIn(Criteria criteria, String propertyPath, Collection values) {
         criteria.in(propertyPath, values);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addNotIn(Criteria criteria, String propertyPath, Collection values) {
         criteria.notIn(propertyPath, values);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addAnd(Criteria criteria, Criteria inner) {
         criteria.and(inner);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addOr(Criteria criteria, Criteria inner) {
         criteria.or(inner);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected String genUpperFunc(String pp) {
         if (StringUtils.contains(pp, "__JPA_ALIAS[[")) {

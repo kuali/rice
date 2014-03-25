@@ -19,7 +19,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * Converts active/inactive represented by the characters "A" and "I" to and from boolean.
+ * Converts active/inactive represented by the characters "A" and "I" to and from true and false.
  *
  * <p>The conversion treats the values as follows: "A" is true and "I" is false.</p>
  *
@@ -28,6 +28,11 @@ import javax.persistence.Converter;
 @Converter
 public class BooleanAIConverter implements AttributeConverter<Boolean, String> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a false or true value to an "I" or "A" value.
+     */
 	@Override
 	public String convertToDatabaseColumn(Boolean objectValue) {
 		if (objectValue == null) {
@@ -36,6 +41,11 @@ public class BooleanAIConverter implements AttributeConverter<Boolean, String> {
 		return objectValue ? "A" : "I";
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from an "I" or "A" value to a false or true value.
+     */
 	@Override
 	public Boolean convertToEntityAttribute(String dataValue) {
 		if (dataValue == null) {

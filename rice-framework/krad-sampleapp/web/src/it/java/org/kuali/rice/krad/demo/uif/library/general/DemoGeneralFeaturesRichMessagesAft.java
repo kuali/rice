@@ -70,7 +70,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     
     protected void testGeneralFeaturesRichMessagesCss() throws Exception {
         waitAndClickByLinkText("CSS");
-        assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example5']/span[@class='fl-text-underline fl-text-larger']");
+        assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example5']/span[@class='uif-text-underline uif-text-larger']");
     }
     
     protected void testGeneralFeaturesRichMessagesLink() throws Exception {

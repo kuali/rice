@@ -966,7 +966,7 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
     var oTable = getDataTableHandle(tableId);
     var columnIndex = jQuery(oTable).find('thead th' + columnId).index();
     var header = jQuery(oTable).find('thead th' + columnId);
-    var columns = jQuery(oTable).find('tbody td' + columnId);
+    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex+1) + ')');
     var footer = jQuery(oTable).find('tfoot th').eq(columnIndex);
     if (bVisibility) {
         header.show();
@@ -993,7 +993,8 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
  */
 function hasVisibleElementsInColumn(tableId, columnId) {
     var oTable = getDataTableHandle(tableId);
-    var columns = jQuery(oTable).find('tbody td' + columnId);
+    var columnIndex = jQuery(oTable).find('thead th' + columnId).index();
+    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex+1) + ')');
     var isColumnsEmpty = true;
 
     jQuery.each(columns, function (index, td) {

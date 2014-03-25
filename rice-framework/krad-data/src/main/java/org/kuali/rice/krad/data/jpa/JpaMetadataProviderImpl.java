@@ -46,18 +46,29 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is the superclass which handles most of the JPA metadata extraction. It handles everything which can be done via
- * the standard javax.persistence annotations. Any implementation-specific annotations must be processed in the provided
- * abstract hook methods.
+ * A superclass which handles most of the JPA metadata extraction.
+ *
+ * <p>
+ * It handles everything which can be done via the standard javax.persistence annotations. Any implementation-specific
+ * annotations must be processed in the provided abstract hook methods.
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class JpaMetadataProviderImpl extends MetadataProviderBase implements JpaMetadataProvider {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaMetadataProviderImpl.class);
 
+    /**
+     * The entity manager used in interacting with the database.
+     */
 	protected EntityManager entityManager;
 
 	/**
 	 * Hook called after all "standard" annotations are processed to perform any further extraction based on the
 	 * internals of the JPA implementation.
+     *
+     * @param metadata The metadata for the data object.
+     * @param entityType The entity type of the data object.
 	 */
 	protected abstract void populateImplementationSpecificEntityLevelMetadata(DataObjectMetadataImpl metadata,
 			EntityType<?> entityType);
@@ -65,6 +76,9 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	/**
 	 * Hook called after all "standard" attribute-level annotations are processed to perform any further extraction
 	 * based on the internals of the JPA implementation.
+     *
+     * @param attribute The attribute metadata for the data object.
+     * @param attr The persistent single-valued property or field.
 	 */
     protected abstract void populateImplementationSpecificAttributeLevelMetadata(DataObjectAttributeImpl attribute,
 			SingularAttribute<?, ?> attr);
@@ -72,6 +86,9 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	/**
 	 * Hook called after all "standard" field-level annotations are processed on attributes identified as "plural" to
 	 * perform any further extraction based on the internals of the JPA implementation.
+     *
+     * @param collection The collection metadata for the data object.
+     * @param cd The persistent collection-valued attribute.
 	 */
     protected abstract void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
 			PluralAttribute<?, ?, ?> cd);
@@ -79,27 +96,23 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	/**
 	 * Hook called after all "standard" field-level annotations are processed on attributes identified as "associations"
 	 * to perform any further extraction based on the internals of the JPA implementation.
+     *
+     * @param relationship The relationship metadata for the data object.
+     * @param rd The persistent single-valued property or field.
 	 */
     protected abstract void populateImplementationSpecificRelationshipLevelMetadata(
 			DataObjectRelationshipImpl relationship, SingularAttribute<?, ?> rd);
 
-	/**
-	 * This method needs to, given the parameters, inject into the JPA repository a 1:1 relationship between the parent
-	 * entity and the extension entity via the given property name. (Which must exist on the entityClass.)
-	 * 
-	 * @param entityClass
-	 *            The parent (owning) class which must be already known to the JPA persistence unit. This one's metadata
-	 *            will be modified within the internals of the JPA metadata.
-	 * @param extensionPropertyName
-	 *            The property on the parent class which will hold the extensionEntity. This property must be of the
-	 *            type of the extension entity or a superclass. (Object will work.)
-	 * @param extensionEntity
-	 *            The child/extension class which needs to be linked. It must also already be known to JPA.
-	 */
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public abstract DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
 			Class<?> extensionEntity);
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected synchronized void initializeMetadata(Collection<Class<?>> types) {
 		LOG.info("Initializing JPA Metadata from " + entityManager);
@@ -127,8 +140,7 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	/**
 	 * Extracts the data from the JPA Persistence Unit. This code assumes that the given class is persistable.
 	 * 
-	 * @param persistableClass
-	 *            Class which will be looked up in OJB's static descriptor repository
+	 * @param persistableClass Class which will be looked up in OJB's static descriptor repository.
 	 * @return the metadata for the class
 	 */
 	@SuppressWarnings("unchecked")
@@ -200,7 +212,13 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 
 		return metadata;
 	}
-	
+
+    /**
+     * Gets the attribute names for the primary keys from the given entity type.
+     *
+     * @param entityType The entity type of the data object.
+     * @return A list of primary key attribute names.
+     */
 	protected List<String> getPrimaryKeyAttributeNames(EntityType<?> entityType) {
 		List<String> primaryKeyAttributeNames = new ArrayList<String>();
 		// JHK: After examining of the metadata structures of EclipseLink, I determined that there
@@ -228,6 +246,14 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		return primaryKeyAttributeNames;
 	}
 
+    /**
+     * Sorts the list of primary key names.
+     *
+     * @param pkFieldNames The final list to which the primary key field names will be added in order.
+     * @param unsortedPks The current list of unsorted primary keys.
+     * @param fields The fields on the current object.
+     * @param type The class of the current object.
+     */
     private void getPrimaryKeyNamesInOrder(List<String> pkFieldNames, List<String> unsortedPks, Field[] fields, Class<?> type) {
         for (Field field : type.getDeclaredFields()) {
             if (unsortedPks.contains(field.getName())) {
@@ -239,6 +265,15 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
             getPrimaryKeyNamesInOrder(pkFieldNames, unsortedPks, type.getSuperclass().getDeclaredFields(), type.getSuperclass());
         }
     }
+
+    /**
+     * Gets a list of attributes for this data object.
+     *
+     * @param persistableClass The class of the data object.
+     * @param fields The collection of singular attributes to process.
+     * @param primaryKeyAttributes The list of primary key attribute names.
+     * @return The list of attributes for this data object.
+     */
 	protected List<DataObjectAttribute> getSingularAttributes(Class<?> persistableClass, Collection<?> fields,
 			List<String> primaryKeyAttributes) {
 		if (fields == null) {
@@ -269,14 +304,14 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 	}
 
 	/**
-	 * Get a single field's metadata from the property descriptor in OJB.
+	 * Gets a single field's metadata from the property descriptor.
 	 * 
-	 * @param persistableClass
-	 * @param attr
-	 * @return the DataObjectAttribute containing the metadata for the given attribute on the provided Class
+	 * @param persistableClass The class of the data object.
+	 * @param attr The singular attribute to process.
+     * @param primaryKeyAttributes The list of primary key attribute names.
+	 * @return The DataObjectAttribute containing the metadata for the given attribute on the provided Class
 	 */
-	protected DataObjectAttribute getAttributeMetadata(Class<?> persistableClass,
- SingularAttribute<?, ?> attr,
+	protected DataObjectAttribute getAttributeMetadata(Class<?> persistableClass, SingularAttribute<?, ?> attr,
 			List<String> primaryKeyAttributes) {
 		DataObjectAttributeImpl attribute = new DataObjectAttributeImpl();
 
@@ -296,7 +331,12 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		return attribute;
 	}
 
-
+    /**
+     * Gets a collection's metadata from the property descriptor.
+     *
+     * @param collections The list of plural attributes to process.
+     * @return The list of collections for this data object.
+     */
 	protected List<DataObjectCollection> getCollectionsFromMetadata(Set<PluralAttribute> collections) {
 		List<DataObjectCollection> colls = new ArrayList<DataObjectCollection>(collections.size());
 		for (PluralAttribute cd : collections) {
@@ -307,6 +347,9 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 
 	/**
 	 * Extracts the collection metadata from a single JPA {@link PluralAttribute} object.
+     *
+     * @param cd The plural attribute to process.
+     * @return The collection metadata from a single JPA {@link PluralAttribute} object.
 	 */
 	protected DataObjectCollection getCollectionMetadataFromCollectionAttribute(PluralAttribute cd) {
 		try {
@@ -353,6 +396,12 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		}
 	}
 
+    /**
+     * Gets the list of relationships for this data object.
+     *
+     * @param references The list of singular attribute references.
+     * @return The list of relationships for this data object.
+     */
 	protected List<DataObjectRelationship> getRelationships(Set<?> references) {
 		List<DataObjectRelationship> rels = new ArrayList<DataObjectRelationship>(references.size());
 		for (SingularAttribute rd : (Set<SingularAttribute>) references) {
@@ -363,6 +412,12 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		return rels;
 	}
 
+    /**
+     * Gets a single field's relationship metadata.
+     *
+     * @param rd The singular attribute to process.
+     * @return The single field's relationship metadata.
+     */
 	protected DataObjectRelationship getRelationshipMetadata(SingularAttribute rd) {
 		try {
 			DataObjectRelationshipImpl relationship = new DataObjectRelationshipImpl();
@@ -381,15 +436,28 @@ public abstract class JpaMetadataProviderImpl extends MetadataProviderBase imple
 		}
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isClassPersistable(Class<?> type) {
 		return handles(type);
 	}
 
+    /**
+     * Setter for the entity manager.
+     *
+     * @param entityManager The entity manager to set.
+     */
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
+    /**
+     * Gets the entity manager for interacting with the database.
+     *
+     * @return The entity manager for interacting with the database.
+     */
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}

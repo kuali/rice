@@ -15,35 +15,15 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.eclipse.persistence.internal.jpa.querydef.SubQueryImpl;
-import org.kuali.rice.core.api.criteria.OrderByField;
-import org.kuali.rice.core.api.criteria.OrderDirection;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.QueryResults;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtensionBo;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibilityBo;
-import org.kuali.rice.kew.rule.dao.RuleDAO;
-import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.data.DataObjectService;
-import org.springframework.beans.factory.annotation.Required;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +33,33 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
+import org.kuali.rice.kew.rule.RuleResponsibilityBo;
+import org.kuali.rice.kew.rule.dao.RuleDAO;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 
 public class RuleDAOJpa implements RuleDAO {
@@ -75,11 +81,30 @@ public class RuleDAOJpa implements RuleDAO {
 		"where newRsp.rule_id=? and "+
 		"newRsp.rule_rsp_id=newDel.rule_rsp_id)";
 
-	public RuleBaseValues save(RuleBaseValues ruleBaseValues) {
-        return getDataObjectService().save(ruleBaseValues);
-	}
+    @Override
+    public RuleBaseValues save(RuleBaseValues ruleBaseValues) {
+        if ( ruleBaseValues == null ) {
+            return null;
+        }
 
-	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {
+        ruleBaseValues = getDataObjectService().save(ruleBaseValues);
+
+        if ( ruleBaseValues.getRoleResponsibilities() != null ) {
+            for ( RuleResponsibilityBo resp : ruleBaseValues.getRuleResponsibilities() ) {
+                resp.setRuleBaseValues(ruleBaseValues);
+                resp.setRuleBaseValuesId(ruleBaseValues.getId());
+            }
+        }
+
+        if ( ruleBaseValues.getRuleResponsibilities() != null && ruleBaseValues.getRuleResponsibilities().size() > 0 ) {
+            return getDataObjectService().save(ruleBaseValues);
+        } else {
+            return ruleBaseValues;
+        }
+    }
+
+	@Override
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         List<Predicate> datePredicateList = generateFromToDatePredicate(new Date());
@@ -96,7 +121,8 @@ public class RuleDAOJpa implements RuleDAO {
         return getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
 	}
 
-	public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
+	@Override
+    public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         List<Predicate> predicates = new ArrayList<Predicate>();
@@ -135,7 +161,8 @@ public class RuleDAOJpa implements RuleDAO {
         return datePredicates;
     }
 
-	public List<RuleBaseValues> fetchAllRules(boolean currentRules) {
+	@Override
+    public List<RuleBaseValues> fetchAllRules(boolean currentRules) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("currentInd",new Boolean(currentRules)),
@@ -144,17 +171,20 @@ public class RuleDAOJpa implements RuleDAO {
         return getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
 	}
 
-	public void delete(String ruleBaseValuesId) {
+	@Override
+    public void delete(String ruleBaseValuesId) {
         getDataObjectService().delete(getDataObjectService().find(RuleBaseValues.class, ruleBaseValuesId));
 	}
 
-	public List<RuleBaseValues> findByDocumentId(String documentId) {
+	@Override
+    public List<RuleBaseValues> findByDocumentId(String documentId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("documentId",documentId));
         return getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
 	}
 
+    @Override
     public RuleBaseValues findRuleBaseValuesByName(String name) {
         if (name == null) {
         	return null;
@@ -171,7 +201,8 @@ public class RuleDAOJpa implements RuleDAO {
         return null;
     }
 
-	public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
+	@Override
+    public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId) {
 		if (ruleBaseValuesId == null) {
 			return null;
 		}
@@ -188,7 +219,8 @@ public class RuleDAOJpa implements RuleDAO {
         return null;
 	}
 
-	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
+	@Override
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("ruleResponsibilityName",reviewerName),
@@ -208,7 +240,8 @@ public class RuleDAOJpa implements RuleDAO {
 		return rules;
 	}
 
-	public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName,
+	@Override
+    public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName,
             String documentType, String reviewerName, String type) {
 
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
@@ -239,7 +272,8 @@ public class RuleDAOJpa implements RuleDAO {
 		return rules;
 	}
 
-	public RuleResponsibilityBo findRuleResponsibility(String responsibilityId) {
+	@Override
+    public RuleResponsibilityBo findRuleResponsibility(String responsibilityId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("responsibilityId",responsibilityId));
@@ -254,7 +288,8 @@ public class RuleDAOJpa implements RuleDAO {
 		return null;
 	}
 
-	public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+	@Override
+    public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RuleBaseValues> cq = cb.createQuery(RuleBaseValues.class);
         Root<RuleBaseValues> root = cq.from(RuleBaseValues.class);
@@ -270,7 +305,7 @@ public class RuleDAOJpa implements RuleDAO {
         Collection<String> kimGroupIds = new HashSet<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        
+
         if ("group".equals(workflowIdDirective)) {
             searchUserInWorkgroups = Boolean.TRUE;
         } else if (StringUtils.isBlank(workflowIdDirective)) {
@@ -279,7 +314,7 @@ public class RuleDAOJpa implements RuleDAO {
         } else {
             searchUser = Boolean.TRUE;
         }
-        
+
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups) {
             Principal principal = null;
 
@@ -305,6 +340,7 @@ public class RuleDAOJpa implements RuleDAO {
         return q.getResultList();
 	}
 
+    @Override
     public List<RuleBaseValues> search(String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<RuleBaseValues> cq = cb.createQuery(RuleBaseValues.class);
@@ -332,7 +368,7 @@ public class RuleDAOJpa implements RuleDAO {
         return addResponsibilityCriteria(query, workgroupIdStrings,principalId,new ArrayList<String>(),
                                         searchUser, searchUserInWorkgroups);
     }
-    
+
     private Subquery<RuleResponsibilityBo> addResponsibilityCriteria(CriteriaQuery<RuleBaseValues> query, Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
 
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
@@ -351,14 +387,14 @@ public class RuleDAOJpa implements RuleDAO {
         List<javax.persistence.criteria.Predicate> workgroupPreds =
                 new ArrayList<javax.persistence.criteria.Predicate>();
 
-        
+
         if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
             Expression<String> exp = fromResp.get("actionRequestedCd");
             javax.persistence.criteria.Predicate actionRequestPredicate = exp.in(actionRequestCodes);
 
             respPredicates.add(actionRequestPredicate);
         }
-        
+
         if (!org.apache.commons.lang.StringUtils.isEmpty(workflowId)) {
             // workflow user id exists
             if (searchUser != null && searchUser) {
@@ -367,7 +403,7 @@ public class RuleDAOJpa implements RuleDAO {
                 userNamePreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
 
                 javax.persistence.criteria.Predicate[] preds = userNamePreds.toArray(new javax.persistence.criteria.Predicate[userNamePreds.size()]);
-                ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
+                ruleRespNamePredicates.add(cb.and(preds));
 
             }
             if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
@@ -379,16 +415,16 @@ public class RuleDAOJpa implements RuleDAO {
                 workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                         KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
                 javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
-                ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
+                ruleRespNamePredicates.add(cb.and(preds));
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
             // no user and one workgroup id
             workgroupPreds.add(cb.like(fromResp.get("ruleResponsibilityName"),
-                                (String)workgroupIds.iterator().next()));
+                                workgroupIds.iterator().next()));
             workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                         KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
             javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
-            ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
+            ruleRespNamePredicates.add(cb.and(preds));
 
         } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
             // no user and more than one workgroup id
@@ -398,19 +434,19 @@ public class RuleDAOJpa implements RuleDAO {
             workgroupPreds.add(cb.equal(fromResp.get("ruleResponsibilityType"),
                                         KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
             javax.persistence.criteria.Predicate[] preds = workgroupPreds.toArray(new javax.persistence.criteria.Predicate[workgroupPreds.size()]);
-            ruleRespNamePredicates.add(cb.and((javax.persistence.criteria.Predicate[]) preds));
+            ruleRespNamePredicates.add(cb.and(preds));
         }
 
         if (!ruleRespNamePredicates.isEmpty()) {
             javax.persistence.criteria.Predicate[] preds = ruleRespNamePredicates.toArray(new javax.persistence.criteria.Predicate[ruleRespNamePredicates.size()]);
-            respPredicates.add(cb.or((javax.persistence.criteria.Predicate[]) preds));
+            respPredicates.add(cb.or(preds));
         }
 
         if (!respPredicates.isEmpty()) {
 
             javax.persistence.criteria.Predicate[] preds = respPredicates.toArray(
                     new javax.persistence.criteria.Predicate[respPredicates.size()]);
-            subquery.where((javax.persistence.criteria.Predicate[]) preds);
+            subquery.where(preds);
             subquery.select(fromResp.get("ruleBaseValuesId"));
             return subquery;
         }
@@ -472,14 +508,16 @@ public class RuleDAOJpa implements RuleDAO {
     }
 
 
-	public List<RuleBaseValues> findByPreviousRuleId(String previousRuleId) {
+	@Override
+    public List<RuleBaseValues> findByPreviousRuleId(String previousRuleId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("previousRuleId",previousRuleId));
 		return getDataObjectService().findMatching(RuleBaseValues.class,builder.build()).getResults();
 	}
 
-	public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
+	@Override
+    public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         if(StringUtils.isNotBlank(ruleTemplateId)){
@@ -495,11 +533,13 @@ public class RuleDAOJpa implements RuleDAO {
 		return null;
 	}
 
-	public void retrieveAllReferences(RuleBaseValues rule) {
+	@Override
+    public void retrieveAllReferences(RuleBaseValues rule) {
 		// getPersistenceBroker().retrieveAllReferences(rule);
 	}
 
-	public RuleBaseValues getParentRule(String ruleBaseValuesId) {
+	@Override
+    public RuleBaseValues getParentRule(String ruleBaseValuesId) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("responsibilities.delegationRules.delegateRuleId",ruleBaseValuesId),
@@ -516,7 +556,8 @@ public class RuleDAOJpa implements RuleDAO {
 		return rule;
 	}
 
-	public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
+	@Override
+    public List findOldDelegations(final RuleBaseValues oldRule, final RuleBaseValues newRule) {
 
 		Query q = entityManager.createNativeQuery(OLD_DELEGATIONS_SQL);
 		q.setParameter(1, oldRule.getId());
@@ -529,8 +570,9 @@ public class RuleDAOJpa implements RuleDAO {
 		return oldDelegations;
 
 	}
-	
-	public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
+
+	@Override
+    public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
         org.kuali.rice.core.api.criteria.QueryByCriteria.Builder builder =
                 org.kuali.rice.core.api.criteria.QueryByCriteria.Builder.create();
         builder.setPredicates(equal("ruleResponsibilityName",ruleResponsibilityName),

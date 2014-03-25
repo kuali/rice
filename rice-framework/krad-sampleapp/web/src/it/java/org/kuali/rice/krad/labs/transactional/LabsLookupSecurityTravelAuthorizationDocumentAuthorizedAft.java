@@ -31,13 +31,13 @@ public class LabsLookupSecurityTravelAuthorizationDocumentAuthorizedAft extends 
 
     @Test
     public void testTransactionalLookupSecurityAuthorizedBookmark() throws Exception {
-        testTransactionalLookupSecurity(true);
+        testTransactionalLookupSecurity();
         passed();
     }
 
     @Test
     public void testTransactionalLookupSecurityAuthorizedNav() throws Exception {
-        testTransactionalLookupSecurity(true);
+        testTransactionalLookupSecurity();
         passed();
     }
 

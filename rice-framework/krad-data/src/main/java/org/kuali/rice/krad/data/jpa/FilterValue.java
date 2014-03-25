@@ -16,9 +16,17 @@
 package org.kuali.rice.krad.data.jpa;
 
 /**
- * Used to provide a common interface for Filter annotation(attributeResolverClass element)
- * on a data object field that you want to customize and want to dynamically generate a value.
+ * Provides a common interface for Filter annotation (attributeResolverClass element) on a data object field that you
+ * want to customize and want to dynamically generate a value.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  **/
 public interface FilterValue {
+
+    /**
+     * Gets the value that has been dynamically generated.
+     *
+     * @return the value that has been dynamically generated.
+     */
     public abstract Object getValue();
 }

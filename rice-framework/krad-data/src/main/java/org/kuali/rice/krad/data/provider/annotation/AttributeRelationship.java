@@ -18,13 +18,25 @@ package org.kuali.rice.krad.data.provider.annotation;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 
 /**
- * Defines a relationship between attributes on two data objects. Analog to the {@link DataObjectAttributeRelationship}
- * metadata.
+ * Defines a relationship between attributes on two data objects.
+ *
+ * <p>Analog to the {@link DataObjectAttributeRelationship} metadata.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public @interface AttributeRelationship {
-	String parentAttributeName();
 
+    /**
+     * Gets the attribute name on the parent object.
+     *
+     * @return the attribute name on the parent object.
+     */
+    String parentAttributeName();
+
+    /**
+     * Gets the attribute name on the child object.
+     *
+     * @return the attribute name on the child object.
+     */
 	String childAttributeName();
 }

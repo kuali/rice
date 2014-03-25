@@ -24,14 +24,19 @@ import java.lang.annotation.Target;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 
 /**
- * Indicates that this attribute should be forced to upper case by the UIF layers before being sent to the
- * {@link PersistenceProvider}.
- * 
- * This is a *hint* only, visible to the system metadata. The KRAD Data module does not enforce it.
+ * Container object for multiple {@link UifDisplayHints} references.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface UifDisplayHints {
+
+    /**
+     * Gets the list of {@link UifDisplayHints}s.
+     *
+     * @return the list of {@link UifDisplayHints}s.
+     */
 	UifDisplayHint[] value();
 }

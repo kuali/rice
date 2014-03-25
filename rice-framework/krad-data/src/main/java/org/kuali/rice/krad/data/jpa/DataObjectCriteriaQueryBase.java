@@ -17,31 +17,62 @@ package org.kuali.rice.krad.data.jpa;
 
 import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class for QueryByCriteria lookups for both Jpa and Ojb PersistenceProvider
- * implementations.  This class implements the core api CriteriaLookupService, as that
- * is the exact interface required, however this class is not intended to be defined
- * as a "service", it is merely a helper.
+ * Base class for QueryByCriteria lookups for both Jpa and Ojb PersistenceProvider implementations.
+ *
+ * <p>
+ * Implements the core api CriteriaLookupService, as that is the exact interface required, however this class is not
+ * intended to be defined as a "service", it is merely a helper.
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
+
+    /**
+     * Gets the QueryTranslator to translate from the API to implementation-specific classes.
+     *
+     * @return the QueryTranslator to translate from the API to implementation-specific classes.
+     */
     protected abstract QueryTranslator<C, Q> getQueryTranslator();
+
+    /**
+     * Gets the row count for the given query.
+     *
+     * @param query the query to count the rows on.
+     * @return the row count for the given query.
+     */
     protected abstract int getRowCount(Q query);
+
+    /**
+     * Gets the row count to include along with the results of the query.
+     *
+     * @param query the query to count the rows on.
+     * @param rows the result rows.
+     *
+     * @return The row count to include along with the results of the query.
+     */
     protected abstract int getIncludedRowCount(Q query, List rows);
+
+    /**
+     * Gets the results from the given query.
+     *
+     * @param query the query to use to get the results.
+     * @param <T> the type of results to return.
+     * @return a list of results from the given query.
+     */
     protected abstract <T> List<T> getResults(Q query);
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <T> GenericQueryResults<T> lookup(Class<T> queryClass, QueryByCriteria criteria) {
-        return lookup(queryClass, criteria, LookupCustomizer.Builder.<T>create().build());
-    }
-
-    @Override
-    public <T> GenericQueryResults<T> lookup(final Class<T> queryClass, final QueryByCriteria criteria, LookupCustomizer<T> customizer) {
         if (queryClass == null) {
             throw new IllegalArgumentException("queryClass is null");
         }
@@ -50,25 +81,29 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             throw new IllegalArgumentException("criteria is null");
         }
 
-        if (customizer == null) {
-            throw new IllegalArgumentException("customizer is null");
-        }
-
-        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria.getPredicate(), customizer);
+        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria.getPredicate());
 
         switch (criteria.getCountFlag()) {
             case ONLY:
                 return forCountOnly(queryClass, criteria, parent);
             case NONE:
-                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag(), customizer.getResultTransform());
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             case INCLUDE:
-                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag(), customizer.getResultTransform());
+                return forRowResults(queryClass, criteria, parent, criteria.getCountFlag());
             default: throw new UnsupportedCountFlagException(criteria.getCountFlag());
         }
     }
 
-    /** gets results where the actual rows are requested. */
-    protected <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final C ojbCriteria, CountFlag flag, LookupCustomizer.Transform<T, T> transform) {
+    /**
+     * Gets results where the actual rows are requested.
+     *
+     * @param queryClass the type of the results to return.
+     * @param criteria the criteria to use to get the results.
+     * @param ojbCriteria the implementation-specific criteria.
+     * @param flag the indicator to whether the row count is requested in the results.
+     * @return results where the actual rows are requested.
+     */
+    protected <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final C ojbCriteria, CountFlag flag) {
         final Q query = getQueryTranslator().createQuery(queryClass, ojbCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
 
@@ -85,11 +120,18 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             rows.remove(criteria.getMaxResults().intValue());
         }
 
-        results.setResults(transformResults(rows, transform));
+        results.setResults(rows);
         return results.build();
     }
 
-    /** gets results where only the count is requested. */
+    /**
+     * Gets results where only the count is requested.
+     *
+     * @param queryClass the type of the results to return.
+     * @param criteria the criteria to use to get the results.
+     * @param platformCriteria the implementation-specific criteria.
+     * @return results where only the count is requested.
+     */
     protected <T> GenericQueryResults<T> forCountOnly(final Class<T> queryClass, final QueryByCriteria criteria, final C platformCriteria) {
         final Q query = getQueryTranslator().createQuery(queryClass, platformCriteria);
         final GenericQueryResults.Builder<T> results = GenericQueryResults.Builder.<T>create();
@@ -97,16 +139,17 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
         return results.build();
     }
 
-    protected static <T> List<T> transformResults(List<T> results, LookupCustomizer.Transform<T, T> transform) {
-        final List<T> list = new ArrayList<T>();
-        for (T r : results) {
-            list.add(transform.apply(r));
-        }
-        return list;
-    }
-
-    /** this is a fatal error since this implementation should support all known count flags. */
+    /**
+     * An error to throw when the CountFlag is not recognized.
+     *
+     * <p>This is a fatal error since this implementation should support all known count flags.</p>
+     */
     protected static class UnsupportedCountFlagException extends RuntimeException {
+
+        /**
+         * Creates an exception for if the CountFlag is not recognized.
+         * @param flag the flag in error.
+         */
         protected UnsupportedCountFlagException(CountFlag flag) {
             super("Unsupported predicate [" + String.valueOf(flag) + "]");
         }

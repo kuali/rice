@@ -20,34 +20,55 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
- * JPA specialization of DataObjectCriteriaQuery
+ * JPA specialization of DataObjectCriteriaQuery.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class JpaCriteriaQuery extends DataObjectCriteriaQueryBase<NativeJpaQueryTranslator.TranslationContext, TypedQuery> {
+
+    /**
+     * The query translator to use for this implementation.
+     */
     protected QueryTranslator<NativeJpaQueryTranslator.TranslationContext, TypedQuery> queryTranslator;
 
+    /**
+     * Creates a new JPA-specific criteria query.
+     *
+     * @param em the entity manager used in interacting with the database.
+     */
     public JpaCriteriaQuery(EntityManager em) {
         this.queryTranslator = new NativeJpaQueryTranslator(em);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected QueryTranslator<NativeJpaQueryTranslator.TranslationContext, TypedQuery> getQueryTranslator() {
         return queryTranslator;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> List<T> getResults(TypedQuery query) {
         return query.getResultList();
     }
 
-
-    /** gets results where only the count is requested. */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected int getRowCount(TypedQuery query) {
         // NOTE: is there a better way to do this (e.g. without retrieving full results)?
         return query.getResultList().size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getIncludedRowCount(TypedQuery query, List rows) {
         return rows.size();

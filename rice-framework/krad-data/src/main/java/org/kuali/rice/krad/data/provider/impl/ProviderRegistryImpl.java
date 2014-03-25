@@ -24,7 +24,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.jpa.JpaPersistenceProvider;
 import org.kuali.rice.krad.data.provider.MetadataProvider;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.Provider;
@@ -39,7 +38,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ProviderRegistry implementation
+ * Defines a basic ProviderRegistry implementation.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ProviderRegistryImpl implements ProviderRegistry {
 
@@ -54,9 +55,10 @@ public class ProviderRegistryImpl implements ProviderRegistry {
     private final Multimap<Class<? extends Provider>, Provider> providersByType = LinkedHashMultimap.<Class<? extends Provider>, Provider>create();
 
     /**
-     * Enumerates all Provider-derived interfaces in the type hierarchy of the specified Provider class
-     * @param provider the Provider class to inspect
-     * @return all Provider-derived interfaces implemented by the Provider
+     * Enumerates all Provider-derived interfaces in the type hierarchy of the specified Provider class.
+     *
+     * @param provider the Provider class to inspect.
+     * @return all Provider-derived interfaces implemented by the Provider.
      */
     protected Iterable<Class<? extends Provider>> enumerateProviderInterfaces(Provider provider) {
         List<? extends Class> interfaces = ClassUtils.getAllInterfaces(provider.getClass());
@@ -69,6 +71,9 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         return (Iterable<Class<? extends Provider>>) providerInterfaces;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized void registerProvider(Provider provider) {
         Validate.notNull(provider, "Provider must be non-null");
@@ -84,6 +89,9 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized boolean unregisterProvider(Provider provider) {
         Validate.notNull(provider, "Provider must be non-null");
@@ -99,23 +107,35 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         return removed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized List<Provider> getProviders() {
         return Collections.unmodifiableList(new ArrayList<Provider>(providersByType.get(Provider.class)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized List<Provider> getProvidersForType(Class<? extends Provider> providerType) {
         Validate.isTrue(providerType != null, "Provider type must be non-null");
         return Collections.unmodifiableList(new ArrayList<Provider>(providersByType.get(providerType)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized List<MetadataProvider> getMetadataProviders() {
         Collection<Provider> metadataProviders = providersByType.get(MetadataProvider.class);
         return Collections.unmodifiableList(new ArrayList(metadataProviders));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public synchronized PersistenceProvider getPersistenceProvider(Class<?> type) {
         Validate.notNull(type, "Data object type must be non-null");
@@ -131,6 +151,9 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public MetadataProvider getMetadataProvider(Class<?> type) {
 		Validate.notNull(type, "Data object type must be non-null");
@@ -146,10 +169,12 @@ public class ProviderRegistryImpl implements ProviderRegistry {
 	}
 
     /**
-     * Determines if the given {@link org.kuali.rice.krad.data.provider.Provider} has the given method.
+     * Determines if the given {@link Provider} has the given method.
+     *
      * @param provider the {@link org.kuali.rice.krad.data.provider.Provider} to check.
      * @param methodName the method name to check for.
-     * @return TRUE if the Provider has the given method name, FALSE otherwirse.
+     * @param args the arguments for the method.
+     * @return TRUE if the Provider has the given method name, FALSE otherwise.
      */
     protected boolean hasDataObjectServiceMethod(Provider provider, String methodName, Class[] args) {
         Method methodToFind;
@@ -165,6 +190,7 @@ public class ProviderRegistryImpl implements ProviderRegistry {
 
     /**
      * Returns the object being proxied, otherwise the given object is returned.
+     *
      * @param bean The proxy to get the underlying object.
      * @return object being proxied, otherwise the given object is returned.
      * @throws Exception if errors while getting the underlying object.
@@ -186,9 +212,10 @@ public class ProviderRegistryImpl implements ProviderRegistry {
     }
 
     /**
-     * Method attempts to inject a {@link org.kuali.rice.krad.data.DataObjectService} if the getter method returns
-     *  null and a setter method exists.
-     * @param provider The {@link org.kuali.rice.krad.data.provider.Provider} to check for getter and setter methods.
+     * Method attempts to inject a {@link DataObjectService} if the getter method returns null and a setter method
+     * exists.
+     *
+     * @param provider The {@link Provider} to check for getter and setter methods.
      */
     private void injectDataObjectService(Provider provider) {
         try {

@@ -97,9 +97,7 @@ public class RichTable extends WidgetBase {
 
     private String ajaxSource;
 
-    private boolean showSearchAndExportOptions = true;
-    private boolean showSearchOption = false;
-    private boolean showExportOption = false;
+    private boolean showExportOption;
 
     private String groupingOptionsJSString;
 
@@ -136,20 +134,15 @@ public class RichTable extends WidgetBase {
                     "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
         }
 
-        if (!isShowSearchAndExportOptions()) {
-            Object domOption = templateOptions.get(UifConstants.TableToolsKeys.SDOM);
-            if (domOption instanceof String) {
-                String sDomOption = (String) domOption;
+        Object domOption = templateOptions.get(UifConstants.TableToolsKeys.SDOM);
+        if (domOption instanceof String) {
+            String sDomOption = (String) domOption;
 
-                if (StringUtils.isNotBlank(sDomOption)) {
-                    if (!isShowExportOption()) {
-                        sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
-                    }
-                    if (!isShowSearchOption()) {
-                        sDomOption = StringUtils.remove(sDomOption, "f"); //Removes search option
-                    }
-                    templateOptions.put(UifConstants.TableToolsKeys.SDOM, sDomOption);
+            if (StringUtils.isNotBlank(sDomOption)) {
+                if (!isShowExportOption()) {
+                    sDomOption = StringUtils.remove(sDomOption, "T"); //Removes Export option
                 }
+                templateOptions.put(UifConstants.TableToolsKeys.SDOM, sDomOption);
             }
         }
 
@@ -747,26 +740,6 @@ public class RichTable extends WidgetBase {
     }
 
     /**
-     * Returns true if search and export options are enabled
-     * 
-     * @return the showSearchAndExportOptions
-     */
-    @BeanTagAttribute(name = "showSearchAndExportOptions")
-    public boolean isShowSearchAndExportOptions() {
-        return this.showSearchAndExportOptions;
-    }
-
-    /**
-     * Returns true if search option is enabled
-     * 
-     * @return the showSearchOption
-     */
-    @BeanTagAttribute(name = "showSearchOption")
-    public boolean isShowSearchOption() {
-        return this.showSearchOption;
-    }
-
-    /**
      * Returns true if export option is enabled
      * 
      * @return the showExportOption
@@ -774,25 +747,6 @@ public class RichTable extends WidgetBase {
     @BeanTagAttribute(name = "showExportOption")
     public boolean isShowExportOption() {
         return this.showExportOption;
-    }
-
-    /**
-     * Show/Hide the search and export options in tabletools. This option supercedes the individual
-     * 'show search' option and 'show export' option
-     * 
-     * @param showSearchAndExportOptions the showSearchAndExportOptions to set
-     */
-    public void setShowSearchAndExportOptions(boolean showSearchAndExportOptions) {
-        this.showSearchAndExportOptions = showSearchAndExportOptions;
-    }
-
-    /**
-     * Show/Hide the search option in tabletools
-     * 
-     * @param showSearchOption the showSearchOptions to set
-     */
-    public void setShowSearchOption(boolean showSearchOption) {
-        this.showSearchOption = showSearchOption;
     }
 
     /**

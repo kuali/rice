@@ -116,7 +116,7 @@
   </bean>
 
   <bean id="TextAreaTestField" parent="Uif-InputField"
-        abstract="true" p:label="Field Label" p:labelPlacement="TOP"
+        abstract="true" p:label="Field Label"
         p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
         p:fieldLabel.cssClasses="labelTop" p:fieldLabel.renderColon="false"
         p:required="true">

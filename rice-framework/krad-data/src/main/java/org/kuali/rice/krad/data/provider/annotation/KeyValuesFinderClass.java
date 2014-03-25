@@ -25,10 +25,18 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
 /**
  * Allows you to configure a {@link KeyValuesFinder} directly on the property.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface KeyValuesFinderClass {
+
+    /**
+     * Gets the {@link KeyValuesFinder} class to instantiate.
+     *
+     * @return the {@link KeyValuesFinder} class to instantiate.
+     */
 	Class<? extends KeyValuesFinder> value();
 }

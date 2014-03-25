@@ -41,13 +41,18 @@ import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFactoryBean {
-
-	private static final Logger LOG = Logger.getLogger(KradEclipseLinkEntityManagerFactoryBean.class);
-
+    private static final Logger LOG = Logger.getLogger(KradEclipseLinkEntityManagerFactoryBean.class);
+    
+    /**
+     * Creates a KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean.
+     */
     public KradEclipseLinkEntityManagerFactoryBean() {
         super.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void loadCustomJpaDefaults(Map<String, String> jpaProperties) {
         if (getPersistenceUnitManager().getDefaultJtaDataSource() != null) {

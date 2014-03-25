@@ -28,25 +28,45 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.DefaultResourceLoader;
 
 /**
- * Metadata provider which can be configured via the standard spring mechanisms. The bean locations are listed as part
- * of the metadata provider service definition. The beans in this provider are loaded into a separate context from all
- * other beans in Rice.
+ * Metadata provider which can be configured via the standard spring mechanisms.
+ *
+ * <p>
+ * The bean locations are listed as part of the metadata provider service definition. The beans in this provider are
+ * loaded into a separate context from all other beans in Rice.
+ * </p>
  * 
- * @author jonathan
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class SpringMetadataProviderImpl extends MetadataProviderBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(SpringMetadataProviderImpl.class);
 
+    /**
+     * The locations of the bean resources.
+     */
 	protected List<String> resourceLocations;
+
+    /**
+     * The default resource loader to use.
+     */
 	protected DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
+
+    /**
+     * The default bean factory to use.
+     */
 	protected DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
+    /**
+     * Creates a metadata provider which can be configured via the standard spring mechanisms.
+     */
 	public SpringMetadataProviderImpl() {
 		LOG.debug("Building SpringMetadataProviderImpl");
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public synchronized void initializeMetadata(Collection<Class<?>> types) {
 		// First, extract the data from the spring configuration into a form usable by the Spring XML parser
@@ -82,10 +102,20 @@ public class SpringMetadataProviderImpl extends MetadataProviderBase {
 		}
 	}
 
+    /**
+     * Gets the locations of the bean resources.
+     *
+     * @return the locations of the bean resources.
+     */
 	public List<String> getResourceLocations() {
 		return resourceLocations;
 	}
 
+    /**
+     * Setter for the resource locations.
+     *
+     * @param resourceLocations the resource locations to set.
+     */
 	public void setResourceLocations(List<String> resourceLocations) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Resource locations set to: " + resourceLocations);
@@ -93,6 +123,9 @@ public class SpringMetadataProviderImpl extends MetadataProviderBase {
 		this.resourceLocations = resourceLocations;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String toString() {
 		return getClass().getName() + " : " + resourceLocations;

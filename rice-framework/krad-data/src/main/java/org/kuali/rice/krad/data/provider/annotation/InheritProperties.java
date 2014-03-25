@@ -23,10 +23,18 @@ import java.lang.annotation.Target;
 
 /**
  * Container object for multiple {@link InheritProperty} references.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface InheritProperties {
+
+    /**
+     * Gets the list of {@link InheritProperty}s.
+     *
+     * @return the list of {@link InheritProperty}s.
+     */
 	InheritProperty[] value();
 }

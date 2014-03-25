@@ -653,11 +653,6 @@
                                     <entry> No records found </entry>
                                     <entry> The text which is displayed when the table is empty </entry>
                                 </row>
-                                <row>
-                                    <entry>showSearchAndExportOptions </entry>
-                                    <entry> false </entry>
-                                    <entry> Indicates whether search and export options are enabled </entry>
-                                </row>
                             </tbody>
                         </tgroup>
                     </table>

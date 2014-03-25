@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.data.provider;
 
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -40,11 +39,6 @@ public class TestPersistenceProvider implements PersistenceProvider {
 
     @Override
     public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria, LookupCustomizer<T> lookupCustomizer) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

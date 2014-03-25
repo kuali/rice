@@ -176,4 +176,7 @@
     <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3018" FNL_APRVR_IND="0"
         MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2941"
         TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3019" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2943"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
 </dataset>

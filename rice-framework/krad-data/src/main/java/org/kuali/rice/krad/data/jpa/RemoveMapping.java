@@ -22,8 +22,8 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Class level annotation that indicates that a mapping inherited from a superclass should be "unmapped" in the
- * child class.
+ * Class level annotation that indicates that a mapping inherited from a superclass should be "unmapped" in the child
+ * class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -33,6 +33,8 @@ public @interface RemoveMapping {
 
     /**
      * (Required) The property name of the mapping to remove.
+     *
+     * @return the property name of the mapping to remove.
      */
     String name();
 

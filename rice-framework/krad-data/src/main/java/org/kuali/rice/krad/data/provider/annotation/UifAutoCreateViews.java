@@ -23,10 +23,18 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that you want the krad-data module to auto-generate the listed types of KRAD views upon startup.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface UifAutoCreateViews {
+
+    /**
+     * Gets the list of view types to autogenerate on startup.
+     *
+     * @return the list of view types to autogenerate on startup.
+     */
 	UifAutoCreateViewType[] value() default UifAutoCreateViewType.ALL;
 }

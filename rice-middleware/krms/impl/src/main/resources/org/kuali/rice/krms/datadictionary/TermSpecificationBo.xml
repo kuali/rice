@@ -218,7 +218,7 @@
       <list>
 
         <!-- bean parent="Uif-InputField" p:propertyName="id" / -->
-        <bean parent="Uif-InputField" p:propertyName="id" p:required="true">
+        <bean parent="Uif-InputField" p:propertyName="id" p:required="true" p:readOnly="@{!#isAddLine}">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="40"/>
           </property>
@@ -244,7 +244,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-InputField" p:propertyName="namespace" p:required="true">
+        <bean parent="Uif-InputField" p:propertyName="namespace" p:required="true" p:readOnly="@{!#isAddLine}">
           <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
           <property name="control">
             <bean parent="Uif-DropdownControl"/>

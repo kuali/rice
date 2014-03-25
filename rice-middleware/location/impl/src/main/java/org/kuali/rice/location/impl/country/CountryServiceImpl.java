@@ -25,6 +25,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.location.api.LocationConstants;
 import org.kuali.rice.location.api.country.Country;
 import org.kuali.rice.location.api.country.CountryQueryResults;
 import org.kuali.rice.location.api.country.CountryService;
@@ -92,8 +93,8 @@ public final class CountryServiceImpl implements CountryService {
 
     @Override
     public Country getDefaultCountry() {
-        String defaultCountryCode = parameterService.getParameterValueAsString(KRADConstants.KNS_NAMESPACE,
-                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
+        String defaultCountryCode = parameterService.getParameterValueAsString(LocationConstants.NAMESPACE_CODE,
+                KRADConstants.DetailTypes.ALL_DETAIL_TYPE, LocationConstants.ParameterKey.DEFAULT_COUNTRY);
         if (StringUtils.isBlank(defaultCountryCode)) {
             return null;
         }

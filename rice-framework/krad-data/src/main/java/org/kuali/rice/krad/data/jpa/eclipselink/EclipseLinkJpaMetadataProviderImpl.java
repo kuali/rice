@@ -64,10 +64,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Provides an EclipseLink-specific implementation for the {@link JpaMetadataProviderImpl}.
+ */
 public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(EclipseLinkJpaMetadataProviderImpl.class);
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected void populateImplementationSpecificEntityLevelMetadata(DataObjectMetadataImpl metadata,
 			EntityType<?> entityType) {
@@ -75,7 +81,10 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			metadata.setBackingObjectName(((EntityTypeImpl<?>) entityType).getDescriptor().getTableName());
 		}
 	}
-	
+
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected void populateImplementationSpecificAttributeLevelMetadata(DataObjectAttributeImpl attribute,
 			SingularAttribute<?, ?> attr) {
@@ -118,6 +127,9 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		}
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
 			PluralAttribute<?, ?, ?> cd) {
@@ -196,9 +208,13 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 	}
 
     /**
-     * Returns the property name on the given entity type which the given database column is mapped to. If no field on
-     * the given type is mapped to this field (which is common in cases of a JPA relationship without an actual @Column
-     * annotated field to represent the foreign key) then this method will return null.
+     * Returns the property name on the given entity type which the given database column is mapped to.
+     *
+     * <p>
+     * If no field on the given type is mapped to this field (which is common in cases of a JPA relationship without an
+     * actual {@link javax.persistence.Column} annotated field to represent the foreign key) then this method will
+     * return null.
+     * </p>
      *
      * @param entityType the entity type on which to search for a property that is mapped to the given column
      * @param databaseColumnName the name of the database column
@@ -207,7 +223,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
      *         mapping exists
      */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-        protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
+    protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
 		for (SingularAttributeImpl attr : (Set<SingularAttributeImpl>) entityType.getSingularAttributes()) {
 			if (!attr.isAssociation()) {
 				if (!(attr.getClass().isAssignableFrom(EmbeddableTypeImpl.class)) &&
@@ -220,6 +236,9 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		return null;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected void populateImplementationSpecificRelationshipLevelMetadata(DataObjectRelationshipImpl relationship,
 			SingularAttribute<?, ?> rd) {
@@ -281,6 +300,12 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		}
 	}
 
+    /**
+     * Populates the inverse relationship for a given relationship.
+     *
+     * @param mapping the {@link DatabaseMapping} that defines the relationship.
+     * @param relationship the relationship of which to populate the other side.
+     */
     protected void populateInverseRelationship(DatabaseMapping mapping, MetadataChildBase relationship) {
         DatabaseMapping relationshipPartner = findRelationshipPartner(mapping);
         if (relationshipPartner != null) {
@@ -305,6 +330,12 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
         }
     }
 
+    /**
+     * Gets the inverse mapping of the given {@link DatabaseMapping}.
+     *
+     * @param databaseMapping the {@link DatabaseMapping} of which to get the inverse.
+     * @return the inverse mapping of the given {@link DatabaseMapping}.
+     */
     protected DatabaseMapping findRelationshipPartner(DatabaseMapping databaseMapping) {
         if (databaseMapping instanceof OneToManyMapping) {
             OneToManyMapping mapping = (OneToManyMapping)databaseMapping;
@@ -351,6 +382,9 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
 			Class<?> extensionEntityClass) {
@@ -392,12 +426,29 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
         return getRelationshipMetadata(singularAttribute);
 	}
 
+    /**
+     * Provides a local implementation of {@link SingularAttributeImpl}.
+     */
     class SingularAttributeLocal extends SingularAttributeImpl {
+
+        /**
+         * Creates a local implementation of {@link SingularAttributeImpl}.
+         *
+         * @param managedType the {@link ManagedType}.
+         * @param mapping the {@link DatabaseMapping}.
+         */
         SingularAttributeLocal(ManagedTypeImpl managedType, DatabaseMapping mapping) {
             super(managedType, mapping);
         }
     }
 
+    /**
+     * Gets the inverse extension of the given {@link ClassDescriptor}.
+     *
+     * @param extensionEntityDescriptor the {@link ClassDescriptor} of which to get the inverse.
+     * @param entityType the type of the entity.
+     * @return the inverse extension of the given {@link ClassDescriptor}.
+     */
     protected OneToOneMapping findExtensionInverse(ClassDescriptor extensionEntityDescriptor, Class<?> entityType) {
         Collection<DatabaseMapping> derivedIdMappings = extensionEntityDescriptor.getDerivesIdMappinps();
         String extensionInfo = "(" + extensionEntityDescriptor.getJavaClass().getName() + " -> " + entityType.getName()
@@ -419,10 +470,20 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
         return (OneToOneMapping)inverseMapping;
     }
 
+    /**
+     * Gets the descriptor for the entity type.
+     *
+     * @param entityClass the type of the enty.
+     * @return the descriptor for the entity type.
+     */
     protected ClassDescriptor getClassDescriptor(Class<?> entityClass) {
 		return getEclipseLinkEntityManager().getDatabaseSession().getDescriptor(entityClass);
 	}
 
+    /**
+     * The entity manager for interacting with the database.
+     * @return the entity manager for interacting with the database.
+     */
 	protected JpaEntityManager getEclipseLinkEntityManager() {
 		return (JpaEntityManager) entityManager;
 	}

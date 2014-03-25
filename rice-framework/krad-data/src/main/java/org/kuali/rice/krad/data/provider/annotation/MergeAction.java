@@ -27,11 +27,19 @@ import org.kuali.rice.krad.data.provider.annotation.impl.AnnotationMetadataProvi
 /**
  * Indicates that, for other annotation metadata on the current class, field, how they should be handled.
  * 
- * In the {@link AnnotationMetadataProviderImpl} implemention, only MERGE and REMOVE are supported.
+ * <p>In the {@link AnnotationMetadataProviderImpl} implemention, only MERGE and REMOVE are supported.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.TYPE, ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface MergeAction {
+
+    /**
+     * Gets the indicator on how metadata merging should occur.
+     *
+     * @return the indicator on how metadata merging should occur.
+     */
 	MetadataMergeAction value();
 }

@@ -21,7 +21,25 @@ package org.kuali.rice.krad.data.provider.annotation;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public @interface UifDisplayHint {
+
+    /**
+     * (Required) Gets the type of the display hint.
+     *
+     * @return the type of the display hint.
+     */
 	UifDisplayHintType value();
+
+    /**
+     * (Optional) Gets the section id for the {@link UifDisplayHintType} of SECTION.
+     *
+     * @return the section id for the {@link UifDisplayHintType} of SECTION.
+     */
 	String id() default "";
+
+    /**
+     * (Optional) Gets the section label for the {@link UifDisplayHintType} of SECTION.
+     *
+     * @return the section label for the {@link UifDisplayHintType} of SECTION.
+     */
 	String label() default "";
 }

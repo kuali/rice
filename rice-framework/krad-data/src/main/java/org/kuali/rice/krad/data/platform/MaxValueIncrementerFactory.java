@@ -40,14 +40,22 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Factory for obtaining instances of {@link DataFieldMaxValueIncrementer} for a given {@link DataSource} and
- * incrementer name. These incrementers are used for getting generated incrementing values like that provided by a
- * database-level sequence generator.
+ * incrementer name.
  *
- * <p>Note that not all database platforms support sequences natively, so incrementers can be returned that emulate
+ * <p>
+ * These incrementers are used for getting generated incrementing values like that provided by a database-level sequence
+ * generator.
+ * </p>
+ *
+ * <p>
+ * Note that not all database platforms support sequences natively, so incrementers can be returned that emulate
  * sequence-like behavior. The Spring Framework provides incrementer implementations for numerous different database
- * platforms. This classes uses {@link DatabasePlatforms} to determine the platform of the given DataSource.</p>
+ * platforms. This classes uses {@link DatabasePlatforms} to determine the platform of the given {@link DataSource}.
+ * </p>
  *
- * <p>Note that this class will cache internally any incrementers for a given DataSource + Incrementer Name combination.
+ * <p>
+ * Note that this class will cache internally any incrementers for a given {@link DataSource} + Incrementer Name
+ * combination.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,9 +65,10 @@ public final class MaxValueIncrementerFactory {
     private static final String ID_COLUMN_NAME = "ID";
 
     /**
-     * Prefix for property names used to identify the classname for a
-     * {@link org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer} to use for a given platform.
-     * To construct a full property name, concatenate this prefix with the platform name.
+     * Prefix for property names used to identify the classname for a {@link DataFieldMaxValueIncrementer} to use for a
+     * given platform.
+     *
+     * <p>To construct a full property name, concatenate this prefix with the platform name.</p>
      *
      * @see org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory
      */
@@ -72,13 +81,13 @@ public final class MaxValueIncrementerFactory {
      * Either constructs a new incrementer or retrieves a cached instance for the given DataSource and target
      * incrementer name.
      *
-     * @param dataSource the DataSource for which to retrieve the incrementer
-     * @param incrementerName the case-insensitive name of the incrementer to use, this will generally be the name of the database
-     *        object which is used to implement the incrementer
+     * @param dataSource the {@link DataSource} for which to retrieve the incrementer.
+     * @param incrementerName the case-insensitive name of the incrementer to use, this will generally be the name of
+     *        the database object which is used to implement the incrementer.
      * @return an incrementer that can be used to generate the next incremented value for the given incrementer against
-     *         the specified DataSource
+     *         the specified {@link DataSource}.
      *
-     * @throws IllegalArgumentException if dataSource or incrementerName are null or blank
+     * @throws IllegalArgumentException if dataSource or incrementerName are null or blank.
      */
     public static DataFieldMaxValueIncrementer getIncrementer(DataSource dataSource, String incrementerName) {
         if (dataSource == null) {
@@ -111,6 +120,13 @@ public final class MaxValueIncrementerFactory {
 
     }
 
+    /**
+     * Creates an {@link DataFieldMaxValueIncrementer} from a {@link DataSource}.
+     *
+     * @param dataSource the {@link DataSource} for which to retrieve the incrementer.
+     * @param incrementerName the name of the incrementer.
+     * @return an {@link DataFieldMaxValueIncrementer} from a {@link DataSource}.
+     */
     private static DataFieldMaxValueIncrementer createIncrementer(DataSource dataSource, String incrementerName) {
         DatabasePlatformInfo platformInfo = DatabasePlatforms.detectPlatform(dataSource);
         DataFieldMaxValueIncrementer incrementer = getCustomizedIncrementer(platformInfo, dataSource,incrementerName,ID_COLUMN_NAME);
@@ -141,15 +157,18 @@ public final class MaxValueIncrementerFactory {
     }
 
     /**
-     * Checks the config file for any references to rice.krad.data.platform.incrementer.(DATASOURCE, ex mysql, oracle).(VERSION optional)
-     * If matching one found attempts to instantiate it to return back to factory for use
-     * @param platformInfo
-     * @param dataSource
-     * @param incrementerName
-     * @param columnName
-     * @return a config set customized incrementer that matches and can be used to generate the next incremented value for the given incrementer against
-     *         the specified DataSource
-     * @throws InstantiationError - if cannot instantiate passed in class
+     * Checks the config file for any references to
+     * {@code rice.krad.data.platform.incrementer.(DATASOURCE, ex mysql, oracle).(VERSION optional)}.
+     *
+     * <p>If matching one found attempts to instantiate it to return back to factory for use.</p>
+     *
+     * @param platformInfo the {@link DatabasePlatformInfo}.
+     * @param dataSource the {@link DataSource} for which to retrieve the incrementer.
+     * @param incrementerName the name of the incrementer.
+     * @param columnName the name of the column to increment.
+     * @return a config set customized incrementer that matches and can be used to generate the next incremented value
+     *         for the given incrementer against the specified {@link DataSource}
+     * @throws InstantiationError if cannot instantiate passed in class.
      */
     private static DataFieldMaxValueIncrementer getCustomizedIncrementer(DatabasePlatformInfo platformInfo, DataSource dataSource, String incrementerName, String columnName){
         if(platformInfo == null){
@@ -195,23 +214,48 @@ public final class MaxValueIncrementerFactory {
         return null;
     }
 
+    /**
+     * Defines an incrementer for MySQL.
+     *
+     * <p>
+     * Since MySQL does not have any sense of a sequence, this class uses the concept of a sequence table, which is a
+     * regular table that has an auto increment feature on it and is used only for that sequence.  When null values are
+     * inserted into the table, the auto increment feature will insert the next value into that field, and then the
+     * database will be queried for the last insert ID to get the next sequence value.
+     * </p>
+     */
     static final class EnhancedMySQLMaxValueIncrementer extends AbstractColumnMaxValueIncrementer {
 
         private JdbcTemplate template;
 
-        private EnhancedMySQLMaxValueIncrementer() {
-        }
+        /**
+         * Creates an incrementer for MySQL.
+         */
+        private EnhancedMySQLMaxValueIncrementer() {}
 
+        /**
+         * Creates an incrementer for MySQL.
+         *
+         * @param dataSource the {@link DataSource} for which to retrieve the incrementer.
+         * @param incrementerName the name of the incrementer.
+         * @param columnName the name of the column to increment.
+         */
         private EnhancedMySQLMaxValueIncrementer(DataSource dataSource, String incrementerName, String columnName) {
             super(dataSource, incrementerName, columnName);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public synchronized void afterPropertiesSet() {
             super.afterPropertiesSet();
             template = new JdbcTemplate(getDataSource());
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected synchronized long getNextKey() throws DataAccessException {
             return template.execute(new ConnectionCallback<Long>() {
@@ -240,6 +284,9 @@ public final class MaxValueIncrementerFactory {
         }
     }
 
+    /**
+     * No-op constructor for final class.
+     */
     private MaxValueIncrementerFactory() {}
 
 }

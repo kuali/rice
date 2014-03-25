@@ -113,5 +113,11 @@ public class LabsInputFieldsAft extends LabsKitchenSinkBase {
     	waitForTextPresent("user control not found");
     	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-up ui-corner-tr']");
     	assertElementPresentByXpath("//a[@class='ui-spinner-button ui-spinner-down ui-corner-br']");
+    	
+    	//Page Navigation links
+    	waitAndClickByXpath("//a[@data-onclick='jumpToBottom();' and contains(text(),'Jump To Bottom Demo')]");
+    	waitAndClickByXpath("//a[@id='ActionLinkField_JumpToField119' and contains(text(),'Jump to field with property name field119 (drop down)')]");
+    	waitAndClickByXpath("//a[@id='ActionLinkField_FocusOnField107' and contains(text(),'Focus on field with property name field107 (size 60 text field)')]");
+    	waitAndClickByXpath("//a[@id='ActionLinkField_FocusOnIdMyDate' and contains(text(),'Focus on field with id myDate (Date2 field)')]");
     }
 }

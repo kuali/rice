@@ -21,12 +21,17 @@ import javax.persistence.Converter;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 
 /**
- * Converts our custom {@link KualiInteger} objects for OJB by converting them to/from longs.
+ * Converts the custom {@link KualiInteger} objects for OJB by converting them to/from {@link Long}.
  */
 @Converter(
 		autoApply = true)
 public class KualiIntegerConverter implements AttributeConverter<KualiInteger, Long> {
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a {@link KualiInteger} to a {@link Long}.
+     */
 	@Override
 	public Long convertToDatabaseColumn(KualiInteger objectValue) {
 		if (objectValue == null) {
@@ -35,6 +40,11 @@ public class KualiIntegerConverter implements AttributeConverter<KualiInteger, L
 		return objectValue.longValue();
 	}
 
+    /**
+     * {@inheritDoc}
+     *
+     * This implementation will convert from a {@link Long} to a {@link KualiInteger}.
+     */
 	@Override
 	public KualiInteger convertToEntityAttribute(Long dataValue) {
 		if (dataValue == null) {

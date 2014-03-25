@@ -24,9 +24,10 @@ import java.io.Serializable;
 /**
  * A base class for creating ID class implementations for JPA.
  *
- * These ID classes are required to have proper equals and
- * hashcode method implementations, so this base class provides reflection-based defaults for both of those as well as
- * toString.
+ * <p>
+ * These ID classes are required to have proper equals and hashcode method implementations, so this base class provides
+ * reflection-based defaults for both of those as well as toString.
+ * </p>
  *
  * @see javax.persistence.IdClass
  *
@@ -36,16 +37,25 @@ public abstract class IdClassBase implements Serializable {
 
     private static final long serialVersionUID = -69571039682070713L;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(obj, this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);

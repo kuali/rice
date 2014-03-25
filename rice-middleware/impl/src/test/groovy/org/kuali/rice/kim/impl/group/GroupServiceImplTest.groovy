@@ -24,11 +24,8 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import org.kuali.rice.core.api.criteria.CriteriaLookupService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
-import org.kuali.rice.core.api.criteria.LookupCustomizer
 import org.kuali.rice.core.api.criteria.QueryByCriteria
-import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.group.Group
 import org.kuali.rice.kim.api.group.GroupMember
 import org.kuali.rice.kim.api.group.GroupQueryResults
@@ -283,7 +280,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return member1Result
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
@@ -304,7 +301,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return member1Result
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
@@ -323,7 +320,7 @@ class GroupServiceImplTest {
     @Test
     public void test_findGroupIds() {
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResultsAll
+            Class clazz, QueryByCriteria query -> return queryResultsAll
         }
         injectDataObjectServiceIntoGroupService()
         List<String> expectedIds = new ArrayList<String>()
@@ -341,7 +338,7 @@ class GroupServiceImplTest {
     @Test
     public void test_lookupGroups() {
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResultsAll
+            Class clazz, QueryByCriteria query -> return queryResultsAll
         }
         injectDataObjectServiceIntoGroupService()
         List<Group> expectedGroups = new ArrayList<Group>()
@@ -389,7 +386,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return member1Result
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
@@ -411,7 +408,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return member1Result
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
@@ -432,7 +429,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return member1Result
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         injectDataObjectServiceIntoGroupService()
 
@@ -535,7 +532,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return memberGroupMemberResult
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, QueryByCriteria query -> return emptyGroupMemberResult
@@ -555,7 +552,7 @@ class GroupServiceImplTest {
             Class clazz, QueryByCriteria query -> return memberGroupMemberResult
         }
         dataObjectServiceMockFor.demand.findMatching(1) {
-            Class clazz, QueryByCriteria query, LookupCustomizer lc -> return queryResults1
+            Class clazz, QueryByCriteria query -> return queryResults1
         }
         injectDataObjectServiceIntoGroupService()
 

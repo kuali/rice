@@ -18,8 +18,9 @@ package org.kuali.rice.krad.data.platform;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Contains database platform information, specifically the name and major version of the database. The name of the
- * database platform should be considered as case insensitive.
+ * Contains database platform information, specifically the name and major version of the database.
+ *
+ * <p>The name of the database platform should be considered as case insensitive.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -28,6 +29,12 @@ public final class DatabasePlatformInfo {
     private final String name;
     private final int majorVersion;
 
+    /**
+     * Creates database platform information.
+     *
+     * @param name the name of the database.
+     * @param majorVersion the major version of the database.
+     */
     public DatabasePlatformInfo(String name, int majorVersion) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("Name cannot be null or blank");
@@ -36,14 +43,27 @@ public final class DatabasePlatformInfo {
         this.majorVersion = majorVersion;
     }
 
+    /**
+     * Gets the name of the database.
+     *
+     * @return the name of the database.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the major version of the database.
+     *
+     * @return the major version of the database.
+     */
     public int getMajorVersion() {
         return majorVersion;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -65,6 +85,9 @@ public final class DatabasePlatformInfo {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int result = name.hashCode();
@@ -72,6 +95,9 @@ public final class DatabasePlatformInfo {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "DatabasePlatformInfo{" +

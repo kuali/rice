@@ -42,6 +42,7 @@
             p:ajaxSource="@{#ConfigProperties['serviceServletUrl']}dataTableRestServiceTest/TableData">
           <property name="richTable.templateOptions">
             <map merge="true">
+              <entry key="sDom" value="Tlrtip"/>
               <entry key="aoColumns"
                      value="[
                           {'sTitle':'Course Id', 'bSortable':true, 'bSearchable':false},

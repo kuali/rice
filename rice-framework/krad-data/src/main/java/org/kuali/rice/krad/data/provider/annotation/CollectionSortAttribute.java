@@ -17,8 +17,24 @@ package org.kuali.rice.krad.data.provider.annotation;
 
 import org.kuali.rice.krad.data.metadata.SortDirection;
 
+/**
+ * Defines an attribute on which to sort a collection.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public @interface CollectionSortAttribute {
+
+    /**
+     * Gets the attribute name to sort on.
+     *
+     * @return the attribute name to sort on.
+     */
 	String value();
 
+    /**
+     * Gets the direction which to sort.
+     *
+     * @return the direction which to sort.
+     */
 	SortDirection sortDirection() default SortDirection.ASCENDING;
 }

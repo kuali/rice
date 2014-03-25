@@ -16,14 +16,12 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBindingQueryResults;
-import org.kuali.rice.krms.impl.AttributeTransform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -222,9 +220,6 @@ public final class ReferenceObjectBindingBoServiceImpl implements ReferenceObjec
 
     @Override
     public ReferenceObjectBindingQueryResults findReferenceObjectBindings(final QueryByCriteria queryByCriteria) {
-        LookupCustomizer.Builder<ReferenceObjectBindingBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
         QueryResults<ReferenceObjectBindingBo> results =
                 dataObjectService.findMatching(ReferenceObjectBindingBo.class, queryByCriteria);
 

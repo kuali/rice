@@ -107,9 +107,11 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     }
 
     @Override
-    public QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps, List<String> wildcardAsLiteralPropertyNames, boolean usePrimaryKeysOnly) {
+    public QueryByCriteria.Builder generateCriteria(Class<?> type, Map<String, String> formProps,
+            List<String> wildcardAsLiteralPropertyNames, boolean usePrimaryKeysOnly) {
         if (usePrimaryKeysOnly) {
-            return getCollectionCriteriaFromMapUsingPrimaryKeysOnly(type, instantiateLookupDataObject(type), formProps).toQueryBuilder();
+            return getCollectionCriteriaFromMapUsingPrimaryKeysOnly(type, instantiateLookupDataObject(type), formProps,
+                    wildcardAsLiteralPropertyNames).toQueryBuilder();
         } else {
             return getCollectionCriteriaFromMap(type, instantiateLookupDataObject(type), formProps, wildcardAsLiteralPropertyNames).toQueryBuilder();
         }
@@ -170,6 +172,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 criteria, null);
     }
 
+    @Deprecated
     protected boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Predicates criteria, Map<String, String> searchValues) {
         // if searchValue is empty and the key is not a valid property ignore
         if (StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
@@ -293,6 +296,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
         return true;
     }
 
+    @Deprecated
     protected Predicates getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class<?> type, Object dataObject, Map<String, String> formProps) {
         Predicates criteria = new Predicates();
         List<String> pkFields = listPrimaryKeyFieldNames(type);
@@ -315,6 +319,28 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
         return criteria;
     }
 
+    protected Predicates getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class<?> type, Object dataObject, Map<String, String> formProps, List<String> wildcardAsLiteralPropertyNames) {
+        Predicates criteria = new Predicates();
+        List<String> pkFields = listPrimaryKeyFieldNames(type);
+        for (String pkFieldName : pkFields) {
+            String pkValue = formProps.get(pkFieldName);
+            if (StringUtils.isBlank(pkValue)) {
+                throw new RuntimeException("Missing pk value for field " + pkFieldName + " when a search based on PK values only is performed.");
+            }
+            else {
+                for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+                    if (pkValue.contains(op.op())) {
+                        throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
+                    }
+                }
+            }
+            boolean treatWildcardsAndOperatorsAsLiteral = wildcardAsLiteralPropertyNames.contains(pkFieldName);
+            createCriteria(dataObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
+        }
+        return criteria;
+    }
+
+    @Deprecated
     protected boolean doesLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class<?> type, String fieldName) {
         // determine the LookupInputField for the field and use isDisableWildcardsAndOperators
         Map<String, String> indexKey = new HashMap<String, String>();

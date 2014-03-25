@@ -30,15 +30,16 @@ import org.kuali.rice.krad.data.provider.MetadataProvider;
 
 /**
  * This "provider" aggregates the other metadata providers given in its spring configuration.
- * 
+ *
+ * <p>
  * The providers are processed in order, each one having the option to overlay information provided by earlier providers
  * in the chain. The nature of the merge/overlay depends on the value of the mergeAction property on the returned
  * object.
+ * </p>
  * 
  * @see MetadataMergeAction
  * 
- * @author jonathan
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompositeMetadataProviderImpl extends MetadataProviderBase implements CompositeMetadataProvider {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
@@ -46,6 +47,9 @@ public class CompositeMetadataProviderImpl extends MetadataProviderBase implemen
 
 	protected List<MetadataProvider> providers;
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	protected synchronized void initializeMetadata(Collection<Class<?>> types) {
 		if (LOG.isInfoEnabled()) {
@@ -88,6 +92,9 @@ public class CompositeMetadataProviderImpl extends MetadataProviderBase implemen
 		}
 	}
 
+    /**
+     * Merges attributes from the current map with those that are inherited.
+     */
 	protected void mergeInheritedAttributes() {
 		for (DataObjectMetadata metadata : masterMetadataMap.values()) {
 			for (DataObjectAttribute attr : metadata.getAttributes()) {
@@ -144,6 +151,12 @@ public class CompositeMetadataProviderImpl extends MetadataProviderBase implemen
 		}
 	}
 
+    /**
+     * Merges the metadata of two specific types.
+     *
+     * @param newMetadata the metadata to merge in.
+     * @param existingMetadata the existing metadata to merge into.
+     */
 	protected void mergeMetadataForType(DataObjectMetadata newMetadata, DataObjectMetadata existingMetadata) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Type: " + newMetadata.getType() + " : " + newMetadata);
@@ -196,11 +209,19 @@ public class CompositeMetadataProviderImpl extends MetadataProviderBase implemen
 
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public List<MetadataProvider> getProviders() {
 		return providers;
 	}
 
+    /**
+     * Setter for the providers.
+     *
+     * @param providers the providers to set.
+     */
 	public void setProviders(List<MetadataProvider> providers) {
 		this.providers = providers;
 	}

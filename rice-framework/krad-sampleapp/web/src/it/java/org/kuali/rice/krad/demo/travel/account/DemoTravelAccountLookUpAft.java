@@ -60,10 +60,51 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountLookUp() throws Exception {
+    	//Search by Travel Account Number
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a1");
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
+        
+        //Search by Travel Account Name
+        waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//a[contains(text(),'a1')]");
+        waitForTextPresent("Travel Account 1");
+        waitAndClickButtonByText(CLEAR_VALUES);
+         
+        //Search by Travel Account Type Code
+        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='CAT']");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextPresent("CAT - Clearing");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='EAT']");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextPresent("EAT - Expense");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='IAT']");
+        waitAndClickButtonByText(SEARCH);
+        waitForTextPresent("IAT - Income");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        
+        //Search by Travel Account Date Created
+        //Cannot perform test on Date Created as there is no value for the field for this.
+        
+        //Search by Travel Account Fiscal Officer User ID
+        waitAndTypeByName("lookupCriteria[foId]","fred");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//a[contains(text(),'a1')]");
+        waitForTextPresent("fred");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        
+        //Search by Travel Account Fiscal Officer
+        waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","fred");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//a[contains(text(),'a1')]");
+        waitForTextPresent("fred");
+        waitAndClickButtonByText(CLEAR_VALUES);
+        
+        //Search by Default (No filters)
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         assertElementPresentByXpath("//a[contains(text(), 'a2')]");

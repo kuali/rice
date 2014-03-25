@@ -4669,10 +4669,10 @@ The following areas allow rich message content described by this section:
     <section>
       <title>Html, Color, and css Rich Message Tags</title>
       <para>Example that uses all 3 in one message (bold html tag, color for #F78C00 web color, and
-          css to add the class 'fl-text-underline' around that content)</para>
+          css to add the class 'uif-text-underline' around that content)</para>
       <programlisting linenumbering = "numbered">&lt;bean parent=&quot;Uif-Message&quot;&gt;
           &lt;property name=&quot;messageText&quot;
-                    value=&quot;<emphasis role="keyword">[b]</emphasis>Message<emphasis role="keyword">[/b]</emphasis> using a <emphasis role="keyword">[color=#F78C00]</emphasis> <emphasis role="keyword">[css=&apos;fl-text-underline&apos;]</emphasis>combination<emphasis role="keyword">[/css]</emphasis> of different options<emphasis role="keyword">[/color]</emphasis>" /&gt;
+                    value=&quot;<emphasis role="keyword">[b]</emphasis>Message<emphasis role="keyword">[/b]</emphasis> using a <emphasis role="keyword">[color=#F78C00]</emphasis> <emphasis role="keyword">[css=&apos;uif-text-underline&apos;]</emphasis>combination<emphasis role="keyword">[/css]</emphasis> of different options<emphasis role="keyword">[/color]</emphasis>" /&gt;
 </programlisting>
     </section>
     <section>
@@ -4732,7 +4732,7 @@ The following areas allow rich message content described by this section:
       <para>Usage in instructionalText (similar in other areas which are backed by the Message
             component in their Java object):</para>
       <programlisting linenumbering = "numbered">…
-<emphasis role="keyword">p:instructionalText=&quot;Testing [css=&apos;fl-text-underline&apos;]checkbox and radio groups[/css] below&quot;</emphasis>
+<emphasis role="keyword">p:instructionalText=&quot;Testing [css=&apos;uif-text-underline&apos;]checkbox and radio groups[/css] below&quot;</emphasis>
 …
 </programlisting>
       <para>Usage in CheckboxControl - also demonstrating the ability to override a property of the component referenced by id (overriding propertyName with value &apos;field103&apos;):</para>

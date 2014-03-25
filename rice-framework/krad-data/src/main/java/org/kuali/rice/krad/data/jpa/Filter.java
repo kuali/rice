@@ -25,11 +25,19 @@ import org.eclipse.persistence.mappings.OneToOneMapping;
 import java.util.List;
 
 /**
- * Implementation that takes the filter generator and executes the changes on the class descriptor
- * for a field
+ * Takes a filter generator and executes the changes on the class descriptor for a field.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Filter {
 
+    /**
+     * Takes a list of filter generators and executes the changes on the class descriptor for a field.
+     *
+     * @param filterGenerators a list of filter generators.
+     * @param descriptor the class descriptor to execute the changes on.
+     * @param propertyName the property name of the field to change.
+     */
     public static void customizeField(List<FilterGenerator> filterGenerators,
             ClassDescriptor descriptor, String propertyName) {
 

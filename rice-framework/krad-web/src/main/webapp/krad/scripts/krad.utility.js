@@ -1025,7 +1025,7 @@ function addLineMouseOut(addButton, highlightItemClass) {
 function collectionLineChanged(inputField, highlightItemClass) {
     // This is not very good for performance but because dirty_form gets binded after this event so we need to trigger
     // the dirty_form check before checking for the dirty fields
-    jQuery(inputField).triggerHandler('blur');
+    jQuery(inputField).triggerHandler('change');
 
     // Get the innerlayout to see if we are dealing with table or stack group
     var innerLayout = jQuery(inputField).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
@@ -1037,8 +1037,10 @@ function collectionLineChanged(inputField, highlightItemClass) {
         var saveButton = row.find('.' + kradVariables.SAVE_LINE_ACTION_CLASS);
 
         if (enabled) {
+            saveButton.removeClass('disabled');
             saveButton.removeAttr('disabled');
         } else {
+            saveButton.addClass('disabled');
             saveButton.attr('disabled', 'disabled');
         }
 
@@ -1048,8 +1050,10 @@ function collectionLineChanged(inputField, highlightItemClass) {
         var saveButton = itemGroup.find('.' + kradVariables.SAVE_LINE_ACTION_CLASS);
 
         if (enabled) {
+            saveButton.removeClass('disabled');
             saveButton.removeAttr('disabled');
         } else {
+            saveButton.addClass('disabled');
             saveButton.attr('disabled', 'disabled');
         }
 
@@ -1265,7 +1269,10 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
 
     // Open the light box
     jQuery.fancybox(options);
-    setupLightboxForm();
+    //stop external content from being wrapped with kualiForm tag
+    if (!(contentOptions.type === "iframe")) {
+        setupLightboxForm();
+    }
 }
 
 /**

@@ -34,7 +34,6 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -92,7 +91,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 results = (Collection<?>) queryMethodResult;
             }
         } else {
-            results = executeAttributeQueryCriteria(suggestQuery, queryParameters, additionalCriteria);
+            results = executeAttributeQueryCriteria(suggestQuery, queryParameters, additionalCriteria, new ArrayList<String>());
         }
 
         // build list of suggest data from result records
@@ -296,7 +295,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             }
         } else {
             // execute field query as object lookup
-            Collection<?> results = executeAttributeQueryCriteria(fieldQuery, queryParameters, null);
+            Collection<?> results = executeAttributeQueryCriteria(fieldQuery, queryParameters, null, new ArrayList<String>(queryParameters.keySet()));
 
             if ((results != null) && !results.isEmpty()) {
                 // expect only one returned row for field query
@@ -416,10 +415,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param attributeQuery attribute query instance to perform query for
      * @param queryParameters map of parameters that will be used in the query criteria
      * @param additionalCriteria map of additional name/value pairs to add to the critiera
+     * @param wildcardAsLiteralPropertyNames - List of property names with wildcards disabled
      * @return results of query
      */
     protected Collection<?> executeAttributeQueryCriteria(AttributeQuery attributeQuery,
-            Map<String, String> queryParameters, Map<String, String> additionalCriteria) {
+            Map<String, String> queryParameters, Map<String, String> additionalCriteria,
+            List<String> wildcardAsLiteralPropertyNames) {
         Collection<?> results = null;
 
         // build criteria for query
@@ -449,7 +450,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         }
 
         // run query
-        results = getLookupService().findCollectionBySearchUnbounded(queryClass, queryCriteria);
+        results = getLookupService().findCollectionBySearchHelper(queryClass, queryCriteria, wildcardAsLiteralPropertyNames, true, null);
 
         // sort results
         if (!attributeQuery.getSortPropertyNames().isEmpty() && (results != null) && (results.size() > 1)) {

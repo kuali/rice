@@ -16,8 +16,11 @@
 package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
@@ -43,6 +46,18 @@ public class RefreshStateModifyTask extends ViewLifecycleTaskBase<Component> {
 
         // force the component to render on a refresh
         component.setRender(true);
+
+        // reset data if needed
+        if (component.isResetDataOnRefresh()) {
+            // TODO: this should handle groups as well, going through nested data fields
+            if (component instanceof DataField) {
+                // TODO: should check default value
+
+                // clear value
+                ObjectPropertyUtils.initializeProperty(ViewLifecycle.getModel(),
+                        ((DataField) component).getBindingInfo().getBindingPath());
+            }
+        }
     }
 
 }

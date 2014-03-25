@@ -40,6 +40,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         navigateToLibraryDemo("Widgets", "Suggest");
     }
 
+    //  this is the one
     protected void testWidgetsSuggest(String exampleLink, String inputFieldName, String search,
             String result) throws Exception {
 
@@ -85,6 +86,18 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         }
     }
 
+    protected void testWidgetsSuggestValidationHelperMethod() throws Exception {
+        final String EXAMPLE_LINK_NAME = "Service Method and Sorting Configuration";
+        final String INPUT_FIELD_NAME = "inputField6";
+        final String invalidSearch = "Travel Account 10";
+        final String validSearch = "Travel Account 2";
+
+        waitAndClickLinkContainingText(EXAMPLE_LINK_NAME);
+
+        assertFocusTypeBlurError(INPUT_FIELD_NAME, invalidSearch);
+        assertFocusTypeBlurValid(INPUT_FIELD_NAME, validSearch);
+    }
+
     protected void testWidgetsSuggestRichText() throws Exception {
 
         final String EXAMPLE_LINK_NAME = "Rich suggest options";
@@ -110,6 +123,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
     protected void testTooltips() throws Exception {
         testWidgetsSuggest("View Helper Method Configuration 1", "inputField2", "a1", "a14");
         testWidgetsSuggestHelperMethod2();
+        testWidgetsSuggestValidationHelperMethod();
         testWidgetsSuggest("Local suggest options", "inputField7", "cold", "ColdFusion");
         testWidgetsSuggest("Configured suggest options", "inputField9", "cold", "ColdFusion");
     }

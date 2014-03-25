@@ -34,7 +34,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.cache.CacheKeyUtils;
-import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -648,10 +647,8 @@ public class PermissionServiceImpl implements PermissionService {
             throws RiceIllegalArgumentException {
         incomingParamCheck(queryByCriteria, "queryByCriteria");
 
-        LookupCustomizer.Builder<PermissionBo> lc = LookupCustomizer.Builder.create();
-        lc.setPredicateTransform(AttributeTransform.getInstance());
-
-        QueryResults<PermissionBo> results = dataObjectService.findMatching(PermissionBo.class, queryByCriteria, lc.build());
+        QueryResults<PermissionBo> results = dataObjectService.findMatching(PermissionBo.class,
+                AttributeTransform.getInstance().apply(queryByCriteria));
 
         PermissionQueryResults.Builder builder = PermissionQueryResults.Builder.create();
         builder.setMoreResultsAvailable(results.isMoreResultsAvailable());

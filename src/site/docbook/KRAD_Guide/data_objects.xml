@@ -279,6 +279,72 @@
                     allow new codes to be created quickly (without the need for a table and
                     mapping). </para></tip>
         </section>
+        <section>
+        	<title>Extending Data Objects</title>
+        	<para>At times, there is a need to add additional attributes to existing objects in Rice or 
+        	in a Rice-based client application.  Since not all objects can be subclassed safely (as some
+        	code may instantiate the base classes directly, we recommend creating an &quot;extension&quot;
+        	object with the additional attributes.  This object will need to have the same primary key 
+        	field(s) as the class being extended.</para>
+        	<para>Rice helps to faciltate this through two additional features.
+        	</para>
+       		<itemizedlist>
+               	<listitem><para>The base class used for KRAD data objects 
+               	(<emphasis role="keyword">org.kuali.rice.krad.bo.DataObjectBase</emphasis>) contains a placeholder
+               	extensionObject property that can be used to traverse to your extension object.</para></listitem>
+               	<listitem><para>A special annotation <emphasis role="keyword">@ExtensionFor</emphasis> which is used
+               	on your extension class in order to link it to the base system data object.  It links the objects
+               	automatically within the JPA layer and sets the extension object to JOIN-fetch with the
+               	extended object.</para></listitem>
+            </itemizedlist>
+            <section>
+            	<title>Usage</title>
+            	<para>To make use of this feature, you need to do a few things.</para>
+            	<orderedlist>
+            		<listitem><para>Create a table for your extension attributes.  This table's primary key
+            			must have the same fields and datatypes as the data object you are extending.</para>
+            			<tip><para><emphasis role="bold">Warning</emphasis></para>
+            				<para>Do NOT add a referential integrity constraint back to the main table.
+            					While that is a logically correct relationship, we do not have full control
+            					over the order in which the ORM tools insert the records in this case.
+            					As such, the system may attempt to insert your extension record first.
+            					(Which would fail if such a constraint were in place.)</para></tip>
+            		</listitem>
+            		<listitem><para>Create a Java class to represent the extension and annotate normally for JPA.</para></listitem>
+            		<listitem><para>Add the <emphasis role="keyword">@ExtensionFor</emphasis> to the class.  
+            		See below for examples.</para></listitem>
+            	</orderedlist>
+            </section>
+            <section>
+            	<title>@ExtensionFor Annotation</title>
+            	<para>There are two properties on the <emphasis role="keyword">@ExtensionFor</emphasis> annoation.</para>
+            	<itemizedlist>
+            		<listitem><para><emphasis role="bold">value (default)</emphasis> : The class to which this extension 
+            		should be attached.</para></listitem>
+            		<listitem><para><emphasis role="bold">extensionPropertyName</emphasis> : On the above class, 
+            		the property with this name should be used to make the attachment.  This property must
+            		be a superclass of your actual extension object.  (Baseline setup simply has the property
+            		set up as an Object.)</para></listitem>
+            	</itemizedlist>
+	            <section role="NotInToc">
+	            	<title>Examples</title>
+	            	<para><emphasis role="bold">Using Default Extension Property</emphasis></para>
+	            	<programlisting>
+@Entity
+@Table(name="TRV_ACCT_EXT")
+@ExtensionFor(Account.class)
+public class AccountExtension { ...} 
+	            	</programlisting>
+	            	<para><emphasis role="bold">Using Custom Extension Property</emphasis></para>
+	            	<programlisting>
+@Entity
+@Table(name="TRV_ACCT_EXT")
+@ExtensionFor(value=Account.class,extensionPropertyName="extensionObject")
+public class AccountExtension { ...} 
+	            	</programlisting>
+	            </section>
+            </section>
+        </section>
         <section role="NotInToc">
             <title>RECAP</title>
             <itemizedlist>
@@ -317,38 +383,274 @@
                     <para>KualiCode represents a business object that has a code and name property.
                     </para>
                 </listitem>
+                <listitem>
+                    <para>The @ExtensionFor annotation allows for extending baseline data objects without
+                    making any changes to the baseline system code or configuration.</para>
+                </listitem>
             </itemizedlist>
         </section>
     </section>
     <section>
-        <title>Java Persistence API and Kuali Rice</title>
-        <para>In JPA there are several ways to execute queries. The following are the best practices
-            that should be used when using JPA in Kuali applications. In general the order of
-            consideration for a query should go as the following:<orderedlist>
+        <title>Java Persistence API</title>
+        <section>
+            <title>KRAD Entity Manager Factories</title>
+            <para><emphasis role="bold">KradEntityManagerFactoryBean</emphasis></para>
+            <para>
+                The KradEntitymanagerFactory is a KRAD-managed entity manager factory bean which can be used to configure a JPA
+                persistence unit using the Spring Framework. This implementation does not support the use of a custom
+                PersistenceUnitManager, but rather stores and manages one internally. This is intended to be an alternative to
+                direct usage of Spring's LocalContainerEntityManagerFactoryBean in order to make JPA configuration with
+                KRAD simpler.
+            </para>
+            <para><emphasis role="bold">Configuration</emphasis></para>
+            <para>
+                The minimal configuration for the KRADEntityManagerFactory is a persistence unit name, JTA or non-JTA datasource,
+                and JPA vendor adapter.
+            </para>
+            <note><para>Persistence unit names must be unique</para></note>
+            
+            <para><emphasis role="bold">Behavior</emphasis></para>
+            <para> When leveraging this class, persistence.xml files are not used. Rather,
+                persistence unit configuration is loaded via the various settings provided on this
+                factory bean which contain everything needed to create the desired persistence unit
+                configuration in the majority of cases. If a KRAD application needs more control
+                over the configuration of the persistence unit or wants to use persistence.xml and
+                JPA's default bootstrapping and classpath scanning behavior, an EntityManagerFactory
+                can be configured using the other classes provided by the Spring framework or by
+                other means as needed. See the LocalContainerEntityManagerFactoryBean class for an
+                alternative approach. </para>
+            <para> Only one of JTA or non-JTA datasource can be set. Depending on which one is set,
+                the underlying persistence unit will have it's
+                javax.persistence.spi.PersistenceUnitTransactionType set to either RESOURCE_LOCAL or
+                JTA. If both of these are set, then this class will throw an IllegalStateException
+                when the afterPropertiesSet method is invoked by the Spring Framework. </para>
+            <para> Elsewhere, this class delegates to implementations of
+                LocalContainerEntityManagerFactoryBean and DefaultPersistenceUnitManager, so
+                information on the specific behavior of some of the settings and methods on this
+                class can be found on the javadoc for those classes as well. </para>
+            <para><emphasis role="bold">JPA Property Defaults</emphasis></para>
+            <para>
+                When the afterPropertiesSet method is invoked, this class will scan the current config context for JPA
+                properties and make them available to the persistence unit. It will combine these with any properties that were set
+                directly on this factory bean via the setJpaProperties(java.util.Properties) or the setJpaPropertyMap(java.util.Map)
+                methods.
+            </para>
+            <para>
+                This scanning occurs in the following order, items later in the list will override any properties from earlier if
+                they happen to set the same effective property value:
+            </para>
+            <orderedlist>
                 <listitem>
-                    <para>Use DataObjectService methods in service methods.</para>
+                    <para>
+                        Scan ConfigContext for properties that begin with "rice.krad.jpa.global." For any found, strip off this prefix
+                        prior to placing it into the JPA property map.
+                    </para>
                 </listitem>
                 <listitem>
-                    <para>Create custom DAOs method to use NamedQuery in JPA.</para>
+                    <para> Scan ConfigContext for properties that begin with
+                        "rice.krad.jpa.&lt;persistence-unit-name&gt;" where "persistence-unit-name"
+                        is the configured name of this persistence unit. For any found, strip off
+                        this prefix prior to placing it into the JPA property map. </para>
                 </listitem>
                 <listitem>
-                    <para>Use Rice Criteria API if query is too complicated and would require
-                        dynamic generation(String concatenation).</para>
+                    <para>
+                        Invoke loadCustomJpaDefaults(java.util.Map) method to allow for possible subclass customization of JPA
+                        property defaults.
+                    </para>
                 </listitem>
                 <listitem>
-                    <para>Use JPA Criteria API if query requires functions not supported in Rice
-                        Criteria API.</para>
+                    <para>
+                        Load the JPA properties configured via setJpaPropertyMap(java.util.Map) method and
+                        setJpaProperties(java.util.Properties) method. It is potentially non-deterministic which of these setters will
+                        take precedence over the other, so it is recommended to only invoke one of them on a given instance of this
+                        factory bean.
+                    </para>
                 </listitem>
-            </orderedlist><emphasis role="bold"> Simple DataObjectService fetch by Primary
-                Key</emphasis><programlisting>CountryBo countryBo = getDataObjectService().find(CountryBo.class,code);
+            </orderedlist>
+            <para><emphasis role="bold">KradEclipseLinkEntityManagerFactoryBean</emphasis></para>
+            <para>
+                The KradEclipseLinkEntityManagerFactory is a KRAD-managed enitity manager factory which can be used to configure an
+                EclipseLink persistence unit using JPA. This class inherits from the KradEntityManagerFactoryBean class, but adds the
+                following behavior:
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>Sets the jpa vendor adapter to an EclipsLink vendor adapter</para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Detects if Java Transation API (JTA) is being used and, if so sets a JPA property value accordingly to allow
+                        EclipseLink integration with the Java Transation API
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Configures an EclipsLink customizer to allow a configurable sequence management strategy.</para>
+                </listitem>
+                <listitem>
+                    <para>Disables the shared cache.</para>
+                </listitem>
+            </orderedlist>
+            <para><emphasis role="bold">Typical KradEclipsLinkEntityManagerFactoryBean Configuration</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="sampleApplicationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<property name="preferredDataSourceParams">
+		<list>
+			<value>sampleApplication.datasource</value>
+		</list>
+	</property>
+	<property name="preferredDataSourceJndiParams">
+		<list>
+			<value>sampleApplication.datasource.jndi.location</value>
+		</list>
+	</property>
+	<property
+		name="serverDataSource"
+		value="false" />
+</bean>
 
-//Fetch by Compound Primary Key
+<bean id="jpaPersistenceUnitName" class="java.lang.String">
+		<constructor-arg value="sample-application" />
+</bean>
+
+<util:list id="sampleJpaPackagesToScan">
+	<value>org.kuali.rice.krad.sampleapp.jpa</value>
+	<value>org.kuali.rice.krad.sampleapp.bo</value>
+</util:list>
+
+// empty since we are doing package scans
+<util:list id="managedClassNames" />
+
+<bean id="entityManagerFactory" class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+    p:jtaDataSource-ref="sampleApplicationDataSource" p:persistenceUnitName-ref="jpaPersistenceUnitName"
+    p:packagesToScan-ref="sampleJpaPackagesToScan" p:managedClassNames-ref="managedClassNames" />
+]]>
+            </programlisting>
+
+        </section>
+        <section>
+            <title>Persistence Providers</title>
+            <para>Persistence providers are implementations of the Java Persistence API (JPA) specification.</para>
+            <note><para>Currently Kuali Rice only has support for the EclipseLink JPA vendor.</para></note>
+            <para>When creating a new instance of the JpaPersistenceProvider, a reference to a "shared" entity manager like that created by
+                Spring's org.springframework.orm.jpa.support.SharedEntityManagerBean must be injected. Additionally, a reference to a 
+                DataObjectService must be injected as well.</para>
+            <para><emphasis role="bold">Spring JpaPersistenceProvider Setup</emphasis></para>
+            <programlisting>
+<![CDATA[
+<util:list id="location.managedClassNames">
+   <value>org.kuali.rice.foo.FooBo</value>
+   <value>org.kuali.rice.foo.BarBo</value>
+</util:list>
+
+<bean id="location.entityManagerFactory" class="org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkEntityManagerFactoryBean"
+    p:jtaDataSource-ref="locationDataSource" p:persistenceUnitName="rice.location"
+    p:managedClassNames-ref="location.managedClassNames"/>
+
+<bean id="dataObjectService" class="org.kuali.rice.krad.data.KradDataFactoryBean"/>
+            
+<bean id="sharedEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean"
+    p:entityManagerFactory-ref="entityManagerFactory" />
+
+<bean id="jpaPersistenceProvider" class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
+    p:dataObjectService-ref="dataObjectService" p:sharedEntityManager-ref="sharedEntityManager"/>
+]]>
+        </programlisting>
+            <para>The JpaPersistenceProvider must then be registered with the Provider Registry in one of two ways:</para>
+            <orderedlist>
+                <listitem><para>Use a ProviderRegistar bean</para></listitem>
+                <listitem><para>Inject into the ModuleConfiguration</para></listitem>
+            </orderedlist>
+            <para><emphasis role="bold">Inject into ProviderRegistar bean</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="location.providerRegistrar" class="org.kuali.rice.krad.data.provider.ProviderRegistrar">
+    <property name="providerRegistry" ref="providerRegistry" />
+    <property name="providers">
+      <util:list>
+        <ref bean="location.jpaPersistenceProvider" />
+        <ref bean="location.metadataProvider" />
+      </util:list>
+    </property>
+  </bean>
+ ]]>
+        </programlisting>
+            <para><emphasis role="bold">Inject into the ModuleConfiguration</emphasis></para>
+            <programlisting>
+<![CDATA[
+<bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+    <property name="namespaceCode" value="location"/>
+    <property name="dataSourceName" value="locationDataSource"/>
+    ...
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
+      </list>
+    </property>
+    ...
+</bean>      
+]]>
+        </programlisting>
+        </section>
+        <section>
+            <title>Metadata Provider</title>
+            <para>
+                To assist with the processing and displaying of information, Kuali Rice comes with a JPA-based
+                metadata provider that extracts information from the JPA annotations and infers information about
+                object keys, attributes, collections, relationships, and default display values.  This is an essential
+                part of any JPA-based setup, so any application implementing JPA in Rice must at the very least hook
+                up to the metadata provider.
+            </para>
+            <para>
+                In the configuration for each module, the following must be included to hook into the provider.
+                <programlisting>&lt;property name="entityManager" ref="sharedEntityManager"/>
+&lt;property name="providers">
+    &lt;list>
+        &lt;ref bean="jpaPersistenceProvider"/>
+        &lt;ref bean="metadataProvider"/>
+    &lt;/list>
+&lt;/property></programlisting>
+                The key here is the <emphasis role="keyword">metadataProvider</emphasis> which is a list that includes
+                the JPA metadata provider, among others.  By default, this points back into Rice to
+                <programlisting>&lt;bean id="metadataProviderJpa"
+    class="org.kuali.rice.krad.data.jpa.eclipselink.EclipseLinkJpaMetadataProviderImpl"
+    p:entityManager-ref="sharedEntityManager" /></programlisting>
+                which uses the EclipseLink reference implementation classes to populate metadata objects.  Only applications
+                that wish to use a different JPA implementation would ever have to override this bean.
+            </para>
+        </section>
+        <section>
+            <title>Queries</title>
+            <para>In JPA there are several ways to execute queries. The following are the best practices
+                that should be used when using JPA in Kuali applications. In general the order of
+                consideration for a query should go as the following:
+                <orderedlist>
+                    <listitem>
+                        <para>Use DataObjectService methods in service methods.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create custom DAOs method to use NamedQuery in JPA.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Use Rice Criteria API if query is too complicated and would require
+                            dynamic generation(String concatenation).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Use JPA Criteria API if query requires functions not supported in Rice
+                            Criteria API.</para>
+                    </listitem>
+                </orderedlist>
+                <emphasis role="bold"> Simple DataObjectService fetch by Primary Key</emphasis>
+                <programlisting>CountryBo countryBo = getDataObjectService().find(CountryBo.class,code);
+
+// Fetch by Compound Primary Key
 final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
 map.put("countryCode", countryCode);
 map.put("code", code);
 StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));</programlisting>
-            <emphasis role="bold">DataObjectService query for matching results</emphasis>
-            <programlisting>//Fetch all matching results by countryCode and that have active equivalent to true
+                <emphasis role="bold">DataObjectService query for matching results</emphasis>
+                <programlisting>// Fetch all matching results by countryCode and that have active equivalent to true
 final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
 map.put("countryCode", countryCode);
 map.put("active", Boolean.TRUE);
@@ -356,22 +658,22 @@ map.put("active", Boolean.TRUE);
 QueryResults&lt;PostalCodeBo> postalCodeBoQueryResults = getDataObjectService().
     findMatching(PostalCodeBo.class,QueryByCriteria.Builder.andAttributes(map).build());
 
-//Fetch all Countries that have alternateCountryCode equal to value passed in
-QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE,
-                alternateCode).build();
+// Fetch all Countries that have alternateCountryCode equal to value passed in
+QueryByCriteria qbc = QueryByCriteria.Builder.forAttribute(
+    KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternateCode).build();
 QueryResults&lt;CountryBo> countryBoQueryResults = getDataObjectService().findMatching(CountryBo.class,qbc);
-List&lt;CountryBo> countryList = countryBoQueryResults.getResults();</programlisting><emphasis
-                role="bold"> DataObjectService query returning the count based on Criteria </emphasis><programlisting>//Fetch count based on document id and principal id and current indicator being true
+List&lt;CountryBo> countryList = countryBoQueryResults.getResults();</programlisting>
+                <emphasis role="bold"> DataObjectService query returning the count based on Criteria </emphasis>
+                <programlisting>//Fetch count based on document id and principal id and current indicator being true
 QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create().setPredicates(
                                        equal(DOCUMENT_ID, documentId),
-                   	                equal(PRINCIPAL_ID, principalId),
-                   	                equal(CURRENT_INDICATOR, Boolean.TRUE)
-                    	        );
+                                       equal(PRINCIPAL_ID, principalId),
+                                       equal(CURRENT_INDICATOR, Boolean.TRUE));
 criteria.setCountFlag(CountFlag.ONLY);
-return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount();</programlisting></para>
-        <para><emphasis role="bold">DataObjectService save</emphasis></para>
-            <programlisting>
-//Fetch by Compound Primary Key
+return getDataObjectService().findMatching(ActionTakenValue.class, criteria.build()).getTotalRowCount();</programlisting>
+            </para>
+            <para><emphasis role="bold">DataObjectService save</emphasis></para>
+            <programlisting>// Fetch by Compound Primary Key
 final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
 map.put("countryCode", countryCode);
 map.put("code", code);
@@ -381,11 +683,9 @@ StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)
 stateBo.setActiveToDate(new Timestamp(System.currentTimeMillis());
 
 // save the StateBo and get the updated instance
-stateBo = getDataObjectService().save(stateBo);
-            </programlisting>
-        <para><emphasis role="bold">DataObjectService save with PersistenceOption</emphasis></para>
-            <programlisting>
-//Fetch by Compound Primary Key
+stateBo = getDataObjectService().save(stateBo);</programlisting>
+            <para><emphasis role="bold">DataObjectService save with PersistenceOption</emphasis></para>
+            <programlisting>// Fetch by Compound Primary Key
 final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
 map.put("countryCode", countryCode);
 map.put("code", code);
@@ -395,67 +695,71 @@ StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)
 stateBo.setActiveToDate(new Timestamp(System.currentTimeMillis());
 
 // save the StateBo, include a PersistenceOption, and get the updated instance
-stateBo = getDataObjectService().save(stateBo, PersistenceOption.FLUSH);
-            </programlisting>                
-        <para>
-            <emphasis>PersistenceOptions</emphasis>
-        </para>
-        <para>
-            One or more persistence options can be passed to indicate whether or not linking should be performed prior to
-            persistence.  By default, linking is performed.  Below is a list of PersistionOption values.
-        </para>
-        <orderedlist>
-            <listitem><para>FLUSH</para></listitem>
-            <listitem><para>LINK_KEYS</para></listitem>
-        </orderedlist>
-    <para><emphasis role="bold">DataObjectService delete</emphasis></para>
-    <programlisting>
-//Fetch by Compound Primary Key
+stateBo = getDataObjectService().save(stateBo, PersistenceOption.FLUSH);</programlisting>
+            <para><emphasis>PersistenceOptions</emphasis></para>
+            <para>
+                One or more persistence options can be passed to indicate whether or not linking should be performed prior to
+                persistence.  By default, linking foreign key values on the wrapped data object is performed.  Below is a
+                list of PersistionOption values.
+            </para>
+            <orderedlist>
+                <listitem>
+                    <para>
+                        FLUSH - Synchronize the persistence context to the underlying data store.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        LINK_KEYS - Synchronize the persistence context to the underlying data store, and
+                        link values into foreign keys that are "read-only" according to the metadata of the data object.
+                    </para>
+                </listitem>
+            </orderedlist>
+            <para><emphasis role="bold">DataObjectService delete</emphasis></para>
+            <programlisting>// Fetch by Compound Primary Key
 final Map&lt;String, Object> map = new HashMap&lt;String, Object>();
 map.put("countryCode", countryCode);
 map.put("code", code);
 StateBo stateBo = getDataObjectService().find(StateBo.class,new CompoundKey(map)));
 
 // delete the StateBo
-getDataObjectService().delete(stateBo);
-    </programlisting>
-        <para>
-            <emphasis role="bold">Injecting the Shared Entity Manager</emphasis>
-            <programlisting>//Add the following to your Spring DAO implementation to assign the appropriate Persistence 
-//Unit to your DAO
-
+getDataObjectService().delete(stateBo);</programlisting>
+            <para>
+                <emphasis role="bold">Injecting the Shared Entity Manager</emphasis>
+                <programlisting>// Add the following to your Spring DAO implementation to assign the appropriate Persistence Unit to your DAO
 public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 
-@PersistenceContext(unitName="kew")
-private EntityManager entityManager;
+    @PersistenceContext(unitName="kew")
+    private EntityManager entityManager;
 
-}</programlisting></para>
-        <para>
-            <emphasis role="bold"> Simple example of Named Query in Rice</emphasis>
-            <programlisting>//Fetch Application Document ID by Document ID
-//Define constants for named query in DAO - In this case DocumentRouteHeaderDAOJpa
-//Name your queries such that they start with the Entity name 
-//like @NamedQuery(name="ParameterBo.findAll", query="SELECT p FROM ParameterBo")
-
+}</programlisting>
+            </para>
+            <para>
+                <emphasis role="bold"> Simple example of Named Query in Rice</emphasis>
+                <programlisting>// Fetch Application Document ID by Document ID
+// Define constants for named query in DAO - In this case DocumentRouteHeaderDAOJpa
+// Name your queries such that they start with the Entity name
+// like @NamedQuery(name="ParameterBo.findAll", query="SELECT p FROM ParameterBo")
 public static final String GET_APP_DOC_STATUS_NAME = "DocumentRouteHeaderValue.GetAppDocStatus";
 public static final String GET_APP_DOC_STATUS_QUERY = "SELECT d.appDocStatus from "
             + "DocumentRouteHeaderValue as d where d.documentId = :documentId";
 
-//Definition of NamedQuery on Queried Entity(DocumentRouteHeaderValue)
-    @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_NAME, query=
-            DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_QUERY)
+// Definition of NamedQuery on Queried Entity(DocumentRouteHeaderValue)
+@NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_NAME, query =
+    DocumentRouteHeaderDAOJpa.GET_APP_DOC_STATUS_QUERY)
 
-//Code to call NamedQuery
-TypedQuery&lt;String> query = getEntityManager().createNamedQuery(
-                            "DocumentRouteHeaderValue.GetAppDocId",String.class);
+// Code to call NamedQuery
+TypedQuery&lt;String> query = getEntityManager().createNamedQuery("DocumentRouteHeaderValue.GetAppDocId",String.class);
 query.setParameter("documentId",documentId);
 
 String applicationDocId = null;
-if(query.getResultList() != null &amp;&amp; !query.getResultList().isEmpty()){
+if (query.getResultList() != null &amp;&amp; !query.getResultList().isEmpty()){
     applicationDocId = query.getResultList().get(0);
 }
+
 return applicationDocId;</programlisting>
-            <emphasis role="bold">More Complex example of NamedQuery </emphasis><programlisting>//Fetch all distinct document IDs by document type and application document ID
+                <emphasis role="bold">More Complex example of NamedQuery </emphasis>
+                <programlisting>// Fetch all distinct document IDs by document type and application document ID
 public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME =
             "DocumentRouteHeaderValue.GetDocumentIdByDocTypeAndAppId";
 public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY = "SELECT "
@@ -463,138 +767,134 @@ public static final String GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY = "SELECT "
             + "WHERE DH.appDocId = :appDocId AND DH.documentTypeId = DT.documentTypeId  AND DT.name = :name";
 
 @NamedQuery(name=DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME, query =
-            DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY)
+    DocumentRouteHeaderDAOJpa.GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_QUERY)
 
-TypedQuery&lt;String> query = getEntityManager().createNamedQuery(GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME,
-                String.class);
+TypedQuery&lt;String> query = getEntityManager().createNamedQuery(GET_DOCUMENT_ID_BY_DOC_TYPE_APP_ID_NAME, String.class);
 query.setParameter("appDocId",appId);
 query.setParameter("name",documentTypeName);
+
 return query.getResultList();</programlisting>
-            <tip>
-                <para> When building named queries you must use an alias the object  "select
-                        <emphasis role="bold">r</emphasis> from KUL_RICE_T <emphasis role="bold"
-                        >r</emphasis>". If you get the below error you are probably missing an
-                    alias.
-                    <programlisting>Caused by: java.lang.ClassCastException: 
-                    org.eclipse.persistence.jpa.jpql.parser.NullExpression 
-                    cannot be cast to org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable
-                 </programlisting>
-                </para>
-            </tip>
-            <emphasis role="bold">Using Rice Criteria API </emphasis>
-            <programlisting>//Example of Dynamic query, this query needs to add date checks dates 
-//if effectiveDate parameter is not null
+                <tip>
+                    <para> When building named queries you must use an alias the object  "select
+                            <emphasis role="bold">r</emphasis> from KUL_RICE_T <emphasis role="bold"
+                            >r</emphasis>". If you get the below error you are probably missing an
+                        alias.
+                        <programlisting>Caused by: java.lang.ClassCastException:
+                        org.eclipse.persistence.jpa.jpql.parser.NullExpression
+                        cannot be cast to org.eclipse.persistence.jpa.jpql.parser.IdentificationVariable
+                     </programlisting>
+                    </para>
+                </tip>
+                <emphasis role="bold">Using Rice Criteria API </emphasis>
+                <programlisting>// Example of Dynamic query, this query needs to add date checks dates if effectiveDate parameter is not null
+// This should be in a DAO class - RuleDAOJpa in this case
 
-//This should be in a DAO class - RuleDAOJpa in this case
+public List&lt;RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes,
+        Timestamp effectiveDate) {
+    QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+    List&lt;Predicate> predicates = new ArrayList&lt;Predicate>();
+    predicates.add(equal("ruleTemplateId",ruleTemplateId));
+    predicates.add(in("docTypeName", documentTypes));
+    predicates.add(equal("active", Boolean.TRUE));
+    predicates.add(equal("delegateRule",Boolean.FALSE));
+    predicates.add(equal("templateRuleInd",Boolean.FALSE));
 
-public List&lt;RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateId, List documentTypes, Timestamp effectiveDate) {
-       QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        List&lt;Predicate> predicates = new ArrayList&lt;Predicate>();
-        predicates.add(equal("ruleTemplateId",ruleTemplateId));
-        predicates.add(in("docTypeName", documentTypes));
-        predicates.add(equal("active", Boolean.TRUE));
-        predicates.add(equal("delegateRule",Boolean.FALSE));
-        predicates.add(equal("templateRuleInd",Boolean.FALSE));
-
-        if(effectiveDate != null){
-            predicates.add(lessThanOrEqual("activationDate",effectiveDate));
-            predicates.add(greaterThanOrEqual("deactivationDate", effectiveDate));
-        }
-        List&lt;Predicate> datePredicateList = generateFromToDatePredicate(new Date());
-        Predicate[] datePreds = generateFromToDatePredicate(new Date()).
-                toArray(new Predicate[datePredicateList.size()]);
-        predicates.add(and(datePreds));
-        Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
-        builder.setPredicates(preds);
-        QueryResults&lt;RuleBaseValues> results = getDataObjectService().findMatching(RuleBaseValues.class,
-                                            builder.build());
-        return results.getResults();
-	}
-
-    public List&lt;Predicate> generateFromToDatePredicate(Date date){
-        List&lt;Predicate> datePredicates = new ArrayList&lt;Predicate>();
-
-        Predicate orFromDateValue = or(lessThanOrEqual("fromDateValue",new Timestamp(date.getTime())),
-              isNull("fromDateValue"));
-        Predicate orToDateValue = or(greaterThanOrEqual("toDateValue",new Timestamp(date.getTime())),
-              isNull("toDateValue"));
-
-        datePredicates.add(orFromDateValue);
-        datePredicates.add(orToDateValue);
-
-        return datePredicates;
+    if (effectiveDate != null) {
+        predicates.add(lessThanOrEqual("activationDate",effectiveDate));
+        predicates.add(greaterThanOrEqual("deactivationDate", effectiveDate));
     }
-            </programlisting>
-            <emphasis role="bold">Using JPA Criteria API </emphasis>
-            <programlisting>//Using JPA Criteria Builder
 
-	public List&lt;RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription,
- String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery&lt;RuleBaseValues> cq = cb.createQuery(RuleBaseValues.class);
-        Root&lt;RuleBaseValues> root = cq.from(RuleBaseValues.class);
-        List&lt;javax.persistence.criteria.Predicate> predicates = getSearchCriteria(root,cq,docTypeName,
- ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
+    List&lt;Predicate> datePredicateList = generateFromToDatePredicate(new Date());
+    Predicate[] datePreds = generateFromToDatePredicate(new Date()).toArray(new Predicate[datePredicateList.size()]);
+    predicates.add(and(datePreds));
+    Predicate[] preds = predicates.toArray(new Predicate[predicates.size()]);
+    builder.setPredicates(preds);
+    QueryResults&lt;RuleBaseValues> results = getDataObjectService().findMatching(RuleBaseValues.class, builder.build());
 
-        if (ruleId != null) {
-            predicates.add(cb.equal(root.get("id"),ruleId));
-        }
-        if (groupId != null) {
-            predicates.add(cb.in(root.get("id")).value(getRuleResponsibilitySubQuery(
-                    groupId, cq)));
-        }
-        Collection&lt;String> kimGroupIds = new HashSet&lt;String>();
-        Boolean searchUser = Boolean.FALSE;
-        Boolean searchUserInWorkgroups = Boolean.FALSE;
-        
-        if ("group".equals(workflowIdDirective)) {
-            searchUserInWorkgroups = Boolean.TRUE;
-        } else if (StringUtils.isBlank(workflowIdDirective)) {
-            searchUser = Boolean.TRUE;
-            searchUserInWorkgroups = Boolean.TRUE;
-        } else {
-            searchUser = Boolean.TRUE;
-        }
-        
-        if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) &amp;&amp; searchUserInWorkgroups) {
-            Principal principal = null;
+    return results.getResults();
+}
 
-            principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+public List&lt;Predicate> generateFromToDatePredicate(Date date){
+    List&lt;Predicate> datePredicates = new ArrayList&lt;Predicate>();
 
-            if (principal == null)
-            {
-            	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
-            }
-            kimGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
-        }
-        Subquery&lt;RuleResponsibilityBo> subquery = addResponsibilityCriteria(cq,kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
+    Predicate orFromDateValue = or(lessThanOrEqual("fromDateValue",new Timestamp(date.getTime())), isNull("fromDateValue"));
+    Predicate orToDateValue = or(greaterThanOrEqual("toDateValue",new Timestamp(date.getTime())), isNull("toDateValue"));
 
-        if(subquery != null){
-            predicates.add(cb.in(root.get("id")).value(subquery));
-        }
-        cq.distinct(true);
-        javax.persistence.criteria.Predicate[] preds = predicates.toArray(
-                new javax.persistence.criteria.Predicate[predicates.size()]);
-        cq.where(preds);
-        TypedQuery&lt;RuleBaseValues> q = getEntityManager().createQuery(cq);
+    datePredicates.add(orFromDateValue);
+    datePredicates.add(orToDateValue);
 
-        return q.getResultList();
-	}
+    return datePredicates;
+}</programlisting>
+                <emphasis role="bold">Using JPA Criteria API</emphasis>
+                <programlisting>// Using JPA Criteria Builder
 
-    private Subquery&lt;RuleResponsibilityBo> getRuleResponsibilitySubQuery(String ruleRespName,
-                        CriteriaQuery&lt;RuleBaseValues> query){
-        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-        Subquery&lt;RuleResponsibilityBo> subquery = query.subquery(RuleResponsibilityBo.class);
-        Root fromResp = subquery.from(RuleResponsibilityBo.class);
-        subquery.where(cb.equal(fromResp.get("ruleResponsibilityName"),ruleRespName));
-        subquery.select(fromResp.get("ruleBaseValuesId"));
+public List&lt;RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId,
+        String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective) {
+    CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+    CriteriaQuery&lt;RuleBaseValues> cq = cb.createQuery(RuleBaseValues.class);
+    Root&lt;RuleBaseValues> root = cq.from(RuleBaseValues.class);
+    List&lt;javax.persistence.criteria.Predicate> predicates = getSearchCriteria(root, cq, docTypeName, ruleTemplateId,
+        ruleDescription, delegateRule, activeInd, extensionValues);
 
-        return subquery;
+    if (ruleId != null) {
+        predicates.add(cb.equal(root.get("id"),ruleId));
     }
-        </programlisting>
-            <emphasis role="bold">Miscellaneous JPA information </emphasis><tip>
-                <para>
-                    <programlisting>//Relationship foreign key updating can go wrong if missing 
+
+    if (groupId != null) {
+        predicates.add(cb.in(root.get("id")).value(getRuleResponsibilitySubQuery(groupId, cq)));
+    }
+
+    Collection&lt;String> kimGroupIds = new HashSet&lt;String>();
+    Boolean searchUser = Boolean.FALSE;
+    Boolean searchUserInWorkgroups = Boolean.FALSE;
+        
+    if ("group".equals(workflowIdDirective)) {
+        searchUserInWorkgroups = Boolean.TRUE;
+    } else if (StringUtils.isBlank(workflowIdDirective)) {
+        searchUser = Boolean.TRUE;
+        searchUserInWorkgroups = Boolean.TRUE;
+    } else {
+        searchUser = Boolean.TRUE;
+    }
+        
+    if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) &amp;&amp; searchUserInWorkgroups) {
+        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
+
+        if (principal == null) {
+            throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
+        }
+
+        kimGroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
+    }
+
+    Subquery&lt;RuleResponsibilityBo> subquery
+        = addResponsibilityCriteria(cq,kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
+
+    if (subquery != null){
+        predicates.add(cb.in(root.get("id")).value(subquery));
+    }
+
+    cq.distinct(true);
+    javax.persistence.criteria.Predicate[] preds = predicates.toArray(new javax.persistence.criteria.Predicate[predicates.size()]);
+    cq.where(preds);
+    TypedQuery&lt;RuleBaseValues> q = getEntityManager().createQuery(cq);
+
+    return q.getResultList();
+}
+
+private Subquery&lt;RuleResponsibilityBo> getRuleResponsibilitySubQuery(String ruleRespName, CriteriaQuery&lt;RuleBaseValues> query) {
+    CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+    Subquery&lt;RuleResponsibilityBo> subquery = query.subquery(RuleResponsibilityBo.class);
+    Root fromResp = subquery.from(RuleResponsibilityBo.class);
+    subquery.where(cb.equal(fromResp.get("ruleResponsibilityName"),ruleRespName));
+    subquery.select(fromResp.get("ruleBaseValuesId"));
+
+    return subquery;
+}</programlisting>
+                <emphasis role="bold">Miscellaneous JPA information </emphasis>
+                <tip>
+                    <para>
+                        <programlisting>//Relationship foreign key updating can go wrong if missing
 //"nullable" on JoinColumn.  It can insert null into the column instead of
 //the actual value of the foreign entity key
 
@@ -603,192 +903,202 @@ public class RouteNodeInstance implements Serializable {
     @JoinColumn(name="RTE_NODE_ID", <emphasis role="bold">nullable = false</emphasis>)
     private RouteNode routeNode;
 }
-                  </programlisting>
-                </para>
-            </tip>
-        </para>
-    </section>
-    <section>
-      <title>Java Persistence Api Sequences and Kuali Rice</title>
-      <para>
-          For automatically generating values for identifier fields, JPA provides <emphasis role="keyword">@GeneratedValue</emphasis>
-          to place on any field or method.  While this works for many databases like Oracle that have their own concepts
-          of sequence objects, some databases like MySQL do not have sequence objects and need additional support.
-          Kuali Rice uses the standard of "sequence tables" in MySQL that use the MyISAM auto increment feature to
-          simulate sequences.  This has prompted the creation of <emphasis role="keyword">@PortableSequenceGenerator</emphasis>
-          to work alongside <emphasis role="keyword">@GeneratedValue</emphasis> to provide automatic application support
-          for both Oracle and MySQL.
-      </para>
-      <para>
-          To use this feature, place it with any <emphasis role="keyword">@GeneratedValue</emphasis> annotation.
-          <programlisting>@PortableSequenceGenerator(name = "TABLE_S")
+                      </programlisting>
+                    </para>
+                </tip>
+            </para>
+        </section>
+        <section>
+          <title>Sequences</title>
+          <para>
+              For automatically generating values for identifier fields, JPA provides <emphasis role="keyword">@GeneratedValue</emphasis>
+              to place on any field or method.  While this works for many databases like Oracle that have their own concepts
+              of sequence objects, some databases like MySQL do not have sequence objects and need additional support.
+              Kuali Rice uses the standard of "sequence tables" in MySQL that use the MyISAM auto increment feature to
+              simulate sequences.  This has prompted the creation of <emphasis role="keyword">@PortableSequenceGenerator</emphasis>
+              to work alongside <emphasis role="keyword">@GeneratedValue</emphasis> to provide automatic application support
+              for both Oracle and MySQL.
+          </para>
+          <para>
+              To use this feature, place it with any <emphasis role="keyword">@GeneratedValue</emphasis> annotation.
+              <programlisting>@PortableSequenceGenerator(name = "TABLE_S")
 @GeneratedValue(generator = "TABLE_S")
 @Id
 @Column(name = "TABLE_ID")
 private String id;</programlisting>
-          In this example, <emphasis role="keyword">TABLE_S</emphasis> is the name of the portable sequence generator,
-          and by default, it is taken as the sequence name in the database.  In order to specify a separate generator
-          name from the database sequence name, use the <emphasis role="keyword">name</emphasis> attribute for the
-          generator name instead and add the <emphasis role="keyword">sequenceName</emphasis> attribute for the database
-          sequence name.  Also, the generator can be configured to start at a specified value by using <emphasis role="keyword">initialValue</emphasis>.
-          By default, it starts at 1000.
-          <programlisting>@PortableSequenceGenerator(name = "TABLE_S_GEN", sequenceName = "TABLE_S", initialValue = 1)
+              In this example, <emphasis role="keyword">TABLE_S</emphasis> is the name of the portable sequence generator,
+              and by default, it is taken as the sequence name in the database.  In order to specify a separate generator
+              name from the database sequence name, use the <emphasis role="keyword">name</emphasis> attribute for the
+              generator name instead and add the <emphasis role="keyword">sequenceName</emphasis> attribute for the database
+              sequence name.  Also, the generator can be configured to start at a specified value by using <emphasis role="keyword">initialValue</emphasis>.
+              By default, it starts at 1000.
+              <programlisting>@PortableSequenceGenerator(name = "TABLE_S_GEN", sequenceName = "TABLE_S", initialValue = 1)
 @GeneratedValue(generator = "TABLE_S")
 @Id
 @Column(name = "TABLE_ID")
 private String id;</programlisting>
-      </para>
-      <para>
-          Some situations call for being able to access the sequences in Spring beans.  The <emphasis role="keyword">MaxValueIncrementerFactoryBean</emphasis>
-          allows for this.  These sequences can then be used in situations where automatically placing them on data
-          objects is not possible or desirable.
-          <programlisting>&lt;bean id="tableIncrementer" class="org.kuali.rice.krad.data.platform.MaxValueIncrementerFactoryBean">
+          </para>
+          <para>
+              Some situations call for being able to access the sequences in Spring beans.  The <emphasis role="keyword">MaxValueIncrementerFactoryBean</emphasis>
+              allows for this.  These sequences can then be used in situations where automatically placing them on data
+              objects is not possible or desirable.
+              <programlisting>&lt;bean id="tableIncrementer" class="org.kuali.rice.krad.data.platform.MaxValueIncrementerFactoryBean">
   &lt;property name="dataSource" ref="dataSource" />
   &lt;property name="incrementerName" value="TABLE_S" />
 &lt;/bean></programlisting>
-          This returns a <emphasis role="keyword">DataFieldMaxValueIncrementer</emphasis> which can be used to access
-          the next values of the sequence, either through <emphasis role="keyword">nextIntValue</emphasis>, <emphasis role="keyword">nextLongValue</emphasis>,
-          or <emphasis role="keyword">nextStringValue</emphasis>.
-      </para>
-    </section>
-    <section>
-        <title>Java Persistence Api Entity Attribute Converters and Kuali Rice</title>
-        <para>
-            Entity Attribute Converters - Converts the current state of the entity attribute value
-            into a data store representation and back again.
-        </para>
-        <note>
-          <para>
-            When the KradEclipseLinkEntityManagerFactoryBean or the KradEntityManagerFactoryBean classes
-            are used the Kuali Rice entity attribute converters are automatically registered within the
-            persistence context.
+              This returns a <emphasis role="keyword">DataFieldMaxValueIncrementer</emphasis> which can be used to access
+              the next values of the sequence, either through <emphasis role="keyword">nextIntValue</emphasis>, <emphasis role="keyword">nextLongValue</emphasis>,
+              or <emphasis role="keyword">nextStringValue</emphasis>.
           </para>
-        </note>
+        </section>
+        <section>
+            <title>Entity Attribute Converters</title>
+            <para>
+                Entity Attribute Converters - Converts the current state of the entity attribute value
+                into a data store representation and back again.
+            </para>
+            <note>
+              <para>
+                When the KradEclipseLinkEntityManagerFactoryBean or the KradEntityManagerFactoryBean classes
+                are used the Kuali Rice entity attribute converters are automatically registered within the
+                persistence context.
+              </para>
+            </note>
 
-        <para><emphasis role="bold">Auto Apply</emphasis></para>
-        <para>
-            The autoApply attribute of a converter may be set to 'true' or 'false'.  When set to true
-            the JPA provider will use the converter to convert all entity attributes of the given type.
-            If autoApply is set to false then a javax.persistence.Convert annotation will need to be added
-            to all attributes that shall be converted, along with the Converter class.
-        </para>
-      </section>
-      <section>
-        <para> The current attribute converters available in Kuali Rice: <table frame="all" tabstyle="striped" pgwide="1">
-            <title>Kuali Rice Standard Converters</title>
-            <tgroup cols="3">
-                <colspec colnum="1" colname="name" colwidth="2.5*" align="left"/>
-                <colspec colnum="2" colname="desc" colwidth="6.0*" align="left"/>
-                <colspec colnum="3" colname="autoApply" colwidth="1.0*" align="center"/>
-                <thead>
-                    <row>
-                        <entry>JPA Field Converter Class</entry>
-                        <entry>Description</entry>
-                        <entry>Auto Apply</entry>
-                    </row>
-                </thead>
-                <tbody>
-                    <row>
-                        <entry>
-                          <link xlink:show="new"
-                                xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanYNConverter.html">
-                            BooleanYNConverter
-                          </link>
-                        </entry>
-                      <entry>Converts java.lang.Boolean True or False values
-                          to java.lang.String characters 'Y' or 'N' to be
-                          persisted to the data store.  Data store values are
-                          converted back to java.lang.Boolean True or False when
-                          injected back into a data object.</entry>
-                        <entry>YES</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01BigDecimalConverter.html">Boolean01BigDecimalConverter</link></entry>
-                        <entry>Converts 0/1 Boolean values to java.math.BigDecimal
-                          to be persisted to the data store.  Data store values
-                          are converted back to 0/1 Boolean values when injected
-                          back into a data object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01Converter.html">Boolean01Converter</link></entry>
-                        <entry>Converts java.lang.Boolean True or False values to
-                            java.math.BigInteger to be persisted to the data store.
-                            Data store values are converted back to
-                            java.lang.Boolean True or False values when injected
-                            back into a data object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanAIConverter.html">BooleanAIConverter</link></entry>
-                        <entry>Converts java.lang.Boolean True or False to
-                            java.lang.String characters 'A' or 'I' (A - active,
-                            I - inactive) to be persisted to the data store.
-                            Data store values are converted back to
-                            java.lang.Boolean True or False values when injected
-                            back into a data object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanTFConverter.html">BooleanTFConverter</link></entry>
-                        <entry>Converts java.lang.Boolean True or False
-                            to java.lang.String characters 'T' or 'F'
-                            (T - true, F - false) to be persisted to the
-                            data store.  Data store values are converted back
-                            to java.lang.Boolean True or False values when
-                            injected back into a data object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/EncryptionConverter.html">EncryptionConverter</link></entry>
-                        <entry>Calls the core service to encrypt/decrypt
-                          values being persisted to and from the data store.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/HashConverter.html">HashConverter</link></entry>
-                        <entry>Calls the core service to hash values
-                          being persisted to the data store.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/InverseBooleanYNConverter.html">InverseBooleanYNConverter</link></entry>
-                        <entry>Converts the java.lang.Boolean True or
-                          False value to it's inverse java.lang.String
-                          character representation to be persisted to the data store.
-                          Data store values are converted back to their inverse
-                          java.lang.Boolean True or False values when injected
-                          back into a data object.</entry>
-                        <entry>NO</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiDecimalConverter.html">KualiDecimalConverter</link></entry>
-                        <entry>Converts KualiDecimal values to BigDecimals
-                          to be persisted to the datasource.  Data store
-                          values are converted back to KualiDecimals when
-                          injected back into a data object.</entry>
-                        <entry>YES</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiIntegerConverter.html">KualiIntegerConverter</link></entry>
-                        <entry>Converts KualiIntegers to java.lang.Longs
-                          to be persisted to the data store.  Data store
-                          values are converted back to KualiIngeters when
-                          injected back into a data object.</entry>
-                        <entry>YES</entry>
-                    </row>
-                    <row>
-                        <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiPercentConverter.html">KualiPercentConverter</link></entry>
-                        <entry>converts KualiPercents to java.math.BigDecimal
-                          to be persisted to the data store.  Data store
-                          values are convert back to KualiPercents when
-                          injected back into a data object.</entry>
-                        <entry>YES</entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table></para>
-    </section>
+            <para><emphasis role="bold">Auto Apply</emphasis></para>
+            <para>
+                The autoApply attribute of a converter may be set to 'true' or 'false'.  When set to true
+                the JPA provider will use the converter to convert all entity attributes of the given type.
+                If autoApply is set to false then a javax.persistence.Convert annotation will need to be added
+                to all attributes that shall be converted, along with the Converter class.
+            </para>
+            <para>Converters are typically specified on a mapping using the @Convert annotation</para>
+            <programlisting>
+@Entity
+public class Channel {
+...
+@Convert(converter = BooleanTFConverter.class)
+@Column(name = "SUBSCRB_IND", nullable = false)
+private boolean subscribable;
+...
+}
+            </programlisting>
+            <para> The current attribute converters available in Kuali Rice: <table frame="all" tabstyle="striped" pgwide="1">
+                <title>Kuali Rice Standard Converters</title>
+                <tgroup cols="3">
+                    <colspec colnum="1" colname="name" colwidth="2.5*" align="left"/>
+                    <colspec colnum="2" colname="desc" colwidth="6.0*" align="left"/>
+                    <colspec colnum="3" colname="autoApply" colwidth="1.0*" align="center"/>
+                    <thead>
+                        <row>
+                            <entry>JPA Field Converter Class</entry>
+                            <entry>Description</entry>
+                            <entry>Auto Apply</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry>
+                              <link xlink:show="new"
+                                    xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanYNConverter.html">
+                                BooleanYNConverter
+                              </link>
+                            </entry>
+                          <entry>Converts java.lang.Boolean True or False values
+                              to java.lang.String characters 'Y' or 'N' to be
+                              persisted to the data store.  Data store values are
+                              converted back to java.lang.Boolean True or False when
+                              injected back into a data object.</entry>
+                            <entry>YES</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01BigDecimalConverter.html">Boolean01BigDecimalConverter</link></entry>
+                            <entry>Converts java.lang.Boolean True or False values to java.math.BigDecimal
+                              to be persisted to the data store.  Data store values
+                              are converted back to java.lang.Boolean True or False values when injected
+                              back into a data object.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/Boolean01Converter.html">Boolean01Converter</link></entry>
+                            <entry>Converts java.lang.Boolean True or False values to
+                                java.math.BigInteger to be persisted to the data store.
+                                Data store values are converted back to
+                                java.lang.Boolean True or False values when injected
+                                back into a data object.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanAIConverter.html">BooleanAIConverter</link></entry>
+                            <entry>Converts java.lang.Boolean True or False to
+                                java.lang.String characters 'A' or 'I' (A - active,
+                                I - inactive) to be persisted to the data store.
+                                Data store values are converted back to
+                                java.lang.Boolean True or False values when injected
+                                back into a data object.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/BooleanTFConverter.html">BooleanTFConverter</link></entry>
+                            <entry>Converts java.lang.Boolean True or False
+                                to java.lang.String characters 'T' or 'F'
+                                (T - true, F - false) to be persisted to the
+                                data store.  Data store values are converted back
+                                to java.lang.Boolean True or False values when
+                                injected back into a data object.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/EncryptionConverter.html">EncryptionConverter</link></entry>
+                            <entry>Calls the core service to encrypt/decrypt
+                              values being persisted to and from the data store.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/HashConverter.html">HashConverter</link></entry>
+                            <entry>Calls the core service to hash values
+                              being persisted to the data store.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/InverseBooleanYNConverter.html">InverseBooleanYNConverter</link></entry>
+                            <entry>Converts the java.lang.Boolean True or
+                              False value to it's inverse java.lang.String
+                              character representation to be persisted to the data store.
+                              Data store values are converted back to their inverse
+                              java.lang.Boolean True or False values when injected
+                              back into a data object.</entry>
+                            <entry>NO</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiDecimalConverter.html">KualiDecimalConverter</link></entry>
+                            <entry>Converts KualiDecimal values to BigDecimals
+                              to be persisted to the datasource.  Data store
+                              values are converted back to KualiDecimals when
+                              injected back into a data object.</entry>
+                            <entry>YES</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiIntegerConverter.html">KualiIntegerConverter</link></entry>
+                            <entry>Converts KualiIntegers to java.lang.Longs
+                              to be persisted to the data store.  Data store
+                              values are converted back to KualiIngeters when
+                              injected back into a data object.</entry>
+                            <entry>YES</entry>
+                        </row>
+                        <row>
+                            <entry><link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/org/kuali/rice/krad/data/jpa/converters/KualiPercentConverter.html">KualiPercentConverter</link></entry>
+                            <entry>converts KualiPercents to java.math.BigDecimal
+                              to be persisted to the data store.  Data store
+                              values are convert back to KualiPercents when
+                              injected back into a data object.</entry>
+                            <entry>YES</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table></para>
+        </section>
+        </section>
 <!-- TODO
     <section>
         <title> The Business Object Service </title>

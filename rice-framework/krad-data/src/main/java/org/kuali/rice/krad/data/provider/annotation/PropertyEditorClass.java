@@ -24,10 +24,18 @@ import java.lang.annotation.Target;
 
 /**
  * Allows you to define a {@link PropertyEditor} for the attribute.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface PropertyEditorClass {
-	Class<? extends PropertyEditor> value();
+
+    /**
+     * Gets the {@link PropertyEditor} class to instantiate.
+     *
+     * @return the {@link PropertyEditor} class to instantiate.
+     */
+    Class<? extends PropertyEditor> value();
 }

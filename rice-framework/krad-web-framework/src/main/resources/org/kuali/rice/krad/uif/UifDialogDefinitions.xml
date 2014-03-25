@@ -102,22 +102,10 @@
   </bean>
 
   <bean id="Uif-DialogDismissButton" parent="Uif-SecondaryActionButton" p:actionLabel="No"
-        p:dialogDismissOption="IMMEDIATE">
-    <property name="dataAttributes">
-      <map merge="true">
-        <entry key="response" value="false"/>
-      </map>
-    </property>
-  </bean>
+        p:dialogDismissOption="IMMEDIATE" p:dialogResponse="false"/>
 
   <bean id="Uif-DialogConfirmButton" parent="Uif-PrimaryActionButton" p:actionLabel="Yes"
-        p:dialogDismissOption="PRESUBMIT">
-    <property name="dataAttributes">
-      <map merge="true">
-        <entry key="response" value="true"/>
-      </map>
-    </property>
-  </bean>
+        p:dialogDismissOption="PRESUBMIT" p:dialogResponse="true"/>
 
   <bean id="Uif-DialogGroup-OkCancel" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Confirm to Continue"/>

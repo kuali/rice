@@ -140,7 +140,7 @@ public class DialogGroup extends GroupBase {
                 Action responseAction = ComponentFactory.getSecondaryAction();
 
                 responseAction.setDialogDismissOption(UifConstants.DialogDismissOption.PRESUBMIT.name());
-                responseAction.getDataAttributes().put(UifConstants.DataAttributes.RESPONSE, keyValue.getKey());
+                responseAction.setDialogResponse(keyValue.getKey());
 
                 responseAction.setActionLabel(keyValue.getValue());
 

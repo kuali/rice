@@ -438,7 +438,6 @@ public class UifConstants {
         public static final String SECTIONS = "sections";
         public static final String ORDER = "order";
         public static final String RETURN = "return";
-        public static final String RESPONSE = "response";
         public static final String SERVER_ERRORS = "serverErrors";
         public static final String SERVER_WARNINGS = "serverWarnings";
         public static final String SERVER_INFO = "serverInfo";
@@ -460,6 +459,7 @@ public class UifConstants {
         public static final String DEFAULT_ENTER_KEY_ACTION = "default_enter_key_action";
         public static final String DISMISS = "dismiss";
         public static final String DISMISS_DIALOG_OPTION = "dismissdialogoption";
+        public static final String DISMISS_RESPONSE = "response";
         public static final String DIALOG_RESPONSE_HANDLER = "response_handler";
         public static final String DIALOG_SHOW_HANDLER = "show_handler";
         public static final String DIALOG_HIDE_HANDLER = "hide_handler";

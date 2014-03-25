@@ -257,20 +257,8 @@
           </property>
           <property name="footer.items">
             <list>
-              <bean parent="Uif-DialogDismissButton" p:actionLabel="Log out">
-                <property name="dataAttributes">
-                  <map merge="true">
-                    <entry key="response" value="logout"/>
-                  </map>
-                </property>
-              </bean>
-              <bean parent="Uif-DialogConfirmButton" p:actionLabel="Continue">
-                <property name="dataAttributes">
-                  <map merge="true">
-                    <entry key="response" value="continue"/>
-                  </map>
-                </property>
-              </bean>
+              <bean parent="Uif-DialogDismissButton" p:actionLabel="Log out" p:dialogResponse="logout"/>
+              <bean parent="Uif-DialogConfirmButton" p:actionLabel="Continue" p:dialogResponse="continue"/>
             </list>
           </property>
           <property name="onDialogResponseScript" value="handleTimeoutWarningResponse(e);"/>

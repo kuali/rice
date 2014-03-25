@@ -113,6 +113,7 @@ public class Action extends ContentElementBase {
     private DialogGroup confirmationDialog;
 
     private String dialogDismissOption;
+    private String dialogResponse;
 
     private boolean ajaxSubmit;
     private String ajaxReturnType;
@@ -382,6 +383,10 @@ public class Action extends ContentElementBase {
 
         if (StringUtils.isNotBlank(dialogDismissOption)) {
             addDataAttribute(UifConstants.DataAttributes.DISMISS_DIALOG_OPTION, dialogDismissOption);
+        }
+
+        if (StringUtils.isNotBlank(dialogResponse)) {
+            addDataAttribute(UifConstants.DataAttributes.DISMISS_RESPONSE, dialogResponse);
         }
 
         // all action parameters should be submitted with action
@@ -1202,6 +1207,29 @@ public class Action extends ContentElementBase {
      */
     public void setDialogDismissOption(String dialogDismissOption) {
         this.dialogDismissOption = dialogDismissOption;
+    }
+
+    /**
+     * If the action is within a {@link org.kuali.rice.krad.uif.container.DialogGroup} it can be configured to
+     * return a response using this property.
+     *
+     * <p>Dialogs can be used to get a response from a user, either a simple confirmation (true or false), or to
+     * choice from a list of options. The responses for the dialog are created with action components. The property
+     * specifies the action value that should be returned (when chosen) to the dialog response handlers. For example,
+     * in a simple confirmation one action will have a dialog response 'false', and the other will have a dialog
+     * response 'true'.</p>
+     *
+     * @return String dialog response value
+     */
+    public String getDialogResponse() {
+        return dialogResponse;
+    }
+
+    /**
+     * @see Action#getDialogResponse()
+     */
+    public void setDialogResponse(String dialogResponse) {
+        this.dialogResponse = dialogResponse;
     }
 
     /**

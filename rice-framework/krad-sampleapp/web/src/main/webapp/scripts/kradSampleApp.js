@@ -147,16 +147,23 @@ function handleTabSwap(control) {
     var tabValue = tab.val();
     if (tabValue != undefined && tabValue != "") {
         var tabIndex = parseInt(tabValue);
-        jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
+        if (tabIndex) {
+            jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
 
-        //main source code viewer
-        var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
-        if (source != null && source.length) {
-            jQuery("#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+            //main source code viewer
+            var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
+            if (source != null && source.length) {
+                jQuery("#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
+            }
+
+            showAdditionalSource(tabIndex);
+            updateHtmlViewer();
         }
-
-        showAdditionalSource(tabIndex);
-        updateHtmlViewer();
+        else {
+            var tabDom = tab[0];
+            var tabNum = tabDom.selectedIndex;
+            jQuery("#ComponentLibrary-TabGroup_tabs").tabs("option", "active", tabNum);
+        }
     }
     else{
         showAdditionalSource(0);

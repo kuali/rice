@@ -30,6 +30,7 @@ class KimAttributeDataTest {
     static {
         KimType.Builder builder = KimType.Builder.create()
         builder.setId("1")
+        builder.setVersionNumber(1L)
         KIM_TYPE = builder.build()
     }
 
@@ -38,6 +39,7 @@ class KimAttributeDataTest {
     static {
         KimAttribute.Builder builder = KimAttribute.Builder.create("the_comp", "the_attr", "the_ns")
         builder.setId("1")
+        builder.setVersionNumber(1L)
         KIM_ATTRIBUTE = builder.build()
     }
 

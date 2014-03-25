@@ -40,11 +40,6 @@ class KimTypeAttributeTest {
     </kimTypeAttribute>
     """
 
-    @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_ver_num_less_than_1() {
-        KimTypeAttribute.Builder.create().setVersionNumber(-1);
-    }
-
     @Test
     void test_copy() {
         def o1b = KimTypeAttribute.Builder.create()

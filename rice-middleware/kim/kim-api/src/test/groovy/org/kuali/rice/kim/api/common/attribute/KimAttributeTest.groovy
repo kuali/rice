@@ -79,11 +79,6 @@ class KimAttributeTest {
         KimAttribute.Builder.create(COMPONENT_NAME, ATTRIBUTE_NAME, " ");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    void test_Builder_fail_ver_num_less_than_1() {
-        KimAttribute.Builder.create(COMPONENT_NAME, ATTRIBUTE_NAME, NAMESPACE_CODE).setVersionNumber(-1);
-    }
-
     @Test
     void test_copy() {
         def o1 = KimAttribute.Builder.create(COMPONENT_NAME, ATTRIBUTE_NAME, NAMESPACE_CODE).build();

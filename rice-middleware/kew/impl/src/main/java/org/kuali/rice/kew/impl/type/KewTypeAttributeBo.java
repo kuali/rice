@@ -19,8 +19,10 @@ import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttributeContract;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -48,6 +50,7 @@ public class KewTypeAttributeBo implements KewTypeAttributeContract, MutableInac
     private Integer sequenceNumber;
 
     @Column(name = "ACTV", nullable = false)
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     @Version

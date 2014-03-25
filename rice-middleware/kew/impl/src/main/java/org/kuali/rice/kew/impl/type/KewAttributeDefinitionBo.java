@@ -19,8 +19,10 @@ import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinitionContract;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -52,6 +54,7 @@ public class KewAttributeDefinitionBo implements KewAttributeDefinitionContract,
     private String label;
 
     @Column(name = "ACTV", nullable = false)
+    @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
     @Column(name = "CMPNT_NM")

@@ -118,7 +118,7 @@
   </bean>
 
   <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
-        p:actionScript="expandDisclosures();"/>
+        p:actionScript="expandDisclosures();" p:actionLabel="Expand All"/>
 
   <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
         p:actionScript="collapseDisclosures();" p:actionLabel="Collapse All"/>

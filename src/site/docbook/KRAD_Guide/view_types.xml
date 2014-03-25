@@ -21,7 +21,30 @@
   <title>View Types</title>
   <section>
     <title>What are View Types?</title>
-    <para>Coming Soon!</para>
+    <para>A View Type is an identifier used to categorize and indicate common features and
+      functionality of views used in Rice. View Types include:<itemizedlist>
+        <listitem>
+          <para>DEFAULT - Associated with base view</para>
+        </listitem>
+        <listitem>
+          <para>INQUIRY - Associated with Inquiry views</para>
+        </listitem>
+        <listitem>
+          <para>LOOKUP - Associated with Lookup views</para>
+        </listitem>
+        <listitem>
+          <para>DOCUMENT - Associated with base document views </para>
+        </listitem>
+        <listitem>
+          <para>MAINTENANCE - Associated with Maintenance Document views</para>
+        </listitem>
+        <listitem>
+          <para> TRANSACTIONAL - Associated with Transactional Document views </para>
+        </listitem>
+        <listitem>
+          <para>INCIDENT -  Associated with Incident views    </para>
+        </listitem>
+      </itemizedlist></para>
     <!-- TODO: Add content here.
     -->
   </section>
@@ -213,11 +236,28 @@
   </section>
   <section>
     <title>Maintenance View Type</title>
+    <para>Maintenance Documents are the primary method for creating and maintaining data elements
+      within Rice. </para>
     <section>
       <title>Maintenance Document Entry</title>
-      <para>Coming Soon!</para>
-      <!-- TODO: Add content here.
-      -->
+      <para>Maintenance Document Entry acts as a wrapper for the data object while it binds the data
+        object to its document type.</para>
+      
+      <programlisting linenumbering="numbered">
+  &lt;bean id="ExampleDataObjectMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    &lt;property name="dataObjectClass" value="edu.sampleu.example.dataobject.ExampleDataObject"/&gt;
+    &lt;property name="documentTypeName" value="ExampleDataObjectMaintenanceDocument"/&gt;
+  &lt;/bean>
+      </programlisting>
+      <para> The MaintenanceDocumentEntry bean help to manages the creation and deletion of records
+        through allowNewOrCopy and allowsRecordDeletion property as shown below: </para>
+      <programlisting linenumbering="numbered">
+  &lt;bean id="ExampleDataObjectMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    ...
+    &lt;property name="allowNewOrCopy" value="true"/&gt;
+    &lt;property name="allowsRecordDeletion" value="true"/&gt;    
+  &lt;/bean>
+      </programlisting>      
     </section>
     <section>
       <title>Maintenance View</title>

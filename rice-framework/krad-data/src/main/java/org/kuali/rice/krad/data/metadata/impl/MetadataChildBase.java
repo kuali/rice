@@ -22,6 +22,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataChild;
 
+/**
+ * {@inheritDoc}
+ */
 public abstract class MetadataChildBase extends MetadataCommonBase implements MetadataChild {
 	private static final long serialVersionUID = 2244738385101424133L;
 
@@ -36,6 +39,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 	protected Boolean loadedAtParentLoadTime;
 	protected Boolean loadedDynamicallyUponUse;
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isSavedWithParent() {
 		if (savedWithParent != null) {
@@ -50,6 +56,10 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 	public void setSavedWithParent(boolean savedWithParent) {
 		this.savedWithParent = savedWithParent;
 	}
+
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isDeletedWithParent() {
 		if (deletedWithParent != null) {
@@ -64,6 +74,10 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 	public void setDeletedWithParent(boolean deletedWithParent) {
 		this.deletedWithParent = deletedWithParent;
 	}
+
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isLoadedAtParentLoadTime() {
 		if (loadedAtParentLoadTime != null) {
@@ -78,6 +92,10 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 	public void setLoadedAtParentLoadTime(boolean loadedAtParentLoadTime) {
 		this.loadedAtParentLoadTime = loadedAtParentLoadTime;
 	}
+
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isLoadedDynamicallyUponUse() {
 		if (loadedDynamicallyUponUse != null) {
@@ -93,6 +111,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 		this.loadedDynamicallyUponUse = loadedDynamicallyUponUse;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectAttributeRelationship> getAttributeRelationships() {
 		if (attributeRelationships != null) {
@@ -108,6 +129,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 		this.attributeRelationships = attributeRelationships;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public MetadataChild getInverseRelationship() {
         if (inverseRelationship != null) {
@@ -123,6 +147,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
         this.inverseRelationship = inverseRelationship;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
 	public String getParentAttributeNameRelatedToChildAttributeName(String childAttribute) {
         for(DataObjectAttributeRelationship dataObjectAttributeRelationship : attributeRelationships){
@@ -133,6 +160,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
         return null;
     }
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -157,6 +187,9 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 		return builder.toString();
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Class<?> getRelatedType() {
 		return relatedType;
@@ -166,6 +199,11 @@ public abstract class MetadataChildBase extends MetadataCommonBase implements Me
 		this.relatedType = relatedType;
 	}
 
+    /**
+    * Gets the metadata from the child
+    *
+    * @return embedded metadata
+    */
 	public MetadataChild getEmbeddedMetadataChild() {
 		return embeddedMetadataChild;
 	}

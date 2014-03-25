@@ -17,6 +17,9 @@ package org.kuali.rice.krad.data.metadata.impl;
 
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 
+/**
+* {@inheritDoc}
+*/
 public class DataObjectAttributeRelationshipImpl implements DataObjectAttributeRelationship {
 	private static final long serialVersionUID = 838360378126210069L;
 
@@ -26,30 +29,58 @@ public class DataObjectAttributeRelationshipImpl implements DataObjectAttributeR
 	public DataObjectAttributeRelationshipImpl() {
 	}
 
+    /**
+    * Gets results where the actual rows are requested.
+    *
+    * @param queryClass the type of the results to return.
+    * @param criteria the criteria to use to get the results.
+    * @param ojbCriteria the implementation-specific criteria.
+    * @param flag the indicator to whether the row count is requested in the results.
+    * @return results where the actual rows are requested.
+    */
 	public DataObjectAttributeRelationshipImpl(String parentAttributeName, String childAttributeName) {
 		super();
 		this.parentAttributeName = parentAttributeName;
 		this.childAttributeName = childAttributeName;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String getParentAttributeName() {
 		return parentAttributeName;
 	}
 
+    /**
+    * Sets the parent attribute name.
+    *
+    * @param parentAttributeName parent attribute name
+    */
 	public void setParentAttributeName(String parentAttributeName) {
 		this.parentAttributeName = parentAttributeName;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String getChildAttributeName() {
 		return childAttributeName;
 	}
 
-	public void setChildAttributeName(String childAttributeName) {
+    /**
+    * Sets the child attribute name.
+    *
+    * @param childAttributeName child attribute name
+    */
+    public void setChildAttributeName(String childAttributeName) {
 		this.childAttributeName = childAttributeName;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

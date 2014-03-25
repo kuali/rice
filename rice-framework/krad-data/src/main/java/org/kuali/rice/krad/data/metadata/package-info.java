@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 /**
- * The interfaces in this package form the data model for the metadata repository extracted via the {@link org.kuali.rice.krad.data.provider.MetadataProvider} classes.
+ * The interfaces in this package form the data model for the metadata repository extracted via the
+ * {@link org.kuali.rice.krad.data.provider.MetadataProvider} classes.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

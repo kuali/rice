@@ -28,16 +28,15 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 public interface MetadataRepository {
 
     /**
-     * Obtain metadata for specified data object type
+     * Obtain metadata for specified data object type.
      *
      * @param type the data object type for which to return metadata
-     *
      * @return DataObjectMetadata for the type or null if none is known
      */
 	DataObjectMetadata getMetadata(Class<?> type);
 
     /**
-     * Returns all metadata for all known data object types
+     * Returns all metadata for all known data object types.
      *
      * @return all metadata for all known data object types
      */
@@ -47,7 +46,6 @@ public interface MetadataRepository {
      * Indicates whether or not the repository contains metadata for the given type.
      *
      * @param type the type to check metadata for
-     *
      * @return true if the repository contains metadata for the given type, false otherwise
      */
     boolean contains(Class<?> type);

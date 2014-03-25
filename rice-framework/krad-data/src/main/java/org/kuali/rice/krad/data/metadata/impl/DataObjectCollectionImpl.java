@@ -21,6 +21,15 @@ import java.util.List;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectCollectionSortAttribute;
 
+/**
+* Collection meta data.
+*
+* <p>
+* Implementation that represents the meta data for a collection in a data object.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public class DataObjectCollectionImpl extends MetadataChildBase implements DataObjectCollection {
 	private static final long serialVersionUID = -785119931770775640L;
 
@@ -32,11 +41,13 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
 	protected List<DataObjectCollectionSortAttribute> defaultOrdering;
 	protected Boolean indirectCollection;
 
-	/**
-	 * The elementLabel defines the name to be used for a single object within the collection.
-	 * 
-	 * For example: "Address" may be the name of one object within the "Addresses" collection.
-	 */
+    /**
+    * The elementLabel defines the name to be used for a single object within the collection.
+    *
+    * <p>
+    * For example: "Address" may be the name of one object within the "Addresses" collection.
+    * </p>
+    */
     @Override
 	public String getElementLabel() {
 		if (elementLabel == null) {
@@ -45,10 +56,14 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
         return elementLabel;
     }
 
+    /**
+    * Sets name used for single object within collection.
+    *
+    * @param elementLabel single object name
+    */
     public void setElementLabel(String elementLabel) {
         this.elementLabel = elementLabel;
     }
-
 
 	@Override
 	public Long getMinItems() {
@@ -61,10 +76,18 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
 		return null;
     }
 
+    /**
+    * Sets minimum items in collection.
+    *
+    * @param minOccurs minimum items in collection.
+    */
 	public void setMinItemsInCollection(Long minOccurs) {
 		this.minItems = minOccurs;
     }
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Long getMaxItems() {
 		if (maxItems != null) {
@@ -76,10 +99,18 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
 		return null;
     }
 
+    /**
+    * Sets maximum items in collection.
+    *
+    * @param maxOccurs maximum items in collection.
+    */
 	public void setMaxItemsInCollection(Long maxOccurs) {
 		this.maxItems = maxOccurs;
     }
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectCollectionSortAttribute> getDefaultOrdering() {
 		if (defaultOrdering != null) {
@@ -91,11 +122,19 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
 		return Collections.emptyList();
 	}
 
+    /**
+    * Sets attribute that the default order of the collection.
+    *
+    * @param defaultCollectionOrdering attribute name
+    */
 	public void setDefaultCollectionOrderingAttributeNames(
 			List<DataObjectCollectionSortAttribute> defaultCollectionOrdering) {
 		this.defaultOrdering = defaultCollectionOrdering;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isIndirectCollection() {
 		if (indirectCollection != null) {
@@ -107,10 +146,20 @@ public class DataObjectCollectionImpl extends MetadataChildBase implements DataO
 		return false;
 	}
 
+    /**
+    * Sets whether linked item is used.
+    *
+    * @param indirectCollection whether link item used.
+    */
 	public void setIndirectCollection(boolean indirectCollection) {
 		this.indirectCollection = indirectCollection;
 	}
 
+    /**
+    * Gets the embedded collection.
+    *
+    * @return the embedded collection, if it exists.
+    */
 	public DataObjectCollection getEmbeddedCollection() {
 		return embeddedCollection;
 	}

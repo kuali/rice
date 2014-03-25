@@ -24,9 +24,9 @@ package org.kuali.rice.krad.data.jpa;
 public interface FilterValue {
 
     /**
-     * Gets the value that has been dynamically generated.
+     * Gets the value that has been dynamically generated
      *
-     * @return the value that has been dynamically generated.
+     * @return the value that has been dynamically generated
      */
     public abstract Object getValue();
 }

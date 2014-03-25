@@ -18,6 +18,9 @@ package org.kuali.rice.krad.data.metadata.impl;
 import org.kuali.rice.krad.data.metadata.DataObjectCollectionSortAttribute;
 import org.kuali.rice.krad.data.metadata.SortDirection;
 
+/**
+* {@inheritDoc}
+*/
 public class DataObjectCollectionSortAttributeImpl implements DataObjectCollectionSortAttribute {
 	private static final long serialVersionUID = 2221451853788207680L;
 
@@ -33,24 +36,43 @@ public class DataObjectCollectionSortAttributeImpl implements DataObjectCollecti
 		this.sortDirection = sortDirection;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String getAttributeName() {
 		return attributeName;
 	}
 
+    /**
+    * Sets attribute name.
+    *
+    * @param attributeName attribute name
+    */
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public SortDirection getSortDirection() {
 		return sortDirection;
 	}
 
+    /**
+    * Sets sort direction.
+    *
+    * @param sortDirection sort direction.
+    */
 	public void setSortDirection(SortDirection sortDirection) {
 		this.sortDirection = sortDirection;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

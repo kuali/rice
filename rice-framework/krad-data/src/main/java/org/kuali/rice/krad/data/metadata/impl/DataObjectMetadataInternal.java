@@ -23,7 +23,6 @@ import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
  * to expose on our public interfaces.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public interface DataObjectMetadataInternal extends DataObjectMetadata {
 	/**
@@ -33,5 +32,10 @@ public interface DataObjectMetadataInternal extends DataObjectMetadata {
 	 */
 	DataObjectMetadataInternal getEmbedded();
 
+    /**
+    * Sets the embedded DataObjectMetadata.
+    *
+    * @param embedded or null
+    */
 	void setEmbedded(DataObjectMetadataInternal embedded);
 }

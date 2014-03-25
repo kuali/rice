@@ -22,8 +22,6 @@ import org.kuali.rice.krad.data.provider.CompositeMetadataProvider;
  * or reference is encountered during the merging performed by the {@link CompositeMetadataProvider}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
-
- * 
  */
 public enum MetadataMergeAction {
 	/**

@@ -27,13 +27,16 @@ import java.util.Set;
 
 /**
  * Base implementation class for attribute metadata for data object classes.
- * 
+ *
+ * <p>
  * This implementation supports "chaining" for most attributes. That is, if the value for a property is defined locally,
  * it will me used. If unset (null) it will, if there is an {@link #embeddedAttribute}, request it from that
  * DataObjectAttribute. (This could be a recursive operation if multiple metadata providers are chained.)
- * 
+ * </p>
+ * <p>
  * If the value is unset and there is no embedded attribute, most methods will return a non-null default value.
- * 
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DataObjectAttributeImpl extends MetadataCommonBase implements DataObjectAttributeInternal {
@@ -68,6 +71,9 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	
 	protected Set<UifDisplayHint> displayHints;
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String getDisplayAttributeName() {
 		if (displayAttributeName != null) {
@@ -79,6 +85,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return getName();
 	}
 
+    /**
+    * Sets the attribute display name.
+    *
+    * @param displayAttributeName the attribute name.
+    */
 	public void setDisplayAttributeName(String displayAttributeName) {
 		if (StringUtils.isBlank(displayAttributeName)) {
 			displayAttributeName = null;
@@ -86,6 +97,9 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		this.displayAttributeName = displayAttributeName;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isCaseInsensitive() {
 		if (caseInsensitive != null) {
@@ -97,10 +111,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return false;
 	}
 
+    /**
+    * Sets value that determines whether attribute is case insensitive.
+    *
+    * @param caseInsensitive whether attribute is case insensitive.
+    */
 	public void setCaseInsensitive(boolean caseInsensitive) {
 		this.caseInsensitive = caseInsensitive;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isForceUppercase() {
 		if (forceUppercase != null) {
@@ -112,10 +134,19 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return false;
 	}
 
+
+    /**
+    * Determines if attribute should be forced to upper case.
+    *
+    * @param forceUppercase whether attribute should be forced to upper.
+    */
 	public void setForceUppercase(boolean forceUppercase) {
 		this.forceUppercase = forceUppercase;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public PropertyEditor getPropertyEditor() {
 		if (propertyEditor != null) {
@@ -127,9 +158,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+     * Sets the property editor used when loading data.
+     *
+     * @param propertyEditor determines formats when loading data.
+     */
 	public void setPropertyEditor(PropertyEditor propertyEditor) {
 		this.propertyEditor = propertyEditor;
 	}
+
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public KeyValuesFinder getValidValues() {
 		if (validValues != null) {
@@ -141,9 +181,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets keyValueFinder used for dropdown.
+    *
+    * @param validValues dropdown keyValueFinder.
+    */
 	public void setValidValues(KeyValuesFinder validValues) {
 		this.validValues = validValues;
 	}
+
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public DataType getDataType() {
 		if (dataType != null) {
@@ -154,10 +203,19 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		}
 		return DataType.STRING;
 	}
+
+    /**
+    * Sets KRAD data type.
+    *
+    * @param dataType KRAD derived data type.
+    */
 	public void setDataType(DataType dataType) {
 		this.dataType = dataType;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -198,6 +256,9 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return builder.toString();
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Long getMaxLength() {
 		if (maxLength != null) {
@@ -209,15 +270,26 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets max length of attribute.
+    *
+    * @param maxLength attribute max length.
+    */
 	public void setMaxLength(Long maxLength) {
 		this.maxLength = maxLength;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public DataObjectAttribute getEmbeddedAttribute() {
 		return embeddedAttribute;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public void setEmbeddedAttribute(DataObjectAttribute embeddedAttribute) {
 		// protect against embedding itself
@@ -231,6 +303,9 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		setEmbeddedCommonMetadata(embeddedAttribute);
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isRequired() {
 		if (required != null) {
@@ -242,10 +317,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return false;
 	}
 
+    /**
+    * Set whether attribute is required.
+    *
+    * @param required attribute required flag.
+    */
 	public void setRequired(boolean required) {
 		this.required = required;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String getValidCharactersConstraintBeanName() {
 		if (validCharactersConstraintBeanName != null) {
@@ -257,10 +340,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return validCharactersConstraintBeanName;
 	}
 
+    /**
+    * Sets valid character constraint bean name.
+    *
+    * @param validCharactersConstraintBeanName character constraint bean name.
+    */
 	public void setValidCharactersConstraintBeanName(String validCharactersConstraintBeanName) {
 		this.validCharactersConstraintBeanName = validCharactersConstraintBeanName;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Class<?> getOwningType() {
 		if (owningType != null) {
@@ -272,10 +363,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets the data object type to which this attribute belongs.
+    *
+    * @param owningType data object type to which this attribute belongs.
+    */
 	public void setOwningType(Class<?> owningType) {
 		this.owningType = owningType;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isPersisted() {
 		if (persisted != null) {
@@ -287,10 +386,19 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return true;
 	}
 
+    /**
+    * Sets flag whether object is persisted.
+    *
+    * @param persisted flag whether object is persisted.
+    */
 	public void setPersisted(boolean persisted) {
 		this.persisted = persisted;
 	}
 
+    /**
+    * Determines type of class.
+    *
+    */
 	public Class<?> getType() {
 		if (type != null) {
             return type;
@@ -298,10 +406,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
         return String.class;
 	}
 
+    /**
+    * Sets unknown class in order to determine type.
+    *
+    * @param javaType unknown class.
+    */
 	public void setType(Class<?> javaType) {
 		this.type = javaType;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Class<?> getInheritedFromType() {
 		if (inheritedFromType != null) {
@@ -313,10 +429,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets unknown class to determine if inherited.
+    *
+    * @param inheritedFromType unknown class.
+    */
 	public void setInheritedFromType(Class<?> inheritedFromType) {
 		this.inheritedFromType = inheritedFromType;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String getInheritedFromAttributeName() {
 		if (inheritedFromAttributeName != null) {
@@ -328,10 +452,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets data object name to determine if inherited.
+    *
+    * @param inheritedFromAttributeName name of attribute.
+    */
 	public void setInheritedFromAttributeName(String inheritedFromAttributeName) {
 		this.inheritedFromAttributeName = inheritedFromAttributeName;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public String getInheritedFromParentAttributeName() {
 		if (inheritedFromParentAttributeName != null) {
@@ -343,15 +475,26 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets parent data object name to determine if inherited.
+    *
+    * @param inheritedFromParentAttributeName name of attribute.
+    */
 	public void setInheritedFromParentAttributeName(String inheritedFromParentAttributeName) {
 		this.inheritedFromParentAttributeName = inheritedFromParentAttributeName;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isInherited() {
 		return getInheritedFromAttributeName() != null;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public DataObjectAttribute getOriginalDataObjectAttribute() {
 		if (embeddedAttribute == null) {
@@ -360,6 +503,9 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return embeddedAttribute.getOriginalDataObjectAttribute();
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public Long getMinLength() {
 		if (minLength != null) {
@@ -371,10 +517,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return null;
 	}
 
+    /**
+    * Sets minimum length of attribute.
+    *
+    * @param minLength minimum length value.
+    */
 	public void setMinLength(Long minLength) {
 		this.minLength = minLength;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean isSensitive() {
 		if (sensitive != null) {
@@ -386,10 +540,18 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return false;
 	}
 
+    /**
+    * Sets whether sensitive.
+    *
+    * @param sensitive whether attribute is sensitive.
+    */
 	public void setSensitive(boolean sensitive) {
 		this.sensitive = sensitive;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
 	public Set<UifDisplayHint> getDisplayHints() {
 		if (displayHints != null) {
@@ -401,6 +563,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		return Collections.emptySet();
 	}
 
+    /**
+    * Sets UIF display hints.
+    *
+    * @param displayHints UIF display hints.
+    */
 	public void setDisplayHints(Set<UifDisplayHint> displayHints) {
 		this.displayHints = displayHints;
 	}

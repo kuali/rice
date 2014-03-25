@@ -18,21 +18,36 @@ package org.kuali.rice.krad.data.metadata;
 import java.io.Serializable;
 
 /**
- * Represents a relationship between a parent and child attribute. Used in the context of a {@link MetadataChild}
- * object.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
+* Parent and child attribute relationship.
+*
+* <p>
+* Represents a relationship between a parent and child attribute. Used in the context of a {@link MetadataChild}
+* object.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public interface DataObjectAttributeRelationship extends Serializable {
 
-	/**
-	 * The property on the "parent" data object.
-	 */
-	String getParentAttributeName();
+    /**
+    * Gets attribute name of parent.
+    *
+    * <p>
+    * The property on the "parent" data object.
+    * </p>
+    *
+    * @return attribute name of parent
+    */
+    String getParentAttributeName();
 
-	/**
-	 * The matching property on the "child", usually part of the child data object's primary key.
-	 */
-	String getChildAttributeName();
-
+    /**
+    * Gets matching child property.
+    *
+    * <p>
+    * The matching property on the "child", usually part of the child data object's primary key.
+    * </p>
+    *
+    * @return matching child property
+    */
+    String getChildAttributeName();
 }

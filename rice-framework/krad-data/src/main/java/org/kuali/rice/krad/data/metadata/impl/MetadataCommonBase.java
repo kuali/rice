@@ -154,6 +154,11 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 		return builder.toString();
 	}
 
+    /**
+    * Parses the label from the property name.
+    *
+    * @param propertyName the full property name including separators
+    */
 	protected String getLabelFromPropertyName(String propertyName) {
 		// We only want to include the component after the last property separator
 		if (propertyName.contains(".")) {
@@ -192,6 +197,16 @@ public abstract class MetadataCommonBase implements MetadataCommonInternal {
 		this.mergeAction = mergeAction;
 	}
 
+    /**
+    * Merges multiple lists into one.
+    *
+    * <p>
+    *     Merges embedded and locallists.
+    * </p>
+    *
+    * @param embeddedList the embedded list.
+    * @param localList the local list.
+    */
 	protected <T extends MetadataCommon> List<T> mergeLists(List<T> embeddedList, List<T> localList) {
 		if (localList == null) {
 			return new ArrayList<T>(embeddedList);

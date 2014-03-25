@@ -33,8 +33,10 @@ import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 
 /**
  * Base implementation class for the metadata related to the data object as a whole.
- * 
+ *
+ * <p>
  * Contains lists of all child elements.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -79,16 +81,27 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	public DataObjectMetadataImpl() {
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Object getUniqueKeyForMerging() {
 		return type;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Class<?> getType() {
 		return type;
 	}
 
+    /**
+    * Sets unknown class to determine type.
+    *
+    * @param type unknown class
+    */
 	public void setType(Class<?> type) {
 		if (type == null) {
 			throw new IllegalArgumentException("The data object type may not be set to null.");
@@ -96,6 +109,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		this.type = type;
 	}
 
+    /**
+    * Gets type based on unknown class.
+    *
+    * @return class type or null
+    */
 	public String getTypeClassName() {
 		if (type == null) {
 			return null;
@@ -105,6 +123,8 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 	/**
 	 * This is really a helper method for cases where these objects may need to be built up via Spring XML.
+     *
+     * @param typeClassName class type
 	 */
 	public void setTypeClassName(String typeClassName) {
         try {
@@ -115,6 +135,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
         }
     }
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<String> getPrimaryKeyAttributeNames() {
 		if (primaryKeyAttributeNames != null) {
@@ -126,6 +149,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return Collections.emptyList();
 	}
 
+    /**
+    * Sets list of primary attribute names which make up key.
+    *
+    * @param primaryKeyAttributeNames list of attribute names.
+    */
 	public void setPrimaryKeyAttributeNames(List<String> primaryKeyAttributeNames) {
 		if (primaryKeyAttributeNames == null) {
 			primaryKeyAttributeNames = Collections.emptyList();
@@ -133,6 +161,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		this.primaryKeyAttributeNames = Collections.unmodifiableList( primaryKeyAttributeNames );
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<String> getBusinessKeyAttributeNames() {
 		// If we have business keys, use that
@@ -150,6 +181,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return Collections.emptyList();
 	}
 
+    /**
+    * Sets list of attribute names that make up business key.
+    *
+    * @param businessKeyAttributeNames attribute names
+    */
 	public void setBusinessKeyAttributeNames(List<String> businessKeyAttributeNames) {
 		if (businessKeyAttributeNames == null) {
 			businessKeyAttributeNames = Collections.emptyList();
@@ -157,11 +193,17 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		this.businessKeyAttributeNames = Collections.unmodifiableList(businessKeyAttributeNames);
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Boolean hasDistinctBusinessKey() {
 		return !getPrimaryKeyAttributeNames().equals(getBusinessKeyAttributeNames());
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String getPrimaryDisplayAttributeName() {
 		if (primaryDisplayAttributeName == null && !getBusinessKeyAttributeNames().isEmpty()) {
@@ -188,6 +230,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		// attribute of the PK list on the embedding object
 	}
 
+    /**
+    * Sets list of attribute names used for display.
+    *
+    * @param primaryDisplayAttributeName list of attribute names.
+    */
 	public void setPrimaryDisplayAttributeName(String primaryDisplayAttributeName) {
 		if (StringUtils.isBlank(primaryDisplayAttributeName)) {
 			this.primaryDisplayAttributeName = null;
@@ -198,6 +245,17 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		}
 	}
 
+    /**
+    * Orders attributes by defined order.
+    *
+    * <p>
+    *     First looks to see if attributes are inherited, then looks at the declared fields based on the attribute
+    *     type.
+    * </p>
+    *
+    * @param attributes list of data object attributes
+    * @return re-ordered list of data object attributes
+    */
 	public List<DataObjectAttribute> orderAttributesByDefinedOrder(List<DataObjectAttribute> attributes) {
 		List<DataObjectAttribute> sorted = new ArrayList<DataObjectAttribute>(attributes.size());
 		Map<String, DataObjectAttribute> keyedAttributes = new HashMap<String, DataObjectAttribute>(attributes.size());
@@ -231,6 +289,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 	List<DataObjectAttribute> mergedAttributes = null;
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectAttribute> getAttributes() {
 		// We have a local list and no overrides - return the existing list
@@ -255,6 +316,15 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		// return mergedAttributes;
 	}
 
+    /**
+    * Sets attributes.
+     *
+     * <p>
+     *     Looks at merge actions when adding, so not all attributes are added.
+     * </p>
+    *
+    * @param attributes list of data object attributes
+    */
 	public void setAttributes(List<DataObjectAttribute> attributes) {
 		if (attributes == null) {
 			attributes = Collections.emptyList();
@@ -279,6 +349,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		}
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectCollection> getCollections() {
 		// We have a local list and no overrides - return the existing list
@@ -291,6 +364,15 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return Collections.emptyList();
 	}
 
+    /**
+    * Sets collections.
+    *
+    * <p>
+    *     Looks at merge actions when adding, so not all collections are added.
+    * </p>
+    *
+    * @param collections list of data object collections or null
+    */
 	public void setCollections(List<DataObjectCollection> collections) {
 		if (collections == null) {
 			this.collections = null;
@@ -315,6 +397,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		}
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectRelationship> getRelationships() {
 		// We have a local list and no overrides - return the existing list
@@ -327,6 +412,15 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return Collections.emptyList();
 	}
 
+    /**
+    * Sets relationships.
+    *
+    * <p>
+    *     Looks at merge actions and whether the relationship is empty when adding, so not all relationships are added.
+    * </p>
+    *
+    * @param relationships list of data object relationships or null
+    */
 	public void setRelationships(List<DataObjectRelationship> relationships) {
 		if (relationships == null) {
 			this.relationships = null;
@@ -377,6 +471,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		attributeToRelationshipMap = Collections.unmodifiableMap(attributeToRelationshipMap);
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public DataObjectAttribute getAttribute(String attributeName) {
 		if (attributeName == null) {
@@ -399,6 +496,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return attribute;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public DataObjectCollection getCollection(String collectionName) {
 		if (collectionName == null) {
@@ -421,6 +521,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return collection;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public DataObjectRelationship getRelationship(String relationshipName) {
 		if (relationshipName == null) {
@@ -443,6 +546,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return relationship;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public List<DataObjectRelationship> getRelationshipsInvolvingAttribute(String attributeName) {
 		// somewhat complex, since it returns a list of all possible relationships
@@ -477,6 +583,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return new ArrayList<DataObjectRelationship>(relationships.values());
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public DataObjectRelationship getRelationshipByLastAttributeInRelationship(String attributeName) {
 		// this returns a single record, so we can just use the first matching one we find
@@ -495,29 +604,49 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return relationship;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public DataObjectMetadataInternal getEmbedded() {
 		return embedded;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public void setEmbedded(DataObjectMetadataInternal embedded) {
 		this.embedded = embedded;
 		setEmbeddedCommonMetadata(embedded);
 	}
 
-	/**
-	 * Helper property to allow identification of the source of metadata. Value is transient, so it will not survive
-	 * serialization.
-	 */
+    /**
+    * Gets the metadata source.
+    *
+    * <p>
+    * Helper property to allow identification of the source of metadata. Value is transient, so it will not survive
+    * serialization.
+    * </p>
+    *
+    * @return metadata source
+    */
 	public String getProviderName() {
 		return providerName;
 	}
 
+    /**
+    * Sets provider name.
+    *
+    * @param providerName name of provider
+    */
 	public void setProviderName(String providerName) {
 		this.providerName = providerName;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -554,6 +683,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return builder.toString();
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean isSupportsOptimisticLocking() {
 		if (supportsOptimisticLocking != null) {
@@ -565,10 +697,18 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return false;
 	}
 
+    /**
+    * Sets whether optimistic locking is supported.
+    *
+    * @param supportsOptimisticLocking whether optimistic locking is supported
+    */
 	public void setSupportsOptimisticLocking(boolean supportsOptimisticLocking) {
 		this.supportsOptimisticLocking = supportsOptimisticLocking;
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public boolean shouldAutoCreateUifViewOfType(UifAutoCreateViewType viewType) {
 		if (getAutoCreateUifViewTypes() == null) {
@@ -578,6 +718,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 				|| getAutoCreateUifViewTypes().contains(UifAutoCreateViewType.ALL);
 	}
 
+    /**
+    * {@inheritDoc}
+    */
 	@Override
 	public Collection<UifAutoCreateViewType> getAutoCreateUifViewTypes() {
 		if (autoCreateUifViewTypes != null) {
@@ -589,14 +732,29 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		return null;
 	}
 
+    /**
+    * Sets list of UIF view types that will be auto created.
+    *
+    * @param autoCreateUifViewTypes UIF view types
+    */
 	public void setAutoCreateUifViewTypes(Collection<UifAutoCreateViewType> autoCreateUifViewTypes) {
 		this.autoCreateUifViewTypes = autoCreateUifViewTypes;
 	}
 
+    /**
+    * Gets sorted attribute list.
+    *
+    * @return ordered attribute list
+    */
 	public List<String> getOrderedAttributeList() {
 		return orderedAttributeList;
 	}
 
+    /**
+    * Sets sorted attribute list.
+    *
+    * @param orderedAttributeList sorted attributes
+    */
 	public void setOrderedAttributeList(List<String> orderedAttributeList) {
 		this.orderedAttributeList = orderedAttributeList;
 	}

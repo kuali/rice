@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 /**
  * MetadataRepository implementation backed by the ProviderRegistry
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MetadataRepositoryImpl implements MetadataRepository {
 

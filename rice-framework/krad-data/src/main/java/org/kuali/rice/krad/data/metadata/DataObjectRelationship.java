@@ -17,9 +17,15 @@ package org.kuali.rice.krad.data.metadata;
 
 
 /**
- * Represents a relationship between two data objects. The parent {@link MetadataChild} interface contains all of the
- * needed properties. This interface is here for future expansion.
- */
+* Relationship between two data objects.
+*
+* <p>
+* Represents a relationship between two data objects. The parent {@link MetadataChild} interface contains all of the
+* needed properties. This interface is here for future expansion.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public interface DataObjectRelationship extends MetadataChild {
 
 }

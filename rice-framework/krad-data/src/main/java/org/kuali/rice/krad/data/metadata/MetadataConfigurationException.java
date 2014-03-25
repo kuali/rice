@@ -15,21 +15,50 @@
  */
 package org.kuali.rice.krad.data.metadata;
 
+/**
+ * Metadata exception handling
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class MetadataConfigurationException extends RuntimeException {
 	private static final long serialVersionUID = 3518029933066928419L;
 
+    /**
+    * Metadata exception.
+    *
+    * @return exception
+    */
 	public MetadataConfigurationException() {
 		super();
 	}
 
+    /**
+    * Metadata config exception.
+    *
+    * @param message error message
+    * @return exception
+    */
 	public MetadataConfigurationException(String message) {
 		super(message);
 	}
 
+    /**
+    * Metadata config exception.
+    *
+    * @param message error message
+    * @param cause error cause
+    * @return exception
+    */
 	public MetadataConfigurationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+    /**
+    * Metadata config exception.
+    *
+    * @param cause error cause
+    * @return exception
+    */
 	public MetadataConfigurationException(Throwable cause) {
 		super(cause);
 	}

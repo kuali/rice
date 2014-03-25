@@ -22,128 +22,198 @@ import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 
 
 /**
- * Metadata for a given data object type. References the data object class and contains lists of all the attributes,
- * collections, and relationships within the class.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
+* Metadata for a given data object type.
+*
+* <p>
+* References the data object class and contains lists of all the attributes, collections, and relationships within
+* the class.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public interface DataObjectMetadata extends MetadataCommon {
 
-	/**
-	 * The type represented by this metadata object. Usually this will simply contain the class name created
-	 * by the persistence layer when it is loaded from the database.
-	 * 
-	 * Will never return null.
-	 */
+    /**
+    * Gets metadata object type.
+    *
+    * <p>
+    * The type represented by this metadata object. Usually this will simply contain the class name created
+    * by the persistence layer when it is loaded from the database.
+    * </p>
+    *
+    * @return metadata object type. Will never return null.
+    */
 	Class<?> getType();
 
-	/**
-	 * Get all the attributes defined on the data object in the order given by the MetadataProvider. This may or may not
-	 * be the same as the backing object's (table) and is most likely the order in which they appear in the source
-	 * persistence metadata (XML or annotations)
-	 * 
-	 * Will never return null. Will return an empty list if no attributes defined.
-	 */
+    /**
+    * Gets attributes defined on the data object.
+    *
+    * <p>
+    * Gets all the attributes defined on the data object in the order given by the MetadataProvider. This may or may not
+    * be the same as the backing object's (table) and is most likely the order in which they appear in the source
+    * persistence metadata (XML or annotations).
+    * </p>
+    *
+    * @return Data object attributes. Will never return null. Will return an empty list if no attributes defined.
+    */
 	List<DataObjectAttribute> getAttributes();
 
-	/**
-	 * Get all the child collections defined on the data object in the order given by the MetadataProvider.
-	 * 
-	 * Will never return null. Will return an empty list if no collections defined.
-	 */
+    /**
+    * Gets child collections.
+    *
+    * <p>
+    * Gets all the child collections defined on the data object in the order given by the MetadataProvider.
+    * </p>
+    *
+    * @return Child collections. Will never return null. Will return an empty list if no collections defined.
+    */
 	List<DataObjectCollection> getCollections();
 
-	/**
-	 * Get all the child relationships defined on the data object in the order given by the MetadataProvider.
-	 * 
-	 * Will never return null. Will return an empty list if no relationships defined.
-	 */
+    /**
+    * Gets child relationships.
+    *
+    * <p>
+    * Gets all the child relationships defined on the data object in the order given by the MetadataProvider.
+    * </p>
+    *
+    * @return Child relationships. Will never return null. Will return an empty list if no relationships defined.
+    */
 	List<DataObjectRelationship> getRelationships();
 
-	/**
-	 * Get the named attribute's metadata from the data object.
-	 * 
-	 * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectAttribute} otherwise.
-	 */
+    /**
+    * Gets attribute metadata.
+    *
+    * <p>
+    * Get the named attribute's metadata from the data object.
+    * </p>
+    *
+    * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectAttribute} otherwise.
+    */
 	DataObjectAttribute getAttribute(String attributeName);
 
-	/**
-	 * Get the named collection's metadata from the data object. The name is the property on the data object which holds
-	 * the {@link Collection}.
-	 * 
-	 * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectCollection} otherwise.
-	 */
+    /**
+    * Gets the named collection's metadata from the data object.
+    *
+    * <p>
+    * The name is the property on the data object which holds
+    * the {@link Collection}.
+    * </p>
+    *
+    * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectCollection} otherwise.
+    */
 	DataObjectCollection getCollection(String collectionName);
 
-	/**
-	 * Get the named relationship's metadata from the data object. The name is the property on the data object which
-	 * holds the related business object's instance.
-	 * 
-	 * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectRelationship} otherwise.
-	 */
+    /**
+    * Gets the named relationship's metadata from the data object.
+    *
+    * <p>
+    * The name is the property on the data object which holds the related business object's instance.
+    * </p>
+    *
+    * @return <b>null</b> if the attributeName does not exist, the associated {@link DataObjectRelationship} otherwise.
+    */
 	DataObjectRelationship getRelationship(String relationshipName);
 
-	/**
-	 * Returns all relationships of which the given attribute is part of the foreign key relationship.
-	 * 
-	 * @return The list of relationship metadata objects or an empty list if none found.
-	 */
+    /**
+    * Gets attribute relationships.
+    *
+    * <p>
+    * Returns all relationships of which the given attribute is part of the foreign key relationship.
+    * </p>
+    *
+    * @return The list of relationship metadata objects or an empty list if none found.
+    */
 	List<DataObjectRelationship> getRelationshipsInvolvingAttribute(String attributeName);
 
 	/**
-	 * Returns a single relationship for which the given attribute is the last in the foreign key relationship.
-	 * 
+	 * Gets relationship of last attribute.
+     *
+     * <p>
+     * Returns a single relationship for which the given attribute is the last in the foreign key relationship.
+	 * </p>
+     *
 	 * @return <b>null</b> if no relationship's foreign key set ends wit the given field. The
 	 *         {@link DataObjectRelationship} otherwise.
 	 */
 	DataObjectRelationship getRelationshipByLastAttributeInRelationship(String attributeName);
 
-	/**
-	 * Get the list of primary key attribute names for this data object.
-	 */
+    /**
+    * Get the list of primary key attribute names for this data object.
+    *
+    * @return primary key attribute names.
+    */
     List<String> getPrimaryKeyAttributeNames();
 
-	/**
-	 * List of attribute names which form a "user friendly" key. (As opposed to a sequence number as used by some parts
-	 * of the system.)
-	 * 
-	 * An example here would be the KIM Role object where the Role ID is the primary key, but the Namespace and Name
-	 * properties form the user-visible and enterable key.
-	 * 
-	 * @return a list containing the business key attributes names for the data object
-	 */
+    /**
+    * List of attribute names which form a "user friendly" key. (As opposed to a sequence number as used by some parts
+    * of the system).
+    *
+    * <p>
+    * An example here would be the KIM Role object where the Role ID is the primary key, but the Namespace and Name
+    * properties form the user-visible and enterable key.
+    * </p>
+    *
+    * @return a list containing the business key attributes names for the data object.
+    */
 	List<String> getBusinessKeyAttributeNames();
 
-	/**
-	 * Returns true if the list of primary key names and business key attribute names are different.
-	 * 
-	 * @return true if the list of primary key names and business key attributes are different, false if they are the
-     *         same
-	 */
+    /**
+    * Returns true if the list of primary key names and business key attribute names are different.
+    *
+    * @return true if the list of primary key names and business key attributes are different, false if they are the
+    *         same.
+    */
 	Boolean hasDistinctBusinessKey();
 
     /**
+     * Gets primary display attribute name
+     *
+     * <p>
      * This is the field on the object which best represents it on displays.  It will be used to build
      * inquiry links and determine where to place quickfinder links.  Usually this will be the the primary key
      * or the last field of the primary key if there are multiple fields.
-     *
+     * </p>
+     * <p>
      * If not specified by the provider, the base implementation will default it to the last attribute in the
      * primaryKeyAttributeNames list.
+     * </p>
      *
-     * @return the name of the attribute to use for primary display purposes
+     * @return the name of the attribute to use for primary display purposes.
      */
     String getPrimaryDisplayAttributeName(); // KNS: titleAttribute
 
-	/**
-	 * Returns true if the underlying ORM tool performs optimistic locking checks on this object before saving. Under
-	 * the KNS, this was done via the versionNumber property and appropriate OJB configuration. In JPA, this is linked
-	 * to the @Version annotation.
-	 * 
-	 * @return true if this data object is configured for optimistic locking
-	 */
+    /**
+    * Determines whether optimistic locking is supported.
+    *
+    * <p>
+    * Returns true if the underlying ORM tool performs optimistic locking checks on this object before saving. Under
+    * the KNS, this was done via the versionNumber property and appropriate OJB configuration. In JPA, this is linked
+    * to the @Version annotation.
+    * </p>
+    *
+    * @return true if this data object is configured for optimistic locking.
+    */
 	boolean isSupportsOptimisticLocking();
 
+    /**
+    * Gets auto create uif view types.
+    *
+    * <p>
+    * Returns collections of uif view types that should be auto created.
+    * </p>
+    *
+    * @return collection of uif view types.
+    */
 	Collection<UifAutoCreateViewType> getAutoCreateUifViewTypes();
 
+    /**
+    * Determines where view type should be auto created.
+    *
+    * <p>
+    * Determines whether the specified uif view type can be auto created.
+    * </p>
+    *
+    * @return true if this uif view type should be auto created.
+    */
 	boolean shouldAutoCreateUifViewOfType(UifAutoCreateViewType viewType);
 }

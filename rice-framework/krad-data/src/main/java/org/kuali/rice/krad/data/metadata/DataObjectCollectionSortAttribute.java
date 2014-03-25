@@ -18,20 +18,36 @@ package org.kuali.rice.krad.data.metadata;
 import java.io.Serializable;
 
 /**
- * Represents a single field on which to sort a {@link DataObjectCollection} within a {@link DataObjectMetadata}.
- * 
- * The collection may hold multiple of these objects to support sorting by multiple fields.
- */
+* Represents a single field on which to sort a {@link DataObjectCollection} within a {@link DataObjectMetadata}.
+*
+* <p>
+* The collection may hold multiple of these objects to support sorting by multiple fields.
+* </p>
+*
+* @author Kuali Rice Team (rice.collab@kuali.org)
+*/
 public interface DataObjectCollectionSortAttribute extends Serializable {
 
-	/**
-	 * The attribute name on which to sort the collection.
-	 */
+    /**
+    * Gets attribute name.
+    *
+    * <p>
+    * The attribute name on which to sort the collection.
+    * </p>
+    *
+    * @return attribute name
+    */
 	String getAttributeName();
 
-	/**
-	 * For this attribute, which way should we sort?
-	 */
+    /**
+    * Gets the attribute sort.
+    *
+    * <p>
+    * For this attribute, which way should we sort?.
+    * </p>
+    *
+    * @return attribute sort
+    */
 	SortDirection getSortDirection();
 
 }

@@ -76,7 +76,6 @@ import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.OptimisticLockingFailureException;
 
-
 /**
  * Service implementation for the Document structure. It contains all of the document level type of
  * processing and calling back into documents for various centralization of functionality. This is the default,

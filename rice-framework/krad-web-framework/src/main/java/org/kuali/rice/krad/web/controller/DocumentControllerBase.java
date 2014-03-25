@@ -74,13 +74,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Base controller class for all KRAD <code>DocumentView</code> screens working
- * with <code>Document</code> models
+ * Base controller class for all KRAD document view screens working with document models.
  *
- * <p>
- * Provides default controller implementations for the standard document actions including: doc handler
- * (retrieve from doc search and action list), save, route (and other KEW actions)
- * </p>
+ * <p>Provides default controller implementations for the standard document actions including: doc handler
+ * (retrieve from doc search and action list), save, route (and other KEW actions)</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

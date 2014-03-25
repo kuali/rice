@@ -37,7 +37,7 @@ public interface DocumentService {
      * @param documentHeaderId
      * @return true if a document with the given documentHeaderId exists
      */
-    public boolean documentExists(String documentHeaderId);
+    boolean documentExists(String documentHeaderId);
 
     /**
      * get a new blank document instance based on the document type name
@@ -45,7 +45,7 @@ public interface DocumentService {
      * @param documentTypeName
      * @return new document instance
      */
-    public Document getNewDocument(String documentTypeName) throws WorkflowException;
+    Document getNewDocument(String documentTypeName) throws WorkflowException;
 
     /**
      * get a new blank document instance having the given Document class
@@ -53,7 +53,7 @@ public interface DocumentService {
      * @param documentClass
      * @return new document instance
      */
-    public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
+    Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
 
     /**
      * get a new blank document instance based on the document type name. The principal name
@@ -63,7 +63,7 @@ public interface DocumentService {
      * @param initiatorPrincipalNm
      * @return new document instance
      */
-    public Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException;
+    Document getNewDocument(String documentTypeName, String initiatorPrincipalNm) throws WorkflowException;
 
     /**
      * get a document based on the document header id which is the primary key for all document types
@@ -71,16 +71,19 @@ public interface DocumentService {
      * @param documentHeaderId
      * @return document, by id
      */
-    public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
+    Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException;
+
     /**
-     * get a document based on the document header id which is the primary key for all document types.  Using this method
-     * does not require that GlobalVariables.getUserSession() be populated.  Therefore, this method can be used when a HTTP request
+     * get a document based on the document header id which is the primary key for all document types.  Using this
+     * method
+     * does not require that GlobalVariables.getUserSession() be populated.  Therefore, this method can be used when a
+     * HTTP request
      * is not being processed (e.g. during workflow indexing/post-processing).
      *
      * @param documentHeaderId
      * @return document, by id
      */
-    public Document getByDocumentHeaderIdSessionless(String documentHeaderId) throws WorkflowException;
+    Document getByDocumentHeaderIdSessionless(String documentHeaderId) throws WorkflowException;
 
     /**
      * This method retrieves a list of fully-populated documents given a list of document header id values.
@@ -90,32 +93,38 @@ public interface DocumentService {
      * @return List of fully-populated documents
      * @throws WorkflowException
      */
-    public List<Document> getDocumentsByListOfDocumentHeaderIds(Class<? extends Document> documentClass, List<String> documentHeaderIds) throws WorkflowException;
+    List<Document> getDocumentsByListOfDocumentHeaderIds(Class<? extends Document> documentClass,
+            List<String> documentHeaderIds) throws WorkflowException;
 
     /**
-     *
-     * This method is to allow for documents to be updated which is currently used to update the document status as well as to allow
+     * This method is to allow for documents to be updated which is currently used to update the document status as well
+     * as to allow
      * for locked docs to be unlocked
      *
      * @param document
      */
-    public Document updateDocument(Document document);
+    Document updateDocument(Document document);
 
     /**
-     * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The convenience
+     * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The
+     * convenience
      * of this method is that the event being used is the standard SaveDocumentEvent.
      *
      * @see org.kuali.rice.krad.service.DocumentService#saveDocument(Document, Class)
      */
-    public Document saveDocument(Document document) throws WorkflowException;
+    Document saveDocument(Document document) throws WorkflowException;
 
     /**
-     * Saves the passed-in document. This will persist it both to the Kuali database, and also initiate it (if necessary) within
-     * workflow, so its available in the initiator's action list.  This method uses the passed in KualiDocumentEvent class when saving
+     * Saves the passed-in document. This will persist it both to the Kuali database, and also initiate it (if
+     * necessary) within
+     * workflow, so its available in the initiator's action list.  This method uses the passed in KualiDocumentEvent
+     * class when saving
      * the document.  The KualiDocumentEvent class must implement the {@link SaveEvent} interface.
      *
-     * Note that the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument call. These
-     * are sent to workflow on a routeDocument action, or any of the others which actually causes a routing action to happen in
+     * Note that the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument
+     * call. These
+     * are sent to workflow on a routeDocument action, or any of the others which actually causes a routing action to
+     * happen in
      * workflow.
      *
      * NOTE: This method will not check the document action flags to check if a save is valid
@@ -125,10 +134,12 @@ public interface DocumentService {
      * @return the document that was passed in
      * @throws WorkflowException
      */
-    public Document saveDocument(Document document, Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException;
+    Document saveDocument(Document document,
+            Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException;
 
     /**
-     * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally provideing a
+     * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally
+     * provideing a
      * annotation to show up in the route log for the document
      *
      * @param document
@@ -137,10 +148,12 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document routeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
+    Document routeDocument(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
     /**
-     * approve this document, optionally providing an annotation which will show up in the route log for this document for this
+     * approve this document, optionally providing an annotation which will show up in the route log for this document
+     * for this
      * action taken, and optionally providing a list of ad hoc recipients for the document
      *
      * @param document
@@ -149,10 +162,12 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document approveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
+    Document approveDocument(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
     /**
-     * approve this document as super user, optionally providing an annotation which will show up in the route log for this document
+     * approve this document as super user, optionally providing an annotation which will show up in the route log for
+     * this document
      * for this action taken
      *
      * @param document
@@ -160,10 +175,11 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException;
+    Document superUserApproveDocument(Document document, String annotation) throws WorkflowException;
 
     /**
-     * cancel this document as super user, optionally providing an annotation which will show up in the route log for this document
+     * cancel this document as super user, optionally providing an annotation which will show up in the route log for
+     * this document
      * for this action taken
      *
      * @param document
@@ -171,10 +187,11 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException;
+    Document superUserCancelDocument(Document document, String annotation) throws WorkflowException;
 
     /**
-     * disapprove this document as super user, optionally providing an annotation which will show up in the route log for this document
+     * disapprove this document as super user, optionally providing an annotation which will show up in the route log
+     * for this document
      * for this action taken
      *
      * @param document
@@ -182,10 +199,11 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
+    Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException;
 
     /**
-     * disapprove this document as super user, without saving, optionally providing an annotation which will show up in the route log for this document
+     * disapprove this document as super user, without saving, optionally providing an annotation which will show up in
+     * the route log for this document
      * for this action taken
      *
      * @param document
@@ -193,11 +211,12 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document superUserDisapproveDocumentWithoutSaving(Document document, String annotation) throws WorkflowException;
-
+    Document superUserDisapproveDocumentWithoutSaving(Document document,
+            String annotation) throws WorkflowException;
 
     /**
-     * disapprove this document, optionally providing an annotation for the disapproval which will show up in the route log for the
+     * disapprove this document, optionally providing an annotation for the disapproval which will show up in the route
+     * log for the
      * document for this action taken
      *
      * @param document
@@ -205,10 +224,11 @@ public interface DocumentService {
      * @return Document
      * @throws Exception
      */
-    public Document disapproveDocument(Document document, String annotation) throws Exception;
+    Document disapproveDocument(Document document, String annotation) throws Exception;
 
     /**
-     * cancel this document, optionally providing an annotation for the disapproval which will show up in the route log for the
+     * cancel this document, optionally providing an annotation for the disapproval which will show up in the route log
+     * for the
      * document for this action taken
      *
      * @param document
@@ -216,12 +236,15 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document cancelDocument(Document document, String annotation) throws WorkflowException;
+    Document cancelDocument(Document document, String annotation) throws WorkflowException;
 
     /**
-     * acknowledge this document, optionally providing an annotation for the acknowledgement which will show up in the route log for
-     * the document for this acknowledgement, additionally optionally provide a list of ad hoc recipients that should recieve this
-     * document. The list of ad hoc recipients for this document should have an action requested of acknowledge or fyi as all other
+     * acknowledge this document, optionally providing an annotation for the acknowledgement which will show up in the
+     * route log for
+     * the document for this acknowledgement, additionally optionally provide a list of ad hoc recipients that should
+     * recieve this
+     * document. The list of ad hoc recipients for this document should have an action requested of acknowledge or fyi
+     * as all other
      * actions requested will be discarded as invalid based on the action being taken being an acknowledgement.
      *
      * @param document
@@ -230,14 +253,20 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document acknowledgeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+    Document acknowledgeDocument(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
-     * blanket approve this document which will approve the document and stand in for an approve for all typically generated
-     * approval actions requested for this document. The user must have blanket approval authority for this document by being
-     * registered as a user in the blanket approval workgroup that is associated with this document type. Optionally an annotation
-     * can be provided which will show up for this action taken on the document in the route log. Additionally optionally provide a
-     * list of ad hoc recipients for this document, which should be restricted to actions requested of acknowledge and fyi as all
+     * blanket approve this document which will approve the document and stand in for an approve for all typically
+     * generated
+     * approval actions requested for this document. The user must have blanket approval authority for this document by
+     * being
+     * registered as a user in the blanket approval workgroup that is associated with this document type. Optionally an
+     * annotation
+     * can be provided which will show up for this action taken on the document in the route log. Additionally
+     * optionally provide a
+     * list of ad hoc recipients for this document, which should be restricted to actions requested of acknowledge and
+     * fyi as all
      * other actions requested will be discarded
      *
      * @param document
@@ -246,10 +275,12 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document blanketApproveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+    Document blanketApproveDocument(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
-     * clear the fyi request for this document, optionally providing a list of ad hoc recipients for this document, which should be
+     * clear the fyi request for this document, optionally providing a list of ad hoc recipients for this document,
+     * which should be
      * restricted to action requested of fyi as all other actions requested will be discarded
      *
      * @param document
@@ -257,7 +288,8 @@ public interface DocumentService {
      * @return document
      * @throws WorkflowException
      */
-    public Document clearDocumentFyi(Document document, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+    Document clearDocumentFyi(Document document,
+            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * Sets the title and app document id in the workflow document
@@ -265,8 +297,7 @@ public interface DocumentService {
      * @param document
      * @throws WorkflowException
      */
-    public void prepareWorkflowDocument(Document document) throws WorkflowException;
-
+    void prepareWorkflowDocument(Document document) throws WorkflowException;
 
     /**
      * This method creates a note from a given document and note text.  The resulting Note will
@@ -277,7 +308,7 @@ public interface DocumentService {
      * @param text the text value to include in the resulting note
      * @return the note that was created
      */
-    public Note createNoteFromDocument(Document document, String text);
+    Note createNoteFromDocument(Document document, String text);
 
     /**
      * Saves the notes associated with the given document if they are in a state where they can be
@@ -288,9 +319,10 @@ public interface DocumentService {
      * @param document the document for which to save notes
      * @return true if the notes were saved, false if they were not
      */
-    public boolean saveDocumentNotes(Document document);
+    boolean saveDocumentNotes(Document document);
 
-    public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+    void sendAdHocRequests(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * Builds an workflow notification request for the note and sends it to note recipient.
@@ -300,19 +332,20 @@ public interface DocumentService {
      * @param sender - user who is sending the notification
      * @throws WorkflowException
      */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
+    void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
 
     /**
-     * recall this document, optionally providing an annotation for the recall which will show up in the route log for the
+     * recall this document, optionally providing an annotation for the recall which will show up in the route log for
+     * the
      * document for this action taken
      *
-     * @since 2.1
      * @param document
      * @param annotation
      * @return document
      * @throws WorkflowException
+     * @since 2.1
      */
-    public Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
+    Document recallDocument(Document document, String annotation, boolean cancel) throws WorkflowException;
 
     /**
      * Complete action for a document
@@ -321,7 +354,8 @@ public interface DocumentService {
      * @param annotation Annotation text
      * @param adHocRecipients list of adhoc recipients
      */
-    public Document completeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
+    Document completeDocument(Document document, String annotation,
+            List adHocRecipients) throws WorkflowException;
 
     /**
      * Helper method used to save and validate a document
@@ -329,5 +363,5 @@ public interface DocumentService {
      * @param document Document
      * @param event KualiDocumentEvent
      */
-    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException;
+    Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException;
 }

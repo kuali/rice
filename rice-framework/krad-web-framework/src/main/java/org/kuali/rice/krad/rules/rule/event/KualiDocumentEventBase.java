@@ -25,6 +25,8 @@ import java.util.List;
 
 /**
  * Abstract superclass for document-related events.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     private static final Logger LOG = Logger.getLogger(KualiDocumentEventBase.class);
@@ -34,9 +36,8 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     protected Document document;
 
     /**
-     *
-     * As a general rule, business rule classes should not change the original object. This constructor was created so that
-     * PreRulesCheckEvent, a UI level rule checker, can make changes.
+     * As a general rule, business rule classes should not change the original object. This constructor was created so
+     * that PreRulesCheckEvent, a UI level rule checker, can make changes.
      *
      * @param description
      * @param errorPathPrefix
@@ -60,7 +61,6 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
 
         LOG.debug(description);
     }
-
 
     /**
      * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getDocument()
@@ -90,7 +90,6 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
         return errorPathPrefix;
     }
 
-
     /**
      * @see java.lang.Object#toString()
      */
@@ -119,8 +118,9 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
      * Provides null-safe access to the documentNumber of the given document.
      *
      * @param document
-     * @return String containing the documentNumber of the given document, or some indication of why the documentNumber isn't
-     *         accessible
+     * @return String containing the documentNumber of the given document, or some indication of why the documentNumber
+     * isn't
+     * accessible
      */
     protected static String getDocumentId(Document document) {
         String docId = "(null document)";
@@ -129,8 +129,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
             String documentNumber = document.getDocumentNumber();
             if (StringUtils.isBlank(documentNumber)) {
                 docId = "(blank " + KRADPropertyConstants.DOCUMENT_NUMBER + ")";
-            }
-            else {
+            } else {
                 docId = documentNumber;
             }
         }

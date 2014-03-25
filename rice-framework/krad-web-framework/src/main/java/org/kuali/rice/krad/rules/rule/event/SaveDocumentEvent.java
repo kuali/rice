@@ -25,12 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents the save event that is part of an eDoc in Kuali. This could be triggered when a user presses the save
- * button for a given document or it could happen when another piece of code calls the save method in the document service.
+ * Rule event generated for a save of a document instance.
  *
+ * <p>This could be triggered when a user presses the save button for a given document or it could
+ * happen when another piece of code calls the save method in the document service.</p>
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEvent {
+
     /**
      * Constructs a SaveDocumentEvent with the specified errorPathPrefix and document
      *
@@ -51,10 +54,11 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String,
+     * java.lang.String, org.kuali.rice.krad.document.Document)
      */
     public SaveDocumentEvent(String description, String errorPathPrefix, Document document) {
-	super(description, errorPathPrefix, document);
+        super(description, errorPathPrefix, document);
     }
 
     /**
@@ -84,15 +88,6 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
 
         events.addAll(getDocument().generateSaveEvents());
 
-        /*
-        if (getDocument() instanceof CashReceiptDocument) {
-            events.addAll(ruleService.generateCheckEvents((CashReceiptDocument) getDocument()));
-        }
-
-        if (getDocument() instanceof AccountingDocument) {
-            events.addAll(ruleService.generateAccountingLineEvents((AccountingDocument) getDocument()));
-        }
-        */
         return events;
     }
 }

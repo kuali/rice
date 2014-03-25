@@ -23,45 +23,45 @@ import java.util.List;
 /**
  * Parent interface of all document-related events, which are used to drive the business rules evaluation process.
  *
- *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KualiDocumentEvent {
+
     /**
      * @return Document The document associated with this event
      */
-    public Document getDocument();
+    Document getDocument();
 
     /**
      * The name of the event.
      *
      * @return String
      */
-    public String getName();
+    String getName();
 
     /**
      * A description of the event.
      *
      * @return String
      */
-    public String getDescription();
-
+    String getDescription();
 
     /**
      * @return errorPathPrefix for this event
      */
-    public String getErrorPathPrefix();
+    String getErrorPathPrefix();
 
     /**
      * Returns the interface that classes must implement to receive this event.
      *
      * @return rule interface
      */
-    public Class<? extends BusinessRule> getRuleInterfaceClass();
+    Class<? extends BusinessRule> getRuleInterfaceClass();
 
     /**
      * Validates the event has all the necessary properties.
      */
-    public void validate();
+    void validate();
 
     /**
      * Invokes the event handling method on the rule object.
@@ -69,12 +69,12 @@ public interface KualiDocumentEvent {
      * @param rule business rule
      * @return true if the rule matches
      */
-    public boolean invokeRuleMethod(BusinessRule rule);
+    boolean invokeRuleMethod(BusinessRule rule);
 
     /**
      * This will return a list of events that are spawned from this event.
      *
      * @return list of events
      */
-    public List<KualiDocumentEvent> generateEvents();
+    List<KualiDocumentEvent> generateEvents();
 }

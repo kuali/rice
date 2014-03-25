@@ -32,7 +32,7 @@ public class ReferenceAddressTypeAft extends AddressTypeAft {
     public static final String BOOKMARK_URL =
             AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Address%20Type&channelUrl=" + WebDriverUtils
                     .getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
-                    "org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo&renderReturnLink=true";
+                    "org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo&hideReturnLink=false&docFormKey=88888888&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL;
 
     @Override
     protected void clickSearch() throws InterruptedException {

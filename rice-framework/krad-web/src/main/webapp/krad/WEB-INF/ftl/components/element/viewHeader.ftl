@@ -36,29 +36,32 @@
     </#if>
 
     <#if element.headerLevel?has_content>
-        <#local headerOpenTag="<${element.headerLevel} ${style!} ${styleClass!}>"/>
+        <#local headerOpenTag="<${element.headerLevel} id=\"${element.id}_header\" ${style!} ${styleClass!}>"/>
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
-
+<#--
     <#local stickyDataAttribute=""/>
     <#if element.sticky>
         <#local stickyDataAttribute="data-sticky='true'"/>
-    </#if>
-
-    <#local renderContentAs="header"/>
+    </#if>-->
 
     <#-- Only render wrapper when upper and lower group content exist -->
-    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
+<#--    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
         <#local renderContentAs="div"/>
         <header class="${view.contentContainerClassesAsString} uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
-        <#-- upper group -->
+        &lt;#&ndash; upper group &ndash;&gt;
         <@krad.template component=element.upperGroup/>
-    </#if>
+    </#if>-->
 
         <#-- Main header content -->
-        <@krad.wrap renderAs="${renderContentAs}" component=element>
+        <@krad.wrap renderAs="header" component=element>
 
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+
+                <#if element.rightGroup?has_content && element.rightGroup.render && element.upperGroup?has_content
+                    && element.upperGroup.render>
+                    <div class="uif-header-inner">
+                </#if>
 
                 ${headerOpenTag}
 
@@ -95,14 +98,16 @@
 
                 <#-- right group -->
                 <@krad.template component=element.rightGroup/>
+
+                <#if element.rightGroup?has_content && element.rightGroup.render && element.upperGroup?has_content
+                    && element.upperGroup.render>
+                    </div>
+                </#if>
+
+                <@krad.template component=element.lowerGroup/>
+
             </#if>
 
         </@krad.wrap>
-
-    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-         <#-- lower group -->
-         <@krad.template component=element.lowerGroup/>
-      </header>
-    </#if>
 
 </#macro>

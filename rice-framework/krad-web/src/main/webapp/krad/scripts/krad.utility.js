@@ -845,23 +845,6 @@ function resizeTheRouteLogFrame() {
 }
 
 /**
- * Adds or adds value to the attribute on the element.
- *
- * @param id - element id
- * @param attributeName - name of the attribute to add/add to
- * @param attributeValue - value of the attribute
- * @param concatFlag - indicate if value should be added to current value
- */
-function addAttribute(id, attributeName, attributeValue, concatFlag) {
-    hasAttribute = jQuery("#" + id).is('[' + attributeName + ']');
-    if (concatFlag && hasAttribute) {
-        jQuery("#" + id).attr(attributeName, jQuery("#" + id).attr(attributeName) + " " + attributeValue);
-    } else {
-        jQuery("#" + id).attr(attributeName, attributeValue);
-    }
-}
-
-/**
  * Open new browser window for the specified help url
  *
  * The help window is positioned in the center of the screen and resized to 1/4th of the screen.
@@ -1071,26 +1054,6 @@ function wrapAsHandler(source) {
     var script = "(function (e) { " + source + "})"
 
     return eval(script);
-}
-
-/**
- * Helper method to check whether the element represented by the given jQuery object has the given
- * attribute.
- *
- * @param $jQueryObject jquery object representing the element to check
- * @param attrName name of the attribute to check for
- * @returns {boolean} true if the element contains the attribute, false if not
- */
-function hasAttribute($jQueryObject, attrName) {
-    var attr = $jQueryObject.attr(attrName);
-
-    // For some browsers, `attr` is undefined; for others,
-    // `attr` is false.  Check for both.
-    if (typeof attr !== 'undefined' && attr !== false) {
-        return true;
-    }
-
-    return false;
 }
 
 /**
@@ -2715,4 +2678,10 @@ function formatHtml(html) {
     }
 
     return formatted;
+}
+
+function getGroupHeaderElement(groupId) {
+    var headerWrapper = jQuery("[data-header_for='" + groupId + "']");
+    var wrapperId = headerWrapper.attr("id");
+    return headerWrapper.find("#" + wrapperId + "_header");
 }

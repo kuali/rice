@@ -302,7 +302,6 @@ public class FreeMarkerInlineRenderUtils {
             script += "createTooltip('" + component.getId() + "', '" + tt.getTooltipContent() + "', "
                     + (templateOptionsJSString == null ? "''" : templateOptionsJSString) + ", " + tt.isOnMouseHover()
                     + ", " + tt.isOnFocus() + ");";
-            script += "addAttribute('" + component.getId() + "', 'class', 'uif-tooltip', true);";
 
             renderScript(script, component, null, out);
         }

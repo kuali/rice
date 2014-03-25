@@ -458,7 +458,7 @@ function handleMessagesAtGroup(id, fieldId, fieldData, pageSetupPhase) {
 
         //retrieve header for section
         if (data.isSection === undefined) {
-            var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
+            var sectionHeader = getGroupHeaderElement(id);
             data.isSection = sectionHeader.length;
         }
 
@@ -497,7 +497,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
 
         //retrieve header for section
         if (data.isSection === undefined) {
-            var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
+            var sectionHeader = getGroupHeaderElement(id);
             data.isSection = sectionHeader.length;
         }
 
@@ -918,7 +918,7 @@ function recursiveGroupMessageCount(parentId) {
  */
 function displayHeaderMessageCount(sectionId, sectionData) {
     if (sectionData && sectionData.displayHeaderSummary) {
-        var sectionHeader = jQuery("[data-header_for='" + sectionId + "']").find("> :header, > label");
+        var sectionHeader = getGroupHeaderElement(sectionId);
 
         if (errorImage == undefined) {
             setupImages();
@@ -1503,8 +1503,7 @@ function handleCollapsedElements(messageData, collapsedErrors, collapsedWarnings
  */
 function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, sectionId, before) {
 
-    var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
-            + "> label .uif-headerText-span").text();
+    var sectionTitle = getGroupHeaderElement(sectionId).find(".uif-headerText-span").text();
     if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
@@ -1589,8 +1588,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
  */
 function generateSummaryLink(sectionId) {
     //determine section title and section type
-    var sectionTitle = jQuery("[data-header_for='" + sectionId + "']").find("> :header .uif-headerText-span, "
-            + "> label .uif-headerText-span").text();
+    var sectionTitle =  getGroupHeaderElement(sectionId).find(".uif-headerText-span").text();
     if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
@@ -1645,7 +1643,7 @@ function generateSummaryLink(sectionId) {
 
         summaryLink.find("a").click(function (event) {
             event.preventDefault();
-            var header = jQuery("[data-header_for='" + sectionId + "']").find("> :header, > label, > a > :header, > a > label");
+
             jumpToElementById(sectionId);
 
             var firstItem = jQuery("[data-messages_for='" + sectionId + "'] > ul > li:first");

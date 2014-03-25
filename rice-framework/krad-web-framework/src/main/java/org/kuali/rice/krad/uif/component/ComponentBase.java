@@ -511,6 +511,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             setOnDocumentReadyScript(timerScript);
         }
 
+        // Add tooltip class
+        if (this.getToolTip() != null && StringUtils.isNotBlank(this.getToolTip().getTooltipContent())) {
+            this.addStyleClass(CssConstants.Classes.TOOLTIP);
+        }
+
         // put together all css class names for this component, in order
         List<String> finalCssClasses = new ArrayList<String>();
 

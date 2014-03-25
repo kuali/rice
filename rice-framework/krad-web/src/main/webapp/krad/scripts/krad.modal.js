@@ -90,7 +90,7 @@ function dismissDialog(dialogId, $action) {
     $dialog.modal('hide');
 
     // trigger the dialog response event if necessary
-    if ($action && hasAttribute($action, kradVariables.ATTRIBUTES.DATA_RESPONSE)) {
+    if ($action && $action.is("[" + kradVariables.ATTRIBUTES.DATA_RESPONSE + "]")) {
         var dialogResponseEvent = jQuery.Event(kradVariables.EVENTS.DIALOG_RESPONSE);
 
         dialogResponseEvent.response = $action.attr(kradVariables.ATTRIBUTES.DATA_RESPONSE);
@@ -132,7 +132,7 @@ function _addDialogDataAttributeToActions(dialogId, $dialog) {
  */
 function _attachDialogResponseHandler(dialogId, $dialog, responseHandler, responseEventData) {
     // check for a response handler defined on the dialog group itself
-    if (!responseHandler && hasAttribute($dialog, kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER)) {
+    if (!responseHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER +"]")) {
         responseHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER));
     }
 
@@ -159,7 +159,7 @@ function _attachDialogResponseHandler(dialogId, $dialog, responseHandler, respon
  */
 function _bindShowDialogHandlers($dialog, showHandler) {
     // check for a show handler defined on the dialog group itself
-    if (!showHandler && hasAttribute($dialog, kradVariables.ATTRIBUTES.DATA_SHOW_HANDLER)) {
+    if (!showHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_SHOW_HANDLER + "]")) {
         showHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_SHOW_HANDLER));
     }
 
@@ -183,7 +183,7 @@ function _bindShowDialogHandlers($dialog, showHandler) {
  */
 function _bindHideDialogHandlers($dialog, hideHandler) {
     // check for a show handler defined on the dialog group itself
-    if (!hideHandler && hasAttribute($dialog, kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER)) {
+    if (!hideHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER +"]")) {
         hideHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER));
     }
 

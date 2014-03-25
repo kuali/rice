@@ -268,7 +268,7 @@ KradRequest.prototype = {
         data.ajaxReturnType = this.ajaxReturnType;
         data.ajaxRequest = this.ajaxSubmit;
 
-        if (this.$action && hasAttribute(this.$action, kradVariables.ATTRIBUTES.ID)) {
+        if (this.$action && this.$action.is("[" + kradVariables.ATTRIBUTES.ID + "]")) {
             data.triggerActionId = this.$action.attr(kradVariables.ATTRIBUTES.ID);
         }
 

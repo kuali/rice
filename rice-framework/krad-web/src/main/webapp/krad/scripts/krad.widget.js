@@ -1410,8 +1410,8 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
     //var element = elementInfo.element;
     var tooltipElement = jQuery("#" + id);
 
-    if (tooltipElement.is("[data-header_for]")) {
-        var innerHeaderSpan = tooltipElement.find("> :header span:first");
+    if (tooltipElement.is("header")) {
+        var innerHeaderSpan = tooltipElement.find("#" + id + "_header > .uif-headerText-span");
         if (innerHeaderSpan.length == 1) {
             tooltipElement = innerHeaderSpan;
             options.container = jQuery("#" + id);

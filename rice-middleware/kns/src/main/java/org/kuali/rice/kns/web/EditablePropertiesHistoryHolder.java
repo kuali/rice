@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Collections;
 
 
 /**
@@ -48,7 +49,7 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	 *
 	 */
 	public EditablePropertiesHistoryHolder() {
-		editablePropertiesMap = new HashMap<String, Set<String>>();
+        editablePropertiesMap = Collections.synchronizedMap(new HashMap<String, Set<String>>());
 		historyOrder = new LinkedList<String>();
 	}
 	

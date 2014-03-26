@@ -3879,6 +3879,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
     }
 
+    protected void waitAndClickButtonByExactText(String buttonText) throws InterruptedException {
+        waitAndClickButtonByExactText(buttonText, this.getClass().toString());
+    }
+
+    protected void waitAndClickButtonByExactText(String buttonText, String message) throws InterruptedException {
+        jGrowl("Click " + buttonText + " button.");
+        waitAndClickByXpath("//button[normalize-space(.)='" + buttonText + "']", message);
+    }
+
     protected void waitAndClickAllByName(String name) throws InterruptedException{
         List<WebElement> elements = driver.findElements(By.name(name));
         for(WebElement ele : elements){

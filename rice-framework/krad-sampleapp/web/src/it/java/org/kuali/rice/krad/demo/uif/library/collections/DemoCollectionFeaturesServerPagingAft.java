@@ -62,7 +62,7 @@ public class DemoCollectionFeaturesServerPagingAft extends WebDriverLegacyITBase
         if(isElementPresentByXpath("//input[@name='collection2[9].field1']")) {
           fail("Element for second page is present.");
         }
-        waitAndClickByLinkText("Next");
+        waitAndClickByLinkText("»");
         assertElementPresentByXpath("//input[@name='collection2[9].field1']");
      }
     

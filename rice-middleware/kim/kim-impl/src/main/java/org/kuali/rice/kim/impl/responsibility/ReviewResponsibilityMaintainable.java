@@ -173,12 +173,12 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
         super.processAfterCopy(document, parameters);
 
-        initializeResponsibilityId(document.getDocumentBusinessObject());
+        initializeResponsibilityId(document.getNewMaintainableObject().getDataObject());
     }
 
-    private void initializeResponsibilityId(BusinessObject businessObject) {
-        if (businessObject instanceof ReviewResponsibilityBo) {
-            ReviewResponsibilityBo responsibilityBo = (ReviewResponsibilityBo) businessObject;
+    private void initializeResponsibilityId(Object dataObject) {
+        if (dataObject instanceof ReviewResponsibilityBo) {
+            ReviewResponsibilityBo responsibilityBo = (ReviewResponsibilityBo) dataObject;
 
             if (StringUtils.isBlank(responsibilityBo.getId())) {
                 DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(

@@ -53,7 +53,7 @@ public class EmploymentStatusAft extends WebDriverLegacyITBase {
     protected void testEmploymentStatus() throws Exception {
         selectFrameIframePortlet();
         waitAndClickButtonByText("Search");
-        assertTextPresent(new String[][]{{"Active"}, {"Deceased"}, {"On Non-Pay Leave"}});
+        assertTextPresent(new String[][]{{"On Non-Pay Leave"}, {"Active"}, {"Deceased"}});
         waitAndTypeByName("lookupCriteria[name]","Active");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("Deceased");

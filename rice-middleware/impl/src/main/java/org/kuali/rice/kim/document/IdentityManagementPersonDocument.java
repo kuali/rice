@@ -386,11 +386,20 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
             }
         }
         if (getAffiliations() != null) {
+            String nextValue = null;
+
             for (PersonDocumentAffiliation affiliation : getAffiliations()) {
                 affiliation.setDocumentNumber(getDocumentNumber());
                 if (StringUtils.isEmpty(affiliation.getEntityAffiliationId())) {
                     DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), "KRIM_ENTITY_AFLTN_ID_S");
-                    affiliation.setEntityAffiliationId(incrementer.nextStringValue());
+                    nextValue = incrementer.nextStringValue();
+                    affiliation.setEntityAffiliationId(nextValue);
+                }
+                for (PersonDocumentEmploymentInfo empInfo : affiliation.getEmpInfos()) {
+                    empInfo.setDocumentNumber(getDocumentNumber());
+                    if (StringUtils.isEmpty(empInfo.getEntityAffiliationId())) {
+                        empInfo.setEntityAffiliationId(nextValue);
+                    }
                 }
             }
         }

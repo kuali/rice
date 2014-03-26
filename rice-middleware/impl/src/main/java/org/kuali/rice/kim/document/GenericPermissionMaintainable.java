@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -72,6 +73,19 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
                     "Cannot save object of type: " + getDataObjectClass() + " with permission service");
         }
     }
+
+    /**
+     * Pre-populates the ID field of the new PermissionBo to be created.
+     *
+     * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
+     */
+    @Override
+    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> parameters) {
+        super.processAfterNew(document,parameters);
+
+        GenericPermissionBo permissionBo = (GenericPermissionBo) document.getNewMaintainableObject().getDataObject();
+        initializePermissionId(permissionBo);
+    }
 	
     /**
      * Pre-populates the ID field of the new PermissionBo to be created.
@@ -81,13 +95,22 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
     @Override
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
         super.processAfterCopy(document,parameters);
-        // get id for new permission
-        DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_PERM_ID_S);
-        String newId = incrementer.nextStringValue();
-        GenericPermissionBo permissionBo = (GenericPermissionBo)document.getNewMaintainableObject().getDataObject();
-        permissionBo.setId(newId);
-        permissionBo.setVersionNumber(null);
 
+        GenericPermissionBo permissionBo = (GenericPermissionBo) document.getNewMaintainableObject().getDataObject();
+        initializePermissionId(permissionBo);
+        permissionBo.setVersionNumber(null);
+    }
+
+    private void initializePermissionId(Object dataObject) {
+        if (dataObject instanceof GenericPermissionBo) {
+            GenericPermissionBo permissionBo = (GenericPermissionBo) dataObject;
+
+            if (StringUtils.isBlank(permissionBo.getId())) {
+                DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(
+                        KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_PERM_ID_S);
+                permissionBo.setId(incrementer.nextStringValue());
+            }
+        }
     }
 
 	@SuppressWarnings("rawtypes")

@@ -521,6 +521,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
         if (getPermissions() != null) {
             for (KimDocumentRolePermission permission : getPermissions()) {
                 permission.setRoleId(roleId);
+                permission.setDocumentNumber(getDocumentNumber());
                 if (StringUtils.isBlank(permission.getRolePermissionId())) {
                     DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
                     permission.setRolePermissionId(incrementer.nextStringValue());

@@ -23,7 +23,11 @@ import org.kuali.rice.krad.document.Document;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.util.RouteToCompletionUtil}.
+ */
 //Adhoc Document Complete functionality utility
+@Deprecated
 public class RouteToCompletionUtil {
 
     /***

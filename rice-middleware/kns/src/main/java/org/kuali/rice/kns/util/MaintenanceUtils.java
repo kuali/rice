@@ -50,6 +50,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceUtils}.
+ */
+@Deprecated
 public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
 

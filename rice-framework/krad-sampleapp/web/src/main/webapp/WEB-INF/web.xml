@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+    Copyright 2005-2014 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -31,6 +31,12 @@
     <param-value>${bootstrap.spring.file}</param-value>
   </context-param>
 
+  <!-- Change this to bootstrap a different Spring PSC -->
+  <context-param>
+    <param-name>web.bootstrap.spring.psc</param-name>
+    <param-value>${bootstrap.spring.psc}</param-value>
+  </context-param>
+
   <context-param>
     <param-name>defaultHtmlEscape</param-name>
     <param-value>true</param-value>
@@ -50,6 +56,13 @@
     <filter-name>HideWebInfFilter</filter-name>
     <filter-class>org.kuali.rice.krad.web.filter.HideWebInfFilter</filter-class>
   </filter>
+
+  <!-- Remove when Rice screens are converted to KRAD -->
+  <filter>
+    <filter-name>ResponseOverrideFilter</filter-name>
+    <filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+  </filter>
+  <!-- End remove -->
 
   <filter>
     <filter-name>BootstrapFilter</filter-name>
@@ -90,6 +103,33 @@
     <filter-name>HideWebInfFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <!-- Remove when Rice screens are converted to KRAD -->
+  <filter-mapping>
+    <filter-name>ResponseOverrideFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>BootstrapFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserLoginFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserPreferencesFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+  <!-- End remove -->
 
   <filter-mapping>
     <filter-name>BootstrapFilter</filter-name>
@@ -196,6 +236,26 @@
     <listener-class>org.kuali.rice.core.framework.config.module.WebModuleLoaderListener</listener-class>
   </listener>
 
+  <!-- Remove when Rice screens are converted to KRAD -->
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.kuali.rice.kns.web.struts.action.KualiActionServlet</servlet-class>
+    <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>3</param-value>
+    </init-param>
+    <init-param>
+      <param-name>detail</param-name>
+      <param-value>3</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <!-- End remove -->
+
   <!-- Notification system servlets -->
   <!-- Notification System Spring MVC UI -->
   <servlet>
@@ -276,6 +336,13 @@
     <servlet-name>remoting</servlet-name>
     <url-pattern>/remoting/*</url-pattern>
   </servlet-mapping>
+
+  <!-- Remove when Rice screens are converted to KRAD -->
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- End remove -->
 
   <servlet-mapping>
     <servlet-name>notification</servlet-name>

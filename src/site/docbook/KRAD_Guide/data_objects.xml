@@ -621,6 +621,25 @@ public class AccountExtension { ...}
             </para>
         </section>
         <section>
+            <title>Accessing Metadata</title>
+            <para>
+                The metadata about data objects is available now directly via the
+                <emphasis role="keyword">DataObjectService.wrap(..)</emphasis> method, which loads the metadata from the
+                metadata repository and places it in a <emphasis role="keyword">DataObjectWrapper</emphasis>.  This
+                wrapper gives access to such information as the primary keys, the business keys, the foreign keys, the
+                attributes, the collections inside the data object, and the relationships to the data object.  It also
+                provides methods to perform manual linking between foreign key and relationship values in case that
+                is not possible or unwanted to do automatically through JPA.
+            </para>
+            <para>
+                For example, if you wanted to get all of the primary key values from a data object, you could write the
+                following:
+                <programlisting>T dataObject = getDataObject();
+DataObjectWrapper&lt;T> wrapper = getDataObjectService().wrap(dataObject);
+Map&lt;String, Object> primaryKeyValues = wrapper.getPrimaryKeyValues();</programlisting>
+            </para>
+        </section>
+        <section>
             <title>Queries</title>
             <para>In JPA there are several ways to execute queries. The following are the best practices
                 that should be used when using JPA in Kuali applications. In general the order of

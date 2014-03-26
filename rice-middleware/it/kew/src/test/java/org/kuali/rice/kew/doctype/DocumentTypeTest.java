@@ -264,6 +264,7 @@ public class DocumentTypeTest extends KEWTestCase {
                 assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", routeNode.getExceptionWorkgroup().getName());
                 ruleTemplate1Found = true;
             }
+
             if (routeNode.getRouteNodeName().equals("RuleTemplate2")) {
                 assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(routeNode.getNodeType())));
                 assertEquals("Wrong branch name", "B2", routeNode.getBranch().getName());
@@ -281,6 +282,7 @@ public class DocumentTypeTest extends KEWTestCase {
                 assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getName());
             }
         }
+
         assertTrue(ruleTemplate1Found);
         assertTrue(ruleTemplate2Found);
     }

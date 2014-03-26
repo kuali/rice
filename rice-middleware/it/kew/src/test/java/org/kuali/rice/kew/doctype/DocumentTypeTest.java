@@ -253,27 +253,36 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("Wrong node type", NodeType.SPLIT.isAssignableFrom(Class.forName(split.getNodeType())));
         assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", split.getExceptionWorkgroup().getName());
 
-        RouteNode ruleTemplate1 = (RouteNode)split.getNextNodes().get(0);
-        assertEquals("Wrong node name", "RuleTemplate1", ruleTemplate1.getRouteNodeName());
-        assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate1.getNodeType())));
-        assertEquals("Wrong branch name", "B1", ruleTemplate1.getBranch().getName());
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate1.getExceptionWorkgroup().getName());
+        assertTrue(split.getNextNodes().size() == 2);
+        boolean ruleTemplate1Found = false;
+        boolean ruleTemplate2Found = false;
 
-        RouteNode ruleTemplate2 = (RouteNode)split.getNextNodes().get(1);
-        assertEquals("Wrong node name", "RuleTemplate2", ruleTemplate2.getRouteNodeName());
-        assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate2.getNodeType())));
-        assertEquals("Wrong branch name", "B2", ruleTemplate2.getBranch().getName());
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate2.getExceptionWorkgroup().getName());
+        for (RouteNode routeNode : split.getNextNodes()) {
+            if (routeNode.getRouteNodeName().equals("RuleTemplate1")) {
+                assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(routeNode.getNodeType())));
+                assertEquals("Wrong branch name", "B1", routeNode.getBranch().getName());
+                assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", routeNode.getExceptionWorkgroup().getName());
+                ruleTemplate1Found = true;
+            }
+            if (routeNode.getRouteNodeName().equals("RuleTemplate2")) {
+                assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(routeNode.getNodeType())));
+                assertEquals("Wrong branch name", "B2", routeNode.getBranch().getName());
+                assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", routeNode.getExceptionWorkgroup().getName());
+                ruleTemplate2Found = true;
 
-        RouteNode join = (RouteNode)ruleTemplate2.getNextNodes().get(0);
-        assertEquals("Wrong node name", "Join", join.getRouteNodeName());
-        assertTrue("Wrong node type", NodeType.JOIN.isAssignableFrom(Class.forName(join.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", join.getExceptionWorkgroup().getName());
+                RouteNode join = (RouteNode)routeNode.getNextNodes().get(0);
+                assertEquals("Wrong node name", "Join", join.getRouteNodeName());
+                assertTrue("Wrong node type", NodeType.JOIN.isAssignableFrom(Class.forName(join.getNodeType())));
+                assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", join.getExceptionWorkgroup().getName());
 
-        RouteNode ruleTemplate3 = (RouteNode)join.getNextNodes().get(0);
-        assertEquals("Wrong node name", "RuleTemplate3", ruleTemplate3.getRouteNodeName());
-        assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate3.getNodeType())));
-        assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getName());
+                RouteNode ruleTemplate3 = (RouteNode)join.getNextNodes().get(0);
+                assertEquals("Wrong node name", "RuleTemplate3", ruleTemplate3.getRouteNodeName());
+                assertTrue("Wrong node type", NodeType.REQUESTS.isAssignableFrom(Class.forName(ruleTemplate3.getNodeType())));
+                assertEquals("Default Exception workgroup not propagated", "TestWorkgroup", ruleTemplate3.getExceptionWorkgroup().getName());
+            }
+        }
+        assertTrue(ruleTemplate1Found);
+        assertTrue(ruleTemplate2Found);
     }
 
     //verifies the documenttype hierarchy is intact after multiple uploads

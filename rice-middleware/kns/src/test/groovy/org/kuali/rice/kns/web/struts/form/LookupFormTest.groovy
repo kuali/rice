@@ -44,7 +44,10 @@ import com.google.common.collect.HashMultimap
 
 /**
  * tests lookup form
+ *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class LookupFormTest {
     class TestBO extends BusinessObjectBase {
         public void refresh() {}

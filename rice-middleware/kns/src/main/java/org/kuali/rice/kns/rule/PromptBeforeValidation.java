@@ -27,7 +27,10 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * By default, unless KualiDocumentActionBase is overridden, the sole method will be invoked upon using the "approve", "blanketApprove",
  * "performRouteReport", and "route" methodToCalls.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public interface PromptBeforeValidation extends BusinessRule {
 
     /**

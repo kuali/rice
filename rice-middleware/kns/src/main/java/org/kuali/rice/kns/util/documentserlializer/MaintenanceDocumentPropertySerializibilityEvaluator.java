@@ -35,6 +35,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public class MaintenanceDocumentPropertySerializibilityEvaluator
 				extends PropertySerializabilityEvaluatorBase implements PropertySerializabilityEvaluator {
 

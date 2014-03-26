@@ -24,7 +24,10 @@ import org.kuali.rice.krad.util.KRADConstants;
  * Kuali customization of ControllerConfig which delegates max upload size lookup to
  * parameter service: KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.MAX_UPLOAD_SIZE_PARM_NM
  * The value must be a string compatible with Struts maxFileSize attribute.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiControllerConfig extends ControllerConfigWrapper {
     public KualiControllerConfig(ControllerConfig config) {
         super(config);

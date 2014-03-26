@@ -30,7 +30,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
  * specific attribute. All types of controls are represented by an instance of this class; you have to call one of the is* methods
  * to figure out which of the other accessors should return useful values.
  *
- *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase implements ControlDefinition {

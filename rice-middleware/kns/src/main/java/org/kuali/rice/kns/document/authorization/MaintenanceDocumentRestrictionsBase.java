@@ -23,6 +23,10 @@ import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRes
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.web.ui.Field;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public class MaintenanceDocumentRestrictionsBase extends InquiryOrMaintenanceDocumentRestrictionsBase implements MaintenanceDocumentRestrictions {
 	private Set<String> readOnlyFields;
 	private Set<String> readOnlySectionIds;

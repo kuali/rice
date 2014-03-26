@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.ui;
 import java.io.Serializable;
 
 /**
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class HeaderField implements Serializable {

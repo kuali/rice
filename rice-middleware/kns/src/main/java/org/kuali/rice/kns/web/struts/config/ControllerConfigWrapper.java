@@ -23,7 +23,10 @@ import java.util.Properties;
 /**
  * Wrapper which aids specializing Struts ControllerConfig
  * Delegates all public methods to wrapped ControllerConfig
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class ControllerConfigWrapper extends ControllerConfig {
 
     /**

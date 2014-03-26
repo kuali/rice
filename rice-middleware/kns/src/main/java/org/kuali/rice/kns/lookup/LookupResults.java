@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kns.lookup;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public class LookupResults extends MultipleValueLookupMetadata {
 
 	private String serializedLookupResults;

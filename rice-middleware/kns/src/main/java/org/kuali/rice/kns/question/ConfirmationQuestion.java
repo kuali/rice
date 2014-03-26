@@ -19,8 +19,10 @@ import java.util.ArrayList;
 
 /**
  * This class support the ConfirmationQuestion. For example: a Yes/No dialog window.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
-
+@Deprecated
 public class ConfirmationQuestion extends QuestionBase {
 
     public static final String YES = "0";

@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching standard-format (mm/dd/yyyy) dates
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.DatePatternConstraint}.
  */
+@Deprecated
 public class DateValidationPattern extends FieldLevelValidationPattern {
 
     /**

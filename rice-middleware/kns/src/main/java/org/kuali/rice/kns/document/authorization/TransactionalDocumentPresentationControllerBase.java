@@ -24,7 +24,10 @@ import java.util.Set;
 
 /**
  * Base class for all TransactionalDocumentPresentationControllers.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase}.
  */
+@Deprecated
 public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
     private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
     

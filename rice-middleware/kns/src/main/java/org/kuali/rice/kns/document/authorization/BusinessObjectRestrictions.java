@@ -19,6 +19,10 @@ import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 
 import java.io.Serializable;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public interface BusinessObjectRestrictions extends Serializable {
     public boolean hasAnyFieldRestrictions();
     

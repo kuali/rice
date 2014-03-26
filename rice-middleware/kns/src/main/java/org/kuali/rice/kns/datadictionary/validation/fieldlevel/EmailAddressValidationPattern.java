@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching (non-local) email addresses
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}
  */
+@Deprecated
 public class EmailAddressValidationPattern extends FieldLevelValidationPattern {
 
     /**

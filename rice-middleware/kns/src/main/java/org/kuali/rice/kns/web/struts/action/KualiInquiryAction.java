@@ -59,7 +59,10 @@ import java.util.Map;
 
 /**
  * This class handles actions for inquiries of business objects.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.controller.InquiryController}.
  */
+@Deprecated
 public class KualiInquiryAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquiryAction.class);
     private NoteService noteService;

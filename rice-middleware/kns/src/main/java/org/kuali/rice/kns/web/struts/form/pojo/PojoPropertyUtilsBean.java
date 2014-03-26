@@ -48,10 +48,13 @@ import java.util.Map;
 /**
  * begin Kuali Foundation modification
  * This class is used to access the properties of a Pojo bean.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  * deleted author tag
  * end Kuali Foundation modification
  */
 // Kuali Foundation modification: class originally SLPropertyUtilsBean
+@Deprecated
 public class PojoPropertyUtilsBean extends PropertyUtilsBean {
 
     public static final Logger LOG = Logger.getLogger(PojoPropertyUtilsBean.class.getName());

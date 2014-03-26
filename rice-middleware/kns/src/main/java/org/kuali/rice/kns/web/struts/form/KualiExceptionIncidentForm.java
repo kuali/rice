@@ -29,8 +29,9 @@ import java.util.Set;
 /**
  * This class is the action form for all Question Prompts.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiExceptionIncidentForm extends KualiForm {
     private static final long serialVersionUID = 831951332440283401L;
     private static Logger LOG=Logger.getLogger(KualiExceptionIncidentForm.class); 

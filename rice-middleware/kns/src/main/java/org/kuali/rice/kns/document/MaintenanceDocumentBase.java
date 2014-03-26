@@ -42,7 +42,10 @@ import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocumentBase}.
  */
+@Deprecated
 public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.MaintenanceDocumentBase implements MaintenanceDocument {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
 

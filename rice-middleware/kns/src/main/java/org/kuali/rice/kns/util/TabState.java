@@ -20,9 +20,9 @@ import java.io.Serializable;
 /**
  * This class is used to keep tab state whether it is open or closed.
  * 
- * 
+ * @deprecated Only used in KNS classes, use KRAD.
  */
-
+@Deprecated
 public class TabState implements Serializable {
 
     private static final long serialVersionUID = -628061041191967501L;

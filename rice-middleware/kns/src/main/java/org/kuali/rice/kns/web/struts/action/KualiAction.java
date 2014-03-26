@@ -69,7 +69,10 @@ import java.util.Set;
  * required for KNS framework calls.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public abstract class KualiAction extends DispatchAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiAction.class);
 

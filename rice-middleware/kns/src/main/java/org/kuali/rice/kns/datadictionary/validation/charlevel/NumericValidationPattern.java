@@ -21,8 +21,9 @@ import org.kuali.rice.krad.datadictionary.validation.CharacterLevelValidationPat
 /**
  * Pattern for matching numeric characters
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.NumericPatternConstraint}.
  */
+@Deprecated
 public class NumericValidationPattern extends CharacterLevelValidationPattern {
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()

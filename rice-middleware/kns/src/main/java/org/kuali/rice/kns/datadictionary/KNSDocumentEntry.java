@@ -32,6 +32,8 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.DocumentEntry}.
  */
 @Deprecated
 public interface KNSDocumentEntry extends DataDictionaryEntry, Serializable {

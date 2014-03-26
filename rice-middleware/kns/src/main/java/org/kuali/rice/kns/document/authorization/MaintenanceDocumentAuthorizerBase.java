@@ -29,6 +29,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase}.
+ */
+@Deprecated
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase implements MaintenanceDocumentAuthorizer {
 	// private static final org.apache.log4j.Logger LOG =
 	// org.apache.log4j.Logger.getLogger(MaintenanceDocumentAuthorizerBase.class);

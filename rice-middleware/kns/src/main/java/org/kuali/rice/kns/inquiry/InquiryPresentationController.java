@@ -17,6 +17,10 @@ package org.kuali.rice.kns.inquiry;
 
 import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.uif.view.ViewPresentationController}.
+ */
+@Deprecated
 public interface InquiryPresentationController extends InquiryOrMaintenanceDocumentPresentationController {
 }
 

@@ -19,6 +19,10 @@ import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentAuthorize
 
 import java.util.Set;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer}.
+ */
+@Deprecated
 public interface MaintenanceDocumentAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer,
         org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer {
 

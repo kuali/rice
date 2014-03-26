@@ -52,6 +52,8 @@ import java.util.Map;
  * See LookupMapBuilder.java
  * <p/>
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.LookupView}.
  */
 @Deprecated
 public class LookupDefinition extends DataDictionaryDefinitionBase {

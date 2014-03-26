@@ -17,7 +17,10 @@ package org.kuali.rice.kns.document.authorization;
 
 import java.util.Set;
 
-
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public interface MaintenanceDocumentRestrictions extends InquiryOrMaintenanceDocumentRestrictions {
 	public void addReadOnlyField(String fieldName);
 

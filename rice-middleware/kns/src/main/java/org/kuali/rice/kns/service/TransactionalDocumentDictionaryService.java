@@ -23,6 +23,8 @@ import java.util.Collection;
 /**
  * This interface defines methods that a TransactionalDocumentDictionary Service must provide. Defines the API for the interacting
  * with TransactionalDocument-related entries in the data dictionary.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
 public interface TransactionalDocumentDictionaryService {

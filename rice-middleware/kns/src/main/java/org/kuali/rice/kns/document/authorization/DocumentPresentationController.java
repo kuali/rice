@@ -19,6 +19,10 @@ import org.kuali.rice.krad.document.Document;
 
 import java.util.Set;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.document.DocumentPresentationController}.
+ */
+@Deprecated
 public interface DocumentPresentationController extends org.kuali.rice.krad.document.DocumentPresentationController {
 	public Set<String> getDocumentActions(Document document);
 }

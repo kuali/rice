@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class ResultRow implements Serializable {

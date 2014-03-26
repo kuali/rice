@@ -20,7 +20,7 @@ import org.kuali.rice.kns.bo.authorization.BusinessObjectAuthorizerBase;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@Deprecated
 public class InquiryAuthorizerBase extends BusinessObjectAuthorizerBase implements InquiryAuthorizer {
 	/**
 	 * Implement this method to flag sections as restricted and get the

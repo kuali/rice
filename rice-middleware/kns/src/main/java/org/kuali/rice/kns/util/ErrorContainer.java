@@ -37,8 +37,9 @@ import org.kuali.rice.krad.util.MessageMap;
  * error message lists of all properties in the ErrorMap), I also moved in the existing code which massaged the contents of the
  * ErrorMap for the purposes of export to the JSP.
  * 
- * 
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class ErrorContainer implements Serializable {
     private final MessageMap errorMap;
     private final int errorCount;

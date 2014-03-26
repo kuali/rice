@@ -22,8 +22,10 @@ import java.util.ArrayList;
  * 
  * 
  *         "confirmation questions") rather than specific questions.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
-
+@Deprecated
 public class QuestionBase implements Question {
     String question;
     ArrayList buttons;

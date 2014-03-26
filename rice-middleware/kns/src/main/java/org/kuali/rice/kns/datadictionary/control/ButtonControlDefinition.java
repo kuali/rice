@@ -17,8 +17,9 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
- The button element is used to render an HTML button
- control.
+ * The button element is used to render an HTML button control.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class ButtonControlDefinition extends ControlDefinitionBase {

@@ -22,7 +22,10 @@ import org.kuali.rice.krad.service.DictionaryValidationService;
  * This class contains all of the business rules that are common to all KNS transactional documents.
  *
  * @see org.kuali.rice.krad.rules.TransactionalDocumentRuleBase
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.rules.TransactionalDocumentRuleBase}.
  */
+@Deprecated
 public class TransactionalDocumentRuleBase extends DocumentRuleBase {
 
 }

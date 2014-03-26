@@ -24,6 +24,8 @@ import java.util.Map;
 
 /**
  * Defines business logic methods that support the Inquiry framework
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.inquiry.Inquirable}.
  */
 @Deprecated
 public interface Inquirable extends org.kuali.rice.krad.inquiry.Inquirable {

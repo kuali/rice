@@ -22,8 +22,9 @@ import org.kuali.rice.kew.api.KewApiConstants
 import static org.junit.Assert.assertFalse
 
 /**
- *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class LookupUtilsTest {
     @Test void testLookupUtilsPreprocessesStandardRangeFields() {
         Map<String, String> fields = new HashMap<String, String>();

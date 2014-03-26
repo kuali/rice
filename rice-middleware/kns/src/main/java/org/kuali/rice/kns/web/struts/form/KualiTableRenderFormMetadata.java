@@ -27,7 +27,10 @@ import java.util.List;
 
 /**
  * This class holds the metadata necessary to render a table when displaytag is not being used.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiTableRenderFormMetadata {
     private int viewedPageNumber;
     private int totalNumberOfPages;

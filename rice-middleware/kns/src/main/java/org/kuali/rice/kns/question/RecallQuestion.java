@@ -20,7 +20,10 @@ import java.util.ArrayList;
 /**
  * Recall to Action List / Recall & Cancel question for Recall functionality.
  * Note: this could possibly be generalized to a generic MultipleChoiceQuestion in combination w/ special question context
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class RecallQuestion extends QuestionBase {
     public static final String RECALL_TO_ACTIONLIST = "0";
     public static final String RECALL_AND_CANCEL = "1";

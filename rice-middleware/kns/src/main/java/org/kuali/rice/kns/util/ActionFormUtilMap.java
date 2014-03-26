@@ -30,8 +30,9 @@ import java.util.List;
 /**
  * Utility map for the action form to provide a way for calling functions through jstl.
  *
- *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 @SuppressWarnings("unchecked")
 public class ActionFormUtilMap extends HashMap {
     private static final long serialVersionUID = 1L;

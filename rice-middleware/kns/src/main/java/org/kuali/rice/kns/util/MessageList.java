@@ -26,7 +26,9 @@ import java.util.ArrayList;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class MessageList extends ArrayList<ErrorMessage> {
 	public void add(String messageKey, String... messageParameters) {
 		add(new ErrorMessage(messageKey, messageParameters));

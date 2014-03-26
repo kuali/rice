@@ -75,7 +75,7 @@ import java.util.Set;
 /**
  * Base Maintainable class to hold things common to all maintainables.
  *
- * @deprecated use KRAD
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintainableImpl}.
  */
 @Deprecated
 public class KualiMaintainableImpl extends MaintainableImpl implements Maintainable {

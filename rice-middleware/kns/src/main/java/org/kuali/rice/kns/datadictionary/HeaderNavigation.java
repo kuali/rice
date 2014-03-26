@@ -21,12 +21,11 @@ import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import java.io.Serializable;
 
 /**
-            The headerNavigation element defines a set of additional
-            tabs which will appear on the document.
+ * The headerNavigation element defines a set of additional tabs which will appear on the document.
  *
- *                The headerNavigationTab defines an additional tab which
-                will appear on the document.
-
+ * The headerNavigationTab defines an additional tab which will appear on the document.
+ *
+ * @@deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
 public class HeaderNavigation extends DataDictionaryDefinitionBase implements Serializable {

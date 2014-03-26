@@ -40,8 +40,9 @@ import java.util.NoSuchElementException;
  * sequentially, in fact, it is more of a geometric series: if n questions are asked, then the code up to and including the first
  * question is executed n times, the second n-1 times, ..., the last question only one time.
  * 
- * 
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public abstract class PromptBeforeValidationBase implements PromptBeforeValidation {
 
     protected static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PromptBeforeValidationBase.class);

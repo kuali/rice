@@ -18,6 +18,10 @@ package org.kuali.rice.kns.web.comparator;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
+@Deprecated
 public class NullValueComparator implements Comparator, Serializable {
     private static final NullValueComparator theInstance = new NullValueComparator();
     

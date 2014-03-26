@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public interface InquiryOrMaintenanceDocumentRestrictions extends
 		BusinessObjectRestrictions {
 	public void addHiddenField(String fieldName);

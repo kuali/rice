@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching Domestic phone Numbers
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}.
  */
+@Deprecated
 public class PhoneNumberValidationPattern extends FieldLevelValidationPattern {
 
     /**

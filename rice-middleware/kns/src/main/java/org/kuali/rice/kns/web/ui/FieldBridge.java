@@ -50,6 +50,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
 @Deprecated
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);

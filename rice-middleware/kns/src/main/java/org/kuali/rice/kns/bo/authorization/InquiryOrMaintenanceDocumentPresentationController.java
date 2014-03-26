@@ -19,6 +19,10 @@ import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.util.Set;
 
+/**
+ * @deprecated Only used by KNS classes, use KRAD.
+ */
+@Deprecated
 public interface InquiryOrMaintenanceDocumentPresentationController {
 	public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject);
 

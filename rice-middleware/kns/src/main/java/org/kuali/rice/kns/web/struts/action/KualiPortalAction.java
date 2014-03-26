@@ -30,7 +30,10 @@ import java.util.regex.Pattern;
  * This is the action for the portal.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiPortalAction extends KualiSimpleAction {
 
     @Override

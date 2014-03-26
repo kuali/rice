@@ -22,7 +22,10 @@ import org.kuali.rice.krad.datadictionary.validation.CharacterLevelValidationPat
  * Pattern for matching alphanumeric characters
  * 
  * Also, allows conditionally whitespace, underscore, period, parens, dollar signs, and forward slash.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.AlphaNumericPatternConstraint}.
  */
+@Deprecated
 public class AlphaNumericValidationPattern extends CharacterLevelValidationPattern {
     protected boolean allowWhitespace = false;
     protected boolean allowUnderscore = false;

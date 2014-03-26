@@ -25,7 +25,9 @@ import org.kuali.rice.krad.datadictionary.validation.CharacterLevelValidationPat
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}.
  */
+@Deprecated
 public class RegexValidationPattern extends CharacterLevelValidationPattern {
 
     private static final long serialVersionUID = -5642894236634278352L;

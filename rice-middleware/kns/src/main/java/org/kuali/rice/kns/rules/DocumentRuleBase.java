@@ -20,7 +20,10 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 
 /**
  * KNS version of DocumentRuleBase
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.rules.DocumentRuleBase}.
  */
+@Deprecated
 public class DocumentRuleBase extends org.kuali.rice.krad.rules.DocumentRuleBase {
 
     protected DictionaryValidationService getDictionaryValidationService() {

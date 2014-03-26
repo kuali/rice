@@ -24,7 +24,9 @@ import org.kuali.rice.krad.util.KRADConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.UTF8AnyCharacterPatternConstraint}.
  */
+@Deprecated
 public class UTF8AnyCharacterValidationPattern extends CharacterLevelValidationPattern{
 	
     protected boolean allowWhitespace = false;

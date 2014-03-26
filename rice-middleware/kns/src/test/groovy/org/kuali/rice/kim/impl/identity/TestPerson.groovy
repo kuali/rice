@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.util.type.KualiDecimal
 /**
  * Stub Person impl
  */
+@Deprecated
 class TestPerson implements Person {
     String getPrincipalId() { return null }
     String getPrincipalName() { return null }

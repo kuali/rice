@@ -28,6 +28,8 @@ import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry}.
  */
 @Deprecated
 public class TransactionalDocumentEntry extends org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry implements KNSDocumentEntry {

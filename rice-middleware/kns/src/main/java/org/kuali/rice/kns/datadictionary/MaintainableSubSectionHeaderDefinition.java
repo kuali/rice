@@ -16,8 +16,9 @@
 package org.kuali.rice.kns.datadictionary;
 
 /**
-    The subSectionHeader allows the section to be separated
-    into sub-sections, each with its own name.
+ * The subSectionHeader allows the section to be separated into sub-sections, each with its own name.
+ *
+ * @deprecated Use sections inside of {@link org.kuali.rice.krad.uif.view.MaintenanceDocumentView}.
  */
 @Deprecated
 public class MaintainableSubSectionHeaderDefinition extends MaintainableItemDefinition implements SubSectionHeaderDefinitionI {

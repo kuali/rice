@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * This class represents a section (tab) in a maintenance document.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class Section implements java.io.Serializable {

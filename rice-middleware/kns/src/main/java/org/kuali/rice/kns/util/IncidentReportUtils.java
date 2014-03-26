@@ -29,8 +29,10 @@ import java.util.Map;
  * Utility methods for use with the incident report functionality.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public final class IncidentReportUtils {
 
 	/**

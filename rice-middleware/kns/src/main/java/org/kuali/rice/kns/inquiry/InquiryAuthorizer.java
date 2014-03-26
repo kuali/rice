@@ -17,6 +17,10 @@ package org.kuali.rice.kns.inquiry;
 
 import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.inquiry.InquiryViewAuthorizerBase}.
+ */
+@Deprecated
 public interface InquiryAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer {
 }
 

@@ -23,16 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-    The maintainableSection element defines one section of the
-    maintenance document.
-
-    JSTL: maintainableSection is a Map which is accessed by an
-    integer representing the sequential occurrence of the section.
-    e.g. "0", "1", etc.  This map contains entries with the following
-    keys:
-        * index (String) - e.g. "0" for first section, etc.
-        * title (String)
-        * maintainableItems (Map)
+ * The maintainableSection element defines one section of the maintenance document.
+ *
+ * JSTL: maintainableSection is a Map which is accessed by an integer representing the sequential occurrence of the
+ * section.
+ * e.g. "0", "1", etc.  This map contains entries with the following keys:
+ *      * index (String) - e.g. "0" for first section, etc.
+ *      * title (String)
+ *      * maintainableItems (Map)
+ *
+ * @deprecated Use sections inside of {@link org.kuali.rice.krad.uif.view.MaintenanceDocumentView}.
  */
 @Deprecated
 public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase {

@@ -84,7 +84,10 @@ import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * General helper methods for handling requests.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class WebUtils {
 	private static final Logger LOG = Logger.getLogger(WebUtils.class);
 

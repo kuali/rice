@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching 5- and 9-digit zipcodes
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}.
  */
+@Deprecated
 public class ZipcodeValidationPattern extends FieldLevelValidationPattern {
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern#getPatternTypeName()

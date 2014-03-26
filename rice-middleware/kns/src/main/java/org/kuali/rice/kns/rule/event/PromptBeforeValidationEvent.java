@@ -24,8 +24,9 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
 /**
  * Event for handling warnings/questions before rules are called.
  * 
- * 
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
     private static final Logger LOG = Logger.getLogger(PromptBeforeValidationEvent.class);
 

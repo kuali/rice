@@ -24,7 +24,10 @@ import java.util.Set;
 
 /**
  * Base class for all MaintenanceDocumentPresentationControllers.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationControllerBase}.
  */
+@Deprecated
 public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase
        implements MaintenanceDocumentPresentationController {
 

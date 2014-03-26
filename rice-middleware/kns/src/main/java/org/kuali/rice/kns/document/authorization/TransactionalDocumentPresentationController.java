@@ -22,8 +22,9 @@ import java.util.Set;
 /**
  * The DocumentPresentationController class is used for non-user related lock down 
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.document.TransactionalDocumentPresentationController}.
  */
+@Deprecated
 public interface TransactionalDocumentPresentationController extends DocumentPresentationController {
 	 /**
      * @param document

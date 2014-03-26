@@ -17,8 +17,9 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-    The hidden element will cause the attribute to not
-    be displayed.
+ * The hidden element will cause the attribute to not be displayed.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.HiddenControl}.
  */
 @Deprecated
 public class HiddenControlDefinition extends ControlDefinitionBase {

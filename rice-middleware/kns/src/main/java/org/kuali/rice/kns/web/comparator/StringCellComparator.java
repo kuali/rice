@@ -21,6 +21,10 @@ import org.kuali.rice.krad.comparator.StringValueComparator;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
+@Deprecated
 public class StringCellComparator implements Comparator, Serializable {
 
     static final long serialVersionUID = -183249045552328424L;

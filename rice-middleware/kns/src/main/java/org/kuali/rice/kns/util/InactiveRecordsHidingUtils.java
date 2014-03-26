@@ -24,7 +24,10 @@ import java.util.Map;
  * collection elements.  This class has several utilities to control that behavior. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public final class InactiveRecordsHidingUtils {
 	
 	private InactiveRecordsHidingUtils() {

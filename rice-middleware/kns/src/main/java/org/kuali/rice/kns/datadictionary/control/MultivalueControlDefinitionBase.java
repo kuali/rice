@@ -18,7 +18,9 @@ package org.kuali.rice.kns.datadictionary.control;
 import org.kuali.rice.krad.datadictionary.exception.CompletionException;
 
 /**
- * Base class for control which provide a list of values to choose between. 
+ * Base class for control which provide a list of values to choose between.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public abstract class MultivalueControlDefinitionBase extends ControlDefinitionBase {

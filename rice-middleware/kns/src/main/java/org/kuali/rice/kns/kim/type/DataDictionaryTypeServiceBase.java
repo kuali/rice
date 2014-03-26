@@ -76,7 +76,10 @@ import com.google.common.collect.Lists;
  * supports the ability to read non-Data Dictionary attribute information from the {@link KimTypeInfoService}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated A krad integrated type service base class will be provided in the future.
  */
+@Deprecated
 public class DataDictionaryTypeServiceBase implements KimTypeService {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryTypeServiceBase.class);

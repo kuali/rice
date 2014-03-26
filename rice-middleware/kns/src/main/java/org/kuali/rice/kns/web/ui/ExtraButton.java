@@ -24,6 +24,8 @@ import java.io.Serializable;
 /**
  * Represents an extra button that may appear on the lookups or bottom of a
  * document page.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class ExtraButton implements Serializable {

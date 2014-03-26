@@ -23,7 +23,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * KNS version of the DocumentPresentationControllerBase - adds #getDocumentActions via {@link DocumentPresentationController}
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.document.DocumentPresentationControllerBase}.
  */
+@Deprecated
 public class DocumentPresentationControllerBase extends org.kuali.rice.krad.document.DocumentPresentationControllerBase implements DocumentPresentationController {
     /**
      * @see DocumentPresentationController#getDocumentActions(org.kuali.rice.krad.document.Document)

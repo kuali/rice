@@ -30,7 +30,10 @@ import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions
  * Tests the KualiLookupableImpl base class.  This test was initially created during investigation
  * of the Kuali lookup framework.  It is probably too tightly coupled to the implementation, and should not
  * be taken at face value as a spec for the code under test.
+ *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class KualiLookupableImplTest {
     private KualiLookupableImpl lookupable = new KualiLookupableImpl()
 

@@ -17,6 +17,8 @@ package org.kuali.rice.kns.datadictionary;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.BusinessObjectEntry}.
  */
 @Deprecated
 public class BusinessObjectEntry extends org.kuali.rice.krad.datadictionary.BusinessObjectEntry {

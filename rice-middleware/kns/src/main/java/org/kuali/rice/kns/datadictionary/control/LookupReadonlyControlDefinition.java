@@ -17,9 +17,10 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-    The lookupReadonly control element creates a field with a magnifying
-    glass and a read-only value.  This forces the user to change the value
-    of the field only by use of the magnifying glass.
+ * The lookupReadonly control element creates a field with a magnifying glass and a read-only value.  This forces the
+ * user to change the value of the field only by use of the magnifying glass.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class LookupReadonlyControlDefinition extends ControlDefinitionBase {

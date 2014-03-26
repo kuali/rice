@@ -28,7 +28,9 @@ import javax.servlet.jsp.JspException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KNSELTextTag extends ELTextTag {
 	/**
 	 * @see org.apache.struts.taglib.html.BaseInputTag#doEndTag()

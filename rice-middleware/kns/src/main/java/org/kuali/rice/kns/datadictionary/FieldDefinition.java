@@ -30,6 +30,8 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
  * Contains field-related information for DataDictionary entries.  Used by lookups and inquiries.
  *
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.field.Field} subclasses.
  */
 @Deprecated
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {

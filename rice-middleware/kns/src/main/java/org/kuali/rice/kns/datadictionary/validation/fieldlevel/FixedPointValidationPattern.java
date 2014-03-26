@@ -21,8 +21,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching fixed point numbers, optionally matching negative numbers
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint}.
  */
+@Deprecated
 public class FixedPointValidationPattern extends FieldLevelValidationPattern {
     public static final String PATTERN_TYPE_PRECISION = "fixedPoint.precision";
     public static final String PATTERN_TYPE_SCALE = "fixedPoint.scale";

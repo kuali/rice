@@ -39,7 +39,10 @@ import org.kuali.rice.kew.api.KewApiConstants
 
 /**
  * Unit tests WebUtils
+ *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class WebUtilsTest {
     def strutsControllerConfig = { "250M" } as ControllerConfig;
     String maxUploadSize;

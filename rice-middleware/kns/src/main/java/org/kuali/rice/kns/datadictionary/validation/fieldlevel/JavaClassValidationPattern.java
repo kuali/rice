@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching fully-specified Java class names
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}.
  */
+@Deprecated
 public class JavaClassValidationPattern extends FieldLevelValidationPattern {
 
 

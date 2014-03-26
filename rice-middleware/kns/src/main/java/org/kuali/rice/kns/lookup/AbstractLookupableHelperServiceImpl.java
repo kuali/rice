@@ -77,7 +77,10 @@ import java.util.Set;
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
  * and some common util methods that require the injected services
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.LookupableImpl}.
  */
+@Deprecated
 public abstract class AbstractLookupableHelperServiceImpl implements LookupableHelperService {
 
     protected static final String TITLE_RETURN_URL_PREPENDTEXT_PROPERTY = "title.return.url.value.prependtext";

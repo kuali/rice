@@ -31,8 +31,10 @@ import java.lang.reflect.Proxy;
  * does not have the bean in question.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class GlobalResourceDelegatingSpringCreator extends SpringCreator {
 
     public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";

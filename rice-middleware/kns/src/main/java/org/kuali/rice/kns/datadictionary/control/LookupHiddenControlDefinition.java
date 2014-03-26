@@ -17,9 +17,10 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
- *  The lookupHidden control element creates a field with a magnifying
-                        glass, but no value showing.  This can be used to do a lookup to
-                        return a value which will appear in another field.
+ *  The lookupHidden control element creates a field with a magnifying glass, but no value showing.  This can be used to
+ *  do a lookup to return a value which will appear in another field.
+ *
+ *  @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class LookupHiddenControlDefinition extends ControlDefinitionBase {

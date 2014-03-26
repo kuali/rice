@@ -45,9 +45,12 @@ import java.util.Set;
 
 /**
  * This class is the base form which implements the PojoForm interface.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  * Kuali Foundation modification: javadoc comments changed
  */
 // begin Kuali Foundation modification: this class was named SLActionForm
+@Deprecated
 public class PojoFormBase extends ActionForm implements PojoForm {
     private static final long serialVersionUID = 1L;
     

@@ -23,7 +23,10 @@ import java.util.Set;
 
 /**
  * Extension to DocumentAuthorizer interface which adds transactional-document-specific methods.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.document.TransactionalDocumentAuthorizer}.
  */
+@Deprecated
 public interface TransactionalDocumentAuthorizer extends DocumentAuthorizer {	
 	/**
      * @param document

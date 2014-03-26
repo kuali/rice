@@ -30,7 +30,9 @@ import org.kuali.rice.krad.util.KRADConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class CustomCsvExportView extends CsvView {
 
 	private ExportViewHelper helper;

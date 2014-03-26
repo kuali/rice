@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching standard-format (yyyy-mm-dd hh:mm:ss.m) timestamps
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint}.
  */
+@Deprecated
 public class TimestampValidationPattern extends FieldLevelValidationPattern {
 
     /**

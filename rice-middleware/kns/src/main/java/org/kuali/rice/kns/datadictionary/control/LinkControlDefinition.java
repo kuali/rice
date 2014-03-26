@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.datadictionary.control;
 
 /**
-The link element is used to render an HTML link control.
-*/
+ * The link element is used to render an HTML link control.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
+ */
 @Deprecated
 public class LinkControlDefinition extends ControlDefinitionBase {
 	 private static final long serialVersionUID = -7568912421829207545L;

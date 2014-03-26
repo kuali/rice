@@ -78,7 +78,7 @@ import java.util.Set;
 /**
  * Contains all of the business rules that are common to all maintenance documents
  *
- * @deprecated use KRAD
+ * @deprecated Only used in KNS classes, use KRAD.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -38,7 +38,10 @@ import java.util.Map;
 
 /**
  * This class common properites for all action forms.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.form.UifFormBase}.
  */
+@Deprecated
 public class KualiForm extends PojoFormBase {
     /**
      * Tab state UI literals

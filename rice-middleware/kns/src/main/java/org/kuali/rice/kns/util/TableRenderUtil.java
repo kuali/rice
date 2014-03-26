@@ -21,8 +21,10 @@ package org.kuali.rice.kns.util;
  * Normally, displaytag handles the rendering of Kuali tables on various screens, but
  * there are situations where displaytag is inadequate for the task (e.g. multiple value lookups).
  * In particular, display tag does not handle POSTing of forms when switching between pages and sorting.
- * 
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public final class TableRenderUtil {
 	
 	private TableRenderUtil() {

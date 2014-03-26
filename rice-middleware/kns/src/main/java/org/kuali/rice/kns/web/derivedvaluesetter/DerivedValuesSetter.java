@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public interface DerivedValuesSetter {
 	public void setDerivedValues(KualiForm form, HttpServletRequest request);
 }

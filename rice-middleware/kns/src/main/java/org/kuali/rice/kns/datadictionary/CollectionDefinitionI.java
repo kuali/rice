@@ -19,6 +19,9 @@ import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.util.List;
 
+/**
+ * @deprecated Only used in KNS classes, no replacement.
+ */
 @Deprecated
 public interface CollectionDefinitionI {
     public String getName();

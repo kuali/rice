@@ -33,8 +33,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * This class handles when the feedback form is submitted.
  * It invokes the KualiFeedbackService to send the feedback email
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
-
+@Deprecated
 public class KualiFeedbackHandlerAction extends KualiAction {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

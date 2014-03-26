@@ -23,7 +23,7 @@ import org.kuali.rice.krad.document.Document;
  * This class is a utility service intended to help retrieve objects related to particular documents.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @deprecated use {@link org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentAuthorizer(java.lang.String)}
+ * @deprecated Use {@link org.kuali.rice.krad.service.DocumentDictionaryService}.
  */
 @Deprecated
 public interface DocumentHelperService {

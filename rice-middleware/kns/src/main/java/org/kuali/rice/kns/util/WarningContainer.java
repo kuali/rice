@@ -25,7 +25,9 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class WarningContainer extends MessageContainer {
 
 	public WarningContainer(MessageMap errorMap) {

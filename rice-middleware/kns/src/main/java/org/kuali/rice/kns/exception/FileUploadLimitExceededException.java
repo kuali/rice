@@ -22,9 +22,9 @@ import org.kuali.rice.core.api.exception.KualiException;
 /**
  * This class represents an FileUploadLimitExceededException.
  * 
- * 
+ * @deprecated Only used in KNS classes, no replacement.
  */
-
+@Deprecated
 public class FileUploadLimitExceededException extends KualiException {
 
 	private ActionForm actionForm;

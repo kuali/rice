@@ -17,12 +17,12 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-                        The currency element defines an HTML text control for
-                        entering dollar and cents amounts.  Only two decimals to
-                        the right of the decimal point are allowed.  Formatted
-                        value is displayed with commas.
-                        
-                        Used Properties: size, formattedMaxLength
+ * The currency element defines an HTML text control for entering dollar and cents amounts.  Only two decimals to the
+ * right of the decimal point are allowed.  Formatted value is displayed with commas.
+ *
+ * Used Properties: size, formattedMaxLength
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class CurrencyControlDefinition extends ControlDefinitionBase {

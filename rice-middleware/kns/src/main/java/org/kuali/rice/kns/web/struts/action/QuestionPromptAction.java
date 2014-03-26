@@ -33,8 +33,9 @@ import java.util.Properties;
 /**
  * This class handles Actions for QuestionPromp.
  *
- *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class QuestionPromptAction extends KualiAction {
 	
     /**

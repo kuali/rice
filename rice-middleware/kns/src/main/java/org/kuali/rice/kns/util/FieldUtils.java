@@ -105,7 +105,10 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 /**
  * This class is used to build Field objects from underlying data dictionary and general utility methods for handling fields.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public final class FieldUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldUtils.class);
     private static DataDictionaryService dataDictionaryService = null;

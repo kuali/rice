@@ -55,8 +55,9 @@ import java.util.regex.Pattern;
 /**
  * This class is the base action form for all maintenance documents.
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.web.form.MaintenanceDocumentForm}.
  */
+@Deprecated
 public class KualiMaintenanceForm extends KualiDocumentFormBase {
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceForm.class);
 

@@ -21,6 +21,7 @@ import org.kuali.rice.coreservice.api.parameter.Parameter
 
 import org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb
 
+@Deprecated
 class CriteriaLookupServiceOjbImplTest {
 
     def lookup = new CriteriaLookupDaoOjb();

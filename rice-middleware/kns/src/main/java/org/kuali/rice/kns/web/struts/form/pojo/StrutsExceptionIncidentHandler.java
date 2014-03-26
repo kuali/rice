@@ -34,7 +34,9 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class StrutsExceptionIncidentHandler extends ExceptionHandler {
     private static final Logger LOG=
         Logger.getLogger(StrutsExceptionIncidentHandler.class);

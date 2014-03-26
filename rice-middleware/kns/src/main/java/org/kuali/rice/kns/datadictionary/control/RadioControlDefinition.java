@@ -17,9 +17,10 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-                        The radio element will render an HTML radio control.
-                        The valuesFinderClass will have a getKeyValues() method
-                        that returns a list of KeyValue objects.
+ * The radio element will render an HTML radio control.  The valuesFinderClass will have a getKeyValues() method that
+ * returns a list of KeyValue objects.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.RadioGroupControl}.
  */
 @Deprecated
 public class RadioControlDefinition extends MultivalueControlDefinitionBase {

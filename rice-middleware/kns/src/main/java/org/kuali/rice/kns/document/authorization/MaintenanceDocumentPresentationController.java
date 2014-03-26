@@ -20,6 +20,10 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 
 import java.util.Set;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController}.
+ */
+@Deprecated
 public interface MaintenanceDocumentPresentationController extends InquiryOrMaintenanceDocumentPresentationController,
         org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController {
 

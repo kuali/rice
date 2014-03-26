@@ -32,6 +32,8 @@ import java.util.List;
  * with Document-related entries in the data dictionary.
  *
  *@author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
 public interface MaintenanceDocumentDictionaryService {

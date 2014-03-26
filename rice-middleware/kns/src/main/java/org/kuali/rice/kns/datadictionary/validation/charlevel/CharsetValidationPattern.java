@@ -24,8 +24,9 @@ import java.util.regex.Pattern;
 /**
  * Pattern for matching any character in the given list (String)
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.CharsetPatternConstraint}.
  */
+@Deprecated
 public class CharsetValidationPattern extends CharacterLevelValidationPattern {
     protected String validChars;
 

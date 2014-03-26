@@ -29,7 +29,10 @@ import org.kuali.rice.krad.util.KRADConstants;
  * This class allows for plugging in custom XML export into the Display Tag library.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class CustomExcelExportView extends ExcelView {
 
 	private ExportViewHelper helper;

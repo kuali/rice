@@ -29,7 +29,10 @@ import java.util.regex.Pattern;
 
 /**
  * This class...
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class CellComparatorHelper {
 
     static private Pattern HREF_ENCLOSURE = Pattern.compile("<a [^>]+>([^<]*)</a>.*", Pattern.MULTILINE);

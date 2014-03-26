@@ -27,7 +27,9 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiMultipartRequestHandler extends CommonsMultipartRequestHandler {
     private static final Logger LOG = Logger.getLogger(KualiMultipartRequestHandler.class);
 

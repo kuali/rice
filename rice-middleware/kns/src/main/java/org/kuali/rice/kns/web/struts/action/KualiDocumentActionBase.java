@@ -126,7 +126,10 @@ import org.springmodules.orm.ojb.OjbOperationException;
 /**
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the
  * distributed transactions that actually implement document handling.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.controller.DocumentControllerBase}.
  */
+@Deprecated
 public class KualiDocumentActionBase extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiDocumentActionBase.class);
 

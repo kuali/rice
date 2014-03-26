@@ -77,7 +77,10 @@ import java.util.Map;
 
 /**
  * This class handles actions for maintenance documents. These include creating new edit, and copying of maintenance records.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.controller.MaintenanceDocumentController}.
  */
+@Deprecated
 public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMaintenanceDocumentAction.class);
 

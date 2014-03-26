@@ -20,6 +20,8 @@ import org.kuali.rice.krad.datadictionary.DataDictionaryDefinitionBase;
 
 /**
  * Abstract superclass for all maintainable fields and collections.  Never used directly.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.field.Field} subclasses.
  */
 @Deprecated
 public abstract class MaintainableItemDefinition extends DataDictionaryDefinitionBase {

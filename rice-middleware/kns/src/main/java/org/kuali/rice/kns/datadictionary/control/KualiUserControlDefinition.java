@@ -18,25 +18,21 @@ package org.kuali.rice.kns.datadictionary.control;
 import org.apache.commons.lang.StringUtils;
 
 /**
-                        The kualiUser element defines a control that identifies
-                        a Kuali user. As an example, consider a person with the
-                        following:
-                            * User ID = JPJONES
-                            * Universal User ID = 3583663872
-                            * Employee ID = 0000123456
-                            * Name = JONES,JOHN p
-                        This control defines a field in which the user can enter the User Id or choose a
-                        user using the magnifying glass lookup.  After a user is selected, user name
-                        will be displayed under the User ID.
-
-                        When using this control, the names of other attributes must be specified
-                        to allow the control to function:
-                            * universalIdAttributeName  -
-                                attribute that provides the Universal User Id - e.g. 3583663872
-                            * userIdAttributeName -
-                                attribute that provides the User Id - e.g. JPJONES
-                            * personNameAttributeName -
-                                attribute that provides the User Name - e.g. JONES,JOHN P
+ * The kualiUser element defines a control that identifies a Kuali user. As an example, consider a person with the
+ * following:
+ *      * User ID = JPJONES
+ *      * Universal User ID = 3583663872
+ *      * Employee ID = 0000123456
+ *      * Name = JONES,JOHN p
+ * This control defines a field in which the user can enter the User Id or choose a user using the magnifying glass
+ * lookup.  After a user is selected, user name will be displayed under the User ID.
+ *
+ * When using this control, the names of other attributes must be specified to allow the control to function:
+ *      * universalIdAttributeName  - attribute that provides the Universal User Id - e.g. 3583663872
+ *      * userIdAttributeName - attribute that provides the User Id - e.g. JPJONES
+ *      * personNameAttributeName - attribute that provides the User Name - e.g. JONES,JOHN P
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.UserControl}.
  */
 @Deprecated
 public class KualiUserControlDefinition extends ControlDefinitionBase {

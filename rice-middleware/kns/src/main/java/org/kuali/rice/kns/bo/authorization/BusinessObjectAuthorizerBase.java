@@ -27,6 +27,10 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.bo.DataObjectAuthorizerBase}.
+ */
+@Deprecated
 public class BusinessObjectAuthorizerBase extends DataObjectAuthorizerBase implements BusinessObjectAuthorizer {
     private static final long serialVersionUID = -6315759348728853851L;
 

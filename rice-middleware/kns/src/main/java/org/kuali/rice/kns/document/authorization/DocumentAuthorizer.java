@@ -26,8 +26,9 @@ import java.util.Set;
  * dynamically determine what editing mode and what actions are allowed for a
  * given user on a given document instance.
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.document.DocumentAuthorizer}.
  */
+@Deprecated
 public interface DocumentAuthorizer extends BusinessObjectAuthorizer, org.kuali.rice.krad.document.DocumentAuthorizer {
 	public Set<String> getDocumentActions(Document document, Person user,
 			Set<String> documentActions);

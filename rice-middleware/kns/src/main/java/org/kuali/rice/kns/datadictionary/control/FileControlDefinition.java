@@ -21,7 +21,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * A single HTML text control.
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.FileControl}.
  */
 @Deprecated
 public class FileControlDefinition extends ControlDefinitionBase {

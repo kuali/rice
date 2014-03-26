@@ -69,7 +69,10 @@ import java.util.Properties;
  * may occur.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.inquiry.InquirableImpl}.
  */
+@Deprecated
 public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
 

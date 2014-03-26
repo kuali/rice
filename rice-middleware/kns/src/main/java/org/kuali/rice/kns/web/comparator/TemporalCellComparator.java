@@ -21,6 +21,10 @@ import org.kuali.rice.krad.comparator.TemporalValueComparator;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
+@Deprecated
 public class TemporalCellComparator implements Comparator, Serializable {
 
     static final long serialVersionUID = 6587335959291216641L;

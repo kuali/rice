@@ -19,7 +19,10 @@ import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.util.Map;
 
-
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.bo.DataObjectAuthorizer}.
+ */
+@Deprecated
 public interface BusinessObjectAuthorizer {
 	public boolean isAuthorized(BusinessObject businessObject,
 			String namespaceCode, String permissionName, String principalId);

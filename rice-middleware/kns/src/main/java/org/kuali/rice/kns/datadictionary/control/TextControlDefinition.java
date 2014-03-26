@@ -17,10 +17,10 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-    The text element defines an HTML text control element.
-    The size attribute defines the size of the field.
-    If the datePicker option is entered, then  the user will be able
-    to select a date from a popup calendar.
+ * The text element defines an HTML text control element.  The size attribute defines the size of the field. If the
+ * datePicker option is entered, then  the user will be able to select a date from a popup calendar.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.TextControl}.
  */
 @Deprecated
 public class TextControlDefinition extends ControlDefinitionBase {

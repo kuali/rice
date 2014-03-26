@@ -16,16 +16,17 @@
 package org.kuali.rice.kns.datadictionary;
 
 /**
-                  The inquirySubSectionHeader allows a separator containing text to
-                  separate groups of fields.  The name attribute is the displayed text.
-
-                  DD:   See InquirySubSectionHeaderDefinition.
-                  JSTL: inquirySubSectionHeader appears in the inquiryFields map as:
-                      * key = "attributeName"
-                      * value = name of inquirySubSectionHeader
+ * The inquirySubSectionHeader allows a separator containing text to separate groups of fields.  The name attribute is
+ * the displayed text.
+ *
+ * DD:   See InquirySubSectionHeaderDefinition.
+ * JSTL: inquirySubSectionHeader appears in the inquiryFields map as:
+ *      * key = "attributeName"
+ *      * value = name of inquirySubSectionHeader
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Use sections inside {@link org.kuali.rice.krad.uif.view.InquiryView}.
  */
 @Deprecated
 public class InquirySubSectionHeaderDefinition extends FieldDefinition implements SubSectionHeaderDefinitionI {

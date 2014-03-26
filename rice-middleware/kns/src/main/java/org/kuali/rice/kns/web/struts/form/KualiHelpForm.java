@@ -20,8 +20,9 @@ import org.kuali.rice.krad.datadictionary.HelpDefinition;
 /**
  * Holds help parameters and found text.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiHelpForm extends KualiForm {
     private static final long serialVersionUID = 1L;
     private String businessObjectClassName;

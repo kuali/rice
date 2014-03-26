@@ -24,37 +24,30 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import java.util.List;
 
 /**
-    The maintainableField element defines the specifications
-    for one data field.
-    JSTL: maintainableField is a Map accessed by the field name.
-    It contains entries with the following keys:
-        * field (boolean String)
-        * name (String)
-        * required (boolean String)
-
-    * name is the name of the field
-    * required is true if the field must contain a non-null value
-    * readOnly is true if it cannot be updated
-    * template documentation from MaintenanceUtils.java:
-        Field templates are used in relation to multiple value lookups.
-        When doing a MV lookup on a collection, the returned BOs
-        are not necessarily of the same type as the elements of the
-        collection. Therefore, a means of mapping between the fields
-        for the 2 BOs are necessary. The template attribute of
-        <maintainableField> contained within <maintainableCollection>
-        tells us this mapping.
-        Example:
-        <maintainableField name="collectionAttrib" template="lookupBOAttrib">
-        means that when a list of BOs are returned, the lookupBOAttrib value
-        of the looked up BO will be placed into the collectionAttrib
-        value of the BO added to the collection
-    * webUILeaveFieldFunction is the name of a javascript function to called when
-        when the user tabs out of the field.
-    * webUILeaveFieldCallbackFunction
-        This is the call javascript function related to the webUILeaveFieldFunction.
-    * readOnlyAfterAdd
-        This is used to indicate that the field is read-only after the record has been
-        initially created.
+ * The maintainableField element defines the specifications for one data field.
+ * JSTL: maintainableField is a Map accessed by the field name.
+ * It contains entries with the following keys:
+ *      * field (boolean String)
+ *      * name (String)
+ *      * required (boolean String)
+ *
+ * name is the name of the field
+ * required is true if the field must contain a non-null value
+ * readOnly is true if it cannot be updated
+ * template documentation from MaintenanceUtils.java:
+ *      Field templates are used in relation to multiple value lookups.  When doing a MV lookup on a collection, the
+ *      returned BOs are not necessarily of the same type as the elements of the collection. Therefore, a means of
+ *      mapping between the fields for the 2 BOs are necessary. The template attribute of <maintainableField> contained
+ *      within <maintainableCollection> tells us this mapping.
+ *      Example:
+ *          <maintainableField name="collectionAttrib" template="lookupBOAttrib"> means that when a list of BOs are
+ *          returned, the lookupBOAttrib value of the looked up BO will be placed into the collectionAttrib value of the
+ *          BO added to the collection
+ * webUILeaveFieldFunction - The name of a javascript function to called when when the user tabs out of the field.
+ * webUILeaveFieldCallbackFunction - This is the call javascript function related to the webUILeaveFieldFunction.
+ * readOnlyAfterAdd - This is used to indicate that the field is read-only after the record has been initially created.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.field.Field} subclasses.
  */
 @Deprecated
 public class MaintainableFieldDefinition extends MaintainableItemDefinition implements FieldDefinitionI{

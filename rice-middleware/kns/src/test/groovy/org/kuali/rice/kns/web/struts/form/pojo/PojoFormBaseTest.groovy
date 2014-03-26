@@ -36,7 +36,10 @@ import org.kuali.rice.kns.util.WebUtils
 
 /**
  * Tests PojoFormBase
+ *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class PojoFormBaseTest {
     def strutsControllerConfig = { "250M" } as ControllerConfig;
     String maxUploadSize;

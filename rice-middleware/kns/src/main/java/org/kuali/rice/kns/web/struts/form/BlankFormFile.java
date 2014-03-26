@@ -25,8 +25,9 @@ import java.io.Serializable;
 /**
  * Empty FormFile instance, used to clear out FormFile attributes of Struts forms.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class BlankFormFile implements FormFile, Serializable {
     public void destroy() {
     }

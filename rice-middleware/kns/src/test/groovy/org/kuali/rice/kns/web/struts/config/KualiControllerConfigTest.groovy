@@ -36,7 +36,9 @@ import org.kuali.rice.kim.api.identity.Person
 /**
  * Tests KualiControllerConfig
  *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class KualiControllerConfigTest {
     def strutsControllerConfig = { "250M" } as ControllerConfig;
     String parameterMaxFileSize;

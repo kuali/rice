@@ -36,7 +36,10 @@ import org.kuali.rice.krad.bo.BusinessObject
 
 /**
  * Tests FieldUtils
+ *
+ * @deprecated KNS test class, move to KRAD equivalent if applicable.
  */
+@Deprecated
 class FieldUtilsTest {
     @Test
     void testGenerateCollectionSubTabName() {

@@ -27,6 +27,8 @@ import java.util.Map;
 
 /**
  * Defines basic methods that all maintainable objects must provide
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.Maintainable}.
  */
 @Deprecated
 public interface Maintainable extends org.kuali.rice.krad.maintenance.Maintainable, SelectiveReferenceRefresher {

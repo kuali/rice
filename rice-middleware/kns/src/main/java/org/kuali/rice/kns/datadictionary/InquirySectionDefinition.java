@@ -24,19 +24,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *                  inquirySection defines the format and content of
-                 one section of the inquiry.
-                 DD:  See InquirySectionDefinition.java
-                 
-                numberOfColumns = the number of fields to be displayed in each row of the inquiry section.
-                For example, numberOfColumns = 2 indicates that the label and values for two fields will be
-                displayed in each row as follows:
-                    field1label field1value  |   field2label field2value
-                    field3label field3value  |   field4label field4value
-                etc.
-                 
+ * inquirySection defines the format and content of one section of the inquiry.
+ * DD:  See InquirySectionDefinition.java
+ *
+ * numberOfColumns = the number of fields to be displayed in each row of the inquiry section.
+ * For example, numberOfColumns = 2 indicates that the label and values for two fields will be displayed in each row as
+ * follows:
+ *      field1label field1value  |   field2label field2value
+ *      field3label field3value  |   field4label field4value
+ *      etc.
+ *
  * Contains section-related information for inquiry sections
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
+ *
+ * @deprecated Use sections inside of {@link org.kuali.rice.krad.uif.view.InquiryView}.
  */
 @Deprecated
 public class InquirySectionDefinition extends DataDictionaryDefinitionBase {

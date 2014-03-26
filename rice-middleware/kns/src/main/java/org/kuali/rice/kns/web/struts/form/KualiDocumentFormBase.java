@@ -67,7 +67,10 @@ import java.util.Properties;
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
  * the base action form for all documents.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.form.DocumentFormBase}.
  */
+@Deprecated
 public abstract class KualiDocumentFormBase extends KualiForm implements Serializable {
     private static final long serialVersionUID = 916061016201941821L;
 

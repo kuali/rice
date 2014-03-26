@@ -28,7 +28,10 @@ import java.util.Map;
  * A service which will resolve workflow attributes into the proper data for routing qualifier resolution
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used in KNS classes, no replacement.
  */
+@Deprecated
 public interface WorkflowAttributePropertyResolutionService {
 
     /** 

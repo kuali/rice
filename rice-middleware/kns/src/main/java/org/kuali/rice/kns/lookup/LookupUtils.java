@@ -57,7 +57,7 @@ import java.util.StringTokenizer;
 /**
  * Utility class for Lookup related utilities and helper methods.
  *
- * @deprecated use KRAD
+ * @deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
 public class LookupUtils {

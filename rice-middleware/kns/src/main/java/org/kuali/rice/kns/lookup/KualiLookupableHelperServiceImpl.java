@@ -42,6 +42,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.LookupableImpl}.
+ */
+@Deprecated
 @Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
 

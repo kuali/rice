@@ -39,7 +39,10 @@ import java.util.Set;
 
 /**
  * This class handles UI actions for all shared methods of transactional documents.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.controller.TransactionalDocumentControllerBase}.
  */
+@Deprecated
 public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBase {
 //    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiTransactionalDocumentActionBase.class);
 

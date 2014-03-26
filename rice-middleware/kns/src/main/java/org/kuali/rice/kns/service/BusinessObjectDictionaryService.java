@@ -25,6 +25,8 @@ import java.util.List;
 
 /**
  * This interface defines the API for the interacting with the data dictionary.
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
 public interface BusinessObjectDictionaryService {

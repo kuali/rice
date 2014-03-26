@@ -38,7 +38,10 @@ import java.util.TreeMap;
 
 /**
  * This class is the action form for all lookups.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.LookupForm}.
  */
+@Deprecated
 public class LookupForm extends KualiForm {
     private static final long serialVersionUID = 1L;
 

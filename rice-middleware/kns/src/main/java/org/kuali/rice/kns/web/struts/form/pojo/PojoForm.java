@@ -22,9 +22,12 @@ import java.util.Set;
 /**
  * begin Kuali Foundation modification
  * This interface defines methods that Pojo Forms must provide.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  * end Kuali Foundation modification
  */
 // Kuali Foundation modification: original name: SLForm
+@Deprecated
 public interface PojoForm {
     public void populate(HttpServletRequest request);
 

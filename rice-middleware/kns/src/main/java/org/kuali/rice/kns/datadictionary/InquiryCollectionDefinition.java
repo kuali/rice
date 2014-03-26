@@ -23,22 +23,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
-   The inquiryCollection defines a collection within the Business Object which contains
-   data that should be displayed with the BO when the inquiry is performed.
-
-   Each inquiryCollection defines a set of data fields, nested inquiryCollections
-   and summaryFields.  The summaryFields will be reported in the header of
-   this inquiryCollection, .
-
-   DD: See InquiryCollectionDefinition.java
-   JSTL: The inquiryCollection element is a Map with the following keys:
-       * name (String)
-       * dataObjectClass (String)
-       * numberOfColumns (String)
-       * inquiryFields (Map)
-       * inquiryCollections (Map, optional)
-       * summaryTitle (String)
-       * summaryFields (Map, optional)
+ * The inquiryCollection defines a collection within the Business Object which contains data that should be displayed
+ * with the BO when the inquiry is performed.
+ *
+ * Each inquiryCollection defines a set of data fields, nested inquiryCollections and summaryFields.  The summaryFields
+ * will be reported in the header of this inquiryCollection.
+ *
+ * DD: See InquiryCollectionDefinition.java
+ * JSTL: The inquiryCollection element is a Map with the following keys:
+ *      * name (String)
+ *      * dataObjectClass (String)
+ *      * numberOfColumns (String)
+ *      * inquiryFields (Map)
+ *      * inquiryCollections (Map, optional)
+ *      * summaryTitle (String)
+ *      * summaryFields (Map, optional)
+ *
+ * @deprecated Use collections inside of {@link org.kuali.rice.krad.uif.view.InquiryView}.
  */
 @Deprecated
 public class InquiryCollectionDefinition extends FieldDefinition implements CollectionDefinitionI {

@@ -17,13 +17,13 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-    The select element will render an HTML select control.
-    The valuesFinderClass will have a getKeyValues() method
-    that returns a list of KeyValue objects.
-
-    An optional script attribute allows java script code to be
-    entered.  This code will be run when the user selects a new
-    value.
+ * The select element will render an HTML select control.  The valuesFinderClass will have a getKeyValues() method that
+ * returns a list of KeyValue objects.
+ *
+ * An optional script attribute allows java script code to be entered.  This code will be run when the user selects a
+ * new value.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.SelectControl}.
  */
 @Deprecated
 public class SelectControlDefinition extends MultivalueControlDefinitionBase {

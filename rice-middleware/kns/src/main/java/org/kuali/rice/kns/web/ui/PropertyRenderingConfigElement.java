@@ -22,6 +22,8 @@ import org.kuali.rice.core.web.format.Formatter;
  * property
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public interface PropertyRenderingConfigElement {

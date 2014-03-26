@@ -21,6 +21,10 @@ import org.kuali.rice.kns.web.ui.Field;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public class InquiryOrMaintenanceDocumentRestrictionsBase extends
 		BusinessObjectRestrictionsBase implements InquiryOrMaintenanceDocumentRestrictions, InquiryRestrictions {
 	private Set<String> hiddenFields;

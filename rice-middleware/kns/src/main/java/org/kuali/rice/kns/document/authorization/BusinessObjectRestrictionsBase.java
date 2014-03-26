@@ -22,6 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public class BusinessObjectRestrictionsBase implements
 		BusinessObjectRestrictions {
 	private Map<String, MaskFormatter> partiallyMaskedFields;

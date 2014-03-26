@@ -36,6 +36,7 @@ import java.util.Properties;
 /**
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
  */
+@Deprecated
 @Transactional
 public class KualiLookupableImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);

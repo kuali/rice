@@ -51,7 +51,10 @@ import java.util.Set;
 
 /**
  * This class serves as the struts action for implementing multiple value lookups
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiMultipleValueLookupAction extends KualiLookupAction implements KualiTableRenderAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiMultipleValueLookupAction.class);
 

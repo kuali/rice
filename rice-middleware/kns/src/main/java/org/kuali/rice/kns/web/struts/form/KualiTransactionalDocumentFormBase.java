@@ -32,7 +32,10 @@ import java.util.Map;
 
 /**
  * This class is the base action form for all transactional documents.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.form.TransactionalDocumentFormBase}.
  */
+@Deprecated
 public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
 	private static final Logger LOG = Logger.getLogger(KualiTransactionalDocumentFormBase.class);
     /**

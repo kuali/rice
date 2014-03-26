@@ -29,6 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
+@Deprecated
 public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl {
     private static final long serialVersionUID = 4814145799502207182L;
 

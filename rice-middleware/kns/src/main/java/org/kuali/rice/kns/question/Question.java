@@ -20,8 +20,9 @@ import java.util.ArrayList;
 /**
  * This interface defines methods that are required to support c Confirmation Question.
  * 
- * 
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public interface Question {
     /**
      * returns the index associated with a specified button

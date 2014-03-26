@@ -27,29 +27,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
-    The maintainableCollection element defines a set of data fields, nested
-    collections, summaryFields and duplicateIdentificationsFields.
-
-    JSTL: maintainableCollection is a Map which is accessed using a
-    key of the name of the maintainableCollection.  Each entry
-    contains the following keys and values:
-        **Key**                **Value**
-        collection             true
-        name                   name of collection
-        dataObjectClass    name of collection class
-        
-* name is the name of the collection
-* dataObjectClass is the class name of the objects in the collection
-* sourceClassName is the class name of the BO used in a lookup
-* sourceAttributeName is the name of the attribute which returns the collection
-* includeAddLine is true if the user is given the ability to add multiple lines.
-* includeMultipleLookupLine whether to render a quickfinder icon for multiple value lookups on the collection.  Defaults to true
-* summaryTitle is the label of the summary
-* attributeToHighlightOnDuplicateKey is the name of an attribute to highlight
-    if two records in the collection are the same based on the
-    duplicateIdentificationFields element.
-
+ * The maintainableCollection element defines a set of data fields, nested collections, summaryFields and
+ * duplicateIdentificationsFields.
  *
+ * JSTL: maintainableCollection is a Map which is accessed using a key of the name of the maintainableCollection.  Each
+ * entry contains the following keys and values:
+ *      **Key**                **Value**
+ *      collection             true
+ *      name                   name of collection
+ *      dataObjectClass    name of collection class
+ *
+ * name is the name of the collection
+ * dataObjectClass is the class name of the objects in the collection
+ * sourceClassName is the class name of the BO used in a lookup
+ * sourceAttributeName is the name of the attribute which returns the collection
+ * includeAddLine is true if the user is given the ability to add multiple lines.
+ * includeMultipleLookupLine whether to render a quickfinder icon for multiple value lookups on the collection.  Defaults to true
+ * summaryTitle is the label of the summary
+ * attributeToHighlightOnDuplicateKey is the name of an attribute to highlight if two records in the collection are the
+ * same based on the duplicateIdentificationFields element.
+ *
+ * @deprecated Use collections inside of {@link org.kuali.rice.krad.uif.view.MaintenanceDocumentView}.
  */
 @Deprecated
 public class MaintainableCollectionDefinition extends MaintainableItemDefinition implements CollectionDefinitionI {

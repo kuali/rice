@@ -23,7 +23,10 @@ import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
  * Rule event interface for implementing business rules against a <code>MaintenanceDocument</code>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.rules.MaintenanceDocumentRule}.
  */
+@Deprecated
 public interface MaintenanceDocumentRule {
 
     /**

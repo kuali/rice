@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 package org.kuali.rice.kns.datadictionary;
+
+/**
+ * @deprecated Only used in KNS classes, no replacement.
+ */
 @Deprecated
 public interface SubSectionHeaderDefinitionI {
     public String getName();

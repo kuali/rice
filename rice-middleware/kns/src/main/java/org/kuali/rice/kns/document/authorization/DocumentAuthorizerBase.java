@@ -38,7 +38,10 @@ import java.util.Set;
 /**
  * DocumentAuthorizer containing common, reusable document-level authorization
  * code.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.document.DocumentAuthorizerBase}.
  */
+@Deprecated
 public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase implements DocumentAuthorizer {
     protected static Log LOG = LogFactory.getLog(DocumentAuthorizerBase.class);
 

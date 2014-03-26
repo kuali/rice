@@ -32,6 +32,8 @@ import org.kuali.rice.krad.util.LegacyDataFramework;
  *
  * TODO: refactor for general objects
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.service.DataObjectAuthorizationService}.
  */
 @Deprecated
 @LegacyDataFramework

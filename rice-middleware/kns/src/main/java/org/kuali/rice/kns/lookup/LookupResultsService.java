@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @deprecated Only used in KNS classes, use KRAD.
+ */
 @Deprecated
 public interface LookupResultsService extends Serializable {
     /**

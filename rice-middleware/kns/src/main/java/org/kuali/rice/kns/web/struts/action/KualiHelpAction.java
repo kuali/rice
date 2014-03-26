@@ -51,8 +51,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This class handles requests for help text.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiHelpAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiHelpAction.class);
 

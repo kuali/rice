@@ -43,7 +43,10 @@ import java.util.Map;
 
 /**
  * This class is the action form for inquiries.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.web.form.InquiryForm}.
  */
+@Deprecated
 public class InquiryForm extends KualiForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryForm.class);
 

@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * This class represents a row of fields on the ui.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class Row implements java.io.Serializable {

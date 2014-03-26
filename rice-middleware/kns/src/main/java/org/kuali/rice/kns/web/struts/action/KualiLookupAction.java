@@ -52,9 +52,9 @@ import java.util.Map;
 /**
  * This class handles Actions for lookup flow
  *
- *
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.LookupController}.
  */
-
+@Deprecated
 public class KualiLookupAction extends KualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupAction.class);
 

@@ -20,7 +20,9 @@ package org.kuali.rice.kns.util;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class AuditError {
 
     private String errorKey;

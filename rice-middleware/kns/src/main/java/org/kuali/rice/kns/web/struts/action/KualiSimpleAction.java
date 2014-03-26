@@ -28,9 +28,9 @@ import javax.servlet.http.HttpServletResponse;
  * This forwards to MAPPING_BASIC without doing anything else; useful for displaying JSPs whose contents don't depend on anything
  * being set up in the action.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
-
+@Deprecated
 public class KualiSimpleAction extends Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionForward returnForward = mapping.findForward(RiceConstants.MAPPING_BASIC);

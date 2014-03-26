@@ -29,7 +29,9 @@ import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public class FieldRestriction {
 
     private String fieldName;

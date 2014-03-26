@@ -22,8 +22,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * Pattern for matching alpha characters
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.AlphaPatternConstraint}.
  */
+@Deprecated
 public class AlphaValidationPattern extends CharacterLevelValidationPattern {
     protected boolean allowWhitespace = false;
 

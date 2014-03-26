@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+/**
+ * @deprecated Only used in KNS classes, no replacement.
+ */
 @Deprecated
 public interface FieldDefinitionI {
     public String getName();

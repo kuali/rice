@@ -39,6 +39,8 @@ import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry}.
  */
 @Deprecated
 public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry implements KNSDocumentEntry {

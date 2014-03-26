@@ -20,7 +20,10 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 /**
  * Common interface for all maintenance documents.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.maintenance.MaintenanceDocument}.
  */
+@Deprecated
 public interface MaintenanceDocument extends org.kuali.rice.krad.maintenance.MaintenanceDocument {
 
     /**

@@ -20,6 +20,8 @@ import org.kuali.rice.krad.document.Document;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.service.DictionaryValidationService}.
  */
 @Deprecated
 public interface DictionaryValidationService extends org.kuali.rice.krad.service.DictionaryValidationService {

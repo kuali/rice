@@ -22,8 +22,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * Pattern for matching any printable character
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.AnyCharacterPatternConstraint}.
  */
+@Deprecated
 public class AnyCharacterValidationPattern extends CharacterLevelValidationPattern {
     protected boolean allowWhitespace = false;
 

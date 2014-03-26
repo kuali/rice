@@ -34,11 +34,14 @@ import java.util.logging.Logger;
 /**
  * begin Kuali Foundation modification
  * This class is the POJO Plugin implementation of the PlugIn interface.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  * end Kuali Foundation modification
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // Kuali Foundation modification: class originally named SL plugin
+@Deprecated
 public class PojoPlugin implements PlugIn {
     static final Logger logger = Logger.getLogger(PojoPlugin.class.getName());
 

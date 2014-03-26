@@ -27,8 +27,9 @@ import java.util.ArrayList;
 /**
  * This class is the action form for all Question Prompts.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class QuestionPromptForm extends KualiForm {
     private static final long serialVersionUID = 1L;
     private ArrayList buttons;

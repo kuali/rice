@@ -33,6 +33,7 @@ import java.util.UUID;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
 @Deprecated
 public class EditablePropertiesHistoryHolder implements java.io.Serializable {

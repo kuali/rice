@@ -27,7 +27,10 @@ import java.util.Set;
 
 /**
  * Base class for all TransactionalDocumentAuthorizers.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase}.
  */
+@Deprecated
 public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements TransactionalDocumentAuthorizer {
 	public final Set<String> getEditModes(Document document, Person user,

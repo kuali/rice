@@ -34,6 +34,7 @@ import java.util.Map;
  * They should act as facades for LookupableHelperServices and also expose bean handlers
  * (getCreateNewUrl, getHtmlMenuBar, getTitle, getRows, getExtraButton{Source,Params})
  *
+ * @deprecated Use {@link org.kuali.rice.krad.lookup.Lookupable}.
  */
 @Deprecated
 public interface Lookupable extends Serializable {

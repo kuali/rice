@@ -25,7 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * When implementing this class, it denotes that this class intends to render its own tables without
  * using display tag.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public interface KualiTableRenderAction {
     public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;
     

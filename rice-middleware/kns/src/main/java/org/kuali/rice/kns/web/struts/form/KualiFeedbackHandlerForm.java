@@ -24,7 +24,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * Feedback form which is used to collect feedback from a user and
  * then email it to a feedback mailing list
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiFeedbackHandlerForm extends KualiForm {
 
 	private static final long serialVersionUID = -7641833777580490471L;

@@ -17,8 +17,9 @@ package org.kuali.rice.kns.datadictionary.control;
 
 
 /**
-                        The checkbox element is used to render an HTML checkbox
-                        control.  It is used for boolean fields.
+ * The checkbox element is used to render an HTML checkbox control.  It is used for boolean fields.
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.control.CheckboxControl}.
  */
 @Deprecated
 public class CheckboxControlDefinition extends ControlDefinitionBase {

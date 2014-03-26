@@ -29,7 +29,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Handles any AuthorizationException by logging it first and then passing it forward to an explanation page.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class AuthorizationExceptionHandler extends ExceptionHandler {
     
     private static final String AUTHORIZATION_EXCEPTION_HANDLER = "authorizationExceptionHandler";

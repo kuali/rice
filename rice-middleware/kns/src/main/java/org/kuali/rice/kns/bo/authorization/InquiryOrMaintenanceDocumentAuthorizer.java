@@ -24,7 +24,9 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public interface InquiryOrMaintenanceDocumentAuthorizer extends BusinessObjectAuthorizer {
 	public Set<String> getSecurePotentiallyHiddenSectionIds();
 }

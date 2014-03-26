@@ -38,7 +38,8 @@ import java.util.Map;
  * This class holds details of html data for an action url.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
+ * @deprecated Only used in KNS classes, no replacement.
  */
 @Deprecated
 public abstract class HtmlData implements Serializable {

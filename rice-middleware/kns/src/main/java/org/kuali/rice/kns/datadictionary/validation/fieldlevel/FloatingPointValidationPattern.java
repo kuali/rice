@@ -21,8 +21,9 @@ import org.kuali.rice.krad.datadictionary.validation.FieldLevelValidationPattern
 /**
  * Validation pattern for matching floating point numbers, optionally matching negative numbers
  * 
- * 
+ * @deprecated Use {@link org.kuali.rice.krad.datadictionary.validation.constraint.FloatingPointPatternConstraint}.
  */
+@Deprecated
 public class FloatingPointValidationPattern extends FieldLevelValidationPattern {
     protected boolean allowNegative;
 

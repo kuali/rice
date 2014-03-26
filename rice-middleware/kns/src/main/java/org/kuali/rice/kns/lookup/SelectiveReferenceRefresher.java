@@ -21,7 +21,10 @@ import java.util.Collection;
 
 /**
  * Classes that implement this interface will refresh
+ *
+ * @deprecated Only used in KNS classes, use KRAD.
  */
+@Deprecated
 public interface SelectiveReferenceRefresher {
     /**
      * Returns a list of references that must be refreshed after a lookup performed on an attribute is performed.

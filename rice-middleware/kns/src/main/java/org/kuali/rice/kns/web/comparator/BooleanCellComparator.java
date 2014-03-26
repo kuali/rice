@@ -20,6 +20,10 @@ import org.displaytag.model.Cell;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
+@Deprecated
 public class BooleanCellComparator implements Comparator, Serializable {
 
     static final long serialVersionUID = 1525781435762831055L;

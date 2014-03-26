@@ -25,13 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-    The inquiry element is used to specify the fields that will be displayed on the
-    inquiry screen for this business object and the order in which they will appear.
-
-    JSTL: The inquiry element is a Map which is accessed using
-    a key of "inquiry".  This map contains the following keys:
-        * title (String)
-        * inquiryFields (Map)
+ * The inquiry element is used to specify the fields that will be displayed on the inquiry screen for this business
+ * object and the order in which they will appear.
+ *
+ * JSTL: The inquiry element is a Map which is accessed using a key of "inquiry".  This map contains the following keys:
+ *      * title (String)
+ *      * inquiryFields (Map)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.uif.view.InquiryView}.
  */
 @Deprecated
 public class InquiryDefinition extends DataDictionaryDefinitionBase {

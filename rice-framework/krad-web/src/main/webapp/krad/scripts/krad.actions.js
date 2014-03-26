@@ -143,13 +143,14 @@ function redirect(url) {
 }
 
 /**
- * Runs client side validation on the entire form and returns the result (an alert is also given
- * if errors are encountered)
+ *
+ * @param {Object=} $group optional parameter to target a single group for validation with no bubbling of validation
+ * messages
+ * @returns {boolean} true if the group contains all valid fields, false otherwise
  */
-function validateForm() {
+function validate($group) {
     clientErrorStorage = new Object();
-    var summaryTextExistence = new Object();
-    var validForm = true;
+    var valid = true;
 
     jQuery.watermark.hideAll();
     pauseTooltipDisplay = true;
@@ -164,48 +165,121 @@ function validateForm() {
         // Temporarily turn off this flag to avoid traversing unneeded logic (all messages will be shown at the end)
         messageSummariesShown = false;
 
-        // Validate the whole form
-        validForm = jq("#kualiForm").valid();
-
-        // Handle field message bubbling manually, but do not write messages out yet
-        jQuery("div[data-role='InputField']").each(function () {
-            var id = jQuery(this).attr('id');
-            var field = jQuery("#" + id);
-            var data = getValidationData(field);
-            var parent = field.data("parent");
-            handleMessagesAtGroup(parent, id, data, true);
-        });
-
-        // Toggle the flag back to default
-        clientErrorExistsCheck = false;
-
-        // Message summaries are going to be shown
-        messageSummariesShown = true;
-
-        // Finally, write the result of the validation messages
-        writeMessagesForPage();
-        pageValidationPhase = false;
+        if (!$group) {
+            valid = _validateForm();
+        }
+        else {
+            valid = _validateGroupOnly($group);
+        }
     }
 
-    if (!validForm) {
-        validForm = false;
+    if (!valid) {
 
         //ensure all non-visible controls are visible to the user
         jQuery(".error:not(:visible)").each(function () {
             cascadeOpen(jQuery(this));
         });
 
-        jumpToTop();
-
         showClientSideErrorNotification();
 
-        jQuery(".uif-pageValidationMessages li.uif-errorMessageItem:first > a").focus();
+        if (!$group) {
+            jumpToTop();
+            jQuery(".uif-pageValidationMessages li.uif-errorMessageItem:first > a").focus();
+        }
+        else {
+
+        }
     }
 
     jq.watermark.showAll();
     pauseTooltipDisplay = false;
 
+    return valid;
+}
+
+/**
+ * Runs client side validation on the entire form and returns the result (an alert is also given
+ * if errors are encountered)
+ */
+function _validateForm() {
+    // Validate the whole form
+    validForm = jq("#kualiForm").valid();
+
+    // Handle field message bubbling manually, but do not write messages out yet
+    jQuery("div[data-role='InputField']").each(function () {
+        var id = jQuery(this).attr("id");
+        var field = jQuery("#" + id);
+        var data = getValidationData(field);
+        var parent = field.data(kradVariables.PARENT_DATA_ATTRIBUTE);
+        handleMessagesAtGroup(parent, id, data, true);
+    });
+
+    // Toggle the flag back to default
+    clientErrorExistsCheck = false;
+
+    // Message summaries are going to be shown
+    messageSummariesShown = true;
+
+    // Finally, write the result of the validation messages
+    writeMessagesForPage();
+    pageValidationPhase = false;
+
+
     return validForm;
+}
+
+/**
+ * Target a single group for client validation, and do not bubble error messages up
+ *
+ * @param $group jQuery object representing the group to be targetted
+ * @returns boolean true if the group's fields are valid, false otherwise
+ */
+function _validateGroupOnly($group) {
+    var id = $group.attr("id");
+    var parentId = $group.attr("data-" + kradVariables.PARENT_DATA_ATTRIBUTE);
+    $group.removeAttr("data-" + kradVariables.PARENT_DATA_ATTRIBUTE);
+
+    validGroup = $group.find("[data-role='Control']").valid();
+
+    // Handle field message bubbling manually, but do not write messages out yet
+    $group.find("div[data-role='InputField']").each(function () {
+        var id = jQuery(this).attr("id");
+        var field = jQuery("#" + id);
+        var data = getValidationData(field);
+        var parent = field.data(kradVariables.PARENT_DATA_ATTRIBUTE);
+        handleMessagesAtGroup(parent, id, data, true);
+    });
+
+    // Toggle the flag back to default
+    clientErrorExistsCheck = false;
+
+    // Message summaries are going to be shown
+    messageSummariesShown = true;
+
+    var validationData = getValidationData($group, true);
+    // Finally, write the result of the validation messages
+    if (validationData) {
+        var messageMap = validationData.messageMap;
+        if (!messageMap) {
+            messageMap = {};
+            validationData.messageMap = messageMap;
+        }
+    }
+
+    writeMessagesForChildGroups(id);
+    writeMessagesForGroup(id, validationData, true, false);
+    displayHeaderMessageCount(id, validationData);
+    $group.find(".uif-errorMessageItem > div").show();
+
+    // Turn off page validation phase flag to return to normal validation processing
+    pageValidationPhase = false;
+
+    // Restore parent id if one exists, by default dialog groups do not have a parent id
+    if (parentId) {
+        $group.attr("data-" + kradVariables.PARENT_DATA_ATTRIBUTE, parentId);
+    }
+
+    return validGroup;
 }
 
 /**

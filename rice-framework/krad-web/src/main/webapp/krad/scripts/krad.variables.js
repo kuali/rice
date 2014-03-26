@@ -72,6 +72,7 @@ JavascriptKradVariables.prototype = {
         REQUEST: "REQUEST"
     },
 
+    DIALOG_SELECTOR: "[role='dialog']",
     DIRTY_CLASS: "dirty",
     DIRTY_FORM: "dirtyForm",
     DISABLE_BROWSER_CACHE: "view.disableBrowserCache",
@@ -155,6 +156,7 @@ JavascriptKradVariables.prototype = {
     PAGE_VALIDATION_MESSAGE_INFO_CLASS: "alert-info",
     PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS: "alert-success",
     PAGE_VALIDATION_MESSAGE_WARNING_CLASS: "alert-warning",
+    PARENT_DATA_ATTRIBUTE: "parent",
     PERFORM_DIRTY_VALIDATION: "performdirtyvalidation",
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
     POPOVER_DATA: "bs.popover",

@@ -574,10 +574,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                     } else if (!data.isSection) {
                         group.prepend(messageBlock);
                     } else if (data.isSection) {
-                        var header = group.find("> .uif-header-contentWrapper");
-                        if (header.length === 0){
-                            header = group.find("> [data-header_for='" + id + "']");
-                        }
+                        header = group.find("[data-header_for='" + id + "']");
                         header.after(messageBlock);
                     }
                 }
@@ -585,6 +582,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 //remove old block styling
                 messageBlock.removeClass("alert");
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_ERROR_CLASS);
+                messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS);
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS);
                 messageBlock.removeClass(kradVariables.PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS);
 
@@ -599,6 +597,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                     messageBlock.removeClass("uif-validationMessages");
                     messageBlock.removeClass("uif-groupValidationMessages");
                     messageBlock.addClass("alert");
+                    messageBlock.addClass(kradVariables.PAGE_VALIDATION_MESSAGE_WARNING_CLASS);
                 }
                 else if (data.infoTotal > 0) {
                     messageBlock.removeClass("uif-validationMessages");
@@ -607,6 +606,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                     messageBlock.addClass(kradVariables.PAGE_VALIDATION_MESSAGE_INFO_CLASS);
                 }
                 else {
+                    messageBlock.addClass("alert");
                     messageBlock.addClass(kradVariables.PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS);
                 }
 

@@ -22,7 +22,7 @@
 
   <!-- DialogGroup demo -->
   <bean id="Demo-DialogGroupView" parent="ComponentLibraryView" p:componentName="Dialog Group"
-          p:description="This demo contains a standard set of components for commonly used modal dialogs.">
+        p:description="This demo contains a standard set of components for commonly used modal dialogs.">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoDialogGroup.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.DialogGroup"/>
     <property name="docBookAnchor" value="d6813e8513"/>
@@ -38,12 +38,13 @@
         <ref bean="Demo-DialogGroup-Example8"/>
         <ref bean="Demo-DialogGroup-Example9"/>
         <ref bean="Demo-DialogGroup-Example10"/>
+        <ref bean="Demo-DialogGroup-Example11"/>
       </list>
     </property>
   </bean>
 
   <bean id="Demo-DialogGroup-Example1" parent="Uif-VerticalBoxSection" p:headerText="Confirm Action"
-          p:instructionalText="Dialog used to confirm an action using the pre-built confirmation dialog. Set the
+        p:instructionalText="Dialog used to confirm an action using the pre-built confirmation dialog. Set the
           confirmation text using the property [b]confirmationPromptText[/b]. The framework use the
           'Uif-ActionConfirmation' by default.">
     <property name="items">
@@ -57,7 +58,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example2" parent="Uif-VerticalBoxSection" p:headerText="Confirm with Explanation"
-          p:instructionalText="Dialog used to confirm an action and require an explanation. Note in this case we
+        p:instructionalText="Dialog used to confirm an action and require an explanation. Note in this case we
           are setting the action property [b]confirmationDialog[/b] because we want something other than the default
           ok/cancel dialog. By default the explanation field binds to form property dialogExplanations['dialogId'],
           but you can override the explanation field using the dialog property [b]explanation[/b] and bind the field to any
@@ -66,10 +67,10 @@
       <list>
         <!-- ex:Demo-DialogGroup-Example2 start-->
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Action" p:methodToCall="refresh">
-           <property name="confirmationDialog">
-             <bean id="Demo-DialogEx2" parent="Uif-ActionConfirmationExpl"
-                   p:promptText="Please provide an explanation for this action:"/>
-           </property>
+          <property name="confirmationDialog">
+            <bean id="Demo-DialogEx2" parent="Uif-ActionConfirmationExpl"
+                  p:promptText="Please provide an explanation for this action:"/>
+          </property>
         </bean>
         <bean parent="Uif-Message" p:render="@{!#empty(dialogExplanations['Demo-DialogEx2'])}"
               p:messageText="Your explanation was: [color=red]@{dialogExplanations['Demo-DialogEx2']}[/color=red]"/>
@@ -79,7 +80,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example3" parent="Uif-VerticalBoxSection" p:headerText="Get Dialog Response Ex. 1"
-          p:instructionalText="This demo shows triggering a dialog client side and getting back the response client side,
+        p:instructionalText="This demo shows triggering a dialog client side and getting back the response client side,
            then taking further action as needed. The second argument to showDialog is an options object that can contain
            a response handler using the key [b]responseHandler[/b]. The handler receives the response event object decorated
            with {response: value for the response data attribute for the button that was selected, action: jQuery object
@@ -98,7 +99,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example4" parent="Uif-VerticalBoxSection" p:headerText="Get Dialog Response Ex. 2"
-          p:instructionalText="This demo shows triggering a dialog client side and getting a response from multiple
+        p:instructionalText="This demo shows triggering a dialog client side and getting a response from multiple
           choices. Note the use of [b]availableResponses[/b]. This is just a convenience method when you have many
           options. An action button is created for each key/value pair and added to the dialog's footer. Use of the
           'Uif-DialogGroup-MultiOpt' bean parent adds a class to the footer that centers the options instead of
@@ -124,7 +125,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example5" parent="Uif-VerticalBoxSection" p:headerText="Show Dialog Ex. 1"
-          p:instructionalText="You can bring up a dialog at any time to collect information using the method
+        p:instructionalText="You can bring up a dialog at any time to collect information using the method
           [b]showDialog[/b]. Form fields present in the dialog will be part of the form and submitted along with
           the rest of the form data. To present an action that just closes the dialog, use bean parent
           'Uif-DialogDismissButton', or set the action property dialogDismissOption to one of: 'IMMEDIATE' - dismiss
@@ -152,7 +153,7 @@
           </property>
           <property name="footer.items">
             <list>
-                <bean parent="Uif-DialogDismissButton" p:actionLabel="Continue"/>
+              <bean parent="Uif-DialogDismissButton" p:actionLabel="Continue"/>
             </list>
           </property>
         </bean>
@@ -162,7 +163,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example6" parent="Uif-VerticalBoxSection" p:headerText="Show Dialog Ex. 2"
-          p:instructionalText="Dialogs can include any content, including progressive disclosure and actions within
+        p:instructionalText="Dialogs can include any content, including progressive disclosure and actions within
           the dialog. Just build out the items list like any standard group. Note this demo also sets the property
           [b]modalLarge[/b] to true. This applies the bootstrap modal-lg class to the dialog as opposed to the
           default modal-sm.">
@@ -174,12 +175,12 @@
         <bean id="Demo-DialogGroup-ShowDialog2" parent="Uif-DialogGroup-OkCancel"
               p:headerText="Dialog with Progressive Disclosure" p:modalLarge="true">
           <property name="help">
-             <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+            <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
           </property>
           <property name="items">
             <list>
               <bean parent="Uif-Message"
-                          p:messageText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor
+                    p:messageText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor
                            facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Phasellus
                            dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius
                            ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae
@@ -235,7 +236,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example7" parent="Uif-VerticalBoxSection" p:headerText="Dialog Events"
-          p:instructionalText="This demo shows examples of configuring script for dialog events. In previous demos,
+        p:instructionalText="This demo shows examples of configuring script for dialog events. In previous demos,
           we saw how the response handler can be passed in using the showDialog options argument. [br][/br]We can also configure script
           for the response event on the dialog group itself using the property [b]onDialogResponseScript[/b]. We can
           also configure script for the show and hide dialog events using the options keys showHandler and hideHandler, or by
@@ -271,7 +272,7 @@
   </bean>
 
   <bean id="Demo-DialogGroup-Example8" parent="Uif-VerticalBoxSection" p:headerText="Server Dialog Ex. 1"
-          p:instructionalText="In certain situations, it might be unknown on the client whether a dialog is needed. The
+        p:instructionalText="In certain situations, it might be unknown on the client whether a dialog is needed. The
           request is made to the server which makes additional checks, and then it is determined the user needs to
           verify the action, or more information is needed. The framework provides the ablity to trigger dialogs from
           the controller methods.[br][/br]In the controller method, first check for a dialog response with the following
@@ -279,7 +280,7 @@
           is null, show the dialog with the statement: return showDialog(DEMO_DUPLICATE_DIALOG, true, form);. If the
           response is not null, you can get the actual response as a string or boolean, for example:
           duplicateDialogResponse.getResponseAsBoolean(). Check the Javadocs on these methods for more information."
-          p:validationMessages.additionalKeysToMatch="demoDialogEx8">
+        p:validationMessages.additionalKeysToMatch="demoDialogEx8">
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example8 start-->
@@ -297,8 +298,8 @@
   <!-- ex:Demo-DialogGroup-Example8 end-->
 
   <bean id="Demo-DialogGroup-Example9" parent="Uif-VerticalBoxSection" p:headerText="Server Dialog Ex. 2"
-          p:instructionalText="This demo shows chaining multiple dialogs from the server for a single request."
-          p:validationMessages.additionalKeysToMatch="demoDialogEx9">
+        p:instructionalText="This demo shows chaining multiple dialogs from the server for a single request."
+        p:validationMessages.additionalKeysToMatch="demoDialogEx9">
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example9 start-->
@@ -329,7 +330,7 @@
   <!-- ex:Demo-DialogGroup-Example9 end-->
 
   <bean id="Demo-DialogGroup-Example10" parent="Uif-VerticalBoxSection" p:headerText="Ajax Retrieval"
-          p:instructionalText="When dialogs are attached to the view (either through the view dialogs property or
+        p:instructionalText="When dialogs are attached to the view (either through the view dialogs property or
           somewhere else in the view tree) they are initially rendered and hidden until the show call is made. The initial
           render can be prevented by setting [b]retrieveViaAjax[/b] to true on the dialog group. The content for the dialog
           will then be retrieved when the showDialog call is made, and kept in the DOM for subsequent calls. Note if the
@@ -354,7 +355,7 @@
           </property>
           <property name="footer.items">
             <list>
-                <bean parent="Uif-DialogDismissButton" p:actionLabel="Continue"/>
+              <bean parent="Uif-DialogDismissButton" p:actionLabel="Continue"/>
             </list>
           </property>
         </bean>
@@ -365,17 +366,59 @@
     </property>
   </bean>
 
+  <bean id="Demo-DialogGroup-Example11" parent="Uif-VerticalBoxSection" p:headerText="Validation in Dialog"
+        p:instructionalText="You can also invoke client-side validation on the dialog's fields">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example11 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField12" p:required="true" p:label="Another field"/>
+        <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
+              p:actionScript="showDialog('Demo-DialogGroup-ShowDialog11');"/>
+        <bean id="Demo-DialogGroup-ShowDialog11" parent="Uif-DialogGroup" p:headerText="Complete Information"
+              p:promptText="Please enter the following data:">
+          <property name="items">
+            <list>
+              <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="SubSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="inputField1" p:required="true" p:label="Field 1"/>
+                    <bean parent="Uif-InputField" p:propertyName="inputField2" p:required="true" p:label="Field 2"/>
+                    <bean parent="Uif-InputField" p:propertyName="inputField3" p:required="true" p:label="Field 3"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="SubSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="inputField4" p:required="true" p:label="Field 4"/>
+                    <bean parent="Uif-InputField" p:propertyName="inputField5" p:required="true" p:label="Field 5"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+          <property name="footer.items">
+            <list>
+              <bean parent="Uif-DialogConfirmButton" p:actionLabel="Continue" p:performClientSideValidation="true"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DialogGroup-Example11 end-->
+      </list>
+    </property>
+  </bean>
+
   <!-- TODO: example of collection action dialogs, and reusing dialogs -->
   <!--<bean id="Demo-DialogGroup-Example11" parent="Uif-VerticalBoxSection" p:headerText="Dialog Reuse"-->
-          <!--p:instructionalText="">-->
-    <!--<property name="items">-->
-      <!--<list>-->
-        <!--&lt;!&ndash; ex:Demo-DialogGroup-Example11 start&ndash;&gt;-->
-        <!--<bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Action" p:methodToCall="refresh"-->
-              <!--p:confirmationPromptText="Note: This operation cannot be undone. Are you sure you want to take this action?"/>-->
-        <!--&lt;!&ndash; ex:Demo-DialogGroup-Example11 end&ndash;&gt;-->
-      <!--</list>-->
-    <!--</property>-->
+  <!--p:instructionalText="">-->
+  <!--<property name="items">-->
+  <!--<list>-->
+  <!--&lt;!&ndash; ex:Demo-DialogGroup-Example11 start&ndash;&gt;-->
+  <!--<bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Action" p:methodToCall="refresh"-->
+  <!--p:confirmationPromptText="Note: This operation cannot be undone. Are you sure you want to take this action?"/>-->
+  <!--&lt;!&ndash; ex:Demo-DialogGroup-Example11 end&ndash;&gt;-->
+  <!--</list>-->
+  <!--</property>-->
   <!--</bean>-->
 
 </beans>

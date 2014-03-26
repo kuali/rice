@@ -183,6 +183,9 @@ public class DialogGroup extends GroupBase {
         if (StringUtils.isNotBlank(this.onHideDialogScript)) {
             addDataAttribute(UifConstants.DataAttributes.DIALOG_HIDE_HANDLER, this.onHideDialogScript);
         }
+
+        // Dialogs do not have a visual "parent" on the page so remove this data attribute
+        this.getDataAttributes().remove(UifConstants.DataAttributes.PARENT);
     }
 
     /**

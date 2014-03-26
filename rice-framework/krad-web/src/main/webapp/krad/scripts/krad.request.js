@@ -192,10 +192,24 @@ KradRequest.prototype = {
     // executes validation, pre-submit code, and any confirmation before contuining with the request
     _executePreSubmit: function () {
         // invoke validateForm if validate flag is true, if returns false do not continue
-        if (this.validate && !validateForm()) {
-            clearHiddens();
 
-            return false;
+        if (this.validate) {
+            var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
+            var inDialog = $dialogGroup.length;
+            var valid = true;
+
+            if (!inDialog) {
+                valid = validate();
+            }
+            else if (inDialog) {
+                valid = validate($dialogGroup);
+            }
+
+            if (!valid) {
+                clearHiddens();
+                return false;
+            }
+
         }
 
         // expose a variable for callbacks

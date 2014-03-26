@@ -22,7 +22,9 @@ import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class LookupResultsDDBo extends TransientBusinessObjectBase {
 	private String someValue;
 	

@@ -52,7 +52,10 @@ import static junit.framework.Assert.fail;
  * DataDictionarySearchableAttributeTest performs various DataDictionarySearchableAttribute-related tests on the doc search, including verification of proper wildcard functionality
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 
     @Override

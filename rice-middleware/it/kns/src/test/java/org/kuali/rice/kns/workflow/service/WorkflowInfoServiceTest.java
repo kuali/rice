@@ -26,7 +26,10 @@ import org.kuali.rice.krad.test.KRADTestCase;
 
 /**
  * This class tests the WorkflowUser service.
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class WorkflowInfoServiceTest extends KRADTestCase {
 
     @Test public void testRouteHeaderExists_NullId() throws IllegalArgumentException {

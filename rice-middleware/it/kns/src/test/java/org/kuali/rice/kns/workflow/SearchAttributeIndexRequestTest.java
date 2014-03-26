@@ -37,7 +37,10 @@ import org.junit.Assert;
  * tests that a document, which goes through a regular or blanket approval process, is indexed correctly
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class SearchAttributeIndexRequestTest extends KRADTestCase {
 
     private static final String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocument";

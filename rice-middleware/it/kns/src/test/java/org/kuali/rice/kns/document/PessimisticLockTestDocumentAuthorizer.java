@@ -24,7 +24,10 @@ import org.kuali.rice.krad.document.Document;
  * requiring a {@link DocumentEntry} in the kuali data dictionary
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class PessimisticLockTestDocumentAuthorizer extends DocumentAuthorizerBase {
 
     public static boolean USES_PESSIMISTIC_LOCKING = true;

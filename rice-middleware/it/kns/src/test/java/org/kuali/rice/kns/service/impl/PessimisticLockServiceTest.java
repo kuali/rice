@@ -42,8 +42,9 @@ import static org.junit.Assert.*;
 /**
  * PessimisticLockServiceTest tests {@link PessimisticLockServiceImpl} for maintainable
  *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PessimisticLockServiceTest extends KNSTestCase {
 

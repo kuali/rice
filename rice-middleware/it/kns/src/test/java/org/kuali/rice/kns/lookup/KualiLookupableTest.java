@@ -46,8 +46,9 @@ import org.kuali.rice.krad.test.KRADTestConstants.TestConstants;
 /**
  * KualiLookupableTest tests {@link KualiLookupableImpl} methods
  * 
- * 
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 @PerTestUnitTestData(
         value = @UnitTestData(
                 order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},

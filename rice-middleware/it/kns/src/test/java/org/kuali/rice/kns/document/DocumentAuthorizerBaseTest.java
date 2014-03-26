@@ -19,6 +19,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.test.KRADTestCase;
 
+/**
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
+ */
+@Deprecated
 @Ignore // everything is commented out
 public class DocumentAuthorizerBaseTest extends KRADTestCase {
 	// TODO rewrite this test

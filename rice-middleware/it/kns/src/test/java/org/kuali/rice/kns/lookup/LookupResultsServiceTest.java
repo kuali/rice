@@ -33,8 +33,9 @@ import java.util.Set;
 /**
  * LookupResultsServiceTest tests {@link LookupResultsService}
  * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class LookupResultsServiceTest extends KNSTestCase {
 
 	public static final String MOCK_PARAMETER_NMSPC = "KR-NS";

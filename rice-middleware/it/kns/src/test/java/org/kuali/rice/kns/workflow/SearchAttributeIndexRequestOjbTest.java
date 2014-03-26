@@ -31,7 +31,10 @@ import org.kuali.rice.krad.util.GlobalVariables;
  * tests that a document, which goes through a regular or blanket approval process, is indexed correctly
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class SearchAttributeIndexRequestOjbTest extends SearchAttributeIndexRequestTest {
 
     private static final String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocumentOjb";

@@ -24,7 +24,9 @@ import org.kuali.rice.krad.document.authorization.PessimisticLock;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
 
     public static final String USER_SESSION_OBJECT_KEY = "TEST_AUTHORIZER_OBJECT_KEY";

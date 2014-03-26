@@ -29,7 +29,10 @@ import org.kuali.rice.krad.test.document.bo.AccountType;
  * KualiInquirableTest tests {@link KualiInquirableImpl} methods
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class KualiInquirableTest extends KNSTestCase {
 
     private AccountType at;

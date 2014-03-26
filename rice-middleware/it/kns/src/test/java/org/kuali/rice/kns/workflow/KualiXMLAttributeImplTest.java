@@ -61,7 +61,10 @@ import static org.junit.Assert.assertNotNull;
  * attributes
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class KualiXMLAttributeImplTest extends KRADTestCase {
     private static Log LOG = LogFactory.getLog(KualiXMLAttributeImplTest.class);
 

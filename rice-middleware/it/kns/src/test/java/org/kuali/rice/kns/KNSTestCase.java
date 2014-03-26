@@ -32,7 +32,10 @@ import java.util.List;
  * Test base class for legacy KNS Tests
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 @RunWith(LoadTimeWeavableTestRunner.class)
 @BootstrapTest(KNSTestCase.BootstrapTest.class)

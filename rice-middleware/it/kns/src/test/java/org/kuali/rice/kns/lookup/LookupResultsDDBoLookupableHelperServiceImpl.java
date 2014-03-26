@@ -38,7 +38,9 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS test class, convert to KRAD equivalent if applicable.
  */
+@Deprecated
 public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableHelperService {
 
 	/**

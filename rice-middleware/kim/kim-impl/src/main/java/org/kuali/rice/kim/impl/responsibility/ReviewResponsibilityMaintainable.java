@@ -25,6 +25,7 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -35,7 +36,9 @@ import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -159,4 +162,29 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 		return true;
 	}
 
+    @Override
+    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+        super.processAfterNew(document, requestParameters);
+
+        initializeResponsibilityId(document.getDocumentBusinessObject());
+    }
+
+    @Override
+    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
+        super.processAfterCopy(document, parameters);
+
+        initializeResponsibilityId(document.getDocumentBusinessObject());
+    }
+
+    private void initializeResponsibilityId(BusinessObject businessObject) {
+        if (businessObject instanceof ReviewResponsibilityBo) {
+            ReviewResponsibilityBo responsibilityBo = (ReviewResponsibilityBo) businessObject;
+
+            if (StringUtils.isBlank(responsibilityBo.getId())) {
+                DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(
+                        KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_RSP_ID_S);
+                responsibilityBo.setId(incrementer.nextStringValue());
+            }
+        }
+    }
 }

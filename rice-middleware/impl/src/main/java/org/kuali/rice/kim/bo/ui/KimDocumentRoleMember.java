@@ -204,23 +204,25 @@ public class KimDocumentRoleMember extends KimDocumentBoActivatableToFromEditabl
     }
 
     protected void populateDerivedValues() {
-        if (MemberType.PRINCIPAL.getCode().equals(getMemberTypeCode())) {
-            if (!StringUtils.isEmpty(getMemberId())) {
+        if (!StringUtils.isEmpty(getMemberId())) {
+            if (MemberType.PRINCIPAL.getCode().equals(getMemberTypeCode())) {
                 Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
                 if (principalInfo != null) {
                     setMemberName(principalInfo.getPrincipalName());
                 }
+            } else if (MemberType.GROUP.getCode().equals(getMemberTypeCode())) {
+                Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
+                if (groupInfo != null) {
+                    setMemberName(groupInfo.getName());
+                    setMemberNamespaceCode(groupInfo.getNamespaceCode());
+                }
+            } else if (MemberType.ROLE.getCode().equals(getMemberTypeCode())) {
+                Role roleInfo = KimApiServiceLocator.getRoleService().getRole(getMemberId());
+                if (roleInfo != null) {
+                    setMemberName(roleInfo.getName());
+                    setMemberNamespaceCode(roleInfo.getNamespaceCode());
+                }
             }
-        } else if (MemberType.GROUP.getCode().equals(getMemberTypeCode())) {
-            Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
-            if (groupInfo != null) {
-                setMemberName(groupInfo.getName());
-                setMemberNamespaceCode(groupInfo.getNamespaceCode());
-            }
-        } else if (MemberType.ROLE.getCode().equals(getMemberTypeCode())) {
-            Role role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
-            setMemberName(role.getName());
-            setMemberNamespaceCode(role.getNamespaceCode());
         }
     }
 

@@ -28,6 +28,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
@@ -228,16 +229,18 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     protected void populateDerivedValues() {
-        if (MemberType.GROUP.getCode().equals(getMemberTypeCode())) {
-            Group groupInfo = null;
-            groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
-            if (groupInfo != null) {
-                setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        if (!StringUtils.isEmpty(getMemberId())) {
+            if (MemberType.GROUP.getCode().equals(getMemberTypeCode())) {
+                Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
+                if (groupInfo != null) {
+                    setMemberNamespaceCode(groupInfo.getNamespaceCode());
+                }
+            } else if (MemberType.ROLE.getCode().equals(getMemberTypeCode())) {
+                Role roleInfo = KimApiServiceLocator.getRoleService().getRole(getMemberId());
+                if (roleInfo != null) {
+                    setMemberNamespaceCode(roleInfo.getNamespaceCode());
+                }
             }
-        } else if (MemberType.ROLE.getCode().equals(getMemberTypeCode())) {
-            Role role;
-            role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
-            setMemberNamespaceCode(role.getNamespaceCode());
         }
     }
 

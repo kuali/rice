@@ -172,17 +172,23 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		if (serviceInfoBo != null) {
 			ServiceDescriptorBo serviceDescriptorBo = getDataObjectService().find(
                     ServiceDescriptorBo.class,serviceInfoBo.getServiceDescriptorId());
-			ServiceEndpoint endpointPriorRemoval = ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
-					ServiceDescriptor.Builder.create(serviceDescriptorBo)).build();
+            if(serviceDescriptorBo != null) {
+                ServiceEndpoint endpointPriorRemoval = ServiceEndpoint.Builder.create(ServiceInfo.Builder.create(serviceInfoBo),
+                        ServiceDescriptor.Builder.create(serviceDescriptorBo)).build();
 
-            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-            builder.setPredicates(equal("serviceId",serviceInfoBo.getServiceId()));
-            getDataObjectService().deleteMatching(ServiceInfoBo.class,builder.build());
+                QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+                builder.setPredicates(equal("serviceId",serviceInfoBo.getServiceId()));
+                getDataObjectService().deleteMatching(ServiceInfoBo.class,builder.build());
 
-            builder = QueryByCriteria.Builder.create();
-            builder.setPredicates(equal("id",serviceInfoBo.getServiceDescriptorId()));
-            getDataObjectService().deleteMatching(ServiceDescriptorBo.class,builder.build());
-			return endpointPriorRemoval;
+                builder = QueryByCriteria.Builder.create();
+                builder.setPredicates(equal("id",serviceInfoBo.getServiceDescriptorId()));
+                getDataObjectService().deleteMatching(ServiceDescriptorBo.class,builder.build());
+                return endpointPriorRemoval;
+           }else{
+                QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+                builder.setPredicates(equal("serviceId",serviceInfoBo.getServiceId()));
+                getDataObjectService().deleteMatching(ServiceInfoBo.class,builder.build());
+           }
 		}
 		return null;
 	}

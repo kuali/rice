@@ -176,7 +176,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 			List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(MemberType.ROLE.getCode(), roleImpl.getId());
 			for (String parentRoleId : parentRoleIds) {
 				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
-				roleSearchCriteria.put("roleId", parentRoleId);
+				roleSearchCriteria.put("id", parentRoleId);
 				//get all parent role permissions and merge them with current permissions
 				permissions = mergePermissionLists(permissions, getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 			}

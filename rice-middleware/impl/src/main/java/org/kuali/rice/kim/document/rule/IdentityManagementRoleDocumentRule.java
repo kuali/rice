@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -130,6 +130,11 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
         boolean valid = true;
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
+        boolean validRoleNamespace = validRoleNamespace(roleDoc);
+        boolean validRoleName = validRoleName(roleDoc);
+        if (!(validRoleNamespace && validRoleName)) {
+            return false;
+        }
         valid &= validDuplicateRoleName(roleDoc);
         valid &= validPermissions(roleDoc);
         valid &= validResponsibilities(roleDoc);
@@ -157,6 +162,42 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
+    }
+    /**
+     * Ensures the {@link IdentityManagementRoleDocument} role namespace is not null or an empty string.
+     * @param roleDoc the {@link IdentityManagementRoleDocument} to validate.
+     * @return TRUE if the role namespace is not null or an empty string, FALSE otherwise.
+     */
+    protected boolean validRoleNamespace(IdentityManagementRoleDocument roleDoc) {
+        boolean validRoleNamespace = false;
+
+        if(StringUtils.isNotBlank(roleDoc.getRoleNamespace())) {
+            validRoleNamespace = true;
+        }
+        else{
+            GlobalVariables.getMessageMap().putError("document.roleNamespace",
+                    RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Namespace"});
+        }
+
+        return validRoleNamespace;
+    }
+    /**
+     * ensures the {@link IdentitymangaementRoleDocument} role name is not null or an empty string
+     * @param roleDoc the {@link IdentityManagementRoleDocument} to validate.
+     * @return TRUE if the role name is not null or an empty string, FALSE otherwise.
+     */
+    protected boolean validRoleName(IdentityManagementRoleDocument roleDoc) {
+        boolean validRoleName = false;
+
+        if(StringUtils.isNotBlank(roleDoc.getRoleName())) {
+            validRoleName = true;
+        }
+        else{
+            GlobalVariables.getMessageMap().putError("document.roleName",
+                    RiceKeyConstants.ERROR_EMPTY_ENTRY, new String[] {"Role Name"});
+        }
+
+        return validRoleName;
     }
 
 	protected boolean canUserAssignRoleMembers(IdentityManagementRoleDocument document){

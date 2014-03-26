@@ -314,6 +314,10 @@ KradRequest.prototype = {
             writeHiddenToForm(key, this.additionalData[key]);
         }
 
+        if (this.$action && this.$action.is("[" + kradVariables.ATTRIBUTES.ID + "]")) {
+            writeHiddenToForm("triggerActionId", this.$action.attr(kradVariables.ATTRIBUTES.ID));
+        }
+
         // start the loading indicator (will be removed on page load)
         if (!this.disableBlocking) {
             showLoading(this.loadingMessage);

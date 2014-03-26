@@ -89,9 +89,11 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             UifControllerHelper.prepareView(request, modelAndView);
         }
 
-        Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
-        if (model instanceof ViewModel) {
-            ((ViewModel) model).preRender(request);
+        if ((modelAndView != null) && (modelAndView.getModelMap() != null)) {
+            Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+            if ((model != null) && (model instanceof ViewModel)) {
+                ((ViewModel) model).preRender(request);
+            }
         }
 
         ProcessLogger.trace("post-handle");

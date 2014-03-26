@@ -1501,6 +1501,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				origMembers = (origDelegationImplTemp==null || origDelegationImplTemp.getMembers()==null)?
 									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
 				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, null, activatingInactive, newDelegationIdAssigned));
+                newKimDelegation.setVersionNumber(null);
 				kimDelegations.add(newKimDelegation);
 				activatingInactive = false;
 			}
@@ -2668,6 +2669,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
                     newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
                     newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
+                    newDelegationMemberImpl.setVersionNumber(null);
                     delegationsMembersList.add(newDelegationMemberImpl);
 			}
 		}

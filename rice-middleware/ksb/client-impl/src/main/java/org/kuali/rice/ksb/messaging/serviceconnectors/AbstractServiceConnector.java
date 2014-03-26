@@ -77,6 +77,9 @@ public abstract class AbstractServiceConnector implements ServiceConnector {
 	protected Object getServiceProxyWithFailureMode(final Object service,
 			final ServiceConfiguration serviceConfiguration) {
 		Object bamWrappedClientProxy = BAMClientProxy.wrap(service, serviceConfiguration);
+        if (!serviceConfiguration.isQueue()) {
+            return bamWrappedClientProxy;
+        }
 		return BusClientFailureProxy.wrap(bamWrappedClientProxy, serviceConfiguration);
 	}
 }

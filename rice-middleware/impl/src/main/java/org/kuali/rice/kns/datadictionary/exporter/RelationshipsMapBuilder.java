@@ -24,7 +24,7 @@ import org.kuali.rice.krad.util.LegacyUtils;
 /**
  * RelationshipsMapBuilder
  * 
- * 
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public class RelationshipsMapBuilder {

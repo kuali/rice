@@ -38,7 +38,9 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Use {@link org.kuali.rice.krad.service.DocumentDictionaryService}.
  */
+@Deprecated
 public class DocumentHelperServiceImpl implements DocumentHelperService {
     
     private DataDictionaryService dataDictionaryService;

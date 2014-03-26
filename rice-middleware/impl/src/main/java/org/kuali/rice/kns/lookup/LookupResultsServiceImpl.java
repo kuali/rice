@@ -33,6 +33,10 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+/**
+ * @deprecated Only used by KNS classes, use KRAD.
+ */
+@Deprecated
 public class LookupResultsServiceImpl implements LookupResultsService {
     private BusinessObjectService businessObjectService;
     private PersistedLookupMetadataDao persistedLookupMetadataDao;

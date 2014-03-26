@@ -69,6 +69,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
+@Deprecated
 public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
     private static final long serialVersionUID = 173059488280366451L;

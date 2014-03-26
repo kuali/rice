@@ -28,7 +28,9 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiPropertyMessageResources extends PropertyMessageResources {
     private static final long serialVersionUID = -7712311580595112293L;
     private HashMap kualiMessages;

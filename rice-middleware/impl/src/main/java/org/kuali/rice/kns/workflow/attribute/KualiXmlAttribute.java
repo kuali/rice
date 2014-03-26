@@ -18,7 +18,10 @@ package org.kuali.rice.kns.workflow.attribute;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.w3c.dom.Element;
 
-
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
+@Deprecated
 public interface KualiXmlAttribute {
 
     public Element getConfigXML(ExtensionDefinition extensionDefinition);

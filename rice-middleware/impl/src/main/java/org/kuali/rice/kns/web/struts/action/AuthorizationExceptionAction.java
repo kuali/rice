@@ -33,8 +33,10 @@ import java.util.Map;
 /**
  * This is the struts action class for handling the exception for Kuali
  * applications.
- * 
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class AuthorizationExceptionAction extends Action {
     
     private static final String MESSAGE_FIELD = "message";

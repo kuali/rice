@@ -27,7 +27,9 @@ import javax.servlet.http.HttpServletResponse;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public interface AuditModeAction {
     public ActionForward activate(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception;
 

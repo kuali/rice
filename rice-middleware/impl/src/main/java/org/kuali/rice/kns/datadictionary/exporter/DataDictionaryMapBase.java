@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
 @Deprecated
 public abstract class DataDictionaryMapBase implements Map {
 

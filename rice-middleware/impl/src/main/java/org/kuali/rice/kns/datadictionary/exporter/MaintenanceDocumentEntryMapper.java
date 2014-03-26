@@ -33,7 +33,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 /**
  * MaintenanceDocumentEntryMapper
  * 
- * 
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public class MaintenanceDocumentEntryMapper extends DocumentEntryMapper {

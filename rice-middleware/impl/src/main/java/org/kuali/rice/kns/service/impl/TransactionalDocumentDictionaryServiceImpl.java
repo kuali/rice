@@ -29,6 +29,8 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 /**
  * This class is the service implementation for the TransactionalDocumentDictionary structure. Defines the API for the interacting
  * with Document-related entries in the data dictionary. This is the default implementation that gets delivered with Kuali.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class TransactionalDocumentDictionaryServiceImpl implements TransactionalDocumentDictionaryService {

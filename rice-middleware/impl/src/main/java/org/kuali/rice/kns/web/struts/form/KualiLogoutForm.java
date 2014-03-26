@@ -23,7 +23,9 @@ import org.apache.struts.action.ActionForm;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiLogoutForm extends ActionForm {
 
 }

@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * AttributesMapBuilder
  *
- *
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public class AttributesMapBuilder {

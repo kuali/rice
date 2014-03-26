@@ -50,6 +50,8 @@ import java.util.Map;
  * contents to the underlying database
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used by KNS classes, no KRAD equivalent available.
  */
 @Deprecated
 @Transactional

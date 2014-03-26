@@ -53,7 +53,7 @@ import java.util.Set;
  * This is the default, Kuali delivered implementation which leverages the
  * DataDictionaryService.
  *
- * @deprecated use KRAD
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictionaryService {

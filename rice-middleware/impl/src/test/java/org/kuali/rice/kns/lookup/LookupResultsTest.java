@@ -28,7 +28,9 @@ import static org.junit.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated {@link LookupResults} is deprecated.
  */
+@Deprecated
 public class LookupResultsTest {
 
 	 LookupResults lookupResults;

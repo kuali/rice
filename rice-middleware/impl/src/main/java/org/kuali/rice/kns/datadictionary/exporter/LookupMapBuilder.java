@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 /**
  * LookupMapBuilder
  *
- *
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public class LookupMapBuilder {

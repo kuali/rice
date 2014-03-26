@@ -30,7 +30,9 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public class PersistableBusinessObjectLookupResultsSupportStrategyImpl
 		implements LookupResultsSupportStrategyService {
 	

@@ -35,7 +35,10 @@ import org.kuali.rice.krad.util.KRADConstants;
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiPropertyMessageResourcesFactory extends PropertyMessageResourcesFactory {
     private static final long serialVersionUID = 9045578011738154255L;
 

@@ -48,6 +48,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
+ */
+@Deprecated
 public class KualiActionServlet extends ActionServlet {
     private static final Logger LOG = Logger.getLogger(KualiActionServlet.class);
     

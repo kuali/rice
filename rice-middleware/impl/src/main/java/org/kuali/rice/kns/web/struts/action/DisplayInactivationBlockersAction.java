@@ -40,9 +40,11 @@ import java.util.TreeMap;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class DisplayInactivationBlockersAction extends KualiAction {
-	
+	@Deprecated
 	public ActionForward displayAllInactivationBlockers(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DisplayInactivationBlockersForm displayInactivationBlockersForm = (DisplayInactivationBlockersForm) form;
 		DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();

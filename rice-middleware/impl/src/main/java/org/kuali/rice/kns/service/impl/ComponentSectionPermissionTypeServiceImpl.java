@@ -19,6 +19,9 @@ import org.kuali.rice.kns.kim.permission.PermissionTypeServiceBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public class ComponentSectionPermissionTypeServiceImpl extends PermissionTypeServiceBase {
 }

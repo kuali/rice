@@ -31,6 +31,10 @@ import org.kuali.rice.kew.framework.document.search.NullDocumentSearchCustomizer
 
 import java.util.List;
 
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
+@Deprecated
 public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchCustomizer {
 
     private SearchableAttribute searchableAttribute;

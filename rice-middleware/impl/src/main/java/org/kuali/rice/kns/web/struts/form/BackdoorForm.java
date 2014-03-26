@@ -23,7 +23,10 @@ import org.kuali.rice.kns.web.struts.action.BackdoorAction;
  * @see BackdoorAction
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class BackdoorForm extends KualiForm {
 
 	private static final long serialVersionUID = -2720178686804392055L;

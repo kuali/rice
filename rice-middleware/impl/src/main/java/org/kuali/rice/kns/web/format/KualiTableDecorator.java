@@ -17,6 +17,10 @@ package org.kuali.rice.kns.web.format;
 
 import org.displaytag.decorator.TableDecorator;
 
+/**
+ * @deprecated Only used by KNS classes, use KRAD.
+ */
+@Deprecated
 public class KualiTableDecorator extends TableDecorator {
 
 

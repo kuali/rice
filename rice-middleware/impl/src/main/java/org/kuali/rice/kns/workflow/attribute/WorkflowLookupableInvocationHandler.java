@@ -31,6 +31,7 @@ import java.util.HashMap;
  * @see org.kuali.rice.kew.attribute.WorkflowLookupableImpl
  * @deprecated This will go away once workflow supports simple url integration for custom attribute lookups.
  */
+@Deprecated
 public class WorkflowLookupableInvocationHandler implements InvocationHandler {
     private BusinessObject proxiedBusinessObject;
     private ClassLoader classLoader;

@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 /**
  * DocumentEntryMapper
  * 
- * 
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public abstract class DocumentEntryMapper {

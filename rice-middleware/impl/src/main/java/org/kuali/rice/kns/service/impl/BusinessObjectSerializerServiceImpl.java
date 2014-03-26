@@ -30,7 +30,10 @@ import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.service.impl.DataObjectSerializerServiceImpl}.
  */
+@Deprecated
 public class BusinessObjectSerializerServiceImpl extends SerializerServiceBase implements BusinessObjectSerializerService {
 
     private DocumentDictionaryService documentDictionaryService;

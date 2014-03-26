@@ -26,7 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ForwardAction subclass that interprets path as module-relative 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class ForwardWithQueryParametersAction extends Action {
 	
 	public ActionForward execute(

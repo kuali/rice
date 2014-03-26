@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Deprecated
 public class KualiLogoutAction extends Action {
 
     /**

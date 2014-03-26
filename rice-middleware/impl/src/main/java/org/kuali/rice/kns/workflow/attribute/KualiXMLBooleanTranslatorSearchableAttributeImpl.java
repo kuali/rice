@@ -24,7 +24,10 @@ import org.w3c.dom.Element;
  * {@link #getValueForXPathTrueEvaluation()} and {@link #getValueForXPathFalseEvaluation()} method's return variables.
  * 
  * NOTE: This will not longer be necessary if the version of xPath being used is every upgrade to 2.x or higher
+ *
+ * @deprecated Only used by KNS classes, no replacement.
  */
+@Deprecated
 public class KualiXMLBooleanTranslatorSearchableAttributeImpl extends KualiXmlSearchableAttributeImpl {
 	private static final long serialVersionUID = -4627314389844574461L;
 

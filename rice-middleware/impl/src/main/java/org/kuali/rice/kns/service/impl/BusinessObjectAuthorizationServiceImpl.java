@@ -70,6 +70,9 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+/**
+ * @deprecated Use {@link DataObjectAuthorizationServiceImpl}.
+ */
 @Deprecated
 @LegacyDataFramework
 public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizationServiceImpl implements BusinessObjectAuthorizationService {

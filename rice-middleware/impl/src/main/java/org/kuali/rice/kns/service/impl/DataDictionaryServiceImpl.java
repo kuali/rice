@@ -26,7 +26,10 @@ import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Use {@link org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl}.
  */
+@Deprecated
 public class DataDictionaryServiceImpl extends org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl implements DataDictionaryService {
 
     private DataDictionaryMap dataDictionaryMap = new DataDictionaryMap(this);

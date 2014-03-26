@@ -25,7 +25,9 @@ import org.kuali.rice.krad.bo.BusinessObject;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public interface LookupResultsSupportStrategyService {
 
 	/**

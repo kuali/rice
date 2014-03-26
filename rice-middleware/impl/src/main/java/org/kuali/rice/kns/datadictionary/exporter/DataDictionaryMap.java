@@ -26,6 +26,9 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
 @Deprecated
 public class DataDictionaryMap extends DataDictionaryMapBase {
 

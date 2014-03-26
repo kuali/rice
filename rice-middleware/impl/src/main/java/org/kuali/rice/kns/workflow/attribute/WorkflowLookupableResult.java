@@ -28,6 +28,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
  * @see WorkflowLookupableInvocationHandler
  * @deprecated This will go away once workflow supports simple url integration for custom attribute lookups.
  */
+@Deprecated
 public interface WorkflowLookupableResult extends BusinessObject {
     /**
      * Gets the returnUrl attribute.

@@ -56,7 +56,10 @@ import java.util.Stack;
  * The default implementation of the WorkflowAttributePropertyResolutionServiceImpl
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used by KNS classes, no replacement.
  */
+@Deprecated
 public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowAttributePropertyResolutionService {
     
     private PersistenceStructureService persistenceStructureService;

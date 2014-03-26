@@ -44,7 +44,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * @deprecated Only used by KNS classes, no replacement.
+ */
+@Deprecated
 public class KualiXmlAttributeHelper {
     private static Log LOG = LogFactory.getLog(KualiXmlAttributeHelper.class);
     private static XPath xpath = XPathHelper.newXPath();

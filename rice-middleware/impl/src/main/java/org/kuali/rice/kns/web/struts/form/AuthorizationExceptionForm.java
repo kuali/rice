@@ -21,7 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Provides the form for displaying an AuthorizationException.
+ *
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class AuthorizationExceptionForm extends KualiForm {
 
     private static final long serialVersionUID = 4341621967261863961L;

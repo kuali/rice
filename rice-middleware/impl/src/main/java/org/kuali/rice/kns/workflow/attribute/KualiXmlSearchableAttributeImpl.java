@@ -25,7 +25,9 @@ import org.w3c.dom.Element;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, no replacement.
  */
+@Deprecated
 public class KualiXmlSearchableAttributeImpl extends StandardGenericXMLSearchableAttribute implements KualiXmlAttribute {
     private static final long serialVersionUID = -5759823164605651979L;
 

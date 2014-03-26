@@ -39,7 +39,10 @@ import org.w3c.dom.Document;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used by KNS classes, no replacement.
  */
+@Deprecated
 public final class WorkflowUtils {
     private static final String XPATH_ROUTE_CONTEXT_KEY = "_xpathKey";
     public static final String XSTREAM_SAFE_PREFIX = "wf:xstreamsafe('";

@@ -45,7 +45,9 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockLookupableHelperServiceImpl.class);
 

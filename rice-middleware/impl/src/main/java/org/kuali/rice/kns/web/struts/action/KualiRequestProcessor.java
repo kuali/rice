@@ -69,8 +69,9 @@ import java.io.IOException;
 /**
  * This class handles setup of user session and restoring of action form.
  * 
- * 
+ * @deprecated KNS Struts deprecated, use KRAD and the Spring MVC framework.
  */
+@Deprecated
 public class KualiRequestProcessor extends RequestProcessor {
 	
 	private static final String MDC_DOC_ID = "docId";

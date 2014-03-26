@@ -26,7 +26,10 @@ import java.sql.Timestamp;
  * A {@link SessionDocumentService} implementation which does nothing.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public class NoOpSessionDocumentServiceImpl implements SessionDocumentService{
 
     @Override

@@ -77,7 +77,10 @@ import java.util.Map;
  * consulted; it will pull values from the document (in this case, document.disbVchrPaymentMethodCode) and populate those
  * into the role qualifier Map<String, String>, with the key being the qualificationAttributeName and the value being the value of the property
  * listed in the documentValuePathGroups in the document.
+ *
+ * @deprecated Only used by KNS classes, no replacement.
  */
+@Deprecated
 public class DataDictionaryQualifierResolver extends QualifierResolverBase {
 //    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataDictionaryQualifierResolver.class);
     

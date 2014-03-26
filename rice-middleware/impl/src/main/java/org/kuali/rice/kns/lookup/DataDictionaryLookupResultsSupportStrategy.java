@@ -38,7 +38,9 @@ import org.kuali.rice.krad.service.DataDictionaryService;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
+@Deprecated
 public class DataDictionaryLookupResultsSupportStrategy implements
 		LookupResultsSupportStrategyService {
 

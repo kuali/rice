@@ -42,6 +42,8 @@ import java.util.List;
 /**
  * This class is the service implementation for the MaintenanceDocumentDictionary structure. Defines the API for the interacting
  * with Document-related entries in the data dictionary. This is the default implementation, that is delivered with Kuali.
+ *
+ * @deprecated Only used by KNS classes, use KRAD.
  */
 @Deprecated
 public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocumentDictionaryService {

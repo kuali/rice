@@ -54,7 +54,8 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
  * @see DataDictionaryService
  * @see PersistenceStructureService
  *
- * @deprecated use KRAD
+ * @deprecated Only use {@link DataObjectMetaDataServiceImpl} if still using legacy data framework, otherwise use new
+ *             KRAD Data framework.
  */
 @Deprecated // Replaced by new metadata provider
 @LegacyDataFramework

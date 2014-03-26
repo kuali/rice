@@ -21,11 +21,11 @@ import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
 /**
  * Defines utility methods associated with mapping Entries et al
  * 
- * 
+ * @deprecated Only used by KNS classes, no replacement.
  */
 @Deprecated
 public final class MapperUtils {
-	
+
 	private MapperUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}

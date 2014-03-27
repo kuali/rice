@@ -36,6 +36,8 @@
     </#if>
 
     <@krad.groupWrap group=group>
+        <a id="mainContent"></a>
+
         <#if group.items?has_content>
             <#-- invoke layout manager -->
             <#local templateName=".main.${group.layoutManager.templateName}"/>

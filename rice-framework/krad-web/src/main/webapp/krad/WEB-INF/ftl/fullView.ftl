@@ -17,6 +17,8 @@
 -->
 <@krad.html view=view>
 
+    <a href="#mainContent" class="sr-only">Skip to main content</a>
+
     <@krad.script value="${KualiForm.growlScript!}"/>
 
     <!-- APPLICATION HEADER -->

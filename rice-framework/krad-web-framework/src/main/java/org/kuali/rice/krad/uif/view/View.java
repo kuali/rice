@@ -553,14 +553,17 @@ public class View extends ContainerBase {
      */
     @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public List<Component> getPagesForPreprocessing() {
-        List<Component> items = (List<Component>) getItems();
+        List<Component> processProcessItems = new ArrayList<Component>();
 
-        if (getPage() != null) {
-            items = new ArrayList<Component>();
-            items.add(getPage());
+        if (getItems() != null) {
+            processProcessItems.addAll(getItems());
         }
 
-        return items;
+        if (getPage() != null) {
+            processProcessItems.add(getPage());
+        }
+
+        return processProcessItems;
     }
 
     /**

@@ -242,7 +242,7 @@
 
               </bean>
 
-              <bean id="agendaType" parent="Uif-InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
+              <bean parent="Uif-InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
                     p:progressiveRenderViaAJAX="true"
                     p:progressiveRender="@{!#empty(#dp.agenda.contextId)}">
 

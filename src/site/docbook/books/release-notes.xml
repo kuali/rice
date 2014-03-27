@@ -79,9 +79,9 @@
           now to avoid larger upgrades in the future, and the information on how to do this is in
           <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html"
           >http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html</link>.
-          This guide includes a general overview of what has changed and why, information on how to run
-          the automatic conversion tool, a list of items that may need to be changed manually, and a
-          primer on how to use the new KRAD Data Framework using the Java Persistence API (JPA).</para>
+          This guide includes information on how to run the automatic conversion tool, a list of items
+          that may need to be changed manually, and a primer on how to use the new KRAD Data Framework
+          using the Java Persistence API (JPA).</para>
     </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>

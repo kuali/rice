@@ -152,16 +152,19 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     @Override
     public DocumentSearchResultValues customizeResults(DocumentType documentType,
             DocumentSearchCriteria documentSearchCriteria, DocumentSearchResults results) {
-        DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
-        if (customizerAttribute != null) {
-            DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
-            if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
-                    DocumentSearchCustomization.RESULTS)) {
-                DocumentSearchResultValues customizedResults = service.customizeResults(documentSearchCriteria, results.getSearchResults(), customizerAttribute.getRuleAttribute().getName());
-                if (customizedResults != null) {
-                    return customizedResults;
+        if (!results.getSearchResults().isEmpty()) {
+            DocumentTypeAttributeBo customizerAttribute = documentType.getCustomizerAttribute();
+            if (customizerAttribute != null) {
+                DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
+                if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
+                        DocumentSearchCustomization.RESULTS)) {
+                    DocumentSearchResultValues customizedResults = service.customizeResults(documentSearchCriteria, results.getSearchResults(), customizerAttribute.getRuleAttribute().getName());
+                    if (customizedResults != null) {
+                        return customizedResults;
+                    }
                 }
             }
+            return null;
         }
         return null;
     }

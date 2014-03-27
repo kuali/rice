@@ -295,14 +295,16 @@
     <@bind path/>
     <#local controlId="${id}_${option_index}">
     <span class="uif-tooltip">
-    <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
-    <#if option.message.richMessage>
-        <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
-    <#else>
-        <label for="${controlId}">${option.value!}</label>
-    </#if>
+        <input type="radio" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if stringStatusValue == option.key> checked="checked"</#if> ${attributes}<@closeTag/>
+        <#if option.message.richMessage>
+            <label for="${controlId}" onclick="handleRadioLabelClick('${controlId}',event); return false;"><@krad.template component=option.message/></label>
+        <#else>
+            <label for="${controlId}">${option.value!}</label>
+        </#if>
     </span>
-    ${separator}
+    <#if option_has_next>
+        ${separator}
+    </#if>
     </#list>
     <#-- End Kuali enhancements and changes -->
 </#macro>
@@ -335,9 +337,9 @@
             <label for="${controlId}">${option.value!}</label>
         </#if>
     </span>
-        <#if option_has_next>
-            ${separator}
-        </#if>
+    <#if option_has_next>
+        ${separator}
+    </#if>
     </#list>
     <input type="hidden" name="_${status.expression}" value="on"/>
     <#-- End Kuali enhancements and changes -->

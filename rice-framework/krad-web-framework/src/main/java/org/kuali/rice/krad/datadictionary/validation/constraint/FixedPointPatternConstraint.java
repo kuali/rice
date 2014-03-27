@@ -26,7 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO delyea don't forget to fill this in.
+ * Validation pattern for matching fixed point numbers, optionally matching negative numbers
+ *
+ * <p>
+ * Only allows a numeric value where the precision property represents the maximum number of
+ * total numbers allowed, and scale represents the minimum numbers after the decimal point.
+ * The decimal places are implied to be 0 if not included and still count towards total
+ * numbers allowed.
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

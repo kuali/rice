@@ -41,6 +41,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -141,10 +142,19 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     }
     
     public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes) {
-    	getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
-    	for (SearchableAttributeValue searchAttribute : searchAttributes) {
-    		getDataObjectService().save(searchAttribute);
-    	}
+        getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
+        HashSet<String> dupedSet = new HashSet<String>();
+        //"de-dupe" for value,key,and doc header id
+        for (SearchableAttributeValue searchAttribute : searchAttributes) {
+            if(searchAttribute != null){
+                String fakeKey = searchAttribute.getSearchableAttributeKey() + "-" + searchAttribute.getSearchableAttributeValue();
+                if(!dupedSet.contains(fakeKey)){
+                    getRouteHeaderDAO().save(searchAttribute);
+                    dupedSet.add(fakeKey);
+                }
+            }
+        }
+        LOG.warn("Deduplication adjusted incoming SearchableAttributeValue list from original: " + searchAttributes.size() + " entries into : "  + (searchAttributes.size() - dupedSet.size()) + " entries.");
     }
 
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader){

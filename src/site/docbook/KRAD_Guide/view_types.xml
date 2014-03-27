@@ -347,6 +347,64 @@
       </section>
     </section>
     <section>
+      <title>Maintenance Serialization and <emphasis role="keyword">@Serialized</emphasis></title>
+      <para>Once a maintenance document is initiated, actions that save the maintenance document
+        (Save, Submit) do so by serializing the data objects to XML using XStream and saving that
+        content to the database (In <emphasis role="keyword">KRNS_MAINT_DOC_T.DOC_CNTNT</emphasis>).
+        Whenever the data object state needs to be restored, the process is reversed: the XML
+        content is deserialized back to object form.
+      </para>
+      <para>In fact, when you Save a maintenance document, after the content is serialized it is
+        immediately deserialized again to restore the data object state before rendering the view.
+        The same thing happens when an approver on a maintenance document opens it up: The XML
+        content is loaded from the database, the data object is restored from the XML, and the view
+        is rendered against that object.
+      </para>
+      <para>One thing to note is that fields marked with the
+        <emphasis role="keyword">javax.persistence.Transient</emphasis> annotation
+        will be left unserialized by default, since they are not mapped to the database and so
+        would normally not be present on a freshly retrieved data object.
+      </para>
+      <para>There are a couple of implications to all this. One is that you may have fields that are
+        lost during this serialization cycle, and if the view depends on those fields then you will
+        have problems when the view attempts to render against the deserialized data object.  The
+        other is that if your data object contains a large object graph, the size of that XML can
+        become quite large and start to fill up your database storage. In order to give you control
+        of the situation, an annotation has been provided in the framework.
+      </para>
+      <para>The <emphasis role="keyword">@Serialized</emphasis> annotation can be used to mark a field to be
+        either included or excluded from this XStream serialization. For example, to configure a
+        <emphasis role="keyword">@Transient</emphasis> field to override the default behavior and include it
+        in the serialized XML, add the following annotation to the field in the data object class:
+        <programlisting>@Serialized(enabled=true, forContexts={SerializationContext.MAINTENANCE})</programlisting>
+        If you have another field that you want to exclude from the serialized form of the object for any
+        reason, then you would annotate it as follows:
+        <programlisting>@Serialized(enabled=false, forContexts={SerializationContext.MAINTENANCE})</programlisting>
+      </para>
+      <para>Let's spend a moment on the attributes within the <emphasis role="keyword">@Serialized</emphasis>
+        annotation:
+        <variablelist>
+          <varlistentry>
+            <term>enabled</term>
+            <listitem>
+              <para>Controls whether the field will be serialized, or omitted from serialized form.  If true,
+                the field will be serialized.  The default value is
+                <emphasis role="keyword">true</emphasis>.</para>
+            </listitem>
+          </varlistentry>
+          <varlistentry>
+            <term>forContexts</term>
+            <listitem>
+              <para>Controls which contexts for serialization the annotation applies to.  For maintenance
+                documents, SerializationContext.MAINTENANCE should be specified.  The default value is
+                <emphasis role="keyword">SerializationContext.ALL</emphasis>, which should be used with caution
+                since it could influence other contexts for serialization in the future.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </para>
+    </section>
+    <section>
       <title>Customizing Maintenance Documents</title>
       <para>With the Maintenance document, we aren't restricted to the two column grid layout.  You
         can choose any group layout, and introduce nested groups and sections.  All the widgets can

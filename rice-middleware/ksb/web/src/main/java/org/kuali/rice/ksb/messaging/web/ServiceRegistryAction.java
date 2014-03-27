@@ -72,10 +72,12 @@ public class ServiceRegistryAction extends KSBAction {
     	List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
     	List<String> serviceEndpointsToDelete = new ArrayList<String>();
     	for (ServiceInfo serviceInfo : serviceInfos) {
-    		if (serviceInfo.getServerIpAddress().equals("localhost") ||
-                serviceInfo.getEndpointUrl().contains("localhost")) {
-    			serviceEndpointsToDelete.add(serviceInfo.getServiceId());
-    		}
+            if (serviceInfo.getServerIpAddress().equals("localhost") ||
+                    serviceInfo.getEndpointUrl().contains("localhost") ||
+                    serviceInfo.getServerIpAddress().equals("127.0.0.1") ||
+                    serviceInfo.getEndpointUrl().contains("127.0.0.1")) {
+                serviceEndpointsToDelete.add(serviceInfo.getServiceId());
+            }
     	}
     	serviceRegistry.removeServiceEndpoints(serviceEndpointsToDelete);
     	KsbApiServiceLocator.getServiceBus().synchronize();
@@ -88,12 +90,10 @@ public class ServiceRegistryAction extends KSBAction {
         final String applicationId = request.getParameter(REMOVED_APPLICATION_ID_PARAM);
         if(StringUtils.isNotBlank(applicationId)) {
             ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
-            List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
+            List<ServiceInfo> serviceInfos = serviceRegistry.getAllServicesForApplication(applicationId);
             List<String> serviceEndpointsToDelete = new ArrayList<String>();
             for (ServiceInfo serviceInfo : serviceInfos) {
-                if (serviceInfo.getApplicationId().equals(applicationId)) {
-                    serviceEndpointsToDelete.add(serviceInfo.getServiceId());
-                }
+                serviceEndpointsToDelete.add(serviceInfo.getServiceId());
             }
             serviceRegistry.removeServiceEndpoints(serviceEndpointsToDelete);
             KsbApiServiceLocator.getServiceBus().synchronize();

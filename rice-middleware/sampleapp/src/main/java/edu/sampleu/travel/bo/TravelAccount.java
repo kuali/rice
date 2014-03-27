@@ -37,14 +37,14 @@ public class TravelAccount extends PersistableBusinessObjectBase {
 	@Id
 	@Column(name="acct_num")
 	private String number;
-	
+
 	private String subAccount;
-    
+
 	@Column(name="acct_name")
 	private String name;
 	
 	private String subAccountName;
-	
+
 	private KualiPercent subsidizedPercent;
 	
 	private Date createDate;
@@ -54,7 +54,7 @@ public class TravelAccount extends PersistableBusinessObjectBase {
     }
 
     @Column(name="acct_fo_id")
-	private Long foId;
+	private String foId;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="acct_fo_id", insertable=false, updatable=false)
@@ -84,11 +84,11 @@ public class TravelAccount extends PersistableBusinessObjectBase {
         this.fiscalOfficer = fiscalOfficer;
     }
 
-    public Long getFoId() {
+    public String getFoId() {
         return foId;
     }
 
-    public void setFoId(Long foId) {
+    public void setFoId(String foId) {
         this.foId = foId;
     }
 

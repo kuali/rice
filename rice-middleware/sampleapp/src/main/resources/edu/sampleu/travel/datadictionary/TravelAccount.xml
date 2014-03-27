@@ -57,7 +57,6 @@
         <ref bean="TravelAccount-subsidizedPercent"/>
         <ref bean="TravelAccount-createDate"/>
         <ref bean="TravelAccount-foId"/>
-        <ref bean="TravelAccount-foName"/>
       </list>
     </property>
   </bean>
@@ -160,18 +159,15 @@
   </bean>
 
   <bean id="TravelAccount-foId" parent="TravelAccount-foId-parentBean"/>
-  <bean id="TravelAccount-foId-parentBean" abstract="true" parent="FiscalOfficer-id">
+  <bean id="TravelAccount-foId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="foId"/>
-    <property name="additionalDisplayAttributeName" value="fiscalOfficer.userName"/>
+    <property name="shortLabel" value="Fiscal Officer User ID"/>
+    <property name="label" value="Fiscal Officer User ID"/>
+    <property name="description" value="Fiscal Officer User ID"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="5"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
     <property name="summary" value="Responsbile for aproving account expenses"/>
-  </bean>
-
-  <bean id="TravelAccount-foName" parent="TravelAccount-foName-parentBean"/>
-  <bean id="TravelAccount-foName-parentBean" abstract="true" parent="FiscalOfficer-userName">
-    <property name="name" value="fiscalOfficer.userName"/>
   </bean>
 
   <!-- Business Object Inquiry Definition -->
@@ -191,8 +187,7 @@
               <bean parent="FieldDefinition" p:attributeName="subAccountName"/>
               <bean parent="FieldDefinition" p:attributeName="createDate"/>
               <bean parent="FieldDefinition" p:attributeName="subsidizedPercent"/>
-              <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
-              <bean parent="FieldDefinition" p:attributeName="fiscalOfficer.userName"/>
+              <bean parent="FieldDefinition" p:attributeName="foId"/>
             </list>
           </property>
           <property name="title" value="Account Information"/>
@@ -217,7 +212,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="number"/>
         <bean parent="FieldDefinition" p:attributeName="name"/>
-        <bean parent="FieldDefinition" p:attributeName="foId" p:forceLookup="true"/>
+        <bean parent="FieldDefinition" p:attributeName="foId"/>
         <bean parent="FieldDefinition" p:attributeName="createDate"/>
       </list>
     </property>
@@ -225,7 +220,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="number" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="name" p:forceInquiry="true"/>
-        <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
+        <bean parent="FieldDefinition" p:attributeName="foId"/>
         <bean parent="FieldDefinition" p:attributeName="subAccount"/>
         <bean parent="FieldDefinition" p:attributeName="subAccountName"/>
         <bean parent="FieldDefinition" p:attributeName="createDate"/>

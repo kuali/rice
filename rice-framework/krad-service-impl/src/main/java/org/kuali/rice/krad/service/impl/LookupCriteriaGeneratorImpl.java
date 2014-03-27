@@ -42,7 +42,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -223,6 +222,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             String searchValue = formProps.get(propertyName);
             addCriteriaForPropertyValues(example, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps, searchValue);
         }
+
         return criteria;
     }
 
@@ -250,6 +250,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             String searchValue = formProps.get(propertyName);
             addCriteriaForPropertyValues(example, propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps, searchValue);
         }
+
         return criteria;
     }
 
@@ -273,6 +274,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
         if (caseInsensitive == null) {
             caseInsensitive = Boolean.TRUE;
         }
+
         return caseInsensitive.booleanValue();
     }
 
@@ -293,6 +295,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -312,10 +315,12 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                     }
                 }
             }
+
             boolean treatWildcardsAndOperatorsAsLiteral = doesLookupFieldTreatWildcardsAndOperatorsAsLiteral(type,
                     pkFieldName);
             createCriteria(dataObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
         }
+
         return criteria;
     }
 
@@ -337,6 +342,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             boolean treatWildcardsAndOperatorsAsLiteral = wildcardAsLiteralPropertyNames.contains(pkFieldName);
             createCriteria(dataObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
         }
+
         return criteria;
     }
 
@@ -363,12 +369,13 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 }
             }
         }
+
         return false;
     }
 
     /**
      * @throws NumberFormatException if {@code value} is not a valid
-     *         representation of a {@code BigDecimal}.
+     *         representation of a {@code Number}.
      */
     protected Number cleanNumeric(String value, Class<?> propertyType) {
         String cleanedValue = value.replaceAll("[^-0-9.]", "");
@@ -950,6 +957,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             if (predicates.size() == 1) {
                 return predicates.get(0);
             }
+
             return PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()]));
         }
 
@@ -967,6 +975,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             if (predicates.size() == 1) {
                 return predicates.get(0);
             }
+
             return PredicateFactory.or(predicates.toArray(new Predicate[predicates.size()]));
         }
 

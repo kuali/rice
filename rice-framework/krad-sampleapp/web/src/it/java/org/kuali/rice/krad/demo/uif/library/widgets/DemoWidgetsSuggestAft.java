@@ -67,13 +67,13 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
         final String EXAMPLE_LINK_NAME = "View Helper Method Configuration 2";
         final String INPUT_FIELD_NAME = "inputField4";
         final String SEARCH_VALUE = "a";
-        final String RESULT = "a6";
+        final String RESULT = "a2";
 
         //go to correct example
         waitAndClickByLinkText(EXAMPLE_LINK_NAME);
 
         //enter values
-        waitAndTypeByName("inputField3", "a6-sub");
+        waitAndTypeByName("inputField3", "SUB1");
         waitAndTypeByName(INPUT_FIELD_NAME, SEARCH_VALUE);
 
         //verify expect suggest results

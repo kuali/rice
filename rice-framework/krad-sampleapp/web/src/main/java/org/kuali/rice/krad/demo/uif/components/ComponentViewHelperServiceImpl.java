@@ -42,7 +42,7 @@ public class ComponentViewHelperServiceImpl extends ViewHelperServiceImpl {
         List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
 
         Map<String, String> lookupCriteria = new HashMap<String, String>();
-        lookupCriteria.put("subAccount", subAccount);
+        lookupCriteria.put("subAccounts.subAccount", subAccount);
         lookupCriteria.put("number", term + SearchOperator.LIKE_MANY.op());
 
         matchingAccounts = (List<TravelAccount>) KRADServiceLocatorWeb.getLookupService().findCollectionBySearch(

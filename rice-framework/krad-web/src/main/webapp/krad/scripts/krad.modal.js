@@ -222,6 +222,7 @@ function handleServerDialogResponse(event) {
     request.additionalData.returnDialogId = event.dialogId;
     request.additionalData.returnDialogResponse = dialogResponse;
     request.additionalData.returnFromDialog = true;
+    request.confirmDialogId = null;
 
     request.send();
 }

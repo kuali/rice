@@ -32,7 +32,7 @@
   </bean>
 
   <bean id="TravelAccount-MaintenanceView" parent="Uif-MaintenanceView">
-    <property name="headerText" value="Travel Account Maintenance"/>
+    <property name="headerText" value="Travel Account Maintenance test"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="items">
       <list merge="true">

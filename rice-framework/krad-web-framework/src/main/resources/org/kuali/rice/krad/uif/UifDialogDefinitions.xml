@@ -154,15 +154,16 @@
     </property>
   </bean>
 
-  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">
+  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup-YesNo">
     <property name="headerText" value="Warning: Sensitive Data"/>
     <property name="items">
       <list>
         <bean id="imageWarning" parent="Uif-ImageField" p:width="75px" p:height="75px"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
+        <bean parent="Uif-DialogPrompt"
+              p:messageText="Potentially sensitive data was found on the document. Do you wish to continue?"/>
       </list>
     </property>
-    <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
   </bean>
 
   <bean id="Uif-SessionTimeoutWarning-DialogGroup" parent="Uif-DialogGroup">

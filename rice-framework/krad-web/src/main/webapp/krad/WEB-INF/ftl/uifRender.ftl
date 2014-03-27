@@ -66,7 +66,7 @@
 
         <#elseif KualiForm.ajaxReturnType == "update-dialog">
             <div data-returntype="update-dialog" data-updatecomponentid="${KualiForm.updateComponentId!}">
-                <#include "updateComponent.ftl" parse=true/>
+                <#include "updateDialog.ftl" parse=true/>
             </div>
         </#if>
 

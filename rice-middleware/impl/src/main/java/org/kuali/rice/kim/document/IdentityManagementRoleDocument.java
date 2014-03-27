@@ -530,15 +530,23 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
         }
         if (getResponsibilities() != null) {
             for (KimDocumentRoleResponsibility responsibility : getResponsibilities()) {
+                String nextRoleResponsibilityId = null;
+
                 if (StringUtils.isBlank(responsibility.getRoleResponsibilityId())) {
                     DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ROLE_RSP_ID_S);
-                    responsibility.setRoleResponsibilityId(incrementer.nextStringValue());
+                    nextRoleResponsibilityId = incrementer.nextStringValue();
+                    responsibility.setRoleResponsibilityId(nextRoleResponsibilityId);
+                } else{
+                    responsibility.setDocumentNumber(getDocumentNumber());
+                    responsibility.setVersionNumber(null);
                 }
+
                 responsibility.setRoleId(roleId);
                 if (!getResponsibilityInternalService().areActionsAtAssignmentLevelById(responsibility.getResponsibilityId())) {
                     if (StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityActionId())) {
                         DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S);
                         responsibility.getRoleRspActions().get(0).setRoleResponsibilityActionId(incrementer.nextStringValue());
+                        responsibility.getRoleRspActions().get(0).setRoleResponsibilityId(nextRoleResponsibilityId);
                     }
                     responsibility.getRoleRspActions().get(0).setRoleMemberId("*");
                     responsibility.getRoleRspActions().get(0).setDocumentNumber(getDocumentNumber());

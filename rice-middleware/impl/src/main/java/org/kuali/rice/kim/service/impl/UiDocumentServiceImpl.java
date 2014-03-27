@@ -2194,18 +2194,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        roleBo.setKimTypeId(identityManagementRoleDocument.getRoleTypeId());
 	        roleBo.setNamespaceCode(identityManagementRoleDocument.getRoleNamespace());
 	        identityManagementRoleDocument.setActive(true);
-		} else {
-	        List<RolePermissionBo> origRolePermissions = new ArrayList<RolePermissionBo>();
-
-            QueryByCriteria altCriteria = QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId).build();
-			origRolePermissions = new ArrayList<RolePermissionBo>(getDataObjectService().findMatching(RolePermissionBo.class, altCriteria).getResults());
-            origRoleResponsibilities = getDataObjectService().findMatching(RoleResponsibilityBo.class, altCriteria).getResults();
-            origRoleDelegations = getDataObjectService().findMatching(DelegateTypeBo.class, altCriteria).getResults();
-
-            objectsToSave.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
-            objectsToSave.addAll(getRoleResponsibilities(identityManagementRoleDocument, origRoleResponsibilities));
-            objectsToSave.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
 		}
+        List<RolePermissionBo> origRolePermissions = new ArrayList<RolePermissionBo>();
+
+        QueryByCriteria altCriteria = QueryByCriteria.Builder.forAttribute(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId).build();
+    	origRolePermissions = new ArrayList<RolePermissionBo>(getDataObjectService().findMatching(RolePermissionBo.class, altCriteria).getResults());
+        origRoleResponsibilities = getDataObjectService().findMatching(RoleResponsibilityBo.class, altCriteria).getResults();
+        origRoleDelegations = getDataObjectService().findMatching(DelegateTypeBo.class, altCriteria).getResults();
+
+        objectsToSave.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
+        objectsToSave.addAll(getRoleResponsibilities(identityManagementRoleDocument, origRoleResponsibilities));
+        objectsToSave.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
 
         objectsToSave.add(roleBo);
         roleBo.setName(identityManagementRoleDocument.getRoleName());
@@ -2277,6 +2276,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				KimCommonUtilsInternal.copyProperties(newRoleResponsibility, documentRoleResponsibility);
 				newRoleResponsibility.setActive(documentRoleResponsibility.isActive());
 				newRoleResponsibility.setRoleId(identityManagementRoleDocument.getRoleId());
+                newRoleResponsibility.setVersionNumber(null);
 				if(ObjectUtils.isNotNull(origRoleResponsibilities)){
 					for(RoleResponsibilityBo origResponsibilityImpl: origRoleResponsibilities){
 						if(!StringUtils.equals(origResponsibilityImpl.getRoleId(), newRoleResponsibility.getRoleId()) &&

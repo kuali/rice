@@ -76,7 +76,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
 
         // add agenda rule information
         waitForPageToLoad();
-        addNewAgendaRuleInformation("Validation Rule", "", ruleName); // TODO: check ruleCodeType
+        addNewAgendaRuleInformation("Validation Rule", "", ruleName);
         waitAndClickButtonByExactText("Add"); // add proposition button
         addRulePropositionInfo("0", "Campus must have students", "", "Bloomington Campus Size", ">", "1");
         addNewRuleActionInformation("KrmsActionResolverType", "test", "test");
@@ -102,6 +102,10 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         if (StringUtils.isNotBlank(ruleTypeCode)) {
             waitAndSelectByName(NEW_DATA_OBJ_PATH + "customRuleAttributesMap[ruleTypeCode]", ruleTypeCode);
         }
+
+        // validate that Type selected is Validation Rule
+        assertTrue("Expected ruleTypeCode dropdown value not found ",isElementPresentByXpath(
+                "//option[@selected='selected' and @value='1002']"));
 
         waitAndTypeByName(NEW_DATA_OBJ_PATH + "agendaItemLine.rule.name", ruleName);
     }

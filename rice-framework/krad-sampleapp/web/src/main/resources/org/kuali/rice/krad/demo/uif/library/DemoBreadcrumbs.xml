@@ -288,8 +288,8 @@
                 <bean parent="Uif-KeyValueLocation" p:key="Demo-ActionView" p:value="ReadOnly Test View"
                       p:location.viewId="Demo-ActionView"
                       p:location.controllerMapping="/kradsampleapp"/>
-                <bean parent="Uif-KeyValueLocation" p:key="Demo-OptionsListControlView" p:value="Client Disable View"
-                      p:location.viewId="Demo-OptionsListControlView"
+                <bean parent="Uif-KeyValueLocation" p:key="Demo-OptionListView" p:value="Client Disable View"
+                      p:location.viewId="Demo-OptionListView"
                       p:location.controllerMapping="/kradsampleapp"/>
               </list>
             </property>

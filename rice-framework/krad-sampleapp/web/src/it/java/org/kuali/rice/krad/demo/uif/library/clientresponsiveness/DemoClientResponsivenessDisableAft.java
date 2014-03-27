@@ -75,10 +75,10 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
     protected void testClientResponsivenessDisableOnKeyUp() throws Exception {
         selectByName("exampleShown","On keyup");
         waitAndTypeByName("inputField13","disable");
-        assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled'");
+        assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled']");
         fireEvent("inputField13", "blur");
         waitAndClickByLinkText("<< Close Library Navigation");
-        assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled'");
+        assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled']");
      }
     
     protected void testClientResponsivenessDisableInCollections() throws Exception {

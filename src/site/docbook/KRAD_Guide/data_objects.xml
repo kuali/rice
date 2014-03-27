@@ -592,6 +592,21 @@ public class AccountExtension { ...}
 </bean>      
 ]]>
         </programlisting>
+        <para>
+            Transactions are handled by default via this configuration.  The
+            <emphasis role="keyword">JpaPersistenceProvider</emphasis> uses Spring's
+            <emphasis role="keyword">@Transactional</emphasis> annotation along with the corresponding setup to ensure
+            that all calls through the <emphasis role="keyword">DataObjectService</emphasis> are wrapped in
+            transactions.  Any alternate persistence provider that supports transactions will also be handled in this
+            manner.  In other words, the <emphasis role="keyword">DataObjectService</emphasis> acts as a transactional
+            boundary and uses the default <emphasis role="keyword">Propagation.REQUIRED</emphasis> to ensure that either
+            a transaction exists or a new one is created.
+        </para>
+        <para>
+            For some objects, such as <emphasis role="keyword">DocumentType</emphasis> which depends on parent types of
+            the same class, KRAD uses optimistic locks on the parent type to force any transaction that has updated the
+            parent type to finish before creating a new transaction to update the current type.
+        </para>
         </section>
         <section>
             <title>Metadata Provider</title>

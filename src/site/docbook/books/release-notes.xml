@@ -58,20 +58,31 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
-  <section>
-    <title>Upgrade Guide</title>
-    <para>Below is information on how to upgrade your database to Rice ${project.version} from the
-      previous version. If you are upgrading from another previous version, you may want to
-      reference <link
-        xlink:href="https://wiki.kuali.org/display/KULRICE/Upgrade+Troubleshooting#UpgradeTroubleshooting-DatabaseUpgradePaths"
-        >Database Upgrade Paths</link>.</para>
     <section>
-      <title>Oracle</title>
+      <title>Upgrade Guide</title>
+      <para>Below is information on how to upgrade your database to Rice ${project.version} from the
+        previous version. If you are upgrading from another previous version, you may want to
+        reference <link
+          xlink:href="https://wiki.kuali.org/display/KULRICE/Upgrade+Troubleshooting#UpgradeTroubleshooting-DatabaseUpgradePaths"
+          >Database Upgrade Paths</link>.</para>
+      <section>
+        <title>Oracle</title>
+      </section>
+      <section>
+        <title>MySQL</title>
+      </section>
     </section>
     <section>
-      <title>MySQL</title>
+        <title>Conversion Guide</title>
+        <para>Rice will eventually require conversion from the Kuali Nervous System (KNS) to the
+          Kuali Rapid Application Development (KRAD) framework.  Rice implementers can also convert
+          now to avoid larger upgrades in the future, and the information on how to do this is in
+          <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html"
+          >http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html</link>.
+          This guide includes a general overview of what has changed and why, information on how to run
+          the automatic conversion tool, a list of items that may need to be changed manually, and a
+          primer on how to use the new KRAD Data Framework using the Java Persistence API (JPA).</para>
     </section>
-  </section>
     <section xml:id="items_addressed_in_rice">
         <title>Items Addressed in Rice ${project.version}</title>
       

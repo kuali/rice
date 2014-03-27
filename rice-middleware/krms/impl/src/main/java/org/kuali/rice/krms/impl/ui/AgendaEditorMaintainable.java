@@ -132,7 +132,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                         propositionBo.getParameters()) > 0) {
                     // Get the term ID; if it is a new parameterized term, it will have a special prefix
                     PropositionParameterBo param = propositionBo.getParameters().get(0);
-                    if (param.getValue().startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
+                    if (StringUtils.isNotBlank(param.getValue()) &&
+                            param.getValue().startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
                         String termSpecId = param.getValue().substring(
                                 KrmsImplConstants.PARAMETERIZED_TERM_PREFIX.length());
                         TermResolverDefinition simplestResolver = getSimplestTermResolver(termSpecId,

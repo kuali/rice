@@ -653,7 +653,7 @@
 
                         <!-- extra components (progressively rendered) for parameterized terms -->
                         <bean parent="Uif-VerticalBoxGroup" p:headerText="Term Parameters"
-                              p:progressiveRender="@{#np.proposition.parameters[0].value matches 'parameterized:.*'}"
+                              p:progressiveRender="@{#np.proposition.parameters[0].value != null and #np.proposition.parameters[0].value matches 'parameterized:.*'}"
                               p:style="border: 1px solid #ccc; padding: .5em; margin: .5em; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
                           <!--
                           p:progressiveRender="@{#np.proposition.parameters[0].value matches 'parameterized:.*'}"

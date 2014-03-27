@@ -28,6 +28,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.ui.CustomOperatorUiTranslator;
 import org.kuali.rice.krms.impl.ui.TermParameter;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 
 import javax.persistence.CascadeType;
@@ -163,11 +164,12 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             String termId = param.getValue();
 
             if (termId != null && termId.length() > 0) {
-                if (termId.startsWith("parameterized:")) {
+                if (termId.startsWith(KrmsImplConstants.PARAMETERIZED_TERM_PREFIX)) {
                     if (!StringUtils.isBlank(newTermDescription)) {
                         termName = newTermDescription;
                     } else {
-                        TermSpecificationBo termSpec = getDataObjectService().find(TermSpecificationBo.class, termId.substring(1 + termId.indexOf(":")));
+                        TermSpecificationBo termSpec = getDataObjectService().find(TermSpecificationBo.class,
+                                termId.substring(1 + termId.indexOf(":")));
                         termName = termSpec.getName() + "(...)";
                     }
                 } else {
@@ -178,7 +180,8 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
             return termName;
 
-        } else if (PropositionParameterType.FUNCTION.getCode().equalsIgnoreCase(param.getParameterType()) || PropositionParameterType.OPERATOR.getCode().equalsIgnoreCase(param.getParameterType())) {
+        } else if (PropositionParameterType.FUNCTION.getCode().equalsIgnoreCase(param.getParameterType()) ||
+                PropositionParameterType.OPERATOR.getCode().equalsIgnoreCase(param.getParameterType())) {
             if (customOperatorUiTranslator.isCustomOperatorFormValue(param.getValue())) {
                 String functionName = customOperatorUiTranslator.getCustomOperatorName(param.getValue());
                 if (!StringUtils.isEmpty(functionName)) {

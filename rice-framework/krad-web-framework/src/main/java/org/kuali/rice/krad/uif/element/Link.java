@@ -24,6 +24,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -80,6 +82,8 @@ public class Link extends ContentElementBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
         if (lightBox != null && lightBox.isRender()){
             this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "handleLightboxOpen(jQuery(this), " +
                     lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
@@ -94,6 +98,16 @@ public class Link extends ContentElementBase {
 
             // force icon only placement
             linkIconPlacement = UifConstants.ICON_ONLY_PLACEMENT;
+        }
+
+        if (target.equals(UifConstants.HtmlAttributeValues.TARGET_BLANK)) {
+            String title = this.getTitle();
+            if (StringUtils.isNotBlank(title)) {
+                this.setTitle(title + " - " + messageService.getMessageText("accessibility.link.opensTab"));
+            }
+            else{
+                this.setTitle(messageService.getMessageText("accessibility.link.opensTab"));
+            }
         }
     }
 

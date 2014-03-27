@@ -497,6 +497,10 @@ public class UifConstants {
         public static final String PROGRESS_BAR = "progressbar";
     }
 
+    public static final class HtmlAttributeValues {
+        public static final String TARGET_BLANK = "_blank";
+    }
+
     public static final class CaseConstraintOperators {
         public static final String HAS_VALUE = "has_value";
         public static final String EQUALS = "equals";

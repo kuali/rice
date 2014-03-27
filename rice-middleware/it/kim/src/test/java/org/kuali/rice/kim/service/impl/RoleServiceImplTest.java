@@ -445,6 +445,84 @@ public class RoleServiceImplTest extends KIMTestCase {
         assertFalse(rm1.getId().equals(rm2.getId()));
     }
 
+    @Test
+    public void testAddMultiplePrincipalsToRole() {
+        Role r2 = roleService.getRole("r2");
+        // Test with empty conditions param
+        Map<String, String> conditions = new HashMap<String, String>();
+
+        int originalNumberOfPrincipals = roleService.getRoleMemberPrincipalIds(r2.getNamespaceCode(), r2.getName(),
+                conditions).size();
+
+        RoleMember rm1 = roleService.assignPrincipalToRole("user3", r2.getNamespaceCode(), r2.getName(), conditions);
+        RoleMember rm2 = roleService.assignPrincipalToRole("user4", r2.getNamespaceCode(), r2.getName(), conditions);
+
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user3",
+                Collections.singletonList(r2.getId()), conditions));
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user4",
+                Collections.singletonList(r2.getId()), conditions));
+
+        int numberOfPrincipals = roleService.getRoleMemberPrincipalIds(r2.getNamespaceCode(), r2.getName(), conditions)
+                .size();
+
+        assertEquals("Should have been two Principals added to role", numberOfPrincipals - 2,
+                originalNumberOfPrincipals);
+
+        r2 = roleService.getRole("r2");
+        roleService.removePrincipalFromRole("user3", r2.getNamespaceCode(), r2.getName(), conditions);
+        roleService.removePrincipalFromRole("user4", r2.getNamespaceCode(), r2.getName(), conditions);
+
+        r2 = roleService.getRole("r2");
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user3",
+                Collections.singletonList(r2.getId()), conditions));
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user4",
+                Collections.singletonList(r2.getId()), conditions));
+        numberOfPrincipals = roleService.getRoleMemberPrincipalIds(r2.getNamespaceCode(), r2.getName(),
+                new HashMap<String, String>()).size();
+        assertEquals("Should have had the two added Principals removed", numberOfPrincipals,
+                originalNumberOfPrincipals);
+    }
+
+    @Test
+    public void testAddMultipleQualifiedPrincipalsToRole() {
+        Role rCampus = roleService.getRole("r-campus");
+        // Test with qualifying conditions
+        Map<String, String> conditions = Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL");
+        int originalNumberOfPrincipals = roleService.getRoleMemberPrincipalIds(rCampus.getNamespaceCode(),
+                rCampus.getName(), Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL")).size();
+
+        RoleMember rm1 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+                conditions);
+        RoleMember rm2 = roleService.assignPrincipalToRole("user4", rCampus.getNamespaceCode(), rCampus.getName(),
+                conditions);
+
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), conditions));
+        assertTrue("principal should be assigned to role", roleService.principalHasRole("user4",
+                Collections.singletonList(rCampus.getId()), conditions));
+
+        int numberOfPrincipals = roleService.getRoleMemberPrincipalIds(rCampus.getNamespaceCode(), rCampus.getName(),
+                Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL")).size();
+
+        assertEquals("Should have been two Principals added to role", numberOfPrincipals,
+                originalNumberOfPrincipals + 2);
+
+        rCampus = roleService.getRole("r-campus");
+        roleService.removePrincipalFromRole("user3", rCampus.getNamespaceCode(), rCampus.getName(), conditions);
+        roleService.removePrincipalFromRole("user4", rCampus.getNamespaceCode(), rCampus.getName(), conditions);
+
+        rCampus = roleService.getRole("r-campus");
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), conditions));
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), conditions));
+
+        numberOfPrincipals = roleService.getRoleMemberPrincipalIds(rCampus.getNamespaceCode(), rCampus.getName(),
+                Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL")).size();
+        assertEquals("Should have had the two added Principals removed", numberOfPrincipals,
+                originalNumberOfPrincipals);
+    }
+
 	/**
 	 * Tests to ensure that a circular role membership cannot be created via the RoleService.
 	 *

@@ -52,10 +52,11 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
 
 	private static final long serialVersionUID = -8884711461398770563L;
 
-	private static final String DOC_TYPE_NAME_PROPERTY = "docTypeFullName";//doc_type_name
+	private static final String DOC_TYPE_NAME_PROPERTY = "docTypeFullName";
     private static final String DOC_TYPE_NAME_KEY = "docTypeFullName";
 
-    private static final String LOOKUPABLE_CLASS = "org.kuali.rice.kew.doctype.bo.DocumentType";//DocumentTypeLookupableImplService//org.kuali.rice.kew.doctype.bo.DocumentType
+    private static final String LOOKUPABLE_CLASS = "org.kuali.rice.kew.doctype.bo.DocumentType";
+    private static final String LOOUPABLE_FIELD = "name";
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
 
     private static final String DOC_TYPE_NAME_XPATH = "//newMaintainableObject/businessObject/docTypeName";
@@ -78,8 +79,10 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         rows = new ArrayList<Row>();
 
         List<Field> fields = new ArrayList<Field>();
-        fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_PROPERTY, "", false, false, null, LOOKUPABLE_CLASS));
-        //fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_KEY, "", false, false, null, LOOKUPABLE_CLASS));
+        Field docTypeField = new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_PROPERTY, "", false, false, null, LOOKUPABLE_CLASS);
+        docTypeField.setFieldConversions(LOOUPABLE_FIELD + ":" + DOC_TYPE_NAME_PROPERTY);
+        fields.add(docTypeField);
+
         rows.add(new Row(fields));
     }
 

@@ -198,9 +198,9 @@ public class View extends ContainerBase {
 
     @DelayedCopy
     private List<? extends Component> items;
-    
+
     private List<String> viewTemplates;
-    
+
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
@@ -234,8 +234,6 @@ public class View extends ContainerBase {
         items = Collections.emptyList();
         viewTemplates = new LifecycleAwareList<String>(this);
     }
-
-
 
     /**
      * The following initialization is performed:
@@ -324,8 +322,7 @@ public class View extends ContainerBase {
 
         View view = ViewLifecycle.getView();
         if (theme != null) {
-            ViewLifecycle.getExpressionEvaluator()
-                .evaluateExpressionsOnConfigurable(view, theme, getContext());
+            ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, theme, getContext());
 
             theme.configureThemeDefaults();
         }
@@ -348,9 +345,9 @@ public class View extends ContainerBase {
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
-        
+
         assert this == ViewLifecycle.getView();
-        
+
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
             preLoadScript = this.getPreLoadScript();
@@ -430,14 +427,13 @@ public class View extends ContainerBase {
                 UifConstants.REQUIRED_INDICATOR_ID);
 
         // Add data defaults for common components to the view for use in js (to reduce size of individual components)
-        this.addScriptDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) groupValidationDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) fieldValidationDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) actionDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR,
-                (String) requiredIndicator);
+        this.addScriptDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) groupValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) fieldValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) actionDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, (String) requiredIndicator);
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.VIEW);
@@ -445,8 +441,7 @@ public class View extends ContainerBase {
         // Add state mapping to post metadata
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateObjectBindingPath",
                 stateObjectBindingPath);
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping",
-                stateMapping);
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping", stateMapping);
     }
 
     /**
@@ -482,15 +477,15 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Gets all breadcrumb items related to this view's parent location. 
-     * 
+     * Gets all breadcrumb items related to this view's parent location.
+     *
      * @return breadcrumb items
      */
     public List<BreadcrumbItem> getBreadcrumbItems() {
         if (parentLocation == null) {
             return Collections.emptyList();
         }
-        
+
         List<BreadcrumbItem> breadcrumbItems = new ArrayList<BreadcrumbItem>();
         breadcrumbItems.add(parentLocation.getPageBreadcrumbItem());
         breadcrumbItems.add(parentLocation.getViewBreadcrumbItem());
@@ -499,7 +494,7 @@ public class View extends ContainerBase {
                 breadcrumbItems.add(item);
             }
         }
-        
+
         return breadcrumbItems;
     }
 
@@ -528,7 +523,7 @@ public class View extends ContainerBase {
      *
      * @return page group instance
      */
-    @ViewLifecycleRestriction(exclude=UifConstants.ViewPhases.PRE_PROCESS)
+    @ViewLifecycleRestriction(exclude = UifConstants.ViewPhases.PRE_PROCESS)
     public PageGroup getCurrentPage() {
         for (Component item : this.getItems()) {
             if (!(item instanceof PageGroup)) {
@@ -553,14 +548,17 @@ public class View extends ContainerBase {
      */
     @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public List<Component> getPagesForPreprocessing() {
-        List<Component> items = (List<Component>) getItems();
+        List<Component> processProcessItems = new ArrayList<Component>();
 
-        if (getPage() != null) {
-            items = new ArrayList<Component>();
-            items.add(getPage());
+        if (getItems() != null) {
+            processProcessItems.addAll(getItems());
         }
 
-        return items;
+        if (getPage() != null) {
+            processProcessItems.add(getPage());
+        }
+
+        return processProcessItems;
     }
 
     /**
@@ -725,6 +723,7 @@ public class View extends ContainerBase {
      * <p>
      * Title text to be displayed on browser tab.
      * </p>
+     *
      * @return
      */
     @BeanTagAttribute(name = "applicationTitleText")
@@ -734,6 +733,7 @@ public class View extends ContainerBase {
 
     /**
      * setter for applicationTitleText
+     *
      * @param applicationTitleText
      */
     public void setApplicationTitleText(String applicationTitleText) {
@@ -1096,7 +1096,7 @@ public class View extends ContainerBase {
         if (additionalScriptFiles == Collections.EMPTY_LIST && isMutable(true)) {
             additionalScriptFiles = new LifecycleAwareList<String>(this);
         }
-        
+
         return additionalScriptFiles;
     }
 
@@ -1133,7 +1133,7 @@ public class View extends ContainerBase {
         if (additionalCssFiles == Collections.EMPTY_LIST && isMutable(true)) {
             additionalCssFiles = new LifecycleAwareList<String>(this);
         }
-        
+
         return additionalCssFiles;
     }
 
@@ -1153,7 +1153,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     *  List of additional link tags that should be included with the
+     * List of additional link tags that should be included with the
      * <code>View</code> in the <head></head>.
      *
      * @return headlink objects
@@ -1164,7 +1164,6 @@ public class View extends ContainerBase {
     }
 
     /**
-     *
      * @see View#getAdditionalHeadLinks()
      */
     public void setAdditionalHeadLinks(List<HeadLink> additionalHeadLinks) {
@@ -1176,7 +1175,7 @@ public class View extends ContainerBase {
      * List of additional meta tags that should be included with the
      * <code>View</code> in the <head></head>.
      *
-     * @return   additionalMetaTags
+     * @return additionalMetaTags
      */
     @BeanTagAttribute(name = "additionalMetaTags", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<MetaTag> getAdditionalMetaTags() {
@@ -1184,14 +1183,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     *
      * @see View#getAdditionalMetaTags()
      */
     public void setAdditionalMetaTags(List<MetaTag> additionalMetaTags) {
         this.additionalMetaTags = additionalMetaTags;
     }
-
-
 
     /**
      * True if the libraryCssClasses set on components will be output to their class attribute, false otherwise.
@@ -1236,7 +1232,7 @@ public class View extends ContainerBase {
 
     /**
      * This method ...
-     * 
+     *
      * @param template
      */
     public void addViewTemplate(String template) {
@@ -1258,7 +1254,7 @@ public class View extends ContainerBase {
      */
     public void setViewTemplates(List<String> viewTemplates) {
         checkMutable(true);
-        
+
         if (viewTemplates == null) {
             this.viewTemplates = new LifecycleAwareList<String>(this);
         } else {
@@ -1540,7 +1536,7 @@ public class View extends ContainerBase {
         if (actionFlags == Collections.EMPTY_MAP && isMutable(true)) {
             actionFlags = new LifecycleAwareMap<String, Boolean>(this);
         }
-        
+
         return actionFlags;
     }
 
@@ -1573,7 +1569,7 @@ public class View extends ContainerBase {
         if (editModes == Collections.EMPTY_MAP && isMutable(true)) {
             editModes = new LifecycleAwareMap<String, Boolean>(this);
         }
-        
+
         return editModes;
     }
 
@@ -1630,7 +1626,7 @@ public class View extends ContainerBase {
      * of configuration and also can drive other configuration like styling.
      *
      * @return true if the view only contains one page group, false if
-     *         it contains multple pages
+     * it contains multple pages
      */
     @BeanTagAttribute(name = "singlePageView")
     public boolean isSinglePageView() {
@@ -1652,7 +1648,7 @@ public class View extends ContainerBase {
      * should be included for this view.  This only applies to single paged views.
      *
      * @return true if the view should contain the default sections
-     *         specified in the page
+     * specified in the page
      */
     public boolean isMergeWithPageItems() {
         return mergeWithPageItems;
@@ -1702,7 +1698,7 @@ public class View extends ContainerBase {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
             items = new LifecycleAwareList<Component>(this);
         }
-        
+
         return items;
     }
 
@@ -1715,7 +1711,7 @@ public class View extends ContainerBase {
     @Override
     public void setItems(List<? extends Component> items) {
         checkMutable(true);
-        
+
         if (items == null) {
             this.items = Collections.emptyList();
         } else {
@@ -1905,8 +1901,8 @@ public class View extends ContainerBase {
      */
     public void setPathBasedBreadcrumbs(List<BreadcrumbItem> pathBasedBreadcrumbs) {
         checkMutable(true);
-        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs == null ? null :
-            new LifecycleAwareList<BreadcrumbItem>(this, pathBasedBreadcrumbs);
+        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs == null ? null : new LifecycleAwareList<BreadcrumbItem>(this,
+                pathBasedBreadcrumbs);
     }
 
     /**
@@ -2194,7 +2190,7 @@ public class View extends ContainerBase {
      * state information or replacements (ie, they will function as they did in version 2.1).</p>
      *
      * @return information needed for state based validation, if null no state based validation
-     *         functionality will exist and configured constraints will apply regardless of state
+     * functionality will exist and configured constraints will apply regardless of state
      * @since 2.2
      */
     @BeanTagAttribute(name = "stateMapping", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -2215,7 +2211,7 @@ public class View extends ContainerBase {
     /**
      * Returns the general context that is available before the apply model phase (during the
      * initialize phase)
-     * 
+     *
      * @return context map
      */
     public Map<String, Object> getPreModelContext() {
@@ -2234,16 +2230,16 @@ public class View extends ContainerBase {
             context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
             context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
             context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
-            
+
             preModelContext = Collections.unmodifiableMap(context);
         }
-        
+
         return preModelContext;
     }
 
     /**
      * This overridden method ...
-     * 
+     *
      * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
     @Override

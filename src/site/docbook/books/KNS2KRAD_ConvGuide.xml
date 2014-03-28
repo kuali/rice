@@ -4423,5 +4423,237 @@ DataObjectWrapper&lt;T> wrapper = getDataObjectService().wrap(dataObject);
 Map&lt;String, Object> primaryKeyValues = wrapper.getPrimaryKeyValues();</programlisting>
         </para>
     </section>
+    <section>
+        <title>Deprecated Classes</title>
+        <para>
+            To ease the transition from OJB to JPA, Rice has kept deprecated classes around to allow the use of both
+            at the same time.  Many of these deprecated classes are used by implementers, so here is a general overview
+            of the most popular classes that have been deprecated, why they have been deprecated, and how to move to the
+            new structure.
+        </para>
+        <para>
+            <table frame="all" tabstyle="striped" pgwide="1">
+                <title>KRAD Data Deprecated Classes</title>
+                <tgroup cols="2">
+                    <colspec colnum="1" colname="class" colwidth="1.75*" align="left"/>
+                    <colspec colnum="2" colname="explanation" colwidth="3.0*" align="left"/>
+                    <spanspec spanname="package" namest="class" nameend="explanation"/>
+                    <thead>
+                        <row>
+                            <entry>Deprecated Class</entry>
+                            <entry>Explanation and Conversion</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.krad.criteria</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">CriteriaLookupDao</emphasis></entry>
+                            <entry>
+                                All DAOs have been consolidated to use the
+                                <emphasis role="bold">org.kuali.rice.krad.data.DataObjectService</emphasis> as a
+                                centralized service.
+                            </entry>
+                        </row>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.krad.dao</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">BusinessObjectDao</emphasis></entry>
+                            <entry>
+                                As business objects can now be any object, use the generic methods in
+                                <emphasis role="bold">DataObjectService</emphasis> for equivalent behavior.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">DocumentDao</emphasis></entry>
+                            <entry>
+                                The generic methods in <emphasis role="bold">DataObjectService</emphasis> can be used
+                                for documents in the same manner as business objects.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">LookupDao</emphasis></entry>
+                            <entry>
+                                Methods in <emphasis role="bold">DataObjectService</emphasis> can be used for the more
+                                general cases, but some of the functionality has also been moved to
+                                <emphasis role="bold">org.kuali.rice.krad.service.LookupService.findCollectionBySearchHelper(..)</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">MaintenanceDocumentDao</emphasis></entry>
+                            <entry>
+                                The method <emphasis role="bold">getLockingDocumentId(..)</emphasis> in
+                                <emphasis role="bold">org.kuali.rice.krad.service.MaintenanceDocumentService</emphasis>
+                                may fill the needs of this one method, but it is also possible to use a customized
+                                query to search for
+                                <emphasis role="bold">org.kuali.rice.krad.maintenance.MaintenanceLock</emphasis> via the
+                                <emphasis role="bold">DataObjectService</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">PersistedLookupMetadataDao</emphasis></entry>
+                            <entry>
+                                Queries wanting to delete objects by a certain criteria (such as before a certain date)
+                                can use <emphasis role="bold">DataObjectService.deleteMatching(..)</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">PersistenceDao</emphasis></entry>
+                            <entry>
+                                References can be loaded by wrapping the data object in
+                                <emphasis role="bold">org.kuali.rice.krad.data.DataObjectWrapper</emphasis> using
+                                <emphasis role="bold">DataObjectService.wrap(..)</emphasis> and calling
+                                <emphasis role="bold">fetchRelationship(..)</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">SequenceAccessorDao</emphasis></entry>
+                            <entry>
+                                Use <emphasis role="bold">org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer</emphasis>
+                                to obtain the next sequence values.  This can be created as a Spring bean using
+                                <emphasis role="bold">org.kuali.rice.krad.data.platform.MaxValueIncrementerFactoryBean</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.krad.bo</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry>
+                                <para><emphasis role="bold">BusinessObject</emphasis></para>
+                                <para><emphasis role="bold">BusinessObjectBase</emphasis></para>
+                            </entry>
+                            <entry>
+                                Objects used by KRAD are no longer required to implement any specific interface.  This
+                                was done to improve flexibility, as KRAD needs to deal with both internally persisted
+                                objects and externally loaded objects.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">DataObjectRelationship</emphasis></entry>
+                            <entry>
+                                This has been replaced by
+                                <emphasis role="bold">org.kuali.rice.krad.data.metadata.DataObjectRelationship</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">ExternalizableBusinessObject</emphasis></entry>
+                            <entry>
+                                This has not been implemented yet in KRAD Data.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">PersistableBusinessObject</emphasis></entry>
+                            <entry>
+                                Objects used by KRAD are no longer required to implement any specific interface.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">PersistableBusinessObjectBase</emphasis></entry>
+                            <entry>
+                                To take advantage of the automatic mappings to object ID and version number,
+                                <emphasis role="bold">org.kuali.rice.krad.bo.DataObjectBase</emphasis> is available for
+                                optional extension.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry>
+                                <para><emphasis role="bold">PersistableBusinessObjectExtension</emphasis></para>
+                                <para><emphasis role="bold">PersistableBusinessObjectExtensionBase</emphasis></para>
+                            </entry>
+                            <entry>
+                                This has been replaced by the KRAD annotation
+                                <emphasis role="bold">org.kuali.rice.krad.data.provider.annotation.ExtensionFor</emphasis>
+                                which maps the extension object type and the property name.  This allows for the same
+                                flexibility that regular business objects receive.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">TransientBusinessObjectBase</emphasis></entry>
+                            <entry>
+                                Objects used by KRAD are no longer required to implement any specific interface.
+                            </entry>
+                        </row>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.core.api.criteria</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">CriteriaLookupService</emphasis></entry>
+                            <entry>
+                                See <emphasis role="bold">org.kuali.rice.krad.criteria.CriteriaLookupDao</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.krad.service</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">BusinessObjectService</emphasis></entry>
+                            <entry>
+                                Use the <emphasis role="bold">DataObjectService</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">DataObjectMetaDataService</emphasis></entry>
+                            <entry>
+                                Use the methods in <emphasis role="bold">DataObjectWrapper</emphasis> obtained via
+                                <emphasis role="bold">DataObjectService.wrap(..)</emphasis> to access metadata from the
+                                repository.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">KeyValuesService</emphasis></entry>
+                            <entry>
+                                Use the <emphasis role="bold">DataObjectService</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry>
+                                <para><emphasis role="bold">PersistenceService</emphasis></para>
+                                <para><emphasis role="bold">PersistenceStructureService</emphasis></para>
+                            </entry>
+                            <entry>
+                                See <emphasis role="bold">PersistenceDao</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">SequenceAccessorService</emphasis></entry>
+                            <entry>
+                                See <emphasis role="bold">SequenceAccessorDao</emphasis>.
+                            </entry>
+                        </row>
+                        <row>
+                            <?dbhtml bgcolor="#ecffff" ?><?dbfo bgcolor="#ecffff" ?>
+                            <entry align="center" spanname="package">
+                                <emphasis role="bold">org.kuali.rice.krad.util</emphasis>
+                            </entry>
+                        </row>
+                        <row>
+                            <entry><emphasis role="bold">ObjectUtils</emphasis></entry>
+                            <entry>
+                                The methods dealing with business objects should no longer be used since objects used by
+                                KRAD are no longer required to implement any specific interface.
+                            </entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
+    </section>
   </section>
 </article>

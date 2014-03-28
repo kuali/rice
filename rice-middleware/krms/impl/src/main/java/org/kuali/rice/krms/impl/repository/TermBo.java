@@ -60,7 +60,7 @@ public class TermBo implements TermDefinitionContract, Serializable {
     protected Long versionNumber;
 
     // new-ing up an empty one allows the TermBo lookup to work on fields in the term specification:
-    @ManyToOne(targetEntity = TermSpecificationBo.class)
+    @ManyToOne(targetEntity = TermSpecificationBo.class, cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID", insertable = false, updatable = false)
     private TermSpecificationBo specification = new TermSpecificationBo();
 

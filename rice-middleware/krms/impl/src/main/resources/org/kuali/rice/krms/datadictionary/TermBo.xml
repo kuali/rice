@@ -291,9 +291,22 @@
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.namespace"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.name"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.type"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.namespace" p:label="Namespace">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
+        </bean>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.name" p:label="Name">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="128"/>
+          </property>
+        </bean>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="specification.type" p:label="Data Type">
+          <property name="control">
+            <bean parent="Uif-TextControl" p:size="128"/>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="resultFields">

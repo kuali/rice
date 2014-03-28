@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
- * Enum representing the types which can be auto-generated.
+ * BETA: Enum representing the types which can be auto-generated.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Beta
 public enum UifAutoCreateViewType {
 	/**
 	 * Convenience value which tells the system to generate all of the other items.

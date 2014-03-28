@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.krad.data.metadata;
 
+import com.google.common.annotations.Beta;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 
 
 /**
@@ -196,7 +197,7 @@ public interface DataObjectMetadata extends MetadataCommon {
 	boolean isSupportsOptimisticLocking();
 
     /**
-    * Gets auto create uif view types.
+    * BETA: Gets auto create uif view types.
     *
     * <p>
     * Returns collections of uif view types that should be auto created.
@@ -204,10 +205,11 @@ public interface DataObjectMetadata extends MetadataCommon {
     *
     * @return collection of uif view types.
     */
+    @Beta
 	Collection<UifAutoCreateViewType> getAutoCreateUifViewTypes();
 
     /**
-    * Determines where view type should be auto created.
+    * BETA: Determines where view type should be auto created.
     *
     * <p>
     * Determines whether the specified uif view type can be auto created.
@@ -215,5 +217,6 @@ public interface DataObjectMetadata extends MetadataCommon {
     *
     * @return true if this uif view type should be auto created.
     */
+    @Beta
 	boolean shouldAutoCreateUifViewOfType(UifAutoCreateViewType viewType);
 }

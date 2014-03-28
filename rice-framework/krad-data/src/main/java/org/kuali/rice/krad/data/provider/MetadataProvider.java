@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.krad.data.provider;
 
+import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+
 import java.util.Collection;
 import java.util.Map;
-
-import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 
 /**
  * Defines metadata SPI for data providers.
  *
  * <p>
- * These providers extract data from their sources (JPA Annotations, Custom krad-data anotations, Spring configuration,
- * Message Services) to provide comprehensive information to the application and UIF layers to help with presentation of
- * information.
+ * These providers extract metadata from their sources (JPA Annotations, Custom krad-data anotations, Spring
+ * configuration, Message Services) to provide this information for use by the application and framework layers.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

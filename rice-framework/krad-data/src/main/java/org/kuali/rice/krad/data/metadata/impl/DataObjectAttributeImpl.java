@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
+import com.google.common.annotations.Beta;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
@@ -330,6 +331,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
      * {@inheritDoc}
      */
 	@Override
+    @Beta
 	public String getValidCharactersConstraintBeanName() {
 		if (validCharactersConstraintBeanName != null) {
 			return validCharactersConstraintBeanName;
@@ -341,10 +343,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	}
 
     /**
-    * Sets valid character constraint bean name.
-    *
-    * @param validCharactersConstraintBeanName character constraint bean name.
-    */
+     * BETA: Sets valid character constraint bean name.
+     *
+     * @param validCharactersConstraintBeanName character constraint bean name.
+     */
+    @Beta
 	public void setValidCharactersConstraintBeanName(String validCharactersConstraintBeanName) {
 		this.validCharactersConstraintBeanName = validCharactersConstraintBeanName;
 	}
@@ -553,6 +556,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
      * {@inheritDoc}
      */
     @Override
+    @Beta
 	public Set<UifDisplayHint> getDisplayHints() {
 		if (displayHints != null) {
 			return displayHints;
@@ -564,10 +568,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 	}
 
     /**
-    * Sets UIF display hints.
+    * BETA: Sets UIF display hints.
     *
     * @param displayHints UIF display hints.
     */
+    @Beta
 	public void setDisplayHints(Set<UifDisplayHint> displayHints) {
 		this.displayHints = displayHints;
 	}

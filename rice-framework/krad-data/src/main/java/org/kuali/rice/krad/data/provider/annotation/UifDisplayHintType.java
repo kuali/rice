@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
- * Defines the type of the {@link UifDisplayHint}.
+ * BETA: Defines the type of the {@link UifDisplayHint}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Beta
 public enum UifDisplayHintType {
 	/**
 	 * Does nothing. Just a placeholder so defaults can be defined.

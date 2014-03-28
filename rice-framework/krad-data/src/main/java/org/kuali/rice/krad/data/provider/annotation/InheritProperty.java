@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import com.google.common.annotations.Beta;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -48,9 +50,10 @@ public @interface InheritProperty {
 	Label label() default @Label("");
 
     /**
-     * Gets the hints which can be passed through when auto-generating the input fields for an attribute.
+     * BETA: Gets the hints which can be passed through when auto-generating the input fields for an attribute.
      *
      * @return the hints which can be passed through when auto-generating the input fields for an attribute.
      */
+    @Beta
 	UifDisplayHints displayHints() default @UifDisplayHints(@UifDisplayHint(UifDisplayHintType.NONE));
 }

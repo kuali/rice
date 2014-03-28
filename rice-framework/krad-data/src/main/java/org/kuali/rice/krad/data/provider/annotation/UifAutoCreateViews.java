@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import com.google.common.annotations.Beta;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,13 +24,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that you want the krad-data module to auto-generate the listed types of KRAD views upon startup.
+ * BETA: Indicates that you want the krad-data module to auto-generate the listed types of KRAD views upon startup.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Beta
 public @interface UifAutoCreateViews {
 
     /**

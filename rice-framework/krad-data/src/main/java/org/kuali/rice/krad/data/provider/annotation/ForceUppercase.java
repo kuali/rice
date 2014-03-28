@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.kuali.rice.krad.data.provider.PersistenceProvider;
-
 /**
- * Indicates that this attribute should be forced to upper case by the UIF layers before being sent to the
- * {@link PersistenceProvider}.
+ * Indicates that this attribute should be forced to upper case before being sent to the {@link PersistenceProvider}.
  * 
  * <p>This is a *hint* only, visible to the system metadata. The KRAD Data module does not enforce it.</p>
  *

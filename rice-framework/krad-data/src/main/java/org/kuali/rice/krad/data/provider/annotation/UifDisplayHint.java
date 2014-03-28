@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.data.provider.annotation;
 
+import com.google.common.annotations.Beta;
+
 /**
- * Class representing the hints which can be passed through when auto-generating the input fields for an attribute.
+ * BETA: Class representing the hints which can be passed through when auto-generating the input fields for an attribute.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Beta
 public @interface UifDisplayHint {
 
     /**

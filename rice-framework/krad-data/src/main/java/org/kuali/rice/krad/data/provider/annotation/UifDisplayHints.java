@@ -21,16 +21,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.google.common.annotations.Beta;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 
 /**
- * Container object for multiple {@link UifDisplayHints} references.
+ * BETA: Container object for multiple {@link UifDisplayHints} references.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Beta
 public @interface UifDisplayHints {
 
     /**

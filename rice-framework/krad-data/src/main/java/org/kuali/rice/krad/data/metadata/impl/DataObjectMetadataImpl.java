@@ -15,14 +15,7 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.annotations.Beta;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
@@ -30,6 +23,14 @@ import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base implementation class for the metadata related to the data object as a whole.
@@ -710,6 +711,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
     * {@inheritDoc}
     */
 	@Override
+    @Beta
 	public boolean shouldAutoCreateUifViewOfType(UifAutoCreateViewType viewType) {
 		if (getAutoCreateUifViewTypes() == null) {
 			return false;
@@ -722,6 +724,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
     * {@inheritDoc}
     */
 	@Override
+    @Beta
 	public Collection<UifAutoCreateViewType> getAutoCreateUifViewTypes() {
 		if (autoCreateUifViewTypes != null) {
 			return autoCreateUifViewTypes;
@@ -733,10 +736,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	}
 
     /**
-    * Sets list of UIF view types that will be auto created.
+    * BETA: Sets list of UIF view types that will be auto created.
     *
     * @param autoCreateUifViewTypes UIF view types
     */
+    @Beta
 	public void setAutoCreateUifViewTypes(Collection<UifAutoCreateViewType> autoCreateUifViewTypes) {
 		this.autoCreateUifViewTypes = autoCreateUifViewTypes;
 	}

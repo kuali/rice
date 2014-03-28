@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.data.metadata;
 
-import java.beans.PropertyEditor;
-import java.util.Set;
-
+import com.google.common.annotations.Beta;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+
+import java.beans.PropertyEditor;
+import java.util.Set;
 
 /**
 * Attribute metadata
@@ -114,7 +115,7 @@ public interface DataObjectAttribute extends MetadataCommon {
 	boolean isRequired();
 
     /**
-    * Gets the bean name.
+    * BETA: Gets the bean name.
     *
     * <p>
     * The bean name (in the UIF data dictionary), which checks the entered value's characters for correctness.
@@ -122,6 +123,7 @@ public interface DataObjectAttribute extends MetadataCommon {
     *
     * @return bean name
     */
+    @Beta
 	String getValidCharactersConstraintBeanName();
 
     /**
@@ -240,7 +242,7 @@ public interface DataObjectAttribute extends MetadataCommon {
 	DataObjectAttribute getOriginalDataObjectAttribute();
 
     /**
-    * Gets the display hints.
+    * BETA: Gets the display hints.
     *
     * <p>
     * Returns a set of display hints which can be used by the UIF layer when displaying these fields.
@@ -248,5 +250,6 @@ public interface DataObjectAttribute extends MetadataCommon {
     *
     * @return display hints
     */
+    @Beta
 	Set<UifDisplayHint> getDisplayHints();
 }

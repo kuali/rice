@@ -362,7 +362,18 @@ public class CollectionGroupLineBuilder implements Serializable {
      * @return boolean true if the user can edit the line, false if not
      */
     protected boolean checkEditLineAuthorization() {
-        boolean canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
+        boolean canEditLine = false;
+
+        if  (lineBuilderContext.getCollectionGroup().getAddLineItems() == null) {
+            canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
+        } else {
+            for (Component component : lineBuilderContext.getCollectionGroup().getAddLineItems()) {
+                if (component.isReadOnly()) {
+                    canEditLine = true;
+                    break;
+                }
+            }
+        }
 
         if (canEditLine && !lineBuilderContext.isAddLine()) {
             canEditLine = checkEditLineAuthorizationAndPresentationLogic();

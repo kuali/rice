@@ -35,6 +35,7 @@
         <ref bean="Demo-TableLayoutDetails-Example4"/>
         <ref bean="Demo-TableLayoutDetails-Example5"/>
         <ref bean="Demo-TableLayoutDetails-Example6"/>
+        <ref bean="Demo-TableLayoutDetails-Example7"/>
       </list>
     </property>
   </bean>
@@ -481,4 +482,38 @@
     </property>
   </bean>
 
+  <bean id="Demo-TableLayoutDetails-Example7" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutDetails-Example7 start-->
+        <bean id="Demo-TableLayoutDetails-Section7" parent="Uif-TableCollectionSection">
+          <property name="header.render" value="false"/>
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="readOnly" value="true"/>
+          <property name="propertyName" value="collection2"/>
+          <property name="layoutManager.renderSequenceField" value="false"/>
+
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2 Read Only"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:readOnly="false"/>
+              <bean parent="Uif-InputField" p:propertyName="bfield" p:label="bfield Read Only">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="bfield" p:label="bfield" p:readOnly="false">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutDetails-Example7 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

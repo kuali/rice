@@ -490,7 +490,8 @@ public class AccountExtension { ...}
                     <para>Disables the shared cache.</para>
                 </listitem>
             </orderedlist>
-            <para><emphasis role="bold">Typical KradEclipsLinkEntityManagerFactoryBean Configuration</emphasis></para>
+            <para><emphasis role="bold">Typical KradEclipseLinkEntityManagerFactoryBean
+                    Configuration</emphasis></para>
             <programlisting>
 <![CDATA[
 <bean id="sampleApplicationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
@@ -526,7 +527,102 @@ public class AccountExtension { ...}
     p:packagesToScan-ref="sampleJpaPackagesToScan" p:managedClassNames-ref="managedClassNames" />
 ]]>
             </programlisting>
-
+            <para><emphasis role="bold">EclipseLink Bytecode Weaving Concerns</emphasis></para>
+            <para>In order to leverage a number of features provided by EclipseLink, bytecode
+                weaving of the JPA entities in the persistence unit must be performed. EclipseLink
+                uses this technique to enable lazy loading, change tracking, fetch groups, and
+                internal optimizations for JPA entites. Weaving is the technique that is used to
+                perform this manipulation of the bytecode of compiled Java classes.</para>
+            <para>You can read more about it in the <link
+                    xlink:href="http://www.eclipse.org/eclipselink/documentation/2.5/concepts/app_dev007.htm#CCHJEDFH"
+                    >EclipseLink documentation on Weaving</link>.</para>
+            <para>There are essentially four approaches that you can take:</para>
+            <para>
+                <orderedlist>
+                    <listitem>
+                        <para>No Weaving</para>
+                    </listitem>
+                    <listitem>
+                        <para>Load-Time Weaving</para>
+                    </listitem>
+                    <listitem>
+                        <para>Static Weaving</para>
+                    </listitem>
+                    <listitem>
+                        <para>Hybrid</para>
+                    </listitem>
+                </orderedlist>
+            </para>
+            <para>Except in the case of very simple applications, performing bytecode weaving is
+                recommended.</para>
+            <para>If you are building library code which contains JPA entities, then static weaving
+                is a good choice as it will allow you to distribute your JARs with "pre-weaved"
+                class files. EclipseLink provides an <link
+                    xlink:href="https://wiki.eclipse.org/EclipseLink/UserGuide/JPA/Advanced_JPA_Development/Performance/Weaving/Static_Weaving"
+                    >Ant task for performing this</link>. If you are using Maven instead there is a
+                plugin you can use. A typical configuration of the plugin would look like
+                this:</para>
+            <para>
+                <programlisting><![CDATA[
+<plugin>
+  <groupId>au.com.alderaan</groupId>
+  <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+  <version>1.0.4</version>
+    <executions>
+      <execution>
+        <goals>
+          <goal>weave</goal>
+        </goals>
+        <phase>process-classes</phase>
+        <configuration>
+          <logLevel>FINER</logLevel>
+          <persistenceXMLLocation>META-INF/persistence-weaving.xml</persistenceXMLLocation>
+        </configuration>
+      </execution>
+    </executions>
+  </version>
+</plugin>
+]]></programlisting>
+            </para>
+            <para>Note the reference to a "persistence-weaving.xml" file. Static weaving <emphasis
+                    role="bold">requires</emphasis> a JPA-standard persistence.xml file in order to
+                identify the entities, mapped super classes, and embedded classes which need to be
+                bytecode weaved. If you are using the KradEclipseLinkEntityManagerFactoryBean, then
+                it is assembling the persistence unit for you programatically and there is no
+                persistence.xml file. We can work around this by defining a separate
+                persistence-weaving.xml file that simply contains a list of the JPA entities, mapped
+                superclasses, and embeddables in our persistence unit. A typical file might look
+                like this:</para>
+            <para>
+                <programlisting>&lt;persistence ...>
+  &lt;persistence-unit name="...">
+    &lt;class>my.package.JpaEntityOne&lt;/class>
+    &lt;class>my.package.JpaEntityTwo&lt;/class>
+    ...
+  &lt;/persistence-unit>
+&lt;/persistence></programlisting>
+            </para>
+            <para>If your JPA entity code will only be consumed internally by your application, then
+                load-time weaving is easy to configure and likely the best choice. It is recommend
+                to do this using the capabilities that the Spring framework provides for load-time
+                weaving. See the <link
+                    xlink:href="http://docs.spring.io/spring/docs/3.2.8.RELEASE/spring-framework-reference/htmlsingle/#context-load-time-weaver"
+                    >Spring documentation on registering a LoadTimeWeaver</link>.</para>
+            <para>For the "hybrid" approach, you simply configure both static and load-time weaving.
+                They can work in conjunction with each other. This is primarily useful if you are
+                developing in an IDE environment. Whenever you change an entity class in the IDE it
+                will recompile that class and the newly compiled version will be missing any
+                bytecode weaving until either static weaving is performed (by executing the Ant task
+                or Maven goal) or a load time weaver is used when the class is loaded. In the hybrid
+                approach, the load-time weaver simply acts as a backup for those situations where
+                the statically weaved bytecode gets blown away by an incremental IDE compile.</para>
+            <para>This hybrid approach is actually the technique that Kuali Rice uses internally
+                since it distributes libraries containing statically-weaved JPA entities. If you are
+                distributing libraries for usage by others and would like to use the hybrid
+                approach, you might also consider looking at the
+                org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver class to
+                avoid requiring any clients of your libraries to also have to configure load-time
+                weaving just to use your library.</para>
         </section>
         <section>
             <title>Persistence Providers</title>

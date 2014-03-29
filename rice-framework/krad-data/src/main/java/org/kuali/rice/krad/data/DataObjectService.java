@@ -22,7 +22,20 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 /**
- * KRAD Data Layer API containing basic CRUD operations and access to a metadata repository.
+ * The primary API for interacting with the data layer.
+ *
+ * <p>Contains basic data access and query operations for supported data objects. Also provides access to the
+ * {@link MetadataRepository} which contains information about the structure and relationships between data objects.</p>
+ *
+ * <p>This service supports the ability to create a {@link DataObjectWrapper} for a given data object. This
+ * wrapper allows for accessing and manipulating properties within the data object as well as performing various
+ * metadata-aware operations on the data object.</p>
+ *
+ * <p>This service is meant to act as a facade to specific persistence and query-capable solutions and data stores.
+ * Implementations of this service may provide transactional capabilities where it makes sense to do so (and depending
+ * on the transactional support of the backend persistence technology). The documentation for the specific
+ * implementation of DataObjectService that is being used should be consulted for specifics on transaction
+ * semantics.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

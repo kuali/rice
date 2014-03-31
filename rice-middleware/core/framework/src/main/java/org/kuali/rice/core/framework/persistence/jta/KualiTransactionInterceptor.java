@@ -69,7 +69,10 @@ public class KualiTransactionInterceptor extends TransactionInterceptor {
      */
 	@Override
     protected void completeTransactionAfterThrowing(TransactionInfo txInfo, Throwable ex) {
-		LOG.fatal( "Exception caught by Transaction Interceptor, this will cause a rollback at the end of the transaction.", ex );
+        if (txInfo.getTransactionAttribute().rollbackOn(ex)) {
+            LOG.fatal("Exception caught by Transaction Interceptor, this will cause a rollback at the end of the transaction.", ex);
+        }
+
         // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
         if (logger.isDebugEnabled()) {
             if (txInfo != null) {

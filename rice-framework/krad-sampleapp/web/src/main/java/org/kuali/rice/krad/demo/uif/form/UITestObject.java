@@ -235,5 +235,35 @@ public class UITestObject implements Serializable {
         this.innerObject = innerObject;
     }
 
+    public void setInputField1(String field) {
+        field1 = field;
+    }
+
+    public String getInputField1() {
+        return field1;
+    }
+
+    public void setInputField2(String field) {
+        field2 = field;
+    }
+
+    public String getInputField2() {
+        return field2;
+    }
+    public void setInputField3(String field) {
+        field3 = field;
+    }
+
+    public String getInputField3() {
+        return field3;
+    }
+    public void setInputField4(String field) {
+        field4 = field;
+    }
+
+    public String getInputField4() {
+        return field4;
+    }
+
 }
 

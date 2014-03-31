@@ -29,7 +29,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -668,8 +667,7 @@ public class LookupUtils {
         }
 
         List<? extends Object> lookupResults = (List<? extends Object>) form.getLookupResults();
-        Map<String, String> fieldConversions = form.getFieldConversions();
-        List<String> fromFieldNames = new ArrayList<String>(fieldConversions.keySet());
+        List<String> fromFieldNames = form.getMultiValueReturnFields();
 
         Set<String> selectedLines = form.getSelectedCollectionLines().get(UifPropertyPaths.LOOKUP_RESULTS);
         Set<String> selectedLookupResultsCache = form.getSelectedLookupResultsCache();

@@ -810,11 +810,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         Control selectControl = selectField.getControl();
         if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
             // get value for each field conversion from line and add to lineIdentifier
-            Map<String, String> fieldConversions = lookupForm.getFieldConversions();
+            List<String> fromFieldNames = new ArrayList<String>(lookupForm.getFieldConversions().keySet());
+            // Per KULRICE-12125 we need to remove secure field names from this list.
+            fromFieldNames = new ArrayList<String>(
+                    KRADUtils.getPropertyKeyValuesFromDataObject(fromFieldNames, lineDataObject).keySet());
 
-            List<String> fromFieldNames = new ArrayList<String>(fieldConversions.keySet());
             Collections.sort(fromFieldNames);
-
+            lookupForm.setMultiValueReturnFields(fromFieldNames);
             String lineIdentifier = "";
             for (String fromFieldName : fromFieldNames) {
                 Object fromFieldValue = ObjectPropertyUtils.getPropertyValue(lineDataObject, fromFieldName);

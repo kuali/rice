@@ -17,6 +17,7 @@ package org.kuali.rice.krad.lookup;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -280,9 +281,19 @@ public class LookupController extends UifControllerBase {
 
         LookupUtils.refreshLookupResultSelections((LookupForm) lookupForm);
 
+        // build string of select line fields
+        String multiValueReturnFieldsParam = "";
+        List<String> multiValueReturnFields = lookupForm.getMultiValueReturnFields();
+        Collections.sort(multiValueReturnFields);
+        if (multiValueReturnFields != null && !multiValueReturnFields.isEmpty()) {
+            for (String field : multiValueReturnFields) {
+                multiValueReturnFieldsParam += field + ",";
+            }
+            multiValueReturnFieldsParam = StringUtils.removeEnd(multiValueReturnFieldsParam, ",");
+        }
+
         // build string of select line identifiers
         String selectedLineValues = "";
-
         Set<String> selectedLines = lookupForm.getSelectedCollectionLines().get(UifPropertyPaths.LOOKUP_RESULTS);
         if (selectedLines != null) {
             for (String selectedLine : selectedLines) {
@@ -292,7 +303,6 @@ public class LookupController extends UifControllerBase {
         }
 
         Properties parameters = new Properties();
-
         parameters.put(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
         parameters.putAll(lookupForm.getInitialRequestParameters());
 
@@ -300,6 +310,10 @@ public class LookupController extends UifControllerBase {
 
         boolean lookupCameFromDifferentServer = KRADUtils.areDifferentDomains(lookupForm.getReturnLocation(),
                 lookupForm.getRequestUrl());
+
+        if (StringUtils.isNotBlank(multiValueReturnFieldsParam)) {
+            redirectAttributes.addAttribute(UifParameters.MULIT_VALUE_RETURN_FILEDS, multiValueReturnFieldsParam);
+        }
 
         if (redirectUrl.length() > RiceConstants.MAXIMUM_URL_LENGTH && !lookupCameFromDifferentServer) {
             redirectAttributes.addFlashAttribute(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);

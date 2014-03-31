@@ -212,10 +212,11 @@ public interface ViewHelperService {
      * @param model object containing the view data
      * @param collectionId the id of the collection being added to
      * @param collectionPath the path to the collection being modified
+     * @param multiValueReturnFields String containing the selected line field names
      * @param lookupResultValues String containing the selected line values
      */
     void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
-            String lookupResultValues);
+            String multiValueReturnFields, String lookupResultValues);
 
     /**
      * Invoked by the <code>Inquiry</code> widget to build the inquiry link

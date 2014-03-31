@@ -371,7 +371,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @SuppressWarnings("unchecked")
     public void processMultipleValueLookupResults(ViewModel model, String collectionId, String collectionPath,
-            String lookupResultValues) {
+            String multiValueReturnFields, String lookupResultValues) {
         // if no line values returned, no population is needed
         if (StringUtils.isBlank(lookupResultValues) || !(model instanceof ViewModel)) {
             return;
@@ -394,10 +394,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             ObjectPropertyUtils.setPropertyValue(model, collectionPath, collection);
         }
 
+        // get the field conversions
         Map<String, String> fieldConversions =
                 (Map<String, String>) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                         UifConstants.PostMetadata.COLL_LOOKUP_FIELD_CONVERSIONS);
-        List<String> toFieldNamesColl = new ArrayList<String>(fieldConversions.values());
+
+        // filter the field conversions by what was returned from the multi value lookup return fields
+        Map <String, String> returnedFieldConversions = filterByReturnedFieldConversions(multiValueReturnFields,
+                fieldConversions);
+
+        List<String> toFieldNamesColl = new ArrayList<String>(returnedFieldConversions.values());
         Collections.sort(toFieldNamesColl);
         String[] toFieldNames = new String[toFieldNamesColl.size()];
         toFieldNamesColl.toArray(toFieldNames);
@@ -519,6 +525,33 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         return isValid;
+    }
+
+    /**
+     * Filters the field conversions by the multi value return fields
+     * @param multiValueReturnFields the return fields to filter by, as a comma separated string
+     * @param fieldConversions the map of field conversions to filter
+     * @return a {@link java.util.Map} containing the filtered field conversions
+     */
+    private Map<String, String> filterByReturnedFieldConversions(String multiValueReturnFields,
+            Map<String, String> fieldConversions) {
+
+        Map <String, String> returnedFieldConversions = new HashMap<String, String>();
+        returnedFieldConversions.putAll(fieldConversions);
+
+        // parse the multi value return fields string
+        String[] returnedFieldsStrArr = StringUtils.split(multiValueReturnFields, ",");
+        // iterate over the returned fields and get the conversion values.
+        if (returnedFieldsStrArr != null && returnedFieldsStrArr.length > 0) {
+            returnedFieldConversions.clear();
+            for (String fieldConversion : returnedFieldsStrArr) {
+                if (fieldConversions.containsKey(fieldConversion)) {
+                    returnedFieldConversions.put(fieldConversion, fieldConversions.get(fieldConversion));
+                }
+            }
+        }
+
+        return returnedFieldConversions;
     }
 
     /**

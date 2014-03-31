@@ -23,8 +23,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +52,7 @@ public class LookupForm extends UifFormBase {
     private String quickfinderId;
 
     private Map<String, String> fieldConversions;
+    private List<String> multiValueReturnFields;
 
     private Map<String, String> lookupCriteria;
 
@@ -63,6 +66,7 @@ public class LookupForm extends UifFormBase {
 
         lookupCriteria = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
+        multiValueReturnFields = new ArrayList<String>();
     }
 
     /**
@@ -300,6 +304,23 @@ public class LookupForm extends UifFormBase {
      */
     public void setFieldConversions(Map<String, String> fieldConversions) {
         this.fieldConversions = fieldConversions;
+    }
+
+    /**
+     * Holds the column names for the multi-value lookup selected values
+     *
+     * Note: as of KULRICE-12125 secure field names will not be stored in this parameter
+     * @return a list of column names for the multi-value lookup
+     */
+    public List<String> getMultiValueReturnFields() {
+        return multiValueReturnFields;
+    }
+
+    /**
+     * @see LookupForm#getMultiValueReturnFields()
+     */
+    public void setMultiValueReturnFields(List<String> multiValueReturnFields) {
+        this.multiValueReturnFields = multiValueReturnFields;
     }
 
     /**

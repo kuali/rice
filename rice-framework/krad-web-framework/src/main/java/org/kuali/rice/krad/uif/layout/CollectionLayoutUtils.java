@@ -49,8 +49,6 @@ public class CollectionLayoutUtils {
                 selectPropertyName = StringUtils.removeStart(selectPropertyName, UifConstants.NO_BIND_ADJUST_PREFIX);
                 ((DataBinding) selectField).getBindingInfo().setBindingName(selectPropertyName);
                 ((DataBinding) selectField).getBindingInfo().setBindToForm(true);
-
-                setControlValueToLineIdentifier(selectField, line);
             } else {
                 ((DataBinding) selectField).getBindingInfo().setBindingName(selectPropertyName);
                 ((DataBinding) selectField).getBindingInfo().setBindByNamePrefix(lineBindingPath);
@@ -63,9 +61,9 @@ public class CollectionLayoutUtils {
 
             ((DataBinding) selectField).getBindingInfo().setBindingName(selectBindingPath);
             ((DataBinding) selectField).getBindingInfo().setBindToForm(true);
-
-            setControlValueToLineIdentifier(selectField, line);
         }
+
+        setControlValueToLineIdentifier(selectField, line);
     }
 
     protected static void setControlValueToLineIdentifier(Field selectField, Object line) {

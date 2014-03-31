@@ -145,6 +145,18 @@ import java.util.Date;
      java.sql.Date convertToSqlDate(String dateString) throws ParseException;
 
     /**
+     * Converts the given String into a java.sql.Date instance for the next day
+     *
+     * @param dateString
+     * @return java.sql.Date
+     * @throws IllegalArgumentException if the given string is null or blank
+     * @throws ParseException if the string cannot be converted
+     *
+     * @since 2.4
+     */
+     java.sql.Date convertToSqlDateUpperBound(String dateString) throws ParseException;
+
+    /**
      * Converts the given String into a java.sql.Time instance
      *
      * @param timeString

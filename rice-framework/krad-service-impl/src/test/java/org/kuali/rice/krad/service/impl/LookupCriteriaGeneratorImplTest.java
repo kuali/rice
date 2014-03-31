@@ -15,14 +15,23 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.AndPredicate;
+import org.kuali.rice.core.api.criteria.GreaterThanOrEqualPredicate;
+import org.kuali.rice.core.api.criteria.GreaterThanPredicate;
+import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
+import org.kuali.rice.core.api.criteria.LessThanPredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
 import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
@@ -35,7 +44,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
+import org.springframework.format.datetime.joda.DateTimeFormatterFactory;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -57,8 +68,11 @@ public class LookupCriteriaGeneratorImplTest {
     @Mock DataDictionaryService dataDictionaryService;
     @Mock DataObjectService dataObjectService;
     @Mock ReferenceLinker referenceLinker;
+    @Mock DateTimeService dateTimeService;
 
     @InjectMocks private LookupCriteriaGeneratorImpl generator = new LookupCriteriaGeneratorImpl();
+
+    private static final DateTimeFormatter formatter = new DateTimeFormatterFactory("mm/dd/yyyy").createDateTimeFormatter();
 
     @Before
     public void setUp() throws Exception {
@@ -70,7 +84,20 @@ public class LookupCriteriaGeneratorImplTest {
                         mock(DataObjectMetadata.class), dataObjectService, referenceLinker);
             }
         });
-
+        when(dateTimeService.convertToSqlDate(any(String.class))).thenAnswer(new Answer<Date>() {
+            @Override
+            public Date answer(InvocationOnMock invocation) throws Throwable {
+                String date = (String) invocation.getArguments()[0];
+                return new Date(LocalDate.parse(date, formatter).toDateTimeAtStartOfDay().getMillis());
+            }
+        });
+        when(dateTimeService.convertToSqlDateUpperBound(any(String.class))).thenAnswer(new Answer<Date>() {
+            @Override
+            public Date answer(InvocationOnMock invocation) throws Throwable {
+                String date = (String) invocation.getArguments()[0];
+                return new Date(LocalDate.parse(date, formatter).plusDays(1).toDateTimeAtStartOfDay().getMillis());
+            }
+        });
     }
 
     @Test
@@ -144,11 +171,155 @@ public class LookupCriteriaGeneratorImplTest {
 
     }
 
+    /**
+     * Criteria for BETWEEN dates should range from the start of the day on the lower date to the end of the day on the
+     * upper date.
+     *
+     * <p>
+     * Since the end of the day is defined as the moment before the next day, then the range that should be checked is
+     * [1/1/2010,1/2/2010), or in SQL, approximately >=2010-01-01 00:00:00 AND <=2010-01-03 00:00:00.
+     * </p>
+     */
+    @Test
+    public void testGenerateCriteria_BetweenDate() {
+        String lowerDateString = "1/1/2010";
+        DateTime lowerDate = DateTime.parse(lowerDateString, formatter).withTimeAtStartOfDay();
+        String upperDateString = "1/2/2010";
+        DateTime upperDate = DateTime.parse(upperDateString, formatter).withTimeAtStartOfDay();
+
+        Map<String, String> mapCriteria = new HashMap<String, String>();
+        mapCriteria.put("prop4", lowerDateString + SearchOperator.BETWEEN.op() + upperDateString);
+
+        QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
+        assertNotNull(qbcBuilder);
+        QueryByCriteria qbc = qbcBuilder.build();
+
+        Predicate and = qbc.getPredicate();
+        assertTrue(and instanceof AndPredicate);
+        Set<Predicate> predicates = ((AndPredicate) and).getPredicates();
+
+        assertEquals(2, predicates.size());
+
+        boolean foundProp4Lower = false;
+        boolean foundProp4Upper = false;
+        for (Predicate predicate : predicates) {
+            if (predicate instanceof GreaterThanOrEqualPredicate) {
+                foundProp4Lower = true;
+                GreaterThanOrEqualPredicate greaterThanOrEqual = (GreaterThanOrEqualPredicate) predicate;
+                assertEquals(greaterThanOrEqual.getValue().getValue(), lowerDate);
+            } else if (predicate instanceof LessThanOrEqualPredicate) {
+                foundProp4Upper = true;
+                LessThanOrEqualPredicate lessThanOrEqual = (LessThanOrEqualPredicate) predicate;
+                assertEquals(lessThanOrEqual.getValue().getValue(), upperDate.plusDays(1));
+            }
+        }
+        assertTrue(foundProp4Lower);
+        assertTrue(foundProp4Upper);
+    }
+
+    /**
+     * Criteria for GREATER THAN OR EQUAL dates should be equal to or after the start of the day on the date.
+     *
+     * <p>
+     * The value that should be checked is [1/1/2010,END_OF_TIME), or in SQL, >=2010-01-01 00:00:00.
+     * </p>
+     */
+    @Test
+    public void testGenerateCriteria_GreaterThanEqualDate() {
+        String dateString = "1/1/2010";
+        DateTime date = DateTime.parse(dateString, formatter).withTimeAtStartOfDay();
+
+        Map<String, String> mapCriteria = new HashMap<String, String>();
+        mapCriteria.put("prop4", SearchOperator.GREATER_THAN_EQUAL.op() + dateString);
+
+        QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
+        assertNotNull(qbcBuilder);
+        QueryByCriteria qbc = qbcBuilder.build();
+
+        Predicate greaterThanEqual = qbc.getPredicate();
+        assertTrue(greaterThanEqual instanceof GreaterThanOrEqualPredicate);
+        assertEquals(((GreaterThanOrEqualPredicate) greaterThanEqual).getValue().getValue(), date);
+    }
+
+    /**
+     * Criteria for LESS THAN OR EQUAL dates should be equal to or before the end of the day on the date.
+     *
+     * <p>
+     * Since the end of the day is defined as the moment before the next day, then the value that should be
+     * checked is (BEGINNING_OF_TIME,1/2/2010), or in SQL, approximately <=2010-01-03 00:00:00.
+     * </p>
+     */
+    @Test
+    public void testGenerateCriteria_LessThanEqualDate() {
+        String dateString = "1/2/2010";
+        DateTime date = DateTime.parse(dateString, formatter).withTimeAtStartOfDay();
+
+        Map<String, String> mapCriteria = new HashMap<String, String>();
+        mapCriteria.put("prop4", SearchOperator.LESS_THAN_EQUAL.op() + dateString);
+
+        QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
+        assertNotNull(qbcBuilder);
+        QueryByCriteria qbc = qbcBuilder.build();
+
+        Predicate lessThanEqual = qbc.getPredicate();
+        assertTrue(lessThanEqual instanceof LessThanOrEqualPredicate);
+        assertEquals(((LessThanOrEqualPredicate) lessThanEqual).getValue().getValue(), date.plusDays(1));
+    }
+
+    /**
+     * Criteria for GREATER THAN dates should be after the start of the day on the date.
+     *
+     * <p>
+     * The value that should be checked is >2010-01-01 00:00:00.
+     * </p>
+     */
+    @Test
+    public void testGenerateCriteria_GreaterThanDate() {
+        String dateString = "1/1/2010";
+        DateTime date = DateTime.parse(dateString, formatter).withTimeAtStartOfDay();
+
+        Map<String, String> mapCriteria = new HashMap<String, String>();
+        mapCriteria.put("prop4", SearchOperator.GREATER_THAN.op() + dateString);
+
+        QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
+        assertNotNull(qbcBuilder);
+        QueryByCriteria qbc = qbcBuilder.build();
+
+        Predicate greaterThan = qbc.getPredicate();
+        assertTrue(greaterThan instanceof GreaterThanPredicate);
+        assertEquals(((GreaterThanPredicate) greaterThan).getValue().getValue(), date);
+    }
+
+    /**
+     * Criteria for LESS THAN dates should be before the start of the day on the date.
+     *
+     * <p>
+     * The value that should be checked is <2010-02-01 00:00:00.
+     * </p>
+     */
+    @Test
+    public void testGenerateCriteria_LessThanDate() {
+        String dateString = "1/2/2010";
+        DateTime date = DateTime.parse(dateString, formatter).withTimeAtStartOfDay();
+
+        Map<String, String> mapCriteria = new HashMap<String, String>();
+        mapCriteria.put("prop4", SearchOperator.LESS_THAN.op() + dateString);
+
+        QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
+        assertNotNull(qbcBuilder);
+        QueryByCriteria qbc = qbcBuilder.build();
+
+        Predicate lessThan = qbc.getPredicate();
+        assertTrue(lessThan instanceof LessThanPredicate);
+        assertEquals(((LessThanPredicate) lessThan).getValue().getValue(), date);
+    }
+
     public static final class TestClass {
 
         private String prop1;
         private String prop2;
         private String prop3;
+        private Date prop4;
 
         public String getProp1() {
             return prop1;
@@ -173,6 +344,15 @@ public class LookupCriteriaGeneratorImplTest {
         public void setProp3(String prop3) {
             this.prop3 = prop3;
         }
+
+        public Date getProp4() {
+            return prop4;
+        }
+
+        public void setProp4(Date prop4) {
+            this.prop4 = prop4;
+        }
+
     }
 
     private static final class DataObjectWrapperImpl<T> extends DataObjectWrapperBase<T> {

@@ -17,6 +17,7 @@ package org.kuali.rice.core.impl.datetime;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -175,6 +176,16 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 		Date date = parseAgainstFormatArray(dateString, stringToDateFormats);
 		return new java.sql.Date(date.getTime());
 	}
+
+    /**
+     * @see org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlDateUpperBound(java.lang.String)
+     */
+    public java.sql.Date convertToSqlDateUpperBound(String dateString)
+            throws ParseException {
+        java.sql.Date date = convertToSqlDate(dateString);
+        DateTime dateUpperBound = new DateTime(date).plusDays(1);
+        return new java.sql.Date(dateUpperBound.getMillis());
+    }
 
     /**
      * @see org.kuali.rice.core.api.datetime.DateTimeService#convertToSqlTime(java.lang.String)

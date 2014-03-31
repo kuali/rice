@@ -497,7 +497,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
                 String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
-                addBetween(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(rangeValues[0])), parseDate(LookupUtils.scrubQueryCharacters(rangeValues[1])));
+                addBetween(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(rangeValues[0])), parseDateUpperBound(LookupUtils.scrubQueryCharacters(rangeValues[1])));
             } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
@@ -505,7 +505,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
-                addLessThanOrEqual(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(propertyValue)));
+                addLessThanOrEqual(criteria, propertyName, parseDateUpperBound(LookupUtils.scrubQueryCharacters(propertyValue)));
             } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
@@ -724,6 +724,11 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     protected java.sql.Date parseDate(String dateString) throws ParseException {
         dateString = dateString.trim();
         return dateTimeService.convertToSqlDate(dateString);
+    }
+
+    protected java.sql.Date parseDateUpperBound(String dateString) throws ParseException {
+        dateString = dateString.trim();
+        return dateTimeService.convertToSqlDateUpperBound(dateString);
     }
 
     protected List<String> listPrimaryKeyFieldNames(Class<?> type) {

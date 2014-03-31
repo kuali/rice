@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.5.0-M1-SNAPSHOT</version>
+  <version>2.5.0-M1</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -46,7 +46,7 @@
   </ciManagement>
 
   <properties>
-    <project.scm.url>https://svn.kuali.org/repos/rice/sandbox/branches/rice-2.4-perf</project.scm.url>
+    <project.scm.url>https://svn.kuali.org/repos/rice/tags/rice-2.5.0-M1</project.scm.url>
   
     <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>

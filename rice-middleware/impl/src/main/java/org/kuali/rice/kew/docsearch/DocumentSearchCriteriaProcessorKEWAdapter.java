@@ -128,6 +128,10 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
      * Fields that are only applicable if application document status is in use (assumes documenttype dependency)
      */
     private static final Collection<String> DOCSTATUS_DEPENDENT_FIELDS = Arrays.asList(new String[] { APPLICATION_DOCUMENT_STATUS, DATE_APP_DOC_STATUS_CHANGED_FROM, DATE_APP_DOC_STATUS_CHANGED });
+    /**
+     * Fields that are only applicable if document contains route nodes
+     */
+    private static final Collection<String> ROUTE_NODE_DEPENDENT_FIELDS = Arrays.asList(new String[] { ROUTE_NODE_NAME, ROUTE_NODE_LOGIC });
 
 
     @Override
@@ -177,6 +181,13 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             if (DOCSTATUS_DEPENDENT_FIELDS.contains(fieldName) && !documentType.isAppDocStatusInUse()) {
                 continue;
             }
+
+            // assuming ROUTE_NODE_DEPENDENT_FIELDS are also documentType-dependent, this block is only executed when documentType is present
+            if (ROUTE_NODE_DEPENDENT_FIELDS.contains(fieldName) &&
+                    getRouteNodesByDocumentType(documentType, false).size() == 0) {
+                continue;
+            }
+
             if (fieldName.equals(DOCUMENT_ATTRIBUTE_FIELD_MARKER)) {
                 rowsToLoad.addAll(getDocumentAttributeRows(documentType));
                 continue;
@@ -319,12 +330,37 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         }
     }
 
-    protected void applyRouteNodeNameCustomizations(Field field, DocumentType documentType) {
+    /**
+     * Return route nodes based on the document
+     *
+     * @param documentType
+     * @return List
+     */
+    protected List<RouteNode> getRouteNodesByDocumentType(DocumentType documentType, boolean includeBlankNodes) {
         List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+
+        // Blank check can be removed if no longer included in RouteNodeService getFlattenedNodes
+        if(nodes.size() > 0 && !includeBlankNodes) {
+            List<RouteNode> namedNodes = new ArrayList<RouteNode>();
+            for (RouteNode node : nodes) {
+                if (StringUtils.isNotBlank(node.getName())) {
+                    namedNodes.add(node);
+                }
+            }
+            return namedNodes;
+        }
+
+        return nodes;
+    }
+
+
+    protected void applyRouteNodeNameCustomizations(Field field, DocumentType documentType) {
+        List<RouteNode> nodes = getRouteNodesByDocumentType(documentType, false);
         List<KeyValue> values = new ArrayList<KeyValue>(nodes.size());
         for (RouteNode node: nodes) {
             values.add(new ConcreteKeyValue(node.getName(), node.getName()));
         }
+
         field.setFieldValidValues(values);
     }
 

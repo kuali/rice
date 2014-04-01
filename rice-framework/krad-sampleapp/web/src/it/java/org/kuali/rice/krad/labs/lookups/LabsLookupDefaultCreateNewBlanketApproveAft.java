@@ -38,6 +38,11 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     }
 
     @Override
+    public String getUserName() {
+        return "admin"; // must have blanket approve rights
+    }
+
+    @Override
     protected void navigate() throws Exception {
         navigateToLookup("Lookup Default");
     }

@@ -27,6 +27,7 @@ public final class KimConstants {
 	
 	public static final String NAMESPACE_CODE = "KR-IDM";
 	public static final String KIM_TYPE_DEFAULT_NAMESPACE = "KUALI";
+	public static final String KIM_TYPE_RICE_NAMESPACE = "RICE";
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";
 	public static final String KIM_GROUP_DEFAULT_NAMESPACE_CODE = "KUALI";
 	public static final String KIM_GROUP_WORKFLOW_NAMESPACE_CODE = "KR-WKFLW";
@@ -341,6 +342,7 @@ public final class KimConstants {
         public static final String ROLE_NAME = "roleName";
         public static final String PERMISSION_NAME = "permissionName";
         public static final String RESPONSIBILITY_NAME = "responsibilityName";
+        public static final String ATTRIBUTE_NAME = "attributeName";
         public static final String GROUP_NAME = "groupName";
         public static final String REQUIRED = "required";
         public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL = "actionDetailsAtRoleMemberLevel";

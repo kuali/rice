@@ -28,10 +28,16 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -42,9 +48,11 @@ import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
@@ -56,6 +64,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 abstract class RoleServiceBase {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
@@ -63,6 +72,8 @@ abstract class RoleServiceBase {
     private BusinessObjectService businessObjectService;
     private LookupService lookupService;
     private IdentityService identityService;
+    private NamespaceService namespaceService;
+    private KimTypeInfoService kimTypeInfoService;
     private GroupService groupService;
     private ResponsibilityInternalService responsibilityInternalService;
     private RoleDao roleDao;
@@ -607,20 +618,118 @@ abstract class RoleServiceBase {
     }
 
     // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
-    // TODO: KULRICE-12100: Most of the time there should be only one result for the kimTypeId and attributeName, but it is not guaranteed, which it should be.
+    /*
+     * search by attribute name, if none return null, if there is only one, return. If there are multiple, then
+     * search by kimType: if found return else 
+     *     search by appId of kimType : if found return else
+     *          search by rice app id : if found return else
+     *              search by kuali app id : if found return else
+     *                  return null.
+     */
     protected String getKimAttributeId(String kimTypeId, String attributeName) {
-        KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
-
-        if (type != null) {
-            for (KimTypeAttribute attribute : type.getAttributeDefinitions()) {
+        Collection<KimAttributeBo> attributeData = getAttributeByName(attributeName);
+        String kimAttributeId = null;
+        
+        if (CollectionUtils.isNotEmpty(attributeData)) {
+            if (CollectionUtils.size(attributeData) == 1) {
+                kimAttributeId = attributeData.iterator().next().getId();
+            } else {
+                kimAttributeId = getCorrectAttributeId(kimTypeId, attributeName, attributeData);
+            }
+        }
+        
+        return kimAttributeId;
+    }
+    
+    /*
+     * Searches the KimAttributeBo for the attribute by name
+     */
+    protected Collection<KimAttributeBo> getAttributeByName(String attributeName) {
+        Map<String, Object> critieria = new HashMap<String, Object>(1);
+        critieria.put(KimConstants.AttributeConstants.ATTRIBUTE_NAME, attributeName);
+        Collection<KimAttributeBo> attributeData = getBusinessObjectService().findMatching(KimAttributeBo.class, critieria);
+        
+        return attributeData;
+    }
+    
+    /*
+     * Attempts to get the right attribute for the kimType. If it fails, then tries by namespace.
+     */
+    protected String getCorrectAttributeId(String kimTypeId, String attributeName, Collection<KimAttributeBo> attributeData) {
+        KimType kimType = getKimTypeInfoService().getKimType(kimTypeId);
+        String attribute = getAttributeFromKimType(kimType, attributeName);
+        
+        return ObjectUtils.isNotNull(attribute) ? attribute : getAttributeFromNamespace(kimType, attributeName, attributeData);
+    }
+    
+    protected String getAttributeFromKimType(KimType kimType, String attributeName) {
+        if (kimType != null) {
+            for (KimTypeAttribute attribute : kimType.getAttributeDefinitions()) {
                 if (attribute.getKimAttribute() != null
                         && StringUtils.equals(attributeName, attribute.getKimAttribute().getAttributeName())) {
                     return attribute.getKimAttribute().getId();
                 }
             }
         }
-
+        
         return null;
+    }
+    
+    /*
+     * Gets the attribute based on the app namespace, if it cannot find then tries Rice namespace and then Kuali.
+     */
+    protected String getAttributeFromNamespace(KimType kimType, String attributeName, Collection<KimAttributeBo> attributes) {
+        String appId = getAppIdFromNamespace(kimType.getNamespaceCode());
+        String attributeId = getAttributeFromAppId(attributes, appId);
+
+        if (ObjectUtils.isNull(attributeId)) {
+            attributeId = getAttributeFromAppId(attributes, KimConstants.KIM_TYPE_RICE_NAMESPACE);
+            if (ObjectUtils.isNull(attributeId)) {
+                attributeId = getAttributeFromAppId(attributes, KimConstants.KIM_TYPE_DEFAULT_NAMESPACE);
+            }
+        }
+        
+        return attributeId;
+    }
+    
+    protected String getAppIdFromNamespace(String namespaceCode) {
+        Namespace appNamespace = getNamespaceService().getNamespace(namespaceCode);
+        if (appNamespace == null) {
+            throw new RuntimeException("Namespace " + namespaceCode + " not mapped in namespace table.");
+        }
+        
+        return appNamespace.getApplicationId();
+    }
+    
+    /*
+     * Compares the appId of the attribute with the given appId.
+     * Here we make the assumption that there are not multiple attributes with the same name
+     * for a given application.
+     */
+    protected String getAttributeFromAppId(Collection<KimAttributeBo> attributes, String appId) {
+        for (KimAttributeBo attribute : attributes) {
+            if (StringUtils.equalsIgnoreCase(getAppIdFromNamespace(attribute.getNamespaceCode()), appId)) {
+                return attribute.getId();
+            }
+        }
+        
+        return null;
+    }
+    
+    protected KimTypeInfoService getKimTypeInfoService() {
+        if (kimTypeInfoService == null) {
+            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
+        }
+        
+        return kimTypeInfoService;
+    }
+
+    protected NamespaceService getNamespaceService() {
+        if (namespaceService == null) {
+            namespaceService = CoreServiceApiServiceLocator.getNamespaceService();
+        }
+        
+        return namespaceService;
     }
 
     protected BusinessObjectService getBusinessObjectService() {

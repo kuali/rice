@@ -3354,20 +3354,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//button[contains(.,'Get Warning Messages')]");
         waitForPageToLoad();
         Thread.sleep(3000);
-        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] not visible",
-                isVisible("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"]"));
-        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem not present",
-                isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-warningMessageItem"));
-        assertTrue("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] not visible", isVisible(
-                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        assertTrue(
-                "div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem not present",
-                isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-warningMessageItem"));
-        assertTrue("div[data-role=\"InputField\"] img[alt=\"Warning\"] not present", isElementPresent(
-                "div[data-role=\"InputField\"] img[alt=\"Warning\"]"));
-        fireMouseOverEvent(By.xpath("//a[contains(.,'Field 1')]"));
-        assertTrue(".uif-warningHighlight no present when //a[contains(.,'Field 1')] is moused over",
-                isElementPresent(".uif-warningHighlight"));
+        waitForElementPresentByXpath("//div[@id='Demo-ValidationLayout-SectionsPage_messages']");
+        waitForElementPresentByXpath("//div[@id='Demo-ValidationLayout-Section1_messages']");
+        fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
+        waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutHorizontalItem uif-hasWarning uif-warningHighlight']");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         waitForElementVisible(".jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
         assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
@@ -3381,16 +3371,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 " not visible after typing nothing in name=field1 then firing blur and focus events");
         assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
-        waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-clientMessageItems",
-                " not visible after typing nothing in name=field1 then firing blur and focus events");
         assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
                 isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
         waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-serverMessageItems", "");
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing b in name=field1 then firing blur and focus events",
-                isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
         assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
                 !isElementPresent(
                         ".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));

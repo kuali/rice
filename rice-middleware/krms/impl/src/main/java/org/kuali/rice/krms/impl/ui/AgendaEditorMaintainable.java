@@ -336,6 +336,13 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     }
 
     @Override
+    public void processAfterCopy(MaintenanceDocument document,
+            Map<String, String[]> parameters) {
+        super.processAfterCopy(document, parameters);
+        AgendaBo agendaBo = ((AgendaEditor) document.getDocumentDataObject()).getAgenda();
+        agendaBo.setVersionNumber(null);
+        }
+    @Override
     public void prepareForSave() {
         // set agenda attributes
         AgendaEditor agendaEditor = (AgendaEditor) getDataObject();
@@ -349,6 +356,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // handle saving new parameterized terms and processing custom operators
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
             PropositionBo propositionBo = agendaItem.getRule().getProposition();
+            agendaItem.setVersionNumber(null);
             if (propositionBo != null) {
                 saveNewParameterizedTerms(propositionBo);
                 processCustomOperators(propositionBo);
@@ -357,7 +365,31 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
         if (agendaBo != null) {
             flushCacheBeforeSave();
+
+            /*
+             AgendaItemBo has columns alwaysId, whenFirstId and whenLastId
+             that have fk constraints to a column (agendaItemid) on the same
+             table.
+
+             With hibernate in this scenario caching all inserts causes them
+             to be executed at the same time in the DB and we get an integrity
+             violation exception.
+
+             The solution is to decouple AgendaBo from AgendaItemBo persist
+             the agenaItems one at at time and flush, causing the items
+             to be persisted avoiding the integrity constraint
+            */
+
+            List<AgendaItemBo> agendaItems = agendaBo.getItems();
+            agendaBo.setItems(new ArrayList<AgendaItemBo>());
             getDataObjectService().save(agendaBo);
+
+            for(AgendaItemBo item : agendaItems) {
+                getDataObjectService().save(item);
+                getDataObjectService().flush(AgendaItemBo.class);
+            }
+
+            agendaBo.setItems(agendaItems);
         } else {
             throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
         }

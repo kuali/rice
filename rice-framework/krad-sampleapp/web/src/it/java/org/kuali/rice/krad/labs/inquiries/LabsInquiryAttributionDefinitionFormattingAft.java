@@ -86,7 +86,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Traveler Type Code:", "123"},
                 {"Customer Number:", "CUST"},
                 {"Drivers License:", "*****45678"},
-                {"Drivers License Exp Date:", "11/08/2018"},
+                {"Drivers License Exp Date:", "06/30/2015"},
                 {"Active:", "true"},
                 {"Non Resident Alien:", "false"},
                 {"Liability Insurance:", "false"},};

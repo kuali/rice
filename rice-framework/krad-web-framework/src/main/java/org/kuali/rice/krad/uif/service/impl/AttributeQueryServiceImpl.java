@@ -377,7 +377,10 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 numQueryMethodArguments += 1;
             }
 
+            // Empty arguments used to handle overloaded method case
+            queryMethodInvoker.setArguments(new Object[numQueryMethodArguments]);
             Class<?>[] argumentTypes = queryMethodInvoker.getArgumentTypes();
+
             if ((argumentTypes == null) || (argumentTypes.length != numQueryMethodArguments)) {
                 throw new RuntimeException(
                         "Query method argument field list size does not match found number of method arguments");

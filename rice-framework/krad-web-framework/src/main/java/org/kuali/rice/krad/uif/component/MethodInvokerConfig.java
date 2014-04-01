@@ -127,6 +127,11 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
             setTargetMethod(methodName);
         }
 
+        Method matchingCandidate = findMatchingMethod();
+        if (matchingCandidate != null) {
+            return matchingCandidate.getParameterTypes();
+        }
+
         Method[] candidates = ReflectionUtils.getAllDeclaredMethods(getTargetClass());
         for (Method candidate : candidates) {
             if (candidate.getName().equals(getTargetMethod())) {

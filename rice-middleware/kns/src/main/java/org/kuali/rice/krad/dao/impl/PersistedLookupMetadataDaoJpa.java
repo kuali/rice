@@ -18,7 +18,6 @@ package org.kuali.rice.krad.dao.impl;
 import org.kuali.rice.krad.dao.PersistedLookupMetadataDao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
 
@@ -26,7 +25,6 @@ import java.sql.Timestamp;
 public class PersistedLookupMetadataDaoJpa implements PersistedLookupMetadataDao {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistedLookupMetadataDaoJpa.class);
     
-    @PersistenceContext
 	private EntityManager entityManager;
     
     @Override

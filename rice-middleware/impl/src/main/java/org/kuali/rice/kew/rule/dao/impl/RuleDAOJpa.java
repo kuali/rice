@@ -15,34 +15,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThanOrEqual;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.OrderByField;
 import org.kuali.rice.core.api.criteria.OrderDirection;
@@ -54,19 +26,34 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public class RuleDAOJpa implements RuleDAO {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleDAOJpa.class);
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
 
     private DataObjectService dataObjectService;

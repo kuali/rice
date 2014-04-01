@@ -30,7 +30,6 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -45,7 +44,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 public class RouteNodeDAOJpa implements RouteNodeDAO {
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

@@ -22,57 +22,54 @@ import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
  * A JPA-based implementation of the {@link DocumentLinkDAO}.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentLinkDAOJpa implements DocumentLinkDAO {
 
-	
-    @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
     private DataObjectService dataObjectService;
 
     @Override
-	public void deleteDocumentLink(DocumentLink link) {
+    public void deleteDocumentLink(DocumentLink link) {
         getDataObjectService().delete(link);
         // see if a reverse link exists or not
         DocumentLink reverseLink = getLinkedDocument(link.getDestDocId(), link.getOrgnDocId());
         if (reverseLink != null) {
             getDataObjectService().delete(reverseLink);
         }
-	}
+    }
 
     @Override
-	public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
+    public List<DocumentLink> getLinkedDocumentsByDocId(String docId) {
         TypedQuery<DocumentLink> query =
                 getEntityManager().createNamedQuery("DocumentLink.GetLinkedDocumentsByDocId", DocumentLink.class);
         query.setParameter("orgnDocId",docId);
         return query.getResultList();
-	
-	}
+
+    }
 
     @Override
-	public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
+    public List<DocumentLink> getOutgoingLinkedDocumentsByDocId(String docId) {
         TypedQuery<DocumentLink> query =
                 getEntityManager().createNamedQuery("DocumentLink.GetOutgoingLinkedDocumentsByDocId", DocumentLink.class);
         query.setParameter("destDocId",docId);
         return query.getResultList();
-	}
+    }
 
     @Override
-	public DocumentLink saveDocumentLink(DocumentLink link) {
+    public DocumentLink saveDocumentLink(DocumentLink link) {
         link = saveIfNotExists(link);
         // create the 2-way linked pair
         saveIfNotExists(createReverseLink(link));
         getDataObjectService().flush(DocumentLink.class);
         return link;
-	}
+    }
 
     protected DocumentLink saveIfNotExists(DocumentLink link) {
         // if an existing link already exists for this, we pretty much just ignore the request to save since it's
@@ -106,10 +103,10 @@ public class DocumentLinkDAOJpa implements DocumentLinkDAO {
         return reverseLink;
     }
 
-	@Override
-	public DocumentLink getDocumentLink(String documentLinkId) {
-		return getDataObjectService().find(DocumentLink.class,documentLinkId);
-	}
+    @Override
+    public DocumentLink getDocumentLink(String documentLinkId) {
+        return getDataObjectService().find(DocumentLink.class,documentLinkId);
+    }
 
 
     public DataObjectService getDataObjectService() {
@@ -129,5 +126,5 @@ public class DocumentLinkDAOJpa implements DocumentLinkDAO {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-	
+
 }

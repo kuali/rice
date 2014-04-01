@@ -21,7 +21,6 @@ import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -32,7 +31,6 @@ import java.util.List;
  */
 public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
     
-    @PersistenceContext(name = "kew")
     private EntityManager entityManager;
 
     /**

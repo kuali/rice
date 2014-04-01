@@ -55,6 +55,8 @@
   <util:list id="additionalMetadataProviders" />
   <util:list id="springMetadataFileLocations" />
 
+  <alias name="sharedEntityManager" alias="rice.coreService.entityManager"/>
+
   <import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
 </beans>

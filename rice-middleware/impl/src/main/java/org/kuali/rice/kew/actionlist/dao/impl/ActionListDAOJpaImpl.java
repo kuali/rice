@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.kew.actionlist.dao.impl;
 
-import java.util.Arrays;
-import java.util.List;
+import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * JPA implementation of the action list DAO for functions not easily handled by the data layer.
@@ -32,7 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionListDAOJpaImpl implements ActionListDAO {
-    @PersistenceContext(unitName="kew")
+
     protected EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {

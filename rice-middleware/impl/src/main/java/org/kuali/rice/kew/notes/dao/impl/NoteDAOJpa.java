@@ -18,14 +18,11 @@ package org.kuali.rice.kew.notes.dao.impl;
 import org.kuali.rice.kew.notes.dao.NoteDAO;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-
 public class NoteDAOJpa implements NoteDAO {
 
-	@PersistenceContext(unitName="kew")
 	EntityManager entityManager;
 
     public List getNotesByDocumentId(String documentId) {

@@ -32,8 +32,6 @@
   ${monitoring.spring.service}
   -->
 
-  <context:annotation-config/>
-
   <bean id="rice.core.config.propertyPlaceholderConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
         p:properties="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}"/>

@@ -92,55 +92,74 @@
   <util:list id="additionalMetadataProviders" />
   <util:list id="springMetadataFileLocations" />
 
+  <alias name="sharedEntityManager" alias="rice.kew.entityManager"/>
+
   <import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
   <bean id="enDocumentRouteHeaderDAO" class="org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpa"
         lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
     <property name="dataSource" ref="kewDataSource"/>
   </bean>
 
   <bean id="enDocumentTypeDAO" class="org.kuali.rice.kew.doctype.dao.impl.DocumentTypeDAOJpa"
         lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
-  <bean id="enNoteDAO" class="org.kuali.rice.kew.notes.dao.impl.NoteDAOJpa"/>
+  <bean id="enNoteDAO" class="org.kuali.rice.kew.notes.dao.impl.NoteDAOJpa">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 
   <bean id="enDocumentLinkDAO" class="org.kuali.rice.kew.documentlink.dao.impl.DocumentLinkDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
   <bean id="enRouteNodeDAO" class="org.kuali.rice.kew.engine.node.dao.impl.RouteNodeDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
-  <bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl" lazy-init="true" />
+  <bean id="enActionListDAO" class="org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 
-  <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa" lazy-init="true"/>
+  <bean id="enActionTakenDAO" class="org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 
   <bean id="enActionRequestDAO" class="org.kuali.rice.kew.actionrequest.dao.impl.ActionRequestDAOJpaImpl"
-        lazy-init="true"/>
+        lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 
   <bean id="enRuleAttributeDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleAttributeDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService" />
   </bean>
 
   <bean id="enRuleDelegationDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDelegationDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="enRuleTemplateDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleTemplateDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
     <property name="dataSource" ref="kewDataSource"/>
   </bean>
 
   <bean id="enRuleDAO" class="org.kuali.rice.kew.rule.dao.impl.RuleDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="enSearchableAttributeDAO" class="org.kuali.rice.kew.docsearch.dao.impl.SearchableAttributeDAOJpa"
               lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
@@ -148,8 +167,12 @@
     <property name="dataSource" ref="kewDataSource" />
   </bean>
 
-  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpa" lazy-init="true"/>
+  <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 
-  <bean id="enStatsDAO" class="org.kuali.rice.kew.stats.dao.impl.StatsDaoJpa" lazy-init="true"/>
+  <bean id="enStatsDAO" class="org.kuali.rice.kew.stats.dao.impl.StatsDaoJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kew.entityManager"/>
+  </bean>
 </beans>
 

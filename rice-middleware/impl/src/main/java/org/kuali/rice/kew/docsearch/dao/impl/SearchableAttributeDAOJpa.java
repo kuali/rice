@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch.dao.impl;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
@@ -32,7 +23,14 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * JPA implementation of SearchableAttributeDAO
@@ -42,7 +40,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
  */
 public class SearchableAttributeDAOJpa implements SearchableAttributeDAO {
 
-	@PersistenceContext(unitName = "kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

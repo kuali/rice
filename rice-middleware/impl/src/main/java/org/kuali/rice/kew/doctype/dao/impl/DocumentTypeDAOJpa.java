@@ -27,12 +27,9 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
@@ -46,7 +43,6 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
 
 	public static final Logger LOG = Logger.getLogger(DocumentTypeDAOJpa.class);
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

@@ -18,15 +18,11 @@ package org.kuali.rice.kew.stats.dao.impl;
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -54,7 +50,6 @@ public class StatsDaoJpa implements StatsDAO {
     public static final String STATS_NUM_DOC_TYPES_REPORT =
                     "select count(dt) from DocumentType dt where dt.currentInd = true";
 
-    @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
     
     @Override

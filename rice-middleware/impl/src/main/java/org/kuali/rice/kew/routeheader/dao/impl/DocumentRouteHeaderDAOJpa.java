@@ -28,7 +28,6 @@ import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer
 
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.sql.DataSource;
@@ -38,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 
 public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
 
@@ -65,8 +63,6 @@ public class DocumentRouteHeaderDAOJpa implements DocumentRouteHeaderDAO {
             + "DISTINCT(DH.documentId) FROM DocumentRouteHeaderValue DH, DocumentType DT "
             + "WHERE DH.appDocId = :appDocId AND DH.documentTypeId = DT.documentTypeId  AND DT.name = :name";
 
-
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataSource dataSource;
 

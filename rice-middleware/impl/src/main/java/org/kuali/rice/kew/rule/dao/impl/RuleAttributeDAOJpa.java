@@ -24,7 +24,6 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,6 @@ public class RuleAttributeDAOJpa implements RuleAttributeDAO {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeDAOJpa.class);
 
-    @PersistenceContext(unitName="kew")
     private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

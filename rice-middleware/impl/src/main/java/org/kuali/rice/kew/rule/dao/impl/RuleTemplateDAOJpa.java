@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +37,10 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.likeIgnoreCase;
 
 
-
 public class RuleTemplateDAOJpa implements RuleTemplateDAO {
 
     private static final String SEQUENCE_NAME = "KREW_RTE_TMPL_S";
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

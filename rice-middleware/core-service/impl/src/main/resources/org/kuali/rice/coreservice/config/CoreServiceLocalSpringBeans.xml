@@ -83,7 +83,9 @@
     <property name="styleDao" ref="styleDao"/>
   </bean>
 
-  <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoJpa"/>
+  <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoJpa">
+    <property name="entityManager" ref="rice.coreService.entityManager" />
+  </bean>
 
   <bean id="styleXmlLoader" class="org.kuali.rice.coreservice.impl.style.StyleXmlParserImpl">
     <property name="styleService" ref="styleService" />

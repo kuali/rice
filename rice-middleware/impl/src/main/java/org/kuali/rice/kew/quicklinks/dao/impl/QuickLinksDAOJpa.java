@@ -18,6 +18,7 @@ package org.kuali.rice.kew.quicklinks.dao.impl;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -29,12 +30,9 @@ import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +40,6 @@ import java.util.StringTokenizer;
 
 public class QuickLinksDAOJpa implements QuickLinksDAO {
 
-    @PersistenceContext(unitName = "kew")
     private EntityManager entityManager;
 
     public static final String FIND_WATCHED_DOCUMENTS_BY_INITIATOR_WORKFLOW_ID_NAME =

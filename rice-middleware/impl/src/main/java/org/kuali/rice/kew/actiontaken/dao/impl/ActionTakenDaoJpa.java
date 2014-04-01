@@ -21,7 +21,6 @@ import org.kuali.rice.kew.api.action.ActionType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 
@@ -33,7 +32,6 @@ import java.sql.Timestamp;
  */
 public class ActionTakenDaoJpa implements ActionTakenDao {
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDaoJpa.class);

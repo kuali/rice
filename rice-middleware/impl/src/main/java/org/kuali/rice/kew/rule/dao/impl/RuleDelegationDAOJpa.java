@@ -22,17 +22,14 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
-
 public class RuleDelegationDAOJpa implements RuleDelegationDAO {
 
-	@PersistenceContext(unitName="kew")
 	private EntityManager entityManager;
     private DataObjectService dataObjectService;
 

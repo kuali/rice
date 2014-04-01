@@ -16,7 +16,6 @@
 package org.kuali.rice.coreservice.impl.style;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -26,7 +25,6 @@ import java.util.List;
  */
 public class StyleDaoJpa implements StyleDao{
 
-    @PersistenceContext(name="coreService")
     private EntityManager entityManager;
 
     @Override

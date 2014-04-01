@@ -57,7 +57,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldSuggestQuery(
      *org.kuali.rice.krad.uif.view.View, java.lang.String, java.lang.String, java.util.Map<java.lang.String,
-     *      java.lang.String>)
+     * java.lang.String>)
      */
     @Override
     public AttributeQueryResult performFieldSuggestQuery(View view, String fieldId, String fieldTerm,
@@ -174,18 +174,17 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param result the result to pull properties from
      * @param propMap the propMap to add properties to
      */
-    private void handleAdditionalSuggestProperties(Suggest fieldSuggest, Object result, Map<String, String> propMap){
-        if (fieldSuggest.getAdditionalPropertiesToReturn() != null){
+    private void handleAdditionalSuggestProperties(Suggest fieldSuggest, Object result, Map<String, String> propMap) {
+        if (fieldSuggest.getAdditionalPropertiesToReturn() != null) {
             //add properties for each valid property name
-            for(String propName: fieldSuggest.getAdditionalPropertiesToReturn()){
+            for (String propName : fieldSuggest.getAdditionalPropertiesToReturn()) {
                 Object propValue = null;
 
-                if(StringUtils.isNotBlank(propName)
-                                        && ObjectPropertyUtils.isReadableProperty(result, propName)){
+                if (StringUtils.isNotBlank(propName) && ObjectPropertyUtils.isReadableProperty(result, propName)) {
                     propValue = ObjectPropertyUtils.getPropertyValue(result, propName);
                 }
 
-                if (propValue != null){
+                if (propValue != null) {
                     propMap.put(propName, propValue.toString());
                 }
             }
@@ -199,47 +198,47 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param result the result to pull properties from
      * @param propMap the propMap to add properties to
      */
-    private void handleLocationSuggestProperties(LocationSuggest fieldSuggest, Object result, Map<String, String> propMap){
+    private void handleLocationSuggestProperties(LocationSuggest fieldSuggest, Object result,
+            Map<String, String> propMap) {
 
         // href property
         Object suggestHrefValue = null;
-        if(StringUtils.isNotBlank(fieldSuggest.getHrefPropertyName())
-                && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getHrefPropertyName())){
+        if (StringUtils.isNotBlank(fieldSuggest.getHrefPropertyName()) && ObjectPropertyUtils.isReadableProperty(result,
+                fieldSuggest.getHrefPropertyName())) {
             suggestHrefValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getHrefPropertyName());
         }
 
         // add if found
-        if(suggestHrefValue != null){
+        if (suggestHrefValue != null) {
             propMap.put(fieldSuggest.getHrefPropertyName(), suggestHrefValue.toString());
         }
 
         // url addition/appendage property
         Object addUrlValue = null;
-        if(StringUtils.isNotBlank(fieldSuggest.getAdditionalUrlPathPropertyName())
-                        && ObjectPropertyUtils.isReadableProperty(result, fieldSuggest.getAdditionalUrlPathPropertyName())){
+        if (StringUtils.isNotBlank(fieldSuggest.getAdditionalUrlPathPropertyName()) && ObjectPropertyUtils
+                .isReadableProperty(result, fieldSuggest.getAdditionalUrlPathPropertyName())) {
             addUrlValue = ObjectPropertyUtils.getPropertyValue(result, fieldSuggest.getAdditionalUrlPathPropertyName());
         }
 
         // add if found
-        if(addUrlValue != null){
+        if (addUrlValue != null) {
             propMap.put(fieldSuggest.getAdditionalUrlPathPropertyName(), addUrlValue.toString());
         }
 
-        if(fieldSuggest.getRequestParameterPropertyNames() == null){
+        if (fieldSuggest.getRequestParameterPropertyNames() == null) {
             return;
         }
 
         // add properties for each valid requestParameter property name
-        for(String key: fieldSuggest.getRequestParameterPropertyNames().keySet()){
+        for (String key : fieldSuggest.getRequestParameterPropertyNames().keySet()) {
             String prop = fieldSuggest.getRequestParameterPropertyNames().get(key);
             Object propValue = null;
 
-            if(StringUtils.isNotBlank(prop)
-                                    && ObjectPropertyUtils.isReadableProperty(result, prop)){
+            if (StringUtils.isNotBlank(prop) && ObjectPropertyUtils.isReadableProperty(result, prop)) {
                 propValue = ObjectPropertyUtils.getPropertyValue(result, prop);
             }
 
-            if (propValue != null){
+            if (propValue != null) {
                 propMap.put(prop, propValue.toString());
             }
         }
@@ -248,7 +247,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
     /**
      * @see org.kuali.rice.krad.uif.service.AttributeQueryService#performFieldQuery(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.String, java.util.Map<java.lang.String,java.lang.String>)
+     * java.lang.String, java.util.Map<java.lang.String,java.lang.String>)
      */
     @Override
     public AttributeQueryResult performFieldQuery(View view, String fieldId, Map<String, String> queryParameters) {
@@ -342,7 +341,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
      * @param isSuggestQuery indicates whether the query is for forming suggest options
      * @param queryTerm if being called for a suggest, the term for the query field
      * @return type depends on method being invoked, could be AttributeQueryResult in which
-     *         case the method has prepared the return result, or an Object that needs to be parsed for the result
+     * case the method has prepared the return result, or an Object that needs to be parsed for the result
      */
     protected Object executeAttributeQueryMethod(View view, AttributeQuery attributeQuery,
             Map<String, String> queryParameters, boolean isSuggestQuery, String queryTerm) {
@@ -374,10 +373,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 numQueryMethodArguments += 1;
             }
 
-            // Empty arguments used to handle overloaded method case
-            queryMethodInvoker.setArguments(new Object[numQueryMethodArguments]);
             Class[] argumentTypes = queryMethodInvoker.getArgumentTypes();
-
             if ((argumentTypes == null) || (argumentTypes.length != numQueryMethodArguments)) {
                 throw new RuntimeException(
                         "Query method argument field list size does not match found number of method arguments");

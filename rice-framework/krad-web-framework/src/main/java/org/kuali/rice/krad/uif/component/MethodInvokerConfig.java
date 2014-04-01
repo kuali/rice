@@ -44,7 +44,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      *
      * @return static method to invoke
      */
-    @BeanTagAttribute(name="staticMethod")
+    @BeanTagAttribute(name = "staticMethod")
     public String getStaticMethod() {
         return staticMethod;
     }
@@ -67,7 +67,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
      *
      * @return method argument types
      */
-    @BeanTagAttribute(name="argumentTypes",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(name = "argumentTypes", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public Class[] getArgumentTypes() {
         if (argumentTypes == null) {
             return getMethodArgumentTypes();
@@ -95,8 +95,8 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
         if (StringUtils.isNotBlank(staticMethod)) {
             int lastDotIndex = this.staticMethod.lastIndexOf('.');
             if (lastDotIndex == -1 || lastDotIndex == this.staticMethod.length()) {
-                throw new IllegalArgumentException("staticMethod must be a fully qualified class plus method name: " +
-                        "e.g. 'example.MyExampleClass.myExampleMethod'");
+                throw new IllegalArgumentException("staticMethod must be a fully qualified class plus method name: "
+                        + "e.g. 'example.MyExampleClass.myExampleMethod'");
             }
             String className = this.staticMethod.substring(0, lastDotIndex);
             String methodName = this.staticMethod.substring(lastDotIndex + 1);
@@ -106,11 +106,6 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable {
                 throw new RuntimeException("Unable to get class for name: " + className);
             }
             setTargetMethod(methodName);
-        }
-
-        Method matchingCandidate = findMatchingMethod();
-        if (matchingCandidate != null) {
-            return matchingCandidate.getParameterTypes();
         }
 
         Method[] candidates = ReflectionUtils.getAllDeclaredMethods(getTargetClass());

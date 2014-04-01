@@ -50,7 +50,8 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     protected void testCollections() throws InterruptedException 
     {
     	//Collection Group 1 - CollectionGroupTableLayout
-    	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']");
+    	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']",
+                "https://jira.kuali.org/browse/RICEQA-274 AFT Failure update LabsCollectionsAft");
     	assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr/td[@class='uif-collection-column-action']");
     
     	//Collection Group 2 - CollectionGroupTableLayout with jQuery table features on

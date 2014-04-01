@@ -18,13 +18,9 @@ package org.kuali.rice.core.framework.persistence.jta;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
-import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
 import org.springframework.beans.factory.FactoryBean;
 
 import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -57,30 +53,30 @@ public class TransactionManagerFactoryBean implements FactoryBean<TransactionMan
         return true;
     }
 
-    static class LazyInitializationHandler implements TargetedInvocationHandler<TransactionManager> {
+    static class LazyInitializationHandler extends BaseTargetedInvocationHandler<TransactionManager> {
 
-        private volatile boolean initialized = false;
-        private TransactionManager transactionManager = null;
+        private volatile boolean initialized;
+        private TransactionManager transactionManager;
+
+        LazyInitializationHandler() {
+            super(null);
+        }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (!this.initialized) {
-                    if (Jta.isFrozen()) {
-                        this.transactionManager = Jta.getTransactionManager();
-                        this.initialized = true;
-                    } else {
-                        throw new IllegalStateException("JTA has not been initialized, in order to use the "
-                                + "TransactionManager please ensure that it has been configured on " + Jta.class.getName());
-                    }
+        public Object invokeInternal(Object proxy, Method method, Object[] args) throws Throwable {
+            if (!this.initialized) {
+                if (Jta.isFrozen()) {
+                    this.transactionManager = Jta.getTransactionManager();
+                    this.initialized = true;
+                } else {
+                    throw new IllegalStateException("JTA has not been initialized, in order to use the "
+                            + "TransactionManager please ensure that it has been configured on " + Jta.class.getName());
                 }
-                if (this.transactionManager == null) {
-                    throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
-                }
-                return method.invoke(transactionManager, args);
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
             }
+            if (this.transactionManager == null) {
+                throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
+            }
+            return method.invoke(transactionManager, args);
         }
 
         public boolean isInitialized() {

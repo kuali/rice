@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.core.framework.persistence.jta;
 
-import org.kuali.rice.core.api.util.reflect.TargetedInvocationHandler;
+import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
 import org.springframework.beans.factory.FactoryBean;
 
-import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -50,30 +47,30 @@ public class UserTransactionFactoryBean implements FactoryBean<UserTransaction> 
 		return true;
 	}
 
-    private static class LazyInitializationHandler implements TargetedInvocationHandler<UserTransaction> {
+    private static class LazyInitializationHandler extends BaseTargetedInvocationHandler<UserTransaction> {
 
-        private volatile boolean initialized = false;
-        private UserTransaction userTransaction = null;
+        private volatile boolean initialized;
+        private UserTransaction userTransaction;
+
+        LazyInitializationHandler() {
+            super(null);
+        }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            try {
-                if (!this.initialized) {
-                    if (Jta.isFrozen()) {
-                        this.userTransaction = Jta.getUserTransaction();
-                        this.initialized = true;
-                    } else {
-                        throw new IllegalStateException("JTA has not been initialized, in order to use the "
-                                + "UserTransaction please ensure that it has been configured on " + Jta.class.getName());
-                    }
+        public Object invokeInternal(Object proxy, Method method, Object[] args) throws Throwable {
+            if (!this.initialized) {
+                if (Jta.isFrozen()) {
+                    this.userTransaction = Jta.getUserTransaction();
+                    this.initialized = true;
+                } else {
+                    throw new IllegalStateException("JTA has not been initialized, in order to use the "
+                            + "UserTransaction please ensure that it has been configured on " + Jta.class.getName());
                 }
-                if (this.userTransaction == null) {
-                    throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
-                }
-                return method.invoke(userTransaction, args);
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
             }
+            if (this.userTransaction == null) {
+                throw new IllegalStateException("Attempting to use TransactionManager but JTA is not enabled.");
+            }
+            return method.invoke(userTransaction, args);
         }
 
         public boolean isInitialized() {
@@ -84,7 +81,6 @@ public class UserTransactionFactoryBean implements FactoryBean<UserTransaction> 
         public UserTransaction getTarget() {
             return userTransaction;
         }
-
 
     }
 

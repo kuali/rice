@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -114,11 +116,78 @@ public final class LegacyUtils {
         ld.endLegacyContext();
     }
 
+    /**
+     * Performs the specified {@link Callable} inside of the legacy context.
+     *
+     * @param callable the method to call inside of the new contexts
+     * @param <T> the return type of the callable
+     * @return the result of the callable
+     * @throws Exception any exception thrown during the execution of the context
+     */
     public static <T> T doInLegacyContext(Callable<T> callable) throws Exception {
         beginLegacyContext();
         try {
             return callable.call();
         } finally {
+            endLegacyContext();
+        }
+    }
+
+    /**
+     * Performs the specified {@link Callable} inside of both the legacy context (if necessary as dependent on the
+     * {@code documentId}) and in new {@link GlobalVariables} as specified by the given {@code userSession}.
+     *
+     * @param documentId id of the document for which to establish the data context
+     * @param userSession the new user session to establish
+     * @param callable the method to call inside of the new contexts
+     * @param <T> the return type of the callable
+     * @return the result of the callable
+     * @throws Exception any exception thrown during the execution of the context
+     */
+    public static <T> T doInLegacyContext(String documentId, UserSession userSession, Callable<T> callable) throws Exception {
+        boolean inLegacyContext = establishLegacyDataContextIfNecessary(documentId);
+        try {
+            return GlobalVariables.doInNewGlobalVariables(userSession, callable);
+        } finally {
+            clearLegacyDataContextIfExists(inLegacyContext);
+        }
+    }
+
+    /**
+     * Establish a legacy data context if it deems that it's necessary to do so for the document being processed.
+     * Unfortunately for us here, there is really no easy way to tell if the original document was submitted from a
+     * legacy context (i.e. KNS + OJB) or if it was submitted from a non-legacy context.
+     *
+     * <p>This is really only a problem for us if the data object happens to be mapped and configured in both the legacy
+     * and non-legacy data frameworks (which may be the case while a conversion is in-progress). In the case that the
+     * document or the maintainable happens to be configured for both legacy and non-legacy data frameworks, the best we
+     * can do is use the non-legacy framework by default. We will, however, ensure that the document entry is not one of
+     * the KNS subclasses, as that will tell us that they have, in fact, converted the document over from KNS to KRAD.
+     * </p>
+     *
+     * @param documentId id of the document for which to establish the data context
+     * @return true if a legacy data context was established, false otherwise
+     */
+    private static boolean establishLegacyDataContextIfNecessary(String documentId) {
+        String documentTypeName = KewApiServiceLocator.getWorkflowDocumentService().getDocumentTypeName(documentId);
+        DocumentEntry documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntry(documentTypeName);
+
+        if (isKnsDocumentEntry(documentEntry)) {
+            beginLegacyContext();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * If the given boolean is true, will end any existing legacy data context.
+     *
+     * @param inLegacyContext whether or not the legacy data context has been established
+     */
+    private static void clearLegacyDataContextIfExists(boolean inLegacyContext) {
+        if (inLegacyContext) {
             endLegacyContext();
         }
     }

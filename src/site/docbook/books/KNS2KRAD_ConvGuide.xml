@@ -4655,5 +4655,29 @@ Map&lt;String, Object> primaryKeyValues = wrapper.getPrimaryKeyValues();</progra
             </table>
         </para>
     </section>
+  <section>
+      <title>Legacy Tools</title>
+      <para>
+          As it is unreasonable to expect that all documents will transition from OJB to JPA at one point, Rice has
+          provided some legacy tools inside of <emphasis role="keyword">org.kuali.rice.krad.util.LegacyUtils</emphasis>
+          that can help moving in and out of the legacy (OJB) context.  Most of the time this is dealt with
+          automatically through the KRAD code, but these tools can be used for customization if necessary.
+      </para>
+      <para>
+          One such area of customization is the <emphasis role="keyword">PostProcessorService</emphasis> which
+          applications often override to insert their own custom tasks during routing.  In order to properly detect
+          whether or not the routing document is in the legacy context or not, use the following staic method:
+          <programlisting>@Override
+public ProcessDocReport doRouteStatusChange(final DocumentRouteStatusChange statusChangeEvent) throws Exception {
+  return LegacyUtils.doInLegacyContext(statusChangeEvent.getDocumentId(), establishPostProcessorUserSession(),
+      new Callable&lt;ProcessDocReport>() {
+      @Override
+      public ProcessDocReport call() throws Exception {
+          ...
+      }
+  });
+}</programlisting>
+      </para>
+  </section>
   </section>
 </article>

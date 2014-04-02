@@ -31,6 +31,7 @@ import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.IDocumentEvent;
 import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
@@ -59,7 +60,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
 
     @Override
     public ProcessDocReport doRouteStatusChange(final DocumentRouteStatusChange statusChangeEvent) throws Exception {
-        return doInContext(statusChangeEvent.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(statusChangeEvent.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
 
@@ -108,7 +109,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
 
     @Override
     public ProcessDocReport doRouteLevelChange(final DocumentRouteLevelChange levelChangeEvent) throws Exception {
-        return doInContext(levelChangeEvent.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(levelChangeEvent.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
 
@@ -151,7 +152,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
 
     @Override
     public ProcessDocReport doActionTaken(final ActionTakenEvent event) throws Exception {
-        return doInContext(event.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(event.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
                 try {
@@ -188,7 +189,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     @Override
     public ProcessDocReport afterActionTaken(final ActionType performed,
             final ActionTakenEvent event) throws Exception {
-        return doInContext(event.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(event.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
                 try {
@@ -230,7 +231,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     @Override
     public ProcessDocReport afterProcess(final AfterProcessEvent event) throws Exception {
-        return doInContext(event.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(event.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
 
@@ -267,7 +268,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     @Override
     public ProcessDocReport beforeProcess(final BeforeProcessEvent event) throws Exception {
-        return doInContext(event.getDocumentId(), new Callable<ProcessDocReport>() {
+        return LegacyUtils.doInLegacyContext(event.getDocumentId(), establishPostProcessorUserSession(), new Callable<ProcessDocReport>() {
             @Override
             public ProcessDocReport call() throws Exception {
 
@@ -304,7 +305,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     @Override
     public List<String> getDocumentIdsToLock(final DocumentLockingEvent event) throws Exception {
-        return doInContext(event.getDocumentId(), new Callable<List<String>>() {
+        return LegacyUtils.doInLegacyContext(event.getDocumentId(), establishPostProcessorUserSession(), new Callable<List<String>>() {
             @Override
             public List<String> call() throws Exception {
 
@@ -383,52 +384,6 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             return new UserSession(KRADConstants.SYSTEM_USER);
         } else {
             return GlobalVariables.getUserSession();
-        }
-    }
-
-
-    protected <T> T doInContext(String documentId, Callable<T> callable) throws Exception {
-        boolean inLegacyContext = establishLegacyDataContextIfNeccesary(documentId);
-        try {
-            return GlobalVariables.doInNewGlobalVariables(establishPostProcessorUserSession(), callable);
-        } finally {
-            clearLegacyDataContextIfExists(inLegacyContext);
-        }
-    }
-
-    /**
-     * Establish a legacy data context if it deems that it's necessary to do so for the document being processed.
-     * Unfortunately for us here, there is really no easy way to tell if the original document was submitted from a
-     * legacy context (i.e. KNS + OJB) or if it was submitted from a non-legacy context.
-     *
-     * <p>This is really only a problem for us if the data object happens to be mapped and configured in both the legacy
-     * and non-legacy data frameworks (which may be the case while a conversion is in-progress). In the case that the
-     * document or the maintainable happens to be configured for both legacy and non-legacy data frameworks, the best we
-     * can do is use the non-legacy framework by default. We will, however, ensure that the document entry is not one of
-     * the KNS subclasses, as that will tell us that they have, in fact, converted the document over from KNS to KRAD.
-     * </p>
-     *
-     * @param documentId id of the document for which to establish the data context
-     * @return true if a legacy data context was established, false otherwise
-     */
-    protected boolean establishLegacyDataContextIfNeccesary(String documentId) {
-        String documentTypeName = KewApiServiceLocator.getWorkflowDocumentService().getDocumentTypeName(documentId);
-        DocumentEntry documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntry(documentTypeName);
-
-        if (LegacyUtils.isKnsDocumentEntry(documentEntry)) {
-            LegacyUtils.beginLegacyContext();
-
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * If the given boolean is true, will end any existing legacy data context.
-     */
-    protected void clearLegacyDataContextIfExists(boolean inLegacyContext) {
-        if (inLegacyContext) {
-            LegacyUtils.endLegacyContext();
         }
     }
 

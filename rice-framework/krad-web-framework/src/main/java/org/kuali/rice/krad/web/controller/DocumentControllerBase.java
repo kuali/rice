@@ -405,7 +405,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     break;
                 case DISAPPROVE:
                     // TODO: need to get disapprove note from user
-                    String disapprovalNoteText = "";
+                    String disapprovalNoteText = generateDisapprovalNote(form, checkSensitiveData);
                     getDocumentService().disapproveDocument(document, disapprovalNoteText);
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED;
                     break;
@@ -826,6 +826,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
     public ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
+    }
+
+    protected String generateDisapprovalNote(DocumentFormBase form, boolean checkSensitiveData) {
+        return "";
     }
 
 }

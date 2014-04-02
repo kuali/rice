@@ -19,7 +19,7 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
- *  @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ConfigComponentActionListAftBase extends ConfigComponentAftBase {
 

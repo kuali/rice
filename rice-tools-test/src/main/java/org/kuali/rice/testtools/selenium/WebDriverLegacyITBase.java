@@ -3716,9 +3716,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         clearTextByXpath("//input[@name='field6']");
         waitAndTypeByXpath("//input[@name='field6']", "123ab");
         fireEvent("field6", "blur");
-        Thread.sleep(5000);
-        assertTrue(isElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']"));
-        Thread.sleep(3000);
+        waitForElementPresentByXpath("//div[@class='uif-inputField inlineBlock uif-hasError']");
     }
 
     protected void verifyRichMessagesValidationRadioAndCheckBoxGroupFunctionality() throws Exception
@@ -3758,12 +3756,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//p[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);
         assertTrue(isElementPresentByXpath(
-                "//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+                "//div[@class='alert-danger']"));
 
         //Testing methodToCall action (no client validation check)
         waitAndClickByXpath("//p[contains(., 'Testing methodToCall action (no client validation check)')]/a");
-        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
-        assertTrue(isElementPresentByXpath("//div[@class='uif-validationMessages uif-groupValidationMessages uif-pageValidationMessages uif-pageValidationMessages-error']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Demo-BasicMessagesSection_messages' and @class='alert alert-danger']"));
+        assertTrue(isElementPresentByXpath("//div[@id='Demo-AdvancedMessagesSection_messages' and @class='alert alert-danger']"));
         Thread.sleep(3000);
     }
 

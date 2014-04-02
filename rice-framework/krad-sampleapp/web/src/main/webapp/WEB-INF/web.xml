@@ -94,6 +94,11 @@
     <filter-class>org.kuali.rice.krad.web.filter.DummyLoginFilter</filter-class>
   </filter>
 
+  <filter>
+    <filter-name>TestingLoginFilter</filter-name>
+    <filter-class>org.kuali.rice.krad.filter.TestingLoginFilter</filter-class>
+  </filter>
+
   <filter-mapping>
     <filter-name>HttpRequestLogger</filter-name>
     <url-pattern>/*</url-pattern>
@@ -189,6 +194,11 @@
   <filter-mapping>
     <filter-name>DummyLoginFilter</filter-name>
     <servlet-name>login</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>TestingLoginFilter</filter-name>
+    <url-pattern>/testlogin</url-pattern>
   </filter-mapping>
 
   <!-- for KCB Spring Web MVC pages -->

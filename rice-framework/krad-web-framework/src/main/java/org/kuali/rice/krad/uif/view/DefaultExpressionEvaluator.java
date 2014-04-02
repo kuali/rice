@@ -54,6 +54,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
             DefaultExpressionEvaluator.class);
 
+    protected static final Pattern SERVER_EVALUATION_PATTERN = Pattern.compile(
+        "(\\s?!?\\b(#|get|is)(.*?\\(.*?\\)))(\\s|$)");
+
     private StandardEvaluationContext evaluationContext;
 
     private Map<String, Expression> cachedExpressions;
@@ -197,11 +200,9 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         exp = StringUtils.replace(exp, " ,", ",");
 
         Map<String, String> serverEvaluations = new HashMap<String, String>();
-        String spelMethodRegex = "(\\s?!?(#|get|is)(.*?\\(.*?\\)))(\\s|$)";
-        Pattern pattern = Pattern.compile(spelMethodRegex);
 
         // Evaluate server side method calls and constants
-        Matcher matcher = pattern.matcher(exp);
+        Matcher matcher = SERVER_EVALUATION_PATTERN.matcher(exp);
         while(matcher.find()) {
             String spelMethodCall = matcher.group(1);
 

@@ -110,6 +110,13 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
             jiraAwareFail("Fields Data Field Default Value 2012 not displayed");
         }
     }
+    
+    protected void testDataFieldDefaultValueFinderClass() throws Exception {
+        String valueText = textValueUnderTest("Demo-DataField-Example12", "DataField 2");
+        if (!valueText.contains("Value returned from org.kuali.rice.krad.demo.uif.library.DemoValuesFinder")) {
+            jiraAwareFail("Fields Default Value Finder Field not displayed");
+        }
+    }
 
     protected void testDataFieldAppendProperty() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example5", "DataField 1");
@@ -171,6 +178,7 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
 //        testDataFieldLabelTop(); // removed form demo
 //        testDataFieldLabelRight(); // removed from demo
         testDataFieldDefaultValue();
+        testDataFieldDefaultValueFinderClass();
         testDataFieldAppendProperty();
         testDataFieldReplaceProperty();
         testDataFieldReplacePropertyWithField();
@@ -215,6 +223,18 @@ public class DemoFieldsDataAft extends DemoLibraryBase {
     @Test
     public void testDataFieldDefaultValueNav() throws Exception {
         testDataFieldDefaultValue();
+        passed();
+    }
+    
+    @Test
+    public void testDataFieldDefaultValueFinderClassBookmark() throws Exception {
+        testDataFieldDefaultValueFinderClass();
+        passed();
+    }
+
+    @Test
+    public void testDataFieldDefaultValueFinderClassNav() throws Exception {
+        testDataFieldDefaultValueFinderClass();
         passed();
     }
 

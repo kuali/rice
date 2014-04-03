@@ -721,6 +721,7 @@ public class ComponentUtils {
                         }
                     }
                 }
+            // Check for Maps that can contain lifecycle elements
             } else if (Map.class.isAssignableFrom(field.getType())) {
                 ReflectionUtils.makeAccessible(field);
                 Map<Object, Object> elements = (Map<Object, Object>) ReflectionUtils.getField(field, lifecycleElement);
@@ -731,6 +732,7 @@ public class ComponentUtils {
                         }
                     }
                 }
+            // Check if field is a lifecycle element itself
             } else if (LifecycleElement.class.isAssignableFrom(field.getType())) {
                 ReflectionUtils.makeAccessible(field);
                 LifecycleElement nestedElement = (LifecycleElement) ReflectionUtils.getField(field, lifecycleElement);

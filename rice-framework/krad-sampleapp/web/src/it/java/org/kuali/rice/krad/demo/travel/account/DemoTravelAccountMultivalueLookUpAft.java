@@ -33,6 +33,10 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
      */
     public static final String LOOKUP_RESULTS = "selectedCollectionLines['lookupResults']";
 
+    boolean foundA9 = false;
+    boolean foundA6 = false;
+    boolean foundA14 = false;
+
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -44,13 +48,31 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 
+    private boolean foundAll() {
+        if (foundA6 || isTextPresent("a6")) {
+            foundA6 = true;
+        }
+
+        if (foundA9 || isTextPresent("a9")) {
+            foundA9 = true;
+        }
+
+        if (foundA14 || isTextPresent("a14")) {
+            foundA14 = true;
+        }
+
+        return foundA6 && foundA9 && foundA14;
+    }
+
     private void testSearchSelect() throws InterruptedException {
         waitAndClickByValue("CAT");
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         waitAndClickByName(LOOKUP_RESULTS);
-        assertTextPresent("a14");
-        assertTextPresent("a6");
-        assertTextPresent("a9");
+
+        while (!foundAll()) {
+            waitAndClickByLinkText("Next", "Didn't find all expected results");
+        }
+
         assertButtonEnabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
         waitAndClickByName(LOOKUP_RESULTS);
         assertButtonDisabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);

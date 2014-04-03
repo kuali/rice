@@ -45,6 +45,7 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
     protected void testMultiValueLookup() throws InterruptedException {
         lightBoxLookupAddMultipleLines();
 
+        waitAndTypeByName("lookupCriteria[number]", "a1");
         waitAndClickButtonByText("Search");
         acceptAlertIfPresent();
         assertButtonDisabledByText("return selected");

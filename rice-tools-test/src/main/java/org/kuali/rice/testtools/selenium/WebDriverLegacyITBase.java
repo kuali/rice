@@ -860,6 +860,42 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForTextPresent("No values match this search.");
     }
 
+    protected void assertElementPresentInResultPages(By searchBy) throws Exception {
+        while(!isElementPresent(searchBy)) {
+            assertTrue("Didn't find expected results in result pages", isNextLinkEnabled());
+            waitAndClickByLinkText("Next");
+        }
+    }
+
+    protected void assertElementsPresentInResultPages(By[] searchBys) throws Exception {
+        boolean[] founds = new boolean[searchBys.length];
+        boolean allFound = false;
+
+        waitForElementPresentById("uLookupResults_layout_next");
+
+        while (!allFound) {
+
+            for (int i = 0; i < founds.length; i++) {
+                if (!founds[i]) {
+                    founds[i] = isElementPresent(searchBys[i]);
+                }
+            }
+
+            allFound = true; // assume we found them all, verify that assumption in the for loop
+            for (int i = 0; i < founds.length; i++) {
+                if (!founds[i]) {
+                    allFound = false;
+                }
+            }
+
+            if (!allFound) {
+                assertTrue("Didn't find expected results in result pages", isNextLinkEnabled());
+                waitAndClickByLinkText("Next");
+            }
+
+        }
+    }
+
     protected void assertFocusTypeBlurError(String field, String textToType) throws InterruptedException {
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
@@ -1591,6 +1627,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected boolean isEnabledByXpath(String locator) {
         return isEnabled(By.xpath(locator));
+    }
+
+    protected boolean isNextLinkEnabled() {
+        return findElements(By.xpath("//a[@id='uLookupResults_layout_next' and @class='next paginate_button paginate_button_disabled']")).size() != 1;
     }
 
     protected int howManyAreVisible(By by) throws InterruptedException {

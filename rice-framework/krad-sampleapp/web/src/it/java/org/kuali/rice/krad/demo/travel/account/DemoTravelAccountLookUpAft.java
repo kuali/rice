@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -106,8 +107,8 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         
         //Search by Default (No filters)
         waitAndClickButtonByText(SEARCH);
-        waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a2')]");
+        By[] bysPresent = new By[] {By.xpath("//a[contains(text(), 'a1')]"), By.xpath("//a[contains(text(), 'a2')]")};
+        assertElementsPresentInResultPages(bysPresent);
     }
 
     protected void testTravelAccountLookUpXss(String fieldName) throws Exception {
@@ -148,8 +149,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
     	waitAndClickButtonByText("submit");
     	Thread.sleep(5000);  //Need sleep as we dont have method which waits and returns true or false.
-    	if(isTextPresent("Document was successfully submitted."))
-    	{
+    	if(isTextPresent("Document was successfully submitted.")) {
     		navigate();
     		waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("edit");

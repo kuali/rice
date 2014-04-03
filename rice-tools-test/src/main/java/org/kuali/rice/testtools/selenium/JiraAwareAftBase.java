@@ -133,6 +133,18 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         assertElementPresentByXpath(locator, this.getClass().toString());
     }
 
+    protected void assertElementPresent(By by) {
+        assertElementPresent(by, this.getClass().toString());
+    }
+
+    protected void assertElementPresent(By by, String message) {
+        try {
+            findElement(by);
+        } catch (Exception e) {
+            jiraAwareFail(by, message, e);
+        }
+    }
+
     protected void assertElementPresentByXpath(String locator, String message) {
         try {
             findElement(By.xpath(locator));

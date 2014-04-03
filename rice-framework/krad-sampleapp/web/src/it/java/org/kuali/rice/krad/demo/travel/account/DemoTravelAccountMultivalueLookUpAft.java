@@ -34,10 +34,6 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
      */
     public static final String LOOKUP_RESULTS = "selectedCollectionLines['lookupResults']";
 
-    boolean foundA9 = false;
-    boolean foundA6 = false;
-    boolean foundA14 = false;
-
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -49,30 +45,12 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 
-    private boolean foundAll() {
-        if (foundA6 || isTextPresent("a6")) {
-            foundA6 = true;
-        }
-
-        if (foundA9 || isTextPresent("a9")) {
-            foundA9 = true;
-        }
-
-        if (foundA14 || isTextPresent("a14")) {
-            foundA14 = true;
-        }
-
-        return foundA6 && foundA9 && foundA14;
-    }
-
-    private void testSearchSelect() throws InterruptedException {
+    private void testSearchSelect() throws Exception {
         waitAndClickByValue("CAT");
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
 
-        while (!foundAll()) {
-            assertTrue("Didn't find all expected results", isNextLinkEnabled());
-            waitAndClickByLinkText("Next");
-        }
+        By[] bysPresent = new By[] {By.xpath("//a[contains(text(), 'a6')]"), By.xpath("//a[contains(text(), 'a9')]"), By.xpath("//a[contains(text(), 'a14')]")};
+        assertElementsPresentInResultPages(bysPresent);
 
         waitAndClickByName(LOOKUP_RESULTS);
         assertButtonEnabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
@@ -85,10 +63,6 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
         waitAndClickByName(LOOKUP_RESULTS);
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         checkForIncidentReport();
-    }
-
-    private boolean isNextLinkEnabled() {
-        return findElements(By.xpath("//a[@id='uLookupResults_layout_next' and @class='next paginate_button paginate_button_disabled']")).size() != 1;
     }
 
     @Test

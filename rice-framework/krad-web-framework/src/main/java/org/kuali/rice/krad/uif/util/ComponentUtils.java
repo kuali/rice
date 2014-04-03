@@ -710,6 +710,18 @@ public class ComponentUtils {
 
         List<java.lang.reflect.Field> fields = ReflectionUtils.getAllFields(elementClass);
         for (java.lang.reflect.Field field : fields) {
+            if (Collection.class.isAssignableFrom(field.getType())) {
+                ReflectionUtils.makeAccessible(field);
+                Collection<Object> elements = (Collection<Object>) ReflectionUtils.getField(field, lifecycleElement);
+                if (elements != null) {
+                    for (Object element: elements) {
+                        if(element != null && LifecycleElement.class.isAssignableFrom(element.getClass())) {
+                            cleanContextDeap((LifecycleElement) element);
+                        }
+                    }
+                }
+            }
+
             if (LifecycleElement.class.isAssignableFrom(field.getType())) {
                 ReflectionUtils.makeAccessible(field);
                 LifecycleElement nestedElement = (LifecycleElement) ReflectionUtils.getField(field, lifecycleElement);

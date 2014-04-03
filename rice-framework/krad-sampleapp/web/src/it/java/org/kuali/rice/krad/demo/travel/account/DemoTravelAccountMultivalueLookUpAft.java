@@ -67,12 +67,12 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
     private void testSearchSelect() throws InterruptedException {
         waitAndClickByValue("CAT");
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
-        waitAndClickByName(LOOKUP_RESULTS);
 
         while (!foundAll()) {
             waitAndClickByLinkText("Next", "Didn't find all expected results");
         }
 
+        waitAndClickByName(LOOKUP_RESULTS);
         assertButtonEnabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);
         waitAndClickByName(LOOKUP_RESULTS);
         assertButtonDisabledByText(WebDriverLegacyITBase.RETURN_SELECTED_BUTTON_TEXT);

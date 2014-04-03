@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -69,7 +70,8 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
 
         while (!foundAll()) {
-            waitAndClickByLinkText("Next", "Didn't find all expected results");
+            assertTrue("Didn't find all expected results", isNextLinkEnabled());
+            waitAndClickByLinkText("Next");
         }
 
         waitAndClickByName(LOOKUP_RESULTS);
@@ -83,6 +85,10 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
         waitAndClickByName(LOOKUP_RESULTS);
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
         checkForIncidentReport();
+    }
+
+    private boolean isNextLinkEnabled() {
+        return findElements(By.xpath("//a[@id='uLookupResults_layout_next' and @class='next paginate_button paginate_button_disabled']")).size() != 1;
     }
 
     @Test

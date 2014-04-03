@@ -49,28 +49,28 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveBookmark() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         testLabsLookupDefaultCreateNewBlanketApprove(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountBookmark() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveNav() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         testLabsLookupDefaultCreateNewBlanketApprove(account);
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountNav() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
         passed();
     }

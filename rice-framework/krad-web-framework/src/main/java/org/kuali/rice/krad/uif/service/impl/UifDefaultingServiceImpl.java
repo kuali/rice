@@ -63,6 +63,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     protected static final String ANY_CHARACTER_PATTERN_CONSTRAINT = "UTF8AnyCharacterPatternConstraint";
     protected static final String DATE_PATTERN_CONSTRAINT = "BasicDatePatternConstraint";
     protected static final String FLOATING_POINT_PATTERN_CONSTRAINT = "FloatingPointPatternConstraintTemplate";
+    protected static final String BIG_DECIMAL_PATTERN_CONSTRAINT = "BigDecimalPatternConstraintTemplate";
     protected static final String TIMESTAMP_PATTERN_CONSTRAINT = "TimestampPatternConstraint";
     protected static final String CURRENCY_PATTERN_CONSTRAINT = "CurrencyPatternConstraint";
 
@@ -233,6 +234,9 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 if (attrDef.getDataType() == DataType.CURRENCY) {
                     validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
                             .getDictionaryBean(CURRENCY_PATTERN_CONSTRAINT);
+                }else if (attrDef.getDataType() == DataType.PRECISE_DECIMAL ) {
+                    validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
+                            .getDictionaryBean(BIG_DECIMAL_PATTERN_CONSTRAINT);
                 } else if (attrDef.getDataType().isNumeric()) {
                     validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
                             .getDictionaryBean(FLOATING_POINT_PATTERN_CONSTRAINT);

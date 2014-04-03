@@ -304,6 +304,9 @@
   <bean id="FloatingPointPatternConstraintTemplate" parent="FloatingPointPatternConstraint" scope="prototype"
   		p:allowNegative="true" />
 
+  <bean id="BigDecimalPatternConstraintTemplate" parent="FloatingPointPatternConstraint" scope="prototype"
+        p:messageKey="validation.floatingPoint" p:allowNegative="true" p:patternTypeKey="validationPatternRegex.bigDecimal"/>
+
   <bean id="PhoneNumberPatternConstraint"
         abstract="true"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.ConfigurationBasedRegexPatternConstraint"

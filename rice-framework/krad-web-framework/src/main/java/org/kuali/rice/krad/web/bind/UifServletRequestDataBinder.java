@@ -205,7 +205,15 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         form.postBind((HttpServletRequest) request);
     }
 
-    // TODO document me...
+    /**
+     * Performs automatic reference linking of the given form based on the properties on the form for which linking
+     * is enabled.
+     *
+     * <p>Linking will only be performed if change tracking and auto linking are enabled on this data binder.</p>
+     *
+     * @param request request instance
+     * @param form form instance against which to perform automatic linking
+     */
     protected void executeAutomaticLinking(ServletRequest request, UifFormBase form) {
         if (!changeTracking) {
             LOG.info("Skip automatic linking because change tracking not enabled for this form.");
@@ -229,6 +237,23 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         }
     }
 
+    /**
+     * Determines the root property paths relative to the given root object type against which to perform automatic
+     * linking.
+     *
+     * <p>This will be determined based on the presence of {@link Link} annotations on the given root object type.
+     * This method is invoked recursively as it walks the class structure looking for Link annotations. It uses the path
+     * and scanned arguments to keep track of how deep into the structure the scanning is and to prevent infinite
+     * recursion.</p>
+     *
+     * @param rootObjectType the root object type from which to perform the scan for auto-linking paths
+     * @param path the current property path relative to the original root object type at which the scan began, if null
+     *             then we are scanning from the root-most object type. Each recursive call of this method will append
+     *             a new property to this path
+     * @param scanned used to track classes that have already been scanned and prevent infinite recursion
+     *
+     * @return a set of property paths that should be auto linked
+     */
     protected Set<String> determineRootAutoLinkingPaths(Class<?> rootObjectType, String path, Set<Class<?>> scanned) {
         Set<String> autoLinkingPaths = new HashSet<String>();
         if (scanned.contains(rootObjectType)) {
@@ -257,6 +282,16 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return autoLinkingPaths;
     }
 
+    /**
+     * A helper method which simply assembles a set of property paths for the given {@link Link} annotation which should
+     * be auto linked.
+     *
+     * @param path the property path from the top-most root class to where the Link annotation was found during the scan
+     * @param autoLink the Link annotation which is being processed
+     *
+     * @return a Set of auto linking paths based on the given path parameter, plus the path(s) defined on the
+     * {@link Link} annotation
+     */
     protected Set<String> assembleAutoLinkingPaths(String path, Link autoLink) {
         Set<String> autoLinkingPaths = new HashSet<String>();
         if (ArrayUtils.isEmpty(autoLink.path())) {
@@ -269,6 +304,18 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return autoLinkingPaths;
     }
 
+    /**
+     * Uses the binding result on this data binder to determine the targets on the form that automatic linking should be
+     * performed against.
+     *
+     * <p>Only those property paths for which auto linking is enabled and which were actually modified during the
+     * execution of this data binding will be returned from this method.</p>
+     *
+     * @param autoLinkingPaths a set of paths relative to the form class for which auto-linking has been enabled
+     *
+     * @return a list of {@link AutoLinkTarget} objects which contain an object to be linked and which properties on
+     * that object were modified during this data binding execution
+     */
     protected List<AutoLinkTarget> extractAutoLinkTargets(Set<String> autoLinkingPaths) {
         List<AutoLinkTarget> targets = new ArrayList<AutoLinkTarget>();
         for (String autoLinkingPath : autoLinkingPaths) {
@@ -287,6 +334,18 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         return targets;
     }
 
+    /**
+     * A utility method which appends two property paths together to create a new nested property path.
+     *
+     * <p>Handles null values for either the path or pathElement. The general output will be path.pathElement
+     * except in situations where either of the two given values are empty or null, in which case only the non-null
+     * value will be returned.</p>
+     *
+     * @param path the prefix of the property path
+     * @param pathElement the suffix of the property path to append to the given path
+     *
+     * @return an appended path, appended with a "." between the given path and pathElement (unless one of these is null)
+     */
     private String appendToPath(String path, String pathElement) {
         if (StringUtils.isEmpty(path)) {
             return pathElement;
@@ -358,7 +417,12 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         this.dataObjectService = dataObjectService;
     }
 
-    // TODO document me
+    /**
+     * Holds an object that will have auto-linking executed against it.
+     *
+     * <p>Also contains a set of property paths (relative to the object) that were modified during the data binding
+     * execution.</p>
+     */
     private static final class AutoLinkTarget {
 
         private final Object target;

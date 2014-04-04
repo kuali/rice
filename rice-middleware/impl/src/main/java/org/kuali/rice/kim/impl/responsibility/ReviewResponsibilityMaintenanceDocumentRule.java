@@ -46,30 +46,54 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
     protected static final String ERROR_NAMESPACE_AND_NAME_VALIDATION = ERROR_MESSAGE_PREFIX + "namespaceandnamevalidation";
     protected static final String NAMESPACE_CODE_PROPERTY = "namespaceCode";
 
-	/**
-	 * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
-	 */
-	@Override
-	protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
-		boolean rulesPassed = true;
-		GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
-		try {
-			ReviewResponsibilityBo resp = (ReviewResponsibilityBo)document.getNewMaintainableObject().getDataObject();
-			// check for creation of a duplicate node
-			if ( resp.getDocumentTypeName() != null
-                    && resp.getRouteNodeName() != null
-                    && !checkForDuplicateResponsibility( resp ) ) {
-				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
-				rulesPassed &= false;
-			}
-             if(StringUtils.isNotBlank(resp.getNamespaceCode()) && StringUtils.isNotBlank(resp.getName()) && StringUtils.isBlank(resp.getId())){
-                rulesPassed &=validateNamespaceCodeAndName(resp.getNamespaceCode(),resp.getName());
-             }
+    /**
+     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
+     */
+    @Override
+    protected boolean processCustomRouteDocumentBusinessRules(MaintenanceDocument document) {
+        boolean rulesPassed = super.processCustomRouteDocumentBusinessRules(document);
+
+        GlobalVariables.getMessageMap().addToErrorPath(MAINTAINABLE_ERROR_PATH);
+        try {
+            ReviewResponsibilityBo newResp =
+                    (ReviewResponsibilityBo) document.getNewMaintainableObject().getDataObject();
+            ReviewResponsibilityBo oldResp =
+                    (ReviewResponsibilityBo) document.getOldMaintainableObject().getDataObject();
+
+            // check for duplicates if the responsibility is being copied or created
+            if (!newResp.getId().equals(oldResp.getId())) {
+                if (newResp.getDocumentTypeName() != null
+                        && newResp.getRouteNodeName() != null
+                        && !checkForDuplicateResponsibility(newResp)) {
+                    GlobalVariables.getMessageMap().putError("documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY);
+                    rulesPassed &= false;
+                }
+
+                if (StringUtils.isNotBlank(newResp.getNamespaceCode()) && StringUtils.isNotBlank(newResp.getName())) {
+                    rulesPassed &= validateNamespaceCodeAndName(newResp.getNamespaceCode(), newResp.getName());
+                }
+            } else {
+                // check for duplicates if particular fields of the responsibility are being edited
+                if (newResp.getDocumentTypeName() != null && newResp.getRouteNodeName() != null
+                        && (!StringUtils.equals(oldResp.getDocumentTypeName(), newResp.getDocumentTypeName())
+                            || !StringUtils.equals(oldResp.getRouteNodeName(), newResp.getRouteNodeName()))
+                        && !checkForDuplicateResponsibility(newResp)) {
+                    GlobalVariables.getMessageMap().putError("documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY);
+                    rulesPassed &= false;
+                }
+
+                if (StringUtils.isNotBlank(newResp.getNamespaceCode()) && StringUtils.isNotBlank(newResp.getName()) && (
+                        !StringUtils.equals(oldResp.getNamespaceCode(), newResp.getNamespaceCode())
+                                || !StringUtils.equals(oldResp.getName(), newResp.getName()))) {
+                    rulesPassed &= validateNamespaceCodeAndName(newResp.getNamespaceCode(), newResp.getName());
+                }
+            }
+
         } finally {
-			GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
-		}
-		return rulesPassed;
-	}
+            GlobalVariables.getMessageMap().removeFromErrorPath(MAINTAINABLE_ERROR_PATH);
+        }
+        return rulesPassed;
+    }
 
 
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {

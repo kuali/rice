@@ -63,6 +63,6 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
 
     protected void testLabsLookupDefaultEmpty()throws Exception {
         waitAndClickButtonByText("Search");
-        findDataTableRow("Travel Account 1");
+        assertTextPresent("items retrieved, displaying all items.");
     }
 }

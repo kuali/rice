@@ -49,35 +49,36 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveBookmark() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String account = uniqueAccount();
         testLabsLookupDefaultCreateNewBlanketApprove(account);
         passed();
     }
 
+    private String uniqueAccount() {
+        return "z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+    }
+
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountBookmark() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(uniqueAccount());
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveNav() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        testLabsLookupDefaultCreateNewBlanketApprove(account);
+        testLabsLookupDefaultCreateNewBlanketApprove(uniqueAccount());
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountNav() throws Exception {
-        String account = "Z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(account);
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(uniqueAccount());
         passed();
     }
 
     protected void testLabsLookupDefaultCreateNewBlanketApprove(String account)throws Exception {
         navigateToCreateNew();
-        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created ");
+        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created " + account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
@@ -85,7 +86,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//input[@value='CAT']");
 
         waitAndClickByLinkText("Notes and Attachments (0)");
-        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
+        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note " + account);
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
@@ -104,7 +105,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
 
     protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(String account)throws Exception {
         navigateToCreateNew();
-        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created");
+        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created " + account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
@@ -116,7 +117,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickButtonByText("add");
 
         waitAndClickByLinkText("Notes and Attachments (0)");
-        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note");
+        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note " + account);
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");

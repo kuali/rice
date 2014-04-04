@@ -43,8 +43,8 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
     	waitAndClickByXpath("//input[@type='image' and @title='Direct Inquiry']");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Document Number:", docId},
-                                          {"Document Description:", "Test"}};
-//        {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
+//                                          {"Document Description:", "Test"}}; // is this data flapping
+        {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

@@ -546,8 +546,16 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                     if (StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityActionId())) {
                         DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S);
                         responsibility.getRoleRspActions().get(0).setRoleResponsibilityActionId(incrementer.nextStringValue());
-                        responsibility.getRoleRspActions().get(0).setRoleResponsibilityId(nextRoleResponsibilityId);
                     }
+
+                    if (StringUtils.isBlank(responsibility.getRoleRspActions().get(0).getRoleResponsibilityId())) {
+                        if (StringUtils.isBlank(nextRoleResponsibilityId)) {
+                            responsibility.getRoleRspActions().get(0).setRoleResponsibilityId(responsibility.getRoleResponsibilityId());
+                        } else {
+                            responsibility.getRoleRspActions().get(0).setRoleResponsibilityId(nextRoleResponsibilityId);
+                        }
+                    }
+
                     responsibility.getRoleRspActions().get(0).setRoleMemberId("*");
                     responsibility.getRoleRspActions().get(0).setDocumentNumber(getDocumentNumber());
                 }

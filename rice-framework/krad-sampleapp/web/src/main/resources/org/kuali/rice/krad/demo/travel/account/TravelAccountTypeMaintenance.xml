@@ -42,7 +42,7 @@
             <list>
               <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true" />
               <bean parent="Uif-InputField" p:propertyName="accountTypeName" p:required="true" />
-              <bean parent="Uif-InputField" p:propertyName="active" p:required="true" />
+              <bean parent="Uif-InputField" p:propertyName="active" />
             </list>
           </property>
         </bean>

@@ -24,6 +24,11 @@
         p:objectLabel="Uber Responsibility"
         p:inquiryDefinition-ref="ResponsibilityImpl-inquiryDefinition" 
         p:lookupDefinition-ref="ResponsibilityImpl-lookupDefinition">
+    <property name="primaryKeys">
+      <list>
+        <value>id</value>
+      </list>
+    </property>
     <property name="attributes">
       <list>
         <ref bean="ResponsibilityImpl-template.namespaceCode"/>
@@ -247,7 +252,7 @@
   </bean>
     
   <bean id="ResponsibilityImpl-inquiryDefinition" parent="ResponsibilityImpl-inquiryDefinition-parentBean"/>
-  <bean id="ResponsibilityImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Responsibility Inquiry">
+  <bean id="ResponsibilityImpl-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition" p:title="Responsibility Inquiry CC">
     <property name="inquirySections">
       <list>
         <bean parent="InquirySectionDefinition" p:title="Responsibility Attributes" p:numberOfColumns="1">

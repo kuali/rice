@@ -25,9 +25,11 @@ import javax.persistence.Table;
 
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeData;
+import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
@@ -35,7 +37,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name = "KRIM_RSP_ATTR_DATA_T")
-public class ResponsibilityAttributeBo extends KimAttributeDataBo {
+public class ResponsibilityAttributeBo extends KimAttributeDataBo implements KimAttributeDataContract, BusinessObject {
     private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRIM_ATTR_DATA_ID_S")
@@ -44,9 +46,8 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
     @Column(name = "ATTR_DATA_ID")
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "RSP_ID", nullable = false)
-    private ResponsibilityBo responsibilityBo;
+    @Column(name = "RSP_ID")
+    private String assignedToId;
 
     /**
      * Converts a mutable bo to its immutable counterpart
@@ -95,20 +96,16 @@ public class ResponsibilityAttributeBo extends KimAttributeDataBo {
     }
 
     @Override
-    public void setAssignedToId(String assignedToId) {
+    public String getAssignedToId() {
+        return assignedToId;
     }
 
     @Override
-    public String getAssignedToId() {
-        return getResponsibilityBo().getId();
+    public void setAssignedToId(String assignedToId) {
+        this.assignedToId = assignedToId;
     }
 
-
-    public ResponsibilityBo getResponsibilityBo() {
-        return responsibilityBo;
-    }
-
-    public void setResponsibilityBo(ResponsibilityBo responsibilityBo) {
-        this.responsibilityBo = responsibilityBo;
+    @Override
+    public void refresh() {
     }
 }

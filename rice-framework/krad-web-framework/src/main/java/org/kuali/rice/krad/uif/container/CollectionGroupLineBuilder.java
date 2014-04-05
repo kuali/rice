@@ -124,7 +124,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                 Action.class);
         setFocusOnIdForActions(actions, lineFields);
 
-        boolean canEditLine = checkEditLineAuthorization();
+        boolean canEditLine = checkEditLineAuthorization(lineFields);
         ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
         ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
 
@@ -359,16 +359,15 @@ public class CollectionGroupLineBuilder implements Serializable {
     /**
      * Determines whether the user is authorized to the edit the line.
      *
+     * @param lineFields list of fields configured for the line
      * @return boolean true if the user can edit the line, false if not
      */
-    protected boolean checkEditLineAuthorization() {
-        boolean canEditLine = false;
+    protected boolean checkEditLineAuthorization(List<Field> lineFields) {
+        boolean canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
 
-        if  (lineBuilderContext.getCollectionGroup().getAddLineItems() == null) {
-            canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
-        } else {
-            for (Component component : lineBuilderContext.getCollectionGroup().getAddLineItems()) {
-                if (component.isReadOnly()) {
+        if (!canEditLine) {
+            for (Field field : lineFields) {
+                if (!field.isReadOnly()) {
                     canEditLine = true;
                     break;
                 }

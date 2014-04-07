@@ -366,7 +366,18 @@ public class CollectionGroupLineBuilder implements Serializable {
         boolean canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
 
         if (!canEditLine) {
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
+            View view = ViewLifecycle.getView();
+
             for (Field field : lineFields) {
+                field.pushObjectToContext(UifConstants.ContextVariableNames.PARENT,
+                        lineBuilderContext.getCollectionGroup());
+                field.pushAllToContext(view.getContext());
+                field.pushObjectToContext(UifConstants.ContextVariableNames.COMPONENT, field);
+
+                expressionEvaluator.evaluatePropertyExpression(view, field.getContext(), field,
+                        UifPropertyPaths.READ_ONLY, true);
+
                 if (!field.isReadOnly()) {
                     canEditLine = true;
                     break;

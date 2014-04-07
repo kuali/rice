@@ -498,6 +498,7 @@
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2 Read Only"/>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Read Only if not b" p:readOnly="@{#lp.field2 ne 'b'}"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:readOnly="false"/>
               <bean parent="Uif-InputField" p:propertyName="bfield" p:label="bfield Read Only">
                 <property name="control">

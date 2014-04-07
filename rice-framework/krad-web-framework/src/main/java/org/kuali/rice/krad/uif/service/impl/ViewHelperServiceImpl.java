@@ -791,21 +791,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void populateDefaultValueForField(Object object, DataField dataField, String bindingPath) {
+
         if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath) || !ObjectPropertyUtils.isWritableProperty(
                 object, bindingPath)) {
             return;
         }
-
         Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
-
-        // Default value only applies when the value being set is null (has no value on the form)
-        if (currentValue != null) {
-            return;
-        }
-
         Object defaultValue = getDefaultValueForField(object, dataField);
 
-        ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+        if (defaultValue != null) {
+            ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
+        }
     }
 
     /**

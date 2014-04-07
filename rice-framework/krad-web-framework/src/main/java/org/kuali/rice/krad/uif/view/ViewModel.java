@@ -287,19 +287,18 @@ public interface ViewModel extends Serializable {
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines);
 
     /**
-     * Indicates whether the form has had default values from the configured
-     * <code>View</code> applied. This happens only once for each form instance
+     * Unique list of view ids that need default values applied.
      *
-     * @return boolean true if default values have been applied, false if not
+     * @return List<String> view ids
      */
-    public boolean isDefaultsApplied();
+    public List<String> getViewsThatNeedDefaultValuesApplied();
 
     /**
-     * Setter for the defaults applied indicator
+     * Setter for the list of view ids that need default values applied.
      *
-     * @param defaultsApplied
+     * @param viewsThatNeedDefaultValuesApplied
      */
-    public void setDefaultsApplied(boolean defaultsApplied);
+    public void setViewsThatNeedDefaultValuesApplied(List<String> viewsThatNeedDefaultValuesApplied);
 
     /**
      * Script that will run on render (view or component) for generating growl messages

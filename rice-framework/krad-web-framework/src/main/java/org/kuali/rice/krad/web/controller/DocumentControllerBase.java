@@ -124,6 +124,11 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && form.getDocId() != null) {
             loadDocument(form);
         } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
+            if (form.getView() != null) {
+
+                //indicate that default values should be applied to this view
+                form.addViewThatNeedsDefaultValuesApplied(form.getViewId());
+            }
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");

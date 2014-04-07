@@ -103,7 +103,7 @@
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
-      <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:required="true" p:colSpan="3" />
+      <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:defaultValue-="1231234" p:required="true" p:colSpan="3" />
     </list>
   </property>
 </bean>

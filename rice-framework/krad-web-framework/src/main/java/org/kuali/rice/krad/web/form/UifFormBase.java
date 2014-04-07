@@ -92,7 +92,7 @@ public class UifFormBase implements ViewModel {
     private Map<String, String[]> initialRequestParameters;
 
     protected String state;
-    protected boolean defaultsApplied;
+    protected List<String> viewsThatNeedDefaultValuesApplied;
     protected boolean renderedInLightBox;
     protected boolean renderedInIframe;
 
@@ -155,7 +155,6 @@ public class UifFormBase implements ViewModel {
     protected Map<String, String> queryParameters;
 
     public UifFormBase() {
-        defaultsApplied = false;
         renderedInLightBox = false;
         renderedInIframe = false;
         requestRedirected = false;
@@ -711,19 +710,34 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#isDefaultsApplied()
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewsThatNeedDefaultValuesApplied()
      */
     @Override
-    public boolean isDefaultsApplied() {
-        return this.defaultsApplied;
+    public List<String> getViewsThatNeedDefaultValuesApplied() {
+        if(viewsThatNeedDefaultValuesApplied == null) {
+            viewsThatNeedDefaultValuesApplied = new ArrayList<String>();
+        }
+
+        return viewsThatNeedDefaultValuesApplied;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setDefaultsApplied(boolean)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setgetViewsThatNeedDefaultValuesApplied(List<String>)
      */
     @Override
-    public void setDefaultsApplied(boolean defaultsApplied) {
-        this.defaultsApplied = defaultsApplied;
+    public void setViewsThatNeedDefaultValuesApplied(List<String> viewsThatNeedDefaultValuesApplied) {
+        this.viewsThatNeedDefaultValuesApplied = viewsThatNeedDefaultValuesApplied;
+    }
+
+    /**
+     * Adds unique view id to list of views that need default values applied.
+     *
+     * @param viewid
+     */
+    public void addViewThatNeedsDefaultValuesApplied(String viewId) {
+        if(!getViewsThatNeedDefaultValuesApplied().contains(viewId)) {
+            viewsThatNeedDefaultValuesApplied.add(viewId);
+        }
     }
 
     /**

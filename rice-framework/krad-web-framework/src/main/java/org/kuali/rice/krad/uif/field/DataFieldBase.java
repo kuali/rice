@@ -51,6 +51,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -226,9 +227,11 @@ public class DataFieldBase extends FieldBase implements DataField {
             this.getFieldLabel().setLabelForComponentId(this.getId() + UifConstants.IdSuffixes.CONTROL);
         }
 
-        ViewHelperService viewHelperService = ViewLifecycle.getView().getViewHelperService();
-        if ((this.getDefaultValue()!=null) || (this.getDefaultValueFinderClass() != null)) {
-               viewHelperService.populateDefaultValueForField(model, this, this.getBindingInfo().getBindingPath());
+        if (model instanceof ViewModel) {
+            View view = ViewLifecycle.getView();
+            if(((ViewModel) model).getViewsThatNeedDefaultValuesApplied().contains(view.getId())) {
+                view.getViewHelperService().populateDefaultValueForField(model, this,                        this.getBindingInfo().getBindingPath());
+            }
         }
 
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();

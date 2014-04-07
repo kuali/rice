@@ -75,6 +75,9 @@ public class ViewLifecycleBuild implements Runnable {
 
         runFinalizePhase();
 
+        // remove view so default values are only applied once
+        ((ViewModel) ViewLifecycle.getModel()).getViewsThatNeedDefaultValuesApplied().remove(view.getId());
+
         // build script for generating growl messages
         String growlScript = ViewLifecycle.getHelper().buildGrowlScript();
         ((ViewModel) ViewLifecycle.getModel()).setGrowlScript(growlScript);
@@ -163,10 +166,12 @@ public class ViewLifecycleBuild implements Runnable {
             LOG.info("performing apply model phase for view: " + view.getId());
         }
 
-        // apply default values if they have not been applied yet
-        if (!model.isDefaultsApplied()) {
+        // apply default values if view in list
+        if (model.getViewsThatNeedDefaultValuesApplied().contains(view.getId())) {
             helper.applyDefaultValues(view);
-            model.setDefaultsApplied(true);
+
+            //remove view from list, so default values are only applied once.
+            //model.getViewsThatNeedDefaultValuesApplied().remove(view.getId());
         }
 
         // get action flag and edit modes from authorizer/presentation controller

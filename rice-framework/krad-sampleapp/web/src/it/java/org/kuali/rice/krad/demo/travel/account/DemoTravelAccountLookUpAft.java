@@ -133,6 +133,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     }   // isAlertPresent()
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("edit");
     	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
@@ -148,9 +149,9 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     	waitAndClickByLinkText("return value");
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
     	waitAndClickButtonByText("submit");
-    	Thread.sleep(5000);  //Need sleep as we dont have method which waits and returns true or false.
-    	if(isTextPresent("Document was successfully submitted.")) {
+    	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
+            waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     		waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("edit");
         	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
@@ -166,10 +167,10 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         	waitAndClickByLinkText("return value");
         	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         	waitAndClickButtonByText("submit");
-    		waitForTextPresent(" This document cannot be Saved or Routed");
+    		waitForTextPresent("This document cannot be Saved or Routed");
     	}
     	else{
-    		waitForElementPresent(" This document cannot be Saved or Routed");
+            waitForTextPresent("This document cannot be Saved or Routed");
     	}
     }
 

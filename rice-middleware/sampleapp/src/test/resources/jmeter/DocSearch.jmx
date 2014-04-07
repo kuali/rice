@@ -131,13 +131,26 @@
             <boolProp name="CounterConfig.per_user">false</boolProp>
           </CounterConfig>
           <hashTree/>
+          <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">if (&quot;80&quot;.equals(vars.get(&quot;PORT&quot;))) {
+	vars.put(&quot;URL&quot;, &quot;${SERVER}${PATH}&quot;);	
+} else {
+	vars.put(&quot;URL&quot;, &quot;${SERVER}:${PORT}${PATH}&quot;);	
+}
+</stringProp>
+            <stringProp name="TestPlan.comments">Remove port from url if it is 80 so to avoid 500 error on CI envs</stringProp>
+          </BeanShellListener>
+          <hashTree/>
           <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
             <collectionProp name="UserParameters.names">
-              <stringProp name="84303">URL</stringProp>
+              <stringProp name="190005758">URL_ENCODED</stringProp>
             </collectionProp>
             <collectionProp name="UserParameters.thread_values">
-              <collectionProp name="960218966">
-                <stringProp name="1330894003">${SERVER}:${PORT}${PATH}</stringProp>
+              <collectionProp name="1530948064">
+                <stringProp name="-1879241901">${__urlencode(${URL})}</stringProp>
               </collectionProp>
             </collectionProp>
             <boolProp name="UserParameters.per_iteration">false</boolProp>
@@ -469,7 +482,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -523,7 +536,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/themes/kboot/stylesheets/kboot.2.4.0-M5-SNAPSHOT.min.css</stringProp>
+                  <stringProp name="Header.value">http://${URL}/themes/kboot/stylesheets/kboot.2.4.0-M5-SNAPSHOT.min.css</stringProp>
                 </elementProp>
                 <elementProp name="DNT" elementType="Header">
                   <stringProp name="Header.name">DNT</stringProp>
@@ -602,7 +615,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -681,7 +694,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -760,7 +773,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -839,7 +852,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -918,7 +931,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -997,7 +1010,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1076,7 +1089,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1155,7 +1168,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do</stringProp>
                 </elementProp>
                 <elementProp name="X-Requested-With" elementType="Header">
                   <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -1305,7 +1318,7 @@
                 </elementProp>
                 <elementProp name="Referer" elementType="Header">
                   <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
+                  <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
                 </elementProp>
                 <elementProp name="DNT" elementType="Header">
                   <stringProp name="Header.name">DNT</stringProp>
@@ -1379,7 +1392,7 @@
                   </elementProp>
                   <elementProp name="Referer" elementType="Header">
                     <stringProp name="Header.name">Referer</stringProp>
-                    <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
+                    <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
                   </elementProp>
                   <elementProp name="DNT" elementType="Header">
                     <stringProp name="Header.name">DNT</stringProp>
@@ -1430,7 +1443,7 @@
                   </elementProp>
                   <elementProp name="Referer" elementType="Header">
                     <stringProp name="Header.name">Referer</stringProp>
-                    <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
+                    <stringProp name="Header.value">http://${URL}/kr-login/login?methodToCall=start&amp;viewId=DummyLoginView&amp;dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm&amp;returnLocation=%2Fportal.do&amp;formKey=${FORM_KEY}&amp;cacheKey=${CACHE_KEY}</stringProp>
                   </elementProp>
                   <elementProp name="DNT" elementType="Header">
                     <stringProp name="Header.name">DNT</stringProp>
@@ -1457,7 +1470,7 @@
                   <elementProp name="channelUrl" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">channelUrl</stringProp>
-                    <stringProp name="Argument.value">http://${SERVER}:${PORT}${PATH}/kew/DocumentSearch.do?docFormKey=${DOC_FORM_KEY}</stringProp>
+                    <stringProp name="Argument.value">http://${URL}/kew/DocumentSearch.do?docFormKey=${DOC_FORM_KEY}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -1502,7 +1515,7 @@
                   </elementProp>
                   <elementProp name="Referer" elementType="Header">
                     <stringProp name="Header.name">Referer</stringProp>
-                    <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/portal.do?</stringProp>
+                    <stringProp name="Header.value">http://${URL}/portal.do?</stringProp>
                   </elementProp>
                   <elementProp name="DNT" elementType="Header">
                     <stringProp name="Header.name">DNT</stringProp>
@@ -1529,7 +1542,7 @@
                   <elementProp name="returnLocation" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.name">returnLocation</stringProp>
-                    <stringProp name="Argument.value">http://${SERVER}:${PORT}${PATH}/portal.do</stringProp>
+                    <stringProp name="Argument.value">http://${URL}/portal.do</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -1574,7 +1587,7 @@
                   </elementProp>
                   <elementProp name="Referer" elementType="Header">
                     <stringProp name="Header.name">Referer</stringProp>
-                    <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/rice-portal/scripts/easyXDM/resize_intermediate.html?url=${PATH_ENCODED}%2Fkew%2FDocumentSearch.do%3FdocFormKey%3D${DOC_FORM_KEY}%26returnLocation%3Dhttp%3A%2F%2F${SERVER}%3A${PORT}${PATH_ENCODED}%2Fportal.do%26hideReturnLink%3Dtrue&amp;xdm_e=http%3A%2F%2F${SERVER}%3A${PORT}${PATH_ENCODED}%2Fportal.do&amp;xdm_c=default4473&amp;xdm_p=4</stringProp>
+                    <stringProp name="Header.value">http://${URL}/rice-portal/scripts/easyXDM/resize_intermediate.html?url=${PATH_ENCODED}%2Fkew%2FDocumentSearch.do%3FdocFormKey%3D${DOC_FORM_KEY}%26returnLocation%3D${URL_ENCODED}%2Fportal.do%26hideReturnLink%3Dtrue&amp;xdm_e=${URL_ENCODED}%2Fportal.do&amp;xdm_c=default4473&amp;xdm_p=4</stringProp>
                   </elementProp>
                   <elementProp name="DNT" elementType="Header">
                     <stringProp name="Header.name">DNT</stringProp>
@@ -1599,7 +1612,7 @@
                     <elementProp name="backLocation" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">backLocation</stringProp>
-                      <stringProp name="Argument.value">http%3A%2F%2F${SERVER}%3A${PORT}${PATH_ENCODED}%2Fportal.do</stringProp>
+                      <stringProp name="Argument.value">${URL_ENCODED}%2Fportal.do</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
@@ -1851,7 +1864,7 @@
                     </elementProp>
                     <elementProp name="Referer" elementType="Header">
                       <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">http://${SERVER}:${PORT}${PATH}/kew/DocumentSearch.do?docFormKey=${DOC_FORM_KEY}&amp;returnLocation=http://${SERVER}:${PORT}${PATH}/portal.do&amp;hideReturnLink=true</stringProp>
+                      <stringProp name="Header.value">http://${URL}/kew/DocumentSearch.do?docFormKey=${DOC_FORM_KEY}&amp;returnLocation=http://${URL}/portal.do&amp;hideReturnLink=true</stringProp>
                     </elementProp>
                     <elementProp name="DNT" elementType="Header">
                       <stringProp name="Header.name">DNT</stringProp>

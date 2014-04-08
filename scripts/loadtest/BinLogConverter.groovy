@@ -27,6 +27,11 @@ def outFile
 def defaultConfigFilePath
 def newline
 
+
+/**
+ * Build config object, set local parameters
+ * @return
+ */
 def init() {
     defaultConfigFilePath = "binlog.conversion.properties"
     def defaultConfigFile = new File(BinLogConverter.getClassLoader().getResource(defaultConfigFilePath).file)
@@ -67,11 +72,12 @@ def stripUninterestingLines(){
     statements = workFile.readLines();
 }
 
-
+/*
+ * find map associated with the table manipulated by the statement
+ */
 def findTableMap(line){
     for (tableName in config.map.tablemaps.keySet()){
         if (line.contains(tableName)){
-            println "Found TABLE: "+tableName
             return config.map.tablemaps.get(tableName)
         }
     }
@@ -79,10 +85,7 @@ def findTableMap(line){
 }
 
 /**
- * assumes time token follows date
- *
- * @param tokens
- * @return
+ * date data fields in binlog are not surrounded by quotes, add the quotes
  */
 def stringifyDates(tokens){
     def date_pattern = ~/....-..-../
@@ -94,6 +97,10 @@ def stringifyDates(tokens){
     }
 }
 
+/**
+ * remove NULL assignments from the sql commands
+ * binlog statements contain null assignments for all unused fields. we don't need them.
+ */
 def removeNullColumns(tokens){
     tokens.eachWithIndex{ token, index ->
         if (token.contains("=NULL")){
@@ -102,6 +109,12 @@ def removeNullColumns(tokens){
     }
 }
 
+/**
+ * Raw data contains placeholders for column names, replace the name holders with the actual table names
+ * @param tokens
+ * @param tableMap
+ * @return
+ */
 def transformColumnNames(tokens, tableMap){
     if (tableMap != null){
         println tableMap
@@ -117,6 +130,12 @@ def transformColumnNames(tokens, tableMap){
     }
 }
 
+/**
+ * for update statements, raw data from binlog has the where clause before the set clause.
+ * Reverse them to be in the correct order with the where clause at the end
+ * @param stmt
+ * @return
+ */
 def moveWhereClauseForUpdates(stmt){
     if (stmt.contains("UPDATE")){
         def wClause = stmt[stmt.indexOf("WHERE ")..<stmt.indexOf(" SET ")]
@@ -126,6 +145,12 @@ def moveWhereClauseForUpdates(stmt){
     return stmt
 }
 
+/**
+ * Break the raw sql statement into tokens for easier manipulation.
+ * Data containing spaces will be split into multiple tokens, handle this during tokenization.
+ * @param stmt
+ * @return
+ */
 def tokenize(stmt){
     def tokens = stmt.tokenize()
     def lastGoodToken = 0;
@@ -141,6 +166,10 @@ def tokenize(stmt){
     return tokens
 }
 
+/*
+ * Ensure any quoted data is handled appropriately.
+ * Use double-quote to surround string. Single quotes for quotes in data
+ */
 def replaceQuotesWithDouble(tokens)
 {
     tokens.eachWithIndex{ token, index ->
@@ -150,6 +179,11 @@ def replaceQuotesWithDouble(tokens)
     }
 }
 
+/**
+ * Reconstructs a SQL statement from the list of tokens
+ * @param tokens
+ * @return
+ */
 def untokenize(tokens)
 {
     replaceQuotesWithDouble(tokens)
@@ -190,6 +224,10 @@ public void performConversion(){
     transformStatements()
 }
 
+/**
+ * Handle command line interface.
+ * @param args
+ */
 def parseCommandLine(args){
     def cli = new CliBuilder(usage:'groovy BinLogConverter.groovyoovy -i <input binlog file> -o <output sql file> [options]')
     cli.h( longOpt: 'help', required: false, 'show usage information' )
@@ -224,6 +262,10 @@ def parseCommandLine(args){
     }
 }
 
+/**
+ * write the converted statements to file
+ * @return
+ */
 def createOutput(){
     outFile.createNewFile()
     statements.each{

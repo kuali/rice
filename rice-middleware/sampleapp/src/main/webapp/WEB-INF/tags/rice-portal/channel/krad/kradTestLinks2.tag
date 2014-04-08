@@ -24,7 +24,6 @@
 
   <strong>Screen Element Testing</strong>
   <ul class="chan">
-    <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91" />Uif Components (Kitchen Sink)</a></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-StandardLayout&methodToCall=start" />Standard Layout Demo</a></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationLayout&methodToCall=start" />Validation Framework Demo</a></li>
     <li><a class="portal_link" target="_blank" href="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=Demo-ValidationServerSide&methodToCall=start" />ServerSide Constraint Validation Demo</a></li>

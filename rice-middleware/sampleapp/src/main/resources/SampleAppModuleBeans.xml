@@ -88,22 +88,10 @@
         <value>classpath:edu/sampleu/demo/course/UifStudentDefinitions.xml</value>
         <value>classpath:edu/sampleu/demo/course/CourseOfferingView.xml</value>
         <value>classpath:edu/sampleu/demo/registration/RegistrationView.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsView.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP5.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP6.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP7.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx10.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewPx11.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifLightTableTest.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifValidationDemoServerSide.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifStateBasedValidation.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifRowDetailsDemo.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/UifBreadcrumbTestViews.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifLayoutView.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifStandardLayout.xml</value>
         <value>classpath:edu/sampleu/demo/layout/UifValidationLayout.xml</value>
@@ -113,7 +101,6 @@
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-ProgressiveRender.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Help.xml</value>
-        <value>classpath:edu/sampleu/demo/kitchensink/DialogTestView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Collections.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/CollectionsM2Test.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/ConfigurationTestView-Quickfinder.xml</value>
@@ -169,17 +156,6 @@
     </property>
     <property name="resourceBundleNames">
       <list>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewResources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP2Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP4Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP5Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP6Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP7Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP8Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP9Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx10Resources</value>
-        <value>edu.sampleu.demo.kitchensink.UifComponentsViewPx11Resources</value>
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
       </list>
     </property>

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.role.RoleBoLite;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -170,12 +172,18 @@ abstract class RoleServiceBase {
         }
 
         Map<String, String> validAttributeIds = new HashMap<String, String>();
-
+        HashSet <String> kimTypeIds = new HashSet<String>();
+        
+        //Getting unique kim types
         for (String roleId : roleIds) {
             RoleBoLite role = getRoleBoLite(roleId);
-            if (role != null && role.getKimRoleType() != null) {
-                for (KimTypeAttributeBo attr : role.getKimRoleType().getAttributeDefinitions()) {
-                    validAttributeIds.put(attr.getKimAttribute().getAttributeName(), attr.getKimAttributeId());
+            kimTypeIds.add(role.getKimTypeId());
+        }
+
+        if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
+            for (String kimTypeId : kimTypeIds) {
+                for (Map.Entry<String, String> entry : qualification.entrySet()) {
+                    validAttributeIds.put(entry.getKey(), getKimAttributeId(kimTypeId, entry.getKey()));
                 }
             }
         }

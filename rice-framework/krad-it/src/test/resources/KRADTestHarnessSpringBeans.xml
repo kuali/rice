@@ -218,6 +218,34 @@
     <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableVersion</value>
     <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableNoVersion</value>
     <value>org.kuali.rice.krad.data.jpa.DisableVersioningTest$DisableNoVersionRemoveMapping</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveCharacterFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveCharacterFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperCharacterFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperCharacterFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveBooleanFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveBooleanFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperBooleanFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperBooleanFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveShortFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveShortFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperShortFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperShortFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveIntegerFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveIntegerFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperIntegerFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperIntegerFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveFloatFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveFloatFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperFloatFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperFloatFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveDoubleFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveDoubleFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperDoubleFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperDoubleFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveLongFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveLongFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperLongFilterGeneratorParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperLongFilterGeneratorChild</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->

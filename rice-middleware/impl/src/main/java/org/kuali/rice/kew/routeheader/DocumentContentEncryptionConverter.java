@@ -40,6 +40,10 @@ import java.util.regex.Pattern;
 @Converter
 public class DocumentContentEncryptionConverter implements AttributeConverter<String, String> {
 
+    /**
+     * It's XML if it starts with a '<' though there can be some whitespace in front of it as well. Encrypted and
+     * Base64 encoded content will *never* start with a '<' so this should be a safe check.
+     */
     private static final Pattern IS_XML = Pattern.compile("^\\s*<");
 
     private static final EncryptionConverter encryptionConverter = new EncryptionConverter();

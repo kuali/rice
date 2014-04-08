@@ -29,7 +29,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.container.Container;
@@ -71,6 +70,8 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     private Map<String, Object> context;
 
     private List<PropertyReplacer> propertyReplacers;
+    
+    private boolean render = true;
     
     private String viewStatus = UifConstants.ViewStatus.CREATED;
 
@@ -606,6 +607,22 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      */
     public boolean isFinal() {
         return StringUtils.equals(viewStatus, ViewStatus.FINAL);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isRender() {
+        return this.render;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRender(boolean render) {
+        this.render = render;
     }
 
 }

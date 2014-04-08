@@ -59,4 +59,11 @@ public interface LifecycleElementState {
      */
     String getParentPath();
 
+    /**
+     * Gets the depth of the element in the lifecycle tree.
+     * 
+     * @return The depth of the element in the lifecycle tree.
+     */
+    int getDepth();
+
 }

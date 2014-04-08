@@ -139,6 +139,26 @@ public interface LifecycleElement extends Serializable, Copyable {
     void setViewStatus(ViewLifecyclePhase phase);
     
     /**
+     * Indicates whether the component should be rendered in the UI
+     *
+     * <p>
+     * If set to false, the corresponding component template will not be invoked
+     * (therefore nothing will be rendered to the UI).
+     * </p>
+     *
+     * @return boolean true if the component should be rendered, false if it
+     *         should not be
+     */
+    boolean isRender();
+
+    /**
+     * Setter for the components render indicator
+     *
+     * @param render
+     */
+    void setRender(boolean render);
+
+    /**
      * Indicates whether the component has been initialized.
      *
      * @return True if the component has been initialized, false if not.

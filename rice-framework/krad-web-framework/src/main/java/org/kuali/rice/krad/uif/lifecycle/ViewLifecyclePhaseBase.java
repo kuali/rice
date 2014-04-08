@@ -47,6 +47,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     private Component parent;
     private String viewPath;
     private String path;
+    private int depth;
 
     private List<String> refreshPaths;
 
@@ -69,6 +70,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         model = null;
         path = null;
         viewPath = null;
+        depth = 0;
         predecessor = null;
         nextPhase = null;
         processed = false;
@@ -136,11 +138,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
 
             boolean skipLifecycle = shouldSkipLifecycle();
 
+            String ntracePrefix = null;
+            String ntraceSuffix = null;
             try {
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
-                    ProcessLogger.ntrace("lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":",
-                            ":" + getElement().getClass().getSimpleName(), 1000);
-                    ProcessLogger.countBegin("lc-" + getStartViewStatus() + "-" + getEndViewStatus());
+                    ntracePrefix = "lc-" + getStartViewStatus() + "-" + getEndViewStatus() + ":";
+                    ntraceSuffix = ":" + getElement().getClass().getSimpleName() + (getElement().isRender()?":render":":no-render");
+
+                    ProcessLogger.ntrace(ntracePrefix, ntraceSuffix, 1000);
+                    ProcessLogger.countBegin(ntracePrefix + ntraceSuffix);
                 }
 
                 String viewStatus = element.getViewStatus();
@@ -210,7 +216,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 processor.setActivePhase(null);
 
                 if (ViewLifecycle.isTrace() && ProcessLogger.isTraceActive()) {
-                    ProcessLogger.countEnd("lc-" + getStartViewStatus() + "-" + getEndViewStatus(),
+                    ProcessLogger.countEnd(ntracePrefix + ntraceSuffix, 
                             getElement().getClass() + " " + getElement().getId());
                 }
             }
@@ -319,6 +325,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     assert successorBase.predecessor == null : this + " " + successorBase;
 
                     successorBase.predecessor = this;
+                    successorBase.depth = this.depth + 1;
                     successorBase.trace("succ-pend");
                 }
 
@@ -514,10 +521,12 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 // a component up to the right status before phase processing.
                 // Swap the next phase in for this phase in the graph.
                 nextPhase.predecessor = predecessor;
+                nextPhase.depth = predecessor.depth + 1;
             } else {
                 // Initial phase chain:  treat the next phase as a successor so that
                 // this phase (and therefore the controlling thread) will be notified
                 nextPhase.predecessor = this;
+                nextPhase.depth = this.depth + 1;
                 synchronized (pendingSuccessors) {
                     pendingSuccessors.add(nextPhase.getParentPath());
                 }
@@ -596,6 +605,14 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
      */
     public void setViewPath(String viewPath) {
         this.viewPath = viewPath;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getDepth() {
+        return this.depth;
     }
 
     /**

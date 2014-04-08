@@ -103,6 +103,9 @@ public class LifecycleRenderingContext {
             request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
             modelAttrs.put(UifParameters.REQUEST, request);
 
+            Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
+            modelAttrs.put(UifParameters.CONFIG_PROPERTIES, properties);
+
             modelAttrs.put(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -133,10 +136,10 @@ public class LifecycleRenderingContext {
 
             global.put(UifParameters.VIEW, ViewLifecycle.getView());
             
-            Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService()
-                    .getAllProperties();
-            global.put(UifParameters.CONFIG_PROPERTIES, properties);
-            global.put(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
+//            Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService()
+//                    .getAllProperties();
+//            global.put(UifParameters.CONFIG_PROPERTIES, properties);
+//            global.put(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
 
             Environment env = template.createProcessingEnvironment(global, writer);
             env.importLib("/krad/WEB-INF/ftl/lib/krad.ftl", "krad");

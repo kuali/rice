@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.uif.freemarker;
 
-import java.io.IOException;
 import java.util.Collections;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
@@ -25,9 +25,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 import freemarker.core.Environment;
 import freemarker.core.Macro;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Perform actual rendering on a component during the lifecycle.
@@ -35,6 +33,8 @@ import org.kuali.rice.krad.uif.view.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
+
+    private static final Logger LOG = Logger.getLogger(RenderComponentTask.class);
 
     /**
      * Constructor.
@@ -78,14 +78,18 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
 
             FreeMarkerInlineRenderUtils.renderTemplate(env, component,
                     null, false, false, Collections.<String, TemplateModel> emptyMap());
-        } catch (TemplateException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
-        } catch (IOException e) {
-            throw new IllegalStateException("Error rendering component " + component.getId(), e);
+
+            component.setRenderedHtmlOutput(renderingContext.getRenderedOutput());
+            component.setSelfRendered(true);
+        } catch (Throwable e) {
+            if (ViewLifecycle.isStrict()) {
+                LOG.warn("Error rendering component during lifecycle phase " + getElementState()
+                        + " falling back to higher level rendering", e);
+            } else if (ViewLifecycle.isTrace() && LOG.isDebugEnabled()) {
+                LOG.debug("component rendering failed during lifecycle phase " + getElementState()
+                        + " falling back to higher level rendering", e);
+            }
         }
 
-        component.setRenderedHtmlOutput(renderingContext.getRenderedOutput());
-        component.setSelfRendered(true);
     }
-
 }

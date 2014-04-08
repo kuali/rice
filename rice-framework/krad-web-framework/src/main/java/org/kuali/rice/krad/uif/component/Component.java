@@ -197,26 +197,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setComponentModifiers(List<ComponentModifier> componentModifiers);
 
     /**
-     * Indicates whether the component should be rendered in the UI
-     *
-     * <p>
-     * If set to false, the corresponding component template will not be invoked
-     * (therefore nothing will be rendered to the UI).
-     * </p>
-     *
-     * @return boolean true if the component should be rendered, false if it
-     *         should not be
-     */
-    boolean isRender();
-
-    /**
-     * Setter for the components render indicator
-     *
-     * @param render
-     */
-    void setRender(boolean render);
-
-    /**
      * When true, this component will render as a placeholder component instead of rendering normally because the
      * content will be later retrieved through manually ajax retrieval calls in the js
      *

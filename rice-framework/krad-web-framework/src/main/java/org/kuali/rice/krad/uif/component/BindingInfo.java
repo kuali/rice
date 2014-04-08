@@ -101,18 +101,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
             return bindingPath;
         }
 
-        String formedBindingPath = "";
-
-        if (!bindToForm && StringUtils.isNotBlank(bindingObjectPath)) {
-            formedBindingPath = bindingObjectPath;
-        }
-
-        if (StringUtils.isNotBlank(bindByNamePrefix)) {
-            if (!bindByNamePrefix.startsWith("[") && StringUtils.isNotBlank(formedBindingPath)) {
-                formedBindingPath += ".";
-            }
-            formedBindingPath += bindByNamePrefix;
-        }
+        String formedBindingPath = getBindingPathPrefix();
 
         if (StringUtils.isNotBlank(bindingName)) {
             if (bindToMap) {
@@ -184,18 +173,7 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
             propertyPath = StringUtils.removeStart(propertyPath, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX);
         }
 
-        String formedBindingPath = "";
-
-        if (!bindToForm && StringUtils.isNotBlank(bindingObjectPath)) {
-            formedBindingPath = bindingObjectPath;
-        }
-
-        if (StringUtils.isNotBlank(bindByNamePrefix)) {
-            if (!bindByNamePrefix.startsWith("[") && StringUtils.isNotBlank(formedBindingPath)) {
-                formedBindingPath += ".";
-            }
-            formedBindingPath += bindByNamePrefix;
-        }
+        String formedBindingPath = getBindingPathPrefix();
 
         if (bindToMap) {
             formedBindingPath += "[" + propertyPath + "]";
@@ -207,6 +185,29 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
         }
 
         return formedBindingPath;
+    }
+
+    /**
+     * Returns the binding path prefix to affix before the binding path or property adjusted binding path.
+     *
+     * @return the binding path prefix to affix before a binding path.
+     */
+    public String getBindingPathPrefix() {
+        String bindingPathPrefix = "";
+
+        if (!bindToForm && StringUtils.isNotBlank(bindingObjectPath)) {
+            bindingPathPrefix = bindingObjectPath;
+        }
+
+        if (StringUtils.isNotBlank(bindByNamePrefix)) {
+            if (!bindByNamePrefix.startsWith("[") && StringUtils.isNotBlank(bindingPathPrefix)) {
+                bindingPathPrefix += ".";
+            }
+
+            bindingPathPrefix += bindByNamePrefix;
+        }
+
+        return bindingPathPrefix;
     }
 
     /**

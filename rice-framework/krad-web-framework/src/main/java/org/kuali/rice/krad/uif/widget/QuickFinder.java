@@ -254,9 +254,11 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         Map<String, String> adjustedFieldConversions = new HashMap<String, String>();
         for (String fromField : fieldConversions.keySet()) {
             String toField = fieldConversions.get(fromField);
-            String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toField);
 
-            adjustedFieldConversions.put(fromField, adjustedToFieldPath);
+            if (!StringUtils.startsWith(toField, bindingInfo.getBindingPathPrefix())) {
+                String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toField);
+                adjustedFieldConversions.put(fromField, adjustedToFieldPath);
+            }
         }
 
         this.fieldConversions = adjustedFieldConversions;

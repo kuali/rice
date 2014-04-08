@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 /**
  * A JPA Converter which supports mixed encrypted and non-encrypted document content XML.
  *
- * <p>Extends from the standard {@link EncryptionConverter} but additionally when converting to the entity attribute
- * value, it will detect whether or not the value is encrypted XML or plain text XML and decrypt if necessary. This
- * allows for this situation where encryption is enabled at a later date. Using this mechanism, existing plain text
+ * <p>Leverages behavior from the  standard {@link EncryptionConverter} but additionally when converting to the entity
+ * attribute value, it will detect whether or not the value is encrypted XML or plain text XML and decrypt if necessary.
+ * This allows for this situation where encryption is enabled at a later date. Using this mechanism, existing plain text
  * docs can be loaded (but could potentially be saved back to the database encrypted if encryption is enabled).</p>
  *
  * <p>Note that the mixed mode only works one way. If you have been using encryption and then disable it, this

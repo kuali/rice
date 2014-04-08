@@ -166,6 +166,15 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                     // Legacy KNS Support - since they don't use DataObjectBase
                     ((PersistableBusinessObject) maintainable.getDataObject()).setObjectId(null);
                     ((PersistableBusinessObject) maintainable.getDataObject()).setVersionNumber(null);
+                } else {
+                    // If neither then use reflection to see if the object has setVersionNumber and setObjectId methods
+                   if(ObjectPropertyUtils.getWriteMethod(maintainable.getDataObject().getClass(), "versionNumber") != null) {
+                        ObjectPropertyUtils.setPropertyValue(maintainable.getDataObject(), "versionNumber", null);
+                   }
+
+                   if(ObjectPropertyUtils.getWriteMethod(maintainable.getDataObject().getClass(), "objectId") != null) {
+                        ObjectPropertyUtils.setPropertyValue(maintainable.getDataObject(), "objectId", null);
+                   }
                 }
 
                 if (!getDocumentDictionaryService().getPreserveLockingKeysOnCopy(maintainable.getDataObjectClass())) {

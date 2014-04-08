@@ -82,7 +82,7 @@ public class DemoLookUpConditionalResultsAft extends WebDriverLegacyITBase {
         // Case 2 - Empty research shows all columns
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndClickButtonByText(SEARCH);
-        Thread.sleep(3000);
+        waitForTextPresent("items retrieved, displaying");
         Assert.assertEquals(4, getCssCount(DATA_TABLE_TH_CSS));
         assertElementPresent(DATA_TABLE_TH_CSS + ":nth-child(2)");
         assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, DATA_TABLE_TH_CSS + ":nth-child(2) label",

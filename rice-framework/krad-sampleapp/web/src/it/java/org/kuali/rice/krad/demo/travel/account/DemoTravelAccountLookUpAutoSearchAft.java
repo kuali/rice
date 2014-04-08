@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,9 +50,12 @@ public class DemoTravelAccountLookUpAutoSearchAft extends WebDriverLegacyITBase 
     }
 
     protected void testDemoTravelAccountLookUpAutoSearch() throws Exception {
-        assertElementPresentByXpath("//a[contains(text(), 'a1')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a2')]");
-        assertElementPresentByXpath("//a[contains(text(), 'a3')]");
+        By[] results = {By.linkText("a1"), By.linkText("a2"), By.linkText("a3"), By.linkText("a4"), By.linkText("a5"),
+                By.linkText("a6"), By.linkText("a7"), By.linkText("a8"), By.linkText("a9"), By.linkText("a10"),
+                By.linkText("a11"), By.linkText("a12"), By.linkText("a13"), By.linkText("a14")};
+
+        assertElementsPresentInResultPages(results);
+
         assertTextPresent("14 items retrieved");
 // TODO should the foid work?
 //        waitAndTypeByName("lookupCriteria[foId]","1");

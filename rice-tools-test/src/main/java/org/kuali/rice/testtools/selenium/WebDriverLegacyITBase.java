@@ -3279,7 +3279,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testServerErrorsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
-        waitForElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
+        waitForElementPresent("div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
         waitIsVisibleByXpath("//div[@data-header_for='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
@@ -3317,11 +3317,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testServerInfoIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
-        waitIsVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']");
-        assertTrue(isVisibleByXpath("//div[@data-messagesfor='Demo-ValidationLayout-SectionsPage']"));
-        assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
-        assertTrue(isVisible("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"]"));
-        assertTrue(isElementPresent("div[data-messagesfor=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
+        waitIsVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']");
+        assertTrue(isVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']"));
+        assertTrue(isElementPresent("div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+        assertTrue(isVisible("div[data-messages_for=\"Demo-ValidationLayout-Section1\"]"));
+        assertTrue(isElementPresent("div[data-messages_for=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
         assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         assertTrue(isElementPresent(".uif-infoHighlight"));

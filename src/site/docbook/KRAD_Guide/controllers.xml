@@ -322,4 +322,105 @@
         <!-- TODO: Add content here.
             -->
     </section>
+    <section>
+        <title>Using Controllers to Allow Guest Access</title>
+        <para>
+            Some views might have to be exposed to users that does not have a Rice user. In these cases we can configure
+            certain views using controllers to allow guest user access.
+        </para>
+        <para>
+            To bypass the normal login mechanism you can change the <emphasis role="keyword">BootstrapFilter</emphasis>
+            configuration.  The <emphasis role="keyword">BootstrapFilter</emphasis> is a Rice filter which at runtime
+            reads a series of filter configurations, constructs and initializes those filters, and invokes them when it
+            is invoked. This allows runtime user configuration of arbitrary filters in the webapp context.  The
+            <emphasis role="keyword">BootstrapFilter</emphasis> configuration allows for excluding certain requests.
+            The following example excludes the <emphasis role="keyword">kradguest</emphasis> servlet requests from the
+            <emphasis role="keyword">DummyLoginFilter</emphasis> and adds an
+            <emphasis role="keyword">AutoLoginFilter</emphasis> for those requests.  The
+            <emphasis role="keyword">AutoLoginFilter</emphasis> allows automatic login with the user specified via the
+            filter init parameter.  With this setup, any requests to the <emphasis role="keyword">kradguest</emphasis>
+            servlet will be automatically logged in as guest and bypass the
+            <emphasis role="keyword">DummyLoginFilter</emphasis>.
+            <programlisting>&lt;param name="filter.login.class"&gt;org.kuali.rice.kew.web.DummyLoginFilter&lt;/param&gt;
+&lt;param name="filtermapping.login.1"&gt;/*&lt;/param&gt;
+&lt;param name="filterexclude.login"&gt;.*/kr-kradguest/.*&lt;/param&gt;
+
+&lt;param name="filter.guestlogin.class"&gt;org.kuali.rice.krad.web.filter.AutoLoginFilter&lt;/param&gt;
+&lt;param name="filtermapping.guestlogin.2"&gt;/kr-kradguest/*&lt;/param&gt;
+&lt;param name="filter.guestlogin.autouser"&gt;guest&lt;/param&gt;</programlisting>
+        </para>
+        <para>
+            KRAD has configured a <emphasis role="keyword">kradguest</emphasis> servlet mapping that can be used for the
+            purpose of allowing guest access.  The setup of controllers mapped to the
+            <emphasis role="keyword">kradguest</emphasis> servlet can be done in the
+            <filename>kradguest-servlet.xml</filename>
+            <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"&gt;
+
+    &lt;import resource="krad-base-servlet.xml"/&gt;
+
+    &lt;!-- Add controller beans for any requests that the krad guest servlet must handle --&gt;
+    &lt;bean id="UifComponentsTestController" class="edu.sampleu.demo.kitchensink.UifGuestController"/&gt;
+&lt;/beans&gt;</programlisting>
+        </para>
+        <para>
+            You can map any controller to the <emphasis role="keyword">kradguest</emphasis> servlet but view access is
+            still not restricted. To do this you can extend your controller and add a check for the views that must
+            allow guest access in the controller start method.
+            <programlisting>@Controller
+@RequestMapping(value = "<emphasis role="bold">/guestviews"</emphasis>)
+public class UifGuestController extends UifControllerBase {
+
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
+        return new UifComponentsTestForm();
+    }
+
+    /**
+     *  Initial method called when requesting new view
+     *
+     *  &lt;p&gt;
+     *  For guest access we check that only certain views can be called through this controller.
+     *  &lt;/p&gt;
+     *
+     * @param form - model
+     * @param result - binding result
+     * @param request - servlet request
+     * @param response - servlet response
+     * @return
+     */
+    @Override
+    @RequestMapping(params = "methodToCall=start")
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+        HttpServletRequest request, HttpServletResponse response) {
+        <emphasis role="bold">if (!form.getViewId().equals("UifGuestUserView")) {
+            throw new RuntimeException("Guest user not allowed to acces this view : " + form.getViewId());
+        }</emphasis>
+        return super.start(form,result,request,response);
+    }
+}</programlisting>
+        </para>
+        <para>
+            With the setup as described above only requests to
+            <emphasis role="bold">kr-kradguest/guestviews?viewId=UifGuestUserView&amp;methodToCall=start</emphasis>
+            will be logged in automatically as guest.
+        </para>
+    </section>
 </chapter>

@@ -50,6 +50,10 @@ public class DocumentContentEncryptionConverter implements AttributeConverter<St
 
     @Override
     public String convertToEntityAttribute(String dataValue) {
+        // can't pass 'null' to Matcher, so let's check that first
+        if (dataValue == null) {
+            return null;
+        }
         Matcher matcher = IS_XML.matcher(dataValue);
         if (matcher.lookingAt()) {
             return dataValue;

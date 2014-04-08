@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.util.xml.XmlJotter;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -43,6 +44,7 @@ public class DocumentRouteHeaderValueContent implements Serializable {
 	@Lob
 	@Basic(fetch=FetchType.LAZY)
 	@Column(name="DOC_CNTNT_TXT")
+    @Convert(converter = DocumentContentEncryptionConverter.class)
 	private String documentContent;
 		
 	public DocumentRouteHeaderValueContent() {}

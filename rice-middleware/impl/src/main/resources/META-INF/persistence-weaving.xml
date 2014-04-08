@@ -80,6 +80,7 @@
     <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatusId</class>
     <class>org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory</class>
     <class>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent</class>
+    <class>org.kuali.rice.kew.routeheader.DocumentContentEncryptionConverter</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeBase</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</class>
     <class>org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue</class>

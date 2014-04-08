@@ -67,6 +67,7 @@
     <value>org.kuali.rice.kew.doctype.DocumentTypePolicyId</value>
     <value>org.kuali.rice.kew.doctype.ApplicationDocumentStatusId</value>
     <value>org.kuali.rice.kew.doctype.ApplicationDocumentStatusCategory</value>
+    <value>org.kuali.rice.kew.routeheader.DocumentContentEncryptionConverter</value>
     <value>org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent</value>
     <value>org.kuali.rice.kew.docsearch.SearchableAttributeBase</value>
     <value>org.kuali.rice.kew.docsearch.SearchableAttributeStringValue</value>

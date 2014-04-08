@@ -660,6 +660,24 @@
         <column name="FIN_COA_CD" primaryKey="true" size="2" type="VARCHAR"/>
         <column name="ORG_CD" primaryKey="true" size="4" type="VARCHAR"/>
     </table>
+    <table name="KRTST_TYP_CHILD_T">
+        <column name="CHAR_PROP" size="1" type="CHAR"/>
+        <column name="BOOL_PROP" size="1" type="VARCHAR"/>
+        <column name="SHORT_PROP" size="5" type="DECIMAL"/>
+        <column name="INT_PROP" size="10" type="DECIMAL"/>
+        <column name="LONG_PROP" size="20" type="DECIMAL"/>
+        <column name="FLOAT_PROP" scale="2" size="10" type="DECIMAL"/>
+        <column name="DOUBLE_PROP" scale="2" size="20" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_TYP_PARENT_T">
+        <column name="CHAR_PROP" size="1" type="CHAR"/>
+        <column name="BOOL_PROP" size="1" type="VARCHAR"/>
+        <column name="SHORT_PROP" size="5" type="DECIMAL"/>
+        <column name="INT_PROP" size="10" type="DECIMAL"/>
+        <column name="LONG_PROP" size="20" type="DECIMAL"/>
+        <column name="FLOAT_PROP" scale="2" size="10" type="DECIMAL"/>
+        <column name="DOUBLE_PROP" scale="2" size="20" type="DECIMAL"/>
+    </table>
     <table name="KRTST_UPDATABLE_CHILD_T">
         <column name="PK_COL" size="10" type="VARCHAR"/>
         <column name="SOME_DATA_COL" size="40" type="VARCHAR"/>

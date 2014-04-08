@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -130,6 +131,13 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
         if (parent instanceof InputField) {
             setupForInputField(view, model, (InputField) parent);
+
+            // add field conversions as accessible binding paths
+            if (isRender()) {
+                for (String toField : fieldConversions.values()) {
+                    ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(toField);
+                }
+            }
         } else if (parent instanceof CollectionGroup) {
             setupForCollectionGroup(view, model, (CollectionGroup) parent);
         }

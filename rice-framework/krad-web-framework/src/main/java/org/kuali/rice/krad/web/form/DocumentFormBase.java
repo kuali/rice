@@ -22,6 +22,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 
 /**
  * Base form for all <code>DocumentView</code> screens
@@ -34,9 +35,14 @@ public class DocumentFormBase extends UifFormBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentFormBase.class);
 
 	private String annotation = "";
+
+    @RequestAccessible
 	private String command;
 
+    @RequestAccessible
 	private String docId;
+
+    @RequestAccessible
 	private String docTypeName;
 
 	protected Document document;

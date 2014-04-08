@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -149,6 +150,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
 
     @Override
+    @MethodAccessible
     public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -723,6 +725,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return null;
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxRefresh")
     public ModelAndView ajaxRefresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -756,6 +759,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param namespace the rule namespace
      * @return true or false
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxValidRuleName", method=RequestMethod.GET)
     public @ResponseBody boolean ajaxValidRuleName(@RequestParam String name, @RequestParam String namespace) {
         return (getRuleBoService().getRuleByNameAndNamespace(name, namespace) != null);

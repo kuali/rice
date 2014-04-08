@@ -82,7 +82,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
 
-        GlobalVariables.getUifFormManager().removeSessionForm(form);
+        if (GlobalVariables.getUifFormManager() != null) {
+            GlobalVariables.getUifFormManager().removeSessionForm(form);
+        }
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();

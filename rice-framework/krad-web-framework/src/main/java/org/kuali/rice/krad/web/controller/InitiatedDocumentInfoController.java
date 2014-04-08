@@ -51,6 +51,7 @@ public class InitiatedDocumentInfoController extends UifControllerBase {
     }
 
     @Override
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm")UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {

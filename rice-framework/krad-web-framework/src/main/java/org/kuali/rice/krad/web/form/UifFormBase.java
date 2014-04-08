@@ -45,6 +45,7 @@ import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -58,15 +59,31 @@ import org.springframework.web.multipart.MultipartFile;
 public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
+    @RequestAccessible
     protected String viewId;
+
+    @RequestAccessible
     protected String viewName;
+
+    @RequestAccessible
     protected ViewType viewTypeName;
+
+    @RequestAccessible
     protected String pageId;
+
+    @RequestAccessible
     protected String methodToCall;
+
+    @RequestAccessible
     protected String formKey;
+
+    @RequestAccessible
     @SessionTransient
     protected String requestedFormKey;
+
+    @RequestAccessible
     protected String flowKey;
+
     protected String sessionId;
     protected int sessionTimeoutInterval;
 
@@ -75,12 +92,18 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected HistoryManager historyManager;
 
+    @RequestAccessible
     @SessionTransient
     protected String jumpToId;
+
     @SessionTransient
     protected String jumpToName;
+
+    @RequestAccessible
     @SessionTransient
     protected String focusId;
+
+    @RequestAccessible
     @SessionTransient
     protected boolean dirtyForm;
 
@@ -93,11 +116,16 @@ public class UifFormBase implements ViewModel {
 
     protected String state;
     protected List<String> viewsThatNeedDefaultValuesApplied;
+
+    @RequestAccessible
     protected boolean renderedInLightBox;
+
+    @RequestAccessible
     protected boolean renderedInIframe;
 
     @SessionTransient
     protected String growlScript;
+
     @SessionTransient
     protected String lightboxScript;
 
@@ -107,11 +135,15 @@ public class UifFormBase implements ViewModel {
 
     protected Map<String, String> viewRequestParameters;
     protected List<String> readOnlyFieldsList;
+
     protected Map<String, Object> newCollectionLines;
 
+    @RequestAccessible
     @SessionTransient
     protected Map<String, String> actionParameters;
+
     protected Map<String, Object> clientStateForSyncing;
+
     @SessionTransient
     protected Map<String, Set<String>> selectedCollectionLines;
 
@@ -123,21 +155,31 @@ public class UifFormBase implements ViewModel {
     protected MultipartFile attachmentFile;
 
     // navigation
+    @RequestAccessible
     protected String returnLocation;
+
+    @RequestAccessible
     protected String returnFormKey;
 
+    @RequestAccessible
     @SessionTransient
     protected boolean ajaxRequest;
+
+    @RequestAccessible
     @SessionTransient
     protected String ajaxReturnType;
+
     @SessionTransient
     private String requestJsonTemplate;
     @SessionTransient
     private boolean collectionPagingRequest;
 
     // dialog fields
+    @RequestAccessible
     @SessionTransient
     protected String dialogExplanation;
+
+    @RequestAccessible
     @SessionTransient
     protected String dialogResponse;
     protected DialogManager dialogManager;
@@ -145,11 +187,13 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected boolean requestRedirected;
 
+    @RequestAccessible
     @SessionTransient
     protected String updateComponentId;
     @SessionTransient
     private Component updateComponent;
 
+    @RequestAccessible
     protected Map<String, Object> extensionData;
 
     protected Map<String, String> queryParameters;

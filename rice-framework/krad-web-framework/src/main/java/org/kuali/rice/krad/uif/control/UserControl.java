@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -65,6 +66,10 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
 
         InputField field = (InputField) parent;
         field.getAdditionalHiddenPropertyNames().add(principalIdPropertyName);
+
+        if (isRender() && !isHidden() && !isReadOnly()) {
+            ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(principalIdPropertyName);
+        }
 
         if (!field.isReadOnly()) {
             // add information fields

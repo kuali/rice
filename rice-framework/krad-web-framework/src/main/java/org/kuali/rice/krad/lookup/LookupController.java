@@ -40,6 +40,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -76,8 +77,9 @@ public class LookupController extends UifControllerBase {
      * continues with the lookup view display
      * </p>
      */
-    @RequestMapping(params = "methodToCall=start")
     @Override
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
@@ -126,6 +128,7 @@ public class LookupController extends UifControllerBase {
      * Performs the search action using the given lookup criteria and sets the results onto the lookup form, then
      * renders the same lookup view.
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
         Lookupable lookupable = lookupForm.getLookupable();
@@ -198,6 +201,7 @@ public class LookupController extends UifControllerBase {
      * 
      * @return ModelAndView
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=selectAllPages")
     public ModelAndView selectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
             HttpServletRequest request, final RedirectAttributes redirectAttributes) {
@@ -228,6 +232,7 @@ public class LookupController extends UifControllerBase {
      * 
      * @return ModelAndView
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deselectAllPages")
     public ModelAndView deselectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
             HttpServletRequest request, final RedirectAttributes redirectAttributes) {
@@ -245,8 +250,9 @@ public class LookupController extends UifControllerBase {
     /**
      * {@inheritDoc}
      */
-    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     @Override
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupUtils.refreshLookupResultSelections((LookupForm) form);
@@ -257,8 +263,9 @@ public class LookupController extends UifControllerBase {
     /**
      * {@inheritDoc}
      */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     @Override
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupUtils.refreshLookupResultSelections((LookupForm) form);

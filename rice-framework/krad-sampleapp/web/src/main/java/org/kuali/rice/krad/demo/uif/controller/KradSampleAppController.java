@@ -25,6 +25,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,7 @@ public class KradSampleAppController extends UifControllerBase {
     }
 
     @Override
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -56,7 +58,7 @@ public class KradSampleAppController extends UifControllerBase {
         return super.start(form, request, response);
     }
 
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=changeTheme")
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=changeTheme")
     public ModelAndView changeTheme(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         changeTheme(form);

@@ -512,6 +512,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         cssClasses = finalCssClasses;
+
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(
+                methodToCallOnRefresh)) {
+            ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCallOnRefresh);
+        }
     }
 
     /**

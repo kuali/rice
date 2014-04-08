@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.view.InquiryView;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 
 /**
  * Form class for <code>InquiryView</code> screens
@@ -32,6 +33,7 @@ import org.kuali.rice.krad.uif.view.InquiryView;
 public class InquiryForm extends UifFormBase {
     private static final long serialVersionUID = 4733144086378429410L;
 
+    @RequestAccessible
     private String dataObjectClassName;
     private Object dataObject;
 

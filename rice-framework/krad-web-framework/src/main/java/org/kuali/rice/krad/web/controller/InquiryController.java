@@ -77,8 +77,9 @@ public class InquiryController extends UifControllerBase {
      * is rendered
      * </p>
      */
-    @RequestMapping(params = "methodToCall=start")
     @Override
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
         InquiryForm inquiryForm = (InquiryForm) form;

@@ -32,25 +32,28 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifBeanPropertyBindingResult extends BeanPropertyBindingResult {
-
     private static final long serialVersionUID = -3740046436620585003L;
 
     private final Set<String> modifiedPaths = new HashSet<String>();
 
     private boolean changeTracking = false;
 
-    public UifBeanPropertyBindingResult(Object target, String objectName,  boolean autoGrowNestedPaths, int autoGrowCollectionLimit) {
+    public UifBeanPropertyBindingResult(Object target, String objectName, boolean autoGrowNestedPaths,
+            int autoGrowCollectionLimit) {
         super(target, objectName, autoGrowNestedPaths, autoGrowCollectionLimit);
     }
 
     /**
      * Create a new {@link BeanWrapper} for the underlying target object.
+     *
      * @see #getTarget()
      */
     @Override
     protected UifViewBeanWrapper createBeanWrapper() {
-        Assert.state(super.getTarget() != null, "Cannot access properties on null bean instance '" + getObjectName() + "'!");
-        Assert.state(super.getTarget() instanceof ViewModel, "Object must be instance of ViewModel to use Uif Bean Wrapper");
+        Assert.state(super.getTarget() != null,
+                "Cannot access properties on null bean instance '" + getObjectName() + "'!");
+        Assert.state(super.getTarget() instanceof ViewModel,
+                "Object must be instance of ViewModel to use Uif Bean Wrapper");
 
         return new UifViewBeanWrapper((ViewModel) super.getTarget(), this);
     }

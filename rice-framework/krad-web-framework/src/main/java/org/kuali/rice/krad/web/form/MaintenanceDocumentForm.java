@@ -19,6 +19,7 @@ import org.kuali.rice.krad.data.util.Link;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.web.bind.ChangeTracking;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 
 /**
  * Form class for <code>MaintenanceDocumentView</code> screens
@@ -30,7 +31,10 @@ import org.kuali.rice.krad.web.bind.ChangeTracking;
 public class MaintenanceDocumentForm extends DocumentFormBase {
 	private static final long serialVersionUID = -5805825500852498048L;
 
+    @RequestAccessible
 	protected String dataObjectClassName;
+
+    @RequestAccessible
 	protected String maintenanceAction;
 
 	public MaintenanceDocumentForm() {

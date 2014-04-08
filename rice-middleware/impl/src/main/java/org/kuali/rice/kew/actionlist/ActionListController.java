@@ -60,6 +60,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -274,6 +275,7 @@ public class ActionListController extends UifControllerBase{
     * @return ModelAndView - uses standard KRAD getUIFModelAndView()
     */
     @Override
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
@@ -755,6 +757,7 @@ public class ActionListController extends UifControllerBase{
      * @param response - http response
      * @return start() - forwards to start method to refresh action list
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=helpDeskActionListLogin")
     public ModelAndView helpDeskActionListLogin(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){

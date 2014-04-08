@@ -294,6 +294,29 @@ public class CloneUtils {
         return false;
     }
 
+    /**
+     * Returns annotation of the given type for the given property name (if present)
+     *
+     * @param clazz class containing the property to check
+     * @param propertyName name of the property to check
+     * @param annotationClass class for the annotation to look for
+     * @return annnotation on property, or null
+     */
+    public static Annotation getFieldAnnotation(Class<?> clazz, String propertyName,
+            Class<? extends Annotation> annotationClass) {
+        Field[] fields = getFields(clazz, false);
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            if (field.getName().equals(propertyName)) {
+                Annotation fieldAnnotation = field.getAnnotation(annotationClass);
+
+                return fieldAnnotation;
+            }
+        }
+
+        return null;
+    }
+
     protected static final Object instantiate(Object original) throws InstantiationException, IllegalAccessException, CloneNotSupportedException {
         if (original instanceof UifCloneable) {
             return ((UifCloneable) original).clone();

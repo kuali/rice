@@ -50,8 +50,11 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
     private Set<String> inputFieldIds;
-    private Set<String> allRenderedPropertyPaths;
+    private Set<String> allDataFieldPropertyPaths;
     private Map<String, List<Object>> addedCollectionObjects;
+
+    private Set<String> accessibleBindingPaths;
+    private Set<String> accessibleMethodToCalls;
 
     /**
      * Default contructor.
@@ -60,7 +63,10 @@ public class ViewPostMetadata implements Serializable {
         fieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
         secureFieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
         inputFieldIds = Collections.synchronizedSet(new HashSet<String>());
+        allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
+        accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
+        accessibleMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
     }
 
     /**
@@ -72,6 +78,14 @@ public class ViewPostMetadata implements Serializable {
         this();
 
         this.id = id;
+    }
+
+    /**
+     * Invoked after the lifecycle is complete to perform an necessary cleaning.
+     */
+    public void cleanAfterLifecycle() {
+        allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
+        addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
     }
 
     /**
@@ -193,7 +207,7 @@ public class ViewPostMetadata implements Serializable {
      */
     public ComponentPostMetadata initializeComponentPostMetadata(String componentId) {
         ComponentPostMetadata componentPostMetadata;
-        
+
         if (componentPostMetadataMap == null) {
             synchronized (this) {
                 if (componentPostMetadataMap == null) {
@@ -201,9 +215,9 @@ public class ViewPostMetadata implements Serializable {
                 }
             }
         }
-        
+
         componentPostMetadata = componentPostMetadataMap.get(componentId);
-        
+
         if (componentPostMetadata == null) {
             synchronized (componentPostMetadataMap) {
                 componentPostMetadata = new ComponentPostMetadata(componentId);
@@ -270,16 +284,24 @@ public class ViewPostMetadata implements Serializable {
         secureFieldPropertyEditors.put(propertyPath, propertyEditor);
     }
 
+    /**
+     * Set of ids for all input fields rendered with the view.
+     *
+     * @return set of id strings
+     */
     public Set<String> getInputFieldIds() {
         return inputFieldIds;
     }
 
+    /**
+     * @see ViewPostMetadata#getInputFieldIds()
+     */
     public void setInputFieldIds(Set<String> inputFieldIds) {
         this.inputFieldIds = inputFieldIds;
     }
 
     /**
-     * Set of property paths that have been rendered as part of the lifecycle.
+     * Set of data field property paths that have been rendered as part of the lifecycle.
      *
      * <p>Note this will include all property paths (of data fields) that were rendered as part of the
      * last full lifecycle and any component refreshes since then. It will not contain all paths of a view
@@ -287,29 +309,29 @@ public class ViewPostMetadata implements Serializable {
      *
      * @return set of property paths as strings
      */
-    public Set<String> getAllRenderedPropertyPaths() {
-        return allRenderedPropertyPaths;
+    public Set<String> getAllDataFieldPropertyPaths() {
+        return allDataFieldPropertyPaths;
     }
 
     /**
-     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
+     * @see ViewPostMetadata#getAllDataFieldPropertyPaths()
      */
-    public void setAllRenderedPropertyPaths(Set<String> allRenderedPropertyPaths) {
-        this.allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>(allRenderedPropertyPaths));
+    public void setAllDataFieldPropertyPaths(Set<String> allDataFieldPropertyPaths) {
+        this.allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>(allDataFieldPropertyPaths));
     }
 
     /**
-     * Adds a property path to the list of rendered property paths.
+     * Adds a property path to the list of data field property paths.
      *
      * @param propertyPath property path to add
-     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
+     * @see ViewPostMetadata#getAllDataFieldPropertyPaths()
      */
-    public void addRenderedPropertyPath(String propertyPath) {
-        if (this.allRenderedPropertyPaths == null) {
-            this.allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
+    public void addDataFieldPropertyPath(String propertyPath) {
+        if (this.allDataFieldPropertyPaths == null) {
+            this.allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         }
 
-        this.allRenderedPropertyPaths.add(propertyPath);
+        this.allDataFieldPropertyPaths.add(propertyPath);
     }
 
     /**
@@ -332,5 +354,54 @@ public class ViewPostMetadata implements Serializable {
      */
     public void setAddedCollectionObjects(Map<String, List<Object>> addedCollectionObjects) {
         this.addedCollectionObjects = addedCollectionObjects;
+    }
+
+    /**
+     * Set of property paths from the view that will allow binding to (by default).
+     *
+     * <p>Used by the UIF web infrastructure to provide security during the binding process. By default, binding
+     * will only occur for properties within the view configuration (for properties that allow updating).</p>
+     *
+     * @return Set of property paths
+     */
+    public Set<String> getAccessibleBindingPaths() {
+        return accessibleBindingPaths;
+    }
+
+    /**
+     * @see ViewPostMetadata#getAccessibleBindingPaths()
+     */
+    public void setAccessibleBindingPaths(Set<String> accessibleBindingPaths) {
+        this.accessibleBindingPaths = accessibleBindingPaths;
+    }
+
+    /**
+     * Adds a path to the set of accessible binding paths.
+     *
+     * @param accessibleBindingPath path to add as accessible
+     * @see ViewPostMetadata#getAccessibleBindingPaths()
+     */
+    public void addAccessibleBindingPath(String accessibleBindingPath) {
+        if (this.accessibleBindingPaths == null) {
+            this.accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
+        }
+
+        this.accessibleBindingPaths.add(accessibleBindingPath);
+    }
+
+    public Set<String> getAccessibleMethodToCalls() {
+        return accessibleMethodToCalls;
+    }
+
+    public void setAccessibleMethodToCalls(Set<String> accessibleMethodToCalls) {
+        this.accessibleMethodToCalls = accessibleMethodToCalls;
+    }
+
+    public void addAccessibleMethodToCall(String methodToCall) {
+        if (this.accessibleMethodToCalls == null) {
+            this.accessibleMethodToCalls = Collections.synchronizedSet(new HashSet<String>());
+        }
+
+        this.accessibleMethodToCalls.add(methodToCall);
     }
 }

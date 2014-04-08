@@ -18,6 +18,7 @@ package org.kuali.rice.krad.labs.sessionPolicy;
 import org.kuali.rice.krad.labs.KradLabsController;
 import org.kuali.rice.krad.labs.KradLabsForm;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,7 @@ public class LabsSessionPolicyController extends KradLabsController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=setSessionTimeout")
     public ModelAndView setSessionTimeout(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

@@ -77,7 +77,7 @@ public class PageValidationMessages extends GroupValidationMessages implements L
 
         Set<String> allPossibleKeys = new HashSet<String>();
 
-        Set<String> renderedPropertyPaths = ViewLifecycle.getViewPostMetadata().getAllRenderedPropertyPaths();
+        Set<String> renderedPropertyPaths = ViewLifecycle.getViewPostMetadata().getAllDataFieldPropertyPaths();
         if (renderedPropertyPaths != null) {
             allPossibleKeys.addAll(renderedPropertyPaths);
         }

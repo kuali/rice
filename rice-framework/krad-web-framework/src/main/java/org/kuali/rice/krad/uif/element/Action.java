@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
@@ -266,8 +267,18 @@ public class Action extends ContentElementBase {
             setActionScript(actionScript);
         }
 
-        buildActionData(view, model, parent);
+        // add additional submit data as accessible binding paths, and method to call as accessible method
+        if (isRender()) {
+            for (String additionalSubmitPath : additionalSubmitData.keySet()) {
+                ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(additionalSubmitPath);
+            }
 
+            if (StringUtils.isNotBlank(methodToCall)) {
+                ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCall);
+            }
+        }
+
+        buildActionData(view, model, parent);
     }
 
     /**

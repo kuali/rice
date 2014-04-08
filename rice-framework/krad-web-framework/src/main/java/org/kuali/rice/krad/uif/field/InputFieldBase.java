@@ -49,6 +49,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -374,38 +375,41 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * Invoked during the finalize phase to capture state of the component needs to support post operations.
      */
     protected void addComponentPostMetadata() {
-        ViewLifecycle.getViewPostMetadata().getInputFieldIds().add(this.getId());
+        ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.LABEL,
-                this.getLabel());
+        viewPostMetadata.getInputFieldIds().add(this.getId());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PATH, this.getName());
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.LABEL, this.getLabel());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.PATH, this.getName());
+
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.SIMPLE_CONSTRAINT,
                 this.getSimpleConstraint());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT, this.getValidCharactersConstraint());
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT,
+                this.getValidCharactersConstraint());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
-                this.getCaseConstraint());
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT, this.getCaseConstraint());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS,
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS,
                 this.getMustOccurConstraints());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS,
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.PREREQ_CONSTSTRAINTS,
                 this.getPrerequisiteConstraints());
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY, attributeQuery);
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.INPUT_FIELD_ATTRIBUTE_QUERY,
+                attributeQuery);
 
         if (this.suggest != null) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.SUGGEST,
-                    this.suggest.getPostData());
+            viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.SUGGEST, this.suggest.getPostData());
         }
 
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE, isUppercaseValue());
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE,
+                isUppercaseValue());
+
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !isReadOnly()) {
+            viewPostMetadata.addAccessibleBindingPath(getBindingInfo().getBindingPath());
+        }
     }
 
     /**

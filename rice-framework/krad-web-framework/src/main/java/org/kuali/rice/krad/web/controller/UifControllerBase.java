@@ -176,6 +176,7 @@ public abstract class UifControllerBase {
     /**
      * Default method mapping for cases where the method to call is not passed, calls the start method
      */
+    @MethodAccessible
     @RequestMapping()
     public ModelAndView defaultMapping(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -186,6 +187,7 @@ public abstract class UifControllerBase {
      * Initial method called when requesting a new view instance which checks authorization and forwards
      * the view for rendering
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -235,6 +237,7 @@ public abstract class UifControllerBase {
     /**
      * Invoked when a session timeout occurs, default impl does nothing but render the view
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=sessionTimeout")
     public ModelAndView sessionTimeout(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -488,6 +491,7 @@ public abstract class UifControllerBase {
     /**
      * Handles menu navigation between view pages
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
     public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -502,6 +506,7 @@ public abstract class UifControllerBase {
     /**
      * Invoked to refresh a view, generally when returning from another view (for example a lookup))
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -593,6 +598,7 @@ public abstract class UifControllerBase {
      * out the query parameters from the request and calls <code>AttributeQueryService</code> to perform the
      * suggest query and prepare the result object that will be exposed with JSON
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldSuggest")
     public
     @ResponseBody
@@ -640,6 +646,7 @@ public abstract class UifControllerBase {
      * that will be exposed with JSON. The result is then used to update field values in the UI with client
      * script.
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=performFieldQuery")
     public
     @ResponseBody
@@ -836,6 +843,7 @@ public abstract class UifControllerBase {
      * @return ModelAndView setup for redirect to original controller methodToCall
      * @throws Exception
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=returnFromLightbox")
     public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -937,6 +945,7 @@ public abstract class UifControllerBase {
     /**
      * Retrieve a page defined by the page number parameter for a collection group.
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -951,6 +960,7 @@ public abstract class UifControllerBase {
      * <p>This will render the aaData JSON for the displayed page of the table matching the tableId passed in the
      * request parameters.</p>
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

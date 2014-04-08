@@ -44,7 +44,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -184,12 +183,15 @@ public class DataFieldBase extends FieldBase implements DataField {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        // adjust the path for hidden fields
-        // TODO: should this check the view#readOnly?
+        // adjust the path for hidden fields and add as accessible paths
         List<String> hiddenPropertyPaths = new ArrayList<String>();
         for (String hiddenPropertyName : getAdditionalHiddenPropertyNames()) {
             String hiddenPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(hiddenPropertyName);
             hiddenPropertyPaths.add(hiddenPropertyPath);
+
+            if (isRender() || StringUtils.isNotBlank(getProgressiveRender())) {
+                ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(hiddenPropertyPath);
+            }
         }
         this.additionalHiddenPropertyNames = hiddenPropertyPaths;
 
@@ -236,7 +238,7 @@ public class DataFieldBase extends FieldBase implements DataField {
 
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
         if (isRender() && viewPostMetadata != null) {
-            viewPostMetadata.addRenderedPropertyPath(getBindingInfo().getBindingPath());
+            viewPostMetadata.addDataFieldPropertyPath(getBindingInfo().getBindingPath());
         }
     }
 

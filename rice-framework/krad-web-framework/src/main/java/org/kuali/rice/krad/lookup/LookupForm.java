@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.http.HttpMethod;
 
@@ -38,25 +39,41 @@ public class LookupForm extends UifFormBase {
     private static final long serialVersionUID = -7323484966538685327L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
 
+    @RequestAccessible
     private String dataObjectClassName;
 
+    @RequestAccessible
     private boolean multipleValuesSelect;
     private boolean redirectedLookup;
 
+    @RequestAccessible
     private boolean returnByScript;
+
+    @RequestAccessible
     private String returnTarget;
 
+    @RequestAccessible
     private String lookupCollectionName;
+
+    @RequestAccessible
     private String lookupCollectionId;
+
+    @RequestAccessible
     private String referencesToRefresh;
+
+    @RequestAccessible
     private String quickfinderId;
 
+    @RequestAccessible
     private Map<String, String> fieldConversions;
     private List<String> multiValueReturnFields;
 
+    @RequestAccessible
     private Map<String, String> lookupCriteria;
 
     private Collection<?> lookupResults;
+
+    @RequestAccessible
     private boolean displayResults;
 
     public LookupForm() {

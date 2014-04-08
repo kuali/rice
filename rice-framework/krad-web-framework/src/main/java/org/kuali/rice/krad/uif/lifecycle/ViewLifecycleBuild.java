@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,8 +89,7 @@ public class ViewLifecycleBuild implements Runnable {
 
         LifecycleRefreshPathBuilder.processLifecycleElements();
 
-        // clear old added collection objects data since they are only needed during the lifecycle
-        ViewLifecycle.getViewPostMetadata().setAddedCollectionObjects(new HashMap<String, List<Object>>());
+        ViewLifecycle.getViewPostMetadata().cleanAfterLifecycle();
 
         ProcessLogger.trace("finalize:" + view.getId());
     }

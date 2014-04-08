@@ -18,26 +18,31 @@ package org.kuali.rice.krad.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Method;
+
 /**
- * Spring controller intercepter for KRAD controllers
+ * Spring controller intercepter for KRAD controllers.
  *
- * <p>
- * Provides infrastructure for preparing the form and view before and after the controller is invoked.
- * Included in this is form session management and preparation of the view for rendering
- * </p>
+ * <p>Provides infrastructure for preparing the form and view before and after the controller is invoked.
+ * Included in this is form session management and preparation of the view for rendering</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -47,17 +52,15 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     /**
      * Before the controller executes the user session is set on GlobalVariables
      * and messages are cleared, in addition setup for the history manager and a check on missing session
-     * forms is performed
+     * forms is performed.
      *
-     * TODO: do we need to clear the messages before this so that formatting and
-     * validation errors done during the binding are not cleared out?
-     *
-     * @see org.springframework.web.servlet.HandlerInterceptor#preHandle(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, java.lang.Object)
+     * {@inheritDoc}
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
+        checkHandlerMethodAccess(request, handler);
+
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
 
         GlobalVariables.setUserSession(session);
@@ -74,12 +77,77 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * After the controller logic is executed, the form is placed into session
-     * and the corresponding view is prepared for rendering
+     * Checks whether access is allowed for the requested controller method.
      *
-     * @see org.springframework.web.servlet.HandlerInterceptor#postHandle(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, java.lang.Object,
-     * org.springframework.web.servlet.ModelAndView)
+     * <p>First a check is done on the method to determine whether it contains the annotation
+     * {@link org.kuali.rice.krad.web.controller.MethodAccessible}. If so, access is allowed. If the
+     * annotation is not present, data from the posted view (if any) is referenced to determine
+     * whether the method was configured as an accessible method to call.</p>
+     *
+     * <p>If method access is not allowed, a {@link org.kuali.rice.krad.web.controller.MethodAccessException}
+     * is thrown.</p>
+     *
+     * @param request HTTP request (used to retrieve parameters)
+     * @param handler handler method that was determined based on the request and mappings
+     * @throws Exception
+     */
+    protected void checkHandlerMethodAccess(HttpServletRequest request, Object handler) throws Exception {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        MethodAccessible methodAccessible = handlerMethod.getMethodAnnotation(MethodAccessible.class);
+
+        // if accessible by annotation then return, otherwise go on to check view configuration
+        if (methodAccessible != null) {
+            return;
+        }
+
+        boolean isMethodAccessible = checkForViewMethodAccess(request);
+
+        if (!isMethodAccessible) {
+            throw new MethodAccessException(handlerMethod.getBeanType(), handlerMethod.getMethod().getName());
+        }
+    }
+
+    /**
+     * Checks whether access to the handler method is allowed based on view configuration.
+     *
+     * <p>Since this method is invoked before the request form is setup, we need to retrieve the session form
+     * form the form manager. In the case of missing post data (GET requests), view method access is not
+     * granted.</p>
+     *
+     * @param request HTTP request to retrieve parameters from
+     * @return boolean true if method access is allowed based on the view, false if not
+     */
+    protected boolean checkForViewMethodAccess(HttpServletRequest request) {
+        String methodToCall = request.getParameter(UifParameters.METHOD_TO_CALL);
+
+        // if method to call is blank, we will assume they are using other strategies to map controller
+        // methods, and therefore using custom access management
+        if (StringUtils.isBlank(methodToCall)) {
+            return true;
+        }
+
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        UifFormBase form = null;
+
+        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
+        if (StringUtils.isNotBlank(formKeyParam) && (uifFormManager != null)) {
+            form = uifFormManager.getSessionForm(formKeyParam);
+        }
+
+        // if we don't have the view post data, access cannot be granted based on the view
+        if ((form == null) || (form.getViewPostMetadata() == null) || (form.getViewPostMetadata()
+                .getAccessibleMethodToCalls() == null)) {
+            return false;
+        }
+
+        return form.getViewPostMetadata().getAccessibleMethodToCalls().contains(methodToCall);
+    }
+
+    /**
+     * After the controller logic is executed, the form is placed into session and the corresponding view
+     * is prepared for rendering.
+     *
+     * {@inheritDoc}
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
@@ -92,8 +160,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     /**
      * After the view is rendered remove the view to reduce the size of the form storage in memory.
      *
-     * @see org.springframework.web.servlet.HandlerInterceptor#afterCompletion(javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
+     * {@inheritDoc}
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,

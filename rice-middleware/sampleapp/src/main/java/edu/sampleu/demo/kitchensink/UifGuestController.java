@@ -15,6 +15,7 @@
  */
 package edu.sampleu.demo.kitchensink;
 
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Controller for the guest user access
+ * Controller for the guest user access.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -36,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UifGuestController extends UifControllerBase {
 
     /**
-     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     * {@inheritDoc}
      */
     @Override
     protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
@@ -44,25 +45,17 @@ public class UifGuestController extends UifControllerBase {
     }
 
     /**
-     *  Initial method called when requesting new view
-     *
-     *  <p>
-     *  For guest access we check that only certain views can be called through this controller.
-     *  </p>
-     *
-     * @param form - model
-     * @param result - binding result
-     * @param request - servlet request
-     * @param response - servlet response
-     * @return
+     * {@inheritDoc}
      */
     @Override
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
             HttpServletRequest request, HttpServletResponse response) {
         if (!form.getViewId().equals("UifGuestUserView")) {
             throw new RuntimeException("Guest user not allowed to acces this view : " + form.getViewId());
         }
+
         return super.start(form,request,response);
     }
 }

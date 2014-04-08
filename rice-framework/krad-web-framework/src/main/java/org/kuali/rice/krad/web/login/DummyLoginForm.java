@@ -30,6 +30,7 @@ public class DummyLoginForm extends UifFormBase {
     //InputFields
     protected String login_user;
     protected String login_pw;
+
     @RequestParameter
     protected String login_message;
 

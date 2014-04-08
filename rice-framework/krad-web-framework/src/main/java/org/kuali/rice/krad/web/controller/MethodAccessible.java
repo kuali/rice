@@ -15,25 +15,20 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import org.kuali.rice.krad.web.bind.UifServletRequestDataBinderFactory;
-import org.springframework.web.method.support.InvocableHandlerMethod;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.ServletRequestDataBinderFactory;
-
-import java.util.List;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Annotation to indicate a controller method should allow access regardless of view configuration.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifRequestMappingHandlerAdapter extends RequestMappingHandlerAdapter {
-
-
-
-    @Override
-    protected ServletRequestDataBinderFactory createDataBinderFactory(
-            List<InvocableHandlerMethod> binderMethods) throws Exception {
-        return new UifServletRequestDataBinderFactory(binderMethods, getWebBindingInitializer());
-    }
-
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface MethodAccessible {
 
 }

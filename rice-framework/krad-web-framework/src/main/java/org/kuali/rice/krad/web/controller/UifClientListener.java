@@ -53,6 +53,7 @@ public class UifClientListener extends UifControllerBase {
      * @param formKeyToClear key of form that should be cleared
      * @return String json success string
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=clearForm")
     public
     @ResponseBody
@@ -71,6 +72,7 @@ public class UifClientListener extends UifControllerBase {
      * @param key - key for the message
      * @return String response in JSON format containing the message text
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=retrieveMessage")
     public
     @ResponseBody
@@ -96,6 +98,7 @@ public class UifClientListener extends UifControllerBase {
      *
      * @return String json success string
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=keepSessionAlive")
     public
     @ResponseBody
@@ -106,6 +109,7 @@ public class UifClientListener extends UifControllerBase {
     /**
      * Invoked from the session timeout warning dialog to log the user out, forwards to logout message view
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=logout")
     public ModelAndView logout(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
                 HttpServletRequest request, HttpServletResponse response) {

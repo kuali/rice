@@ -120,7 +120,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive character mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveCharacterFilterGeneratorParent {
 
         @Id
@@ -154,7 +154,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive character mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveCharacterFilterGeneratorChild {
 
         @Id
@@ -175,7 +175,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper character mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperCharacterFilterGeneratorParent {
 
         @Id
@@ -209,7 +209,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper character mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperCharacterFilterGeneratorChild {
 
         @Id
@@ -306,7 +306,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive boolean mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveBooleanFilterGeneratorParent {
 
         @Id
@@ -341,7 +341,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive boolean mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveBooleanFilterGeneratorChild {
 
         @Id
@@ -363,7 +363,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper boolean mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperBooleanFilterGeneratorParent {
 
         @Id
@@ -398,7 +398,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper boolean mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperBooleanFilterGeneratorChild {
 
         @Id
@@ -496,7 +496,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive short mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveShortFilterGeneratorParent {
 
         @Id
@@ -530,7 +530,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive short mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveShortFilterGeneratorChild {
 
         @Id
@@ -551,7 +551,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper short mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperShortFilterGeneratorParent {
 
         @Id
@@ -585,7 +585,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper short mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperShortFilterGeneratorChild {
 
         @Id
@@ -682,7 +682,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive integer mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveIntegerFilterGeneratorParent {
 
         @Id
@@ -716,7 +716,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive integer mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveIntegerFilterGeneratorChild {
 
         @Id
@@ -737,7 +737,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper integer mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperIntegerFilterGeneratorParent {
 
         @Id
@@ -771,7 +771,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper integer mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperIntegerFilterGeneratorChild {
 
         @Id
@@ -868,7 +868,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive long mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveLongFilterGeneratorParent {
 
         @Id
@@ -902,7 +902,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive long mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveLongFilterGeneratorChild {
 
         @Id
@@ -923,7 +923,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper long mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperLongFilterGeneratorParent {
 
         @Id
@@ -957,7 +957,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper long mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperLongFilterGeneratorChild {
 
         @Id
@@ -1054,7 +1054,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive float mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveFloatFilterGeneratorParent {
 
         @Id
@@ -1088,7 +1088,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive float mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveFloatFilterGeneratorChild {
 
         @Id
@@ -1109,7 +1109,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper float mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperFloatFilterGeneratorParent {
 
         @Id
@@ -1143,7 +1143,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper float mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperFloatFilterGeneratorChild {
 
         @Id
@@ -1240,7 +1240,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test primitive double mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class PrimitiveDoubleFilterGeneratorParent {
 
         @Id
@@ -1274,7 +1274,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test primitive double mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class PrimitiveDoubleFilterGeneratorChild {
 
         @Id
@@ -1295,7 +1295,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple parent entity to test wrapper double mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_PARENT_T")
+    @Table(name = "KRTST_TYP_PARENT_T")
     public static class WrapperDoubleFilterGeneratorParent {
 
         @Id
@@ -1329,7 +1329,7 @@ public class FilterGeneratorCoersionTest extends KRADTestCase {
      * Simple child entity to test wrapper double mappings.
      */
     @Entity
-    @Table(name = "KRTST_FILTER_GENERATOR_CHILD_T")
+    @Table(name = "KRTST_TYP_CHILD_T")
     public static class WrapperDoubleFilterGeneratorChild {
 
         @Id

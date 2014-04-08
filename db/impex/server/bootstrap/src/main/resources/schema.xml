@@ -3831,6 +3831,24 @@
         <column name="STR_PROP" size="40" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
+    <table name="KRTST_TYP_CHILD_T">
+        <column name="CHAR_PROP" size="1" type="CHAR"/>
+        <column name="BOOL_PROP" size="1" type="VARCHAR"/>
+        <column name="SHORT_PROP" size="5" type="DECIMAL"/>
+        <column name="INT_PROP" size="10" type="DECIMAL"/>
+        <column name="LONG_PROP" size="20" type="DECIMAL"/>
+        <column name="FLOAT_PROP" scale="2" size="10" type="DECIMAL"/>
+        <column name="DOUBLE_PROP" scale="2" size="20" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_TYP_PARENT_T">
+        <column name="CHAR_PROP" size="1" type="CHAR"/>
+        <column name="BOOL_PROP" size="1" type="VARCHAR"/>
+        <column name="SHORT_PROP" size="5" type="DECIMAL"/>
+        <column name="INT_PROP" size="10" type="DECIMAL"/>
+        <column name="LONG_PROP" size="20" type="DECIMAL"/>
+        <column name="FLOAT_PROP" scale="2" size="10" type="DECIMAL"/>
+        <column name="DOUBLE_PROP" scale="2" size="20" type="DECIMAL"/>
+    </table>
     <table name="TRV_ACCT_EXT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="ACCT_TYPE" primaryKey="true" size="100" type="VARCHAR"/>

@@ -1,19 +1,4 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/**
 * Copyright 2005-2014 The Kuali Foundation
 *
 * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -64,6 +49,7 @@ def init() {
 /**
  * We only want the lines that start with ###
  * Separate the good stuff with delimiter line
+ * Then saves all the parsed lines into a List
  */
 def stripUninterestingLines(){
     boolean consecutiveTrash = false
@@ -81,35 +67,127 @@ def stripUninterestingLines(){
     statements = workFile.readLines();
 }
 
-def findTableName(line){
-    for (tableName in config.list.tablenames){
+
+def findTableMap(line){
+    for (tableName in config.map.tablemaps.keySet()){
         if (line.contains(tableName)){
+            println "Found TABLE: "+tableName
             return config.map.tablemaps.get(tableName)
         }
     }
     return null
 }
 
-def replaceColumnHoldersWithNames(){
-    def tableMap
-    statements.eachWithIndex { statement, index ->
-        tableMap = findTableName(statement)
-        if (tableMap != null){
-            println tableMap
-            for (column in tableMap){
-                if (statement.contains(column.key)){
-                    println "FOUND " + column.key + " in " + statement
-                    statements[index] = statement.replace(column.key,column.value)
-                    println "New Statement: "+statements[index]
+/**
+ * assumes time token follows date
+ *
+ * @param tokens
+ * @return
+ */
+def stringifyDates(tokens){
+    def date_pattern = ~/....-..-../
+    def time_pattern = ~/..:..:../
+    tokens.eachWithIndex{ token, index ->
+        if (token.find(date_pattern) || token.find(time_pattern)){
+            tokens[index] = token[0..token.indexOf('=')] + "'" + token[token.indexOf("=")+1..-1]+"'"
+        }
+    }
+}
+
+def removeNullColumns(tokens){
+    tokens.eachWithIndex{ token, index ->
+        if (token.contains("=NULL")){
+            tokens[index]=""
+        }
+    }
+}
+
+def transformColumnNames(tokens, tableMap){
+    if (tableMap != null){
+        println tableMap
+        tokens.eachWithIndex{ token, index ->
+            if (token.contains("=")){
+                def colId = token[0..<token.indexOf("=")]
+                if (tableMap.containsKey(colId)){
+                    def comma = (tokens[index+1]?.contains("=")) ? "," : ""
+                    tokens[index] = tableMap[colId] + token[token.indexOf("=")..-1] + comma
                 }
             }
         }
     }
 }
 
+def moveWhereClauseForUpdates(stmt){
+    if (stmt.contains("UPDATE")){
+        def wClause = stmt[stmt.indexOf("WHERE ")..<stmt.indexOf(" SET ")]
+        stmt = stmt - wClause
+        stmt = stmt + wClause
+    }
+    return stmt
+}
+
+def tokenize(stmt){
+    def tokens = stmt.tokenize()
+    def lastGoodToken = 0;
+    tokens.eachWithIndex{token, index ->
+        if (token.startsWith("@") || token.startsWith("INSERT") || token.startsWith("SET") || token.startsWith("UPDATE")
+            || token.startsWith("WHERE") || token.startsWith("DELETE")){
+            lastGoodToken = index
+        } else {
+            tokens[lastGoodToken] = tokens[lastGoodToken] + " " + token
+            tokens[index] = ""
+        }
+    }
+    return tokens
+}
+
+def replaceQuotesWithDouble(tokens)
+{
+    tokens.eachWithIndex{ token, index ->
+        def last = token.lastIndexOf("'");
+        token = token.reverse().replaceFirst("'",'"').reverse().replaceFirst("'",'"');
+        tokens[index] = token
+    }
+}
+
+def untokenize(tokens)
+{
+    replaceQuotesWithDouble(tokens)
+    StringBuffer sb = new StringBuffer()
+    tokens.each{
+        sb.append(it+" ")
+    }
+    return sb.toString()
+}
+
+/**
+ * tears down the statement into tokens, manipulates them, and then rebuilds the statement
+ * 1. turns dates into strings
+ * 2. remove and null assignments in sql statements
+ * 3. transform the sql to use column names
+ * 4. for update commands, move the where clause to the end of the statement
+ * @return
+ */
+def transformStatements(){
+    statements.eachWithIndex{ statement, index ->
+        def tableMap = findTableMap(statement)
+        if (tableMap){
+            def tokens = tokenize(statement)
+            removeNullColumns(tokens)
+            tokens = tokens.minus("")
+            stringifyDates(tokens)
+            transformColumnNames(tokens, tableMap)
+            def reconstructedStatement = untokenize(tokens)
+            reconstructedStatement = moveWhereClauseForUpdates(reconstructedStatement)
+            statements[index] = reconstructedStatement
+        }
+    }
+}
+
+
 public void performConversion(){
     stripUninterestingLines()
-    replaceColumnHoldersWithNames()
+    transformStatements()
 }
 
 def parseCommandLine(args){

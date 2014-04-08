@@ -135,23 +135,12 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         PeopleFlowDefinition.Builder builder = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, NAME);
         PeopleFlowMember.Builder memberBuilder = PeopleFlowMember.Builder.create("admin", MemberType.PRINCIPAL);
         memberBuilder.setPriority(1);
-        try {
-            memberBuilder.setActionRequestPolicy(ActionRequestPolicy.FIRST);
-            fail ("should have thrown IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL");
-        } catch (IllegalArgumentException e) {
-            // throws IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL
-        }
+
         builder.getMembers().add(memberBuilder);
 
         Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName("KR-WKFLW", "TestWorkgroup");
         memberBuilder = PeopleFlowMember.Builder.create(group.getId(), MemberType.GROUP);
         memberBuilder.setPriority(2);
-        try {
-            memberBuilder.setActionRequestPolicy(ActionRequestPolicy.FIRST);
-            fail ("should have thrown IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL");
-        } catch (IllegalArgumentException e) {
-            // throws IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL
-        }
 
         builder.getMembers().add(memberBuilder);
 
@@ -183,12 +172,6 @@ public class PeopleFlowServiceTest extends KEWTestCase {
         memberBuilder = PeopleFlowMember.Builder.create("ewestfal", MemberType.PRINCIPAL);
 
         PeopleFlowDelegate.Builder testMember = PeopleFlowDelegate.Builder.create("test1",MemberType.PRINCIPAL);
-        try {
-            testMember.setActionRequestPolicy(ActionRequestPolicy.FIRST);
-            fail ("should have thrown IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL");
-        } catch (IllegalArgumentException e) {
-            // throws IllegalArgumentException: cannot set ActionRequestPolicy for MemberTypes GROUP or PRINCIPAL
-        }
 
         memberBuilder.setDelegates(Arrays.asList(testMember));
         builder.getMembers().add(memberBuilder);

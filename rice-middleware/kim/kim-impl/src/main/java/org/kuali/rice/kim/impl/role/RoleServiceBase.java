@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -49,15 +51,18 @@ import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
+import org.kuali.rice.kim.api.type.KimTypeInfoService;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -68,6 +73,8 @@ abstract class RoleServiceBase {
 
     protected DataObjectService dataObjectService;
     protected IdentityService identityService;
+    protected NamespaceService namespaceService;
+    protected KimTypeInfoService kimTypeInfoService;
     protected GroupService groupService;
     protected ResponsibilityInternalService responsibilityInternalService;
     protected RoleDao roleDao;
@@ -179,7 +186,7 @@ abstract class RoleServiceBase {
      * @throws IllegalArgumentException if daoActionToTake refers to an enumeration constant that is not role-member-related.
      */
     protected List<RoleMemberBo> getRoleMemberBoList(RoleDaoAction daoActionToTake, Collection<String> roleIds, String principalId,
-                                                     Collection<String> groupIds, String memberTypeCode, Map<String, String> qualification) {
+            Collection<String> groupIds, String memberTypeCode, Map<String, String> qualification) {
         if (roleIds == null || roleIds.isEmpty()) {
             roleIds = Collections.emptyList();
         }
@@ -189,14 +196,22 @@ abstract class RoleServiceBase {
 
         Map<String, String> validAttributeIds = new HashMap<String, String>();
 
+        HashSet <String> kimTypeIds = new HashSet<String>();
+
+        //Getting unique kim types
         for (String roleId : roleIds) {
             RoleBoLite role = getRoleBoLite(roleId);
-            if (role != null && role.getKimRoleType() != null) {
-                for (KimTypeAttributeBo attr : role.getKimRoleType().getAttributeDefinitions()) {
-                    validAttributeIds.put(attr.getKimAttribute().getAttributeName(), attr.getKimAttributeId());
+            kimTypeIds.add(role.getKimTypeId());
+        }
+
+        if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
+            for (String kimTypeId : kimTypeIds) {
+                for (Map.Entry<String, String> entry : qualification.entrySet()) {
+                    validAttributeIds.put(entry.getKey(), getKimAttributeId(kimTypeId, entry.getKey()));
                 }
             }
         }
+
 
         Map<String, String> convertedQualification = convertQualifierKeys(qualification, validAttributeIds);
 
@@ -274,7 +289,7 @@ abstract class RoleServiceBase {
                 PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()),
                 PredicateFactory.and(principalPredicates.toArray(new Predicate[0])),
                 PredicateFactory.and(groupPredicates.toArray(new Predicate[0]))
-                ) );
+        ) );
 
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {
@@ -316,28 +331,27 @@ abstract class RoleServiceBase {
      *  Other consideration used in the code below which the above does not address...
      *      What about referencing the outer query?  What's the syntax for that.  OJB had a special constant.
      *
-     * @param c
      * @param qualification
      */
     protected Predicate getRoleQualificationPredicate(Map<String, String> qualification) {
         return null;
-//        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
-//            for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
-//                if (StringUtils.isNotBlank(qualifier.getValue())) {
-//                    String value = (qualifier.getValue()).replace('*', '%');
-//                    PredicateFactory.and(
-//                            PredicateFactory.like("attributeValue", value),
-//                            PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
-//                            PredicateFactory.equal("attributeValue", value),
-//
-//                    subCrit.addLike("attributeValue", value);
-//                    subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
-//                    subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "id");
-//                    ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataBo.class, subCrit);
-//                    c.addExists(subQuery);
-//                }
-//            }
-//        }
+        //        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
+        //            for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
+        //                if (StringUtils.isNotBlank(qualifier.getValue())) {
+        //                    String value = (qualifier.getValue()).replace('*', '%');
+        //                    PredicateFactory.and(
+        //                            PredicateFactory.like("attributeValue", value),
+        //                            PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
+        //                            PredicateFactory.equal("attributeValue", value),
+        //
+        //                    subCrit.addLike("attributeValue", value);
+        //                    subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
+        //                    subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "id");
+        //                    ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataBo.class, subCrit);
+        //                    c.addExists(subQuery);
+        //                }
+        //            }
+        //        }
     }
 
     protected List<RoleMemberBo> getRoleMembershipsForMemberId(String memberType, String memberId, Map<String, String> qualification) {
@@ -658,48 +672,48 @@ abstract class RoleServiceBase {
         return results.getResults().get(0);
     }
 
-	protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
-		List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
+    protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
+        List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
         List<RoleMember> roleMembers = new ArrayList<RoleMember>();
         if(CollectionUtils.isNotEmpty(roleMemberBos)) {
             for (RoleMemberBo bo : roleMemberBos) {
                 roleMembers.add(RoleMemberBo.to(bo));
             }
-			return roleMembers;
-		}
+            return roleMembers;
+        }
 
-		return Collections.emptyList();
-	}
+        return Collections.emptyList();
+    }
 
-	protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
-		List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
-		RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
-		if(roleTypeService != null) {
-    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
-    			switch (daoActionToTake) {
-	    			case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
-	        			rms = getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(role.getId()), Collections.singletonList(memberId), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
-	    				break;
-	    			case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
-	        			rms = getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(role.getId()), memberId, populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
-	    				break;
-	    			case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for roles as role members only.
-	    				List<RoleMemberBo> allRoleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(role.getId()), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
-	        			for(RoleMemberBo rm : allRoleMembers) {
-	        				if ( rm.getMemberId().equals(memberId) ) {
-	        					rms.add(rm);
-	        				}
-	        			}
+    protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
+        List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
+        RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
+        if(roleTypeService != null) {
+            List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+            if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+                switch (daoActionToTake) {
+                    case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
+                        rms = getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(role.getId()), Collections.singletonList(memberId), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
                         break;
-	    			default : // The daoActionToTake parameter is invalid; throw an exception.
-	    				throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
-    			}
+                    case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
+                        rms = getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(role.getId()), memberId, populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+                        break;
+                    case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for roles as role members only.
+                        List<RoleMemberBo> allRoleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(Collections.singletonList(role.getId()), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
+                        for(RoleMemberBo rm : allRoleMembers) {
+                            if ( rm.getMemberId().equals(memberId) ) {
+                                rms.add(rm);
+                            }
+                        }
+                        break;
+                    default : // The daoActionToTake parameter is invalid; throw an exception.
+                        throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
+                }
 
-    		}
-		}
-		return rms;
-	}
+            }
+        }
+        return rms;
+    }
 
     //return roleMemberId of match or null if no match
     protected RoleMember doAnyMemberRecordsMatch(List<RoleMemberBo> roleMembers, String memberId, String memberTypeCode, Map<String, String> qualifier) {
@@ -796,11 +810,58 @@ abstract class RoleServiceBase {
 
     // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
     // TODO: KULRICE-12100: Most of the time there should be only one result for the kimTypeId and attributeName, but it is not guaranteed, which it should be.
+    // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
+    /*
+     * search by attribute name, if none return null, if there is only one, return. If there are multiple, then
+     * search by kimType: if found return else 
+     *     search by appId of kimType : if found return else
+     *          search by rice app id : if found return else
+     *              search by kuali app id : if found return else
+     *                  return null.
+     */
     protected String getKimAttributeId(String kimTypeId, String attributeName) {
-        KimType type = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
+        Collection<KimAttributeBo> attributeData = getAttributeByName(attributeName);
+        String kimAttributeId = null;
 
-        if (type != null) {
-            for (KimTypeAttribute attribute : type.getAttributeDefinitions()) {
+        if (CollectionUtils.isNotEmpty(attributeData)) {
+            if (CollectionUtils.size(attributeData) == 1) {
+                kimAttributeId = attributeData.iterator().next().getId();
+            } else {
+                kimAttributeId = getCorrectAttributeId(kimTypeId, attributeName, attributeData);
+            }
+        }
+
+        return kimAttributeId;
+    }
+
+    /*
+     * Searches the KimAttributeBo for the attribute by name
+     */
+    protected Collection<KimAttributeBo> getAttributeByName(String attributeName) {
+        /*Map<String, Object> critieria = new HashMap<String, Object>(1);
+        critieria.put(KimConstants.AttributeConstants.ATTRIBUTE_NAME, attributeName);*/
+        QueryResults<KimAttributeBo> attributeData = getDataObjectService().findMatching(KimAttributeBo.class, QueryByCriteria.Builder.forAttribute("attributeName", attributeName).build());
+
+        return attributeData.getResults();
+    }
+
+    /*
+     * Attempts to get the right attribute for the kimType. If it fails, then tries by namespace.
+     */
+    protected String getCorrectAttributeId(String kimTypeId, String attributeName, Collection<KimAttributeBo> attributeData) {
+        KimType kimType = getKimTypeInfoService().getKimType(kimTypeId);
+        String attribute = getAttributeFromKimType(kimType, attributeName);
+
+        if (attribute != null) {
+            return attribute;
+        } else {
+            return getAttributeFromNamespace(kimType, attributeName, attributeData);
+        }
+    }
+
+    protected String getAttributeFromKimType(KimType kimType, String attributeName) {
+        if (kimType != null) {
+            for (KimTypeAttribute attribute : kimType.getAttributeDefinitions()) {
                 if (attribute.getKimAttribute() != null
                         && StringUtils.equals(attributeName, attribute.getKimAttribute().getAttributeName())) {
                     return attribute.getKimAttribute().getId();
@@ -811,6 +872,62 @@ abstract class RoleServiceBase {
         return null;
     }
 
+    /*
+     * Gets the attribute based on the app namespace, if it cannot find then tries Rice namespace and then Kuali.
+     */
+    protected String getAttributeFromNamespace(KimType kimType, String attributeName, Collection<KimAttributeBo> attributes) {
+        String appId = getAppIdFromNamespace(kimType.getNamespaceCode());
+        String attributeId = getAttributeFromAppId(attributes, appId);
+
+        if (attributeId == null) {
+            attributeId = getAttributeFromAppId(attributes, KimConstants.KIM_TYPE_RICE_NAMESPACE);
+            if (attributeId == null) {
+                attributeId = getAttributeFromAppId(attributes, KimConstants.KIM_TYPE_DEFAULT_NAMESPACE);
+            }
+        }
+
+        return attributeId;
+    }
+
+    protected String getAppIdFromNamespace(String namespaceCode) {
+        Namespace appNamespace = getNamespaceService().getNamespace(namespaceCode);
+        if (appNamespace == null) {
+            throw new RuntimeException("Namespace " + namespaceCode + " not mapped in namespace table.");
+        }
+
+        return appNamespace.getApplicationId();
+    }
+
+    /*
+     * Compares the appId of the attribute with the given appId.
+     * Here we make the assumption that there are not multiple attributes with the same name
+     * for a given application.
+     */
+    protected String getAttributeFromAppId(Collection<KimAttributeBo> attributes, String appId) {
+        for (KimAttributeBo attribute : attributes) {
+            if (StringUtils.equalsIgnoreCase(getAppIdFromNamespace(attribute.getNamespaceCode()), appId)) {
+                return attribute.getId();
+            }
+        }
+
+        return null;
+    }
+
+    protected KimTypeInfoService getKimTypeInfoService() {
+        if (kimTypeInfoService == null) {
+            kimTypeInfoService = KimApiServiceLocator.getKimTypeInfoService();
+        }
+
+        return kimTypeInfoService;
+    }
+
+    protected NamespaceService getNamespaceService() {
+        if (namespaceService == null) {
+            namespaceService = CoreServiceApiServiceLocator.getNamespaceService();
+        }
+
+        return namespaceService;
+    }
 
     protected IdentityService getIdentityService() {
         if (identityService == null) {

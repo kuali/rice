@@ -42,9 +42,9 @@ public class UifFormManager implements Serializable {
 
     private int maxNumberOfSessionForms = 5;
 
-    private Vector accessedFormKeys;
+    protected Vector accessedFormKeys;
 
-    private Map<String, UifFormBase> sessionForms;
+    protected Map<String, UifFormBase> sessionForms;
 
     /**
      * Create a new form manager with an empty list of forms for the session.
@@ -53,10 +53,13 @@ public class UifFormManager implements Serializable {
         this.accessedFormKeys = new Vector();
         this.sessionForms = new HashMap<String, UifFormBase>();
 
-        String maxNumberOfSessionFormsConfig =
-                CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("maxNumberOfSessionForms");
-        if (StringUtils.isNotBlank(maxNumberOfSessionFormsConfig)) {
-            maxNumberOfSessionForms = Integer.parseInt(maxNumberOfSessionFormsConfig);
+        if (CoreApiServiceLocator.getKualiConfigurationService() != null) {
+            String maxNumberOfSessionFormsConfig =
+                    CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                            "maxNumberOfSessionForms");
+            if (StringUtils.isNotBlank(maxNumberOfSessionFormsConfig)) {
+                maxNumberOfSessionForms = Integer.parseInt(maxNumberOfSessionFormsConfig);
+            }
         }
     }
 

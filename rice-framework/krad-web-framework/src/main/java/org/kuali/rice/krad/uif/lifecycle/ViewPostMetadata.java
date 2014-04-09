@@ -389,14 +389,31 @@ public class ViewPostMetadata implements Serializable {
         this.accessibleBindingPaths.add(accessibleBindingPath);
     }
 
+    /**
+     * Set of method to calls configured within the view that access should be allowed for.
+     *
+     * <p>Used by the UIF web infrastructure to provide security for invoking controller methods. By default,
+     * only methods within the view configuration can be called.</p>
+     *
+     * @return Set of method names
+     */
     public Set<String> getAccessibleMethodToCalls() {
         return accessibleMethodToCalls;
     }
 
+    /**
+     * @see ViewPostMetadata#getAccessibleMethodToCalls()
+     */
     public void setAccessibleMethodToCalls(Set<String> accessibleMethodToCalls) {
         this.accessibleMethodToCalls = accessibleMethodToCalls;
     }
 
+    /**
+     * Adds a method to the set of accessible controller methods.
+     *
+     * @param methodToCall method to add as accessible
+     * @see ViewPostMetadata#getAccessibleMethodToCalls()
+     */
     public void addAccessibleMethodToCall(String methodToCall) {
         if (this.accessibleMethodToCalls == null) {
             this.accessibleMethodToCalls = Collections.synchronizedSet(new HashSet<String>());

@@ -652,20 +652,23 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
                 LinkedList.class);
+        elementQueue.offer(component);
         try {
-            LifecycleElement currentElement = elementQueue.poll();
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
 
-            // if component is a data field apply default value
-            if (currentElement instanceof DataField) {
-                DataField dataField = ((DataField) currentElement);
+                // if component is a data field apply default value
+                if (currentElement instanceof DataField) {
+                    DataField dataField = ((DataField) currentElement);
 
-                // need to make sure binding is initialized since this could be on a page we have not initialized yet
-                dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
+                    // need to make sure binding is initialized since this could be on a page we have not initialized yet
+                    dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
 
-                populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
+                    populateDefaultValueForField(model, dataField, dataField.getBindingInfo().getBindingPath());
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
             }
-
-            elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
         } finally {
             elementQueue.clear();
             RecycleUtils.recycle(elementQueue);

@@ -169,7 +169,7 @@ public class ViewLifecycleBuild implements Runnable {
             helper.applyDefaultValues(view);
 
             //remove view from list, so default values are only applied once.
-            //model.getViewsThatNeedDefaultValuesApplied().remove(view.getId());
+            model.getViewsThatNeedDefaultValuesApplied().remove(view.getId());
         }
 
         // get action flag and edit modes from authorizer/presentation controller

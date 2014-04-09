@@ -30,6 +30,10 @@
             <index-column name="DOC_HDR_ID"/>
         </index>
     </table>
+    <table name="KRNS_ATT_CNTNT_T">
+        <column name="ATT_ID" size="36" type="VARCHAR"/>
+        <column name="ATT_CNTNT" type="BLOB"/>
+    </table>
     <table name="KRNS_ATT_T">
         <column name="NTE_ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column default="SYS_GUID()" name="OBJ_ID" required="true"

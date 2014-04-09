@@ -56,6 +56,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * Unit tests for proving correct operation of the ViewHelperService.
@@ -73,6 +75,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @BeforeClass
     public static void setUpClass() throws Throwable {
         UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setMethod("POST");
+
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
     }
 
     @Before

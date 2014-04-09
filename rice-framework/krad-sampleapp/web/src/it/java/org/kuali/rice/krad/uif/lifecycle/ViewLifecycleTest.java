@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.KRADTestCase;
@@ -49,6 +50,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * Unit tests for proving correct operation of the ViewHelperService.
@@ -68,14 +71,21 @@ public class ViewLifecycleTest extends KRADTestCase {
 //        UifUnitTestUtils.establishMockConfig("KRAD-ViewLifecycleTest");
 //    }
 //
-//    @Before
-//    public void setUp() throws Throwable {
+    @Before
+    @Override
+    public void setUp() throws Exception{
 //        UifUnitTestUtils.establishMockUserSession("admin");
 //        String async = Boolean.toString(getRepetition() == 1);
 //        ProcessLogger.trace("async:" + async);
 //        ConfigContext.getCurrentContextConfig().getProperties().setProperty(
 //                KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_ASYNCHRONOUS, async);
-//    }
+        super.setUp();
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setMethod("POST");
+
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+    }
 //
 //    @After
 //    public void tearDown() throws Throwable {

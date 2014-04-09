@@ -307,7 +307,7 @@
       <list>
         <bean id="KradMaintenanceSampleItems-PageR5C2" parent="Uif-VerticalBoxSection"
               p:headerText="Demo of Different Default Open/Close States"
-              p:instructionalText="Description of what is done to override default open/close tab states">
+              p:instructionalText="IN PROGRESS - Description of what is done to override default open/close tab states">
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Travel Account Maintenance different default open/close tab states"

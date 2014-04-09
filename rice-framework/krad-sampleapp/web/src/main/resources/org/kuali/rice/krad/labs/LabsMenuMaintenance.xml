@@ -255,7 +255,7 @@
           <list>
             <bean parent="Uif-Link" p:linkText="Maintenance Sample - Tab States"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR5C2"/>
-            <bean parent="Uif-Message" p:messageText="Demonstrate Different Default Open/Close Tab States"/>
+            <bean parent="Uif-Message" p:messageText="IN PROGRESS - Demonstrate Different Default Open/Close Tab States"/>
           </list>
           </property>
         </bean>

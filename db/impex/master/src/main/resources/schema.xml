@@ -1578,9 +1578,9 @@
         <column name="ENTITY_ID" size="40" type="VARCHAR"/>
         <column name="ENT_TYP_CD" size="40" type="VARCHAR"/>
         <column name="ADDR_TYP_CD" size="40" type="VARCHAR"/>
-        <column name="ADDR_LINE_1" size="45" type="VARCHAR"/>
-        <column name="ADDR_LINE_2" size="45" type="VARCHAR"/>
-        <column name="ADDR_LINE_3" size="45" type="VARCHAR"/>
+        <column name="ADDR_LINE_1" size="128" type="VARCHAR"/>
+        <column name="ADDR_LINE_2" size="128" type="VARCHAR"/>
+        <column name="ADDR_LINE_3" size="128" type="VARCHAR"/>
         <column name="CITY" size="30" type="VARCHAR"/>
         <column name="STATE_PVC_CD" size="2" type="VARCHAR"/>
         <column name="POSTAL_CD" size="20" type="VARCHAR"/>
@@ -1756,6 +1756,9 @@
         </index>
         <index name="KRIM_ENTITY_EMP_INFO_TI2">
             <index-column name="ENTITY_AFLTN_ID"/>
+        </index>
+        <index name="KRIM_ENTITY_EMP_INFO_TI3">
+            <index-column name="EMP_ID"/>
         </index>
     </table>
     <table name="KRIM_ENTITY_ENT_TYP_T">
@@ -2150,9 +2153,9 @@
     <table name="KRIM_PND_ADDR_MT">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ADDR_TYP_CD" size="40" type="VARCHAR"/>
-        <column name="ADDR_LINE_1" size="50" type="VARCHAR"/>
-        <column name="ADDR_LINE_2" size="50" type="VARCHAR"/>
-        <column name="ADDR_LINE_3" size="50" type="VARCHAR"/>
+        <column name="ADDR_LINE_1" size="128" type="VARCHAR"/>
+        <column name="ADDR_LINE_2" size="128" type="VARCHAR"/>
+        <column name="ADDR_LINE_3" size="128" type="VARCHAR"/>
         <column name="CITY" size="30" type="VARCHAR"/>
         <column name="STATE_PVC_CD" size="2" type="VARCHAR"/>
         <column name="POSTAL_CD" size="20" type="VARCHAR"/>
@@ -3424,6 +3427,10 @@
         <index name="KRNS_ADHOC_RTE_ACTN_RECIP_T2">
             <index-column name="DOC_HDR_ID"/>
         </index>
+    </table>
+    <table name="KRNS_ATT_CNTNT_T">
+        <column name="ATT_ID" size="36" type="VARCHAR"/>
+        <column name="ATT_CNTNT" type="BLOB"/>
     </table>
     <table name="KRNS_ATT_T">
         <column name="NTE_ID" primaryKey="true" size="14" type="DECIMAL"/>

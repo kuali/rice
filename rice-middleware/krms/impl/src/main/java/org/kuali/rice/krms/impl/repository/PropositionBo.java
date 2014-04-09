@@ -44,6 +44,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -468,6 +470,17 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         newProp.setCompoundComponents(newCompoundComponents);
 
         return newProp;
+    }
+
+    /*
+     * This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
+     * still available after the object has been detached, or serialized. For most JPA providers, after serialization
+     * any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
+     * or return null.
+     */
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+        parameters.size();
+        stream.defaultWriteObject();
     }
 
     public String getTermSpecId() {

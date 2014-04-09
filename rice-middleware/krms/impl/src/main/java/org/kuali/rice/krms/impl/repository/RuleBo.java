@@ -48,6 +48,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -470,6 +472,17 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         }
 
         return newActionList;
+    }
+
+    /*
+     * This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
+ 	 * still available after the object has been detached, or serialized. For most JPA providers, after serialization
+ 	 * any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
+ 	 * or return null.
+ 	 */
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+        proposition.getId();
+        stream.defaultWriteObject();
     }
 
     public String getId() {

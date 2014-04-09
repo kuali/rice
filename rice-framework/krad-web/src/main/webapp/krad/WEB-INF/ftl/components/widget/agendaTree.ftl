@@ -17,12 +17,6 @@
 -->
 <#macro uif_agendaTree widget componentId>
 
-    <#-- KRAD doesn't support hidden input fields at present.  This is a workaround for it. -->
-    <#if KualiForm.viewTypeName != 'MAINTENANCE'>
-    <input type="hidden" name="dataObject.selectedAgendaItemId" value="${KualiForm.dataObject.selectedAgendaItemId!}"
-           class="selectedAgendaItemId"/>
-    </#if>
-
     <#--
     Invokes JS method to implement a tree plug-in.  see agendaTree.js
     -->

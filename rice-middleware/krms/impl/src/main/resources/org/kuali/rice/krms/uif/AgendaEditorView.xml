@@ -334,12 +334,12 @@
           p:actionLabel="[-] collapse all" p:style="margin-right: 15pt;">
           <property name="actionImage"><null/></property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false" p:render="true">
+        <bean parent="Uif-InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false" p:render="true" p:readOnly="false">
           <property name="control">
             <bean parent="Uif-HiddenControl" p:cssClasses="selectedAgendaItemId"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="disableButtons" p:showLabel="false" p:render="true">
+        <bean parent="Uif-InputField" p:propertyName="disableButtons" p:showLabel="false" p:render="true" p:readOnly="false">
           <property name="control">
             <bean parent="Uif-HiddenControl" p:cssClasses="disableButtons"/>
           </property>

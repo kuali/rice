@@ -100,7 +100,7 @@ public class AgendaInquiryController  extends InquiryController {
 
         AgendaItemBo result = null;
 
-        if (agendaItemId.equals(node.getId())) {
+        if (StringUtils.equals(node.getId(), agendaItemId)) {
             result = node;
         } else {
             for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {

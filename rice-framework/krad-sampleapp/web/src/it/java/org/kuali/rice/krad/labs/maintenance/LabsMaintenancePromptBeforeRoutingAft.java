@@ -38,7 +38,7 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     	waitAndClickByLinkText("Travel Account Maintenance prompting before routing on submit");
     }
 
-    protected void testMaintenancePresentationController() throws InterruptedException {
+    protected void testMaintenancePromptBeforeRouting() throws InterruptedException {
     	waitAndTypeByName("document.documentHeader.documentDescription","Prompt Before Routing");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.number","a12");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14");
@@ -50,14 +50,14 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     }
 
     @Test
-    public void testMaintenancePresentationControllerBookmark() throws Exception {
-    	testMaintenancePresentationController();
+    public void testMaintenancePromptBeforeRoutingBookmark() throws Exception {
+    	testMaintenancePromptBeforeRouting();
         passed();
     }
 
     @Test
-    public void testMaintenancePresentationControllerNav() throws Exception {
-    	testMaintenancePresentationController();
+    public void testMaintenancePromptBeforeRoutingNav() throws Exception {
+    	testMaintenancePromptBeforeRouting();
         passed();
     }
 }

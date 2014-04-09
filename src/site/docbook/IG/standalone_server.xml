@@ -618,39 +618,104 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
             <title>Load Impex Data with Maven</title>
             <orderedlist>
                 <listitem>
-                    <para>Change to the directory <emphasis role="bold">db/demo</emphasis> located
+                    <para>Change to the directory <emphasis role="bold">db/impex</emphasis> located
                         where you decompressed the software.</para>
                 </listitem>
                 <listitem>
+                    <para>Decide which type of server you want to install.
+                        <itemizedlist>
+                            <listitem>If you want to install a full Rice development environment, change
+                                to the directory <emphasis role="bold">master</emphasis>.  This will
+                                create a database named <emphasis role="bold">RICE</emphasis> by default.
+                                This is the recommended way to get started developing with Rice.
+                            </listitem>
+                            <listitem>If you want a production standalone Rice install, change to the
+                                directory <emphasis role="bold">server/bootstrap</emphasis>.  This will
+                                create a database named <emphasis role="bold">RICESERVERBOOTSTRAP</emphasis>
+                                by default.
+                            </listitem>
+                            <listitem>If you want to install some demonstration data on top of the production
+                                standalone Rice install, change to the directory <emphasis role="bold">server/demo</emphasis>.
+                                This will create a database named <emphasis role="bold">RICESERVERDEMO</emphasis>
+                                by default.
+                            </listitem>
+                            <listitem>
+                                The <emphasis role="bold">client</emphasis> folder is for client applications
+                                that connect to Rice separately and is not needed at this stage.
+                            </listitem>
+                        </itemizedlist>
+                        <note>Selecting to install the master or demo databases is for testing only.  There
+                            is no easy way to remove this data once it is in your database.  Only select these
+                            options if you are in a development or testing environment.</note>
+                    </para>
+                </listitem>
+                <listitem>
                     <para>Verify that Maven can connect to your database instance.</para>
-                    <para><emphasis role="bold">Running Locally:</emphasis><itemizedlist>
+                    <para>
+                        <emphasis role="bold">Running Locally:</emphasis>
+                        <itemizedlist>
                             <listitem>
                                 <para>MySQL</para>
                                 <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=[dbapassword]</programlisting>
-                                <note><para>If the 'root' user does not have a password (which is the default on a new MySQL install),
-                                        drop the '-Dimpex.dba.password' parameter from all MySQL
-                                        commands or use 'NONE' for the password: </para>
-                                    <para><programlisting>mvn validate -Pdb,mysql</programlisting>or 
-                                        <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=NONE</programlisting></para></note>
                             </listitem>
                             <listitem>
                                 <para>Oracle</para>
                                 <programlisting>mvn validate -Pdb,oracle -Dimpex.dba.password=[dbapassword]</programlisting>
                             </listitem>
-                        </itemizedlist></para>
-                    <para><emphasis role="bold">Connecting to a remote database:</emphasis><itemizedlist>
-                        <listitem>
-                            <para>MySQL</para>
-                            <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.url=jdbc:mysql://[your-mysql-instance]/ -Dimpex.dba.password=[dbapassword]</programlisting>
-                        </listitem>
-                        <listitem>
-                            <para>Oracle</para>
-                            <programlisting>mvn validate -Pdb,oracle -Dimpex.url=jdbc:oracle:thin:@[your-oracle-server]:1521:XE -Dimpex.dba.password=[dbapassword]</programlisting>
-                        </listitem>
-                    </itemizedlist></para>
+                        </itemizedlist>
+                    </para>
+                    <para>
+                        <emphasis role="bold">Connecting to a remote database:</emphasis>
+                        <itemizedlist>
+                            <listitem>
+                                <para>MySQL</para>
+                                <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.url=jdbc:mysql://[your-mysql-instance]/ -Dimpex.dba.password=[dbapassword]</programlisting>
+                            </listitem>
+                            <listitem>
+                                <para>Oracle</para>
+                                <programlisting>mvn validate -Pdb,oracle -Dimpex.url=jdbc:oracle:thin:@[your-oracle-server]:1521:XE -Dimpex.dba.password=[dbapassword]</programlisting>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                    <note>
+                        <para>Some setup may be necessary if the setup for connecting as an administrator to your
+                          database differs from the base install.  For example, if the username to connect to
+                          the database engine (often known as the 'admin' or 'root' user) is different in your
+                          setup, then you may have to add the following parameter:
+                          <programlisting>-Dimpex.dba.username=[dbaUsername]</programlisting>
+                          If for MySQL the 'root' user does not have a password (which is the default on a new
+                          install), you can either remove the parameter altogether:
+                          <programlisting>mvn validate -Pdb,mysql</programlisting>
+                          or specify 'NONE':
+                          <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=NONE</programlisting>
+                        </para>
+                    </note>
                 </listitem>
                 <listitem>
-                    <para>Load the data set. </para>
+                    <para>Review the options for creating your database.  The commands in the next step
+                        will verify the connection and create a new user and schema based on the default name.
+                        So, if you choose to install inside the <emphasis role="bold">master</emphasis>
+                        directory, it will create a user and schema named <emphasis role="bold">RICE</emphasis>.
+                        If you wish to change this, you can add one or more of these options to the following
+                        commands.
+                        <itemizedlist>
+                            <listitem>
+                                <emphasis role="bold">-Dimpex.username=[username]</emphasis>: Controls the user
+                                name that is created to access the schema.
+                            </listitem>
+                            <listitem>
+                                <emphasis role="bold">-Dimpex.password=[password]</emphasis>: Controls the password
+                                for the user that is created to access the schema.
+                            </listitem>
+                            <listitem>
+                                <emphasis role="bold">-Dimpex.database=[database]</emphasis>: (MySQL only) Controls
+                                the schema name that is created.
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>Load the data set.</para>
                     <para><emphasis role="bold">Running Locally:</emphasis><itemizedlist>
                         <listitem>
                             <para>MySQL</para>
@@ -759,28 +824,27 @@ OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programli
                     </orderedlist>
                 </para>
                 <para>An example <emphasis role="bold">rice-config.xml</emphasis> file is included
-                            in the server distribution under <emphasis role="bold"
-                                >config/web/src/main/config/example-config</emphasis>.</para>
-                <para>For MySQL, just modify the following database parameters in the <emphasis
-                                role="bold">rice-config.xml</emphasis> file. The values should
-                            conform to the values you will use with the ImpEx tool via the <emphasis
-                                role="bold">impex-build.properties</emphasis> file. ImpEx is set up
-                    in the <link linkend="database_setup">Installing and
-                        Configuring the Database Management System</link> section of this guide. </para>
-                    <para>
-                        <programlisting>datasource.url=jdbc:mysql://localhost:3306/rice
+                    in the server distribution under
+                    <emphasis role="bold">config/web/src/main/config/example-config</emphasis>.
+                </para>
+                <para>Modify the following database parameters in the
+                    <emphasis role="bold">rice-config.xml</emphasis> file.  The values should conform
+                    to the values you selected in the
+                    <link linkend="Rice_DB">Building the Rice Database</link> section of this guide.
+                </para>
+                <para>
+                    <programlisting>datasource.url=jdbc:mysql://localhost:3306/rice
 datasource.username=rice
-datasource.password=kualirice
+datasource.password=rice
 datasource.url=jdbc:mysql://remoteMySQLServerComputerName:3306/rice
 datasource.username=rice
-datasource.password=kualirice</programlisting>
+datasource.password=rice</programlisting>
                     </para>
                     <para>If you are using Oracle, the JDBC URL will have this
                         general form:</para>
                     <para>
                         <programlisting>datasource.url=jdbc:oracle:thin:@remoteMySQLServerComputerName:1521:ORACLE_SID</programlisting>
                     </para>
-                    <note><para>Additional configuration parameters are described in the <link linkend="database_setup">Parameters</link> section of this guide.</para></note>
                 </listitem>
                 <listitem>
                     <para>At this point, you are ready to try to bring up the Tomcat

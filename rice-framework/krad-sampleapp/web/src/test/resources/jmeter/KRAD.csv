@@ -1,6 +1,6 @@
 # https://wiki.kuali.org/display/KULRICE/Rice+Performance+Benchmarks
-"KitchenSink PerfomanceMedium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,2000
-"KitchenSink PerfomanceMedium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,2000
+"KitchenSink PerformanceMedium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,2000
+"KitchenSink PerformanceMedium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,2000
 "UICompView page 1",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1000
 "UICompView page 2",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,2000
 "UICompView page 3",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,2000
@@ -14,4 +14,4 @@
 "UICompView page 10",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,2000
 "UICompView page 11",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,2000
 "UICompView page 11",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,2000
-"KS POC",kr-krad/kitchensinkperformance,viewId=Demo-Performance-LightTable,NOTUSED,2000
+"KS POC",kr-krad/kitchensinkperformance,Demo-Performance-LightTable,NOTUSED,2000

@@ -14,6 +14,9 @@
         ACCT_NUM="a13" ACCT_TYPE="CAT" OBJ_ID="a13" SUBSIDIZED_PCT="95" VER_NBR="1"/>
     <TRV_ACCT ACCT_FO_ID="fran" ACCT_NAME="Travel Account 14"
         ACCT_NUM="a14" ACCT_TYPE="CAT" OBJ_ID="a14" VER_NBR="1"/>
+    <TRV_ACCT ACCT_FO_ID="fran" ACCT_NAME="Travel Account 16"
+        ACCT_NUM="a16" ACCT_TYPE="CAT" CREATE_DT="20140401120100"
+        OBJ_ID="a16" SUBSIDIZED_PCT="95" VER_NBR="1"/>
     <TRV_ACCT ACCT_FO_ID="fran" ACCT_NAME="Travel Account 2"
         ACCT_NUM="a2" ACCT_TYPE="EAT" OBJ_ID="a2" VER_NBR="1"/>
     <TRV_ACCT ACCT_FO_ID="frank" ACCT_NAME="Travel Account 3"

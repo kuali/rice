@@ -4360,6 +4360,23 @@ public class RouteNodeInstance implements Serializable {
                   </programlisting>
           </para>
         </tip>
+        <note>
+          <para>
+Due to the fact that JPA returns new copies of objects when an object is saved, several methods in DocumentServiceImpl
+have been changed to return new Document objects as well.  In the past, the same document that was passed in was also
+passed back to the calling code.  To prevent issues, the calling code should always use the object returned from
+methods in DocumentServiceImpl for future operations.  For reference, the following methods used to return the passed-in
+document but now return a new Document object:<itemizedlist>
+                <listitem>saveDocument</listitem>
+                <listitem>updateDocument</listitem>
+                <listitem>completeDocument</listitem>
+                <listitem>blanketApproveDocument</listitem>
+                <listitem>superUserApproveDocument</listitem>
+                <listitem>superUserCancelDocument</listitem>
+                <listitem>superUserDisapproveDocument</listitem>
+              </itemizedlist>
+          </para>
+        </note>
       </para>
     </section>
     <section>

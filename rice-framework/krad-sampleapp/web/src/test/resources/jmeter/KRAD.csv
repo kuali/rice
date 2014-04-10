@@ -1,4 +1,5 @@
 # https://wiki.kuali.org/display/KULRICE/Rice+Performance+Benchmarks
+# If there is no pageId use NOT_USED_DELETE
 "Kitchen Sink Input Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1000
 "Kitchen Sink Other Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,2000
 "Kitchen Sink Validation",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,2000

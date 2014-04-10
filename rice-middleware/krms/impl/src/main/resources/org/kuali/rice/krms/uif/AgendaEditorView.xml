@@ -231,7 +231,7 @@
                 <!-- populate context id field on tab out based on namespace and contextName-->
                 <property name="attributeQuery">
                     <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
-                        p:queryFieldMapping="namespace:namespace,contextName:name" p:returnFieldMapping="name:contextName,id:agenda.contextId">
+                        p:queryFieldMapping="namespace:namespace,contextName:name" p:returnFieldMapping="id:agenda.contextId">
                       <property name="additionalCriteria">
                         <map>
                           <entry key="active" value="true" />

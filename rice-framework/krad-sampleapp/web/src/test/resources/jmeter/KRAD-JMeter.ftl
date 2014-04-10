@@ -159,7 +159,7 @@
 	vars.put(&quot;URL&quot;, &quot;@{SERVER}:@{PORT}@{PATH}&quot;);	
 }
 
-if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;)) {
+if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
 	vars.put(&quot;REFERER_ULR&quot;, &quot;http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&quot;);
 } else {
 	vars.put(&quot;REFERER_ULR&quot;, &quot;http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&amp;amp;pageId=@{PAGEID}&quot;);

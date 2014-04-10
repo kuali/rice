@@ -115,11 +115,17 @@ public class PropositionNaturalLanguageTemplater implements NaturalLanguageTempl
         Map<String, Object> contextMap = new HashMap<String, Object>();
         //Add proposition constant to contextMap.
         if (parametersMap.containsKey(PropositionParameterType.CONSTANT.getCode())) {
-            contextMap.put(CONSTANT_VALUE_TOKEN, (String) parametersMap.get(PropositionParameterType.CONSTANT.getCode()));
+            String constantString = (String) parametersMap.get(PropositionParameterType.CONSTANT.getCode());
+            if (StringUtils.isNumeric(constantString)) {
+                contextMap.put(CONSTANT_VALUE_TOKEN, Integer.valueOf(constantString));
+            } else {
+                contextMap.put(CONSTANT_VALUE_TOKEN, constantString);
+            }
         }
         //Add proposition operator to contextMap.
         if (parametersMap.containsKey(PropositionParameterType.OPERATOR.getCode())) {
-            contextMap.put(OPERATOR_TOKEN, (String) parametersMap.get(PropositionParameterType.OPERATOR.getCode()));
+            String operatorString = (String) parametersMap.get(PropositionParameterType.OPERATOR.getCode());
+            contextMap.put(OPERATOR_TOKEN, operatorString);
         }
         //Access type service to retrieve type name.
         KrmsTypeDefinitionContract type = getKrmsTypeRepositoryService().getTypeById(typeId);

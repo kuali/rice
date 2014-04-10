@@ -294,7 +294,10 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
 
     @Override
     public List<RoleResponsibilityActionBo> getRoleRspActions() {
-        return roleRspActions;
+        if (this.roleRspActions == null) {
+            return new AutoPopulatingList<RoleResponsibilityActionBo>(RoleResponsibilityActionBo.class);
+        }
+        return this.roleRspActions;
     }
 
     public void setRoleRspActions(List<RoleResponsibilityActionBo> roleRspActions) {

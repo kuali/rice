@@ -17,5 +17,5 @@
 -- create a record with a create date field set
 
 INSERT INTO TRV_ACCT(ACCT_NUM, ACCT_NAME, ACCT_TYPE, ACCT_FO_ID, OBJ_ID, CREATE_DT, SUBSIDIZED_PCT)
-  VALUES('a16', 'Travel Account 16', 'CAT', 'fran', 'a16', '2014-04-01  12:01:00', 95)
+  VALUES('a16', 'Travel Account 16', 'CAT', 'fran', 'a16', TO_DATE('2014/04/01 12:01:00', 'yyyy/mm/dd hh24:mi:ss'), 95)
 /

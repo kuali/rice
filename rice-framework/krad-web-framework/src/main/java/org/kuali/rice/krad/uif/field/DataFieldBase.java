@@ -232,7 +232,8 @@ public class DataFieldBase extends FieldBase implements DataField {
         if (model instanceof ViewModel) {
             View view = ViewLifecycle.getView();
             if(((ViewModel) model).getViewsThatNeedDefaultValuesApplied().contains(view.getId())) {
-                view.getViewHelperService().populateDefaultValueForField(model, this,                        this.getBindingInfo().getBindingPath());
+                view.getViewHelperService().populateDefaultValueForField(model, this,
+                        this.getBindingInfo().getBindingPath());
             }
         }
 

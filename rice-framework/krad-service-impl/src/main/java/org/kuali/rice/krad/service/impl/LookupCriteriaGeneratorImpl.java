@@ -515,7 +515,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
                 addLessThan(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(propertyValue)));
             } else {
-                addEqual(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(propertyValue)));
+                // matches date between midnight to 11:59pm - does not take time into account
+               addBetween(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(propertyValue)),
+                       parseDateUpperBound(LookupUtils.scrubQueryCharacters(propertyValue)));
             }
         } catch (ParseException ex) {
             GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_DATE, propertyValue);

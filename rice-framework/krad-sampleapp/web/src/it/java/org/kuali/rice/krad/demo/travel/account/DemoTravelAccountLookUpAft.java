@@ -87,9 +87,13 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH);
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
-        
+
         //Search by Travel Account Date Created
-        //Cannot perform test on Date Created as there is no value for the field for this.
+        waitAndTypeByName("lookupCriteria[createDate]","04/01/2014");
+        waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//a[contains(text(),'a16')]");
+        waitForTextPresent("fran");
+        waitAndClickButtonByText(CLEAR_VALUES);
         
         //Search by Travel Account Fiscal Officer User ID
         waitAndTypeByName("lookupCriteria[foId]","fred");

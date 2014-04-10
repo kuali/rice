@@ -22,7 +22,7 @@ import java.util.UUID
 /**
  * KimPermissionConverter.groovy
  *
- * A groovy class which can be used to update KNS to KRAD.
+ * A groovy class which can be used to update KNS to KRAD
  * Examines a Rice database looking for KNS related KIM permissions and creates a SQL script file
  * which creates equivalent KRAD permissions.
  *
@@ -54,11 +54,6 @@ class KimPermissionConverter {
     String kradNamespaceCode = "KR-KRAD";
     String knsNamespaceCode = "KR-NS";
 
-    String viewInquiryFieldPermTemplateName = "View Inquiry or Maintenance Document Field";
-    String viewFieldPermTemplateName = "View Field";
-    String viewInquirySectionPermTemplateName = "View Inquiry or Maintenance Document Section";
-    String viewGroupPermTemplateName = "View Group";
-
     // canned select statements
     String selectPermissionTemplateByName = "SELECT * FROM KRIM_PERM_TMPL_T WHERE NM = ? AND NMSPC_CD = ? AND ACTV_IND = 'Y'";
     String selectPermissionsByTemplate = "SELECT * FROM KRIM_PERM_T WHERE PERM_TMPL_ID = ?";
@@ -67,13 +62,20 @@ class KimPermissionConverter {
     String selectAttributeDefinitionIds = "SELECT NM, NMSPC_CD, KIM_ATTR_DEFN_ID FROM KRIM_ATTR_DEFN_T WHERE ACTV_IND = 'Y'";
 
     // insert statement help strings
+    String insertIntoPermissionTemplateTable = "INSERT INTO KRIM_PERM_TMPL_T (ACTV_IND,KIM_TYP_ID,NM,NMSPC_CD,OBJ_ID,PERM_TMPL_ID,VER_NBR) VALUES ('";
     String insertIntoPermissionTable = "INSERT INTO KRIM_PERM_T (PERM_ID, OBJ_ID, PERM_TMPL_ID, NMSPC_CD, NM, DESC_TXT, ACTV_IND, VER_NBR) VALUES ('";
     String insertIntoPermissionAttributesTable = "INSERT INTO KRIM_PERM_ATTR_DATA_T (ATTR_DATA_ID, OBJ_ID, PERM_ID, KIM_TYP_ID, KIM_ATTR_DEFN_ID, ATTR_VAL, VER_NBR) VALUES ('";
     String insertIntoRoleMembershipTable = "INSERT INTO KRIM_ROLE_PERM_T (ROLE_PERM_ID, OBJ_ID, ROLE_ID, PERM_ID, ACTV_IND, VER_NBR) VALUES ('";
 
     // map old and new permission templates
     def permTemplateMap = ["View Inquiry or Maintenance Document Field":"View Field", "View Inquiry or Maintenance Document Section":"View Group", "Inquire Into Records":"Open View",
-            "Modify Maintenance Document Field":"Edit Field","Modify Maintenance Document Section":"Edit Group","Perform Custom Maintenance Document Function":"Perform Action"]
+            "Modify Maintenance Document Field":"Edit Field","Modify Maintenance Document Section":"Edit Group","Perform Custom Maintenance Document Function":"Perform Action",
+            "Add Note / Attachment":"Add Note / Attachment","Copy Document":"Copy Document", "Create / Maintain Record(s)":"Create / Maintain Record(s)",
+            "Delete Note / Attachment":"Delete Note / Attachment","Edit Document":"Edit Document","Full Unmask Field":"Full Unmask Field","Look Up Records":"Look Up Records",
+            "Maintain System Parameter":"Maintain System Parameter", "Modify Batch Job":"Modify Batch Job","Open Document":"Open Document", "Partial Unmask Field":"Partial Unmask Field",
+            "Send Ad Hoc Request":"Send Ad Hoc Request","Take Requested Action":"Take Requested Action","Upload Batch Input File(s)":"Upload Batch Input File(s)","Use Screen":"Use Screen",
+            "Use Transactional Document":"Use Transactional Document","View Note / Attachment":"View Note / Attachment"]
+
     //old and new attribute type name
     def permAttributeDetailsMap = ["componentName":"viewId","sectionId":"groupId","buttonName":"actionEvent"]
     public KimPermissionConverter(config) {
@@ -123,20 +125,20 @@ class KimPermissionConverter {
     }
 
     /**
-     * Transforms KNS permission used to override the hide field security attribute into the KRAD equivalent.
+     * Transforms KNS permission into the KRAD equivalent.
      *
      * Ouput:
      * - insert new permission into KRIM_PERM_T
-     * - insert new permissions attributes (viewId, fieldId, propertyName) into KRIM_PERM_ATTR_DATA_T
+     * - insert new permissions attributes into KRIM_PERM_ATTR_DATA_T
      * - insert role assigments into  KRIM_ROLE_MBR_T
      *
      * DB Info needed
-     * - KIM_TYP_ID of Krad View Field Permission
-     * - ATTR_DEFN_ID of 3 KimAttributes related to Krad View Field Permission
+     * - KIM_TYP_ID
+     * - ATTR_DEFN_ID of the KimAttributes
      */
     protected void transformPermissions(knsTemplateName, kradTemplateName) {
 
-        // get KRAD View Field permission template. we need the KimTypeId
+        // get KRAD permission template if it exists, we need the KimTypeId
         // for creating the new permissions attributes to insert into KRIM_PERM_ATTR_DATA_T table
         def permTemplate = sql.firstRow(selectPermissionTemplateByName, [kradTemplateName, kradNamespaceCode] );
 
@@ -144,14 +146,40 @@ class KimPermissionConverter {
         // should be only 1
         def tmpl = sql.firstRow(selectPermissionTemplateByName,[knsTemplateName, knsNamespaceCode]);
         def tmplId = tmpl.PERM_TMPL_ID;
+        def kradTmplId = "";
+        def kradKimTypeId ="";
+
+        if (permTemplate == null) {
+            //if the KRAD template does not exist, create a new one keeping the KIM_TYP_ID the same as the KNS one
+            def createPermTemplString = insertIntoPermissionTemplateTable + "Y','" +
+                    tmpl.KIM_TYP_ID +
+                    "','" +
+                    kradTemplateName +
+                    "','" +
+                    kradNamespaceCode +
+                    "','" +
+                    getUuid() +
+                    "','" +
+                    sequencePrefix +
+                    tmplId +
+                    "', 1)";
+
+            kradTmplId = sequencePrefix + tmplId ;
+            kradKimTypeId =  tmpl.KIM_TYP_ID ;
+            outputFile << "-- Insert new ${kradTemplateName} permission template for KRAD.\n";
+            outputFile << createPermTemplString + "\n" + sqlStatementDelimiter;
+        }else{
+            kradTmplId = permTemplate.PERM_TMPL_ID;
+            kradKimTypeId = permTemplate.KIM_TYP_ID
+        }
 
         // find the existing permissions based off this template
         sql.eachRow(selectPermissionsByTemplate, [tmplId]) { perm ->
             outputFile << "-- Insert new ${kradTemplateName} permission.\n";
             def newPermId = sequencePrefix + perm.PERM_ID;
 
-            // create an open view permission
-            def createPermString = insertIntoPermissionTable + newPermId + "', '" + getUuid() + "', '" + permTemplate.PERM_TMPL_ID +
+            // create the permission
+            def createPermString = insertIntoPermissionTable + newPermId + "', '" + getUuid() + "', '" + kradTmplId +
                     "', '" + kradNamespaceCode + "', '" + perm.NM + "', '" +  perm.DESC_TXT + "', 'Y', 1)";
             outputFile << createPermString + "\n" + sqlStatementDelimiter;
 
@@ -161,7 +189,7 @@ class KimPermissionConverter {
             sql.eachRow(selectPermissionAttributes, [perm.PERM_ID]){ oldAttr ->
                 def newAttributeValues = mapPermissionAttribute( oldAttr );
                 def createAttrString = insertIntoPermissionAttributesTable + newAttributeValues['ATTR_DATA_ID'] +
-                        "', '" + getUuid() + "', '" + newPermId + "', '" + permTemplate.KIM_TYP_ID + "', '" +
+                        "', '" + getUuid() + "', '" + newPermId + "', '" + kradKimTypeId + "', '" +
                         newAttributeValues['KIM_ATTR_DEFN_ID'] + "', '" + newAttributeValues['ATTR_VAL'] + "', 1)";
                 outputFile << createAttrString + "\n" + sqlStatementDelimiter;
             }
@@ -197,13 +225,20 @@ class KimPermissionConverter {
             oldAttrNm, newAttrNm ->
                 if (oldAttr.KIM_ATTR_DEFN_ID == getAttributeDefinitionId(oldAttrNm)){
                     newAttribute.put('KIM_ATTR_DEFN_ID', getAttributeDefinitionId(newAttrNm));
-                    newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL + '*');
-                } else {
-                    // copy the old Id and Value into the new
-                    newAttribute.put('KIM_ATTR_DEFN_ID', oldAttr.KIM_ATTR_DEFN_ID);
-                    newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL);
+                    if(oldAttrNm.equals("componentName")){
+                        newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL + 'MaintenanceView');
+                    } else{
+                        newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL + '*');
+                    }
                 }
         }
+
+        if(newAttribute.get('KIM_ATTR_DEFN_ID') == null) {
+            // copy the old Id and Value into the new
+            newAttribute.put('KIM_ATTR_DEFN_ID', oldAttr.KIM_ATTR_DEFN_ID);
+            newAttribute.put('ATTR_VAL', oldAttr.ATTR_VAL);
+        }
+
         return newAttribute;
     }
 
@@ -213,7 +248,7 @@ class KimPermissionConverter {
      * @return id of the attribute
      */
     def String getAttributeDefinitionId(String name){
-        return kimAttributeDefinitions.findAll{ it.NM == name}.KIM_ATTR_DEFN_ID[0];
+        return  kimAttributeDefinitions.findAll{ it.NM == name}.KIM_ATTR_DEFN_ID[0];
     }
 
     /**

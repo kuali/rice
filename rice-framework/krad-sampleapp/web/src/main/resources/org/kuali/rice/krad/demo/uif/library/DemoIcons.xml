@@ -36,6 +36,7 @@
         <ref bean="Demo-Icons-Example6"/>
         <ref bean="Demo-Icons-Example7"/>
         <ref bean="Demo-Icons-Example8"/>
+        <ref bean="Demo-Icons-Example9"/>
         <ref bean="Demo-Icons-Example10"/>
         <ref bean="Demo-Icons-Example11"/>
         <ref bean="Demo-Icons-Example12"/>

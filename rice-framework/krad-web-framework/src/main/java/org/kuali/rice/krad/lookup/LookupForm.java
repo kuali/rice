@@ -44,6 +44,8 @@ public class LookupForm extends UifFormBase {
 
     @RequestAccessible
     private boolean multipleValuesSelect;
+
+    @RequestAccessible
     private boolean redirectedLookup;
 
     @RequestAccessible

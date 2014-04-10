@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -921,6 +922,12 @@ public class DataDictionary {
     private static Class<?> getAttributeClassWhenBOIsClass(Class<?> boClass, String attributeName) {
         Object boInstance;
         try {
+
+            //KULRICE-11351 should not differentiate between primitive types and their wrappers during DD validation
+            if (boClass.isPrimitive()) {
+                boClass = ClassUtils.primitiveToWrapper(boClass);
+            }
+
             boInstance = boClass.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Unable to instantiate Data Object: " + boClass, e);

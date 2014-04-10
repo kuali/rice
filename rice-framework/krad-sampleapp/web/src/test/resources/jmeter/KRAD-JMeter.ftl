@@ -18,8 +18,8 @@
 -->
 <jmeterTestPlan version="1.2" properties="2.5" jmeter="2.10 r1533061">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="@{TESTPLANNAME}" enabled="true">
-      <stringProp name="TestPlan.comments">JMeter test for @{TESTPLANNAME}</stringProp>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="${testplanname}" enabled="true">
+      <stringProp name="TestPlan.comments">JMeter test for ${testplanname}</stringProp>
       <boolProp name="TestPlan.functional_mode">false</boolProp>
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
@@ -82,27 +82,22 @@
           </elementProp>
           <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">@{__P(pageundertesttimeoutms,@{pageundertesttimeoutms})}</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TESTPLANNAME" elementType="Argument">
-            <stringProp name="Argument.name">TESTPLANNAME</stringProp>
-            <stringProp name="Argument.value">@{__P(testplanname,@{testplanname})}</stringProp>
+            <stringProp name="Argument.value">@{__P(pageundertesttimeoutms,${pageundertesttimeoutms})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="TESTPATH" elementType="Argument">
             <stringProp name="Argument.name">TESTPATH</stringProp>
-            <stringProp name="Argument.value">@{__P(testpath,@{testpath})}</stringProp>
+            <stringProp name="Argument.value">@{__P(testpath,${testpath})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="VIEWID" elementType="Argument">
             <stringProp name="Argument.name">VIEWID</stringProp>
-            <stringProp name="Argument.value">@{__P(viewid,@{viewid})}</stringProp>
+            <stringProp name="Argument.value">@{__P(viewid,${viewid})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PAGEID" elementType="Argument">
             <stringProp name="Argument.name">PAGEID</stringProp>
-            <stringProp name="Argument.value">@{__P(pageid,@{pageid})}</stringProp>
+            <stringProp name="Argument.value">@{__P(pageid,${pageid})}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -2069,7 +2064,7 @@
                     </elementProp>
                     <elementProp name="Referer" elementType="Header">
                       <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
+                      <stringProp name="Header.value">http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
                     </elementProp>
                     <elementProp name="X-Requested-With" elementType="Header">
                       <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2148,7 +2143,7 @@
                     </elementProp>
                     <elementProp name="Referer" elementType="Header">
                       <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
+                      <stringProp name="Header.value">http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
                     </elementProp>
                     <elementProp name="X-Requested-With" elementType="Header">
                       <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2227,7 +2222,7 @@
                     </elementProp>
                     <elementProp name="Referer" elementType="Header">
                       <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
+                      <stringProp name="Header.value">http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
                     </elementProp>
                     <elementProp name="X-Requested-With" elementType="Header">
                       <stringProp name="Header.name">X-Requested-With</stringProp>
@@ -2320,7 +2315,7 @@
                     </elementProp>
                     <elementProp name="Referer" elementType="Header">
                       <stringProp name="Header.name">Referer</stringProp>
-                      <stringProp name="Header.value">http://@{URL}/kr-krad/labs?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
+                      <stringProp name="Header.value">http://@{URL}@{TESTPATH}?viewId=@{VIEWID}&amp;pageId=@{PAGEID}</stringProp>
                     </elementProp>
                     <elementProp name="Accept-Encoding" elementType="Header">
                       <stringProp name="Header.name">Accept-Encoding</stringProp>
@@ -2331,6 +2326,60 @@
                 <hashTree/>
               </hashTree>
             </hashTree>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="/kr-krad/login methodToCall logout" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="methodToCall" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.name">methodToCall</stringProp>
+                  <stringProp name="Argument.value">logout</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain"></stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">@{PATH}/kr-krad/login</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="Accept-Language" elementType="Header">
+                  <stringProp name="Header.name">Accept-Language</stringProp>
+                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                </elementProp>
+                <elementProp name="Accept" elementType="Header">
+                  <stringProp name="Header.name">Accept</stringProp>
+                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
+                </elementProp>
+                <elementProp name="User-Agent" elementType="Header">
+                  <stringProp name="Header.name">User-Agent</stringProp>
+                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:28.0) Gecko/20100101 Firefox/28.0</stringProp>
+                </elementProp>
+                <elementProp name="DNT" elementType="Header">
+                  <stringProp name="Header.name">DNT</stringProp>
+                  <stringProp name="Header.value">1</stringProp>
+                </elementProp>
+                <elementProp name="Accept-Encoding" elementType="Header">
+                  <stringProp name="Header.name">Accept-Encoding</stringProp>
+                  <stringProp name="Header.value">gzip, deflate</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
           </hashTree>
         </hashTree>
       </hashTree>

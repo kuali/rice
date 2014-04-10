@@ -71,10 +71,12 @@ public class FreemarkerJmeterTestGenerator {
             while ((csvLine = csvReader.readLine()) != null && (!csvLine.isEmpty())) {
                 i = 0;
                 csvProperties = new Properties();
+                System.out.println("Processing " + csvLine);
                 tokenizer = new StringTokenizer(csvLine, ",");
 
                 while (tokenizer.hasMoreTokens()) {
-                    csvProperties.put(propertiesArray[i++], tokenizer.nextToken());
+                    // remove quotes (from the testplanname)
+                    csvProperties.put(propertiesArray[i++], tokenizer.nextToken().replace("\"", ""));
                 }
 
                 // TODO would be nice to allow overriding via System params like the other Freemarker Generators do

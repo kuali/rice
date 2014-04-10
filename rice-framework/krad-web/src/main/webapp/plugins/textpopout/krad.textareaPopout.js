@@ -27,12 +27,14 @@
 			
 			var id= $(this).attr("id");
 			var obj = $(this);
+
 			var context;
 			if (top == self) {
-				context = jq;
-			}
-			else{
-				context = parent.$;
+                context = jq;
+            } else if (parent.$('iframe[id*=easyXDM_]').length > 0) {
+                context = parent.$;
+            } else if (parent.$('#' + kradVariables.PORTAL_IFRAME_ID).length > 0) {
+                context = parent.parent.$;
 			}
 			
 			var labelHtml="";

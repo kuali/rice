@@ -25,9 +25,12 @@ import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.conference.ConferenceSession;
 import org.kuali.rice.krad.test.conference.SessionCoordinator;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Set;
 import java.util.UUID;
@@ -49,6 +52,9 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
     @Test
     public void testAutoLinking_UsingForeignKey() {
         MaintenanceDocumentForm form = buildMaintenanceDocumentForm();
+        ViewPostMetadata viewPostMetadata = new ViewPostMetadata();
+        form.setViewPostMetadata(viewPostMetadata);
+
         MaintenanceDocumentBase maintDoc = (MaintenanceDocumentBase)form.getDocument();
 
         UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form, "form");
@@ -67,11 +73,15 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
         assertNull(session.getAltCoordinator1());
 
         MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+
         UifFormManager formManager = new UifFormManager();
         request.getSession().setAttribute(UifParameters.FORM_MANAGER, formManager);
         String basePath = "document.newMaintainableObject.dataObject.";
         String altCoordIdPath = basePath + "altCoordinator1Id";
         request.addParameter(altCoordIdPath, sc.getId().toString());
+
+        viewPostMetadata.addAccessibleBindingPath(altCoordIdPath);
 
         // let's bind this sucker
         binder.bind(request);
@@ -92,6 +102,9 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
     @Test
     public void testAutoLinking_UsingIdentity() {
         MaintenanceDocumentForm form = buildMaintenanceDocumentForm();
+        ViewPostMetadata viewPostMetadata = new ViewPostMetadata();
+        form.setViewPostMetadata(viewPostMetadata);
+
         MaintenanceDocumentBase maintDoc = (MaintenanceDocumentBase)form.getDocument();
 
         UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form, "form");
@@ -110,11 +123,15 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
         assertNull(session.getAltCoordinator1());
 
         MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+
         UifFormManager formManager = new UifFormManager();
         request.getSession().setAttribute(UifParameters.FORM_MANAGER, formManager);
         String basePath = "document.newMaintainableObject.dataObject.";
         String altCoordIdPath = basePath + "altCoordinator1.id";
         request.addParameter(altCoordIdPath, sc.getId().toString());
+
+        viewPostMetadata.addAccessibleBindingPath(altCoordIdPath);
 
         // let's bind this sucker
         binder.bind(request);
@@ -131,6 +148,9 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
     public void testModifiedPropertyTracking() {
 
         MaintenanceDocumentForm form = buildMaintenanceDocumentForm();
+        ViewPostMetadata viewPostMetadata = new ViewPostMetadata();
+        form.setViewPostMetadata(viewPostMetadata);
+
         MaintenanceDocumentBase maintDoc = (MaintenanceDocumentBase)form.getDocument();
 
         UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form, "form");
@@ -138,6 +158,8 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
         binder.setAutoLinking(false);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
+
         UifFormManager formManager = new UifFormManager();
         request.getSession().setAttribute(UifParameters.FORM_MANAGER, formManager);
         String basePath = "document.newMaintainableObject.dataObject.";
@@ -149,6 +171,11 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
         request.addParameter(titlePath, "My New ConferenceSession");
         request.addParameter(altCoordinator1IdPath, (String)null);
         request.addParameter(altCoordinator1_idPath, "1");
+
+        viewPostMetadata.addAccessibleBindingPath(idPath);
+        viewPostMetadata.addAccessibleBindingPath(titlePath);
+        viewPostMetadata.addAccessibleBindingPath(altCoordinator1IdPath);
+        viewPostMetadata.addAccessibleBindingPath(altCoordinator1_idPath);
 
         // now let's run the binding and make sure it bound correctly
         binder.bind(request);

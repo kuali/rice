@@ -481,7 +481,9 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
  	 * or return null.
  	 */
     private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
-        proposition.getId();
+        if (proposition != null) {
+            proposition.getId();
+        }
         stream.defaultWriteObject();
     }
 

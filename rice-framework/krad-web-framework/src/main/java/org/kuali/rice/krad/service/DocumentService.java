@@ -29,6 +29,9 @@ import java.util.List;
 /**
  * Defines various operations that support the Document framework.
  *
+ * The calling code should always use any returned Document object for future operations since a new object will be
+ * created if a passed-in document is saved.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DocumentService {
@@ -87,7 +90,7 @@ public interface DocumentService {
      *
      * @param documentClass
      * @param documentHeaderIds
-     * @return List of fully-populated documents
+     * @return list of fully-populated documents
      * @throws WorkflowException
      */
     public List<Document> getDocumentsByListOfDocumentHeaderIds(Class<? extends Document> documentClass, List<String> documentHeaderIds) throws WorkflowException;
@@ -97,6 +100,7 @@ public interface DocumentService {
      * well as to allow for locked docs to be unlocked
      *
      * @param document the document to be updated
+     * @return the updated document
      */
     public Document updateDocument(Document document);
 
@@ -114,13 +118,13 @@ public interface DocumentService {
      * passed in KualiDocumentEvent class when saving the document.  The KualiDocumentEvent class must implement
      * the {@link SaveEvent} interface.
      *
-     * Note: the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument
+     * Note that the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument
      * call. These are sent to workflow on a routeDocument action, or any of the others which actually causes a
      * routing action to happen in workflow.
      *
-     * Note: that this method will not check the document action flags to check if a save is valid
+     * Also note that this method will not check the document action flags to check if a save is valid
      *
-     * Note: calling code should always use the object returned from this method for future operations since a new
+     * The calling code should always use the object returned from this method for future operations since a new
      * object is created when the passed-in document is saved.
      *
      * @param document the document to be saved
@@ -294,15 +298,16 @@ public interface DocumentService {
 
     /**
      * Send ad hoc requests for the given document, optionally providing an annotation which will show up in the route
-     * log of the document.  Also optionally a list of ad hoc recipients can be provided for the document. However if
+     * log of the document.  Also optionally providing a list of ad hoc recipients for the document. However if
      * no ad hoc recipients are provided, no ad hoc requests will be sent.
      *
      * @param document the document for which the ad hoc requests are sent
      * @param annotation the annotation to appear in the route log of the document
      * @param adHocRecipients list of ad hoc recipients to which the document will be routed
+     * @return the document
      * @throws WorkflowException
      */
-    public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+    public Document sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * Builds an workflow notification request for the note and sends it to note recipient.
@@ -310,9 +315,10 @@ public interface DocumentService {
      * @param document - document that contains the note
      * @param note - note to notify
      * @param sender - user who is sending the notification
+     * @return the document
      * @throws WorkflowException
      */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
+    public Document sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
 
     /**
      * Recall the document, optionally providing an annotation for the recall which will show up in the route

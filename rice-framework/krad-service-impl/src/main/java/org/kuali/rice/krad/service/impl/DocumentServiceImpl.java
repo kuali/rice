@@ -977,7 +977,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.krad.service.DocumentService
      */
     @Override
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
+    public Document sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
         AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 
         // build notification request
@@ -1005,6 +1005,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         // clear recipient allowing an notification to be sent to another person
         note.setAdHocRouteRecipient(new AdHocRoutePerson());
+        return document;
     }
 
     /**
@@ -1041,7 +1042,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.krad.service.DocumentService#sendAdHocRequests(org.kuali.rice.krad.document.Document, String, java.util.List)
      */
     @Override
-    public void sendAdHocRequests(Document document, String annotation,
+    public Document sendAdHocRequests(Document document, String annotation,
             List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         prepareWorkflowDocument(document);
         getWorkflowDocumentService()
@@ -1051,6 +1052,7 @@ public class DocumentServiceImpl implements DocumentService {
                 document.getDocumentHeader().getWorkflowDocument());
 
         removeAdHocPersonsAndWorkgroups(document);
+        return document;
     }
 
     private void removeAdHocPersonsAndWorkgroups(Document document) {

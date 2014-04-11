@@ -86,11 +86,11 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertTextPresent("InputField 1");
         assertIsNotVisibleByXpath("//a[contains(text(),'Required')]");
 
-        waitAndClickByLinkText("Action Link with clientside validation");
+        waitAndClickByLinkText("Action Field with client side required validation");
         assertIsVisibleByXpath("//a[contains(text(),'Required')]", "");
 
         waitAndTypeByName("inputField1", "some text");
-        waitAndClickByLinkText("Action Link with clientside validation");
+        waitAndClickByLinkText("Action Field with client side required validation");
         assertIsNotVisibleByXpath("//a[contains(text(),'Required')]");
     }
 

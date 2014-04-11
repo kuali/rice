@@ -81,7 +81,7 @@
       <list>
         <bean parent="Uif-InputField" p:label="InputField 1" p:propertyName="inputField1" p:required="true"/>
         <!-- ex:Demo-ActionField-Example4 start-->
-        <bean parent="Uif-ActionLink" p:methodToCall="refresh" p:actionLabel="Action Link with clientside validation"
+        <bean parent="Uif-ActionLink" p:methodToCall="refresh" p:actionLabel="Action Field with client side required validation"
               p:performClientSideValidation="true"/>
         <!-- ex:Demo-ActionField-Example4 end-->
       </list>

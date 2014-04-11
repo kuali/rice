@@ -89,7 +89,7 @@
               p:propertyName="inputField1" p:required="true"/>
         <!-- ex:Demo-Action-Example4 start-->
         <bean parent="Uif-ActionLink" p:methodToCall="refresh"
-              p:actionLabel="Action Link with clientside validation"
+              p:actionLabel="Action Field with client side required validation"
               p:performClientSideValidation="true"/>
         <!-- ex:Demo-Action-Example4 end-->
       </list>

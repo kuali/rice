@@ -341,7 +341,11 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         super.processAfterCopy(document, parameters);
         AgendaBo agendaBo = ((AgendaEditor) document.getDocumentDataObject()).getAgenda();
         agendaBo.setVersionNumber(null);
+
+        for (AgendaItemBo agendaItem : agendaBo.getItems()) {
+            agendaItem.setVersionNumber(null);
         }
+    }
     @Override
     public void prepareForSave() {
         // set agenda attributes
@@ -356,7 +360,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // handle saving new parameterized terms and processing custom operators
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
             PropositionBo propositionBo = agendaItem.getRule().getProposition();
-            agendaItem.setVersionNumber(null);
             if (propositionBo != null) {
                 saveNewParameterizedTerms(propositionBo);
                 processCustomOperators(propositionBo);
@@ -380,16 +383,20 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
              to be persisted avoiding the integrity constraint
             */
 
-            List<AgendaItemBo> agendaItems = agendaBo.getItems();
-            agendaBo.setItems(new ArrayList<AgendaItemBo>());
-            getDataObjectService().save(agendaBo);
+            if(this.getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
+                List<AgendaItemBo> agendaItems = agendaBo.getItems();
+                agendaBo.setItems(new ArrayList<AgendaItemBo>());
+                getDataObjectService().save(agendaBo);
 
-            for(AgendaItemBo item : agendaItems) {
-                getDataObjectService().save(item);
-                getDataObjectService().flush(AgendaItemBo.class);
+                for(AgendaItemBo item : agendaItems) {
+                    getDataObjectService().save(item);
+                    getDataObjectService().flush(AgendaItemBo.class);
+                }
+
+                agendaBo.setItems(agendaItems);
+            }else{
+                getDataObjectService().save(agendaBo);
             }
-
-            agendaBo.setItems(agendaItems);
         } else {
             throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
         }

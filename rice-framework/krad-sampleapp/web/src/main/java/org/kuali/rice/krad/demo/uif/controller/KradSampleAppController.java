@@ -72,6 +72,7 @@ public class KradSampleAppController extends UifControllerBase {
         return getUIFModelAndView(uiTestForm);
     }
 
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addGrowl")
     public ModelAndView addGrowl(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

@@ -229,8 +229,8 @@ function subtractValues(values, startingValue) {
 }
 
 function showGroupOutlines(button) {
-    var groups = jQuery(button).closest(".uif-verticalBoxLayout").find("> .uif-group").not(":first");
-    groups = jQuery(groups).add(jQuery(groups).find(".uif-group"));
+    var groups = jQuery(button).closest(".uif-boxSection").find(".uif-group, .uif-verticalBoxGroup, .uif-horizontalBoxGroup").not(":first");
+    groups = jQuery(groups).add(jQuery(groups).find(".uif-group, .uif-verticalBoxGroup, .uif-horizontalBoxGroup"));
     if (groups.hasClass("demo-outlineGroup")) {
         groups.removeClass("demo-outlineGroup");
     }
@@ -240,7 +240,7 @@ function showGroupOutlines(button) {
 }
 
 function showItemOutlines(button) {
-    var groups = jQuery(button).closest(".uif-verticalBoxLayout").find("> .uif-group").not(":first");
+    var groups = jQuery(button).closest(".uif-boxSection").find(".uif-group, .uif-verticalBoxGroup, .uif-horizontalBoxGroup").not(":first");
     var items = groups.find(".uif-boxLayoutVerticalItem, .uif-boxLayoutHorizontalItem");
     if (items.hasClass("demo-outlineItem")) {
         items.removeClass("demo-outlineItem");

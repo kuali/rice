@@ -195,7 +195,6 @@
     <bean id="Demo-BoxLayoutManager-Example5" parent="Uif-VerticalBoxSection">
       <property name="items">
         <list>
-          <bean parent="Demo-BoxLayoutManager-Buttons"/>
           <!-- ex:Demo-BoxLayoutManager-Example5 start-->
           <!-- making padding 50px between items -->
           <bean parent="Uif-VerticalBoxGroup">
@@ -218,7 +217,6 @@
   <bean id="Demo-BoxLayoutManager-Example6" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Demo-BoxLayoutManager-Buttons"/>
         <!-- ex:Demo-BoxLayoutManager-Example6 start-->
         <!-- giving each item a css class to add a border bottom -->
         <bean parent="Uif-VerticalBoxGroup">
@@ -241,7 +239,6 @@
   <bean id="Demo-BoxLayoutManager-Example7" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-        <bean parent="Demo-BoxLayoutManager-Buttons"/>
         <!-- ex:Demo-BoxLayoutManager-Example7 start-->
         <!-- giving each item a style that adds a background color and margin -->
         <bean parent="Uif-HorizontalBoxGroup">

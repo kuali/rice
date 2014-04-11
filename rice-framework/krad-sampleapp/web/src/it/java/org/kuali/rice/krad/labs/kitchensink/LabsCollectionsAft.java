@@ -42,6 +42,7 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
 	@Test
     public void testCollectionsBookmark() throws Exception {
         testCollections();
+        testSubCollectionSize();
         testDeleteSubCollectionLine();
         passed();
     }
@@ -49,6 +50,7 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     @Test
     public void testCollectionsNav() throws Exception {
         testCollections();
+        testSubCollectionSize();
         testDeleteSubCollectionLine();
         passed();
     }
@@ -78,6 +80,27 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     	
     	//Collection Group 5 - Stacked Collection with a Stacked subcollection
     	assertElementPresentByXpath("//ul/li/div[@data-parent='UifCompView-CollectionList']");
+    }
+
+    protected void testSubCollectionSize() throws Exception {
+        // wait for collections page to load by checking the presence of a sub collection line item
+        for (int second = 0;; second++) {
+            if (second >= waitSeconds)
+                jiraAwareFail(TIMEOUT_MESSAGE
+                        + " looking for "
+                        + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
+            try {
+                if (isElementPresentByXpath("//span[@class='uif-headerText-span' and contains(text(),'SubCollection - (3 lines)')]"))
+                {
+                    break;
+                }
+            } catch (Exception e) {}
+            Thread.sleep(1000);
+        }
+
+        // verify that sub collection sizes are displayed as expected
+        waitForElementPresentByXpath("//section[@id='subCollection1_line0']/header/div/label/a/span[contains(text(),'SubCollection - (3 lines)')]]");
+        waitForElementPresentByXpath("//a[@id='subCollection1_line1_toggle']/span");
     }
 
     protected void testDeleteSubCollectionLine() throws Exception {

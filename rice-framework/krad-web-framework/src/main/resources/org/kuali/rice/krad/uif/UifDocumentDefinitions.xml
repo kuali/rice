@@ -98,7 +98,7 @@
     <property name="headerText"
               value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})"/>
     <property name="propertyName" value="notes"/>
-    <property name="cssClasses" value="tableborders wrap"/>
+    <property name="cssClasses" value="uif-disclosure tableborders wrap"/>
     <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="false"/>

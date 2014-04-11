@@ -600,7 +600,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public void tearDown() {
         try {
             if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
-                waitAndClickLogoutIfPresent();
+                logout();
             } else {
                 System.out.println("Last AFT URL: " + driver.getCurrentUrl());
                 if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true")) || screenshotSteps()) {
@@ -3949,10 +3949,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath(LOGOUT_XPATH, failable);
     }
 
-    protected void waitAndClickLogoutIfPresent() throws InterruptedException {
+    protected void logout() throws InterruptedException {
         selectTopFrame();
         if (isElementPresentByXpath(LOGOUT_XPATH)) {
             waitAndClickLogout(this);
+// KRAD Logout requires server configuration, currently env14 is not configured so throws Incident Report.
+//        } else {
+//            String logoutUrl = getBaseUrlString() + "/kr-krad/login?methodToCall=logout";
+//            jGrowl("Logging out with " + logoutUrl);
+//            open(logoutUrl);
         }
     }
 

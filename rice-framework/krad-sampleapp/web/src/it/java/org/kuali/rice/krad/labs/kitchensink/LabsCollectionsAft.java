@@ -17,6 +17,8 @@ package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotSame;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -24,6 +26,8 @@ import org.junit.Test;
 public class LabsCollectionsAft extends LabsKitchenSinkBase {
 
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=ab7fa92d-a2a0-4b94-b349-c00eb81de311&cacheKey=endwmf7mxaohx3lxynk6sm&pageId=UifCompView-Page7#UifCompView-Page7";
+
+    public static final String FIELD_ELEMENT_NAME = "list4[0].subList[0].field1";
 
     @Override
     protected String getBookmarkUrl() {
@@ -38,12 +42,14 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
 	@Test
     public void testCollectionsBookmark() throws Exception {
         testCollections();
+        testDeleteSubCollectionLine();
         passed();
     }
 
     @Test
     public void testCollectionsNav() throws Exception {
         testCollections();
+        testDeleteSubCollectionLine();
         passed();
     }
     
@@ -68,10 +74,36 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     	
     	//Collection Group 4 - Stacked Collection with a Table subcollection
     	assertElementPresentByXpath("//div[@id='collection4_disclosureContent']/section/table");
-    	waitAndClickByXpath("//span[contains(text(),'SubCollection - (3 lines)')]");
     	assertElementPresentByXpath("//div[@id='subCollection1_line0_disclosureContent']");
     	
     	//Collection Group 5 - Stacked Collection with a Stacked subcollection
     	assertElementPresentByXpath("//ul/li/div[@data-parent='UifCompView-CollectionList']");
+    }
+
+    protected void testDeleteSubCollectionLine() throws Exception {
+        // wait for collections page to load by checking the presence of a sub collection line item
+        waitForElementPresentByName(FIELD_ELEMENT_NAME);
+
+        // change a value in the line to be deleted
+        waitAndTypeByName(FIELD_ELEMENT_NAME, "selenium");
+
+        // click the delete button
+        waitAndClickById("subCollection1_line0_del_line0_line0");
+        Thread.sleep(2000);
+
+        // confirm that the input box containing the modified value is not present
+        for (int second = 0;; second++) {
+            if (second >= waitSeconds)fail(TIMEOUT_MESSAGE);
+
+            try {
+                if (!"selenium".equals(waitAndGetAttributeByName(FIELD_ELEMENT_NAME, "value")))
+                    break;
+            } catch (Exception e) {}
+
+            Thread.sleep(1000);
+        }
+
+        // verify that the value has changed for the input box in the line that has replaced the deleted one
+        assertNotSame("selenium", waitAndGetAttributeByName(FIELD_ELEMENT_NAME, "value"));
     }
 }

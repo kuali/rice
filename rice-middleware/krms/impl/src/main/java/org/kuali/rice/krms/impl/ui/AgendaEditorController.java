@@ -743,6 +743,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveUp")
     public ModelAndView ajaxMoveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -864,6 +865,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveDown")
     public ModelAndView ajaxMoveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -972,6 +974,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveLeft")
     public ModelAndView ajaxMoveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -1025,6 +1028,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveRight")
     public ModelAndView ajaxMoveRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -1335,6 +1339,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.refresh(form, result, request, response);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxDelete")
     public ModelAndView ajaxDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -1419,6 +1424,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         items.remove(removeAgendaItem);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxCut")
     public ModelAndView ajaxCut(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1438,6 +1444,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxPaste")
     public ModelAndView ajaxPaste(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1768,6 +1775,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * This method starts an edit proposition.
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "goToEditProposition")
     public ModelAndView goToEditProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -1859,7 +1867,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         
         return selectedId;
     }
-    
+
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "addProposition")
     public ModelAndView addProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -2036,6 +2045,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return -1;
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "movePropositionUp")
     public ModelAndView movePropositionUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2045,6 +2055,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "movePropositionDown")
     public ModelAndView movePropositionDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2104,6 +2115,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
     }
+
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "movePropositionLeft")
     public ModelAndView movePropositionLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2143,6 +2156,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "movePropositionRight")
     public ModelAndView movePropositionRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2187,6 +2201,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * Additionally, it puts a new blank simple proposition underneath the compound proposition
      * as a sibling to the selected proposition.
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "togglePropositionSimpleCompound")
     public ModelAndView togglePropositionSimpleCompound(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2236,7 +2251,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
-
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "cutProposition")
     public ModelAndView cutProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2249,6 +2264,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "pasteProposition")
     public ModelAndView pasteProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2317,6 +2333,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "deleteProposition")
     public ModelAndView deleteProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -2354,6 +2371,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "updateCompoundOperator")
     public ModelAndView updateCompoundOperator(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)

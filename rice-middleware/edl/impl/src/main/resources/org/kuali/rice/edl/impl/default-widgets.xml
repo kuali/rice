@@ -515,7 +515,7 @@
 							</xsl:variable>
 							<xsl:variable name="checked">
 								<xsl:choose>
-									<xsl:when test="$hasUserValue"><xsl:value-of select="//edlContent/data/version[@current='true']/field[@name=current()/../../@name and value=current()] = ."/></xsl:when>
+									<xsl:when test="$hasUserValue">true</xsl:when>
 									<!-- use the default if no user values are specified -->
 									<xsl:when test=". = ../../value">true</xsl:when>
 									<xsl:otherwise>false</xsl:otherwise>

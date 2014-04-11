@@ -47,12 +47,12 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
     /**
      * //section[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']
      */
-    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_BEFORE = "//section[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
+    private static final String EVAL_DISABLED_ON_KEY_UP_PWD_FIELD_XPATH_BEFORE = "//section[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2' and @disabled='disabled']";
     
     /**
      * //section[@id='Demo-PasswordControl-Example4']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField2']
      */
-    private static final String DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_AFTER = "//section[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2']";
+    private static final String EVAL_DISALBED_ON_KEY_UP_PWD_FIELD_XPATH_AFTER = "//section[@id='Demo-PasswordControl-Example4']/div/input[@type='password' and @name='inputField2']";
     
     /**
      * //section[@id='Demo-PasswordControl-Example5']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='password' and @name='inputField4' and @disabled='disabled']
@@ -102,11 +102,11 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath(DISABLED_PWD_FIELD_XPATH);
     }
 
-    protected void testLibraryControlPasswordDisableOnKeyEvent() throws Exception {
-        waitAndClickByLinkText("Disable on Key event");
-        assertElementPresentByXpath(DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_BEFORE);
+    protected void testLibraryControlPasswordEvaluateDisabledOnKeyUp() throws Exception {
+        waitAndClickByLinkText("Evaluate disabled on key up");
+        assertElementPresentByXpath(EVAL_DISABLED_ON_KEY_UP_PWD_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField1","a");
-        assertElementPresentByXpath(DISABLE_ON_KEY_EVENT_PWD_FIELD_XPATH_AFTER);
+        assertElementPresentByXpath(EVAL_DISALBED_ON_KEY_UP_PWD_FIELD_XPATH_AFTER);
     }
     
     protected void testLibraryControlPasswordEnableWhenChanged() throws Exception {
@@ -130,7 +130,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         testLibraryControlPasswordDefault();
         testLibraryControlPasswordSize();
         testLibraryControlPasswordDisabled();
-        testLibraryControlPasswordDisableOnKeyEvent();
+        testLibraryControlPasswordEvaluateDisabledOnKeyUp();
         testLibraryControlPasswordEnableWhenChanged();
         testLibraryControlPasswordDisableWhenChanged();
         passed();
@@ -141,7 +141,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         testLibraryControlPasswordDefault();
         testLibraryControlPasswordSize();
         testLibraryControlPasswordDisabled();
-        testLibraryControlPasswordDisableOnKeyEvent();
+        testLibraryControlPasswordEvaluateDisabledOnKeyUp();
         testLibraryControlPasswordEnableWhenChanged();
         testLibraryControlPasswordDisableWhenChanged();
         passed();

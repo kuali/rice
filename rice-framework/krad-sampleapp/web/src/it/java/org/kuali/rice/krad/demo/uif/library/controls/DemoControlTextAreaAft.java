@@ -65,8 +65,8 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example7']/textarea[@name='inputField2' and @rows='3' and @cols='40' and @placeholder='watermark text ']");
     }
     
-    protected void testLibraryControlTextAreaDisableOnKeyEvent() throws Exception {
-        waitAndClickByLinkText("Disable on Key event");
+    protected void testLibraryControlTextAreaEvaluateDisabledOnKeyUp() throws Exception {
+        waitAndClickByLinkText("Evaluate disabled on key up");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example8']/textarea[@name='inputField2' and @rows='3' and @cols='40' and @disabled]");
         waitAndTypeByXpath("//div[@data-parent='Demo-TextAreaControl-Example8']/textarea[@name='inputField1']","a");
         assertElementPresentByXpath("//div[@data-parent='Demo-TextAreaControl-Example8']/textarea[@name='inputField2' and @rows='3' and @cols='40']");
@@ -107,7 +107,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
         testLibraryControlTextAreaTextExpand();
         testLibraryControlTextAreaDisabled();
         testLibraryControlTextAreaWatermarkText();
-        testLibraryControlTextAreaDisableOnKeyEvent();
+        testLibraryControlTextAreaEvaluateDisabledOnKeyUp();
         testLibraryControlTextAreaEnableWhenChanged();
         testLibraryControlTextAreaDisableWhenChanged();
     }

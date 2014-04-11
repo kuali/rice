@@ -66,8 +66,8 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example4']/fieldset/span/input[@type='radio' and @name='inputField2' and @value='2']");
     }
     
-    protected void testLibraryControlRadioDisableOnKeyEvent() throws Exception {
-        waitAndClickByLinkText("Disable on Key event");
+    protected void testLibraryControlRadioEvaluateDisabledOnKeyUp() throws Exception {
+        waitAndClickByLinkText("Evaluate disabled on key up");
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='1']");
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example5']/fieldset/span/input[@type='radio' and @name='inputField2' and @disabled='disabled' and @value='2']");
         waitAndTypeByName("inputField1","a");
@@ -100,7 +100,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         testLibraryControlRadioKeyValuePairs();
         testLibraryControlRadioDisabled();
         testLibraryControlRadioDelimiter();
-        testLibraryControlRadioDisableOnKeyEvent();
+        testLibraryControlRadioEvaluateDisabledOnKeyUp();
         testLibraryControlRadioEnableWhenChanged();
         testLibraryControlRadioDisableWhenChanged();
         passed();
@@ -112,7 +112,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         testLibraryControlRadioKeyValuePairs();
         testLibraryControlRadioDisabled();
         testLibraryControlRadioDelimiter();
-        testLibraryControlRadioDisableOnKeyEvent();
+        testLibraryControlRadioEvaluateDisabledOnKeyUp();
         testLibraryControlRadioEnableWhenChanged();
         testLibraryControlRadioDisableWhenChanged();
         passed();

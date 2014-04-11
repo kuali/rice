@@ -57,12 +57,12 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
     /**
      * //section[@id='Demo-TextControl-Example8']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField7' and @disabled='disabled']
      */
-    private static final String DISABLE_ON_KEY_EVENT_TXT_FIELD_XPATH_BEFORE = "//section[@id='Demo-TextControl-Example8']/div/input[@type='text' and @name='inputField7' and @disabled='disabled']";
+    private static final String EVAL_DISABLED_ON_KEY_UP_TXT_FIELD_XPATH_BEFORE = "//section[@id='Demo-TextControl-Example8']/div/input[@type='text' and @name='inputField7' and @disabled='disabled']";
     
     /**
      * //section[@id='Demo-TextControl-Example8']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField7']
      */
-    private static final String DISABLE_ON_KEY_EVENT_TXT_FIELD_XPATH_AFTER = "//section[@id='Demo-TextControl-Example8']/div/input[@type='text' and @name='inputField7']";
+    private static final String EVAL_DISABLED_ON_UP_EVENT_TXT_FIELD_XPATH_AFTER = "//section[@id='Demo-TextControl-Example8']/div/input[@type='text' and @name='inputField7']";
     
     /**
      * //section[@id='Demo-TextControl-Example9']/div[@class='uif-verticalBoxLayout clearfix']/div/input[@type='text' and @name='inputField9' and @disabled='disabled']
@@ -123,11 +123,11 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath(WATERMARK_TXT_FIELD_XPATH);
     }
 
-    protected void testLibraryControlTextDisableOnKeyEvent() throws Exception {
-        waitAndClickByLinkText("Disable on Key event");
-        assertElementPresentByXpath(DISABLE_ON_KEY_EVENT_TXT_FIELD_XPATH_BEFORE);
+    protected void testLibraryControlTextEvaluateDisabledOnKeyUp() throws Exception {
+        waitAndClickByLinkText("Evaluate disabled on key up");
+        assertElementPresentByXpath(EVAL_DISABLED_ON_KEY_UP_TXT_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField6","a");
-        assertElementPresentByXpath(DISABLE_ON_KEY_EVENT_TXT_FIELD_XPATH_AFTER);
+        assertElementPresentByXpath(EVAL_DISABLED_ON_UP_EVENT_TXT_FIELD_XPATH_AFTER);
     }
     
     protected void testLibraryControlTextEnableWhenChanged() throws Exception {
@@ -153,7 +153,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         testLibraryControlTextExpand();
         testLibraryControlTextDisabled();
         testLibraryControlTextWatermarkText();
-        testLibraryControlTextDisableOnKeyEvent();
+        testLibraryControlTextEvaluateDisabledOnKeyUp();
         testLibraryControlTextEnableWhenChanged();
         testLibraryControlTextDisableWhenChanged();
         passed();
@@ -166,7 +166,7 @@ public class DemoControlTextAft extends WebDriverLegacyITBase {
         testLibraryControlTextExpand();
         testLibraryControlTextDisabled();
         testLibraryControlTextWatermarkText();
-        testLibraryControlTextDisableOnKeyEvent();
+        testLibraryControlTextEvaluateDisabledOnKeyUp();
         testLibraryControlTextEnableWhenChanged();
         testLibraryControlTextDisableWhenChanged();
         passed();

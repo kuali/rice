@@ -145,7 +145,7 @@
         </bean>
         <bean id="ST-DemoCheckboxControlExample7-Input2" parent="Uif-InputField" p:propertyName="inputField2">
           <property name="control">
-            <bean parent="Uif-CheckboxControl" p:disabledWhenChangedPropertyNames="inputField1"
+            <bean parent="Uif-CheckboxControl" p:disabled="true" p:enabledWhenChangedPropertyNames="inputField1"
                   p:evaluateDisabledOnKeyUp="true" p:checkboxLabel="Add me to your mailing list"/>
           </property>
         </bean>

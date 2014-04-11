@@ -236,38 +236,38 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         passed();
     }
 
-    protected void testCheckboxControlDisabledOnKeyEvent() throws Exception {
+    protected void testCheckboxControlEvaluateDisabledOnKeyUp() throws Exception {
         navigateToExample("Demo-CheckboxControl-Example7");
 
         waitForElementPresentById("ST-DemoCheckboxControlExample7-Input1_control");
         waitForElementPresentById("ST-DemoCheckboxControlExample7-Input2_control");
-        assertTextPresent("Evaluate the disable condition on controls which disable it on each key up event");
-
-        // check that checkbox controls is visible, not selected and enabled
-        assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
-        assertTrue(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
-
-        // space input1
-        driver.findElement(By.id("ST-DemoCheckboxControlExample7-Input1_control")).sendKeys(Keys.SPACE);
+        assertTextPresent("Evaluate the disabled condition on each key up event");
 
         // check that checkbox controls is visible, not selected and disabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
         assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
         assertFalse(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
+
+        // space input1
+        driver.findElement(By.id("ST-DemoCheckboxControlExample7-Input1_control")).sendKeys(Keys.SPACE);
+
+        // check that checkbox controls is visible, not selected and enabled
+        assertTrue(isVisibleById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertFalse(isCheckedById("ST-DemoCheckboxControlExample7-Input2_control"));
+        assertTrue(isEnabledById("ST-DemoCheckboxControlExample7-Input2_control"));
     }
 
 
     @Test
     public void testCheckboxControlDisabledOnKeyEventBookmark() throws Exception {
-        testCheckboxControlDisabledOnKeyEvent();
+        testCheckboxControlEvaluateDisabledOnKeyUp();
         passed();
     }
 
     @Test
     public void testCheckboxControlDisabledOnKeyEventNav() throws Exception {
         navigateToLibraryDemo("Controls", "Checkbox");
-        testCheckboxControlDisabledOnKeyEvent();
+        testCheckboxControlEvaluateDisabledOnKeyUp();
         passed();
     }
 

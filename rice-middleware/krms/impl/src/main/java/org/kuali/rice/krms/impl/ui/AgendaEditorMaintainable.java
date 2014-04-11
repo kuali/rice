@@ -383,7 +383,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
              to be persisted avoiding the integrity constraint
             */
 
-            if(this.getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
+            if(this.getMaintenanceAction() != null &&
+                    this.getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
                 List<AgendaItemBo> agendaItems = agendaBo.getItems();
                 agendaBo.setItems(new ArrayList<AgendaItemBo>());
                 getDataObjectService().save(agendaBo);

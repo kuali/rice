@@ -74,7 +74,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +146,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         return modelAndView;
     }
-
 
     @Override
     @MethodAccessible
@@ -734,15 +732,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
-    @RequestMapping(params = "methodToCall=" + "moveUp")
-    public ModelAndView moveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        moveSelectedSubtreeUp(form);
-
-        return super.refresh(form, result, request, response);
-    }
-
     @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveUp")
     public ModelAndView ajaxMoveUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -856,15 +845,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }
 
-    @RequestMapping(params = "methodToCall=" + "moveDown")
-    public ModelAndView moveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        moveSelectedSubtreeDown(form);
-        
-        return super.refresh(form, result, request, response);
-    }
-
     @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveDown")
     public ModelAndView ajaxMoveDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -965,15 +945,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
     }
 
-    @RequestMapping(params = "methodToCall=" + "moveLeft")
-    public ModelAndView moveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        moveSelectedSubtreeLeft(form);
-        
-        return super.refresh(form, result, request, response);
-    }
-
     @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxMoveLeft")
     public ModelAndView ajaxMoveLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -1015,17 +986,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" left to be a sibling of its parent ").append(parent.getRule().getName());
             agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         }
-    }
-
-
-    @RequestMapping(params = "methodToCall=" + "moveRight")
-    public ModelAndView moveRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        moveSelectedSubtreeRight(form);
-
-        return super.refresh(form, result, request, response);
     }
 
     @MethodAccessible
@@ -1320,25 +1280,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return ((AgendaEditor)maintenanceForm.getDocument().getDocumentDataObject());
     }
 
-    private void treeToInOrderList(AgendaItemBo agendaItem, List<AgendaItemBo> listToBuild) {
-        listToBuild.add(agendaItem);
-        for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
-            AgendaItemBo child = childAccessor.getChild(agendaItem);
-            if (child != null) treeToInOrderList(child, listToBuild);
-        }
-    }
-
-    
-    @RequestMapping(params = "methodToCall=" + "delete")
-    public ModelAndView delete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        deleteSelectedSubtree(form);
-
-        return super.refresh(form, result, request, response);
-    }
-
     @MethodAccessible
     @RequestMapping(params = "methodToCall=" + "ajaxDelete")
     public ModelAndView ajaxDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -1351,7 +1292,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return getUIFModelAndView(form);
     }
 
-    
     private void deleteSelectedSubtree(UifFormBase form) {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
@@ -1501,45 +1441,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         // call the super method to avoid the agenda tree being reloaded from the db
         return getUIFModelAndView(form);
-    }
-
-    /**
-     * Updates to the category call back to this method to set the categoryId appropriately
-     * TODO: shouldn't this happen automatically?  We're taking it out of the form by hand here
-     */
-    @RequestMapping(params = "methodToCall=" + "ajaxCategoryChangeRefresh")
-    public ModelAndView ajaxCategoryChangeRefresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-
-        String categoryParamName = null;
-        Enumeration paramNames = request.getParameterNames();
-        while (paramNames.hasMoreElements()) {
-            String paramName = paramNames.nextElement().toString();
-            if (paramName.endsWith("categoryId")) {
-                categoryParamName = paramName;
-                break;
-            }
-        }
-
-        if (categoryParamName != null) {
-            String categoryId = request.getParameter(categoryParamName);
-
-            if (StringUtils.isBlank(categoryId)) { categoryId = null; }
-
-            AgendaEditor agendaEditor = getAgendaEditor(form);
-            RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
-            String selectedPropId = agendaEditor.getSelectedPropositionId();
-
-            // TODO: This should work even if the prop isn't selected!!!  Find the node in edit mode?
-            if (!StringUtils.isBlank(selectedPropId)) {
-                Node<RuleTreeNode, String> selectedPropositionNode =
-                        findPropositionTreeNode(rule.getPropositionTree().getRootElement(), selectedPropId);
-                selectedPropositionNode.getData().getProposition().setCategoryId(categoryId);
-            }
-        }
-
-        return ajaxRefresh(form, result, request, response);
     }
 
     /**

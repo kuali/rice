@@ -127,26 +127,14 @@
       <list>
         <!-- ex:Demo-Group-Example5 start-->
         <!-- Section usage -->
-        <!--<bean parent="Uif-HorizontalBoxSection">
+        <bean parent="Uif-HorizontalBoxSection">
           <property name="items">
-            <list>-->
-              <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField9"/>
-                  </list>
-                </property>
-              </bean>
-              <bean parent="Uif-VerticalBoxSection" p:headerText="Section 2">
-                <property name="items">
-                  <list>
-                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField10"/>
-                  </list>
-                </property>
-              </bean>
-            <!--</list>
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField9"/>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField10"/>
+            </list>
           </property>
-        </bean> -->
+        </bean>
         <!-- ex:Demo-Group-Example5 end-->
       </list>
     </property>

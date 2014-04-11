@@ -46,11 +46,6 @@
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
     <field-descriptor name="requestType" column="request_trav" jdbc-type="VARCHAR"/>
     <!--  object references -->
-    <reference-descriptor name="documentHeader" class-ref="org.kuali.rice.krad.bo.DocumentHeader" auto-retrieve="true"
-                          auto-update="object"
-                          auto-delete="object">
-      <foreignkey field-ref="documentNumber"/>
-    </reference-descriptor>
     <collection-descriptor name="travelAccounts"
                            element-class-ref="edu.sampleu.travel.bo.TravelAccount"
                            auto-retrieve="true" auto-update="false"

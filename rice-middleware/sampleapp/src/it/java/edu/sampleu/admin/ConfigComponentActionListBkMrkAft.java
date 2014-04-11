@@ -76,4 +76,40 @@ public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionList
     public void testActionListFyiPersonBookmark() throws Exception {
         testActionListFyiPerson();
     }
+
+    @Test
+    public void testActionListAcknowledgePerson_WithPendingApprove_Bookmark() throws Exception {
+        testActionListAcknowledgePerson_WithPendingApprove();
+    }
+
+    @Test
+    public void testActionListAcknowledgePerson_WithPendingAcknowledge_Bookmark() throws Exception {
+        testActionListAcknowledgePerson_WithPendingAcknowledge();
+    }
+
+    @Test
+    public void testActionListApprovePerson_WithPendingApprove_Bookmark() throws Exception {
+        testActionListApprovePerson_WithPendingApprove();
+    }
+
+    @Test
+    public void testActionListApprovePerson_WithPendingAcknowledge_Bookmark() throws Exception {
+        testActionListApprovePerson_WithPendingAcknowledge();
+    }
+
+
+    @Test
+    public void testActionListSavePerson_Bookmark() throws Exception {
+        testActionListSavePerson();
+    }
+
+    @Test
+    public void testComponentRecallAndCancel_Bookmark() throws Exception {
+        testComponentRecallAndCancel_Person();
+    }
+
+    @Test
+    public void testComponentRecallToActionList_Bookmark() throws Exception {
+        testComponentRecallToActionList_Person();
+    }
 }

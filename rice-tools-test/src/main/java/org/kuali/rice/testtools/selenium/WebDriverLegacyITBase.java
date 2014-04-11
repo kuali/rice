@@ -449,12 +449,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         actionRequestLabelMap.put("A","APPROVE");
         actionRequestLabelMap.put("F","FYI");
         actionRequestLabelMap.put("C","COMPLETE");
+        actionRequestLabelMap.put("CR","COMPLETE");
         actionRequestLabelMap.put("K","ACKNOWLEDGE");
         actionRequestLabelMap.put("D","APPROVE");
         actionRequestButtonMap = new HashMap();
         actionRequestButtonMap.put("A","methodToCall.approve");
         actionRequestButtonMap.put("F","methodToCall.fyi");
         actionRequestButtonMap.put("C","methodToCall.complete");
+        actionRequestButtonMap.put("CR","methodToCall.route");
         actionRequestButtonMap.put("K","methodToCall.acknowledge");
         actionRequestButtonMap.put("D","methodToCall.disapprove");
     }
@@ -785,19 +787,32 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             waitAndTypeByName("reason","disapproved for AFT");
             jGrowl("Click yes button");
             waitAndClickByName("methodToCall.processAnswer.button0");
-        } else if ("C".equals(actionListOptionValue)) {
+        } else if ("C".equals(actionListOptionValue) || "CR".equals(actionListOptionValue)) {
             waitAndClickByName("methodToCall.close");
         }
         waitForTextNotPresent(docId);
-        assertOutbox(docId);
     }
 
-    protected void assertOutbox(String docId) throws InterruptedException {
+    protected void assertNotInActionList(String docId) throws InterruptedException {
+        selectTopFrame();
+        waitAndClickActionList();
+        selectFrameIframePortlet();
+        waitForTextNotPresent(docId);
+        while (waitForIsTextPresent("Next")) {
+            waitAndClickByLinkText("Next");
+            waitForTextNotPresent(docId);
+        }
+    }
+
+    protected void assertOutbox(String docId, String state) throws InterruptedException {
         // find it in outbox
         waitAndClickLinkContainingText("Outbox");
         while (!waitForIsTextPresent(docId)) {
             waitAndClickByLinkText("Next");
         }
+        WebElement docIdTr = findElement(By.xpath("//table/tbody/tr/td/a[contains(text(), '" + docId + "')]/../.."));
+        assertTrue("Outbox items " + docIdTr.getText() + " does not contain " + docId, docIdTr.getText().contains(docId));
+        assertTrue("Outbox items " + docIdTr.getText() + " state is incorrect " + state, docIdTr.getText().contains(state));
         waitForTextPresent(docId);
 
 //        // clear all items in the outbox

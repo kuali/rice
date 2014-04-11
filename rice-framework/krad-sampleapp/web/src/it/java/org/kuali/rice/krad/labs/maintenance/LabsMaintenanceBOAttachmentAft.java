@@ -76,6 +76,8 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     	waitAndTypeByXpath("//div[@data-label='ID']/input",random);
     	fileUploadSetUp();
     	fileIngesterCollection();
+    	waitAndClickButtonByExactText("add");
+    	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     	waitAndClickButtonByExactText("blanket approve");
     }
     

@@ -43,31 +43,13 @@ function handlePageAndCacheRefreshing() {
     // the entire view from the server
     var cacheKeyHashVal = getUrlParameter(kradVariables.CACHE_KEY, window.location.hash);
     if (cacheKeyHashVal) {
-        // remove hash key so it is not present on refresh
-        var hash = getRemovedUrlHashKey(kradVariables.CACHE_KEY);
-
-        var refreshQueryString;
-
-        // pick up form key for refresh call so we get the latest state
-        var formKeyField = jQuery("input[name='" + kradVariables.FORM_KEY + "']");
-        if (formKeyField.length && formKeyField.val()) {
-            refreshQueryString = getUrlQueryString(kradVariables.FORM_KEY, formKeyField.val(), refreshQueryString);
+        if(history.replaceState){
+            removeCacheKeyHTML5();
+        } else {
+            removeCacheKeyNonHTML5();
         }
-
-        var pageIdHashVal = getUrlParameter(kradVariables.PAGE_ID, window.location.hash);
-        if (pageIdHashVal) {
-            refreshQueryString = getUrlQueryString(kradVariables.PAGE_ID, pageIdHashVal, refreshQueryString);
-        }
-
-        window.location.replace("?" + refreshQueryString + hash);
 
         return true;
-    }
-
-    // check whether the view is multi-page, if not we don't need to setup page URL handling
-    var singlePageView = (jQuery("input[name='" + kradVariables.SINGLE_PAGE_VIEW + "']").val() == "true");
-    if (singlePageView) {
-        return false;
     }
 
     // is a lightbox being closed by the back button
@@ -77,9 +59,10 @@ function handlePageAndCacheRefreshing() {
     jQuery(document).bind("afterLoad", function(e){
         if(history.replaceState){
             history.pushState({lightbox: true}, null, window.location + "&" + kradVariables.LIGHTBOX_PARAM + "=true");
-        }
-        else{
-            window.location.hash = window.location.hash + "&" + kradVariables.LIGHTBOX_PARAM + "=true"
+        } else {
+            var search = window.location.search.substring(1);
+            var hash = getUrlQueryString( kradVariables.LIGHTBOX_PARAM, "true", window.location.hash);
+            window.location.replace("?" + search + hash);
         }
     });
 
@@ -88,19 +71,17 @@ function handlePageAndCacheRefreshing() {
         // force a history back on close (if back button wasn't clicked to close)
         if(!lightboxBackClose && history.replaceState &&  window.location &&
                 (window.location).toString().indexOf(kradVariables.LIGHTBOX_PARAM + "=true")){
-            // TODO webkit incorrectly still stores the history of iframes after removal, back will cause bad behavior
-            if (!jQuery.browser.webkit){
-                history.back();
-            }
+            history.back();
         }
         else if(!lightboxBackClose && window.location.hash &&
-                (window.location.hash).toString().indexOf("lightbox=true")){
+                (window.location.hash).toString().indexOf(kradVariables.LIGHTBOX_PARAM + "=true")){
+            var search = window.location.search.substring(1);
             // TODO just removing attribute because IE has a bug with erasing the hash history so back cant be
             // used as we would like it to
             var hash = window.location.hash.toString();
             hash = hash.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
             hash = hash.replace(kradVariables.LIGHTBOX_PARAM + "=true&", "");
-            window.location.replace(hash);
+            window.location.replace("?" + search + hash);
         }
         lightboxBackClose = false;
     });
@@ -142,6 +123,12 @@ function handlePageAndCacheRefreshing() {
         }
     });
 
+    // check whether the view is multi-page, if not we don't need to setup page URL handling
+    var singlePageView = (jQuery("input[name='" + kradVariables.SINGLE_PAGE_VIEW + "']").val() == "true");
+    if (singlePageView) {
+        return false;
+    }
+
     // check if page id on hash is different from the page we actually have, if so
     // retrieve the correct page
     var hashPageId = getUrlParameter(kradVariables.PAGE_ID, window.location.hash);
@@ -174,8 +161,11 @@ function updateRequestUrl(pageId) {
 
     // generate unique cache key (only has to be unique with a given form key)
     var disableCache = (jQuery("input[name='" + kradVariables.DISABLE_BROWSER_CACHE + "']").val() == "true");
+    var cacheKey;
+    var urlPageId = getUrlParameter(kradVariables.PAGE_ID, window.location.search.substring(1));
+
     if (disableCache) {
-        var cacheKey = generateQuickGuid();
+        cacheKey = generateQuickGuid();
     }
 
     // check for single page views in which case we don't need to update URL with page id
@@ -210,7 +200,6 @@ function updateRequestUrl(pageId) {
             updatedPageUrl = updatedPageUrl.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
         }
 
-        var urlPageId = getUrlParameter(kradVariables.PAGE_ID);
         if (urlPageId && pageId && (urlPageId != pageId)) {
             // push state if new page
             history.pushState({pageId: pageId}, null, updatedPageUrl);
@@ -219,38 +208,35 @@ function updateRequestUrl(pageId) {
             // otherwise replace state
             history.replaceState({pageId: pageId}, null, updatedPageUrl);
         }
-    }
-    else {
+    } else {
         // add keys hash if no HTML5 history support (old IE support)
-        var hash = "";
+        var urlSearch = window.location.search.substring(1);
+        var search = urlSearch;
+        var hash = window.location.hash;
+        var delineatedHash;
 
         if (!singlePageView) {
-            hash = getAppendedUrlHashKey(kradVariables.PAGE_ID, pageId);
+            search = getUrlQueryString(kradVariables.PAGE_ID, pageId, search);
         }
 
         if (formKeyField.length && formKeyField.val()) {
-            hash = getAppendedUrlHashKey(kradVariables.FORM_KEY, formKeyField.val(), hash);
+            hash = getUrlQueryString(kradVariables.FORM_KEY, formKeyField.val(), hash);
         }
 
         if (disableCache) {
             hash = getAppendedUrlHashKey(kradVariables.CACHE_KEY, cacheKey, hash);
         }
 
-        // if the hash is empty or already contains the page id we want to replace
-        // the current history item (not add to it)
-        var replaceHistory = false;
-        if (!window.location.hash || (pageId == getUrlParameter(kradVariables.PAGE_ID, window.location.hash))) {
-            replaceHistory = true;
+        if (hash) {
+            delineatedHash = "#" + hash;
         }
 
-        // if we are just updating the URL use location.replace which will not add an item
-        // to the history, otherwise we will reset the hash which will add an item history (and allow
-        // the user to go back to the previous URL with the back button)
-        if (replaceHistory) {
-            window.location.replace(hash);
-        }
-        else {
-            window.location.hash = hash;
+        if (urlPageId && pageId && (urlPageId != pageId)) {
+            window.location.replace("?" + search + delineatedHash);
+        } else {
+            if (hash) {
+                window.location.replace("?" + search + delineatedHash);
+            }
         }
     }
 }
@@ -281,6 +267,7 @@ function getUrlParameter(paramName, searchString) {
 
     for (var i = 0; i < params.length; i++) {
         var val = params[i].split("=");
+        val[0] = stripDelimiters(val[0]);
 
         if (val[0] == paramName) {
             return decodeURIComponent(val[1]);
@@ -324,6 +311,9 @@ function getUrlQueryString(appendageId, appendageValue, searchString) {
     for (var i = 0; i < params.length; i++) {
         var val = params[i].split("=");
 
+        // remove leading delimiters, we don't want it part of a param name
+        val[0] = stripDelimiters(val[0]);
+
         //skip the param we are replacing
         if (val[0] == appendageId) {
             continue;
@@ -365,7 +355,7 @@ function getAppendedUrlHashKey(key, value, hashString) {
 
     hashString = stripHashDelimiter(hashString);
 
-    return "#?" + getUrlQueryString(key, value, hashString);
+    return getUrlQueryString(key, value, hashString);
 }
 
 /**
@@ -394,6 +384,8 @@ function getRemovedUrlHashKey(key, hashString) {
     for (i = 0; i < params.length; i++) {
         var parm = params[i].split("=");
 
+        parm[0] = stripDelimiters(parm[0]);
+
         if (parm[0] == key) {
             continue;
         }
@@ -406,7 +398,7 @@ function getRemovedUrlHashKey(key, hashString) {
         }
     }
 
-    return "#?" + newHash;
+    return newHash;
 }
 
 /**
@@ -425,4 +417,63 @@ function stripHashDelimiter(hashString) {
     }
 
     return hashString;
+}
+
+/**
+ * Strips off delimiters from string
+ *
+ * @param string to strip delimiter from
+ * @return {*} updated string
+ */
+function stripDelimiters(str) {
+    if ((str.length > 0) && (str.substring(0, 1) == '#')) {
+        str = str.substring(1);
+    }
+
+    if ((str.length > 0) && (str.substring(0, 1) == '?')) {
+        str = str.substring(1);
+    }
+
+    if ((str.length > 0) && (str.substring(0, 1) == '&')) {
+        str = str.substring(1);
+    }
+
+    return str;
+}
+
+function removeCacheKeyHTML5() {
+    var refreshQueryString =  window.location.search.substring(1);
+
+    // pick up form key for refresh call so we get the latest state
+    var formKeyField = jQuery("input[name='" + kradVariables.FORM_KEY + "']");
+    if (formKeyField.length && formKeyField.val()) {
+        refreshQueryString = getUrlQueryString(kradVariables.FORM_KEY, formKeyField.val(), refreshQueryString);
+    }
+
+    // remove cache key so it is not present on refresh
+    refreshQueryString = getRemovedUrlHashKey(kradVariables.CACHE_KEY, refreshQueryString);
+
+    history.replaceState(null, null, "?" + refreshQueryString);
+}
+
+function removeCacheKeyNonHTML5() {
+    // add keys hash if no HTML5 history support (old IE support)
+    var search = window.location.search.substring(1);
+    var hash = window.location.hash;
+    var delineatedHash;
+
+    // pick up form key for refresh call so we get the latest state
+    var formKeyField = jQuery("input[name='" + kradVariables.FORM_KEY + "']");
+    if (formKeyField.length && formKeyField.val()) {
+        hash = getUrlQueryString(kradVariables.FORM_KEY, formKeyField.val(), hash);
+    }
+
+    // remove cache key so it is not present on refresh
+    hash = getRemovedUrlHashKey(kradVariables.CACHE_KEY, hash);
+
+    if (hash) {
+        delineatedHash = "#" + hash;
+    }
+
+    window.location.replace("?" + search + delineatedHash);
 }

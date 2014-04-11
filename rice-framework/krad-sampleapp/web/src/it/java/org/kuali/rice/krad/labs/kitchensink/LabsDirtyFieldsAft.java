@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.krad.compview;
+package org.kuali.rice.krad.labs.kitchensink;
 
 import com.thoughtworks.selenium.SeleneseTestBase;
+import org.junit.Test;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -24,39 +25,38 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
+public class LabsDirtyFieldsAft extends LabsKitchenSinkBase {
 
     /**
      * "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
      */
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page1";
 
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
 
-    protected void navigation() throws InterruptedException {
-        waitAndClickKRAD();
-        waitAndClickByLinkText(UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
-        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+    @Override
+    protected void navigate() throws Exception {
+        navigateToKitchenSink("Input Fields");
     }
 
-    protected void testDirtyFieldsCheckNav(JiraAwareFailable failable) throws Exception {
-        navigation();
+    @Test
+    public void testDirtyFieldsCheckBookmark() throws Exception {
         testDirtyFieldsCheck();
         passed();
     }
 
-    protected void testDirtyFieldsCheckBookmark(JiraAwareFailable failable) throws Exception {
+    @Test
+    public void testDirtyFieldsCheckNav() throws Exception {
         testDirtyFieldsCheck();
         passed();
     }
-
 
     protected void testDirtyFieldsCheck() throws Exception {
-        checkForIncidentReport(getTestUrl());
-        waitAndClickByLinkText("Text Controls");
+        waitForPageToLoad();
+
         waitAndTypeByName("field1", "test 1");
         waitAndTypeByName("field102", "test 2");
         assertCancelConfirmation();
@@ -87,4 +87,10 @@ public abstract class DirtyFieldsAftBase extends WebDriverLegacyITBase {
         // 'Progressive Disclosure' navigation link
         assertCancelConfirmation();
     }
+
+    private void assertCancelConfirmation() throws InterruptedException {
+        waitAndClickByLinkText("Cancel");
+        alertDismiss();
+    }
+
 }

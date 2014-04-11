@@ -828,11 +828,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertElementPresentByName(CANCEL_NAME);
     }
 
-    protected void assertCancelConfirmation() throws InterruptedException {
-        waitAndClickByLinkText("Cancel");
-        alertDismiss();
-    }
-
     protected void assertDocFinal(String docId) throws InterruptedException {
         assertDocSearch(docId, DOC_STATUS_FINAL);
     }

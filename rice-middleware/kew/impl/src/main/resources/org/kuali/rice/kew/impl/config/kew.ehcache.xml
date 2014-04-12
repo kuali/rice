@@ -22,14 +22,14 @@
          monitoring="autodetect"
          dynamicConfig="true">
 
-  <defaultCache maxEntriesLocalHeap="5000" timeToLiveSeconds="3600"/>
+  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
 
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleType" maxEntriesLocalHeap="50000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" maxEntriesLocalHeap="5000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" maxEntriesLocalHeap="50000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="100000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="25000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="25000" timeToLiveSeconds="3600"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/ExtensionDefinitionType" maxEntriesLocalHeap="5000" timeToLiveSeconds="3600"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/ExtensionDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
   
 </ehcache>

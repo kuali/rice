@@ -3355,6 +3355,13 @@ public class QueryUtils {
       'https://test.kuali.org/kr-krad/krad/images'. This makes the source for our image
       'https://test.kuali.org/kr-krad/krad/images/searchicon.png' which will be used by the browser
       to fetch the image contents. </para>
+    <para>Three other notable config properties are: krad.url, kr.krad.url, and rice.server.krad.url.
+      Here are the definitions for these configurations (krad.url and kr.krad.url have the same definition):</para>
+    <programlisting linenumbering="numbered">
+      &lt;param name=&quot;krad.url&quot; override=&quot;false&quot;&gt;${application.url}/kr-krad&lt;/param&gt;
+      &lt;param name=&quot;kr.krad.url&quot; override=&quot;false&quot;&gt;${application.url}/kr-krad&lt;/param&gt;
+      &lt;param name=&quot;rice.server.krad.url&quot; override=&quot;false&quot;&gt;${rice.server.url}/kr-krad&lt;/param&gt;
+    </programlisting>
     <tip>
       <title>Configuration Properties:</title>
       <para>Note the configuration properties are fed from the various '-config' XML files

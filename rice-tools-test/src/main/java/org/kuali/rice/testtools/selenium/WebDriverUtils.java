@@ -336,6 +336,12 @@ public class WebDriverUtils {
      */
     public static void tearDown(boolean passed, String sessionId, String poolParamTest, String poolParamUser) throws Exception {
 
+        if (passed) {
+            System.out.println("Registering session passed " + sessionId);
+        } else {
+            System.out.println("Registering session failed " + sessionId);
+        }
+
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
             SauceLabsWebDriverHelper.tearDown(passed, sessionId);
         }

@@ -365,10 +365,8 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
             client.updateJobInfo(sessionId, updates);
 
             if (passed) {
-                System.out.println("Registering session passed " + sessionId);
                 client.jobPassed(sessionId);
             } else {
-                System.out.println("Registering session failed " + sessionId);
                 client.jobFailed(sessionId);
             }
 

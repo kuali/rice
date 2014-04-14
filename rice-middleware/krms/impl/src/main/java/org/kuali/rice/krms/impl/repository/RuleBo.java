@@ -214,6 +214,9 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
 
         propositionSummaryBuffer = new StringBuffer();
         PropositionBo prop = this.getProposition();
+        if (prop!=null && StringUtils.isBlank(prop.getDescription())) {
+            prop.setDescription("");
+        }
         buildPropTree(rootNode, prop, editMode);
         this.propositionTree = myTree;
         return myTree;
@@ -578,4 +581,5 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     public void setSelectedPropositionId(String selectedPropositionId) {
         this.selectedPropositionId = selectedPropositionId;
     }
+
 }

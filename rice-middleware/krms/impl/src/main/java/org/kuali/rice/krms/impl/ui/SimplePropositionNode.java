@@ -64,7 +64,10 @@ public class SimplePropositionNode extends RuleTreeNode {
         if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(prop.getParameterType())){
             //TODO: use termBoService
             String termId = prop.getValue();
-            TermBo term = getDataObjectService().find(TermBo.class,termId);
+            TermBo term = null;
+            if (termId!=null) {
+                term = getDataObjectService().find(TermBo.class,termId);
+            }
             if (term!=null){
                 return term.getSpecification().getName();
             }

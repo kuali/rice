@@ -152,7 +152,6 @@
         <value>TestModuleResources</value>
       </list>
     </property>
-    <property name="entityManager" ref="kradTestSharedEntityManager"/>
     <property name="providers">
         <list>
             <ref bean="kradTestJpaPersistenceProvider"/>

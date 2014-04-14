@@ -715,8 +715,7 @@ public class AccountExtension { ...}
             </para>
             <para>
                 In the configuration for each module, the following must be included to hook into the provider.
-                <programlisting>&lt;property name="entityManager" ref="sharedEntityManager"/>
-&lt;property name="providers">
+                <programlisting>&lt;property name="providers">
     &lt;list>
         &lt;ref bean="jpaPersistenceProvider"/>
         &lt;ref bean="metadataProvider"/>

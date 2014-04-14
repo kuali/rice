@@ -3968,7 +3968,6 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       &lt;/map>
     &lt;/property>
     <emphasis role="bold">
-    &lt;property name="entityManager" ref="sharedEntityManager" />
     &lt;property name="providers">
       &lt;list>
         &lt;ref bean="jpaPersistenceProvider"/>

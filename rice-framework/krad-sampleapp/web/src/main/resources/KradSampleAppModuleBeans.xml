@@ -162,7 +162,6 @@
         <value>org.kuali.rice.krad.labs.resources.LabsLookupResources</value>
       </list>
     </property>
-    <property name="entityManager" ref="sharedEntityManager"/>
     <property name="providers">
       <list>
         <ref bean="jpaPersistenceProvider"/>

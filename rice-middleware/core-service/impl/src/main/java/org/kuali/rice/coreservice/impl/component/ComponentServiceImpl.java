@@ -21,16 +21,15 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
-import org.kuali.rice.coreservice.api.component.Component;
-import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.ChecksumUtils;
+import org.kuali.rice.coreservice.api.component.Component;
+import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,9 +50,6 @@ public class ComponentServiceImpl implements ComponentService {
 
     private ComponentSetDao componentSetDao;
     private DataObjectService dataObjectService;
-
-
-    private EntityManager entityManager;
 
     @Override
     public Component getComponentByCode(String namespaceCode, String componentCode) {
@@ -241,13 +237,4 @@ public class ComponentServiceImpl implements ComponentService {
         this.dataObjectService = dataObjectService;
     }
 
-
-    public EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-    
 }

@@ -26,7 +26,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import javax.persistence.EntityManager;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,9 +91,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 
 	//optional
 	protected String dataSourceName;
-
-	//optional
-	protected EntityManager entityManager;
 
 	protected Map<Class, Class> externalizableBusinessObjectImplementations;
 
@@ -417,14 +413,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
         this.dataSourceName = dataSourceName;
     }
 
-    public EntityManager getEntityManager() {
-        return this.entityManager;
-    }
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
     /**
 	 *
 	 * This method passes by reference. It will alter the list passed in.
@@ -449,7 +437,6 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
                     .append("namespaceCode", namespaceCode)
                     .append("applicationContext", applicationContext.getDisplayName())
                     .append("dataSourceName", dataSourceName)
-                    .append("entityManager", entityManager) //.getEntityManagerFactory().getPersistenceUnitUtil())
                     .toString();
     }
 

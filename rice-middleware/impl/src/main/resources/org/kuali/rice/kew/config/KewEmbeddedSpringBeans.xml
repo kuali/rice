@@ -373,7 +373,6 @@
                value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
       </map>
     </property>
-    <property name="entityManager" ref="sharedEntityManager" />
     <property name="providers">
       <list>
         <ref bean="jpaPersistenceProvider"/>

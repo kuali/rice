@@ -119,7 +119,6 @@
       </list>
     </property>
 
-    <property name="entityManager" ref="sharedEntityManager" />
     <property name="providers">
       <list>
         <ref bean="jpaPersistenceProvider"/>

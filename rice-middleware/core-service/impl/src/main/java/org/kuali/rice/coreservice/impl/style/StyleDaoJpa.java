@@ -23,12 +23,11 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StyleDaoJpa implements StyleDao{
+public class StyleDaoJpa implements StyleDao {
 
     private EntityManager entityManager;
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<String> getAllStyleNames() {
         return (List<String>)getEntityManager().createNamedQuery("StyleBo.findAllStyleNames").
                 getResultList();
@@ -41,4 +40,5 @@ public class StyleDaoJpa implements StyleDao{
     public void setEntityManager(EntityManager entityManager){
         this.entityManager = entityManager;
     }
+
 }

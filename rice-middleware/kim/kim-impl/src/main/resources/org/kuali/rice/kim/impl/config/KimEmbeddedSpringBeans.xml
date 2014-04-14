@@ -276,7 +276,6 @@
                value="org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo"/>
       </map>
     </property>
-    <property name="entityManager" ref="sharedEntityManager" />
     <property name="providers">
       <list>
         <ref bean="jpaPersistenceProvider"/>

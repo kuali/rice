@@ -101,7 +101,6 @@
                value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
       </map>
     </property>
-    <property name="entityManager" ref="sharedEntityManager" />
     <property name="providers">
       <list>
         <ref bean="jpaPersistenceProvider"/>

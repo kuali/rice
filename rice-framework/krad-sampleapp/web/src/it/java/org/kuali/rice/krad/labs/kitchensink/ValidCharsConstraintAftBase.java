@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.krad.compview;
+package org.kuali.rice.krad.labs.kitchensink;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase {
+public abstract class ValidCharsConstraintAftBase extends LabsKitchenSinkBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page4
@@ -36,11 +35,12 @@ public abstract class ValidCharsConstraintAftBase extends WebDriverLegacyITBase 
     }
 
     protected void navigation() throws Exception {
-        waitAndClickKRAD();
-        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
-        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
-        waitAndClickByLinkText("Validation");
-        waitAndClickByLinkText("Validation - Regex");
+        navigateToKitchenSink("Validation - Regex");
+//        waitAndClickKRAD();
+//        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
+//        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+//        waitAndClickByLinkText("Validation");
+//        waitAndClickByLinkText("Validation - Regex");
     }
 
     protected void testValidCharsConstraintNav(JiraAwareFailable failable) throws Exception {

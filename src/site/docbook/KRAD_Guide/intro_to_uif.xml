@@ -98,7 +98,7 @@
                 tasks of setting up configuration. Every business object has an object-relational
                 mapping and an entry in the data dictionary; that entry is made up of field
                 configurations, which gets tediously long fairly quickly.  And then there's building
-                the corresponding Java code to be the actual business  object. Even more pieces are
+                the corresponding Java code to be the actual business object. Even more pieces are
                 added to this recipe when attempting to put together a document. </para>
             <para>KRAD is adopting a series of design principles to alleviate some of the work
                 required for this configuration. KRAD intends to introduce a series of simple-to-use

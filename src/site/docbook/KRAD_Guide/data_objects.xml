@@ -82,8 +82,7 @@
                 the work of translating the request along with the corresponding object(s) to the
                 necessary DML statement. This provides a great advantage to the application as it
                 generally requires no database dependent code (database specific code might be required
-                in certain cases). More information on particular ORM tooling will be provided in the
-                sections 'OJB Primer' and 'Using JPA'. </para>
+                in certain cases). </para>
             <para>In order to prepare our application for persisting data using an ORM tool, we must
                 build the objects that will hold the application data. From the established data model,
                 we can determine the objects needed using a mapping strategy. Although the strategies
@@ -148,27 +147,26 @@
                 introducing any business logic or presentation logic into the objects. </para>
         </section>
         <section>
-            <title>Business Objects </title>
-            <para>A special type of data object in KRAD is known as a Business Object. These are
-                data objects that implement the interface org.kuali.rice.krad.bo.BusinessObject.
-                There are two primary types of business object: those that persist to the database
-                and those that do not. Those business objects that do persist to the database should
-                implement the org.kuali.rice.krad.bo.PersistableBusinessObject interface. This
-                interface adds persistence related methods that are invoked throughout the
-                framework. </para>
-            <para>Generally, when creating a new data object, it is more convenient to extend one of
-                the provided base classes that implement the necessary interfaces. For persistable
-                objects, this base class is org.kuali.rice.krad.bo. PersistableBusinessObjectBase.
+            <title>Data Objects </title>
+            <para>A special type of object in KRAD is known as a Data Object. There are two
+                primary types of data object: those that persist to the database and those that
+                do not. Generally, when creating a new data object, it is more convenient to extend
+                one of the provided base classes that implement the necessary interfaces. For
+                persistable objects, this base class is org.kuali.rice.krad.bo.DataObjectBase.
                 Within this base class, default implementations for the persistable methods exist
                 along with properties for the common fields required for all persisted objects.
-                These are described in more detail later on in this section. Business objects that
-                do not persist to the database can extend
-                org.kuali.rice.krad.bo.TransientBusinessObjectBase. </para>
-            <tip><para><emphasis role="keyword">Transient Business Objects</emphasis>: Transient business objects were
-                    necessary in earlier versions of Rice, due to the framework requiring all
-                    objects to be business objects (including the UI generation). With version 2.0
-                    of Rice and KRAD, this restriction no longer exists; therefore there is really
-                    no need for the transient business object concept. </para></tip>
+                These are described in more detail later on in this section. Data objects that
+                do not persist to the database do not have to extend any particular class. </para>
+            <tip>
+                <para><emphasis role="keyword">Business Objects</emphasis>: Earlier versions of
+                    Rice using OJB used to require that all data objects extend the sub-interfaces
+                    of org.kuali.rice.krad.bo.BusinessObjectBase (such as
+                    org.kuali.rice.krad.bo.PersistableBusinessObjectBase or
+                    org.kuali.rice.krad.bo.TransientBusinessObjectBase), due to the framework
+                    requiring all objects to be business objects (including the UI generation). With
+                    version 2.0 of Rice with KRAD and JPA, this restriction no longer exists; therefore
+                    there is really no need for these extensions. </para>
+            </tip>
             <para>In order to take advantage of all the features KRAD provides, it is recommended
                 that all persistable objects (and therefore tables) contain two properties: <orderedlist>
                     <listitem>
@@ -193,15 +191,15 @@
                 </orderedlist></para>
         </section>
         <section>
-            <title>Special Business Objects </title>
-            <para>Additional functionality exists for a few special types of business objects. One
-                of these special types is business objects that have an active status. That is, each
+            <title>Special Data Objects </title>
+            <para>Additional functionality exists for a few special types of data objects. One
+                of these special types is data objects that have an active status. That is, each
                 record has a state of active (which generally means the record is valid for using)
                 or inactive (meaning the record should not be used due to being old or not currently
                 valid). Objects of this type should implement the Inactivatable interface. This
                 interface requires the methods isActive() and setActive(Boolean active) to be
                 implemented. </para>
-            <para>The simplest form of inactivatable business objects are those that maintain a
+            <para>The simplest form of inactivatable data objects are those that maintain a
                 single field that indicates the active status as a Boolean field. Another common
                 case is that of an active date range (also known as effective dating). These objects
                 maintain two fields that work together for determining the active status. This first
@@ -216,7 +214,7 @@
     asOfDate &lt; activeToDate.getMillis());   </programlisting>
                 where the asOfDate is the current date or a date we wish to simulate the active
                 check for. </para>
-            <para>For inactivatable business objects that use effective dating, the
+            <para>For inactivatable data objects that use effective dating, the
                 org.kuali.rice.krad.bo.InactivatableFromToImpl class can be extended which holds the
                 necessary properties and implements the logic necessary to determine the active
                 status (note that this class implements the Inactivatable and InactivatableFromTo
@@ -266,9 +264,9 @@
                             Inactivatable. </para>
                     </listitem>
                 </itemizedlist></para>
-            <para>Another special type of business objects are code/name objects. These objects all
+            <para>Another special type of data objects are code/name objects. These objects all
                 contain a field that represents a code, and a field that gives the name for that
-                code (or description). In many cases these are the only two fields present. Business
+                code (or description). In many cases these are the only two fields present. Data
                 objects of this type should implement the org.kuali.rice.krad.bo.KualiCode interface
                 (or extend org.kuali.rice.krad.bo.KualiCodeBase). When presenting code values that
                 have a related object of type KualiCode, the framework will do translation to
@@ -364,23 +362,18 @@ public class AccountExtension { ...}
                         maintenance, and validation. </para>
                 </listitem>
                 <listitem>
-                    <para>A business object is a special kind of data object that provides
-                        properties and methods for persistence and other framework functionality.
-                    </para>
-                </listitem>
-                <listitem>
                     <para>All persistable data objects should have the version number and object id
                         properties. </para>
                 </listitem>
                 <listitem>
-                    <para>Business objects that have an active status implement the Inactivatable
+                    <para>Data objects that have an active status implement the Inactivatable
                         interface.</para>
                 </listitem>
                 <listitem>
                     <para>KRAD provides additional functionality for inactivatable objects. </para>
                 </listitem>
                 <listitem>
-                    <para>KualiCode represents a business object that has a code and name property.
+                    <para>KualiCode represents a data object that has a code and name property.
                     </para>
                 </listitem>
                 <listitem>
@@ -1230,7 +1223,7 @@ private boolean subscribable;
         </section>
 <!-- TODO
     <section>
-        <title> The Business Object Service </title>
+        <title> The Data Object Service </title>
         <para></para>
     </section>
     <section>

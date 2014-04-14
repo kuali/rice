@@ -19,11 +19,39 @@
 <chapter xml:id="testing_and_tooling" xmlns="http://docbook.org/ns/docbook"
          version="5.0">
   <title>Testing and Tooling</title>
+  <note>
+      <para>Rice tools are currently considered in beta and are not verified for current use.
+          While certain tools like the Data Dictionary Reloader have gone through several
+          revisions and have probably settled down to a standard setup, other tools like the
+          Rice Data Objects Developer (RDO) have not been updated from OJB to JPA, so use these
+          tools at your own risk.</para>
+  </note>
   <section>
-    <title>Reloading Dictionary</title>
-    <para>Coming Soon!</para>
-    <!-- TODO: Add content here.
-    -->
+    <title>Reloading the Data Dictionary</title>
+    <para>Rice provides tooling to allow automatic data dictionary reloading when a server context
+        is refreshed.  This greatly speeds up the KRAD development cycle as it allows a developer
+        to reload view configurations without having to restart the server.  The mechanism to refresh
+        resources is different for every server, but it is very similar to hot swapping classes in
+        Tomcat.</para>
+    <para>To set this up, you will first need to add
+        <emphasis role="keyword">rice-krad-development-tools</emphasis> as a dependency to the web
+        module of your project.  In Rice, the best place to put this is in
+        <emphasis role="keyword">rice-middleware/web/pom.xml</emphasis> since it will affect all
+        Rice applications.  It is recommended that this be added for development only; this is why
+        Rice does not ship it with this dependency.
+        <programlisting>&lt;dependency>
+  &lt;groupId>org.kuali.rice&lt;/groupId>
+  &lt;artifactId>rice-krad-development-tools&lt;/artifactId>
+  &lt;version>${rice.version}&lt;/version>
+&lt;/dependency></programlisting>
+    </para>
+    <para>Finally, you will need to add a parameters to your Rice configuration file, such as
+        <emphasis role="keyword">rice-config.xml</emphasis>.
+        <programlisting>&lt;param name="rice.kr.additionalSpringFiles">classpath:org/kuali/rice/krad/devtools/datadictionary/ReloadingDataDictionarySpringBeans.xml&lt;/param></programlisting>
+        You will also need to make sure that your parameter
+        <emphasis role="keyword">rice.krad.dev.mode</emphasis> is set to true to avoid caching
+        the views.
+    </para>
   </section>
   <section>
     <title>Rice Data Objects</title>

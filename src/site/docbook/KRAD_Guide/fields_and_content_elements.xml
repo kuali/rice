@@ -1672,8 +1672,8 @@ for (State state : codes) {
                 <note>
                     <title>Reusable Key Value Finders</title>
                     <para>Since the majority of key value finder implementations employ the pattern of 
-                        retrieving all records for a business object, a 'generic' key value finder could 
-                        easily be built that is configured with the business object class to retrieve, and 
+                        retrieving all records for a data object, a 'generic' key value finder could
+                        easily be built that is configured with the data object class to retrieve, and
                         properties that should be used for the key and value. Then this finder can be referenced 
                         and configured within input fields saving the need to create a new class each time. 
                         This along with potentially other reusable key value finders will be added in Rice 
@@ -2476,7 +2476,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
       <title>Automatic Lookups and Inquiries</title>
       <para>For many instances where a lookup or inquiry is desired, there is an underlying
         relationship in the model. In Chapter 3, we learned how to represent one-to-one
-        relationships in code (with nested data objects) and then provide configuration to OJB using
+        relationships in code (with nested data objects) and then provide configuration using
         a reference descriptor. In Chapter 4, we learned about the data dictionary and the ability
         to declare relationship definitions for our data object entry. These sources of metadata are
         then consumed by the UIF to automatically configure lookups and inquiries for our
@@ -2493,7 +2493,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
           <para>Determine a parent data object class for the fields property.</para>
         </listitem>
         <listitem>
-          <para>Query OJB metadata to get a class descriptor for the data object class, get any
+          <para>Query the object metadata to get a class descriptor for the data object class, get any
             reference descriptors the property participates in.</para>
         </listitem>
         <listitem>
@@ -2528,7 +2528,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
                 for the property from the model which is used as the data object class.</para>
       <note>
         <title>Data Object Metadata</title>
-        <para>Many areas of the UIF (including the above widgets) use metadata from the OJB
+        <para>Many areas of the UIF (including the above widgets) use metadata from the ORM
           repository and Data Dictionary together. They use a service named
           DataObjectMetaDataService which is a façade for both sources of metadata.</para>
       </note>
@@ -2755,7 +2755,7 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
         on the mapped data object fields. For example, suppose we have the following query field
         mapping: "document.rentedBookId:bookId" and the value of the document.rentedBookId on our
         view is '3'. When the query is performed the following clause will be created "where bookId
-        = '3'" (note the actual SQL is not constructed by KRAD, but created by the OJB criteria
+        = '3'" (note the actual SQL is not constructed by KRAD, but created by the ORM criteria
         object).</para>
       <para><emphasis role="keyword">returnFieldMapping</emphasis> – A map type that holds the mappings of
                 properties from the data object class to the calling view. Each entry represents one

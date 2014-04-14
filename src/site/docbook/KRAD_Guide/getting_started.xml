@@ -37,14 +37,14 @@
                 <itemizedlist>
                     <listitem>
                         <para>KRAD is a complete framework for application development, covering all
-                            the application layers (Presentation, Business, and Data)</para>
+                            the application layers (Presentation, Object, and Data)</para>
                     </listitem>
                     <listitem>
                         <para>KRAD is comprised of the following feature areas:</para>
                         <itemizedlist>
                                 <listitem>
                                 <para>Persistence Framework – Provides services and other utilities
-                                    for persisting data. Central to all of this is the Business
+                                    for persisting data. Central to all of this is the Data
                                     Object.</para>
                             </listitem>
                                 <listitem>
@@ -1156,14 +1156,17 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 class, and provide arguments for the deployment (such as context, web app location
                 and so on).</para>
         </section>
-        <section><title>Setup for KRAD Development</title><para>To begin using the Rice development framework, we must first configure an application module.
-                This information tells the KRAD framework where to find resources for our module
-                (such as dictionary and OJB files) along with other metadata about our module. We
-                could choose to have one module for our whole application, or break into many
-                modules (if using maven each KRAD module generally corresponds with a maven
-                module).</para><para>To configure a module we create a <emphasis role="bold">ModuleConfiguration</emphasis>. A
-                ModuleConfiguration is a bean wired in Spring XML specifying the following
-                information:</para><itemizedlist>
+        <section>
+            <title>Setup for KRAD Development</title>
+            <para>To begin using the Rice development framework, we must first configure an
+                application module. This information tells the KRAD framework where to find resources
+                for our module (such as data dictionary files, package prefixes, and resource bundles)
+                along with other metadata about our module. We could choose to have one module for our
+                whole application, or break into many modules (if using maven each KRAD module generally
+                corresponds with a maven module).</para>
+            <para>To configure a module we create a <emphasis role="bold">ModuleConfiguration</emphasis>.
+                A ModuleConfiguration is a bean wired in Spring XML specifying the following information:</para>
+            <itemizedlist>
                 <listitem>
                     <para>The module's namespace</para>
                 </listitem>
@@ -1209,7 +1212,7 @@ groovy createproject.groovy -name MyRiceApp –standalone
                 given, then XML files added to that directory will automatically get picked up and
                 loaded on application startup.</para>
             <para>When the Rice enabled application is started, the configuration for each module
-                will be read and, in some cases such as the dictionary and OJB, used to initialize
+                will be read and, in some cases such as the data dictionary, used to initialize
                 services.</para>
             <para>After we have our module configuration, we then need to configure a module
                 service. This is a service that will provide metadata for our module.

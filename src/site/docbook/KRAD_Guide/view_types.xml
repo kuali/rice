@@ -97,7 +97,7 @@
 &lt;/bean&gt;
       </programlisting>
       <para>As usual, we give the lookup bean a unique ID.  The title property will contain the
-        header text of our lookup.  We assign the business object that will be returned by this
+        header text of our lookup.  We assign the data object that will be returned by this
         lookup via the dataObjectClassName property.  The lookupCriteria property is a list of
         LookupCriteriaAttributeFields.  These specify the fields by which we can narrow the
         results.  Finally, we specify what fields should appear in the result via the resultFields
@@ -115,10 +115,10 @@
       </programlisting>
     </section>
     <section>
-      <title>LookupSearchService</title>
+      <title>LookupService</title>
       <para>The LookupService is responsible for the data retrieval.  The default
         implementation that is delivered out-of-the-box is LookupServiceImpl.  This provides
-        a generic search mechanism for business objects.
+        a generic search mechanism for data objects.
       </para>
     </section>
     <section>
@@ -205,7 +205,7 @@
 &lt;/bean&gt;
       </programlisting>
       <para>We identify the inquiry view by assigning a unique ID. The title property will contain
-        the header text of our inquiry. We specify the business object that will be displayed by
+        the header text of our inquiry. We specify the data object that will be displayed by
         this inquiry with the dataObjectClassName property. With the items property, we can specify
         one or more groups that will make up the inquiry page. Here, we choose a simple two column
         grid layout with Uif-InputFields that will display the label in the first column and the

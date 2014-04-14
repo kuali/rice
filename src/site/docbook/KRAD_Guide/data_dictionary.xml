@@ -27,7 +27,7 @@
       the Spring Framework for configuration, so the notation and parsing operation will match that
       of the files that define the module configurers.</para>
     <para>The contents of the data dictionary are defined by two sets of vocabularies; the
-            'business object' and the 'document' data.</para>
+            'data object' and the 'document' data.</para>
     <section role="NotInToc">
       <title>Recap</title>
       <itemizedlist>
@@ -63,8 +63,8 @@
   <section>
     <title> Attribute Definitions </title>
     <para>Attribute definitions are used to provide metadata about the attributes (i.e. fields)
-            of a business object. The following is a sampling of attribute definitions from the
-            CampusImpl business object data dictionary file:</para>
+            of a data object. The following is a sampling of attribute definitions from the
+            CampusImpl data object data dictionary file:</para>
     <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Campus-campusCode-parentBean&quot; abstract=&quot;true&quot; parent=&quot;AttributeDefinition&quot;&gt;
     &lt;property name=&quot;forceUppercase&quot; value=&quot;true&quot;/&gt;
@@ -83,21 +83,21 @@
     &lt;property name=&quot;description&quot; value=&quot;The code uniquely identifying a particular campus.&quot;/&gt;
 &lt;/bean&gt;
         </programlisting>
-    <para>In client applications, it is common that several business objects share a field
+    <para>In client applications, it is common that several data objects share a field
             representing the same type of data. For example, a country's postal code may occur in
             many different tables. In these circumstances, the use of a parent bean reference
             (parent=&quot;Country-postalCountryCode") definition allows the reuse of parts of a standard
-            definition from the &quot;master&quot; business object. For instance, the StateImpl business
-            object (business object data dictionary file State.xml) references the postalCountryCode
-            property of the CountryImpl (business object data dictionary file Country.xml). Because
+            definition from the &quot;master&quot; data object. For instance, the StateImpl data
+            object (data object data dictionary file State.xml) references the postalCountryCode
+            property of the CountryImpl (data object data dictionary file Country.xml). Because
             the postalCountryCode fields in StateImpl and CountryImpl are identical, a simple
-            attribute definition bean in the Business Object data dictionary file (State.xml) can be
+            attribute definition bean in the Data Object data dictionary file (State.xml) can be
             used:</para>
     <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;State-postalCountryCode&quot; parent=&quot;Country-postalCountryCode-parentBean&quot;/&gt;</programlisting>
     <para>The definition of the
             Country-postalCountryCode-parentBean bean is seen inside the Country.xml file (for the
-            CountryImpl business object):</para>
+            CountryImpl data object):</para>
     <programlisting linenumbering = "numbered">
 &lt;bean id=&quot;Country-postalCountryCode-parentBean&quot; abstract=&quot;true&quot; parent=&quot;AttributeDefinition&quot;&gt;
     &lt;property name=&quot;name&quot; value=&quot;postalCountryCode&quot;/&gt;
@@ -153,7 +153,7 @@
                                     any property value</para>
               </listitem>
               <listitem>
-                <para>controlField (and control) – the control component to use by
+                <para>control – the control component to use by
                                     default when rendering the property</para>
               </listitem>
               <listitem>
@@ -165,7 +165,7 @@
     </section>
   </section>
   <section>
-    <title> Data Object and Business Object Entries </title>
+    <title> Data Object Entries </title>
     <para>Data Object entries provide the KRAD framework extra metadata about a data object
             which is not provided by the persistence mapping or the class itself.</para>
     <para>The data object entry contains information about:<itemizedlist>
@@ -225,8 +225,7 @@
       <title>Recap</title>
       <itemizedlist>
         <listitem>
-          <para>A Data Object (or Business Object) Entry provides metadata about a data
-                        object</para>
+          <para>A Data Object Entry provides metadata about a data object</para>
         </listitem>
         <listitem>
           <para>Created with a bean whose parent is "DataObjectEntry" (or extending

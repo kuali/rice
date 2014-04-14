@@ -58,6 +58,80 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
+  <section>
+    <title>Major Changes</title>
+    <section>
+      <title>Java Persistence API (JPA) Support and Internal Conversion</title>
+      <para>One of the major deliverables for version ${project.version} of Kuali Rice was support
+        for the Java Persistence API (JPA) and conversion away from the legacy OJB framework for
+        object-relational mapping within Kuali. This goal has been accomplished with this release of
+        Kuali Rice.</para>
+      <para>The specific implementation of JPA being used is the JPA 2.1 reference implementation of
+        EclipseLink (<link>http://www.eclipselink.org</link>), version 2.5.1.</para>
+      <para>As part of this effort, a number of changes were made to Kuali Rice itself:<itemizedlist>
+          <listitem>
+            <para>Internal services and data access objects within Kuali Rice were modified to use
+              JPA instead of OJB.</para>
+          </listitem>
+          <listitem>
+            <para>A number of helper classes were provided to make JPA setup and configuration
+              simpler, specifically:<itemizedlist>
+                <listitem>
+                  <para><code>KradEclipseLinkEntityManagerFactoryBean</code> which simplifies
+                    Spring-based configuration of JPA</para>
+                </listitem>
+                <listitem>
+                  <para>JPA 2.1 converter classes to help with standard data conversions that are
+                    commonly used by Rice-based applications (such as converter "Y" and "N" in the
+                    database to corresponding boolean values)</para>
+                </listitem>
+                <listitem>
+                  <para>Custom annotations allowing for the use of cross-database platform
+                    "Sequences" in the database.</para>
+                </listitem>
+                <listitem>
+                  <para>Custom annotations allowing for filtering, mapping removal, and versioning
+                    removal.</para>
+                </listitem>
+              </itemizedlist></para>
+          </listitem>
+          <listitem>
+            <para>A JPA-based Data Provider implementation was provided for the new krad-data module
+              (see next section).</para>
+          </listitem>
+          <listitem>
+            <para>An OJB to JPA converter was created to help with migration of existing
+              applications using OJB over to JPA.</para>
+          </listitem>
+      </itemizedlist>A guide is provided which details how to convert from OJB to JPA within the <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html"
+        >KNS to KRAD conversion guide.</link>
+      </para>
+    </section>
+    <section>
+      <title>The krad-data Module</title>
+      <para>The krad-data module is a new module of KRAD which provides a set of APIs for working
+        with data and metadata.</para>
+      <para>This module was created to help facilitate the conversion to JPA within Kuali Rice and
+        allows for Kuali Rice modules to leverage this API for data operations without having to
+        hard-code the use of JPA APIs throughout the code base. It also allows the rest of the
+        frameworks within KRAD to use this API and insulate themselves from the details of the
+        underlying persistence implementation. This ultimately gives the product more flexibility
+        moving forward. In fact, the krad-data module is intended to provide the capability to
+        support other data and persistence technologies in the future.</para>
+      <para>More information about the design of this module (as well as the specifics of its JPA
+        implementation) can be found in the <link
+          xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+Data+Layer+Design">KRAD Data Layer
+          Design</link> documents, as well as the "Data Objects" documentation within the KRAD
+        Guide.</para>
+      <para>It is important to note that efforts have been made to keep the Kuali Nervous System
+        (KNS) with OJB support backward compatible in Rice 2.4. A legacy adapter layer was put into
+        place as part of the integration of the krad-data module back into the rest of KRAD and this
+        is intended to make decisions on whether to use the old OJB-based persistence layer or the
+        new JPA-based implementation depending on various pieces of contextual information.
+        Specifics on how this works can be found in the aforementioned KRAD Data Layer Design
+        documents.</para>
+    </section>
+  </section>
     <section>
       <title>Upgrade Guide</title>
       <para>Below is information on how to upgrade your database to Rice ${project.version} from the

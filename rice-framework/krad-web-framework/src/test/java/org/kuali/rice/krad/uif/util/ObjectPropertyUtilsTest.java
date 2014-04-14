@@ -15,27 +15,10 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.CollectionGroupBase;
@@ -53,8 +36,26 @@ import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
+
+    final Logger LOG = LoggerFactory.getLogger(ObjectPropertyUtilsTest.class);
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestAnnotation {
@@ -614,6 +615,104 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         assertEquals("foo2", splitPaths[2]);
         assertEquals("foo3['key.nest.nest']", splitPaths[3]);
         assertEquals("foo4", splitPaths[4]);
+    }
+
+    // Classes used by testGetterInInterfaceOrSuperHasWiderType to check covariant return types on JDK6
+
+    // Holds a concrete superclass of KualiPercent
+    public interface KualiDecimalHolder {
+        KualiDecimal getDecimal();
+    }
+
+    // Holds an interface that is implemented by Integer
+    public interface ComparableHolder {
+        Comparable getComparable();
+    }
+
+    // Holds an abstract class that is extended by Integer
+    public interface NumberHolder {
+        Number getNumber();
+    }
+
+    public class NumberedImplOne implements NumberHolder {
+        @Override
+        public Integer getNumber() {
+            return 1;
+        }
+    }
+
+    public abstract class AbstractNumberHolder implements NumberHolder {
+        @Override
+        public abstract Number getNumber();
+    }
+
+    public class ConcreteNumberHolder extends AbstractNumberHolder {
+        @Override
+        public Number getNumber() {
+            return 1;
+        }
+    }
+
+    public class ConcreteNarrowedNumberHolder extends ConcreteNumberHolder {
+        @Override
+        public Integer getNumber() {
+            return 1;
+        }
+    }
+
+    public class ConcreteNarrowedNumberHolderSub extends ConcreteNarrowedNumberHolder {
+
+    }
+
+    public class ComparableHolderImpl implements ComparableHolder {
+        @Override
+        public Integer getComparable() {
+            return 1;
+        }
+    }
+
+    public class KualiPercentHolder implements KualiDecimalHolder {
+        @Override
+        public KualiPercent getDecimal() {
+            return new KualiPercent(1d);
+        }
+    }
+
+    /**
+     * Verifies (at least when run on Linux in JDK6) that the JDK6 Introspector bug/shortcoming WRT covariant return
+     * types that results in a wider getter method being preferred over a more specific implementation getter method
+     * depending on the order of Methods returned by reflection on a class.
+     */
+    @Test
+    public void testGetterInInterfaceOrSuperHasWiderType() {
+        Method readMethod = null;
+
+        readMethod = ObjectPropertyUtils.getReadMethod(ComparableHolderImpl.class, "comparable");
+        assertEquals(Integer.class, readMethod.getReturnType());
+
+        readMethod = ObjectPropertyUtils.getReadMethod(NumberedImplOne.class, "number");
+        assertEquals(Integer.class, readMethod.getReturnType());
+
+        readMethod = ObjectPropertyUtils.getReadMethod(ConcreteNarrowedNumberHolder.class, "number");
+        assertEquals(Integer.class, readMethod.getReturnType());
+
+        readMethod = ObjectPropertyUtils.getReadMethod(ConcreteNarrowedNumberHolderSub.class, "number");
+        assertEquals(Integer.class, readMethod.getReturnType());
+
+        // This case is *not* covered by our workaround, and would fail w/ JDK 6 on Linux if enabled.
+        // The interface has a concrete superclass, which will be returned in JDK6 on Linux where the
+        // Method order returned by reflection on a class is different, and the Introspector isn't smart
+        // enough to ask which Method return type is more specific.
+        readMethod = ObjectPropertyUtils.getReadMethod(KualiPercentHolder.class, "decimal");
+
+        if (readMethod.getReturnType() == KualiDecimal.class) {
+            LOG.info("I bet you're using JDK6 on Linux");
+        }
+
+        // Other cases to test if we have to refine this functionality:
+        // * similar to the ConcreteNarrowedNumberHolder,
+        //   but creating an abstract impl of AbstractKualiDecimalHolder as the intermediate class
+        // * similar to ConcreteNarrowedNumberHolderSub, but ConcreteNarrowedKualiDecimalHolderSub
     }
 
 }

@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -23,6 +26,7 @@ import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -40,9 +44,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
-
 /**
  * Utility methods to get/set property values and working with objects.
  * 
@@ -50,6 +51,9 @@ import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
  */
 public final class ObjectPropertyUtils {
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
+
+    // enables a work-around that attempts to correct a platform difference
+    private static final boolean isJdk6 = System.getProperty("java.version").startsWith("1.6");
 
     /**
      * Internal metadata cache.
@@ -905,6 +909,12 @@ public final class ObjectPropertyUtils {
                     if (readMethod == null) {
                         readMethod = getReadMethodByName(beanClass, propertyName);
                     }
+
+                    // working around a JDK6 Introspector bug WRT covariance, see KULRICE-12334
+                    if (isJdk6) {
+                        readMethod = getCorrectedReadMethod(beanClass, readMethod);
+                    }
+
                     mutableReadMethodMap.put(propertyName, readMethod);
 
                     Method writeMethod = propertyDescriptor.getWriteMethod();
@@ -914,11 +924,55 @@ public final class ObjectPropertyUtils {
                 }
             }
 
+
+
             propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap);
             readMethods = Collections.unmodifiableMap(mutableReadMethodMap);
             writeMethods = Collections.unmodifiableMap(mutableWriteMethodMap);
         }
 
+        /**
+         * Workaround for a JDK6 Introspector issue (see KULRICE-12334) that results in getters for interface types
+         * being returned instead of same named getters for concrete implementation types (depending on the Method order
+         * returned by reflection on the beanClass.
+         *
+         * <p>Note that this doesn't cover all cases, see ObjectPropertyUtilsTest.testGetterInInterfaceOrSuperHasWiderType
+         * for details.</p>
+         *
+         * @param beanClass the class of the bean being inspected
+         * @param readMethod the read method being double-checked
+         * @return the corrected read Method
+         */
+        private Method getCorrectedReadMethod(Class<?> beanClass, Method readMethod) {
+            if (readMethod != null && !readMethod.getReturnType().isPrimitive() &&
+                    isAbstractClassOrInterface(readMethod.getReturnType())) {
+
+                Method implReadMethod = null;
+
+                try {
+                    implReadMethod = beanClass.getMethod(readMethod.getName(), readMethod.getParameterTypes());
+                } catch (NoSuchMethodException e) {
+                    // if readMethod != null, this should not happen according to the javadocs for Class.getMethod()
+                }
+
+                if (implReadMethod != null && isSubClass(implReadMethod.getReturnType(), readMethod.getReturnType())) {
+                        return implReadMethod;
+                }
+            }
+
+            return readMethod;
+        }
+
+        // we assume a non-null arg
+        private boolean isAbstractClassOrInterface(Class<?> clazz) {
+            return clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers());
+        }
+
+        // we assume non-null args
+        private boolean isSubClass(Class<?> childClassCandidate, Class<?> parentClassCandidate) {
+            // if A != B and A >= B then A > B
+            return parentClassCandidate != childClassCandidate &&
+                    parentClassCandidate.isAssignableFrom(childClassCandidate);
+        }
     }
-    
 }

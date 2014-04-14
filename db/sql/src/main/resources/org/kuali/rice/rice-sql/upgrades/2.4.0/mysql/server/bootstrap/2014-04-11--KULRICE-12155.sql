@@ -15,12 +15,12 @@
 --
 
 --
--- KULRICE-12380 - To update the xml for widgets.xml, first delete the widgets stylesheet and then recreate it
+-- KULRICE-12155 - To update the xml for widgets.xml, first delete the widgets stylesheet and then recreate it
 -- with the updates.  The change is in the checkbox_render template when the checked variable is getting set.
 --
 -- IMPORTANT NOTE - For client upgrades, if the out-of-the-box widgets stylesheet is not used (i.e - ACTV_IND on
 -- stylesheet 2020 is 0) then this SQL will create a second widgets stylesheet with an ACTV_IND of 1.  Instead of
--- running the SQL below, apply the fix to your active widgets stylesheet.  To do so, please see KULRICE-12380 for
+-- running the SQL below, apply the fix to your active widgets stylesheet.  To do so, please see KULRICE-12155 for
 -- a detailed description of the change.
 --
 
@@ -28,19 +28,9 @@ DELETE FROM KRCR_STYLE_T WHERE STYLE_ID = '2020' AND NM = 'widgets'
 /
 
 INSERT INTO KRCR_STYLE_T (ACTV_IND,NM,OBJ_ID,STYLE_ID,VER_NBR,XML)
-  VALUES (1, 'widgets', SYS_GUID(), '2020', 1, EMPTY_CLOB())
-/
-
--- Length: 65847
---  Chunks: 17
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '<xsl:stylesheet xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  VALUES (1, 'widgets', UUID(), '2020', 1, '<xsl:stylesheet xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctions" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 				<xsl:output method="html" version="4.01"/>
-				<xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != ''true''"/>
+				<xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != \'true\'"/>
 				<!-- determined by an appconstant -->
 				<xsl:variable name="showAttachments" select="/documentContent/documentState/showAttachments"/>
 				<xsl:strip-space elements="*"/>
@@ -67,7 +57,7 @@ BEGIN
 											<xsl:value-of select="$renderCmd"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="''all''"/>
+											<xsl:value-of select="\'all\'"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:variable>
@@ -77,7 +67,7 @@ BEGIN
 											<xsl:value-of select="$align"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="''horizontal''"/>
+											<xsl:value-of select="\'horizontal\'"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:variable>
@@ -94,12 +84,12 @@ BEGIN
 								</xsl:variable>
 								<xsl:variable name="regex" select="my-class:escapeJavascript(validation/regex)"/>
 								<xsl:variable name="customValidator" select="validation/customValidator"/>
-								<xsl:variable name="validation_required" select="validation/@required = ''true''"/>
+								<xsl:variable name="validation_required" select="validation/@required = \'true\'"/>
 								<xsl:variable name="message">
-									<!-- <xsl:if test="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]"> -->
+									<!-- <xsl:if test="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]"> -->
 									<xsl:choose>
-										<xsl:when test="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/errorMessage">
-											<xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/errorMessage"/>
+										<xsl:when test="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/errorMessage">
+											<xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/errorMessage"/>
 										</xsl:when>
 										<xsl:when test="//documentState/fieldError[@key=current()/@name]">
 											<xsl:value-of select="//documentState/fieldError[@key=current()/@name]"/>
@@ -108,10 +98,10 @@ BEGIN
 											<xsl:value-of select="validation/message"/>
 										</xsl:when>
 										<xsl:when test="validation/regex">
-											<xsl:value-of select="$fieldDisplayName"/> (<xsl:value-of select="@name"/>) <xsl:text> does not match ''</xsl:text> <xsl:value-of select="$regex"/> <xsl:text>''</xsl:text>
+											<xsl:value-of select="$fieldDisplayName"/> (<xsl:value-of select="@name"/>) <xsl:text> does not match \'</xsl:text> <xsl:value-of select="$regex"/> <xsl:text>\'</xsl:text>
 										</xsl:when>
 										<xsl:otherwise>
-									    <xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name]"/>
+									    <xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name]"/>
 											<xsl:comment>* Dropped Through and Hit Otherwise</xsl:comment>
 										</xsl:otherwise>
 									</xsl:choose>
@@ -119,20 +109,11 @@ BEGIN
 								</xsl:variable>
 								<xsl:variable name="custommessage">
 									<xsl:choose>
-										<xsl:when test="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/errorMessage">
-											<xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/errorMessage"/>
+										<xsl:when test="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/errorMessage">
+											<xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/errorMessage"/>
 										</xsl:when>
 										<xsl:otherwise>NONE</xsl:otherwise>
-									<';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '/xsl:choose>
+									</xsl:choose>
 								</xsl:variable>
 
 								<xsl:comment>* custom message: <xsl:value-of select="$custommessage"/>
@@ -142,12 +123,12 @@ BEGIN
 								<xsl:comment>* message: <xsl:value-of select="$message"/>
 </xsl:comment>
 								<xsl:variable name="hasFieldError" select="//documentState/fieldError[@key=current()/@name]"/>
-								<xsl:variable name="invalid" select="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/@invalid"/>
+								<xsl:variable name="invalid" select="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/@invalid"/>
 								<!--
-									determine value to display: use the value specified in the current version	if it exists, otherwise use the ''default''
+									determine value to display: use the value specified in the current version	if it exists, otherwise use the \'default\'
 									value defined in the field or if specified use data from userSession
 								-->
-								<xsl:variable name="userValue" select="//edlContent/data/version[@current=''true'']/field[@name=current()/@name]/value"/>
+								<xsl:variable name="userValue" select="//edlContent/data/version[@current=\'true\']/field[@name=current()/@name]/value"/>
 								<xsl:variable name="hasUserValue" select="boolean($userValue)"/>
 								<xsl:variable name="value">
 									<xsl:choose>
@@ -187,8 +168,8 @@ BEGIN
 
 
 								<xsl:choose>
-									<xsl:when test="$input_type=''text''">
-										<xsl:comment>* input_type ''text''</xsl:comment>
+									<xsl:when test="$input_type=\'text\'">
+										<xsl:comment>* input_type \'text\'</xsl:comment>
 										<xsl:call-template name="textbox_render">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$render"/>
@@ -202,7 +183,7 @@ BEGIN
 											<xsl:with-param name="validation_required" select="$validation_required"/>
 											<xsl:with-param name="readOnly">
                                                 <xsl:choose>
-                                                    <xsl:when test="//fieldDef[@name=$fieldName]/lookup/lookupReadOnly = ''true''">true</xsl:when>
+                                                    <xsl:when test="//fieldDef[@name=$fieldName]/lookup/lookupReadOnly = \'true\'">true</xsl:when>
                                                     <xsl:otherwise>
 <xsl:value-of select="$readOnly"/>
 </xsl:otherwise>
@@ -211,19 +192,10 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''password''">
+									<xsl:when test="$input_type=\'password\'">
 										<xsl:call-template name="textbox_render">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
-											<xsl:wit';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := 'h-param name="renderCmd" select="$render"/>
+											<xsl:with-param name="renderCmd" select="$render"/>
 											<xsl:with-param name="align" select="$vAlign"/>
 											<xsl:with-param name="hasUserValue" select="$hasUserValue"/>
 											<xsl:with-param name="value" select="$value"/>
@@ -235,7 +207,7 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''radio''">
+									<xsl:when test="$input_type=\'radio\'">
 										<xsl:call-template name="radio_render">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$render"/>
@@ -251,7 +223,7 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''checkbox''">
+									<xsl:when test="$input_type=\'checkbox\'">
 										<xsl:call-template name="checkbox_render">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$render"/>
@@ -267,7 +239,7 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''select''">
+									<xsl:when test="$input_type=\'select\'">
 										<xsl:call-template name="select_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$render"/>
@@ -283,33 +255,24 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''select_refresh''">
+									<xsl:when test="$input_type=\'select_refresh\'">
 										<xsl:call-template name="select_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$render"/>
 											<xsl:with-param name="align" select="$vAlign"/>
 											<xsl:with-param name="hasUserValue" select="$hasUserValue"/>
 											<xsl:with-param name="value" select="$value"/>
-			';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '								<xsl:with-param name="invalid" select="$invalid"/>
+											<xsl:with-param name="invalid" select="$invalid"/>
 											<xsl:with-param name="regex" select="$regex"/>
 											<xsl:with-param name="customValidator" select="$customValidator"/>
 											<xsl:with-param name="message" select="$message"/>
 											<xsl:with-param name="validation_required" select="$validation_required"/>
 											<xsl:with-param name="readOnly" select="$readOnly"/>
-											<xsl:with-param name="refreshPage" select="''true''"/>
+											<xsl:with-param name="refreshPage" select="\'true\'"/>
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''textarea''">
+									<xsl:when test="$input_type=\'textarea\'">
 										<xsl:call-template name="textarea_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$renderCmd"/>
@@ -325,7 +288,7 @@ BEGIN
 											<xsl:with-param name="customFunction" select="$customFunction"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''button''">
+									<xsl:when test="$input_type=\'button\'">
 										<xsl:call-template name="button_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$renderCmd"/>
@@ -339,7 +302,7 @@ BEGIN
 											<xsl:with-param name="validation_required" select="$validation_required"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''submit button''">
+									<xsl:when test="$input_type=\'submit button\'">
 										<xsl:call-template name="submitbutton_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="renderCmd" select="$renderCmd"/>
@@ -353,36 +316,27 @@ BEGIN
 											<xsl:with-param name="validation_required" select="$validation_required"/>
 										</xsl:call-template>
 									</xsl:when>
-									<xsl:when test="$input_type=''hidden''">
+									<xsl:when test="$input_type=\'hidden\'">
 										<xsl:call-template name="hidden_input">
 											<xsl:with-param name="fieldName" select="$fieldName"/>
 											<xsl:with-param name="value" select="$value"/>
 										</xsl:call-template>
 									</xsl:when>
 								</xsl:choose>
-								<xsl:if test="$renderCmd=''all'' or $renderCmd=''input''">
+								<xsl:if test="$renderCmd=\'all\' or $renderCmd=\'input\'">
                                     <xsl:call-template name="lookup">
                                       <xsl:with-param name="fieldName" select="$fieldName"/>
                                       <xsl:with-param name="readOnly" select="$readOnly"/>
                                     </xsl:call-template>
 									<span class="{$type}Message" id="{@name}_messageHeaderCell">
 										<xsl:text> </xsl:text>
-<xsl:value-of select="$';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := 'type"/>
+<xsl:value-of select="$type"/>
 <xsl:text>: </xsl:text>
 									</span>
 									<span class="{$type}Message" id="{@name}_message">
 										<xsl:value-of select="$message"/>
 									</span>
-									<xsl:if test="validation/regex or validation/customValidator or validation[@required=''true'']">
+									<xsl:if test="validation/regex or validation/customValidator or validation[@required=\'true\']">
 										<xsl:if test="not(validation/customValidator)">
 											<script type="text/javascript">
 												// register field for regex checking
@@ -413,19 +367,19 @@ BEGIN
 					<xsl:param name="validation_required"/>
 					<xsl:param name="readOnly"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''all'' or  $renderCmd=''title''">
+					<xsl:if test="$renderCmd=\'all\' or  $renderCmd=\'title\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
-						<xsl:if test="$align =''horizontal''">
+					<xsl:if test="$renderCmd=\'all\'">
+						<xsl:if test="$align =\'horizontal\'">
 							<xsl:text>          </xsl:text>
 						</xsl:if>
-						<xsl:if test="$align=''vertical''">
+						<xsl:if test="$align=\'vertical\'">
 							<br/>
 						</xsl:if>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all'' or $renderCmd=''input''">
-						<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+					<xsl:if test="$renderCmd=\'all\' or $renderCmd=\'input\'">
+						<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 							<xsl:call-template name="hidden_input">
 								<xsl:with-param name="fieldName" select="$fieldName"/>
 								<xsl:with-param name="value" select="$value"/>
@@ -438,7 +392,7 @@ BEGIN
 							    <xsl:value-of select="$customFunction"/>
 							  </xsl:attribute>
 							</xsl:if>
-							<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+							<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 								<xsl:attribute name="disabled">
 								  disabled
 								</xsl:attribute>
@@ -473,33 +427,24 @@ BEGIN
 					<xsl:param name="value"/>
 					<xsl:param name="readOnly"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''all'' or  $renderCmd=''title''">
+					<xsl:if test="$renderCmd=\'all\' or  $renderCmd=\'title\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
-						<xsl:if test="$align =''horizontal''">
-							<xsl:text>            </xsl:text>';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '
+					<xsl:if test="$renderCmd=\'all\'">
+						<xsl:if test="$align =\'horizontal\'">
+							<xsl:text>            </xsl:text>
 						</xsl:if>
-						<xsl:if test="$align=''vertical''">
+						<xsl:if test="$align=\'vertical\'">
 							<br/>
 						</xsl:if>
 					</xsl:if>
-					<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+					<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 						<xsl:call-template name="hidden_input">
 							<xsl:with-param name="fieldName" select="$fieldName"/>
 							<xsl:with-param name="value" select="$value"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all'' or $renderCmd=''input''">
+					<xsl:if test="$renderCmd=\'all\' or $renderCmd=\'input\'">
 						<xsl:for-each select="current()/display/values">
 							<xsl:variable name="title">
 								<xsl:choose>
@@ -521,12 +466,12 @@ BEGIN
 							    <xsl:value-of select="$customFunction"/>
 							  </xsl:attribute>
 							</xsl:if>
-								<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+								<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 									<xsl:attribute name="disabled">disabled</xsl:attribute>
 								</xsl:if>
 								<xsl:choose>
 									<xsl:when test="$hasUserValue">
-										<xsl:if test="//edlContent/data/version[@current=''true'']/field[@name=current()/../../@name and value=current()]">
+										<xsl:if test="//edlContent/data/version[@current=\'true\']/field[@name=current()/../../@name and value=current()]">
 											<xsl:attribute name="checked">checked</xsl:attribute>
 										</xsl:if>
 									</xsl:when>
@@ -539,10 +484,10 @@ BEGIN
 								</xsl:choose>
 							</input>
 							<xsl:value-of select="$title"/>
-							<xsl:if test="$align =''horizontal''">
+							<xsl:if test="$align =\'horizontal\'">
 								<xsl:text>           </xsl:text>
 							</xsl:if>
-							<xsl:if test="$align=''vertical''">
+							<xsl:if test="$align=\'vertical\'">
 								<br/>
 							</xsl:if>
 						</xsl:for-each>
@@ -557,26 +502,26 @@ BEGIN
 					<xsl:param name="value"/>
 					<xsl:param name="readOnly"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''all'' or  $renderCmd=''title''">
+					<xsl:if test="$renderCmd=\'all\' or  $renderCmd=\'title\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
-						<xsl:if test="$align =''horizontal''">
+					<xsl:if test="$renderCmd=\'all\'">
+						<xsl:if test="$align =\'horizontal\'">
 							<xsl:text>          </xsl:text>
 						</xsl:if>
-						<xsl:if test="$align=''vertical''">
+						<xsl:if test="$align=\'vertical\'">
 							<br/>
 						</xsl:if>
 					</xsl:if>
 					<!--
-						<xsl:if test="$globalReadOnly = ''true''  or $readOnly = ''true''">
+						<xsl:if test="$globalReadOnly = \'true\'  or $readOnly = \'true\'">
 							<xsl:call-template name="hidden_input">
 								<xsl:with-param name="fieldName" select="$fieldName"/>
 								<xsl:with-param name="value" select="$value"/>
 							</xsl:call-template>
 						</xsl:if>
 					-->
-					<xsl:if test="$renderCmd=''all'' or $renderCmd=''input''">
+					<xsl:if test="$renderCmd=\'all\' or $renderCmd=\'input\'">
 						<xsl:for-each select="current()/display/values">
 							<xsl:variable name="title">
 								<xsl:choose>
@@ -595,20 +540,11 @@ BEGIN
 								<xsl:choose>
 									<xsl:when test="$hasUserValue">true</xsl:when>
 									<!-- use the default if no user values are specified -->
-									<xsl:when test=". = .';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := './../value">true</xsl:when>
+									<xsl:when test=". = ../../value">true</xsl:when>
 									<xsl:otherwise>false</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							<xsl:if test="($globalReadOnly = ''true''  or $readOnly = ''true'') and $checked = ''true'' ">
+							<xsl:if test="($globalReadOnly = \'true\'  or $readOnly = \'true\') and $checked = \'true\' ">
 								<xsl:call-template name="hidden_input">
 									<xsl:with-param name="fieldName" select="$fieldName"/>
 									<xsl:with-param name="value" select="."/>
@@ -621,18 +557,18 @@ BEGIN
 							    <xsl:value-of select="$customFunction"/>
 							  </xsl:attribute>
 							</xsl:if>
-								<xsl:if test="$globalReadOnly = ''true''  or $readOnly = ''true''">
+								<xsl:if test="$globalReadOnly = \'true\'  or $readOnly = \'true\'">
 									<xsl:attribute name="disabled">disabled</xsl:attribute>
 								</xsl:if>
-								<xsl:if test="$checked = ''true''">
+								<xsl:if test="$checked = \'true\'">
 									<xsl:attribute name="checked">checked</xsl:attribute>
 								</xsl:if>
 							</input>
 							<xsl:value-of select="$title"/>
-							<xsl:if test="$align =''horizontal''">
+							<xsl:if test="$align =\'horizontal\'">
 								<xsl:text>           </xsl:text>
 							</xsl:if>
-							<xsl:if test="$align=''vertical''">
+							<xsl:if test="$align=\'vertical\'">
 								<br/>
 							</xsl:if>
 						</xsl:for-each>
@@ -648,12 +584,12 @@ BEGIN
 					<xsl:param name="readOnly"/>
 					<xsl:param name="refreshPage"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''title'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'title\' or $renderCmd=\'all\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'all\'">
 						<xsl:choose>
-							<xsl:when test="$align=''horizontal''">
+							<xsl:when test="$align=\'horizontal\'">
 								<xsl:text>       </xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -661,13 +597,13 @@ BEGIN
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:if>
-					<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+					<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 						<xsl:call-template name="hidden_input">
 							<xsl:with-param name="fieldName" select="$fieldName"/>
 							<xsl:with-param name="value" select="$value"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''input'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'input\' or $renderCmd=\'all\'">
 						<select name="{$fieldName}">
 							<xsl:if test="$customFunction">
 							  <xsl:variable name="customFunction_val" select="$customFunction"/>
@@ -675,7 +611,7 @@ BEGIN
 							    <xsl:value-of select="$customFunction"/>
 							  </xsl:attribute>
 							</xsl:if>
-							<xsl:if test="$globalReadOnly = ''true''  or $readOnly = ''true''">
+							<xsl:if test="$globalReadOnly = \'true\'  or $readOnly = \'true\'">
 								<xsl:attribute name="disabled">disabled</xsl:attribute>
 							</xsl:if>
 							<xsl:for-each select="current()/display/values">
@@ -695,7 +631,7 @@ BEGIN
 								<option title="{$title}" value="{.}">
 									<xsl:choose>
 										<xsl:when test="$hasUserValue">
-											<xsl:if test="//edlContent/data/version[@current=''true'']/field[@name=current()/../../@name and value=current()]">
+											<xsl:if test="//edlContent/data/version[@current=\'true\']/field[@name=current()/../../@name and value=current()]">
 												<!-- <xsl:if test="$value = current()"> -->
 												<xsl:attribute name="selected">selected</xsl:attribute>
 											</xsl:if>
@@ -708,26 +644,17 @@ BEGIN
 										</xsl:otherwise>
 									</xsl:choose>
 									<xsl:if test=". = ../../value">
-										<xsl:attribute name="selected">selected</x';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := 'sl:attribute>
+										<xsl:attribute name="selected">selected</xsl:attribute>
 									</xsl:if>
 									<xsl:value-of select="$title"/>
 								</option>
 							</xsl:for-each>
 						</select>
-						<xsl:if test="$refreshPage = ''true''">
+						<xsl:if test="$refreshPage = \'true\'">
 						  <script type="text/javascript">
 						  	// register additional onchange event, use prototype to hide the main form and show a message so as to prevent changes while refreshing.
 						  	// programmers are to create the following divisions; html div; that wrap the main form and a seperate div wrapping the message that will show.
-							register_onchange(''<xsl:value-of select="$fieldName"/>'', function() { $(''mainform-div'').hide(); $(''refresh-message'').show(); document.forms[0].submit(); });
+							register_onchange(\'<xsl:value-of select="$fieldName"/>\', function() { $(\'mainform-div\').hide(); $(\'refresh-message\').show(); document.forms[0].submit(); });
 						  </script>
 						</xsl:if>
 					</xsl:if>
@@ -743,18 +670,18 @@ BEGIN
 					<xsl:param name="validation_required"/>
 					<xsl:param name="readOnly"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''title'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'title\' or $renderCmd=\'all\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$globalReadOnly = ''true'' or $readOnly = ''true''">
+					<xsl:if test="$globalReadOnly = \'true\' or $readOnly = \'true\'">
 						<xsl:call-template name="hidden_input">
 							<xsl:with-param name="fieldName" select="$fieldName"/>
 							<xsl:with-param name="value" select="$value"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'all\'">
 						<xsl:choose>
-							<xsl:when test="$align=''horizontal''">
+							<xsl:when test="$align=\'horizontal\'">
 								<xsl:text>       </xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -762,8 +689,8 @@ BEGIN
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''input'' or $renderCmd=''all''">
-						<xsl:variable name="metaCols" select="display/meta[name=''cols'']/value"/>
+					<xsl:if test="$renderCmd=\'input\' or $renderCmd=\'all\'">
+						<xsl:variable name="metaCols" select="display/meta[name=\'cols\']/value"/>
 						<xsl:variable name="cols">
 							<xsl:choose>
 								<xsl:when test="$metaCols">
@@ -772,7 +699,7 @@ BEGIN
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<xsl:variable name="metaRows" select="display/meta[name=''rows'']/value"/>
+						<xsl:variable name="metaRows" select="display/meta[name=\'rows\']/value"/>
 						<xsl:variable name="rows">
 							<xsl:choose>
 								<xsl:when test="$metaRows">
@@ -788,7 +715,7 @@ BEGIN
 							    <xsl:value-of select="$customFunction"/>
 							  </xsl:attribute>
 							</xsl:if>
-							<xsl:if test="$globalReadOnly = ''true''  or $readOnly = ''true''">
+							<xsl:if test="$globalReadOnly = \'true\'  or $readOnly = \'true\'">
 								<xsl:attribute name="disabled">disabled</xsl:attribute>
 							</xsl:if>
 							<!--
@@ -812,12 +739,12 @@ BEGIN
 					<xsl:param name="renderCmd"/>
 					<xsl:param name="align"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''title'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'title\' or $renderCmd=\'all\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'all\'">
 						<xsl:choose>
-							<xsl:when test="$align=''horizontal''">
+							<xsl:when test="$align=\'horizontal\'">
 								<xsl:text>    </xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -825,17 +752,8 @@ BEGIN
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''input'' or $renderCmd=''all''">
-';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '						<button name="{$fieldName}">
+					<xsl:if test="$renderCmd=\'input\' or $renderCmd=\'all\'">
+						<button name="{$fieldName}">
 							<xsl:variable name="value" select="value"/>
 							<xsl:if test="$value">
 								<xsl:attribute name="value">
@@ -863,12 +781,12 @@ BEGIN
 					<xsl:param name="renderCmd"/>
 					<xsl:param name="align"/>
 					<xsl:param name="customFunction"/>
-					<xsl:if test="$renderCmd=''title'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'title\' or $renderCmd=\'all\'">
 						<xsl:value-of select="current()/@title"/>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'all\'">
 						<xsl:choose>
-							<xsl:when test="$align=''horizontal''">
+							<xsl:when test="$align=\'horizontal\'">
 								<xsl:text>    </xsl:text>
 							</xsl:when>
 							<xsl:otherwise>
@@ -876,7 +794,7 @@ BEGIN
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:if>
-					<xsl:if test="$renderCmd=''input'' or $renderCmd=''all''">
+					<xsl:if test="$renderCmd=\'input\' or $renderCmd=\'all\'">
 						<input name="{$fieldName}" type="submit">
 							<xsl:variable name="value" select="value"/>
 							<xsl:if test="$value">
@@ -908,16 +826,16 @@ BEGIN
 					      <xsl:value-of select="$value"/>
 					    </xsl:when>
 					    <xsl:otherwise>
-						  <xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name=string($fieldName)]/value"/>
+						  <xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name=string($fieldName)]/value"/>
 						</xsl:otherwise>
 					  </xsl:choose>
 					</xsl:variable>
 					<input name="{$fieldName}" type="hidden" value="{$finalValue}"/>
 					<!-- <xsl:comment>
-					XPath: //edlContent/data/version[@current=''true'']/field[@name={$fieldName}]/value
+					XPath: //edlContent/data/version[@current=\'true\']/field[@name={$fieldName}]/value
 					Escaped: <xsl:value-of select="my-class:escapeForXPath($fieldName)"/>
-					What''s my value? <xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name=$fieldName]/value"/>
-					What''s my value2? <xsl:value-of select="//edlContent/data/version[@current=''true'']/field[@name=my-class:escapeForXPath($fieldName)]/value"/>
+					What\'s my value? <xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name=$fieldName]/value"/>
+					What\'s my value2? <xsl:value-of select="//edlContent/data/version[@current=\'true\']/field[@name=my-class:escapeForXPath($fieldName)]/value"/>
 					</xsl:comment> -->
 
 				</xsl:template>
@@ -930,12 +848,12 @@ BEGIN
 					<xsl:param name="use_jsButton"/>
 					<xsl:variable name="clickFunctionVal" select="boolean(normalize-space($clickfunction))"/>
 					<xsl:choose>
-						<xsl:when test="$readOnly=''true''">
+						<xsl:when test="$readOnly=\'true\'">
 						  <input disabled="disabled" name="edl.gotoPage:{$pageName}" type="submit" value="{$value}"/>
 						</xsl:when>
 						<xsl:when test="$clickFunctionVal">
 						  <xsl:choose>
-							<xsl:when test="$use_jsButton = ''true''">
+							<xsl:when test="$use_jsButton = \'true\'">
 								<input name="jsButton" onClick="{$clickfunction}" type="submit" value="{$value}"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -944,16 +862,7 @@ BEGIN
 						  </xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
-						  <input name="edl.gotoPage:{$pageName}" type=';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '"submit" value="{$value}"/>
+						  <input name="edl.gotoPage:{$pageName}" type="submit" value="{$value}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:template>
@@ -1002,14 +911,14 @@ BEGIN
 
 				<xsl:template name="htmlHead">
 					<!-- whether the FIELDS can be edited -->
-					<!-- <xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != ''true''"/>-->
+					<!-- <xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != \'true\'"/>-->
 					<!-- whether the form can be acted upon -->
-					<xsl:variable name="actionable" select="/documentContent/documentState/actionable = ''true''"/>
+					<xsl:variable name="actionable" select="/documentContent/documentState/actionable = \'true\'"/>
 					<xsl:variable name="docId" select="/documentContent/documentState/docId"/>
 					<xsl:variable name="def" select="/documentContent/documentState/definition"/>
 					<xsl:variable name="docType" select="/documentContent/documentState/docType"/>
 					<xsl:variable name="style" select="/documentContent/documentState/style"/>
-					<xsl:variable name="annotatable" select="/documentContent/documentState/annotatable = ''true''"/>
+					<xsl:variable name="annotatable" select="/documentContent/documentState/annotatable = \'true\'"/>
 					<xsl:variable name="docTitle">
 						<xsl:choose>
 							<xsl:when test="//edlContent/edl/@title">
@@ -1022,7 +931,7 @@ BEGIN
 					</xsl:variable>
 					<xsl:variable name="pageTitle">
 						<xsl:choose>
-							<xsl:when test="$globalReadOnly = ''true''">
+							<xsl:when test="$globalReadOnly = \'true\'">
 								Viewing
               </xsl:when>
 							<xsl:otherwise>
@@ -1040,20 +949,11 @@ BEGIN
 					<xsl:comment>* 	 [var annotatable_value=<xsl:value-of select="//documentState/annotatable"/>]</xsl:comment>
 					<xsl:comment>* 	 [var globalReadOnly=<xsl:value-of select="$globalReadOnly"/>]</xsl:comment>
 					<xsl:comment>* 	 [var annotatable=<xsl:value-of select="$annotatable"/>]</xsl:comment>
-					<xsl:comment>* 	 [var annotation=<xsl:value-of select="//edlContent/data/version[@current=''true'']/annotation"/>]</xsl:comment>
+					<xsl:comment>* 	 [var annotation=<xsl:value-of select="//edlContent/data/version[@current=\'true\']/annotation"/>]</xsl:comment>
 					<xsl:comment>* 	 [transient start]</xsl:comment>
 					<xsl:comment>* 	 [var docid=<xsl:value-of select="$docId"/>]</xsl:comment>
 					<xsl:comment>* 	 [transient end]</xsl:comment>
-					<xsl:comment>* ';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '	 [var doctype=<xsl:value-of select="$docType"/>]</xsl:comment>
+					<xsl:comment>* 	 [var doctype=<xsl:value-of select="$docType"/>]</xsl:comment>
 					<xsl:comment>* 	 [var def=<xsl:value-of select="$def"/>]</xsl:comment>
 					<xsl:comment>* 	 [var style=<xsl:value-of select="$style"/>]</xsl:comment>
 					<link href="css/screen.css" rel="stylesheet" type="text/css"/>
@@ -1068,7 +968,7 @@ BEGIN
 				</xsl:template>
 
 				<xsl:template name="instructions">
-					<!-- <xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != ''true''"/> -->
+					<!-- <xsl:variable name="globalReadOnly" select="/documentContent/documentState/editable != \'true\'"/> -->
 					<xsl:variable name="docType" select="/documentContent/documentState/docType"/>
 					<xsl:variable name="docTitle">
 						<xsl:choose>
@@ -1104,7 +1004,7 @@ BEGIN
 					</xsl:variable>
 					<xsl:variable name="pageTitle">
 						<xsl:choose>
-							<xsl:when test="$globalReadOnly = ''true''">
+							<xsl:when test="$globalReadOnly = \'true\'">
 								Viewing
 							</xsl:when>
 							<xsl:otherwise>
@@ -1125,7 +1025,7 @@ BEGIN
 						</tr>
 						<tr>
 							<td>
-								<!-- if ''save'' action is present then this is a "new" document that has not been routed, and therefore we should display the create instructions -->
+								<!-- if \'save\' action is present then this is a "new" document that has not been routed, and therefore we should display the create instructions -->
 								<xsl:choose>
 									<xsl:when test="//documentState/actionsPossible/save">
 										<xsl:value-of select="$createInstructions"/>
@@ -1175,16 +1075,7 @@ BEGIN
 								<xsl:otherwise>
 									??Unknown user??
 								</xsl:otherwise>
-';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '							</xsl:choose>
+							</xsl:choose>
 							standing in for user
 							<xsl:choose>
 								<xsl:when test="//documentState/userSession/backdoorUser/backdoorDisplayName">
@@ -1207,18 +1098,18 @@ BEGIN
 					<xsl:variable name="def" select="/documentContent/documentState/definition"/>
 					<xsl:variable name="docType" select="/documentContent/documentState/docType"/>
 					<xsl:variable name="style" select="/documentContent/documentState/style"/>
-					<xsl:variable name="incrementVersion" select="//edlContent/data/version[@current=''true'']/incrementVersion"/>
+					<xsl:variable name="incrementVersion" select="//edlContent/data/version[@current=\'true\']/incrementVersion"/>
 					<xsl:variable name="currentPage" select="//currentPage"/>
 					<xsl:variable name="previousPage" select="//previousPage"/>
 					<div style="display: none">
-						<xsl:if test="$incrementVersion = ''true''">
+						<xsl:if test="$incrementVersion = \'true\'">
 							<input name="incrementVersion" type="hidden" value="{$incrementVersion}"/>
 						</xsl:if>
 						<xsl:choose>
 							<xsl:when test="$docId">
 								<!-- preserve the data for comparison without transient value -->
 								<xsl:comment>* input name="docId" type="hidden"</xsl:comment>
-								<!-- mark the entire input element transient because we can''t insert comments in the middle of a tag just to omit a certain attribute -->
+								<!-- mark the entire input element transient because we can\'t insert comments in the middle of a tag just to omit a certain attribute -->
 								<xsl:comment>[transient start]</xsl:comment>
 								<input name="docId" type="hidden" value="{$docId}"/>
 								<xsl:comment>[transient end]</xsl:comment>
@@ -1245,9 +1136,9 @@ BEGIN
 				</xsl:template>
 
 				<xsl:template name="annotation">
-					<xsl:variable name="annotation" select="//edlContent/data/version[@current=''true'']/annotation"/>
-					<xsl:variable name="currentAnnotation" select="//edlContent/data/version[@current=''true'']/currentAnnotation"/>
-					<xsl:variable name="annotatable" select="/documentContent/documentState/annotatable = ''true''"/>
+					<xsl:variable name="annotation" select="//edlContent/data/version[@current=\'true\']/annotation"/>
+					<xsl:variable name="currentAnnotation" select="//edlContent/data/version[@current=\'true\']/currentAnnotation"/>
+					<xsl:variable name="annotatable" select="/documentContent/documentState/annotatable = \'true\'"/>
 					<xsl:if test="$annotatable or $annotation or $currentAnnotation">
 						<table align="center" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="80%">
 							<tr>
@@ -1255,7 +1146,7 @@ BEGIN
 									<xsl:if test="$annotation">
 										<div>
 <h4>Annotations</h4>
-											<xsl:for-each select="//edlContent/data/version[@current=''true'']/annotation">
+											<xsl:for-each select="//edlContent/data/version[@current=\'true\']/annotation">
 												<div>
 <xsl:value-of select="."/>
 </div>
@@ -1278,26 +1169,17 @@ BEGIN
 				<xsl:template name="buttons">
 					<xsl:param name="fname"/>
 					<xsl:param name="showRTP"/>
-					<xsl:v';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := 'ariable name="functionName" select="$fname"/>
+					<xsl:variable name="functionName" select="$fname"/>
 					<xsl:variable name="fxname" select="boolean(normalize-space($fname))"/>
-					<xsl:variable name="actionable" select="/documentContent/documentState/actionable = ''true''"/>
-					<xsl:variable name="apos" select="&quot;''&quot;"/>
+					<xsl:variable name="actionable" select="/documentContent/documentState/actionable = \'true\'"/>
+					<xsl:variable name="apos" select="&quot;\'&quot;"/>
 					<xsl:variable name="showRTPbutton" select="$showRTP"/>
 					<xsl:if test="//documentState/actionsPossible/*">
 						<table align="center" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="80%">
 							<tr>
 								<td align="center" class="thnormal" colspan="2">
 									<xsl:text>									</xsl:text>
-										<xsl:for-each select="//documentState/actionsPossible/*[. != ''returnToPrevious'']">
+										<xsl:for-each select="//documentState/actionsPossible/*[. != \'returnToPrevious\']">
 											<xsl:variable name="actionTitle">
 												<xsl:choose>
 													<xsl:when test="@title">
@@ -1308,7 +1190,7 @@ BEGIN
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:variable>
-										<xsl:if test="local-name() != ''returnToPrevious'' or local-name() = ''returnToPrevious'' and not($showRTPbutton = ''false'')">
+										<xsl:if test="local-name() != \'returnToPrevious\' or local-name() = \'returnToPrevious\' and not($showRTPbutton = \'false\')">
 											<input name="userAction" title="{$actionTitle}" type="submit">
 												<xsl:if test="not($actionable)">
 													<xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -1316,40 +1198,40 @@ BEGIN
 											 <xsl:choose>
 												<xsl:when test="$fxname">
 												  <xsl:attribute name="onclick">
-													  <xsl:value-of select="''buttonClick(''"/>
+													  <xsl:value-of select="\'buttonClick(\'"/>
 													  <xsl:value-of select="$apos"/>
 													  <xsl:value-of select="$actionTitle"/>
 													  <xsl:value-of select="$apos"/>
-													  <xsl:value-of select="''); ''"/>
-													  <xsl:value-of select="''buttonClickFunctionName(''"/>
+													  <xsl:value-of select="\'); \'"/>
+													  <xsl:value-of select="\'buttonClickFunctionName(\'"/>
 													  <xsl:value-of select="$functionName"/>
-													  <xsl:value-of select="'')''"/>
+													  <xsl:value-of select="\')\'"/>
 													</xsl:attribute>
 												</xsl:when>
 												<xsl:otherwise>
 													<xsl:attribute name="onclick">
-													  <xsl:value-of select="''buttonClick(''"/>
+													  <xsl:value-of select="\'buttonClick(\'"/>
 													  <xsl:value-of select="$apos"/>
 													  <xsl:value-of select="$actionTitle"/>
 													  <xsl:value-of select="$apos"/>
-													  <xsl:value-of select="'')''"/>
+													  <xsl:value-of select="\')\'"/>
 													</xsl:attribute>
 												</xsl:otherwise>
 											  </xsl:choose>
 											  <xsl:choose>
-											    <xsl:when test="local-name() = ''route''">
+											    <xsl:when test="local-name() = \'route\'">
 											      <xsl:attribute name="value">
-											        <xsl:value-of select="''submit''"/>
+											        <xsl:value-of select="\'submit\'"/>
 											      </xsl:attribute>
 											    </xsl:when>
-											    <xsl:when test="local-name() = ''blanketApprove''">
+											    <xsl:when test="local-name() = \'blanketApprove\'">
 											      <xsl:attribute name="value">
-											        <xsl:value-of select="''blanket approve''"/>
+											        <xsl:value-of select="\'blanket approve\'"/>
 											      </xsl:attribute>
 											    </xsl:when>
-											    <xsl:when test="local-name() = ''returnToPrevious''">
+											    <xsl:when test="local-name() = \'returnToPrevious\'">
 											      <xsl:attribute name="value">
-											        <xsl:value-of select="''return to previous''"/>
+											        <xsl:value-of select="\'return to previous\'"/>
 											      </xsl:attribute>
 											    </xsl:when>
 											    <xsl:otherwise>
@@ -1363,10 +1245,10 @@ BEGIN
 											<xsl:text>                 					 </xsl:text>
 										</xsl:for-each>
 
-								<xsl:if test="not($showRTPbutton = ''false'')">
+								<xsl:if test="not($showRTPbutton = \'false\')">
 									<xsl:if test="//documentState/actionsPossible/returnToPrevious">
 										<select name="previousNode">
-											<xsl:if test="not($actionable) or $showRTPbutton = ''false''">
+											<xsl:if test="not($actionable) or $showRTPbutton = \'false\'">
 												<xsl:attribute name="disabled">disabled</xsl:attribute>
 											</xsl:if>
 											<xsl:for-each select="//documentState/previousNodes/node">
@@ -1375,16 +1257,7 @@ BEGIN
 												</option>
 											</xsl:for-each>
 										</select>
-									';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '	<xsl:text>                 					 </xsl:text>
+										<xsl:text>                 					 </xsl:text>
 									</xsl:if>
 								</xsl:if>
 								</td>
@@ -1395,7 +1268,7 @@ BEGIN
 
 				<xsl:template match="/">
 					<xsl:choose>
-						<xsl:when test="$overrideMain=''true''">
+						<xsl:when test="$overrideMain=\'true\'">
 							<xsl:call-template name="mainForm"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -1407,7 +1280,7 @@ BEGIN
 									<xsl:call-template name="header"/>
 									<xsl:call-template name="instructions"/>
 									<xsl:call-template name="errors"/>
-									<xsl:variable name="formTarget" select="''EDocLite''"/>
+									<xsl:variable name="formTarget" select="\'EDocLite\'"/>
 									<form accept-charset="ISO-8859-1" action="{$formTarget}" enctype="multipart/form-data" id="edoclite" method="post" onsubmit="return validateOnSubmit(this)">
 										<xsl:call-template name="hidden-params"/>
 										<xsl:call-template name="mainBody"/>
@@ -1449,7 +1322,7 @@ BEGIN
 </xsl:attribute>
 						</input>
 						<table align="center" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="80%">
-							<xsl:if test="$showAdd = ''true''">
+							<xsl:if test="$showAdd = \'true\'">
 								<tr>
 									<td align="center" class="thnormal2" colspan="4" scope="col">
 										<b>Create Note </b>
@@ -1471,12 +1344,12 @@ BEGIN
 								</tr>
 								<tr valign="top">
 									<td class="datacell">
-										<xsl:if test="$globalReadOnly != ''true''">
+										<xsl:if test="$globalReadOnly != \'true\'">
 											<xsl:value-of select="//NoteForm/currentUserName"/>
 										</xsl:if>
 									</td>
 									<td class="datacell">
-										<xsl:if test="$globalReadOnly != ''true''">
+										<xsl:if test="$globalReadOnly != \'true\'">
 											<xsl:comment>[transient start]</xsl:comment>
 											<xsl:value-of select="//NoteForm/currentDate"/>
             				  <xsl:comment>[transient end]</xsl:comment>
@@ -1484,32 +1357,23 @@ BEGIN
 									</td>
 									<td class="datacell">
 										<xsl:choose>
-											<xsl:when test="$showEdit = ''yes''">
+											<xsl:when test="$showEdit = \'yes\'">
 												<textarea cols="60" disabled="true" name="addText" rows="3"/>
-												<xsl:if test="$showAttachments = ''true''">
+												<xsl:if test="$showAttachments = \'true\'">
 													<br/>Attachment:	<input disabled="true" name="file" type="file"/>
 												</xsl:if>
 											</xsl:when>
 											<xsl:otherwise>
 												<textarea cols="60" name="addText" rows="3">
-													<xsl:if test="$globalReadOnly = ''true''">
+													<xsl:if test="$globalReadOnly = \'true\'">
 														<xsl:attribute name="disabled">disabled</xsl:attribute>
 													</xsl:if>
 												</textarea>
-												<xsl:if test="$showAttachments = ''true''">
-			';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '										<br/>
+												<xsl:if test="$showAttachments = \'true\'">
+													<br/>
 													Attachment:
 													<input name="file" type="file">
-														<xsl:if test="$globalReadOnly = ''true''">
+														<xsl:if test="$globalReadOnly = \'true\'">
 															<xsl:attribute name="disabled">disabled</xsl:attribute>
 														</xsl:if>
 													</input>
@@ -1519,7 +1383,7 @@ BEGIN
 									</td>
 									<td class="datacell">
 										<xsl:choose>
-											<xsl:when test="$showEdit = ''yes''">
+											<xsl:when test="$showEdit = \'yes\'">
 												<div align="center">
 													<img height="15" hspace="3" src="images/tinybutton-save-disable.gif" vspace="3" width="45"/>
 												</div>
@@ -1527,11 +1391,11 @@ BEGIN
 											<xsl:otherwise>
 												<div align="center">
 													<xsl:choose>
-														<xsl:when test="$globalReadOnly = ''true''">
+														<xsl:when test="$globalReadOnly = \'true\'">
 															<img height="15" hspace="3" src="images/tinybutton-save-disable.gif" vspace="3" width="45"/>
 														</xsl:when>
 														<xsl:otherwise>
-															<img border="0" height="15" hspace="3" onclick="document.forms[0].methodToCall.value=''save''; document.forms[0].submit();" src="images/tinybutton-save.gif" vspace="3" width="45"/>
+															<img border="0" height="15" hspace="3" onclick="document.forms[0].methodToCall.value=\'save\'; document.forms[0].submit();" src="images/tinybutton-save.gif" vspace="3" width="45"/>
 														</xsl:otherwise>
 													</xsl:choose>
 												</div>
@@ -1554,11 +1418,11 @@ BEGIN
 										<td class="thnormal" scope="col">
 											<div align="center">
 												 <xsl:choose>
-													<xsl:when test="$globalReadOnly = ''true''">
+													<xsl:when test="$globalReadOnly = \'true\'">
 														Date
 													</xsl:when>
 													<xsl:otherwise>
-														<a href="javascript: document.forms[0].elements[''methodToCall''].value = ''sort''; document.forms[0].elements[''sortNotes''].value = ''true''; document.forms[0].submit();">Date</a>
+														<a href="javascript: document.forms[0].elements[\'methodToCall\'].value = \'sort\'; document.forms[0].elements[\'sortNotes\'].value = \'true\'; document.forms[0].submit();">Date</a>
 														<img height="5" src="images/arrow-expcol-down.gif" width="9"/>
 													</xsl:otherwise>
 												</xsl:choose>
@@ -1587,15 +1451,15 @@ BEGIN
 											</td>
 											<td class="datacell">
 												 <xsl:choose>
-													<xsl:when test="editingNote = ''true'' and authorizedToEdit = ''true''">
+													<xsl:when test="editingNote = \'true\' and authorizedToEdit = \'true\'">
 														<textarea cols="60" name="noteText" rows="3">
-															<xsl:if test="$globalReadOnly = ''true''">
+															<xsl:if test="$globalReadOnly = \'true\'">
 																<xsl:attribute name="disabled">disabled</xsl:attribute>
 															</xsl:if>
 															<xsl:value-of select="noteText"/>
 														</textarea>
 														<br/>
-														<xsl:if test="$showAttachments = ''true''">
+														<xsl:if test="$showAttachments = \'true\'">
 															<xsl:choose>
 																<xsl:when test="attachments/attachment">
 																	<xsl:for-each select="attachments/attachment">
@@ -1605,20 +1469,11 @@ BEGIN
 <xsl:value-of select="../../noteId"/>
 </xsl:attribute>
 																		</input>
-																		<xsl:choos';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := 'e>
-																			<xsl:when test="$globalReadOnly = ''true''">
+																		<xsl:choose>
+																			<xsl:when test="$globalReadOnly = \'true\'">
 																			</xsl:when>
 																			<xsl:otherwise>
-																				<a href="javascript: document.forms[0].elements[''methodToCall''].value = ''deleteAttachment''; document.forms[0].submit();">delete</a>  
+																				<a href="javascript: document.forms[0].elements[\'methodToCall\'].value = \'deleteAttachment\'; document.forms[0].submit();">delete</a>  
 	                    									<xsl:variable name="hrefStr">attachment?attachmentId=<xsl:value-of select="attachmentId"/>
 </xsl:variable>
 																				<a href="{$hrefStr}">download</a>
@@ -1630,7 +1485,7 @@ BEGIN
 																	<br/>
 																	Attachment:
 																	<input name="file" type="file">
-																		<xsl:if test="$globalReadOnly = ''true''">
+																		<xsl:if test="$globalReadOnly = \'true\'">
 																			<xsl:attribute name="disabled">disabled</xsl:attribute>
 																		</xsl:if>
 																	</input>
@@ -1642,7 +1497,7 @@ BEGIN
 														<xsl:value-of select="noteText"/>
 														<br/>
 														<br/>
-														<xsl:if test="$showAttachments = ''true''">
+														<xsl:if test="$showAttachments = \'true\'">
 															<xsl:for-each select="attachments/attachment">
 																<xsl:value-of select="fileName"/>   
 	                    					<xsl:variable name="hrefStr">attachment?attachmentId=<xsl:value-of select="attachmentId"/>
@@ -1655,30 +1510,30 @@ BEGIN
 											</td>
 											<td class="datacell">
 												<xsl:choose>
-													<xsl:when test="editingNote = ''true'' and authorizedToEdit = ''true'' and $globalReadOnly != ''true''">
+													<xsl:when test="editingNote = \'true\' and authorizedToEdit = \'true\' and $globalReadOnly != \'true\'">
 														<div align="center">
 															<img border="0" height="15" hspace="3" src="images/tinybutton-save.gif" vspace="3" width="40">
-																<xsl:attribute name="onclick">document.forms[0].elements[''methodToCall''].value = ''save'';
-																	document.forms[0].elements[''noteIdNumber''].value = <xsl:value-of select="noteId"/>;
+																<xsl:attribute name="onclick">document.forms[0].elements[\'methodToCall\'].value = \'save\';
+																	document.forms[0].elements[\'noteIdNumber\'].value = <xsl:value-of select="noteId"/>;
 																	document.forms[0].submit();
 																</xsl:attribute>
 															</img>
-															<img border="0" height="15" hspace="3" onclick="document.forms[0].elements[''methodToCall''].value = ''cancel''; document.forms[0].submit();" src="images/tinybutton-cancel.gif" vspace="3" width="40"/>
+															<img border="0" height="15" hspace="3" onclick="document.forms[0].elements[\'methodToCall\'].value = \'cancel\'; document.forms[0].submit();" src="images/tinybutton-cancel.gif" vspace="3" width="40"/>
 														</div>
 													</xsl:when>
 													<xsl:otherwise>
 														<xsl:choose>
-															<xsl:when test="../../showEdit != ''yes'' and authorizedToEdit = ''true'' and $globalReadOnly !=''true''">
+															<xsl:when test="../../showEdit != \'yes\' and authorizedToEdit = \'true\' and $globalReadOnly !=\'true\'">
 																<div align="center">
 																	<img border="0" height="15" hspace="3" src="images/tinybutton-edit1.gif" vspace="3" width="40">
-																		<xsl:attribute name="onclick">document.forms[0].elements[''methodToCall''].value = ''edit'';
-																			document.forms[0].elements[''noteIdNumber''].value = <xsl:value-of select="noteId"/>;
+																		<xsl:attribute name="onclick">document.forms[0].elements[\'methodToCall\'].value = \'edit\';
+																			document.forms[0].elements[\'noteIdNumber\'].value = <xsl:value-of select="noteId"/>;
 																			document.forms[0].submit();
 																		</xsl:attribute>
 																	</img>
 																	<img border="0" height="15" hspace="3" src="images/tinybutton-delete1.gif" vspace="3" width="40">
-																		<xsl:attribute name="onclick">document.forms[0].elements[''methodToCall''].value = ''delete'';
-																			document.forms[0].elements[''noteIdNumber''].value = <xsl:value-of select="noteId"/>;
+																		<xsl:attribute name="onclick">document.forms[0].elements[\'methodToCall\'].value = \'delete\';
+																			document.forms[0].elements[\'noteIdNumber\'].value = <xsl:value-of select="noteId"/>;
 																			document.forms[0].submit();
 																		</xsl:attribute>
 																	</img>
@@ -1690,16 +1545,7 @@ BEGIN
 																	<img height="15" src="images/tinybutton-delete1-disabled.gif" vspace="3" width="40"/>
 																</div>
 															</xsl:otherwise>
-				';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
-/
-DECLARE    data CLOB; buffer VARCHAR2(32000);
-BEGIN
-    SELECT XML INTO data FROM KRCR_STYLE_T
-    WHERE
- STYLE_ID = '2020'    FOR UPDATE;
-    buffer := '										</xsl:choose>
+														</xsl:choose>
 													</xsl:otherwise>
 												</xsl:choose>
 											</td>
@@ -1707,7 +1553,7 @@ BEGIN
 									</xsl:for-each>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:if test="//NoteForm/showAdd != ''true''">
+									<xsl:if test="//NoteForm/showAdd != \'true\'">
 										<tr>
 											<td class="thnormal2">
 												<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
@@ -1719,9 +1565,9 @@ BEGIN
 																	<br/>
 																	<br/>
 																	<p>No notes available </p>
-																	<xsl:if test="//NoteForm/authorizedToAdd = ''true''">
+																	<xsl:if test="//NoteForm/authorizedToAdd = \'true\'">
 																		<p>
-																			<img border="0" height="15" hspace="3" onclick="document.forms[0].elements[''methodToCall''].value = ''add''; document.forms[0].submit();" src="images/tinybutton-addnote.gif" vspace="3" width="66"/>
+																			<img border="0" height="15" hspace="3" onclick="document.forms[0].elements[\'methodToCall\'].value = \'add\'; document.forms[0].submit();" src="images/tinybutton-addnote.gif" vspace="3" width="66"/>
 																		</p>
 																	</xsl:if>
 																</div>
@@ -1740,14 +1586,12 @@ BEGIN
                 <xsl:template name="lookup">
                   <xsl:param name="fieldName"/>
                   <xsl:param name="readOnly"/>
-                  <xsl:if test="$globalReadOnly != ''true'' and $readOnly != ''true''">
+                  <xsl:if test="$globalReadOnly != \'true\' and $readOnly != \'true\'">
                     <xsl:if test="//fieldDef[@name=$fieldName]/lookup">
-                      <input name="userAction.performLookup.{$fieldName}" onclick="buttonClick(''performLookup'');" src="images/searchicon.gif" type="image" value="performLookup.{$fieldName}"/>
+                      <input name="userAction.performLookup.{$fieldName}" onclick="buttonClick(\'performLookup\');" src="images/searchicon.gif" type="image" value="performLookup.{$fieldName}"/>
                     </xsl:if>
                   </xsl:if>
                 </xsl:template>
 			</xsl:stylesheet>
-';
-    DBMS_LOB.writeappend(data,LENGTH(buffer),buffer);
-END;
+')
 /

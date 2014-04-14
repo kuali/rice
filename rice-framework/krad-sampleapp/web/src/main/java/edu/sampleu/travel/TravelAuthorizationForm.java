@@ -15,6 +15,8 @@
  */
 package edu.sampleu.travel;
 
+import org.kuali.rice.krad.data.util.Link;
+import org.kuali.rice.krad.web.bind.ChangeTracking;
 import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 
 /**
@@ -27,6 +29,8 @@ import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@ChangeTracking
+@Link(path = "document")
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
 	private static final long serialVersionUID = 6857088926834897587L;
 

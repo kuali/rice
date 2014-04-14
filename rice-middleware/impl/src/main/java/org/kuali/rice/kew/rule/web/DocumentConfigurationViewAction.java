@@ -39,9 +39,10 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
-import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -113,7 +114,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			// just skip - and don't display links
         	LOG.error( "Unable to check DocumentType initiation permission for "+ docTypeDocumentType, ex );
 		}
-    	String permissionDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(PermissionBo.class);
+    	String permissionDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(GenericPermissionBo.class);
         try {
             if ((permissionDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(permissionDocumentType).canInitiate(permissionDocumentType, GlobalVariables.getUserSession().getPerson())) {
                 form.setCanInitiatePermissionDocument( true );
@@ -122,7 +123,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			// just skip - and don't display links
         	LOG.error( "Unable to check Permission initiation permission for "+ permissionDocumentType, ex );
 		}
-    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(ResponsibilityBo.class);
+    	String responsibilityDocumentType = getMaintenanceDocumentDictionaryService().getDocumentTypeName(ReviewResponsibilityBo.class);
         try {
             if ((responsibilityDocumentType != null) && getDocumentHelperService().getDocumentAuthorizer(responsibilityDocumentType).canInitiate(responsibilityDocumentType, GlobalVariables.getUserSession().getPerson())) {
                 form.setCanInitiateResponsibilityDocument( true );

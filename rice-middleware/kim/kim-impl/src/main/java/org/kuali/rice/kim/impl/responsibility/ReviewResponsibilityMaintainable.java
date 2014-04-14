@@ -49,6 +49,9 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	private static final Logger LOG = Logger.getLogger( ReviewResponsibilityMaintainable.class );
 	private static final long serialVersionUID = -8102504656976243468L;
 
+    protected static final String DOCUMENT_TYPE_NAME = "documentTypeName";
+    protected static final String ROUTE_NODE_NAME = "routeNodeName";
+
 	private static Template REVIEW_TEMPLATE;
 
     public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
@@ -187,4 +190,35 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             }
         }
     }
+
+    @Override
+    public void setupNewFromExisting(MaintenanceDocument document, Map<String, String[]> parameters) {
+        String docTypeName = "";
+        String routeNodeName = "";
+
+        ReviewResponsibilityBo reviewResponsibilityBo = (ReviewResponsibilityBo) document.getNewMaintainableObject().getDataObject();
+        initializeResponsibilityId(document.getDocumentBusinessObject());
+        reviewResponsibilityBo.setActive(true);
+
+        for (String paramName : parameters.keySet()) {
+            String[] parameterValues = parameters.get(paramName);
+            if (paramName.equals(DOCUMENT_TYPE_NAME)) {
+                if (parameterValues.length > 0) {
+                    docTypeName = parameterValues[0];
+                }
+            }
+            if (paramName.equals(ROUTE_NODE_NAME)) {
+                if (parameterValues.length > 0) {
+                    routeNodeName = parameterValues[0];
+                }
+            }
+        }
+
+        if (StringUtils.isNotEmpty(docTypeName) && StringUtils.isNotEmpty(routeNodeName)) {
+            reviewResponsibilityBo.setDocumentTypeName(docTypeName);
+            reviewResponsibilityBo.setRouteNodeName(routeNodeName);
+        }
+        document.getNewMaintainableObject().setDataObject(reviewResponsibilityBo);
+    }
+
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.document;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -42,6 +43,9 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
 	private static final Logger LOG = Logger.getLogger( GenericPermissionMaintainable.class );	
 	private static final long serialVersionUID = -8102504656976243468L;
+
+    protected static final String DETAIL_OBJECTS_ATTRIBUTE_NAME = "attributeDetails.kimAttribute.attributeName";
+    protected static final String DETAIL_OBJECTS_ATTRIBUTE_VALUE = "attributeDetails.attributeValue";
 
     /**
      * Saves the responsibility via the responsibility update service
@@ -148,4 +152,34 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 		}
 	}
 
+    @Override
+    public void setupNewFromExisting(MaintenanceDocument document, Map<String, String[]> parameters) {
+        String attrName = "";
+        String attrValue = "";
+
+        GenericPermissionBo permissionBo = (GenericPermissionBo) document.getNewMaintainableObject().getDataObject();
+        initializePermissionId(permissionBo);
+        permissionBo.setActive(true);
+
+        for (String paramName : parameters.keySet()) {
+            String[] parameterValues = parameters.get(paramName);
+            if (paramName.equals(DETAIL_OBJECTS_ATTRIBUTE_NAME)) {
+                if (parameterValues.length > 0) {
+                    attrName = parameterValues[0];
+                }
+            }
+            if (paramName.equals(DETAIL_OBJECTS_ATTRIBUTE_VALUE)) {
+                if (parameterValues.length > 0) {
+                    attrValue = parameterValues[0];
+                }
+            }
+        }
+
+        if (StringUtils.isNotEmpty(attrName) && StringUtils.isNotEmpty(attrValue)) {
+            Map<String, String> details = new HashMap<String, String>();
+            details.put(attrName, attrValue);
+            permissionBo.setDetails(details);
+        }
+        document.getNewMaintainableObject().setDataObject(permissionBo);
+    }
 }

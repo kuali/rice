@@ -137,14 +137,17 @@ tr.overridden td a {
 				  <c:choose>
   				    <c:when test="${permDocTypeName == documentType.name}">
 				      <c:set var="tabLabel" value="Defined For This Document" />
-				    </c:when>
+                      <c:set var="docTypeNameSave" value="${permDocTypeName}" />
+              </c:when>
 				    <c:otherwise>
 				      <c:set var="tabLabel" value="Inherited From: ${permDocTypeName}" />
-				    </c:otherwise>
+                      <c:set var="docTypeNameSave" value="${permDocTypeName}" />
+            </c:otherwise>
 				  </c:choose>				  
 	              <kul:subtab width="100%" subTabTitle="${tabLabel}" noShowHideButton="false">
 					  <c:set var="permissions" value="${KualiForm.permissionsByDocumentType[permDocTypeName]}" scope="request" />
-	              	  <c:import url="DocumentConfigurationViewPermissionList.jsp" />
+                      <c:set var="docTypeNameVar" value="${docTypeNameSave}" scope="request" />
+                  <c:import url="DocumentConfigurationViewPermissionList.jsp" />
     	          </kul:subtab>
 	          </c:forEach>
 			</div> 	  
@@ -155,7 +158,8 @@ tr.overridden td a {
              Gray lines that are stricken through represent inherited responsibilities that have been overridden by a more specific responsibilities.
  	  			<kul:subtab width="100%" subTabTitle="Exception Routing" noShowHideButton="true">
 				  <c:set var="responsibilities" value="${KualiForm.exceptionResponsibilities}" scope="request" />
-	           	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
+          <c:set var="exceptionResp" value="true" scope="request"/>
+            <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
  	  			</kul:subtab>
  	  			<c:set var="routeNodeIndentLevel" value="0" />
 				<c:forEach var="node" items="${KualiForm.routeNodes}">
@@ -174,8 +178,10 @@ tr.overridden td a {
                    </c:if>
 				   <c:if test="${node.routeNodeName != 'AdHoc' && !fn:contains(node.nodeType,'NoOpNode') && !fn:contains(node.nodeType,'SplitNode') && !fn:contains(node.nodeType,'JoinNode')}">
 					  <c:set var="responsibilities" value="${KualiForm.responsibilityMap[node.routeNodeName]}" scope="request" />
-		              <kul:subtab width="100%" subTabTitle="Route Node: ${node.routeNodeName}" noShowHideButton="true">
-		              	  <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
+            <c:set var="routeNodeName" value="${node.routeNodeName}" scope="request"/>
+            <c:set var="exceptionResp" value="false" scope="request"/>
+             <kul:subtab width="100%" subTabTitle="Route Node: ${node.routeNodeName}" noShowHideButton="true">
+                    <c:import url="DocumentConfigurationViewResponsibilityList.jsp" />
 		              </kul:subtab>	              
 		           </c:if>
                    <c:if test="${fn:contains(node.nodeType,'JoinNode')}">

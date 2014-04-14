@@ -29,18 +29,22 @@
         	                <th>
                                <kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.assignedToRolesToDisplay}" noColon="true" />
                             </th>
-        	                <th style="width: 20em;">Inherited</th>
-       	                	<c:if test="${KualiForm.canInitiateResponsibilityDocument}">
+                          <c:choose>
+                            <c:when test="${KualiForm.canInitiateResponsibilityDocument && !exceptionResp}">
+                              <th style="width: 20em;">Inherited</th>
+                            </c:when>
+                            <c:otherwise>
+                              <th style="width: 33.3em;">Inherited</th>
+                            </c:otherwise>
+                          </c:choose>
+                          <c:if test="${KualiForm.canInitiateResponsibilityDocument && !exceptionResp}">
 	        	                <th style="width: 12em;">
 	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
+		                                <c:param name="methodToCall" value="newWithExisting" />
 		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo"/>
-		                                <%-- TODO: replace hard-coding of attribute IDs with lookup stored on form --%>
-		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
-		                                <c:param name="detailObjects[0].attributeValue" value="${documentType.name}"/>
-		                                <c:param name="detailObjects[1].kimAttributeId" value="16"/>
-		                                <c:param name="detailObjects[1].attributeValue" value="${node.routeNodeName}"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo"/>
+		                                <c:param name="documentTypeName" value="${documentType.name}"/>
+		                                <c:param name="routeNodeName" value="${routeNodeName}"/>
 	                                </c:url>" target="_blank">Add Responsibility</a>
 	        	                </th>
                             </c:if>	                
@@ -81,12 +85,12 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                               	<c:if test="${KualiForm.canInitiateResponsibilityDocument}">
+                                <c:if test="${KualiForm.canInitiateResponsibilityDocument && !exceptionResp}">
 	                                <td>
 	                                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                    <c:param name="methodToCall" value="edit" />
-		                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityBo"/>
-		                                    <c:param name="id" value="${resp.id}"/>
+		                                    <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo"/>
+		                                    <c:param name="id" value="${resp.responsibilityId}"/>
 	                                    </c:url>" target="_blank">Edit Responsibility</a>
 	                                </td>
                                 </c:if>

@@ -28,14 +28,13 @@
                             <kul:htmlAttributeHeaderCell scope="col" align="left" 
                                 attributeEntry="${permissionAttributes.assignedToRolesToDisplay}" />
                            	<c:if test="${KualiForm.canInitiatePermissionDocument}">
-	        	                <th>
+                              <th>
 	                                <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
-		                                <c:param name="methodToCall" value="Constants.MAINTENANCE_NEWWITHEXISTING_ACTION" />
+		                                <c:param name="methodToCall" value="newWithExisting" />
 		                                <%-- TODO: replace this class name with the interface or maintenance class and let module service handle --%>
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
-		                                <%-- TODO: replace hard-coding of attribute ID with lookup stored on form --%>
-		                                <c:param name="detailObjects[0].kimAttributeId" value="13"/>
-		                                <c:param name="detailObjects[0].attributeValue" value="${permDocTypeName}"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.GenericPermissionBo"/>
+		                                <c:param name="attributeDetails.kimAttribute.attributeName" value="documentTypeName"/>
+		                                <c:param name="attributeDetails.attributeValue" value="${docTypeNameVar}"/>
 	                                </c:url>" target="_blank">Add Permission</a>
 	        	                </th>
                             </c:if>
@@ -92,7 +91,7 @@
 	                            <td>
                                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                <c:param name="methodToCall" value="edit" />
-		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
+		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.GenericPermissionBo"/>
 		                                <c:param name="id" value="${perm.id}"/>
 	                                </c:url>" target="_blank">Edit Permission</a>
 		                        </td>

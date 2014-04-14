@@ -62,11 +62,13 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
      */
     private void fileIngester(List<File> fileToUpload) throws Exception {
         int cnt = 0;
+
         for (File file : fileToUpload) {
             String path = file.getAbsolutePath().toString();
             driver.findElement(By.name("file[" + cnt + "]")).sendKeys(path);
             cnt++;
         }
+
         waitAndClickById("imageField");
     }
 
@@ -81,6 +83,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         for (int i = 0; i < N; i += L) {
             subLists.add(new ArrayList<File>(fileList.subList(i, Math.min(N, i + L))));
         }
+
         return subLists;
     }
 
@@ -144,9 +147,8 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         if (dir != null && dir.listFiles().length > 0) {
             Integer i = 1;
             for (File file : dir.listFiles()) {
-                if (file.getName().endsWith(".xml")) {
-                    if (!file.getName().equalsIgnoreCase("sample-app-config.xml"))
-                        fileUploadList.add(file);
+                if (file.getName().endsWith(".xml") && !file.getName().equalsIgnoreCase("sample-app-config.xml")) {
+                    fileUploadList.add(file);
                 }
                 i++;
             }
@@ -183,6 +185,7 @@ public abstract class EdocLiteXmlIngesterBase extends AdminTmplMthdAftNavBase {
         if (fileUploadList == null && fileUploadList.isEmpty()) {
             return;
         }
+
         if (fileUploadList.size() > 10) {
             List<List<File>> subLists = getSubListsForFile(fileUploadList, 10);
             for (List<File> fileSet : subLists) {

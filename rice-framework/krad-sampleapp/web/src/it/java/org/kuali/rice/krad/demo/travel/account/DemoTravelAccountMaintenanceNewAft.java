@@ -125,8 +125,8 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"blah");
-        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"blah");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"Xss");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"Xss");
         selectByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"Clearing Account Type");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
@@ -161,15 +161,12 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	assertTextPresent(addRequiredMessage);
     }
 
-    public boolean isAlertPresent()
-    {
-        try
-        {
+    public boolean isAlertPresent() {
+        try {
             driver.switchTo().alert();
             return true;
         }   // try
-        catch (Exception Ex)
-        {
+        catch (Exception Ex) {
             return false;
         }   // catch
     }

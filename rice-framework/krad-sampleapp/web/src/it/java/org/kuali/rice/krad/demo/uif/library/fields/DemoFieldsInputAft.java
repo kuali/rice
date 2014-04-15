@@ -197,7 +197,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         findElement(By.cssSelector("#" + travelAccountNumberControlId), travelAccountNumberField).sendKeys("a1");
         waitAndClickSearch3();
         waitAndClickReturnValue();
-        waitAndClickByLinkText("Quickfinder");
+//        waitAndClickByLinkText("Quickfinder"); // work around for Quickfinder not loaded on return
         assertElementPresentByXpath("//input[@name='inputField7' and @value='a1']");
     }
 

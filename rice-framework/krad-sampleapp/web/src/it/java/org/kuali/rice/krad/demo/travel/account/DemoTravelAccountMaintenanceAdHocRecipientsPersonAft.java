@@ -49,6 +49,7 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
 
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "kr");
         waitAndClickById("Uif-AdHocPersonCollection_add");
+        jGrowl("Click Add button");
         waitAndClickButtonByText("Save");
 
         waitForTextPresent("Document was successfully saved.");

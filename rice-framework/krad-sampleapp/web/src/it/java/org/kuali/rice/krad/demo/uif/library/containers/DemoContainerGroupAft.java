@@ -68,8 +68,8 @@ public class DemoContainerGroupAft extends WebDriverLegacyITBase {
     protected void testLibraryContainerGroupSectionHorizontal() throws Exception {
         selectByName("exampleShown","Section Horizontal");
         assertElementPresentByXpath("//main[@id='Demo-Group-Example5']/header/h2");
-        assertElementPresentByXpath("//main[@id='Demo-Group-Example5']/section/header/h3/span[contains(text(),'Section 1')]");
-        assertElementPresentByXpath("//main[@id='Demo-Group-Example5']/section/header/h3/span[contains(text(),'Section 2')]");
+        assertElementPresentByXpath("//main[@id='Demo-Group-Example5']/div/div/label[contains(text(),'Field 1:')]");
+        assertElementPresentByXpath("//main[@id='Demo-Group-Example5']/div/div[2]/label[contains(text(),'Field 1:')]");
     }
     
     protected void testLibraryContainerGroupSubSection() throws Exception {

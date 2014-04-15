@@ -53,7 +53,7 @@ public final class ObjectPropertyUtils {
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
     // enables a work-around that attempts to correct a platform difference
-    private static final boolean isJdk6 = System.getProperty("java.version").startsWith("1.6");
+    private static final boolean isJdk6 = System.getProperty("java.version").startsWith("1.6.");
 
     /**
      * Internal metadata cache.

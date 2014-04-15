@@ -63,7 +63,7 @@ public abstract class ClearIndividualCashesAftBase extends AdminTmplMthdAftNavBa
         waitAndClickByXpath("//ul[@class='jstree-no-icons']/li[4]/ul/li[15]/a/ins");
         waitAndClickButtonByText("Flush");
         Thread.sleep(10000);
-        assertTextPresent(" Cache: http://rice.kuali.org/krms/v2_0/TermSpecificationType was flushed for the CacheManager: krmsDistributedCacheManager.");
+        assertTextPresent("Cache: http://rice.kuali.org/krms/v2_0/TermSpecificationType was flushed for the CacheManager: krmsDistributedCacheManager.");
         assertTextPresent("Cache Management");
     }
 }

@@ -83,7 +83,7 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
 
         if (hasDocError()) {
             // After the second run of this test, there will be 2 Errors.  Requires a decent amount of work to satisfy constraints.
-            if (!extractErrorText().startsWith("2 error(s) found on page")) {
+            if (!extractErrorText().startsWith("3 error(s) found on page")) {
                 checkForDocError();
             }
         } else {

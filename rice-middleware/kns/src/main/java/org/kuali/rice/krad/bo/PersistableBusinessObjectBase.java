@@ -359,17 +359,4 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         return KNSServiceLocator.getLegacyAppFrameworkAdapterService();
     }
 
-    /**
-     * It appears that the CGLIB proxies override the finalizer method of the
-     * PersistableBusinessObjects which may cause memory issues. From what I see we do not use the
-     * finalize() method in these objects. By declaring this method final in the class
-     * org.kuali.rice.kns.bo.PersistableBusinessObjectBase we might be able to free up some memory.
-     * 
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected final void finalize() throws Throwable {
-        super.finalize();
-    }
-
 }

@@ -609,7 +609,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                     screenshot();
                 }
             }
-            WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user);
+            WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user, getClass().getSimpleName(), testName.getMethodName());
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
             t.printStackTrace();

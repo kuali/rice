@@ -59,6 +59,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class WebDriverUtils {
 
+    protected static SauceLabsWebDriverHelper saucelabs;
+
     public static boolean jGrowlEnabled = false;
 
     public static boolean jsHighlightEnabled = false;
@@ -298,7 +300,7 @@ public class WebDriverUtils {
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
             driver = getWebDriver();
         } else {
-            SauceLabsWebDriverHelper saucelabs = new SauceLabsWebDriverHelper();
+            saucelabs = new SauceLabsWebDriverHelper();
             saucelabs.setUp(className, testName);
             driver = saucelabs.getDriver();
         }
@@ -334,7 +336,7 @@ public class WebDriverUtils {
      * @param poolParamUser can be null unless a user pool is being used
      * @throws Exception
      */
-    public static void tearDown(boolean passed, String sessionId, String poolParamTest, String poolParamUser) throws Exception {
+    public static void tearDown(boolean passed, String sessionId, String poolParamTest, String poolParamUser, String className, String testName) throws Exception {
 
         if (passed) {
             System.out.println("Registering session passed " + sessionId);
@@ -343,7 +345,7 @@ public class WebDriverUtils {
         }
 
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) {
-            SauceLabsWebDriverHelper.tearDown(passed, sessionId);
+            saucelabs.tearDown(passed, sessionId, className, testName);
         }
 
         if (System.getProperty(REMOTE_PUBLIC_USERPOOL_PROPERTY) != null) {

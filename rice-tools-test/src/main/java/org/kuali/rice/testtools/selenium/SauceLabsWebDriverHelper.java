@@ -320,8 +320,9 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"),
                 capabilities);
         this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+    }
 
-        // TODO it would be better to do these at tear down, passing state could then be included in names, but requires more parameters
+    private void downloadResults(String className, String testName) {
         if ("true".equals(System.getProperty(SAUCE_DOWNLOAD_SCRIPT_PROPERTY, "false"))) {
             try {
                 String dir = determineSaveDir(className, testName);
@@ -332,6 +333,9 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                         + "cd ../\n";
                 System.out.println(resources);
                 writeFile("SauceLabsResources" + dir + ".sh", resources);
+
+//                downloadResource(dir, "selenium-server.log");
+//                downloadResource(dir, "video.flv");
             } catch (Exception e) {
                 System.out.println("Exception while writing SauceLabsResources.sh " + e.getMessage());
                 System.out.println(curlSaveResourceString(className, testName, "selenium-server.log"));
@@ -340,6 +344,33 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
             }
         }
     }
+
+    /* the curl command works, this doesn't, what's wrong?
+    private void downloadResource(String dir, String resource) throws IOException {
+        File file = new File(dir + resource);
+        if(!file.exists()) {
+            file.createNewFile();
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        CloseableHttpClient httpclient = HttpClients.custom().build();
+        try {
+            String userCredentials = "username:password";
+            String basicAuth = "Basic " + new String(new Base64().encode(userCredentials.getBytes()));
+            HttpGet httpget = new HttpGet(resourceUrl(resource));
+            httpget.setHeader("Authorization", basicAuth);
+            httpget.setHeader("Content-Type", "text/html");
+            CloseableHttpResponse response = httpclient.execute(httpget);
+            try {
+                fileOutputStream.write(EntityUtils.toByteArray(response.getEntity()));
+                fileOutputStream.close();
+            } finally {
+                response.close();
+            }
+        } finally {
+            httpclient.close();
+        }
+    }
+    */
 
     /**
      * <p>
@@ -352,7 +383,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
      * @param sessionId saucelabs test session id, as a String
      * @throws Exception
      */
-    public static void tearDown(boolean passed, String sessionId) throws Exception {
+    public void tearDown(boolean passed, String sessionId, String className, String testName) throws Exception {
         if (sessionId != null && System.getProperty(REMOTE_DRIVER_SAUCELABS_PROPERTY) != null) { // dup guard so WebDriverUtils doesn't have to be used
             SauceREST client = new SauceREST(System.getProperty(SauceLabsWebDriverHelper.SAUCE_USER_PROPERTY),
                     System.getProperty(SauceLabsWebDriverHelper.SAUCE_KEY_PROPERTY));
@@ -372,13 +403,18 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
 
             // give the client message a chance to get processed on saucelabs side
             Thread.sleep(Integer.parseInt(System.getProperty(SAUCE_REST_API_DELAY_MS, "5000")));
+
+            downloadResults(className, testName);
         }
     }
 
     private String curlSaveResourceString(String className, String testName, String resource) {
-        return "curl -o " + deriveResourceBaseNames(className, testName, resource)
-                + " -u " + authentication.getUsername() + ":" + authentication.getAccessKey()
-                + " http://saucelabs.com/rest/" + authentication.getUsername()+ "/jobs/" + sessionId + "/results/" + resource;
+        return "curl -o " + deriveResourceBaseNames(className, testName, resource) + " -u " + authentication
+                .getUsername() + ":" + authentication.getAccessKey() + " " + resourceUrl(resource);
+    }
+
+    private String resourceUrl(String resource) {
+        return "http://saucelabs.com/rest/" + authentication.getUsername() + "/jobs/" + sessionId + "/results/" + resource;
     }
 
     private String deriveResourceBaseNames(String className, String testName, String resource) {

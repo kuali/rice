@@ -202,11 +202,13 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 
         for (String paramName : parameters.keySet()) {
             String[] parameterValues = parameters.get(paramName);
+
             if (paramName.equals(DOCUMENT_TYPE_NAME)) {
                 if (parameterValues.length > 0) {
                     docTypeName = parameterValues[0];
                 }
             }
+
             if (paramName.equals(ROUTE_NODE_NAME)) {
                 if (parameterValues.length > 0) {
                     routeNodeName = parameterValues[0];
@@ -218,6 +220,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             reviewResponsibilityBo.setDocumentTypeName(docTypeName);
             reviewResponsibilityBo.setRouteNodeName(routeNodeName);
         }
+
         document.getNewMaintainableObject().setDataObject(reviewResponsibilityBo);
     }
 

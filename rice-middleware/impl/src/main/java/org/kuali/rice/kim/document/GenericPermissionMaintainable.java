@@ -163,11 +163,13 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 
         for (String paramName : parameters.keySet()) {
             String[] parameterValues = parameters.get(paramName);
+
             if (paramName.equals(DETAIL_OBJECTS_ATTRIBUTE_NAME)) {
                 if (parameterValues.length > 0) {
                     attrName = parameterValues[0];
                 }
             }
+
             if (paramName.equals(DETAIL_OBJECTS_ATTRIBUTE_VALUE)) {
                 if (parameterValues.length > 0) {
                     attrValue = parameterValues[0];
@@ -180,6 +182,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
             details.put(attrName, attrValue);
             permissionBo.setDetails(details);
         }
+
         document.getNewMaintainableObject().setDataObject(permissionBo);
     }
 }

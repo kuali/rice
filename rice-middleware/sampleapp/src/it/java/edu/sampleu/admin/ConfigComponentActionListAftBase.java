@@ -48,10 +48,15 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
         selectTopFrame();
     }
 
-    private void assertActionListRequestPerson(String backdoorUser, String actionCode, String beforeState, String afterState) throws InterruptedException {
-        String docId = testCreateActionRequestPerson(backdoorUser, actionCode);
-        impersonateUser(backdoorUser);
-        assertActionList(docId, actionCode, beforeState);
+    private void assertActionListRequestPerson(String user, String actionType, String beforeState, String afterState) throws Exception {
+        String[][] adhocRequests = new String [][]{{user, actionType}};
+        assertActionListRequestPerson(adhocRequests, beforeState, afterState);
+    }
+
+    private void assertActionListRequestPerson(String[][] adhocRequests, String beforeState, String afterState) throws Exception {
+        String docId = testCreateActionRequestPerson(adhocRequests);
+        impersonateUser(adhocRequests[0][0]);
+        assertActionList(docId, adhocRequests[0][1], beforeState);
         assertOutbox(docId, afterState);
         selectTopFrame();
     }
@@ -68,21 +73,15 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
      *
      * Initiates a new maintenance document (Component BO) with added adHoc request to create an action request
      * in a users action list for the document
-     * @param user
-     * @param actionType
+     * @param userActions 2d array containing username, action pairs. (ex: "fred","A")
      *
      * @return documentID of the newly initiated document to which the created action request applies.
      */
-    protected String testCreateActionRequestPerson(String user, String actionType) throws InterruptedException {
-        String docId = testCreateNew();
-        addAdHocRecipientsPerson(new String[]{user, actionType});
-        submitAndClose();
-        return docId;
-    }
-
     protected String testCreateActionRequestPerson(String[][] userActions) throws InterruptedException {
         String docId = testCreateNew();
-        addAdHocRecipientsPerson(userActions);
+        if (!userActions[0][0].isEmpty()){
+            addAdHocRecipientsPerson(userActions);
+        }
         submitAndClose();
         return docId;
     }
@@ -152,11 +151,7 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
      */
     public void testActionListApprovePerson_WithPendingApprove() throws Exception {
         String[][] adhocRequests = new String [][]{{"fred","A"},{"fran","A"}};
-        String docId = testCreateActionRequestPerson(adhocRequests);
-        impersonateUser("fran");
-        assertActionList(docId, "A", "ENROUTE");
-        assertOutbox(docId, "ENROUTE");
-        selectTopFrame();
+        assertActionListRequestPerson(adhocRequests, "ENROUTE", "ENROUTE");
         passed();
     }
 
@@ -167,15 +162,10 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
      * @throws Exception
      */
     public void testActionListApprovePerson_WithPendingAcknowledge() throws Exception {
-        String[][] adhocRequests = new String [][]{{"fred","K"},{"fran","A"}};
-        String docId = testCreateActionRequestPerson(adhocRequests);
-        impersonateUser("fran");
-        assertActionList(docId, "A", "ENROUTE");
-        assertOutbox(docId, "PROCESSED");
-        selectTopFrame();
+        String[][] adhocRequests = new String [][]{{"fran","A"},{"fred","K"}};
+        assertActionListRequestPerson(adhocRequests, "ENROUTE", "PROCESSED");
         passed();
     }
-
 
     public void testActionListApproveGroup() throws Exception {
         assertActionListRequestGroup("fred", "RecipeMasters", "KR-WKFLW", "A", "ENROUTE", "FINAL");
@@ -194,6 +184,12 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
      */
     public void testActionListCompletePerson() throws Exception {
         assertActionListRequestPerson("fran", "C", "ENROUTE", "FINAL");
+        passed();
+    }
+
+    public void testActionListCompletePerson_WithPendingAcknowledge() throws Exception {
+        String[][] adhocRequests = new String [][]{{"fran","C"},{"fred","K"}};
+        assertActionListRequestPerson(adhocRequests, "ENROUTE", "PROCESSED");
         passed();
     }
 
@@ -229,12 +225,12 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
 
 
 
-    public void testActionListCancel_Person() throws Exception {
+    public void testActionListCancelPerson() throws Exception {
         assertActionListRequestGroup("dev2", "Kuali Developers", "KUALI", "F", "FINAL", "FINAL");
         passed();
     }
 
-    public void testComponentRecallAndCancel_Person() throws Exception {
+    public void testComponentRecallAndCancel_WithPendingPersonApprove() throws Exception {
         String user = "erin";
         String docId = testCreateNew();
         addAdHocRecipientsPerson(new String[]{user, "A"});
@@ -245,8 +241,9 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
         passed();
     }
 
-    public void testComponentRecallToActionList_Person() throws Exception {
+    public void testComponentRecallToActionList_WithPendingPersonApprove() throws Exception {
         String user = "erin";
+
         String docId = testCreateNew();
         addAdHocRecipientsPerson(new String[]{user, "A"});
         submit();
@@ -254,38 +251,62 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
         recall(false);
         // TODO: new window vs. new tab issue
         assertActionList(docId, "CR", "SAVED");
-        selectTopFrame();
-        waitForTextPresent("ENROUTE");
-        waitAndClickByName("methodToCall.reload");
+
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        waitAndClickDocSearch();
+        selectFrameIframePortlet();
+        waitAndTypeByName("documentId",docId);
+        waitAndClickByXpath(SEARCH_XPATH);
         waitForTextPresent("FINAL");
-        close();
-        impersonateUser(user);
-        assertActionList(docId, "FYI", "FINAL");
         passed();
     }
 
-    public void testActionListSavePerson() throws Exception {
+    public void testComponentCancel_WithPendingPersonApprove()throws Exception {
+        String docId = testCreateNew();
+        addAdHocRecipientsPerson(new String[]{"fred", "A"});
+        waitAndClickByName("methodToCall.cancel");
+        assertDocSearchNoResults(docId);
+    }
+
+    public void testComponentSave_WithPendingPersonApprove() throws Exception {
         String user = "erin";
         String docId = testCreateNew();
         addAdHocRecipientsPerson(new String[]{user, "A"});
         saveAndReload();
-        WebElement adhocTr = findElement(By.xpath("//table/tbody/tr/td/input[contains(text(), '" + user + "')]/../.."));
-        assertTrue("Adhoc request section " + adhocTr.getText() + " does not contain " + user, adhocTr.getText().contains(user));
+        waitForTextPresent("SAVED");
         passed();
     }
 
-    public void testActionListSubmitPerson() throws Exception {
-        assertActionListRequestGroup("dev2", "Kuali Developers", "KUALI", "F", "FINAL", "FINAL");
+    public void assertComponentSubmit_WithPersonRequest(String user, String action, String state) throws Exception {
+        String[][] userActions = new String [][]{{user, action}};
+        String docId = testCreateNew();
+        if (!userActions[0][0].isEmpty()){
+            addAdHocRecipientsPerson(userActions);
+        }
+        submit();
+        waitForTextPresent("ENROUTE");
+        waitAndClickByName("methodToCall.reload");
+        waitForTextPresent(state);
+        close();
+    }
+
+    public void testComponentSubmit() throws Exception {
+        assertComponentSubmit_WithPersonRequest("", "", "FINAL");
         passed();
     }
 
-    public void testActionListSubmitPerson_WithPendingApproval() throws Exception {
-        assertActionListRequestGroup("dev2", "Kuali Developers", "KUALI", "F", "FINAL", "FINAL");
+    public void testComponentSubmit_WithPendingPersonApprove() throws Exception {
+        assertComponentSubmit_WithPersonRequest("erin", "A", "ENROUTE");
         passed();
     }
 
-    public void testActionListSubmitPerson_WithPendingAcknowledge() throws Exception {
-        assertActionListRequestGroup("dev2", "Kuali Developers", "KUALI", "F", "FINAL", "FINAL");
+    public void testComponentSubmit_WithPendingPersonAcknowledge() throws Exception {
+        assertComponentSubmit_WithPersonRequest("erin", "K", "PROCESSED");
+        passed();
+    }
+
+    public void testComponentSubmit_WithPendingPersonFyi() throws Exception {
+        assertComponentSubmit_WithPersonRequest("erin", "F", "FINAL");
         passed();
     }
 

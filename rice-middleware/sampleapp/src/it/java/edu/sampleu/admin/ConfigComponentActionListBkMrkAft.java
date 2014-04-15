@@ -58,6 +58,11 @@ public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionList
     }
 
     @Test
+    public void  testActionListCompletePerson_WithPendingAcknowledge_Bookmark() throws Exception {
+        testActionListCompletePerson_WithPendingAcknowledge();
+    }
+
+    @Test
     public void testActionListDisapproveGroupBookmark() throws Exception {
         testActionListDisapproveGroup();
     }
@@ -99,17 +104,37 @@ public class ConfigComponentActionListBkMrkAft extends ConfigComponentActionList
 
 
     @Test
-    public void testActionListSavePerson_Bookmark() throws Exception {
-        testActionListSavePerson();
+    public void testComponentSave_WithPendingPersonApprove_Bookmark() throws Exception {
+        testComponentSave_WithPendingPersonApprove();
     }
 
     @Test
-    public void testComponentRecallAndCancel_Bookmark() throws Exception {
-        testComponentRecallAndCancel_Person();
+    public void testComponentCancel_WithPendingPersonApprove_Bookmark() throws Exception {
+        testComponentCancel_WithPendingPersonApprove();
     }
 
     @Test
-    public void testComponentRecallToActionList_Bookmark() throws Exception {
-        testComponentRecallToActionList_Person();
+    public void testComponentRecallAndCancel_WithPendingPersonApprove_Bookmark() throws Exception {
+        testComponentRecallAndCancel_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentRecallToActionList_WithPendingPersonApprove_Bookmark() throws Exception {
+        testComponentRecallToActionList_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonApprove_Bookmark() throws Exception {
+        testComponentSubmit_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonAcknowledge_Bookmark() throws Exception {
+        testComponentSubmit_WithPendingPersonAcknowledge();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonFyi_Bookmark() throws Exception {
+        testComponentSubmit_WithPendingPersonFyi();
     }
 }

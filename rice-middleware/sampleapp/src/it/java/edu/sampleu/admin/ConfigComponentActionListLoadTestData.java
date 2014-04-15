@@ -39,7 +39,7 @@ public class ConfigComponentActionListLoadTestData extends ConfigComponentAction
         for (String user: users) {
             for (int i = 0; i < 1000; i++) {
                 System.out.println(user + " " + i);
-                testCreateActionRequestPerson(user, "A");
+                testCreateActionRequestPerson(new String[][]{{user, "A"}});
                 uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
                 open(getBaseUrlString() + getTestUrl());
                 waitForElementPresent(By.xpath("//iframe"));

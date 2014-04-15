@@ -53,6 +53,11 @@ public class ConfigComponentActionListNavAft extends ConfigComponentActionListAf
     }
 
     @Test
+    public void  testActionListCompletePerson_WithPendingAcknowledge_Nav() throws Exception {
+        testActionListCompletePerson_WithPendingAcknowledge();
+    }
+
+    @Test
     public void testActionListDisapproveGroupNav() throws Exception {
         testActionListDisapproveGroup();
     }
@@ -71,4 +76,61 @@ public class ConfigComponentActionListNavAft extends ConfigComponentActionListAf
     public void testActionListFyiPersonNav() throws Exception {
         testActionListFyiPerson();
     }
+
+    @Test
+    public void testActionListAcknowledgePerson_WithPendingApprove_Nav() throws Exception {
+        testActionListAcknowledgePerson_WithPendingApprove();
+    }
+
+    @Test
+    public void testActionListAcknowledgePerson_WithPendingAcknowledge_Nav() throws Exception {
+        testActionListAcknowledgePerson_WithPendingAcknowledge();
+    }
+
+    @Test
+    public void testActionListApprovePerson_WithPendingApprove_Nav() throws Exception {
+        testActionListApprovePerson_WithPendingApprove();
+    }
+
+    @Test
+    public void testActionListApprovePerson_WithPendingAcknowledge_Nav() throws Exception {
+        testActionListApprovePerson_WithPendingAcknowledge();
+    }
+
+
+    @Test
+    public void testComponentSave_WithPendingPersonApprove_Nav() throws Exception {
+        testComponentSave_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentCancel_WithPendingPersonApprove_Nav() throws Exception {
+        testComponentCancel_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentRecallAndCancel_WithPendingPersonApprove_Nav() throws Exception {
+        testComponentRecallAndCancel_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentRecallToActionList_WithPendingPersonApprove_Nav() throws Exception {
+        testComponentRecallToActionList_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonApprove_Nav() throws Exception {
+        testComponentSubmit_WithPendingPersonApprove();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonAcknowledge_Nav() throws Exception {
+        testComponentSubmit_WithPendingPersonAcknowledge();
+    }
+
+    @Test
+    public void testComponentSubmit_WithPendingPersonFyi_Nav() throws Exception {
+        testComponentSubmit_WithPendingPersonFyi();
+    }
 }
+

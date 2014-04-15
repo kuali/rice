@@ -47,7 +47,7 @@ public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavBase {
 
     protected void saveAndReload() throws InterruptedException {
         checkForDocError();
-        waitAndClickByName("methodToCall.save");
+        waitAndClickByXpath(SAVE_XPATH);
         waitForTextPresent("Document was successfully saved");
         waitAndClickByName("methodToCall.reload");
 //         waitAndClickByName("methodToCall.processAnswer.button1");

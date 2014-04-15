@@ -16,6 +16,7 @@
 package org.kuali.rice.core.web.cache;
 
 import org.kuali.rice.core.api.util.tree.Tree;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public final class CacheAdminForm extends UifFormBase {
     private Tree<String, String> cacheTree = new Tree<String, String>();
 
     //it would be nice if this were a cacheTree of selected nodes so it doesn't have to be parsed
+    @RequestAccessible
     private Collection<String> flush = new ArrayList<String>();
 
     public void setCacheTree(Tree<String, String> cacheTree) {

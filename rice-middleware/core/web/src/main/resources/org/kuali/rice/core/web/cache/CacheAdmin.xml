@@ -61,12 +61,13 @@
 
           <property name="tree">
             <bean parent="Uif-Tree">
-              <property name="templateOptionsJSString">
-                <value>
-                  {"themes": {"theme": "default", "dots": true, "icons": false},
-                   "checkbox": {"two_state": true, "real_checkboxes": true, "real_checkboxes_names": function (n) { return ['flush', (n[0].id)]; }},
-                   "plugins": ["themes", "html_data", "ui", "checkbox"]}
-                </value>
+              <property name="templateOptions">
+                <map merge="true">
+                  <entry key="themes" value="{'theme': 'default', 'dots': true, 'icons': false}"/>
+                  <entry key="checkbox" value="{'two_state': true, 'real_checkboxes': true,
+                                                'real_checkboxes_names': function (n) { return ['flush', (n[0].id)];}}"/>
+                  <entry key="plugins" value="['themes', 'html_data', 'ui', 'checkbox']"/>
+                </map>
               </property>
             </bean>
           </property>

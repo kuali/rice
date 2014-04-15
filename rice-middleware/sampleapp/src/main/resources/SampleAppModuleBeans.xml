@@ -111,6 +111,8 @@
         <value>classpath:edu/sampleu/demo/kitchensink/UifCollectionTotaling.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/UifGuestUserView.xml</value>
         <value>classpath:edu/sampleu/demo/kitchensink/TrainingApplicationView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/address/AddressTypeLookupView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/affiliation/AffiliationTypeLookupView.xml</value>
         <value>classpath:edu/sampleu/kim/api/identity/citizenship/CitizenshipStatusLookupView.xml</value>
@@ -157,6 +159,8 @@
     <property name="resourceBundleNames">
       <list>
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
+        <value>edu.sampleu.demo.kitchensink.UifComponentsViewP4Resources</value>
       </list>
     </property>
   </bean>

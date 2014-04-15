@@ -31,8 +31,7 @@ import java.util.List;
 public class KitchenSinkPerformanceForm extends UifFormBase {
     private String inputOne;
 
-    @SessionTransient
-    private List<CourseSearchResult> perfCollection;
+    protected List<CourseSearchResult> perfCollection;
 
     public String getInputOne() {
         return inputOne;

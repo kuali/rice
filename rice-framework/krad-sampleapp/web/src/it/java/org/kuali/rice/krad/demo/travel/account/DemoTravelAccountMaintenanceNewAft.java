@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
@@ -109,7 +110,11 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
         waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
-        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='IAT']");
+        waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitForElementNotPresent(By.xpath("//button[contains(text(),'Add New Line')]"));
+        waitAndClickLinkContainingText("return value");
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickButtonByText("submit");
         waitForTextPresent("Document was successfully submitted.");

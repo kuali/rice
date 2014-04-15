@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
@@ -145,13 +146,19 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']")) {
             jiraAwareFail("Fiscal Officer at start of test is not fran");
         }
-
-    	checkForRequiredFields();
-
+        checkForRequiredFields();
         changeFiscalOfficer("eric");
-
+        
         // change eric back to fran
         changeFiscalOfficer("fran");
+    }
+    
+    protected void testSubAccountOperations() throws Exception {
+        waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"));
+        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","A");
+        waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account A");
+        waitAndClickButtonByExactText("add");
+        waitForTextPresent("Duplicate Sub Accounts (Travel Sub Account Number) are not allowed.");
     }
 
     private void changeFiscalOfficer(String newUser) throws Exception {
@@ -214,6 +221,12 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     @Test
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
     	testEditFiscalOfficer();
+        passed();
+    }
+    
+    @Test
+    public void testDemoTravelAccountMaintenanceSubAccountOperationsBookmark() throws Exception {
+    	testSubAccountOperations();
         passed();
     }
 

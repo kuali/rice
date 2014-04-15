@@ -679,9 +679,12 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     /**
-     * Verifies (at least when run on Linux in JDK6) that the JDK6 Introspector bug/shortcoming WRT covariant return
-     * types that results in a wider getter method being preferred over a more specific implementation getter method
-     * depending on the order of Methods returned by reflection on a class.
+     * Verifies (at least when run on Linux in JDK6) our fix for the JDK6 Introspector bug/shortcoming WRT covariant
+     * return types that results in a wider getter method being preferred over a more specific implementation getter
+     * method.
+     *
+     * <p>This makes the type reported by Introspector for read methods depending on the order of Methods depend on the
+     * order that they are returned by reflection on a class, which has been demonstrated to vary between platforms.</p>
      */
     @Test
     public void testGetterInInterfaceOrSuperHasWiderType() {

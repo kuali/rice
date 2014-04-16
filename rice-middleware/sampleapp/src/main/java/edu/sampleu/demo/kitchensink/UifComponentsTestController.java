@@ -25,6 +25,8 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -156,6 +158,7 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Adds errors to fields defined in the validationMessageFields array
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addErrors")
     public ModelAndView addErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

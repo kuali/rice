@@ -27,7 +27,7 @@ Syntel Inc., rSmart, and The University of Utah (http://www.kuali.org/rice).
 
 APACHE
 This product includes software developed by the Apache Software Foundation (http://www.apache.org).
-commons-beanutils-1.8.3-kuali-4.jar, v1.8.3-kuali-4. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+commons-beanutils-1.8.3-kuali-4.jar, v1.8.3-kuali-4. Copyright (c) 2002-2014 The Apache Foundation, Modified from the original source licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 commons-codec-1.6.jar, v1.6. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 commons-collections-3.2.1.jar, v3.2.1. Copyright (c) 2002-2014 The Apache Foundation Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 commons-dbcp-1.4.jar, v1.4. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -48,8 +48,8 @@ cxf-rt-frontend-jaxws-2.7.0.jar, v2.7.0. Copyright (c) 2002-2014 The Apache Foun
 cxf-rt-frontend-simple-2.7.0.jar, v2.7.0. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 cxf-rt-transports-http-2.7.0.jar, v2.7.0. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 cxf-rt-ws-security-2.7.0.jar, v2.7.0. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-db-ojb-1.0.4-patch8.jar, v1.0.4-patch8. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-filemonitor-1.0-kuali.jar, v1.0-kuali. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+db-ojb-1.0.4-patch8.jar, v1.0.4-patch8. Copyright (c) 2002-2014 The Apache Foundation, Modified from the original source licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+filemonitor-1.0-kuali.jar, v1.0-kuali. Copyright (c) 2002-2014 The Apache Foundation, Modified from the original source licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 serializer-2.7.1.jar, v2.7.1. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 struts-core-1.3.10.jar, v1.3.10. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 struts-el-1.3.10.jar, v1.3.10. Copyright (c) 2002-2014 The Apache Foundation, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -63,7 +63,7 @@ xalan-2.7.1.jar, v2.7.1. Copyright (c) 2002-2014 The Apache Foundation, Licensed
 
 BITRONIX  
 This product includes software developed by the Bitronix project (http://docs.codehaus.org/display/BTM/Home):
-btm-2.1.2.jar, v.2.1.2. Licensed under the terms of LGPL, v.3.0 (http://www.gnu.org/copyleft/lesser.html)
+btm-2.1.2.jar, v.2.1.2. Copyright (c) 2010, Bitronix Software, Licensed under the terms of LGPL, v.3.0 (http://www.gnu.org/copyleft/lesser.html)
 
 BOUNCYCASTLE
 This product includes software developed by the Legion of the Bouncy Castle (http://www.bouncycastle.org):
@@ -71,7 +71,7 @@ bcprov-jdk16-1.46.jar, v1.46, (c) 2000 - 2013 The Legion of the Bouncy Castle In
 
 CLOSURE-COMPILER
 This product includes software developed by the closure-compiler project (https://code.google.com/p/closure-compiler/).
-closure-compiler-v20130603.jar, v20130603. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+closure-compiler-v20130603.jar, v20130603. Copyright (C) 2009 The Closure Compiler Authors, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 DISPLAYTAG
 This product includes software developed by Displaytag (http://www.displaytag.org/1.2/):
@@ -79,7 +79,7 @@ displaytag-1.2.jar, v1.2. Copyright (c) 2002-2007 the Displaytag team, Licensed 
 
 DWR
 This product includes software developed by Direct Web Remoting (http://directwebremoting.org/dwr/index.html):
-dwr-3.0.RC2.jar, v.3.0.RC2. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+dwr-3.0.RC2.jar, v.3.0.RC2. Copyright (C) 2005 Joe Walker, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 ECLIPSE
 This product includes software developed by the Eclipse Foundation (http://eclipse.org):
@@ -91,15 +91,15 @@ org.eclipse.persistence.jpa-2.5.1.jar, v.2.5.1. Copyright (c) 2014 The Eclipse F
 
 FREEMARKER
 This product includes software developed by the Freemarker project (http://freemarker.org/):
-freemarker-2.3.20-patch2.jar, v2.3.20-patch2. Copyright (c) 2003 The Visigoth Software Society , Licensed under the terms of a BSD-style license (http://freemarker.org/docs/app_license.html)
+freemarker-2.3.20-patch2.jar, v2.3.20-patch2. Copyright (c) 2003 The Visigoth Software Society, Modified from the original source licensed under the terms of a BSD-style license (http://freemarker.org/docs/app_license.html)
 
 GROOVY
 This product includes software developed by the Groovy project (http://groovy.codehaus.org/):
-groovy-all-1.8.5.jar, v.1.8.5. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+groovy-all-1.8.5.jar, v.1.8.5. Copyright (C) 2003-2007 codehaus.org, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 GUAVA
 This product includes software developed by the Guava project (https://code.google.com/p/guava-libraries/):
-guava-11.0.jar, v11.0. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+guava-11.0.jar, v11.0. Copyright (C) 2011 The Guava Authors, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 JAVASSIST
 This product includes software developed by Javassist (http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/javassist/):
@@ -116,8 +116,8 @@ jaxen-1.1.1.jar, v1.1.3. Copyright 2003-2006 The Werken Company, Licensed under 
 
 JDOM
 This product includes software developed by the JDOM Project (http://www.jdom.org/):
-dom4j-1.6.1.jar, v1.6.1. Licensed under the terms of the JDOM License (http://www.jdom.org/docs/faq.html#a0030)
-jdom-1.1.jar, v1.1.  Licensed under the terms of the JDOM License (http://www.jdom.org/docs/faq.html#a0030)
+dom4j-1.6.1.jar, v1.6.1. Copyright (C) 2000-2002 Jason Hunter & Brett McLaughlin, Licensed under the terms of the JDOM License (http://www.jdom.org/docs/faq.html#a0030)
+jdom-1.1.jar, v1.1.  Copyright (C) 2000-2002 Jason Hunter & Brett McLaughlin, Licensed under the terms of the JDOM License (http://www.jdom.org/docs/faq.html#a0030)
 
 JODA-TIME
 This product includes software developed by the JODA Project (http://www.joda.org/joda-time/)
@@ -126,16 +126,16 @@ joda-time-jsptags-1.1.1.jar, v.1.1.1. Copyright (c) 2002-2014 Joda.org , License
 
 JOTM
 This product includes software developed by the JOTM Project (http://jotm.objectweb.org/)
-jotm-core-2.1.10-kuali-1.jar, v2.1.10-kuali-1, Copyright (c) 1999-2005 ObjectWeb Consortium under a BSD-style license (http://jotm.objectweb.org/bsd_license.html)
+jotm-core-2.1.10-kuali-1.jar, v2.1.10-kuali-1, Copyright (c) 1999-2005 ObjectWeb Consortium, Modified from the original source licensed under the terms of the BSD-style license (http://jotm.objectweb.org/bsd_license.html)
 
 JSR-330
 This product includes software developed by the JSR-330: Dependency Injection for Java project (https://code.google.com/p/atinject/)
-javax.inject-1.jar, v1. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-javax.json-api-1.0.jar, v1.0. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-mail-1.4.4.jar, v1.4.4. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-jta-1.1.jar, v1.1. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-validation-api-1.0.0.GA.jar, v1.0.0.GA. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
-jsr311-api-1.1.1.jar, v1.1.1. Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+javax.inject-1.jar, v1. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+javax.json-api-1.0.jar, v1.0. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+mail-1.4.4.jar, v1.4.4. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+jta-1.1.jar, v1.1. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+validation-api-1.0.0.GA.jar, v1.0.0.GA. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+jsr311-api-1.1.1.jar, v1.1.1. Copyright (C) 2009 The JSR-330 Expert Group, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 LESS
 This product includes software developed by the JOTM Project (http://jotm.objectweb.org/)
@@ -164,7 +164,7 @@ xapool-1.5.0-patch4.jar, v.1.5.0-patch4. Copyright (c) 2000 Lutris Technologies 
 
 QUARTZ
 This product includes software developed by Quartz (http://quartz-scheduler.org/):
-quartz-1.8.4.jar, v1.8.4. Copyright (c) Terracotta, Inc, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+quartz-1.8.4.jar, v1.8.4. Copyright (c) 2010 Terracotta, Inc., Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 REFLECTIONS
 This product includes software developed by Reflections (https://code.google.com/p/reflections/)

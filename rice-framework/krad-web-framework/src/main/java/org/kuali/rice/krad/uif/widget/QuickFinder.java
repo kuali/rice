@@ -258,6 +258,8 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             if (!StringUtils.startsWith(toField, bindingInfo.getBindingPathPrefix())) {
                 String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toField);
                 adjustedFieldConversions.put(fromField, adjustedToFieldPath);
+            }  else {
+                adjustedFieldConversions.put(fromField, toField);
             }
         }
 

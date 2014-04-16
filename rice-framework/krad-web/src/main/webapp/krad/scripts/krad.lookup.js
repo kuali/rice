@@ -252,11 +252,8 @@ function returnLookupResultReload(returnLink) {
         parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).attr('src', href);
     } else {
         window.open(href, target);
-
-        if (!target || (target === "_self")) {
-            closedLightboxNeeded = false;
-        }
-    }
+        closedLightboxNeeded = false;
+   }
 
     if (closedLightboxNeeded) {
         closeLightbox();

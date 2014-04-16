@@ -84,7 +84,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "proposition")
     @OrderBy("sequenceNumber")
-    private List<PropositionParameterBo> parameters;
+    private List<PropositionParameterBo> parameters = new ArrayList<PropositionParameterBo>();;
 
     @Column(name = "CMPND_OP_CD")
     private String compoundOpCode;

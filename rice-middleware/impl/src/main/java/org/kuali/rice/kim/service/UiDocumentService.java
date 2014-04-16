@@ -52,7 +52,7 @@ public interface UiDocumentService {
 	 * 	  
 	 * @param identityManagementPersonDocument
 	 */
-    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, Principal.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, Principal.Cache.NAME, Role.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
     void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
     
     /**

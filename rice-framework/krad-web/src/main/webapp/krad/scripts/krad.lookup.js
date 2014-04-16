@@ -289,6 +289,5 @@ function setupMultiValueReturn() {
                 value: field.value
             }).appendTo('#'+kradVariables.KUALI_FORM);    });
     }
-    closeLightbox();
 }
 

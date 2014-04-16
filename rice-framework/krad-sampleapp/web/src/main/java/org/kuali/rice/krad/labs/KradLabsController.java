@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs;
 
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,7 @@ public class KradLabsController extends UifControllerBase {
         return new KradLabsForm();
     }
 
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=jsonExample")
     public ModelAndView jsonExample(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

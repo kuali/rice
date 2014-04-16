@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.login;
 
 
 import org.kuali.rice.krad.uif.component.RequestParameter;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -31,6 +32,7 @@ public class DummyLoginForm extends UifFormBase {
     protected String login_user;
     protected String login_pw;
 
+    @RequestAccessible
     @RequestParameter
     protected String login_message;
 

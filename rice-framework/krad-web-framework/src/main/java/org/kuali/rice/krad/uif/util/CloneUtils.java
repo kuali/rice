@@ -304,13 +304,15 @@ public class CloneUtils {
      */
     public static Annotation getFieldAnnotation(Class<?> clazz, String propertyName,
             Class<? extends Annotation> annotationClass) {
-        Field[] fields = getFields(clazz, false);
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
-            if (field.getName().equals(propertyName)) {
-                Annotation fieldAnnotation = field.getAnnotation(annotationClass);
+        if (clazz != null) {
+            Field[] fields = getFields(clazz, false);
+            for (int i = 0; i < fields.length; i++) {
+                Field field = fields[i];
+                if (field.getName().equals(propertyName)) {
+                    Annotation fieldAnnotation = field.getAnnotation(annotationClass);
 
-                return fieldAnnotation;
+                    return fieldAnnotation;
+                }
             }
         }
 

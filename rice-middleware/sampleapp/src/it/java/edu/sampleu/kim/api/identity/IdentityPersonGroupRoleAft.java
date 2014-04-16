@@ -68,7 +68,8 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
         String id = "";
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
-            id = idBase + String.format(format, i);
+            id = idBase + i;
+//            id = idBase + String.format(format, i);
             addPerson(id);
         }
     }

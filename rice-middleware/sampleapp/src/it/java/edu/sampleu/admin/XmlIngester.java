@@ -141,7 +141,7 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
      *
      */
     @Test
-    public void testXMLIngesterSuccessfulFileUpload() throws Exception {
+    public void testXMLIngesterSuccessfulFileUploadNav() throws Exception {
         List<File> fileUploadList = buildFileUploadList();
         navigate();
         int cnt = 0;

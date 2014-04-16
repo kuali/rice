@@ -69,6 +69,8 @@ public class IdentityPersonGroupRoleAft extends WebDriverLegacyITBase {
         String format = "%0" + (userCnt + "").length() + "d";
         for(int i = userCntStart; i < userCnt; i++) {
             id = idBase + i;
+// I'ld like to use numbers with leading zeros, but the XmlIngester which creates the users, uses SimpleUserContent.ftl, which doesn't.
+// creating a new version which uses UserListIngestion.ftl might be the way to go.  JMeter's user counter config would also need to be formatted.
 //            id = idBase + String.format(format, i);
             addPerson(id);
         }

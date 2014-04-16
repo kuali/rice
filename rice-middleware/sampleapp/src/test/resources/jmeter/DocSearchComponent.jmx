@@ -123,7 +123,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">${LOOPS}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${THREAD}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${THREADS}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${RAMPSECONDS}</stringProp>
         <longProp name="ThreadGroup.start_time">1357589923000</longProp>
         <longProp name="ThreadGroup.end_time">1357589923000</longProp>

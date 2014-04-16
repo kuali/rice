@@ -67,7 +67,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         fireEvent("field76", "blur");
         waitForTextPresent("Travel Account 1");
 
-        waitAndTypeByName("field79", "");
+        waitAndTypeByName("field79", "a3");
         fireEvent("field79", "blur");
         waitAndClickByName("field60"); // force blur on field79
         waitForTextPresent("Travel Account 3");
@@ -81,6 +81,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         waitAndClickButtonByText("Search");
         waitAndClickReturnValue();
 
+        waitAndTypeByName("field70", "a1");
         waitAndClickByXpath("//input[@title='Direct Inquiry']");
         gotoLightBox();
         assertTextPresent(new String[] {"Travel Account Number:", "a1", "Travel Account Name:", "Travel Account 1", "Code And Description:", "IAT - Income"});

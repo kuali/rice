@@ -1220,7 +1220,96 @@ private boolean subscribable;
                 </tgroup>
             </table></para>
         </section>
-        </section>
+    </section>
+    <section>
+        <title>Data Object Metadata</title>
+        <para>
+            In addition to providing the capability to map data objects to database tables, Rice provides different
+            methods of defining additional information about an object in the form of metadata.  This includes not
+            only the relationships between objects but display information as well, such as labels, value finders,
+            validation behaviors, and view construction hints.
+        </para>
+        <para>
+            All metadata is processed through the main metadata provider.  It processes the metadata by accessing a
+            list of all specific metadata providers and merging their data to create one source of metadata for the
+            system to use.  Rice defines a list of three core metadata providers: one for the database, one for
+            annotations, and one for spring bean definitions.  It also provides a spring list hook called
+            <emphasis role="keyword">additionalMetadataProviders</emphasis> that client applications can override to
+            insert their own metadata.
+            <programlisting>&lt;bean id="metadataProvider" class="org.kuali.rice.krad.data.provider.impl.CompositeMetadataProviderImpl">
+    &lt;property name="providers" ref="metadataProviderList" />
+&lt;/bean>
+&lt;bean id="metadataProviderList" class="org.kuali.rice.core.framework.util.spring.ListMergeBeanFactory">
+    &lt;constructor-arg>
+        &lt;list>
+            &lt;ref bean="coreMetadataProviders" />
+            &lt;ref bean="additionalMetadataProviders" />
+        &lt;/list>
+    &lt;/constructor-arg>
+&lt;/bean>
+&lt;util:list id="coreMetadataProviders">
+    &lt;ref bean="metadataProviderJpa" />
+    &lt;ref bean="metadataProviderAnnotation" />
+    &lt;ref bean="metadataProviderSpring" />
+&lt;/util:list>
+&lt;util:list id="additionalMetadataProviders" /></programlisting>
+        </para>
+        <para>
+          Rice processes the providers in order, giving each one the option of overlaying information provided by
+          earlier providers in the chain.  That means that database metadata is considered first but may be
+          overridden by annotations, then by spring beans, and finally by client applications.  The default action
+          is to merge data, but this can be overridden by the
+          <emphasis role="keyword">MetadataMergeAction</emphasis>, either via the
+          <emphasis role="keyword">@MergeAction</emphasis> annotation or the
+          <emphasis role="keyword">mergeAction</emphasis> attribute in the XML.  The merge action can take on
+          the following behaviors:
+          <table frame="all" tabstyle="striped" pgwide="1">
+            <title>Merge Actions</title>
+            <tgroup cols="2">
+              <colspec colnum="1" colname="name" colwidth="1.0*" align="left"/>
+              <colspec colnum="2" colname="desc" colwidth="1.0*" align="left"/>
+              <thead>
+                <row>
+                  <entry>Merge Action</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>MERGE</entry>
+                  <entry>
+                    If a match is found (same data object or attribute name), the existing object will
+                    be embedded inside of the new object and be used only to fill in missing values.
+                  </entry>
+                </row>
+                <row>
+                  <entry>REPLACE</entry>
+                  <entry>
+                    If a match is found (same data object or attribute name), the existing object will
+                    be replaced completely by this one.
+                  </entry>
+                </row>
+                <row>
+                  <entry>REMOVE</entry>
+                  <entry>
+                    If a match is found (same data object or attribute name), the existing object will be
+                    removed.  (Any attribute except that forming the key (type or attribute name) can be
+                    left unset.)
+                  </entry>
+                </row>
+                <row>
+                  <entry>NO_OVERRIDE</entry>
+                  <entry>
+                    If a match is found (same data object or attribute name), the existing object will be
+                    left alone.  The new object will only be included if there is not already an
+                    existing object.
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </para>
+    </section>
 <!-- TODO
     <section>
         <title> The Data Object Service </title>

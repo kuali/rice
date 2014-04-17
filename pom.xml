@@ -273,6 +273,8 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
+    <jdk.source.version>1.6</jdk.source.version>
+    <jdk.target.version>1.6</jdk.target.version>
   </properties>
 
   <profiles>
@@ -957,6 +959,8 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
+            <source>${jdk.source.version}</source>
+            <target>${jdk.target.version}</target>
             <!-- impl module is huge and requires at least 768m to compile -->
             <fork>true</fork>
             <meminitial>256</meminitial>

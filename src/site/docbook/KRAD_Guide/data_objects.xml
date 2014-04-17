@@ -1230,7 +1230,16 @@ private boolean subscribable;
             and validation behaviors.
         </para>
         <para>
-            All metadata is processed through the main metadata provider.  It processes the metadata by accessing a
+            Rice contains several metadata providers, which can access references to several different kinds of metadata
+            throughout the system.  These providers are registered via the module configuration are all accessible via
+            the <emphasis role="keyword">ProviderRegistry</emphasis>, but it is much more direct to obtain metadata by
+            using the <emphasis role="keyword">MetadataRepository</emphasis>.  It has the capability to not only fetch
+            all metadata in the system but also fetch metadata for a specific type.  It will return the metadata for
+            that type from the first provider that supports the type.
+        </para>
+        <para>
+            All metadata is processed through a single main metadata provider called the
+            <emphasis role="keyword">CompositeMetadataProvider</emphasis>.  It processes the metadata by accessing a
             list of all specific metadata providers and merging their data to create one source of metadata for the
             system to use.  Rice defines a list of three core metadata providers: one for the database, one for
             annotations, and one for spring bean definitions.  It also provides a spring list hook called

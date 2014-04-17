@@ -634,7 +634,7 @@ DECLARE
          FROM user_tables
          WHERE
             table_name like 'KRTST#_%' escape '#' OR
-            table_name like 'TRV#_%' escape '#' OR
+            table_name like 'TRV#_%' escape '#'
          ORDER BY table_name;
 BEGIN
    FOR r IN tables_cursor LOOP
@@ -649,8 +649,8 @@ DECLARE
       SELECT sequence_name
          FROM user_sequences
          WHERE
-            sequence_name like 'KRTST#_%S' escape '#'
-            sequence_name like 'TRVL#_%S' escape '#'
+            sequence_name like 'KRTST#_%S' escape '#' OR
+            sequence_name like 'TRVL#_%S' escape '#' OR
             sequence_name like 'TRV#_%S' escape '#'
          ORDER BY sequence_name;
 BEGIN

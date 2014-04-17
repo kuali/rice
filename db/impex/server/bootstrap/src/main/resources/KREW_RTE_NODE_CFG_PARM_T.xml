@@ -154,42 +154,4 @@
         RTE_NODE_CFG_PARM_ID="2473" RTE_NODE_ID="2917" VAL="false"/>
     <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
         RTE_NODE_CFG_PARM_ID="2474" RTE_NODE_ID="2917" VAL="Template"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2485" RTE_NODE_ID="2924" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
-        RTE_NODE_CFG_PARM_ID="2486" RTE_NODE_ID="2924" VAL="P"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
-        RTE_NODE_CFG_PARM_ID="2487" RTE_NODE_ID="2924" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
-        RTE_NODE_CFG_PARM_ID="2488" RTE_NODE_ID="2924" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
-        RTE_NODE_CFG_PARM_ID="2489" RTE_NODE_ID="2924" VAL="Template"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2490" RTE_NODE_ID="2927" VAL="&lt;requests name=&quot;PeopleFlows&quot;>&#xa;&lt;activationType>R&lt;/activationType>&#xa;&lt;rulesEngine executorClass=&quot;edu.sampleu.travel.workflow.TravelAccountRulesEngineExecutor&quot;/>&#xa;&lt;/requests>&#xa;"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
-        RTE_NODE_CFG_PARM_ID="2491" RTE_NODE_ID="2927" VAL="R"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="rulesEngine"
-        RTE_NODE_CFG_PARM_ID="2492" RTE_NODE_ID="2927"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
-        RTE_NODE_CFG_PARM_ID="2493" RTE_NODE_ID="2927" VAL="Template"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2494" RTE_NODE_ID="2926" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
-        RTE_NODE_CFG_PARM_ID="2495" RTE_NODE_ID="2926" VAL="P"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
-        RTE_NODE_CFG_PARM_ID="2496" RTE_NODE_ID="2926" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
-        RTE_NODE_CFG_PARM_ID="2497" RTE_NODE_ID="2926" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
-        RTE_NODE_CFG_PARM_ID="2498" RTE_NODE_ID="2926" VAL="Template"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="contentFragment"
-        RTE_NODE_CFG_PARM_ID="2519" RTE_NODE_ID="2935" VAL="&lt;start name=&quot;Initiated&quot;>&#xa;&lt;activationType>P&lt;/activationType>&#xa;&lt;mandatoryRoute>false&lt;/mandatoryRoute>&#xa;&lt;finalApproval>false&lt;/finalApproval>&#xa;&lt;/start>&#xa;"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="activationType"
-        RTE_NODE_CFG_PARM_ID="2520" RTE_NODE_ID="2935" VAL="P"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="mandatoryRoute"
-        RTE_NODE_CFG_PARM_ID="2521" RTE_NODE_ID="2935" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="finalApproval"
-        RTE_NODE_CFG_PARM_ID="2522" RTE_NODE_ID="2935" VAL="false"/>
-    <KREW_RTE_NODE_CFG_PARM_T KEY_CD="ruleSelector"
-        RTE_NODE_CFG_PARM_ID="2523" RTE_NODE_ID="2935" VAL="Template"/>
 </dataset>

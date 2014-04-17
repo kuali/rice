@@ -153,6 +153,9 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             HttpServletResponse response) {
         MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
 
+        // indicate that default values should be applied to this view
+        maintenanceForm.addViewThatNeedsDefaultValuesApplied(form.getViewId());
+
         setupMaintenance(maintenanceForm, request, KRADConstants.MAINTENANCE_NEW_ACTION);
 
         return getUIFModelAndView(maintenanceForm);

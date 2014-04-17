@@ -121,13 +121,18 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
     }
 
     /**
-     * Set the attribute bo list from the map of attribute key/value pairs and then calls
-     * {@link org.kuali.rice.kew.api.peopleflow.PeopleFlowService} to save the people flow instance
+     * Set the attribute bo list from the map of attribute key/value pairs
+     */
+    @Override
+    public void prepareForSave() {
+        ((PeopleFlowBo) getDataObject()).updateAttributeBoValues();
+    }
+
+    /**
+     * Calls {@link org.kuali.rice.kew.api.peopleflow.PeopleFlowService} to save the people flow instance
      */
     @Override
     public void saveDataObject() {
-        ((PeopleFlowBo) getDataObject()).updateAttributeBoValues();
-
         PeopleFlowDefinition peopleFlowDefinition;
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             peopleFlowDefinition = PeopleFlowBo.maintenanceCopy(((PeopleFlowBo) getDataObject()));

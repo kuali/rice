@@ -44,7 +44,7 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky View Header");
         waitAndClickByXpath("//section[@id='Demo-StickyHeader-Example1']/a");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper']");
+        waitForElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper']");
         switchToWindow("Kuali");
     }
     
@@ -52,7 +52,7 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Application Header and View Header");
         waitAndClickByXpath("//section[@id='Demo-StickyHeader-Example2']/a");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
+        waitForElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
         switchToWindow("Kuali");
     }
     
@@ -76,7 +76,7 @@ public class DemoGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Sticky Everything");
         waitAndClickByLinkText("All header content sticky");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
+        waitForElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
         assertElementPresentByXpath("//header[@data-header_for='Demo-StickyHeaderFooter-View5' and @data-sticky='true']");
         switchToWindow("Kuali");
     }

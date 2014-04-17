@@ -2087,7 +2087,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         docId = waitForDocId();
         //Enter details for Parameter.
         waitAndTypeByName("document.documentHeader.documentDescription", "Adding Test Parameter");
-        selectOptionByName("document.newMai_ntainableObject.namespaceCode", "KR-WKFLW");
+        selectOptionByName("document.newMaintainableObject.namespaceCode", "KR-WKFLW");
         waitAndTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         waitAndTypeByName("document.newMaintainableObject.applicationId", "KUALI");
         parameterName = "TestIndicator" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();

@@ -62,11 +62,11 @@ public class ServerSideTestViewAft extends WebDriverLegacyITBase {
        waitForTextPresent("Select is a required field.");
        
        //PreRequisite constraint
-       waitForElementPresentByXpath("//input[@name='field7' and @disabled]");
-       waitAndClickByXpath("//input[@type='checkbox' and @name='booleanField']");
-       if(isElementPresentByXpath("//input[@name='field7' and @disabled]")) {
-           fail("PreRequisite Constraint isn't working !");
-       }
+//       waitForElementPresentByXpath("//input[@name='field7' and @disabled]");
+//       waitAndClickByXpath("//input[@type='checkbox' and @name='booleanField']");
+//       if(isElementPresentByXpath("//input[@name='field7' and @disabled]")) {
+//           fail("PreRequisite Constraint isn't working !");
+//       }
        
        //MustOccurs constraint
        waitAndTypeByName("field14","a");

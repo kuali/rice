@@ -73,6 +73,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertElementPresentByLinkText("Action Link success callback");
 
         waitAndClickByLinkText("Action Link success callback");
+        Thread.sleep(1500); // give the alert time to get triggered via callback
         assertTrue(driver.switchTo().alert().getText().contains("Refresh called successfully"));
         driver.switchTo().alert().accept();
     }

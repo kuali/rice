@@ -54,6 +54,11 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     }
 
     @Override
+    public String getUserName() {
+        return "admin"; // must have blanket approve rights
+    }
+
+    @Override
     protected void navigate() throws Exception {
     	navigateToMaintenance("Maintenance Sample - BO Attachment");
     }

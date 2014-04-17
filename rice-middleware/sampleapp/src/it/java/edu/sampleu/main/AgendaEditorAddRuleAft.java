@@ -68,6 +68,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         waitForPageToLoad();
         addNewAgendaInformation(agendaName, "Kuali Rules Test", "Context1");
         // dynamic agenda details
+        Thread.sleep(500); // tab is happening to fast
         unfocusElement();
         waitAndTypeByName(NEW_DATA_OBJ_PATH + "agenda.typeId", "Campus Agenda");
         unfocusElement();
@@ -131,6 +132,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         if (StringUtils.isNoneBlank(propComparison)) {
             waitAndSelectByName(propositionPath + "parameters[2].value", propComparison);
             unfocusElement();
+            Thread.sleep(1500); // need time for next input to be reloaded
         }
 
         if (StringUtils.isNoneBlank(propositionValue)) {

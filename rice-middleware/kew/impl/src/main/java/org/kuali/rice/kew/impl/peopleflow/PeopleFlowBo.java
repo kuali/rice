@@ -76,7 +76,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     @Column(name = "NMSPC_CD", nullable = false)
     private String namespaceCode;
 
-    @Column(name = "TYP_ID", insertable = false, updatable = false)
+    @Column(name = "TYP_ID")
     private String typeId;
 
     @Column(name = "DESC_TXT")
@@ -91,7 +91,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name = "TYP_ID")
+    @JoinColumn(name = "TYP_ID", insertable = false, updatable = false)
     private KewTypeBo typeBo;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "peopleFlow", orphanRemoval = true)

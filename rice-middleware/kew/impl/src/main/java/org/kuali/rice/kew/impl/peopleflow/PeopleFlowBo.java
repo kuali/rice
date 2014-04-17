@@ -268,10 +268,10 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     }
 
     /**
-     * Updates the values in the attribute values map from the attribute bos.
+     * Updates the values in the attribute values map from the attribute bos and updates the members.
      */
     @PostLoad
-    public void updateAttributeValues() {
+    protected void postLoad() {
         this.attributeValues = new HashMap<String, String>();
         for (PeopleFlowAttributeBo attributeBo: attributeBos) {
             this.attributeValues.put(attributeBo.getAttributeDefinition().getName(), attributeBo.getValue());

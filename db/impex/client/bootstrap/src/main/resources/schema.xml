@@ -431,10 +431,4 @@
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="467"/>
-    <sequence name="TRVL_CO_ID_S" nextval="10021"/>
-    <sequence name="TRVL_DEST_ID_S" nextval="10001"/>
-    <sequence name="TRVL_EXP_ITM_ID_S" nextval="10001"/>
-    <sequence name="TRVL_MLG_RT_ID_S" nextval="10001"/>
-    <sequence name="TRVL_PD_EXP_ID_S" nextval="10001"/>
-    <sequence name="TRVL_TRAVELER_DTL_ID_S" nextval="10001"/>
 </database>

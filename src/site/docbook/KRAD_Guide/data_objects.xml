@@ -1340,6 +1340,32 @@ private Person fiscalOfficer;</programlisting>
                 <emphasis role="keyword">foId</emphasis>.
             </para>
         </section>
+        <section>
+            <title>Spring Metadata Provider</title>
+            <para>
+                The spring metadata provider will process all spring beans that hold object metadata and include them
+                in the system metadata repository.  These are applied directly after the annotation metadata is
+                processed and will merge both the JPA-based metadata and the annotation metadata into itself unless
+                directed otherwise.  This is especially useful when overriding metadata on Rice objects directly on the
+                data level so it will be carried to all instances of this object on the interface.
+            </para>
+            <para>
+                The spring beans can be used to create a metadata structure for an object rooted at
+                <emphasis role="keyword">DataObjectMetadata</emphasis>.  For example, to override the above
+                <emphasis role="keyword">accountTypeCode</emphasis> with a new label, add the following:
+                <programlisting>&lt;bean parent="DataObjectMetadata" p:typeClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount">
+    &lt;property name="attributes">
+        &lt;list>
+            &lt;bean parent="DataObjectAttribute"
+                  p:name="accountTypeCode"
+                  p:label="University Travel Account Type Code" />
+        &lt;/list>
+    &lt;/property>
+&lt;/bean></programlisting>
+                Instead of having the "Travel Account Type Code" this data object would now have the "University Travel
+                Account Type Code."
+            </para>
+        </section>
     </section>
 <!-- TODO
     <section>

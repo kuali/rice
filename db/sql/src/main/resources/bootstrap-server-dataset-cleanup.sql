@@ -94,6 +94,12 @@ delete from krew_doc_typ_t where doc_typ_nm='TravelMileageRateMaintenanceDocumen
 /
 delete from krew_doc_typ_t where doc_typ_nm='TravelerDetailMaintenanceDocument'
 /
+delete from krew_doc_typ_t where doc_typ_nm='TravelAccountTypeMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='TravelAttachmentGroupSampleMaintenanceDocument'
+/
+delete from krew_doc_typ_t where doc_typ_nm='LabsTravelCompanyMaintenanceDocument'
+/
 delete from krew_doc_typ_attr_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
 /
 delete from krew_doc_typ_plcy_reln_t where DOC_TYP_ID not in (select doc_typ_id from KREW_DOC_TYP_T)
@@ -621,6 +627,38 @@ DELETE FROM KREW_RULE_EXT_T WHERE rule_id != '1044'
 DELETE FROM KREW_RULE_EXPR_T
 /
 
+-- delete all sample app and test tables that can be easily removed using name patterns
+DECLARE
+   CURSOR tables_cursor IS
+      SELECT table_name
+         FROM user_tables
+         WHERE
+            table_name like 'KRTST#_%' escape '#' OR
+            table_name like 'TRV#_%' escape '#' OR
+         ORDER BY table_name;
+BEGIN
+   FOR r IN tables_cursor LOOP
+      execute immediate 'DROP TABLE '||r.table_name||' CASCADE CONSTRAINTS';
+   END LOOP;
+END;
+/
+
+-- delete all sample app and test sequences that can be easily removed using name patterns
+DECLARE
+   CURSOR sequences_cursor IS
+      SELECT sequence_name
+         FROM user_sequences
+         WHERE
+            sequence_name like 'KRTST#_%S' escape '#'
+            sequence_name like 'TRVL#_%S' escape '#'
+            sequence_name like 'TRV#_%S' escape '#'
+         ORDER BY sequence_name;
+BEGIN
+   FOR r IN sequences_cursor LOOP
+      execute immediate 'DROP SEQUENCE '||r.sequence_name;
+   END LOOP;
+END;
+/
 
 -- Re-enable constraints
 DECLARE 

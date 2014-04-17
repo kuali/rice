@@ -78,6 +78,7 @@ DECLARE
             sequence_name like 'BK#_%S' escape '#' OR
             sequence_name like 'TRAV#_%S' escape '#' OR
             sequence_name like 'TRVL#_%SEQ' escape '#' OR
+            sequence_name like 'TRVL#_%S' escape '#' OR
             sequence_name like 'TRV#_%S' escape '#' OR
             sequence_name like 'KRTST#_%S' escape '#'
          ORDER BY sequence_name;

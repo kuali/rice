@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.krad.compview;
+package org.kuali.rice.krad.labs.kitchensink;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -24,7 +24,7 @@ import org.openqa.selenium.By;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
+public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page10
@@ -40,9 +40,7 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
     }
 
     protected void navigation() throws Exception {
-        waitAndClickKRAD();
-        waitAndClickByXpath(KITCHEN_SINK_XPATH);
-        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
+        navigateToKitchenSink("Other Examples");
     }
 
     protected void testUifTooltipByName(String nameField1, String nameField2) throws Exception {
@@ -52,8 +50,8 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
         fireEvent(nameField1, "focus");
         fireMouseOverEventByName(nameField1);
 
-        assertEquals("This tooltip is triggered by focus or and mouse over.", getText(
-                "td.jquerybubblepopup-innerHtml"));
+        String tooltipContents = getText(By.cssSelector("[data-for='ucbjiy8_control']"));
+        assertEquals("This tooltip is triggered by focus or and mouse over.", tooltipContents);
         fireEvent(nameField1, "blur");
 
         fireEvent(nameField2, "focus");
@@ -61,10 +59,11 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
 
         // check if tooltip opens on mouse over
         fireMouseOverEventByName(nameField2);
-        assertTrue("unable to detect tooltip", isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
+        assertFalse("unable to detect tooltip", isVisibleByXpath("//td[contains(.,\"This is a tool-tip with different position and tail options\")]"));
 
         // check if tooltip closed on mouse out of nameField2
         fireEvent(nameField2, "blur");
+        fireMouseOverEventByName(nameField1);
         waitAndTypeByName(nameField1, "");
         Thread.sleep(5000);
         assertFalse("able to detect tooltip", isVisibleByXpath(
@@ -79,7 +78,6 @@ public abstract class UifTooltipAftBase extends WebDriverLegacyITBase {
 
     protected void testUifTooltipNav(JiraAwareFailable failable) throws Exception {
         navigation();
-        waitAndClickByLinkText("Other Examples");
         testUifTooltipByName(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }

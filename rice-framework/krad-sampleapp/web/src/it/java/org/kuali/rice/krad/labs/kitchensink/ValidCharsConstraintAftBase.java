@@ -36,11 +36,6 @@ public abstract class ValidCharsConstraintAftBase extends LabsKitchenSinkBase {
 
     protected void navigation() throws Exception {
         navigateToKitchenSink("Validation - Regex");
-//        waitAndClickKRAD();
-//        waitAndClickByLinkText("Uif Components (Kitchen Sink)");
-//        switchToWindow(KUALI_UIF_COMPONENTS_WINDOW_XPATH);
-//        waitAndClickByLinkText("Validation");
-//        waitAndClickByLinkText("Validation - Regex");
     }
 
     protected void testValidCharsConstraintNav(JiraAwareFailable failable) throws Exception {

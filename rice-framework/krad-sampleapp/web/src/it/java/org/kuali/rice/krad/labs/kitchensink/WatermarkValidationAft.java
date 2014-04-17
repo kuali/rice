@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.krad.compview;
+package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverITBase;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * tests whether the watermarks is work as expected even when they contain an
@@ -28,25 +23,37 @@ import static junit.framework.Assert.assertEquals;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WatermarkValidationAft extends WebDriverITBase {
-	@Override
-	public String getTestUrl() {
-		return AutomatedFunctionalTestUtils.PORTAL;
-	}
 
-	@Test
+public class WatermarkValidationAft extends LabsKitchenSinkBase {
+
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page1";
+
+    @Override
+    public String getBookmarkUrl() {
+        return BOOKMARK_URL;
+    }
+
+
 	/**
 	 * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
 	 * the scripts will be working ok
 	 */
 	public void testWatermarking() throws Exception {
-		waitAndClickByLinkText("KRAD");
-		waitAndClickByLinkText(WebDriverLegacyITBase.UIF_COMPONENTS_KITCHEN_SINK_LINK_TEXT);
-		Thread.sleep(5000);
-		//Switch to new window.
-		switchWindow();
-        waitAndClickByLinkText("Text Controls");
-        assertEquals("It's watermarked ",getAttributeByName("field106", "placeholder"));
-		assertEquals("Watermark... ",getAttributeByName("field110", "placeholder"));
+
+        String watermarkValue = waitAndGetAttributeByName("field106", "placeholder");
+        assertEquals("It's watermarked ", watermarkValue);
+		watermarkValue = waitAndGetAttributeByName("field110", "placeholder");
+        assertEquals("Watermark... ",watermarkValue);
 	}
+
+    @Override
+    protected void navigate() throws Exception {
+        navigateToKitchenSink("Input Fields");
+    }
+
+    @Test
+    public void testWatermarkingNav() throws Exception {
+        testWatermarking();
+        passed();
+    }
 }

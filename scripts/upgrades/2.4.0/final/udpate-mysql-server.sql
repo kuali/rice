@@ -1,18 +1,183 @@
---
--- Copyright 2005-2014 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
---
+
+
+
+-- ===================================================================================
+-- 2013-09-16--KULRICE-10453.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-10453
+-- ===================================================================================
+
+
+INSERT INTO KRCR_PARM_T (OBJ_ID, NMSPC_CD, CMPNT_CD, PARM_NM, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
+    SELECT UUID(), 'KR-KRAD', CMPNT_CD, PARM_NM, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID
+      FROM KRCR_PARM_T
+     WHERE NMSPC_CD = 'KR-NS'
+       AND CMPNT_CD = 'Lookup'
+       AND PARM_NM = 'RESULTS_LIMIT'
+       AND APPL_ID NOT IN (SELECT APPL_ID FROM KRCR_PARM_T
+                        WHERE NMSPC_CD = 'KR-KRAD'
+                          AND CMPNT_CD = 'Lookup'
+                          AND PARM_NM = 'RESULTS_LIMIT')
+/
+
+
+-- ===================================================================================
+-- 2013-10-02--KULRICE-9252.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-9252
+-- ===================================================================================
+
+
+-- KULRICE-9252 Configuration Parameter for default help URL for KRAD lookup views
+
+INSERT INTO KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
+VALUES ('KR-KRAD', 'Lookup', 'DEFAULT_HELP_URL','69A9BABE4A0FBD56E0404F8189D82511', 1, 'HELP',
+        'http://site.kuali.org/rice/latest/reference/html/Help.html#lookup', 'Default External Help Url', 'A', 'KUALI')
+/
+COMMIT
+/
+
+
+-- ===================================================================================
+-- 2013-10-22--KULRICE-11052.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-11052
+-- ===================================================================================
+
+
+-- KULRICE-11052 - Adding a static date to prevent impex from updating it every time
+
+UPDATE KRIM_ROLE_T SET LAST_UPDT_DT = STR_TO_DATE( '20121128143720', '%Y%m%d%H%i%s' ) WHERE ROLE_ID = 'KR1001'
+/
+
+
+
+-- ===================================================================================
+-- 2013-10-23--KULRICE-9086.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-9086
+-- ===================================================================================
+
+
+-- KULRICE-9086 - Adding a parameter for the maximum number of rows that will be displayed in the lookup results
+
+INSERT INTO KRCR_PARM_T (OBJ_ID, NMSPC_CD, CMPNT_CD, PARM_NM, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
+    SELECT UUID(), 'KR-KRAD', CMPNT_CD, 'MULTIPLE_VALUE_RESULTS_LIMIT', PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID
+      FROM KRCR_PARM_T
+     WHERE NMSPC_CD = 'KR-NS'
+       AND CMPNT_CD = 'Lookup'
+       AND PARM_NM = 'MULTIPLE_VALUE_RESULTS_PER_PAGE'
+       AND NOT EXISTS (SELECT '1' FROM KRCR_PARM_T
+                        WHERE NMSPC_CD = 'KR-KRAD'
+                          AND CMPNT_CD = 'Lookup'
+                          AND PARM_NM = 'MULTIPLE_VALUE_RESULTS_LIMIT')
+/
+
+
+-- ===================================================================================
+-- 2014-01-09--KULRICE-9198.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-9198
+-- ===================================================================================
+
+
+-- KULRICE-9198 - krms_attr_defn_t.attr_defn_id is a varchar(255),
+--                but referencing columns are a mixture of varchar(40) and varchar(255)
+
+ALTER TABLE KRMS_TYP_ATTR_T MODIFY ATTR_DEFN_ID VARCHAR(40)
+/
+ALTER TABLE KRMS_ATTR_DEFN_T MODIFY ATTR_DEFN_ID VARCHAR(40)
+/
+
+
+-- ===================================================================================
+-- 2014-03-20--KULRICE-8154.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-8154
+-- ===================================================================================
+
+
+INSERT INTO KRCR_NMSPC_T (APPL_ID, NMSPC_CD, NM, ACTV_IND, OBJ_ID, VER_NBR)
+  VALUES('RICE', 'KR-LOC', 'Kuali Location', 'Y', UUID(), 1)
+/
+
+UPDATE KRCR_PARM_T SET NMSPC_CD = 'KR-LOC' WHERE CMPNT_CD = 'All' AND PARM_NM = 'DEFAULT_COUNTRY'
+/
+
+
+
+-- ===================================================================================
+-- 2014-04-09--KULRICE-12277.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-12277
+-- ===================================================================================
+
+
+-- Create new KR-NTFCN:Channel KIM type
+INSERT INTO krim_typ_t (kim_typ_id, obj_id, ver_nbr, nmspc_cd, nm, srvc_nm, actv_ind) VALUES ('KR1002', uuid(), 1, 'KR-NTFCN', 'Channel', '{http://rice.kuali.org/ken/v2_0}channelPermissionTypeService', 'Y')
+/
+INSERT INTO krim_attr_defn_t (kim_attr_defn_id, obj_id, ver_nbr, nmspc_cd, nm, lbl, actv_ind, cmpnt_nm) VALUES ('KR1002', uuid(), 1, 'KR-NTFCN', 'Channel ID', 'Channel ID', 'Y', NULL)
+/
+INSERT INTO krim_typ_attr_t (kim_typ_attr_id, obj_id, ver_nbr, sort_cd, kim_typ_id, kim_attr_defn_id, actv_ind) VALUES ('KR1005', uuid(), 1, 'a', (SELECT kim_typ_id FROM krim_typ_t WHERE nmspc_cd = 'KR-NTFCN' AND nm = 'Channel'), (SELECT kim_attr_defn_id FROM krim_attr_defn_t WHERE nmspc_cd = 'KR-NTFCN' AND nm = 'Channel ID'), 'Y')
+/
+
+-- Create KR-NTFCN:View Notification permission template
+INSERT INTO krim_perm_tmpl_t (perm_tmpl_id, obj_id, ver_nbr, nmspc_cd, nm, desc_txt, kim_typ_id, actv_ind) VALUES ('KR1005', uuid(), 1, 'KR-NTFCN', 'View Notification', 'View KEN notifications', (SELECT kim_typ_id FROM krim_typ_t WHERE nmspc_cd = 'KR-NTFCN' AND nm = 'Channel'), 'Y')
+/
+
+
+
+-- ===================================================================================
+-- 2014-04-09--KULRICE-12281.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-12281
+-- ===================================================================================
+
+
+-- This creates a new permission template which controls which users can export results from a lookup and sets up a single permission which allows all users to export from all lookups
+INSERT INTO krim_perm_tmpl_t (perm_tmpl_id, obj_id, ver_nbr, nmspc_cd, nm, desc_txt, kim_typ_id, actv_ind) VALUES ('KR1004', uuid(), '1', 'KR-NS', 'Export Records', 'Ability to export results from the lookup screen.', (SELECT kim_typ_id FROM krim_typ_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Namespace or Component'), 'Y')
+/
+INSERT INTO krim_perm_t (perm_id, obj_id, ver_nbr, perm_tmpl_id, nmspc_cd, nm, desc_txt, actv_ind) VALUES ('KR1003', uuid(), '1', (SELECT perm_tmpl_id FROM krim_perm_tmpl_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Export Records'), 'KR-NS', 'Export Any Record', 'Ability to export any record', 'Y')
+/
+INSERT INTO krim_perm_attr_data_t (attr_data_id, obj_id, ver_nbr, perm_id, kim_typ_id, kim_attr_defn_id, attr_val) VALUES ('KR1005', uuid(), '1', (SELECT perm_id FROM krim_perm_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Export Any Record' AND perm_tmpl_id = (SELECT perm_tmpl_id FROM krim_perm_tmpl_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Export Records')), (SELECT kim_typ_id FROM krim_typ_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Namespace or Component'), (SELECT kim_attr_defn_id FROM krim_attr_defn_t WHERE nmspc_cd = 'KR-NS' AND nm = 'namespaceCode'), '*')
+/
+INSERT INTO krim_role_perm_t (role_perm_id, obj_id, ver_nbr, role_id, perm_id, actv_ind) VALUES ('KR1004', uuid(), '1', (SELECT role_id FROM krim_role_t WHERE nmspc_cd = 'KUALI' AND role_nm = 'User'), (SELECT perm_id FROM krim_perm_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Export Any Record' AND perm_tmpl_id = (SELECT perm_tmpl_id FROM krim_perm_tmpl_t WHERE nmspc_cd = 'KR-NS' AND nm = 'Export Records')), 'Y')
+/
+
+
+
+-- ===================================================================================
+-- 2014-04-09--KULRICE-12323.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-12323
+-- ===================================================================================
+
+
+-- This alters the size of the address fields on the address and person maintenance document tables so they are a bit longer and match
+ALTER TABLE krim_entity_addr_t CHANGE COLUMN ADDR_LINE_1 ADDR_LINE_1 VARCHAR(128)
+/
+ALTER TABLE krim_entity_addr_t CHANGE COLUMN ADDR_LINE_2 ADDR_LINE_2 VARCHAR(128)
+/
+ALTER TABLE krim_entity_addr_t CHANGE COLUMN ADDR_LINE_3 ADDR_LINE_3 VARCHAR(128)
+/
+
+ALTER TABLE krim_pnd_addr_mt CHANGE COLUMN ADDR_LINE_1 ADDR_LINE_1 VARCHAR(128)
+/
+ALTER TABLE krim_pnd_addr_mt CHANGE COLUMN ADDR_LINE_2 ADDR_LINE_2 VARCHAR(128)
+/
+ALTER TABLE krim_pnd_addr_mt CHANGE COLUMN ADDR_LINE_3 ADDR_LINE_3 VARCHAR(128)
+/
+
+
+
+-- ===================================================================================
+-- 2014-04-09--KULRICE-12405.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-12405
+-- ===================================================================================
+
+
+-- This index improves performance of KFS queries which need to fetch entities by employee ID
+CREATE INDEX KRIM_ENTITY_EMP_INFO_TI3 ON KRIM_ENTITY_EMP_INFO_T(EMP_ID)
+/
+
+
+
+-- ===================================================================================
+-- 2014-04-11--KULRICE-12155.sql (MySQL)
+-- https://jira.kuali.org/browse/KULRICE-12155
+-- ===================================================================================
+
 
 --
 -- KULRICE-12155 - To update the xml for widgets.xml, first delete the widgets stylesheet and then recreate it

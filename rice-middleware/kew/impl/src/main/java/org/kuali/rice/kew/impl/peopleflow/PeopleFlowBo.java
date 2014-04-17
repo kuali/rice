@@ -256,7 +256,7 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
     }
 
     /**
-     * Updates the values in the attribute bos from the attribute values map
+     * Updates the values in the attribute bos from the attribute values map.
      */
     public void updateAttributeBoValues() {
         for (PeopleFlowAttributeBo attributeBo : this.attributeBos) {
@@ -267,8 +267,11 @@ public class PeopleFlowBo implements Serializable, PeopleFlowContract, MutableIn
         }
     }
 
+    /**
+     * Updates the values in the attribute values map from the attribute bos.
+     */
     @PostLoad
-    protected void postLoad() throws InstantiationException, IllegalAccessException {
+    public void updateAttributeValues() {
         this.attributeValues = new HashMap<String, String>();
         for (PeopleFlowAttributeBo attributeBo: attributeBos) {
             this.attributeValues.put(attributeBo.getAttributeDefinition().getName(), attributeBo.getValue());

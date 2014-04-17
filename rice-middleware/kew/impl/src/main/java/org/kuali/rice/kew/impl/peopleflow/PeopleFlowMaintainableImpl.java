@@ -121,11 +121,19 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
     }
 
     /**
-     * Set the attribute bo list from the map of attribute key/value pairs
+     * Set the attribute bo list from the map of attribute key/value pairs.
      */
     @Override
     public void prepareForSave() {
         ((PeopleFlowBo) getDataObject()).updateAttributeBoValues();
+    }
+
+    /**
+     * Set the map of attribute key/value pairs list from the attribute bo list.
+     */
+    @Override
+    public void processAfterRetrieve() {
+        ((PeopleFlowBo) getDataObject()).updateAttributeValues();
     }
 
     /**

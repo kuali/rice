@@ -244,9 +244,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             form.setDocTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
         }
 
-        // indicate that default values need to be applied to this view.
-        form.addViewThatNeedsDefaultValuesApplied(form.getViewId());
-
         // set action on form
         form.setMaintenanceAction(maintenanceAction);
 

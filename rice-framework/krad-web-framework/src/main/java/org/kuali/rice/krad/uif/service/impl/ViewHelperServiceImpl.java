@@ -800,20 +800,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
         Object currentValue = ObjectPropertyUtils.getPropertyValue(object, bindingPath);
-
-        // Default value only applies when the value being set is null (has no value on the form) or false (for
-        // Boolean fields).
-        if (currentValue != null ) {
-            if (currentValue instanceof Boolean) {
-                Boolean currentValueBoolean = (Boolean)currentValue;
-                if (currentValueBoolean) {
-                    return;
-                }
-            } else {
-                return;
-            }
-        }
-
         Object defaultValue = getDefaultValueForField(object, dataField);
 
         if (defaultValue != null) {

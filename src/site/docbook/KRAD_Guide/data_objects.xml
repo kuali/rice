@@ -698,7 +698,7 @@ public class AccountExtension { ...}
         </para>
         </section>
         <section>
-            <title>Metadata Provider</title>
+            <title>JPA Metadata Provider</title>
             <para>
                 To assist with the processing and displaying of information, Kuali Rice comes with a JPA-based
                 metadata provider that extracts information from the JPA annotations and infers information about
@@ -1227,7 +1227,7 @@ private boolean subscribable;
             In addition to providing the capability to map data objects to database tables, Rice provides different
             methods of defining additional information about an object in the form of metadata.  This includes not
             only the relationships between objects but display information as well, such as labels, value finders,
-            validation behaviors, and view construction hints.
+            and validation behaviors.
         </para>
         <para>
             All metadata is processed through the main metadata provider.  It processes the metadata by accessing a
@@ -1309,6 +1309,37 @@ private boolean subscribable;
             </tgroup>
           </table>
         </para>
+        <section>
+            <title>Annotation Metadata Provider</title>
+            <para>
+                The annotation metadata provider will process all Java annotations on a data object class to include
+                them in the system metadata repository.  These are applied directly after the JPA metadata is processed
+                and will merge the JPA-based metadata into itself unless directed otherwise.
+            </para>
+            <para>
+                A good example of using this provider is applying data dictionary attributes to a field in a data
+                object.
+                <programlisting>@Label("Travel Account Type Code")
+@Description("Type code grouping for account")
+@KeyValuesFinderClass(AccountTypeKeyValues.class)
+private String accountTypeCode;</programlisting>
+                For <emphasis role="keyword">accountTypeCode</emphasis>, the annotations define the label that will
+                appear on the interface for any input fields, the description that will go along with the field if
+                requested, and a key values finder class that will search for all possible values that can go into
+                this field.
+            </para>
+            <para>
+                The annotations can also define relationships between two objects that normally would not have a
+                database link between them.
+                <programlisting>private String foId;
+
+@Relationship(foreignKeyFields="foId")
+private Person fiscalOfficer;</programlisting>
+                In this case, the relationships directs the metadata to load the
+                <emphasis role="keyword">Person</emphasis> object using the foreign key field
+                <emphasis role="keyword">foId</emphasis>.
+            </para>
+        </section>
     </section>
 <!-- TODO
     <section>

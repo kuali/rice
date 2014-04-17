@@ -60,7 +60,7 @@ public class EntityTypeAft extends WebDriverLegacyITBase {
         waitAndTypeByName("lookupCriteria[code]","PERSON");
         waitAndClickButtonByText("Search");
         waitForTextNotPresent("SYSTEM");
-        assertTextPresent("PERSON");
+        waitForTextPresent("PERSON");
     }
 
     @Test

@@ -149,9 +149,9 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
     	waitAndClickButtonByText("submit");
-    	String requiredMessage []={"Description: Required","Travel Account Number: Required","Travel Account Name: Required","Travel Account Type Code: Required"
-    			};
+    	String requiredMessage []={"Description: Required","Travel Account Number: Required","Travel Account Name: Required","Travel Account Type Code: Required"};
     	assertTextPresent(requiredMessage);
+        assertTrue(findElement(By.xpath("//h3[@id='pageValidationHeader']")).getText().contains("This page has"));
     	waitAndClickButtonByText("Save");
     	assertTextPresent(requiredMessage);
     	waitAndClickButtonByText("blanket approve");

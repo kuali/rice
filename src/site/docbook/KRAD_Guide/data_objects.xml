@@ -69,12 +69,11 @@
         <title> Data Objects </title>
         <section>
             <title>Data Objects</title>
-            <para>We begin our training for the Kuali Rapid Application Development framework with the
-                data access layer. Enterprise applications generally have a large number of CRUD (Create
-                Read Update Delete) operations; therefore, the access of data is a very important
-                concern of development. KRAD builds on top of other tools to provide general facilities
-                that greatly reduce the development time. These facilities are known as the KRAD
-                Persistence Framework. </para>
+            <para>Enterprise applications generally have a large number of CRUD (Create, Read,
+                Update, Delete) operations; therefore, the access of data is a very important
+                concern of development. KRAD builds on top of other tools to provide general
+                facilities that greatly reduce the development time. These facilities are known as
+                the KRAD Persistence Framework. </para>
             <para>The foundation of the KRAD Persistence Framework is the third party ORM (Object
                 Relational Mapping) tool. ORM tools target the persistence of data with a relational
                 database. This is achieved by mapping a Java object that contains the data to one or
@@ -129,9 +128,6 @@
                     data object properties. As we will see later on, the framework can take care of
                     many things for us automatically based on the metadata derived from these
                     relationships. </para></tip>
-            <para>Next, well that's it! However, as we will see in just a bit, in order to take
-                advantage of the additional persistence features KRAD provides, there is one
-                additional thing we need to add. </para>
             <para>KRAD refers to any object that provides data as a 'Data Object'. Data objects provide
                 a very central role in an enterprise application. Within the suggested KRAD
                 architecture, they are not bound to just the data access layer, but can freely move
@@ -1376,18 +1372,235 @@ private Person fiscalOfficer;</programlisting>
             </para>
         </section>
     </section>
-<!-- TODO
     <section>
-        <title> The Data Object Service </title>
-        <para></para>
-    </section>
-    <section>
-        <title> Building DAOs and using Spring Templates </title>
-        <para></para>
-    </section>
-    <section>
-        <title> Persistence Metadata </title>
-        <para></para>
-    </section>
--->    
+        <title>Linking and Fetching</title>
+        <para>The KRAD data module includes support for a number of different mechanisms to help
+            ensure that object state is fully populated and related objects are properly linked
+            together. These mechanisms encompass a number of different techniques including:<orderedlist>
+                <listitem>
+                    <para>Relationship Fetching</para>
+                </listitem>
+                <listitem>
+                    <para>Reference Linking</para>
+                </listitem>
+                <listitem>
+                    <para>Foreign Key Linking</para>
+                </listitem>
+            </orderedlist>The goal of these different techniques is to use information available at
+            runtime to "fill in the blanks" for relationships and/or foreign key fields on a data
+            object. This functionality can be accessed via various methods provided on the
+                <code>DataObjectWrapper</code>. There are two primary ways to model these types of
+            relationships, either with a simple relationship or one with a redundant foreign key
+            field. In order to better understand how linking and fetching works, it's important to
+            understand the distinction between these two cases.</para>
+        <para>It is easiest to demonstrate this using examples. We will start with an example data
+            object (using JPA annotations) that has a simple
+            relationship:<programlisting>
+@Entity
+public class EntityOne {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "TWO_ID")
+    private EntityTwo two;
+
+}
+
+@Entity
+class EntityTwo {
+ 
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private String id;
+ 
+    @Column(name = "VAL")
+    private String value;
+ 
+}
+</programlisting></para>
+        <para>In this example, we have EntityOne with a relationship to EntityTwo. The foreign key
+            field which relates EntityOne to EntityTwo is the "id" field on EntityTwo.</para>
+        <para>Now, let's consider the redundant foreign key
+            case:<programlisting>
+@Entity
+public class EntityOneWithFK {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private Long id;
+<emphasis role="bold">
+    @Column(name = "TWO_ID", insertable = false, updatable = false)
+    private String twoId;</emphasis>
+
+    @ManyToOne
+    @JoinColumn(name = "TWO_ID")
+    private EntityTwo two;
+
+}
+
+@Entity
+class EntityTwo {
+ 
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private String id;
+ 
+    @Column(name = "VAL")
+    private String value;
+ 
+}
+</programlisting></para>
+        <para>Notice the addition here of the "twoId" field. In this case both the "twoId" field and
+            the "id" field on EntityTwo represent the same foreign key in the relationship. Hence
+            the redundancy of this approach. It is logical to wonder why the redundant key is even
+            necessary. The answer is that it is not, and it should not be considered best practice
+            (with JPA at least) to do this. However, with legacy KNS applications based on Apache
+            OJB, this was the typical approach. Therefore, we still need to support both of these
+            models in order to ease migration. </para>
+        <para>As we discuss each of the fetching and linking techniques in the next few sections,
+            keep these two different relationship scenarios in mind.</para>
+        <section>
+            <title>Relationship Fetching</title>
+            <para>Relationship fetching allows for a related object to be fetched based on available
+                foreign key values on the object. This provides a facility to load the full state of
+                a related object when only foreign key values have been populated on the parent
+                object. This is a common enough operation that it has been implemented as a
+                general-purpose utility with the <code>fetchRelationship</code> methods on the
+                    <code>DataObjectWrapper</code>. When fetching a relationship, the name of the
+                relationship to fetch is supplied (relative to the parent object) along with whether
+                or not a redundant foreign key field should be used as the source of the foreign key
+                value. It is also possible to specify whether or not any dangling relationships
+                should be nullified if no data object is found for the given foreign key
+                values.</para>
+            <para>Relationship fetching can use either the redundant foreign key field (if one
+                exists) or the current value of the foreign key field on the related object in the
+                case of a simple relationship. When executed, it will use the foreign key value to
+                query the <code>DataObjectService</code> for that related object and then replace
+                the original related object on the parent with the resulting value.</para>
+            <para>To best deomonstrate the logic, let's look at an example:</para>
+            <programlisting>
+EntityOne one = new EntityOne();
+
+// create a partially initialized instance of EntityTwo to hold the foreign key value of "100"
+EntityTwo two = new EntityTwo();
+two.setId(100);
+one.setTwo(two);
+
+DataObjectWrapper&lt;EntityOne> oneWrapped = dataObjectService.wrap(one);
+
+// fetch relationship, useForeignKeyAttribute = false, nullifyDanglingRelationsip = true
+oneWrapped.fetchRelationship("two", false, true); 
+
+// now, the "two" field on EntityOne holds our fetched instance of EntityTwo with id of "100"
+EntityTwo fetchedTwo = one.getTwo();
+</programlisting>
+            <para>Note that in the above example if there was no instance of <code>EntityTwo</code>
+                with an id of "100" in the data store, then <code>one.getTwo()</code> would return
+                null after the call to fetch the relationship. This is because
+                    <code>nullifyDanglingRelationship</code> was set to "true" when the method was
+                executed.</para>
+            <para>More detailed documentation on the <code>fetchRelationship</code> method can be
+                found in the JavaDocs for the <code>DataObjectWrapper</code>.</para>
+        </section>
+        <section>
+            <title>Reference Linking</title>
+            <para>Reference Linking is a feature which allows for ensuring that relationships and
+                foreign key state are populated and kept in sync as changes are made to a data
+                object. This may include fetching relationships as keys are changed that would
+                necessitate updating the object graph, as well as keeping foreign keys in sync in
+                the scenario where redundant foreign key fields are being used.</para>
+            <para>Reference linking takes as input a data object and a set of property paths
+                (relative to the given object) which have been modified. The
+                    <code>ReferenceLinker</code> will then examine those modified paths and make a
+                decision on how best to synchronize the keys and populate relationships. It requires
+                a set of changes to the object to be specified so as to eliminate ambiguity on what
+                the linking process should do, as well as allow the process to be optimized so that
+                it does not have to analyze and link the entire related object graph when only a
+                portion of the data has been modified.</para>
+            <para>The set of modified property paths which are supplied to the reference linker can
+                be simple or nested property paths. The reference linking feature itself was
+                designed with the goal of supporting population of missing object state when
+                modifications are occurring to a data object. The most typical case for this in KRAD
+                is during the data binding process that Spring MVC performs. However, the reference
+                linking feature itself does not assume anything about how the changes are made to
+                the data object, it just needs to know what has been modified. This allows the API
+                for reference linking to remain simple.</para>
+            <para>Reference linking can be executed using the <code>linkChanges</code> method on the
+                    <code>DataObjectWrapper</code>. Let's demonstrate with an example:</para>
+            <programlisting>
+EntityOne one = /* a new or existing instance of Entity One */
+DataObjectWrapper&lt;EntityOne> oneWrapped = dataObjectService.wrap(one);
+
+// set the value of the id for the related EntityTwo to "100"
+oneWrapped.setPropertyValue("two.id", 100);
+
+// execute the reference linking, this will notice that we've changed our foreign key value
+// for our reference to EntityTwo and will fetch that relationship for us
+Set&lt;String> changes = Sets.newHashSet("two.id");
+oneWrapped.linkChanges(changes);
+
+// now, the "two" field on EntityOne holds our fetched instance of EntityTwo with id of "100"
+EntityTwo fetchedTwo = one.getTwo();
+</programlisting>
+            <para>Notice the reference in the comments above to fetching a relationship. In fact,
+                the reference linking process itself leverages the relationship fetching
+                functionality that we talked about in the previous section. In reality, it takes the
+                set of changes and determines which relationships to fetch and which foreign key
+                values (if multiple exist for the relationship) should be used to perform that
+                fetching. This insulates KRAD applications from having to perform a lot of this type
+                of logic manually in custom controllers and takes full advantage of the metadata
+                that the data framework has available to it when reconciling data object
+                state.</para>
+        </section>
+        <section>
+            <title>Foreign Key Linking</title>
+            <para>Foreign key linking only applies to situations where there are redundant foreign
+                key fields on a data object or any other data objects that it is related to. This
+                linking operation can be executed against a data object and it will ensure that any
+                redundant foreign key values are populated based on the foreign key values stored in
+                the related data objects. It then recurses through the object graph and performs the
+                same operation on all related data objects.</para>
+            <para>This operation is often paired with persistence of the data object itself. This is
+                because primary key values which are used in relationships are often generated at
+                the time that an object is saved. This is typically done using a database sequence
+                or similar technique. In these cases, the value for a foreign key field may not be
+                known until <emphasis role="bold">after</emphasis> persistence has occurred and the
+                key values have been generated. As a result, there is a shortcut to execute foreign
+                key linking as part of the <code>save</code> operation on
+                    <code>DataObjectService</code> by using a persistence option.</para>
+            <para>The following example demonstrates this usage:</para>
+            <programlisting>
+EntityOneWithFK one = new EntityOneWithFK();
+EntityTwo two = new EntityTwo();
+two.setValue("...");
+one.setTwo(two);
+
+// in this case, both the primary key for "one" and "two" are generated when saved, in order to
+// ensure that "twoId" gets populated we need to link the foreign keys as part of the save
+
+one = dataObjectService.save(one, PersistenceOption.LINK_KEYS);
+
+// now all of our ids should be generated and the value for "twoId" should match "two.id"
+assert one.getId() != null;
+assert one.getTwo().getId() != null;
+assert one.getTwoId() != null;
+assert one.getTwoId() == one.getTwo().getId();
+</programlisting>
+            <para>If we had not used the <code>LINK_KEYS</code> persistence option, then the value
+                for <code>one.getTwoId()</code> after the save would have still been null since JPA
+                will not populate this value for us after a persist/merge because the mapping has
+                updatable and insertable set to "false".</para>
+            <para>In addition to automatic execution of foreign key linking using the
+                    <code>LINK_KEYS</code> persistence option, it is also possible to execute this
+                linking manually using the <code>linkForeignKeys</code> method on the
+                    <code>DataObjectWrapper</code>.</para>
+        </section>
+    </section>  
 </chapter>

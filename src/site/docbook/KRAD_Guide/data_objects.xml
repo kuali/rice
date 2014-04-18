@@ -1411,7 +1411,7 @@ public class EntityOne {
 }
 
 @Entity
-class EntityTwo {
+public class EntityTwo {
  
     @Id
     @GeneratedValue
@@ -1445,7 +1445,7 @@ public class EntityOneWithFK {
 }
 
 @Entity
-class EntityTwo {
+public class EntityTwo {
  
     @Id
     @GeneratedValue

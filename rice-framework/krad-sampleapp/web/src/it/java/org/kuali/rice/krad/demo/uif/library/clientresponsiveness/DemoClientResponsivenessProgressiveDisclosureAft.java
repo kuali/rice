@@ -118,13 +118,13 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndClickByLinkText("Conditional Options");
     	selectByName("inputField19","Apples");
     	waitAndClickButtonByText("Refresh Group");
+        Thread.sleep(10000); // would be better to have a waitForTextNotPresent that takes seconds
         waitForTextNotPresent("Loading...");
-    	Thread.sleep(10000);		
     	selectByName("inputField4","Vegetables");
     	// Test page gives exception after this step.
         waitAndClickButtonByText("Refresh Field");
+        Thread.sleep(10000); // would be better to have a waitForTextNotPresent that takes seconds
         waitForTextNotPresent("Loading...");
-        Thread.sleep(10000);
         waitAndClickButtonByText("Refresh Field but with Server Errors");
         waitForTextPresent("Field 1: Intended message with key: serverTestError not found.");
         waitAndClickButtonByText("Refresh Page");

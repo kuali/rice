@@ -52,6 +52,6 @@ public class LabsLookupMvViewAft extends LabsLookupBase {
     protected void testLabsLookupMVView()throws Exception {
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","fr*");
         waitAndClickButtonByText("Search");
-        assertResultCount("5");
+        waitForTextPresent("of 5 entries");
     }
 }

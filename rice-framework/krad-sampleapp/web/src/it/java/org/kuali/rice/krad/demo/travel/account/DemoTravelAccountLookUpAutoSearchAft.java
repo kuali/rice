@@ -50,7 +50,7 @@ public class DemoTravelAccountLookUpAutoSearchAft extends WebDriverLegacyITBase 
     }
 
     protected void testDemoTravelAccountLookUpAutoSearch() throws Exception {
-        assertTextPresent("Showing 1 to 10");
+        waitForTextPresent("Showing 1 to 10");
 
         By[] results = {By.linkText("a1"), By.linkText("a2"), By.linkText("a3"), By.linkText("a4"), By.linkText("a5"),
                 By.linkText("a6"), By.linkText("a7"), By.linkText("a8"), By.linkText("a9"), By.linkText("a10"),

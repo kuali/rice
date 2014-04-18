@@ -1004,7 +1004,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         driver.switchTo().window(parentWindowHandle);
     }
 
-    protected void assertTableLayout() {
+    protected void assertTableLayout() throws Exception {
+        waitForTextPresent("Actions");
         String pageSource = driver.getPageSource();
         assertTrue(pageSource.contains("Table Layout"));
         assertTrue(pageSource.contains("Field 1"));

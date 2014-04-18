@@ -91,6 +91,7 @@ public class DemoFieldsActionAft extends DemoLibraryBase {
         assertIsVisible("#" + fieldId);
         waitAndClickByLinkText(field.getText());
 
+        Thread.sleep(1500); // give alert time to be triggered
         assertTrue(driver.switchTo().alert().getText().contains("Refresh called successfully"));
         alertAccept();
     }

@@ -65,7 +65,7 @@ public abstract class WebDriverITBase {
     }
 
 
-    public void fail(String message) {
+    public void fail(String message) { // should this method be abstract or overridden, no jira aware fail?
         SeleneseTestBase.fail(message);
     }
 
@@ -401,10 +401,9 @@ public abstract class WebDriverITBase {
             (driver.findElement(by)).click();
         } catch (Exception e) {
             fail(e.getMessage() + " " + by.toString() + " " + message);
-            e.printStackTrace();
         }
     }
-    
+
     /**
      * 
      *

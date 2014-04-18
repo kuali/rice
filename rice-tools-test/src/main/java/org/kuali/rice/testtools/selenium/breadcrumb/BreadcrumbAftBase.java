@@ -55,7 +55,7 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
         // etc.
         assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         // The second ▼
-        waitAndClickByXpath(getTriangleXpath());
+        waitAndClickByXpath(getTriangleXpath(), "failed on breadcrumb pageNumber " + pageNumber);
         Thread.sleep(100);
         assertTrue(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         waitAndClickByXpath(getTriangleXpath());

@@ -18,3 +18,5 @@
 -- KULRICE-11129 Samples for I22, population of Active Indicator field with initial values
 UPDATE TRV_ACCT_TYPE SET ACTV_IND='Y'
 /
+COMMIT
+/

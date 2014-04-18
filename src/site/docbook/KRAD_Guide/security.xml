@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  ~ Copyright 2005-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<chapter xml:id="security" xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <title>Security</title>
+  <section>
+    <title>Overview</title>
+    <para>The purpose of this functionality is to provide security within the request binding
+      process and controller invocation.</para>
+  </section>
+  <section>
+    <title>Model Binding</title>
+    <para>Request parameters are bound to model (form) properties based on property security levels.
+      These levels indicate when a property can be updated.</para>
+    <section>
+      <title>Default Security Level - View</title>
+      <para>The default security level for model properties is based on view metadata. That is, the
+        property will only be updated if contained in view configuration that requires updating.
+        This includes:<itemizedlist>
+          <listitem>
+            <para>Input Field Property Name - If the property name is associated with an input
+              field</para>
+          </listitem>
+          <listitem>
+            <para>Quickfinder Field Conversion - If the property name is listed as a return field of
+              a quickfinder, the value will be updated when returning from that lookup</para>
+          </listitem>
+          <listitem>
+            <para>Action Additional Submit Data - If the property name is listed in the
+              additionalSubmitData property for an action</para>
+          </listitem>
+          <listitem>
+            <para>Data Field Additional Hiddens - If the property name is listed in the
+              additionalHiddenPropertyNames property for Data Field</para>
+          </listitem>
+          <listitem>
+            <para>User Control Principal Id - Property name mapped to the user control principal id
+              hidden</para>
+          </listitem>
+          <listitem>
+            <para>Collection Group Property Name - If the property name is associated with a
+              collection group, the collection items will be updated (add or delete). Individual
+              properties in the collection item must meet one of the other requirements.</para>
+          </listitem>
+        </itemizedlist></para>
+      <para>Note in all these cases, the component must be rendered, not hidden, and not read-only
+        (where applicable). These settings in turn can depend on code and KIM permissions.</para>
+    </section>
+    <section>
+      <title>Accessible Security Level</title>
+      <para>Model properties may contain the annotation <emphasis role="bold"
+          >@RequestAccessible</emphasis> to indicate their values can be updated by request
+        parameters. This would allow updates regardless of view configuration. The annotation may be
+        placed on a data object to grant access to all nested properties (unless they contain a
+        request protected annotation).</para>
+      <para>If a property is not within the view configuration (or in the view configuration but
+        doesn't meet one of the conditions above), this annotation may be needed to allow binding.
+        For example, the application may have custom script that pass request parameters which
+        should update model (form) properties. <emphasis role="bold">In addition, since view post
+          data is only available for POST requests, any properties that need binding on GET requests
+          must have this annotation. </emphasis>The annotation may also include a <emphasis
+          role="bold">method</emphasis> value that restricts access depending on the HTTP request
+        method (for example GET).</para>
+    </section>
+    <section>
+      <title>Protected Security Level</title>
+      <para>Model properties may contain the annotation <emphasis role="bold"
+          >@RequestProtected</emphasis> to indicate their values cannot be updated by request
+        parameters. This would disallow updates regardless of view configuration. Note the
+        annotation maybe be placed on a data object to deny access to all nested properties (unless
+        they contain a request accessible annotation).</para>
+      <para>If the property name is within the view configuration and meets one of the conditions
+        above, this annotation will be needed to prevent updating. For example, you might have a
+        hidden which is needed for script, but you don't want that value to be updated. </para>
+      <note><title>Binding Access Errors</title>
+        <para>When a request parameter is present for a property whose binding access is protected,
+        the value will not be populated. In addition, a debug message will be written and the
+        property name added to supressedFields in the binding result. The request will continue as
+        usual, and applications can deal further with the binding result if needed.</para></note>
+      <para><emphasis role="bold">Example</emphasis>
+        <programlisting>public class TravelForm extends UifFormBase {
+ 
+  // view security level
+  private String firstName;
+ 
+  // view security level
+  private String lastName;
+ 
+  @RequestProtected
+  private String travelSequenceId;
+ 
+  @RequestAccessible
+  private boolean updateFlag;
+ 
+  @RequestProtected
+  private TaxInfo taxInfo;
+ 
+  @RequestAccessible(method=RequestMethod.GET)
+  private boolean copy;
+ 
+}</programlisting>
+      </para>
+    </section>
+  </section>
+  <section>
+    <title>Controller Method Binding</title>
+    <para>Security will be implemented within the UIF to verify the user has access to invoke the
+      controller method requested. Method access will be granted based on the following.</para>
+    <para><emphasis role="bold">Default Security Level - View</emphasis><itemizedlist>
+        <listitem>
+          <para>Action Method To Call - If method is configured as the method to call for a view
+            action</para>
+        </listitem>
+        <listitem>
+          <para>Component Method To Call on Refresh - If method is configured as the method to call
+            on refresh for a component</para>
+        </listitem>
+      </itemizedlist></para>
+    <para>Note in all these cases, the component must be rendered, not hidden, and not read-only
+      (where applicable). These settings in turn can depend on code and KIM permissions.</para>
+    <para><emphasis role="bold">Accessible Security Level</emphasis></para>
+    <para>Controller methods may contain the annotation <emphasis role="bold"
+        >@MethodAccessible</emphasis> to indicate they can be invoked regardless of the view
+      configuration.</para>
+    <para>Since view actions only cover posts, all methods that can be invoked in a GET
+      request must have the @MethodAccessible annotation. The default start method of
+      UifControllerBase (and GET methods for other framework controllers) will have this annotation
+      already. In addition, any methods invoked with custom script will need this annotation.</para>
+    <para>Spring's RequestMapping annotation can sldo be used to restrict method access for Http
+      request types (GET, POST) and other request attributes.</para>
+    <note><title>Method Access Errors</title><para>When a controller method is requested whose access is protected,
+      the request will end and the user will be redirected to the incident report page.</para></note>
+  </section>
+  <section>
+    <title>Use Screen</title>
+    <para>Use Screen is a KIM permission template of the KNS that restricted controller access.
+      Access is restricted for an entire module by just specifying the namespace (in permissions
+      details), or a particular controller by specifying the action class. In KRAD, the default
+      security level requires a valid action component (which can then depend on permissions). So
+      this is only be needed to restrict access (based on user) for those controller methods
+      annotated with <emphasis role="bold">@RequestAccessible</emphasis>. </para>
+    <para>This permission differs from the Open View permission which can be used to restrict any
+      view (or screen) since it prevents someone form invoking a controller method they should not
+      have access to (which might indirectly prevent them from accessing a screen). </para>
+  </section>
+</chapter>

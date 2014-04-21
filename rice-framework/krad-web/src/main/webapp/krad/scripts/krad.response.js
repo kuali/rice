@@ -217,7 +217,7 @@ KradResponse.prototype = {
         var app = jQuery("#" + kradVariables.APP_ID);
         app.hide();
 
-        var update = jQuery("div[data-returntype='update-view']", content);
+        var update = jQuery(content);
 
         var appHeaderUpdate = update.find("#" + kradVariables.APPLICATION_HEADER_WRAPPER);
         app.find("#" + kradVariables.APPLICATION_HEADER_WRAPPER).replaceWith(appHeaderUpdate);

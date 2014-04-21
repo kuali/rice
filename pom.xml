@@ -2555,9 +2555,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/branches/rice-2.4</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/branches/rice-2.4</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/branches/rice-2.4</url>
   </scm>
 
 </project>

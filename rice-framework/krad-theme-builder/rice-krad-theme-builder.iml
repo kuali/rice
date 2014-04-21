@@ -20,7 +20,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.kuali.common:kuali-util:4.4.10" level="project" />
+    <orderEntry type="library" name="Maven: org.kuali.common:kuali-util:4.4.9" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.0.10" level="project" />
     <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.50" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.2.1" level="project" />

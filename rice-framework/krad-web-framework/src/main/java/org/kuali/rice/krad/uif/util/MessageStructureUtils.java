@@ -19,6 +19,8 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -442,6 +444,11 @@ public class MessageStructureUtils {
                     "," +
                     successCallback +
                     "); return false;\">";
+
+            ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
+            if (viewPostMetadata != null) {
+                viewPostMetadata.addAccessibleMethodToCall(methodToCall);
+            }
         } else {
             messagePiece = "</a>";
         }

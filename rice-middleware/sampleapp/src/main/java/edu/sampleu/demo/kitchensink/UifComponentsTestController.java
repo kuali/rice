@@ -158,7 +158,6 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Adds errors to fields defined in the validationMessageFields array
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addErrors")
     public ModelAndView addErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

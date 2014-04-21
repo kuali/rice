@@ -347,7 +347,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.sun:tools:1.6">
         <CLASSES>
-          <root url="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar!/" />
+          <root url="jar:///usr/lib/jvm/java-7-oracle/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

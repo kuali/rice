@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <bean id="LabsGroupControl" parent="LabsGroupControl-parentBean"/>
-  <bean id="LabsGroupControl-parentBean" abstract="true" parent="BusinessObjectEntry">
+  <bean id="LabsGroupControl-parentBean" abstract="true" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.labs.LabsGroupControl"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">

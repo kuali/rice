@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <bean id="LabsUserControl" parent="LabsUserControl-parentBean"/>
-  <bean id="LabsUserControl-parentBean" abstract="true" parent="BusinessObjectEntry">
+  <bean id="LabsUserControl-parentBean" abstract="true" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.labs.LabsUserControl"/>
     <property name="titleAttribute" value="principalId"/>
     <property name="attributes">

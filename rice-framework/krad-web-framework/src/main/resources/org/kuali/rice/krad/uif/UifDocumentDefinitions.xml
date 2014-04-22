@@ -192,6 +192,7 @@
           <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson"/>
           <property name="propertyName" value="adHocRoutePersons"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="addLinePlacement" value="BOTTOM" />
           <property name="headerText" value="Person Requests:"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
@@ -221,6 +222,7 @@
           <property name="propertyName" value="adHocRouteWorkgroups"/>
           <property name="headerText" value="Ad Hoc Group Requests:"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="addLinePlacement" value="BOTTOM" />
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="cssClasses" value="tableborders"/>

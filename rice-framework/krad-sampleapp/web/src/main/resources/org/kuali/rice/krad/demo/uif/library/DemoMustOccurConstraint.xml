@@ -44,7 +44,7 @@
         <bean parent="Uif-InputField" p:label="Field 2A" p:propertyName="inputField2"/>
         <bean parent="Uif-InputField" p:label="Field 2B" p:propertyName="inputField3"/>
         <bean parent="Uif-InputField" p:label="Field with MustOccurConstraint" p:propertyName="inputField4"
-              p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+              p:constraintText="Field 1A; AND/OR Field 2A with Field 2B must occur when this field has a value">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">
@@ -141,7 +141,7 @@
         <bean parent="Uif-InputField" p:label="Field 2B" p:propertyName="inputField12"/>
         
         <bean parent="Uif-InputField" p:label="Field With MustOccurConstraint" p:propertyName="inputField13"
-                p:constraintText="(1A or 1B) OR (2A and 2B) must occur">
+                p:constraintText="(1A or 1B) AND/OR (2A and 2B) must occur">
           <property name="mustOccurConstraints">
             <list>
               <bean parent="MustOccurConstraint">

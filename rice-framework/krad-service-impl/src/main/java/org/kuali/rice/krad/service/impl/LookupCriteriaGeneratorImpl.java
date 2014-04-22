@@ -476,15 +476,22 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
     protected void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Predicates criteria) {
         String[] splitPropVal = StringUtils.split(propertyValue, SearchOperator.NOT.op());
 
-        int strLength = splitPropVal.length;
-        // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
-        if (strLength > 1) {
-            String expandedNot = SearchOperator.NOT + StringUtils.join(splitPropVal, SearchOperator.AND.op() + SearchOperator.NOT.op());
-            // we know that since this method was called, treatWildcardsAndOperatorsAsLiteral must be false
-            addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, false, criteria);
-        } else {
-            // only one so add a not like
-            addNotLike(criteria, propertyName, splitPropVal[0], caseInsensitive);
+        try {
+            int strLength = splitPropVal.length;
+            // if Not'ed empty criteria
+            if (strLength == 0)
+                throw new IllegalArgumentException("Improper syntax of NOT operator in " + propertyName);
+            // if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
+            if (strLength > 1) {
+                String expandedNot = SearchOperator.NOT + StringUtils.join(splitPropVal, SearchOperator.AND.op() + SearchOperator.NOT.op());
+                // we know that since this method was called, treatWildcardsAndOperatorsAsLiteral must be false
+                addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, false, criteria);
+            } else {
+                // only one so add a not like
+                addNotLike(criteria, propertyName, splitPropVal[0], caseInsensitive);
+            }
+        } catch (IllegalArgumentException ex) {
+            GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_NOT_SYNTAX, propertyName);
         }
     }
 
@@ -497,6 +504,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Wildcards and operators are not allowed on this date field: " + propertyName);
                 String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
+                if (rangeValues.length < 2)
+                    throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
                 addBetween(criteria, propertyName, parseDate(LookupUtils.scrubQueryCharacters(rangeValues[0])), parseDateUpperBound(LookupUtils.scrubQueryCharacters(rangeValues[1])));
             } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
                 if (treatWildcardsAndOperatorsAsLiteral)
@@ -521,6 +531,8 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             }
         } catch (ParseException ex) {
             GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_DATE, propertyValue);
+        } catch (IllegalArgumentException ex) {
+            GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_BETWEEN_SYNTAX, propertyName);
         }
     }
 
@@ -533,6 +545,9 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
                 if (treatWildcardsAndOperatorsAsLiteral)
                     throw new RuntimeException("Cannot use wildcards and operators on numeric field " + propertyName);
                 String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
+                if (rangeValues.length < 2)
+                    throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
                 addBetween(criteria, propertyName, cleanNumeric(rangeValues[0], propertyType), cleanNumeric(rangeValues[1], propertyType));
             } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
                 if (treatWildcardsAndOperatorsAsLiteral)
@@ -555,6 +570,8 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
             }
         } catch (NumberFormatException ex) {
             GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_NUMBER, propertyValue);
+        } catch (IllegalArgumentException ex) {
+            GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_BETWEEN_SYNTAX, propertyName);
         }
     }
 
@@ -562,19 +579,26 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
      * Adds to the criteria object based on query characters given
      */
     protected void addStringRangeCriteria(String propertyName, String propertyValue, boolean caseInsensitive, Predicates criteria) {
-        if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
-            String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
-            addBetween(criteria, propertyName, rangeValues[0], rangeValues[1], caseInsensitive);
-        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
-            addGreaterThanOrEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
-        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
-            addLessThanOrEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
-        } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
-            addGreaterThan(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
-        } else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
-            addLessThan(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
-        } else {
-            addEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+        try {
+            if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
+                String[] rangeValues = StringUtils.split(propertyValue, SearchOperator.BETWEEN.op());
+                if (rangeValues.length < 2)
+                    throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
+                addBetween(criteria, propertyName, rangeValues[0], rangeValues[1], caseInsensitive);
+            } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
+                addGreaterThanOrEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+            } else if (propertyValue.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
+                addLessThanOrEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+            } else if (propertyValue.startsWith(SearchOperator.GREATER_THAN.op())) {
+                addGreaterThan(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+            } else if (propertyValue.startsWith(SearchOperator.LESS_THAN.op())) {
+                addLessThan(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+            } else {
+                addEqual(criteria, propertyName, LookupUtils.scrubQueryCharacters(propertyValue), caseInsensitive);
+            }
+        } catch (IllegalArgumentException ex) {
+            GlobalVariables.getMessageMap().putError("lookupCriteria[" + propertyName + "]", RiceKeyConstants.ERROR_BETWEEN_SYNTAX, propertyName);
         }
     }
 
@@ -754,7 +778,7 @@ public class LookupCriteriaGeneratorImpl implements LookupCriteriaGenerator {
      */
     protected boolean isWriteable(Object o, String p) throws IllegalArgumentException {
         if (null == o || null == p) {
-            throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
+            throw new IllegalArgumentException("Cannot check writable status with null arguments.");
         }
 
         boolean b = false;

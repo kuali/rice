@@ -53,6 +53,8 @@ public final class RiceKeyConstants {
     public static final String ERROR_INCLUSIVE_MIN = "error.inclusiveMin";
     public static final String ERROR_INCLUSIVE_MAX = "error.inclusiveMax";
     public static final String ERROR_OUT_OF_RANGE = "error.outOfRange";
+    public static final String ERROR_NOT_SYNTAX = "error.notSyntax";
+    public static final String ERROR_BETWEEN_SYNTAX = "error.betweenSyntax";
 
     public static final String ERROR_INACTIVATION_BLOCKED = "error.inactivation.blocked";
 

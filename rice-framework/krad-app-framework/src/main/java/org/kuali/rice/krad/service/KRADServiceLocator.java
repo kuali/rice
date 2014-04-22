@@ -42,9 +42,9 @@ public class KRADServiceLocator {
     public static final String MAIL_SERVICE = "mailService";
     public static final String DB_PLATFORM = "dbPlatform";
     public static final String INACTIVATEABLE_FROM_TO_SERVICE = "inactivateableFromToService";
-    public static final String KD_DATA_OBJECT_SERVICE = "kd-dataObjectService";
-    public static final String KD_METADATA_REPOSITORY = "kd-metadataRepository";
-    public static final String KD_PROVIDER_REGISTRY = "kd-providerRegistry";
+    public static final String DATA_OBJECT_SERVICE = "dataObjectService";
+    public static final String METADATA_REPOSITORY = "metadataRepository";
+    public static final String PROVIDER_REGISTRY = "providerRegistry";
     public static final String LEGACY_DATA_ADAPTER_FRAMEWORK = "legacyAppFrameworkAdapter";
     public static final String KRAD_APPLICATION_DATA_SOURCE = "kradApplicationDataSource";
 
@@ -103,15 +103,15 @@ public class KRADServiceLocator {
 
 
     public static DataObjectService getDataObjectService() {
-        return getService(KD_DATA_OBJECT_SERVICE);
+        return getService(DATA_OBJECT_SERVICE);
     }
 
     public static MetadataRepository getMetadataRepository() {
-        return getService(KD_METADATA_REPOSITORY);
+        return getService(METADATA_REPOSITORY);
     }
 
     public static ProviderRegistry getProviderRegistry() {
-        return getService(KD_PROVIDER_REGISTRY);
+        return getService(PROVIDER_REGISTRY);
     }
 
     public static DataSource getKradApplicationDataSource() {

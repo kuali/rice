@@ -67,7 +67,7 @@ public class ModuleConfigurationTest {
         config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID");
         ConfigContext.init(config);
         StaticListableBeanFactory testBf = new StaticListableBeanFactory();
-        testBf.addBean(KRADServiceLocator.KD_PROVIDER_REGISTRY, prMock);
+        testBf.addBean(KRADServiceLocator.PROVIDER_REGISTRY, prMock);
         ResourceLoader rl = new BeanFactoryResourceLoader(new QName("moduleconfiguration-unittest"), testBf);
         GlobalResourceLoader.addResourceLoader(rl);
         GlobalResourceLoader.start();

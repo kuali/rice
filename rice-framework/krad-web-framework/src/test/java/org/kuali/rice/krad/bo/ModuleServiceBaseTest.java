@@ -80,7 +80,7 @@ public class ModuleServiceBaseTest {
         StaticListableBeanFactory testBf = new StaticListableBeanFactory();
         when(kualiModuleService.getInstalledModuleServices()).thenReturn(installedModuleServices);
 
-        testBf.addBean(KRADServiceLocator.KD_PROVIDER_REGISTRY, mock(ProviderRegistry.class));
+        testBf.addBean(KRADServiceLocator.PROVIDER_REGISTRY, mock(ProviderRegistry.class));
         testBf.addBean(KRADServiceLocatorWeb.KUALI_MODULE_SERVICE, kualiModuleService);
 
         ResourceLoader rl = new BeanFactoryResourceLoader(new QName("moduleservicebase-unittest"), testBf);

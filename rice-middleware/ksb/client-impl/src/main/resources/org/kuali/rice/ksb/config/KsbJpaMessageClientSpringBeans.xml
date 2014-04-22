@@ -83,7 +83,7 @@
   <bean id="grlBeanImporter" abstract="true"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean" p:singleton="true"
         p:mustExist="true"/>
-  <bean id="rice.ksb.message.providerRegistry" p:serviceName="kd-providerRegistry" parent="grlBeanImporter"/>
+  <bean id="rice.ksb.message.providerRegistry" p:serviceName="providerRegistry" parent="grlBeanImporter"/>
 
   <bean id="rice.ksb.message.providerRegister" class="org.kuali.rice.krad.data.provider.ProviderRegistrar">
     <!-- Inject optional provider registry as it does not exist on the KradDataServiceLocator at this point-->

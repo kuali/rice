@@ -187,13 +187,13 @@
 
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
-  <bean id="kd-providerRegistry"
+  <bean id="providerRegistry"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-providerRegistry"/>
+        p:serviceName="providerRegistry"/>
 
-  <bean id="kd-dataObjectService"
+  <bean id="dataObjectService"
         class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceName="kd-dataObjectService"/>
+        p:serviceName="dataObjectService"/>
 
   <!-- Enables Load-Time Weaving -->
   <context:load-time-weaver weaver-class="org.kuali.rice.core.framework.util.spring.OptionalContextLoadTimeWeaver"/>
@@ -263,7 +263,7 @@
 
   <bean id="kradTestJpaPersistenceProvider"
         class="org.kuali.rice.krad.data.jpa.JpaPersistenceProvider"
-        p:dataObjectService-ref="kd-dataObjectService"
+        p:dataObjectService-ref="dataObjectService"
         p:sharedEntityManager-ref="kradTestSharedEntityManager"/>
 
   <!-- Metadata Providers -->

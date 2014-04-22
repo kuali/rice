@@ -59,7 +59,7 @@ public class LegacyUtilsTest {
         ConfigContext.init(config);
 
         when(resourceLoader.getName()).thenReturn(QName.valueOf(LegacyUtilsTest.class.getName()));
-        when(resourceLoader.getService(QName.valueOf("kd-metadataRepository"))).thenReturn(metadataRepository);
+        when(resourceLoader.getService(QName.valueOf("metadataRepository"))).thenReturn(metadataRepository);
         when(resourceLoader.getService(QName.valueOf("dataDictionaryService"))).thenReturn(dataDictionaryService);
 
         GlobalResourceLoader.addResourceLoader(resourceLoader);

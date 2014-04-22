@@ -118,7 +118,7 @@ public class LegacyDataAdapterLegacyDetectionTest {
         // person = (Person) KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
         // fake it out :(
         testBf.addBean(KimApiServiceLocator.KIM_PERSON_SERVICE, new PersonServiceImpl());
-        testBf.addBean("kd-metadataRepository", mock(MetadataRepository.class));
+        testBf.addBean("metadataRepository", mock(MetadataRepository.class));
         testBf.addBean("dataDictionaryService", mock(DataDictionaryService.class));
         testBf.addBean("knsLegacyDataAdapter", knsLegacyDataAdapter);
         testBf.addBean("kradLegacyDataAdapter",kradLegacyDataAdapter);

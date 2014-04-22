@@ -29,21 +29,21 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd
                            ">
 
-  <bean id="kd-dataObjectService"
+  <bean id="dataObjectService"
         class="org.kuali.rice.krad.data.provider.impl.ProviderBasedDataObjectService"
-        p:providerRegistry-ref="kd-providerRegistry"
-        p:metadataRepository-ref="kd-metadataRepository"
-        p:referenceLinker-ref="kd-referenceLinker"/>
+        p:providerRegistry-ref="providerRegistry"
+        p:metadataRepository-ref="metadataRepository"
+        p:referenceLinker-ref="referenceLinker"/>
 
-  <bean id="kd-providerRegistry"
+  <bean id="providerRegistry"
         class="org.kuali.rice.krad.data.provider.impl.ProviderRegistryImpl"/>
 
-  <bean id="kd-metadataRepository"
+  <bean id="metadataRepository"
         class="org.kuali.rice.krad.data.metadata.impl.MetadataRepositoryImpl"
-        p:providerRegistry-ref="kd-providerRegistry"/>
+        p:providerRegistry-ref="providerRegistry"/>
 
-  <bean id="kd-referenceLinker"
+  <bean id="referenceLinker"
         class="org.kuali.rice.krad.data.util.ReferenceLinker"
-        p:dataObjectService-ref="kd-dataObjectService"/>
+        p:dataObjectService-ref="dataObjectService"/>
 
 </beans>

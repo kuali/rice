@@ -35,7 +35,7 @@
 
 	<bean id="configurationService" p:serviceName="kualiConfigurationService" parent="grlBeanImporter" />
 	<bean id="rice.ksb.serviceBus" p:serviceName="rice.ksb.serviceBus" parent="grlBeanImporter" />
-	<bean id="providerRegistry" p:serviceName="kd-providerRegistry" parent="grlBeanImporter" />
-	<bean id="dataObjectService" p:serviceName="kd-dataObjectService" parent="grlBeanImporter" />
+	<bean id="providerRegistry" p:serviceName="providerRegistry" parent="grlBeanImporter" />
+	<bean id="dataObjectService" p:serviceName="dataObjectService" parent="grlBeanImporter" />
 
 </beans>

@@ -30,14 +30,14 @@ public class KradDataServiceLocator {
     }
 
     public static DataObjectService getDataObjectService() {
-        return getService("kd-dataObjectService");
+        return getService("dataObjectService");
     }
 
     public static MetadataRepository getMetadataRepository() {
-        return getService("kd-metadataRepository");
+        return getService("metadataRepository");
     }
 
 	public static ProviderRegistry getProviderRegistry() {
-		return getService("kd-providerRegistry");
+		return getService("providerRegistry");
 	}
 }

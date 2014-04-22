@@ -81,7 +81,7 @@ public class LegacyDataAdapterImplTest {
         ConfigContext.getCurrentContextConfig().removeProperty(KRADConstants.Config.KNS_ENABLED);
 
         StaticListableBeanFactory testBf = new StaticListableBeanFactory();
-        testBf.addBean("kd-metadataRepository", metadataRepository);
+        testBf.addBean("metadataRepository", metadataRepository);
         testBf.addBean("dataDictionaryService", dataDictionaryService);
         testBf.addBean("knsLegacyDataAdapter", knsLegacyDataAdapter);
         testBf.addBean("kradLegacyDataAdapter", kradLegacyDataAdapter);

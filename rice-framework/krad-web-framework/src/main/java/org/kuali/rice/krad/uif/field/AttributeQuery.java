@@ -86,8 +86,8 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      * @param viewHelperService instance of view helper to use as default for query methods
      */
     public void defaultQueryTarget(ViewHelperService viewHelperService) {
-        if ((queryMethodInvokerConfig.getTargetClass() == null) && (queryMethodInvokerConfig.getTargetObject()
-                == null)) {
+        if ((queryMethodInvokerConfig != null) && (queryMethodInvokerConfig.getTargetClass() == null)
+                && (queryMethodInvokerConfig.getTargetObject() == null)) {
             queryMethodInvokerConfig.setTargetClass(viewHelperService.getClass());
         }
     }

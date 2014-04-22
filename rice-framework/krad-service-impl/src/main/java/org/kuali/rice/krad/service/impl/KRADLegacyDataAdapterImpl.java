@@ -905,10 +905,15 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public Map<String, String> getInquiryParameters(Object dataObject, List<String> keys, String propertyName) {
         Map<String, String> inquiryParameters = new HashMap<String, String>();
+        org.kuali.rice.krad.data.metadata.DataObjectRelationship dataObjectRelationship = null;
+
         DataObjectMetadata objectMetadata =
                 KRADServiceLocator.getDataObjectService().getMetadataRepository().getMetadata(dataObject.getClass());
-        org.kuali.rice.krad.data.metadata.DataObjectRelationship dataObjectRelationship =
-                objectMetadata.getRelationshipByLastAttributeInRelationship(propertyName);
+
+        if (objectMetadata != null) {
+            dataObjectRelationship = objectMetadata.getRelationshipByLastAttributeInRelationship(propertyName);
+        }
+
         for (String keyName : keys) {
             String keyConversion = keyName;
             if (dataObjectRelationship != null) {

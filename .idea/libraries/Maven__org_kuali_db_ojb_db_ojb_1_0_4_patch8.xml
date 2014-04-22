@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8">
     <CLASSES>
-      <root url="jar://$M2_REPO$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$M2_REPO$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$M2_REPO$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/kuali/db/ojb/db-ojb/1.0.4-patch8/db-ojb-1.0.4-patch8-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

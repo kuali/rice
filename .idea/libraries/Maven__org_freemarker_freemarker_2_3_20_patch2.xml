@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.freemarker:freemarker:2.3.20-patch2">
     <CLASSES>
-      <root url="jar://$M2_REPO$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$M2_REPO$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$M2_REPO$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.20-patch2/freemarker-2.3.20-patch2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

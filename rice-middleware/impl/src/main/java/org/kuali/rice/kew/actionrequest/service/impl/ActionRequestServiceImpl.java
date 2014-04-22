@@ -516,11 +516,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionRequest.setActionTaken(actionTaken);
 
         if (!activationContext.isSimulation()) {
-            if (actionTaken != null) {
-                // only add it if it's not null and we aren't in a simulation context, if we are in simulation mode, we
-                // don't want to modify any action requests, lest they get saved by a JPA flush later!
-                actionTaken.getActionRequests().add(actionRequest);
-            }
             actionRequest = getDataObjectService().save(actionRequest);
             deleteActionItems(actionRequest, true);
         }

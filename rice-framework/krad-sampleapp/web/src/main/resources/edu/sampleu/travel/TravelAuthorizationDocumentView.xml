@@ -156,6 +156,11 @@
     <property name="propertyName" value="actualExpenseItems"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="true"/>
+    <property name="layoutManager.columnCalculations">
+      <list>
+        <bean parent="Uif-ColumnCalculationInfo-Sum" p:propertyName="expenseAmount"/>
+      </list>
+    </property>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="travelCompanyName" p:required="true"/>

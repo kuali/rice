@@ -166,7 +166,6 @@ public class GroupBase extends ContainerBase implements Group {
     public void performInitialization(Object model) {
         if (isClosedAjaxDisclosure()) {
             this.setItems(new ArrayList<Component>());
-            this.setFooter(null);
         }
 
         super.performInitialization(model);

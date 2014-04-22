@@ -80,6 +80,7 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
 
         Collections.shuffle(Arrays.asList(copiedBreadcrumbOrderIndex));
         for (int i = 0, s = copiedBreadcrumbOrderIndex.length; i < s; i++) {
+            jGrowl("Click on Bread crumb index number " + i);
             testBreadcrumb(copiedBreadcrumbOrderIndex[i]);
         }
     }

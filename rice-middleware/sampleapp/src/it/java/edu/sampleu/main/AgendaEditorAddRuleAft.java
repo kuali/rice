@@ -70,6 +70,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         // dynamic agenda details
         Thread.sleep(500); // tab is happening to fast
         unfocusElement();
+        unfocusElement();
         waitAndTypeByName(NEW_DATA_OBJ_PATH + "agenda.typeId", "Campus Agenda");
         unfocusElement();
         waitAndTypeByName(NEW_DATA_OBJ_PATH + "customAttributesMap[Campus]", "BL");

@@ -1,5 +1,3 @@
 <component name="CopyrightManager">
-  <settings default="The Kuali Foundation">
-    <module2copyright />
-  </settings>
+  <settings default="The Kuali Foundation" />
 </component>

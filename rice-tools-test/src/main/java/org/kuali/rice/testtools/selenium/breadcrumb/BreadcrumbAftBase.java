@@ -17,6 +17,7 @@ package org.kuali.rice.testtools.selenium.breadcrumb;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,6 +54,7 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
         //         Other Fields
         // </a></li>
         // etc.
+        jiraAwareWaitFor(By.xpath(SECOND_BREADCRUMB_NAV_XPATH));
         assertFalse(isVisibleByXpath(SECOND_BREADCRUMB_NAV_XPATH));
         // The second ▼
         waitAndClickByXpath(getTriangleXpath(), "failed on breadcrumb pageNumber " + pageNumber);

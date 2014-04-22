@@ -42,8 +42,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-       waitAndClickByXpath("//img[@alt='doc search']"); 
-       waitAndClickByName("toggleAdvancedSearch");
+        waitAndClickByXpath("//img[@alt='doc search']");
     }
 
     @Test
@@ -53,12 +52,12 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     
     @Test
     public void testAdvancedDocSearchBookmark() throws Exception {
-        selectFrameIframePortlet();
-        waitAndClickByName("toggleAdvancedSearch");
         advancedDocSearchAll();
     }
     
     private void advancedDocSearchAll() throws Exception{
+        selectFrameIframePortlet();
+        waitAndClickByName("toggleAdvancedSearch");
         searchByDocumentType();
         searchByInitiator();
         searchByApprover();

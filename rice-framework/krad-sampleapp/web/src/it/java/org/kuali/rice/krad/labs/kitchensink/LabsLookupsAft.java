@@ -67,6 +67,8 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         fireEvent("field76", "blur");
         waitForTextPresent("Travel Account 1");
 
+        String field79Value = waitAndGetAttributeByName("field79", "value");
+        jGrowl("field79's value is: " + field79Value); // it appears sometimes the value is already a3?
         waitAndTypeByName("field79", "a3");
         fireEvent("field79", "blur");
         waitAndClickByName("field60"); // force blur on field79

@@ -46,7 +46,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
        waitAndClickByName("toggleAdvancedSearch");
     }
 
-//    @Test
+    @Test
     public void testAdvancedDocSearchNav() throws Exception {
         advancedDocSearchAll();
     }

@@ -147,10 +147,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Loads the document by its provided document header id. This has been abstracted out so that
-     * it can be overridden in children if the need arises
+     * Loads the document by its provided document header id.
      *
-     * @param form - form instance that contains the doc id parameter and where
+     * <p>This has been abstracted out so that
+     * it can be overridden in children if the need arises</p>
+     *
+     * @param form form instance that contains the doc id parameter and where
      * the retrieved document instance should be set
      */
     protected void loadDocument(DocumentFormBase form) throws WorkflowException {
@@ -191,7 +193,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      * Creates a new document of the type specified by the docTypeName property of the given form.
      * This has been abstracted out so that it can be overridden in children if the need arises.
      *
-     * @param form - form instance that contains the doc type parameter and where
+     * @param form form instance that contains the doc type parameter and where
      * the new document instance should be set
      */
     protected void createDocument(DocumentFormBase form) throws WorkflowException {
@@ -205,9 +207,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Reloads the document contained on the form from the database
+     * Reloads the document contained on the form from the database.
      *
-     * @param form - document form base containing the document instance from which the document number will
+     * @param form document form base containing the document instance from which the document number will
      * be retrieved and used to fetch the document from the database
      * @return ModelAndView
      */
@@ -228,9 +230,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
     /**
      * Prompts user to confirm the cancel action then if confirmed cancels the document instance
-     * contained on the form
+     * contained on the form.
      *
-     * @param form - document form base containing the document instance that will be cancelled
+     * @param form document form base containing the document instance that will be cancelled
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=cancel")
@@ -244,9 +246,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Saves the document instance contained on the form
+     * Saves the document instance contained on the form.
      *
-     * @param form - document form base containing the document instance that will be saved
+     * @param form document form base containing the document instance that will be saved
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=save")
@@ -270,7 +272,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     /**
      * Completes the document instance contained on the form
      *
-     * @param form - document form base containing the document instance that will be completed
+     * @param form document form base containing the document instance that will be completed
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=complete")
@@ -284,7 +286,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     /**
      * Routes the document instance contained on the form
      *
-     * @param form - document form base containing the document instance that will be routed
+     * @param form document form base containing the document instance that will be routed
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=route")
@@ -397,8 +399,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      * Invokes the {@link DocumentService} to carry out a request workflow action and adds a success message, if
      * requested a check for sensitive data is also performed.
      *
-     * @param form - document form instance containing the document for which the action will be taken on
-     * @param action - {@link WorkflowAction} enum indicating what workflow action to take
+     * @param form document form instance containing the document for which the action will be taken on
+     * @param action {@link WorkflowAction} enum indicating what workflow action to take
      */
     protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action) {
         Document document = form.getDocument();
@@ -491,7 +493,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     /**
      * Redirects to the supervisor functions page.
      *
-     * @return ModelAndView - model and view configured for the redirect URL
+     * @return ModelAndView model and view configured for the redirect URL
      */
     @MethodAccessible
     @RequestMapping(params = "methodToCall=supervisorFunctions")
@@ -706,7 +708,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         if (note != null) {
             Attachment attachment = note.getAttachment();
             if (attachment != null) {
-                //make sure attachment is setup with backwards reference to note (rather then doing this we could also
+                // make sure attachment is setup with backwards reference to note (rather then doing this we could also
                 // just call the attachment service (with a new method that took in the note)
                 attachment.setNote(note);
 

@@ -26,10 +26,10 @@ import org.openqa.selenium.By;
 public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=People%20Flow&channelUrl="
-     *  + WebDriverUtils.getBaseUrlString() + ITUtil.KRAD_LOOKUP_METHOD
+     * AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=People%20Flow&channelUrl="
+     *  + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD
      *  + "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
-     *  + "&returnLocation=" + ITUtil.PORTAL_URL + ITUtil.SHOW_MAINTENANCE_LINKS;
+     *  + "&returnLocation=" + AutomatedFunctionalTestUtils.AutomatedFunctionalTestUtils + ITUtil.SHOW_MAINTENANCE_LINKS;
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=People%20Flow&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KRAD_LOOKUP_METHOD

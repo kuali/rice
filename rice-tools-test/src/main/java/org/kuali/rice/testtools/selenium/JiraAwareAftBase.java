@@ -745,6 +745,9 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * </p>
      */
     protected void passed() {
+        if (passed == true) {
+            WebDriverUtils.jGrowl(getDriver(), "Passed has been called more than once " + getClass().getSimpleName(), true, "Passed");
+        }
         passed = true;
         WebDriverUtils.jGrowl(getDriver(), "Success " + getClass().getSimpleName(), true, "Passed");
     }

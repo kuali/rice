@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 import java.io.File;
@@ -31,6 +33,15 @@ import java.io.File;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateNewAftBase {
+
+    /**
+     * WebDriverUtils.getBaseUrlString() + "/kr-krad/peopleFlowMaintenance?" +
+     * "viewTypeName=MAINTENANCE&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL_ENCODED  + "&methodToCall=start&" +
+     * "dataObjectClassName=org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"
+     */
+    public static final String BOOKMARK_URL =  WebDriverUtils.getBaseUrlString() + "/kr-krad/peopleFlowMaintenance?" +
+            "viewTypeName=MAINTENANCE&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL_ENCODED  + "&methodToCall=start&" +
+            "dataObjectClassName=org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo";
 
     /**
      * Provider of the temporary folder.
@@ -56,19 +67,43 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      * @throws Exception when an error is encountered in the test
      */
     @Test
-    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultAttachmentNav() throws Exception {
-        navigateToPeopleFlowNotesAndAttachments();
+    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultAttachmentBookmark() throws Exception {
+        testDefaultAttachement();
+    }
 
+    /**
+     * Tests adding both the required note and an optional attachment.
+     *
+     * @throws Exception when an error is encountered in the test
+     */
+    @Test
+    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultAttachmentNav() throws Exception {
+        navigateToCreateNew();
+
+        testDefaultAttachement();
+    }
+
+    protected void testDefaultAttachement() throws Exception {
+        navigateToNotesAndAttachments();
         waitAndTypeByName(NOTES_AND_ATTACHMENTS_PREFIX + "." + KRADConstants.NOTE_TEXT_PROPERTY_NAME,
                 "Attachment_Note");
         waitAndAddAttachment("attachment.txt", "Testing123");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
-        Thread.sleep(2000);
-
-        assertTextPresent("Attachment_Note");
+        waitForTextPresent("Attachment_Note");
         assertTextPresent("attachment.txt");
         assertTextNotPresent("Note Text is a required field.");
+        passed();
+    }
+
+    /**
+     * Tests adding just the required note.
+     *
+     * @throws Exception when an error is encountered in the test
+     */
+    @Test
+    public void testPeopleFlowCreateNewNotesAndAttachments_DefaultNoAttachmentBookmark() throws Exception {
+        testDefaultNoAttachment();
     }
 
     /**
@@ -78,16 +113,30 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      */
     @Test
     public void testPeopleFlowCreateNewNotesAndAttachments_DefaultNoAttachmentNav() throws Exception {
-        navigateToPeopleFlowNotesAndAttachments();
+        navigateToCreateNew();
 
+        testDefaultNoAttachment();
+    }
+
+    protected void testDefaultNoAttachment() throws InterruptedException {
+        navigateToNotesAndAttachments();
         waitAndTypeByName(NOTES_AND_ATTACHMENTS_PREFIX + "." + KRADConstants.NOTE_TEXT_PROPERTY_NAME,
                 "Attachment_Note");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
-        Thread.sleep(2000);
-
-        assertTextPresent("Attachment_Note");
+        waitForTextPresent("Attachment_Note");
         assertTextNotPresent("Note Text is a required field");
+        passed();
+    }
+
+    /**
+     * Tests adding just the optional attachment, which should result in an error.
+     *
+     * @throws Exception when an error is encountered in the test
+     */
+    @Test
+    public void testPeopleFlowCreateNewNotesAndAttachments_NoNoteTextBookmark() throws Exception {
+        testNoNoteText();
     }
 
     /**
@@ -97,19 +146,27 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
      */
     @Test
     public void testPeopleFlowCreateNewNotesAndAttachments_NoNoteTextNav() throws Exception {
-        navigateToPeopleFlowNotesAndAttachments();
+        navigateToCreateNew();
 
+        testNoNoteText();
+    }
+
+    protected void testNoNoteText() throws Exception {
+        navigateToNotesAndAttachments();
         waitAndAddAttachment("attachment.txt", "Testing123");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
         waitForTextPresent("Note Text is a required field");
         assertTextNotPresent("attachment.txt");
+        passed();
     }
 
-    private void navigateToPeopleFlowNotesAndAttachments() throws Exception {
+    protected void navigateToCreateNew() throws Exception {
         selectFrameIframePortlet();
-
         waitAndClickByLinkText("Create New");
+    }
+
+    private void navigateToNotesAndAttachments() throws InterruptedException {
         waitForElementPresent(
                 "div[data-header_for='PeopleFlow-MaintenanceView'] div[data-label='Document Number'] > span");
 

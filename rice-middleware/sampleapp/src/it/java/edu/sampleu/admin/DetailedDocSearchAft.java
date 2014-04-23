@@ -19,7 +19,6 @@ import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.junit.Test;
-import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Tests whether the ENABLE_FIELD_LEVEL_HELP_IND parameter is being considered and loaded on each request.

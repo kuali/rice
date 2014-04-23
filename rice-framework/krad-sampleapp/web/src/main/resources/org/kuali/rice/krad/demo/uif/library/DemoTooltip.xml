@@ -63,7 +63,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Tooltip-Example2 start-->
-        <bean parent="GenericTextField" p:required="true" p:propertyName="dataField1" p:readOnly="false" p:exclusiveMin="2" p:label="Field Label" p:labelPlacement="LEFT">
+        <bean parent="GenericTextField" p:required="true" p:propertyName="dataField1" p:readOnly="false" p:exclusiveMin="2" p:label="Field Label">
           <property name="fieldLabel">
             <bean parent="Uif-Label">
               <property name="toolTip">

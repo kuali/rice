@@ -42,7 +42,9 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickByXpath("//img[@alt='doc search']");
+       waitAndClickByXpath("//img[@alt='doc search']"); 
+       selectFrameIframePortlet();
+       waitAndClickByName("toggleAdvancedSearch");
     }
 
     @Test
@@ -78,7 +80,13 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
 
     private void searchByDocumentType() throws Exception {
-        //Search by Document Type not working. Sometimes also gives 500 Server error while searching and returning value for the field
+        selectFrameIframePortlet();
+        waitAndTypeByName("documentTypeName","ParameterMaintenanceDocument");
+        waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        acceptAlertIfPresent();
+        waitForTextPresent("Parameter Maintenance Document");
+        waitAndClickByName("methodToCall.clearValues");
     }
     
     private void searchByInitiator() throws Exception {
@@ -100,11 +108,26 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
 
     private void searchByViewer() throws Exception {
-        //Unknown - no idea from where can we get these fields
+        waitAndTypeByName("viewerPrincipalName","admin");
+        waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        waitForTextPresent("items retrieved");
+        waitForElementPresentByXpath("//a[contains(text(),'admin, admin')]");
+        waitAndClickByName("methodToCall.clearValues");
     }
     
     private void searchByGroupViewer() throws Exception {
-        //Unknown - no idea from where can we get these fields        
+        waitAndClickByXpath("//input[@type='image' and @alt='Search Group Viewer Id']");
+        selectFrameIframePortlet();
+        waitAndTypeByName("id","2009");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        waitAndClickLinkContainingText("return value");
+        selectFrameIframePortlet();
+        waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        waitForTextPresent("Component Maintenance Document");
+        waitForElementPresentByXpath("//a[contains(text(),'admin, admin')]");
+        waitAndClickByName("methodToCall.clearValues");
     }
     
     private void searchByDocumentId() throws Exception {
@@ -115,7 +138,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
     
     private void searchByApplicationDocumentId() throws Exception {
-        //Unknown - no idea from where can we get these fields
+        //Unknown - no idea from where can we get these fields - Skipped as of now.
     }
     
     private void searchByDocumentStatus() throws Exception {
@@ -182,6 +205,10 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
     
     private void searchByTitle() throws Exception {
-        //Search By Title not working
+        waitAndTypeByName("title","Travel Doc 2 - dfads");
+        waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        waitForTextPresent("Travel Doc 2 - dfads");
+        waitAndClickByName("methodToCall.clearValues");
     }
 }

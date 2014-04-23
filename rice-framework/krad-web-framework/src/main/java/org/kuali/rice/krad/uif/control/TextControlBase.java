@@ -74,7 +74,7 @@ public class TextControlBase extends ControlBase implements TextControl, SizedCo
                 setMinLength(field.getMinLength());
             }
 
-            if (textExpand) {
+            if (textExpand || (datePicker != null && datePicker.isRender())) {
                 field.setRenderInputAddonGroup(true);
             }
         }

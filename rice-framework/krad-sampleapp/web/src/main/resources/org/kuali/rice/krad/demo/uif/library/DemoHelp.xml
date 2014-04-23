@@ -217,13 +217,6 @@
               <bean parent="Uif-Label"/>
               <bean parent="Uif-Help">
                 <property name="externalHelpUrl" value="http://www.kuali.org/?widget_only"/>
-                <property name="helpAction">
-                  <bean id="standalone-external-help" parent="Uif-ActionImage">
-                    <property name="actionImage">
-                      <bean parent="Uif-HelpImage"/>
-                    </property>
-                  </bean>
-                </property>
               </bean>
               <bean parent="Uif-Disclosure-VerticalBoxSubSection" p:layoutManager.orientation="VERTICAL">
                 <property name="help">

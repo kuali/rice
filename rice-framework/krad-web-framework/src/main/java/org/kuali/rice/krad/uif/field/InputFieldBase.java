@@ -366,6 +366,10 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         addComponentPostMetadata();
+
+        if (this.getHelp() != null && StringUtils.isNotBlank(this.getHelp().getExternalHelpUrl())) {
+            this.setRenderInputAddonGroup(true);
+        }
     }
 
     /**

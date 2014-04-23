@@ -52,7 +52,7 @@
 				constraintHtml="<span class='constraint'>" + options.constraint + "</span>";
 			}
 			
-			$(this).after('<span class="input-group-btn"><a id="expand_btn_' + id + '" title="Expand" class="icon-edit-sign"></a></span>');
+			$(this).siblings(".input-group-addon").append('<a id="expand_btn_' + id + '" title="Expand" class="icon-edit-sign"></a>');
 			$(document).ready(function()
 			{
 				$("a#expand_btn_" + id).click(function(e){

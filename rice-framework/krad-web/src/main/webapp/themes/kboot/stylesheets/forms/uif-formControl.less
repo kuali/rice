@@ -1,4 +1,3 @@
-
 .uif-inputField input[type="text"], .uif-inputField .uif-textAreaControl {
   //width: 100%;
 }
@@ -12,30 +11,22 @@
 }
 
 .input-group-addon, .input-group-btn {
-  width: 1%;
-  vertical-align: top;
-}
-
-
-/** this is necessary because controls have 2px margin, and the group button is display table cell **/
-.input-group-addon, .input-group-btn {
-  padding-bottom: 2px;
   width: inherit;
+  padding: 0;
 }
 
-
+/** this is done to increase the clickable target so user does not have to be pixel perfect **/
+.input-group-addon > *, .input-group-btn > *{
+    padding: 8px 4px;
+}
 
 .input-group-msg {
   width: 1%;
 }
 
-
-
 .input-group {
   //width: 100%;
 }
-
-
 
 .input-group-btn > a {
   display: inline-block;
@@ -61,10 +52,6 @@
 .input-group-btn > a[class*='icon-'] {
   padding: 9px 7px 8px 7px;
 }
-
-
-
-
 
 .input-group-msg {
   display: table-cell;

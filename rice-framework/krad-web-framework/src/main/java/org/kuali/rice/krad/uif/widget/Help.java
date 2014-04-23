@@ -152,8 +152,7 @@ public class Help extends WidgetBase {
                         "help.icon.title.tag");
             }
 
-            getHelpAction().getActionImage().setAltText(helpTitle);
-            getHelpAction().getActionImage().setTitle(helpTitle);
+            getHelpAction().setTitle(helpTitle);
         }
     }
 

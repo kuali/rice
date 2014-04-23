@@ -586,6 +586,36 @@
               </property>
             </bean>
 
+            <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Testing Field Groups">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-FieldGroupBase" p:label="Field Group">
+                    <property name="group">
+                      <bean parent="Uif-CssGridGroup">
+                        <property name="items">
+                          <list>
+                            <bean parent="Uif-InputField" p:colSpan="4"
+                                  p:propertyName="inputField1">
+                              <property name="control">
+                                <bean parent="Uif-DateControl"/>
+                              </property>
+                            </bean>
+                            <bean parent="Uif-Message" p:cssGridSizes.mdSize="1" p:messageText="to"/>
+                            <bean parent="Uif-InputField" p:colSpan="4"
+                                  p:propertyName="inputField1">
+                              <property name="control">
+                                <bean parent="Uif-DateControl"/>
+                              </property>
+                            </bean>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
             <bean parent="Uif-VerticalBoxSection" p:headerText="Separate nested groups">
               <property name="items">
                 <list>
@@ -706,6 +736,7 @@
                   </list>
                 </property>
               </bean>
+
             </list>
           </property>
         </bean>

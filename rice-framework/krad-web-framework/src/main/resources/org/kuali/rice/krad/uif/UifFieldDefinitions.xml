@@ -81,7 +81,7 @@
     </property>
     <property name="postInputCssClasses">
       <list>
-        <value>input-group-btn</value>
+        <value>input-group-addon</value>
       </list>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>

@@ -127,7 +127,7 @@
                        <div class="input-group inlineBlock">
                    </#if>
 
-                   <#if field.postInputAddons??>
+                   <#if field.postInputAddons?? >
                         <#list field.postInputAddons as postAddon>
                             <#if postAddon.wrapperCssClassesAsString?has_content>
                                 <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
@@ -156,29 +156,35 @@
                     <#-- render control for input -->
                     <@krad.template component=field.control field=field/>
 
+                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                         <div class="${field.postInputCssClassesAsString}">
+                    </#if>
+
+                    <#if field.postInputAddons??>
+                         <#list field.postInputAddons as postAddon>
+
+                             <@krad.template component=postAddon/>
+
+                         </#list>
+                    </#if>
+
+                    <#-- render field help -->
+                    <@krad.template component=field.help/>
+
+                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
+                            </div>
+                    </#if>
+
                     <#if field.helperText?has_content>
                         <div class="uif-helperText">
                             ${field.helperText}
                         </div>
                     </#if>
 
-                    <#if field.postInputAddons??>
-                         <#list field.postInputAddons as postAddon>
-                             <#if postAddon.wrapperCssClassesAsString?has_content>
-                                 <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
-                             <#else>
-                                 <#local postAddonStyleClass=""/>
-                             </#if>
-
-                             <span ${postAddonStyleClass!}>
-                                 <@krad.template component=postAddon/>
-                             </span>
-                         </#list>
-                    </#if>
-
                     <#if field.postInputAddons?? || field.renderInputAddonGroup>
                         </div>
                     </#if>
+
                  </#if>
             </#if>
 
@@ -187,13 +193,6 @@
 
                 <@krad.template component=field.inquiry componentId="${field.id}" readOnly=field.readOnly/>
             </#if>
-
-            <#-- render field help -->
-            <@krad.template component=field.help/>
-
-            <#--<#if field.renderFieldset>-->
-                <#--</fieldset>-->
-            <#--</#if>-->
 
         <#if field.renderMarkerIconSpan>
             <span id="${field.id}_markers"></span>

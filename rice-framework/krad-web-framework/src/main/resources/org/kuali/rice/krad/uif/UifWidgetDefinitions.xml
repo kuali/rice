@@ -337,13 +337,11 @@
     </property>
   </bean>
 
-  <bean id="Uif-HelpAction" parent="Uif-ActionImage">
-    <property name="actionImage">
-      <bean parent="Uif-HelpImage"/>
-    </property>
+  <bean id="Uif-HelpAction" parent="Uif-ActionLink">
     <property name="cssClasses">
       <list>
         <value>uif-helpAction</value>
+        <value>icon-question</value>
       </list>
     </property>
   </bean>

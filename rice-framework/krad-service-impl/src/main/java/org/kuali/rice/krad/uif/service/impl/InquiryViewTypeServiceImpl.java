@@ -58,26 +58,27 @@ public class InquiryViewTypeServiceImpl implements ViewTypeService {
 	/**
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromRequest(java.util.Map)
 	 */
-	public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
-		Map<String, String> parameters = new HashMap<String, String>();
+    public Map<String, String> getParametersFromRequest(Map<String, String> requestParameters) {
+        Map<String, String> parameters = new HashMap<String, String>();
 
-		if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
-			parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
-		}
-		else {
-			parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
-		}
+        if (requestParameters.containsKey(UifParameters.VIEW_NAME)) {
+            parameters.put(UifParameters.VIEW_NAME, requestParameters.get(UifParameters.VIEW_NAME));
+        } else {
+            parameters.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+        }
 
-		if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
-			parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME,
-					requestParameters.get(UifParameters.DATA_OBJECT_CLASS_NAME));
-		}
-		else {
-			throw new RuntimeException("Parameter '" + UifParameters.DATA_OBJECT_CLASS_NAME
-					+ "' must be given to find views of type: " + getViewTypeName());
-		}
+        if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
+            parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, requestParameters.get(
+                    UifParameters.DATA_OBJECT_CLASS_NAME));
+        } else {
+            String ajaxRequest = requestParameters.get(UifParameters.AJAX_REQUEST);
+            if (!"true".equalsIgnoreCase(ajaxRequest)) {
+                throw new RuntimeException("Parameter '" + UifParameters.DATA_OBJECT_CLASS_NAME
+                        + "' must be given to find views of type: " + getViewTypeName());
+            }
+        }
 
-		return parameters;
-	}
+        return parameters;
+    }
 
 }

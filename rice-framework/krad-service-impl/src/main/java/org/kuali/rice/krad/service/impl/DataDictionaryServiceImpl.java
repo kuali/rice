@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.beans.PropertyEditor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +65,7 @@ import org.kuali.rice.krad.uif.view.View;
 public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     private DataDictionary dataDictionary;
+    private Map<Class<?>, PropertyEditor> propertyEditorMap;
 
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
@@ -944,6 +946,20 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
             return Collections.emptySet();
         }
         return blockingClasses;
+    }
+
+    @Override
+    public Map<Class<?>, PropertyEditor> getPropertyEditorMap() {
+        return propertyEditorMap;
+    }
+
+    /**
+     * @see #getPropertyEditorMap()
+     *
+     * @param propertyEditorMap mapping from property type to property editor
+     */
+    public void setPropertyEditorMap(Map<Class<?>, PropertyEditor> propertyEditorMap) {
+        this.propertyEditorMap = propertyEditorMap;
     }
 
     public DocumentTypeService getDocumentTypeService() {

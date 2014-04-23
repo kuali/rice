@@ -73,7 +73,7 @@
 
   <bean id="Demo-AppHeader-View2" parent="Uif-FormView">
     <property name="headerText" value="Fixed Application Header"/>
-    <!-- ex:Demo-AppHeader-Example1 start-->
+    <!-- ex:Demo-AppHeader-Example2 start-->
     <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
     <property name="applicationHeader">
       <bean parent="Demo-KC-AppHeader"/>
@@ -83,7 +83,7 @@
         <value>container</value>
       </list>
     </property>
-    <!-- ex:Demo-AppHeader-Example1 end-->
+    <!-- ex:Demo-AppHeader-Example2 end-->
     <property name="items">
       <list>
         <bean parent="Uif-Page">
@@ -155,7 +155,7 @@
   <!-- ex:Demo-AppHeader-Example1 end-->
 
   <!-- ex:Demo-AppHeader-Example1 start-->
-  <bean id="Demo-Menu-Researcher" parent="Uif-AppMenuGroup" p:layoutManager.defaultItemColSpan="3">
+  <bean id="Demo-Menu-Researcher" parent="Uif-AppMenuGroup" p:layoutManager.defaultItemSize="3">
     <property name="items">
       <list>
         <bean parent="Uif-SimpleGroup">

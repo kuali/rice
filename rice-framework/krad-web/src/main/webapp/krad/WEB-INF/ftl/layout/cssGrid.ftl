@@ -26,28 +26,13 @@
 <#include "../components/element/label.ftl"/>
 
 <#macro uif_cssGrid items manager container>
-    <#if manager.styleClassesAsString?has_content>
-        <#local styleClass="class=\"${manager.styleClassesAsString}\""/>
-    </#if>
-
-    <#if manager.style?has_content>
-        <#local style="style=\"${manager.style}\""/>
-    </#if>
-
-    <#local rowIndex = 0/>
     <#local cellIndex = 0/>
 
-    <#list manager.rows as rowItems>
-        <div class="${manager.rowCssClassAttributes[rowIndex]}">
-            <#list rowItems as item>
-                <div class="${manager.cellCssClassAttributes[cellIndex]}">
-                    <@krad.template component=item/>
-                </div>
-                <#local cellIndex = cellIndex + 1/>
-            </#list>
+    <#list manager.cellItems as item>
+        <div class="${manager.cellCssClassAttributes[cellIndex]}">
+            <@krad.template component=item/>
         </div>
-
-        <#local rowIndex = rowIndex + 1/>
+        <#local cellIndex = cellIndex + 1/>
     </#list>
 
 </#macro>

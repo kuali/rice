@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.uif.component.Component;
+
 import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.Collections;
@@ -23,8 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.kuali.rice.krad.uif.component.Component;
 
 /**
  * Holds data about the rendered view that might be needed to handle a post request.
@@ -50,7 +50,7 @@ public class ViewPostMetadata implements Serializable {
     private Map<String, PropertyEditor> secureFieldPropertyEditors;
 
     private Set<String> inputFieldIds;
-    private Set<String> allDataFieldPropertyPaths;
+    private Set<String> allRenderedPropertyPaths;
     private Map<String, List<Object>> addedCollectionObjects;
 
     private Set<String> accessibleBindingPaths;
@@ -63,7 +63,7 @@ public class ViewPostMetadata implements Serializable {
         fieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
         secureFieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
         inputFieldIds = Collections.synchronizedSet(new HashSet<String>());
-        allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
+        allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
         accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
         accessibleMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
@@ -84,7 +84,7 @@ public class ViewPostMetadata implements Serializable {
      * Invoked after the lifecycle is complete to perform an necessary cleaning.
      */
     public void cleanAfterLifecycle() {
-        allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
+        allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
     }
 
@@ -206,8 +206,6 @@ public class ViewPostMetadata implements Serializable {
      * @return post metadata instance
      */
     public ComponentPostMetadata initializeComponentPostMetadata(String componentId) {
-        ComponentPostMetadata componentPostMetadata;
-
         if (componentPostMetadataMap == null) {
             synchronized (this) {
                 if (componentPostMetadataMap == null) {
@@ -216,9 +214,10 @@ public class ViewPostMetadata implements Serializable {
             }
         }
 
-        componentPostMetadata = componentPostMetadataMap.get(componentId);
-
-        if (componentPostMetadata == null) {
+        ComponentPostMetadata componentPostMetadata;
+        if (componentPostMetadataMap.containsKey(componentId)) {
+            componentPostMetadata = componentPostMetadataMap.get(componentId);
+        } else {
             synchronized (componentPostMetadataMap) {
                 componentPostMetadata = new ComponentPostMetadata(componentId);
                 componentPostMetadataMap.put(componentId, componentPostMetadata);
@@ -301,7 +300,7 @@ public class ViewPostMetadata implements Serializable {
     }
 
     /**
-     * Set of data field property paths that have been rendered as part of the lifecycle.
+     * Set of property paths that have been rendered as part of the lifecycle.
      *
      * <p>Note this will include all property paths (of data fields) that were rendered as part of the
      * last full lifecycle and any component refreshes since then. It will not contain all paths of a view
@@ -309,29 +308,29 @@ public class ViewPostMetadata implements Serializable {
      *
      * @return set of property paths as strings
      */
-    public Set<String> getAllDataFieldPropertyPaths() {
-        return allDataFieldPropertyPaths;
+    public Set<String> getAllRenderedPropertyPaths() {
+        return allRenderedPropertyPaths;
     }
 
     /**
-     * @see ViewPostMetadata#getAllDataFieldPropertyPaths()
+     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
      */
-    public void setAllDataFieldPropertyPaths(Set<String> allDataFieldPropertyPaths) {
-        this.allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>(allDataFieldPropertyPaths));
+    public void setAllRenderedPropertyPaths(Set<String> allRenderedPropertyPaths) {
+        this.allRenderedPropertyPaths = allRenderedPropertyPaths;
     }
 
     /**
-     * Adds a property path to the list of data field property paths.
+     * Adds a property path to the list of rendered property paths.
      *
      * @param propertyPath property path to add
-     * @see ViewPostMetadata#getAllDataFieldPropertyPaths()
+     * @see ViewPostMetadata#getAllRenderedPropertyPaths()
      */
-    public void addDataFieldPropertyPath(String propertyPath) {
-        if (this.allDataFieldPropertyPaths == null) {
-            this.allDataFieldPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
+    public void addRenderedPropertyPath(String propertyPath) {
+        if (this.allRenderedPropertyPaths == null) {
+            this.allRenderedPropertyPaths = new HashSet<String>();
         }
 
-        this.allDataFieldPropertyPaths.add(propertyPath);
+        this.allRenderedPropertyPaths.add(propertyPath);
     }
 
     /**

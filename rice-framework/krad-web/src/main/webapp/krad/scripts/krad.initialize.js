@@ -37,6 +37,7 @@ var validateClient = true;
 var messageSummariesShown = false;
 var pauseTooltipDisplay = false;
 var haltValidationMessaging = false;
+var pageValidationPhase = false;
 var gAutoFocus = false;
 var clientErrorStorage = new Object();
 var summaryTextExistence = new Object();
@@ -65,13 +66,11 @@ var refreshImage;
 var navigationImage;
 var ajaxReturnHandlers = {};
 
-var gCurrentBubblePopupId;
-
 var activeDialogId;
 var sessionWarningTimer;
 var sessionTimeoutTimer;
 
-//delay function
+// delay function
 var delay = (function () {
     var timer = 0;
     return function (callback, ms) {
@@ -83,9 +82,9 @@ var delay = (function () {
 // map of componentIds and refreshTimers
 var refreshTimerComponentMap = {};
 
-//setup handler for opening form content popups with errors
+// setup handler for opening form content popups with errors
 jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function (event) {
-    openPopupContentsWithErrors();
+    openPopoverContentsWithErrors();
 });
 
 // common event registering done here through JQuery ready event
@@ -132,15 +131,15 @@ jQuery(document).ready(function () {
     // show the page
     jQuery("#" + kradVariables.APP_ID).show();
 
-    //run all the scripts
+    // run all the scripts
     runHiddenScripts("");
 
     time(true, "viewSetup-phase-2");
 
-    //setup dirty field processing
+    // setup dirty field processing
     dirtyFormState.dirtyHandlerSetup();
 
-    //disclosure handler setup
+    // disclosure handler setup
     setupDisclosureHandler();
 
     setupHelperTextHandler();
@@ -148,7 +147,19 @@ jQuery(document).ready(function () {
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
 
-    //setup any potential sticky/fixed content
+    jQuery(window).unbind("resize.tooltip");
+    jQuery(window).bind("resize.tooltip", function(){
+        var visibleTooltips = jQuery(".popover:visible");
+        visibleTooltips.each(function(){
+            // bug with popover plugin does not reposition tooltip on window resize, forcing it here
+            jQuery(this).prev("[data-hasTooltip]").popover("show");
+        });
+    });
+
+    // setup the handler for enter key event actions
+    initEnterKeyHandler();
+
+    // setup any potential sticky/fixed content
     setupStickyHeaderAndFooter();
 
     hideEmptyCells();
@@ -160,16 +171,73 @@ jQuery(document).ready(function () {
     });
 
     time(false, "viewSetup-phase-2");
-
-
 });
+
+/**
+ * Sets up and initializes the handlers for enter key actions.
+ *
+ * <p>This function determines which button/action should fire when the enter key is pressed while focus is on a configured input</p>
+ *
+ */
+function initEnterKeyHandler(){
+    jQuery(document).on("keyup", "[data-enter_key]", function(event) {
+        // grab the keycode based on browser
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        // check for enter key
+        if(keycode !== 13) { return; }
+            event.preventDefault();
+            event.stopPropagation();
+
+            // using event bubbling, we search for inner most element with data attribute kradVariables.ENTER_KEY_SUFFIX and assign it's value as an ID
+            var enterKeyId = jQuery(event.currentTarget).data(kradVariables.ENTER_KEY_SUFFIX);
+
+            // make sure the targeted action is a permitted element
+            if(jQuery(event.target).is(":not(a, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION +  "'] )")){
+                // check to see if primary enter key action button is targeted
+                if(enterKeyId === kradVariables.ENTER_KEY_DEFAULT){
+                    // find all primary action buttons on page with attribute data-default_enter_key_action='true'
+                    var primaryButtons = jQuery(event.currentTarget).find("[data-default_enter_key_action='true']");
+
+                    // filter the buttons only one parent section deep
+                    var primaryButton = primaryButtons.filter(function() {
+                        return jQuery(this).parents('[data-enter_key]').length < 2;
+                    });
+
+                    // if the button exists get it's id
+                    if (primaryButton.length) {
+                        enterKeyId = primaryButton.attr("id");
+                    }
+                }
+
+                // if enterKeyAction is still set to  ENTER_KEY_PRIMARY value, do nothing, button doesn't exist
+                if(enterKeyId === kradVariables.ENTER_KEY_DEFAULT){
+                     return false;
+                }
+
+                // make sure action button is visible and not disabled before we fire it
+                if(jQuery('#' + enterKeyId).is(":visible") && jQuery('#' + enterKeyId).is(":disabled") === false){
+                    jQuery(document).find('#' + enterKeyId).click();
+                }
+        }
+    });
+
+    // a hack to capture the native browser enter key behavior..  keydown and keyup
+    jQuery(document).on("keydown", "[data-enter_key]", function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode === 13) {
+            event.preventDefault();
+            return;
+        }
+    });
+}
 
 /**
  * Sets up and initializes the handlers for sticky header and footer content
  */
 function setupStickyHeaderAndFooter() {
 
-    //sticky(header) content variables must be initialized here to retain sticky location across page request
+    // sticky(header) content variables must be initialized here to retain sticky location across page request
     stickyContent = jQuery("[data-sticky='true']:visible");
     if (stickyContent.length) {
         stickyContent.each(function () {
@@ -181,13 +249,13 @@ function setupStickyHeaderAndFooter() {
         initStickyContent();
     }
 
-    //find and initialize stickyFooters
+    // find and initialize stickyFooters
     stickyFooterContent = jQuery("[data-sticky_footer='true']:visible");
     applicationFooter = jQuery("#" + kradVariables.APPLICATION_FOOTER_WRAPPER);
 
     initStickyFooterContent();
 
-    //bind scroll and resize events to dynamically update sticky content positions
+    // bind scroll and resize events to dynamically update sticky content positions
     jQuery(window).unbind("scroll.sticky");
     jQuery(window).bind("scroll.sticky", function () {
         handleStickyContent();
@@ -209,18 +277,7 @@ function setupStickyHeaderAndFooter() {
 function initFieldHandlers() {
     time(true, "field-handlers");
 
-    var validationTooltipOptions = {
-        position: "top",
-        align: "left",
-        distance: 0,
-        manageMouseEvents: false,
-        themePath: getBubblePopupThemePath(),
-        alwaysVisible: false,
-        tail: {align: "left"},
-        themeMargins: {total: "13px", difference: "2px"}
-    };
-
-    //add global action handler
+    // add global action handler
     jQuery(document).on("click", "a[data-role='Action'], button[data-role='Action'], "
             + "img[data-role='Action'], input[data-role='Action']",
             function (e) {
@@ -245,7 +302,7 @@ function initFieldHandlers() {
                 return actionFunction.call(this, e);
             });
 
-    //add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
+    // add a focus handler for scroll manipulation when there is a sticky header or footer, so content stays in view
     jQuery("[data-role='Page']").on("focus", "a[href], area[href], input:not([disabled]), "
             + "select:not([disabled]), textarea:not([disabled]), button:not([disabled]), "
             + "iframe, object, embed, *[tabindex], *[contenteditable]",
@@ -257,7 +314,7 @@ function initFieldHandlers() {
                     elementHeight = 24;
                 }
 
-                //if something is focused under the footer, adjust the scroll
+                // if something is focused under the footer, adjust the scroll
                 if (stickyFooterContent && stickyFooterContent.length) {
                     var footerOffset = stickyFooterContent.offset().top;
                     if (element.offset().top + elementHeight > footerOffset) {
@@ -268,7 +325,7 @@ function initFieldHandlers() {
                     }
                 }
 
-                //if something is focused under the header content, adjust the scroll
+                // if something is focused under the header content, adjust the scroll
                 if (stickyContent && stickyContent.length) {
                     var reversedStickyContent = jQuery(stickyContent.get().reverse());
                     var headerOffset = reversedStickyContent.offset().top + reversedStickyContent.outerHeight();
@@ -298,49 +355,18 @@ function initFieldHandlers() {
                     var tooltipElement = this;
                     var focus = jQuery(tooltipElement).is(":focus");
                     if (elementInfo.type == "fieldset") {
-                        //for checkbox/radio fieldsets we put the tooltip on the label of the first input
+                        // for checkbox/radio fieldsets we put the tooltip on the label of the first input
                         tooltipElement = jQuery(element).filter(".uif-tooltip");
-                        //if the fieldset or one of the inputs have focus then the fieldset is considered focused
+                        // if the fieldset or one of the inputs have focus then the fieldset is considered focused
                         focus = jQuery(element).filter("fieldset").is(":focus")
                                 || jQuery(element).filter("input").is(":focus");
                     }
 
                     var hasMessages = jQuery("[data-messages_for='" + fieldId + "']").children().length;
 
-                    //only display the tooltip if not already focused or already showing
-                    if (!focus && hasMessages && !jQuery(tooltipElement).IsBubblePopupOpen()) {
-                        if (elementInfo.themeMargins) {
-                            validationTooltipOptions.themeMargins = elementInfo.themeMargins;
-                        }
-
-                        //special case check for input within a fieldset, hide other tooltips to avoid overlap
-                        if (jQuery(tooltipElement).is("select, input:text, textarea, input:file, input:password")
-                                && jQuery(tooltipElement).parents("fieldset[data-type='CheckboxSet'], "
-                                + "fieldset[data-type='RadioSet']").length) {
-                            hideBubblePopups();
-                        }
-                        var show = true;
-
-                        //special case check for if any internal inputs of a fieldset: if they are showing tooltips
-                        //do not show this fieldset's tooltip to avoid overlap
-                        if (elementInfo.type == "fieldset") {
-                            jQuery("select, input:text, textarea, input:file, input:password", "#" + fieldId).each(function () {
-                                if (jQuery(this).IsBubblePopupOpen()) {
-                                    show = false;
-                                }
-                            });
-                        }
-
-                        if (show) {
-                            var data = getValidationData(jQuery("#" + fieldId));
-                            validationTooltipOptions.themeName = data.tooltipTheme;
-                            validationTooltipOptions.innerHTML = jQuery("[data-messages_for='" + fieldId + "']").html();
-                            //set the margin to offset it from the left appropriately
-                            validationTooltipOptions.divStyle = {margin: getTooltipMargin(tooltipElement)};
-                            jQuery(tooltipElement).SetBubblePopupOptions(validationTooltipOptions, true);
-                            jQuery(tooltipElement).SetBubblePopupInnerHtml(validationTooltipOptions.innerHTML, true);
-                            jQuery(tooltipElement).ShowBubblePopup();
-                        }
+                    // only display the tooltip if not already focused or already showing
+                    if (!focus && hasMessages) {
+                        showMessageTooltip(fieldId);
                     }
                 }
             });
@@ -359,19 +385,24 @@ function initFieldHandlers() {
                 if (data && data.useTooltip) {
                     var elementInfo = getHoverElement(fieldId);
                     var element = elementInfo.element;
-                    //first check to see if the mouse has entered part of the tooltip (in some cases it has invisible content
-                    //above the field - so this is necessary) - also prevents non-displayed tooltips from hiding content
-                    //when entered
-                    var result = mouseOutBubblePopupCheck(event, fieldId, element, this, elementInfo.type, data);
-                    if (!result) {
-                        return false;
+                    var tooltipElement = this;
+                    var focus = jQuery(tooltipElement).is(":focus");
+                    if (elementInfo.type == "fieldset") {
+                        // for checkbox/radio fieldsets we put the tooltip on the label of the first input
+                        tooltipElement = jQuery(element).filter(".uif-tooltip");
+                        // if the fieldset or one of the inputs have focus then the fieldset is considered focused
+                        focus = jQuery(element).filter("fieldset").is(":focus")
+                                || jQuery(element).filter("input").is(":focus");
                     }
-                    //continue with the mouseleave event
-                    mouseLeaveHideMessageTooltip(fieldId, this, element, elementInfo.type);
+
+                    if (!focus) {
+                        hideMessageTooltip(fieldId);
+                    }
+
                 }
             });
 
-    //when these fields are focus store what the current errors are if any and show the messageTooltip
+    // when these fields are focus store what the current errors are if any and show the messageTooltip
     jQuery(document).on("focus",
             "div[data-role='InputField'] input:text, "
                     + "div[data-role='InputField'] input:password, "
@@ -384,7 +415,7 @@ function initFieldHandlers() {
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
 
-                //keep track of what errors it had on initial focus
+                // keep track of what errors it had on initial focus
                 var data = getValidationData(jQuery("#" + id));
                 if (data && data.errors) {
                     data.focusedErrors = data.errors;
@@ -394,8 +425,8 @@ function initFieldHandlers() {
                 showMessageTooltip(id, false);
             });
 
-    //when these fields are focused out validate and if this field never had an error before, show and close, otherwise
-    //immediately close the tooltip
+    // when these fields are focused out validate and if this field never had an error before, show and close, otherwise
+    // immediately close the tooltip
     jQuery(document).on("focusout",
             "div[data-role='InputField'] input:text, "
                     + "div[data-role='InputField'] input:password, "
@@ -415,14 +446,14 @@ function initFieldHandlers() {
                     valid = validateFieldValue(this);
                 }
 
-                //mouse in tooltip check
+                // mouse in tooltip check
                 var mouseInTooltip = false;
                 if (data && data.useTooltip && data.mouseInTooltip) {
                     mouseInTooltip = data.mouseInTooltip;
                 }
 
                 if (!hadError && !valid) {
-                    //never had a client error before, so pop-up and delay
+                    // never had a client error before, so pop-up and delay
                     showMessageTooltip(id, true, true);
                 }
                 else if (!mouseInTooltip) {
@@ -430,7 +461,7 @@ function initFieldHandlers() {
                 }
             });
 
-    //when these fields are changed validate immediately
+    // when these fields are changed validate immediately
     jQuery(document).on("change",
             "div[data-role='InputField'] input:checkbox, "
                     + "div[data-role='InputField'] input:radio, "
@@ -441,7 +472,7 @@ function initFieldHandlers() {
                 }
             });
 
-    //Greying out functionality
+    // Greying out functionality
     jQuery(document).on("change",
             "div[data-role='InputField'] input:text, "
                     + "div[data-role='InputField'] input:password, "
@@ -461,7 +492,7 @@ function initFieldHandlers() {
                 }
             });
 
-    //special radio and checkbox control handling for click events
+    // special radio and checkbox control handling for click events
     jQuery(document).on("click",
             "div[data-role='InputField'] input:checkbox, "
                     + "div[data-role='InputField'] input:radio,"
@@ -474,7 +505,7 @@ function initFieldHandlers() {
                 jQuery("fieldset > span > input").not(this).trigger(event);
             });
 
-    //special radio and checkbox control handling for focus events
+    // special radio and checkbox control handling for focus events
     jQuery(document).on("focus",
             "div[data-role='InputField'] input:checkbox, "
                     + "div[data-role='InputField'] input:radio",
@@ -485,11 +516,11 @@ function initFieldHandlers() {
                 jQuery("fieldset > span > input").not(this).trigger(event);
             });
 
-    //when focused out the checkbox and radio controls that are part of a fieldset will check if another control in
-    //their fieldset has received focus after a short period of time, otherwise the tooltip will close.
-    //if not part of the fieldset, the closing behavior is similar to normal fields
-    //in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
-    //in the fieldset has focus)
+    // when focused out the checkbox and radio controls that are part of a fieldset will check if another control in
+    // their fieldset has received focus after a short period of time, otherwise the tooltip will close.
+    // if not part of the fieldset, the closing behavior is similar to normal fields
+    // in both cases, validation occurs when the field is considered to have lost focus (fieldset case - no control
+    // in the fieldset has focus)
     jQuery(document).on("focusout",
             "div[data-role='InputField'] input:checkbox, "
                     + "div[data-role='InputField'] input:radio",
@@ -505,17 +536,17 @@ function initFieldHandlers() {
 
                 //radio/checkbox is in fieldset case
                 if (parent.parent().is("fieldset")) {
-                    //we only ever want this to be handled once per attachment
+                    // we only ever want this to be handled once per attachment
                     jQuery(this).one("handleFieldsetMessages", function (event) {
                         var proceed = true;
-                        //if the element that invoked the event is part of THIS fieldset, we do not lose focus, so
-                        //do not proceed with close handling
+                        // if the element that invoked the event is part of THIS fieldset, we do not lose focus, so
+                        // do not proceed with close handling
                         if (event.element
                                 && jQuery(event.element).is(jQuery(this).closest("fieldset").find("input"))) {
                             proceed = false;
                         }
 
-                        //the fieldset is focused out - proceed
+                        // the fieldset is focused out - proceed
                         if (proceed) {
                             var hadError = parent.parent().find("input").hasClass("error");
                             var valid = true;
@@ -536,24 +567,24 @@ function initFieldHandlers() {
 
                     var currentElement = this;
 
-                    //if no radios/checkboxes are reporting events assume we want to proceed with closing the message
+                    // if no radios/checkboxes are reporting events assume we want to proceed with closing the message
                     setTimeout(function () {
                         var event = jQuery.Event("handleFieldsetMessages");
                         event.element = [];
                         jQuery(currentElement).trigger(event);
                     }, 500);
                 }
-                //non-fieldset case
+                // non-fieldset case
                 else if (!jQuery(this).parent().parent().is("fieldset")) {
                     var hadError = jQuery(this).hasClass("error");
                     var valid = true;
-                    //not in a fieldset - so validate directly
+                    // not in a fieldset - so validate directly
                     if (validateClient) {
                         valid = validateFieldValue(this);
                     }
 
                     if (!hadError && !valid) {
-                        //never had a client error before, so pop-up and delay
+                        // never had a client error before, so pop-up and delay
                         showMessageTooltip(id, true, true);
                     }
                     else if (!mouseInTooltip) {
@@ -607,7 +638,7 @@ function setupDisclosureHandler() {
                 else {
                     disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
 
-                    //run scripts for previously hidden content
+                    // run scripts for previously hidden content
                     runHiddenScripts(disclosureContent, true, false);
 
                     link.find("#" + linkId + "_exp").show();
@@ -654,37 +685,13 @@ function setupHelperTextHandler() {
     });
 }
 
-/**
- * Calls the create call to initialize the bubblepopup plugin to take into account any content that may have
- * bubblepopups
- *
- * @param selector (optional) if specified used as the selection string to select an element to check to see if it has
- * elements that could have tooltips, if the content does not contain these elements, does not reinitialize the create
- * call
- */
-function initBubblePopups() {
-    //CreateBubblePopup was modified to be additive on call, and now uses one handler per event type- kuali customization
-    jQuery(document).CreateBubblePopup("input:not([type='hidden']):not([type='image']), input[data-role='help'], "
-            + "select, textarea, .uif-tooltip", {   manageMouseEvents: false,
-        themePath: getBubblePopupThemePath()});
-}
-
-function hideBubblePopups(element) {
+function hideTooltips(element) {
     if (element != undefined && element.length) {
-        jQuery(element).find("input:not(input[type='image']), input[data-role='help'], select, textarea, "
-                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups()
+        jQuery(element).find("[data-hasTooltip]").popover("hide");
     }
     else {
-        jQuery("input:not(input[type='image']), input[data-role='help'], select, textarea,"
-                + ".uif-tooltip").not("input[type='hidden']").HideAllBubblePopups();
+        jQuery("[data-hasTooltip]").popover("hide");
     }
-}
-
-/**
- * Returns the URL to the bubblepopup theme directory
- */
-function getBubblePopupThemePath() {
-    return getConfigParam(kradVariables.APPLICATION_URL) + kradVariables.BUBBLEPOPUP_THEME_PATH;
 }
 
 /**
@@ -695,7 +702,7 @@ function setupPage(validate) {
 
     dirtyFormState.resetDirtyFieldCount();
 
-    //if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
+    // if we are skipping this page setup, reset the flag, and return (this logic is for redirects)
     if (skipPageSetup) {
         skipPageSetup = false;
         return;
@@ -726,7 +733,7 @@ function setupPage(validate) {
 
     setupImages();
 
-    //reinitialize sticky footer content because page footer can be sticky
+    // reinitialize sticky footer content because page footer can be sticky
     jQuery("[data-role='Page']").on(kradVariables.EVENTS.ADJUST_STICKY, function(){
         stickyFooterContent = jQuery("[data-sticky_footer='true']");
         initStickyFooterContent();
@@ -744,38 +751,37 @@ function setupPage(validate) {
         actionDefaults = jQuery("[data-role='View']").data(kradVariables.ACTION_DEFAULTS);
     }
 
-    //Reset summary state before processing each field - summaries are shown if server messages
+    // Reset summary state before processing each field - summaries are shown if server messages
     // or on client page validation
     messageSummariesShown = false;
 
-    //flag to turn off and on validation mechanisms on the client
+    // flag to turn off and on validation mechanisms on the client
     validateClient = validate;
 
     // select current page
     var pageId = getCurrentPageId();
 
-    jQuery("ul.uif-navigationMenu").selectMenuItem({selectPage: pageId});
-    jQuery("ul.uif-tabMenu").selectTab({selectPage: pageId});
-
     // update URL to reflect the current page
     updateRequestUrl(pageId);
 
     prevPageMessageTotal = 0;
-    //skip input field iteration and validation message writing, if no server messages
+    // skip input field iteration and validation message writing, if no server messages
     var hasServerMessagesData = jQuery("[data-role='Page']").data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
-        //Handle messages at field, if any
+        pageValidationPhase = true;
+        // Handle messages at field, if any
         jQuery("div[data-role='InputField']").each(function () {
             var id = jQuery(this).attr('id');
             handleMessagesAtField(id, true);
         });
 
-        //Write the result of the validation messages
+        // Write the result of the validation messages
         writeMessagesForPage();
         messageSummariesShown = true;
+        pageValidationPhase = false;
     }
 
-    //focus on pageValidation header if there are messages on this page
+    // focus on pageValidation header if there are messages on this page
     if (jQuery(".uif-pageValidationHeader").length) {
         jQuery(".uif-pageValidationHeader").focus();
     }
@@ -789,9 +795,6 @@ function setupPage(validate) {
     jQuery(document).trigger(kradVariables.VALIDATION_SETUP_EVENT);
 
     pageValidatorReady = true;
-
-    //ensure bubblepopups are initialized
-    initBubblePopups();
 
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
@@ -847,7 +850,7 @@ jQuery.validator.setDefaults({
             var id = getAttributeId(jQuery(element).attr('id'));
             var data = getValidationData(jQuery("#" + id));
 
-            //if this field previously had errors validate on key up
+            // if this field previously had errors validate on key up
             if (data && data.focusedErrors && data.focusedErrors.length) {
                 var valid = validateFieldValue(element);
                 if (!valid) {
@@ -879,7 +882,7 @@ jQuery.validator.setDefaults({
                 writeMessagesAtField(id);
             }
 
-            //force hide of tooltip if no messages present
+            // force hide of tooltip if no messages present
             if (!(data.warnings.length || data.info.length || data.serverErrors.length
                     || data.serverWarnings.length || data.serverInfo.length)) {
                 hideMessageTooltip(id);
@@ -1284,7 +1287,7 @@ function errorHandler(msg, url, lno) {
 }
 
 // script that should execute when the page unloads
-//jQuery(window).bind('beforeunload', function (evt) {
+// jQuery(window).bind('beforeunload', function (evt) {
 // clear server form if closing the browser tab/window or going back
 // TODO: work out back button problem so we can add this clearing
 //    if (!event.pageY || (event.pageY < 0)) {

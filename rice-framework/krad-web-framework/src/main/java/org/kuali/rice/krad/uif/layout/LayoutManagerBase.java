@@ -216,6 +216,14 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
+    public boolean skipLifecycle() {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
     }
 
@@ -541,14 +549,6 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
         checkMutable(true);
         this.propertyReplacers = propertyReplacers;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean skipLifecycle() {
-        return false;
     }
 
     @Override

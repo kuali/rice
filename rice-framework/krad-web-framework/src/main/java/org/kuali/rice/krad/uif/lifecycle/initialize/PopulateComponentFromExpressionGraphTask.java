@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;

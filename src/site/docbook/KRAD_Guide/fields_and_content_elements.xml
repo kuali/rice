@@ -86,25 +86,23 @@ public class FieldBase extends ComponentBase implements Field {
             component.</para>
     <section>
       <title>Other Label Options</title>
-      <para>In addition to the properties described previously, the label component offers the
-                following properties:</para>
+      <para>In addition to the properties described previously, the label component offers the following properties:</para>
+      <para><emphasis role="keyword">showLabel</emphasis> – This indicates whether the label should be shown. Note that the label is still rendered but off screen for accessibility purposes. Set rendering to false to not render the label.</para>
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:showLabel="false"/&gt;</programlisting>
       <para><emphasis role="keyword">renderColon</emphasis> – This indicates whether a colon should be
         rendered after the label text. For example, the label text of 'Foo' will result in 'Foo:'
         being rendered.</para>
-      <para><emphasis role="keyword">requiredMessage</emphasis> – This is a message component that will
+      <para><emphasis role="keyword">requiredIndicator</emphasis> – This is a string that will
         be rendered with the label to indicate that the element associated with the label (generally
-        a control) is required. By default, the message text is configured to be '*' but can be
+        a control) is required. By default, the string is configured to be '*' but can be
         changed on a global or case by case basis:</para>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage="required"/&gt;</programlisting>
-      <para>Like all components, the required message will be displayed if its render property
-                is true. Therefore we can set the required message to not display as follows:</para>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredMessage.render="false"/&gt;</programlisting>
-      <para>However, we typically want to display the required message when the component the label
+      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:label.requiredIndicator="required"/&gt;</programlisting>
+      <para>However, we typically want to display the required indicator when the component the label
         is associated with is required. This is again where our Field component provides value. The
         field will look at the required property (on all components) of the wrapped component, and,
-        if set to true, will then set the render property to true for the label's required message.
-        Likewise, if the component's required property is false, the render property on the required
-        message will be set to false. Therefore these two properties are synced.</para>
+        if set to true, will then render the label's required indicator.
+        Likewise, if the component's required property is false, the required
+        indicator will not render.</para>
       <note>
         <title>Automatic Setting of Properties?</title>
         <para>In this section we have mentioned a few cases where the field component will
@@ -114,33 +112,11 @@ public class FieldBase extends ComponentBase implements Field {
           change the component behavior, we would need to create a new class and then override the
           base bean definition as described. </para>
       </note>
-      <para><emphasis role="keyword">requiredMessagePlacement</emphasis> – Along with the required
-        message, the label component also provides a required message placement option. This
-        indicates where the required message should be rendered in relation to the label text. The
-        type for this property is org.kuali.rice.krad.uif.UifConstants.Position, which is an enum
-        for the four possible positions (LEFT, TOP, RIGHT, BOTTOM). However, in the case of the
-        required message, only the LEFT and RIGHT positions are supported.</para>
     </section>
     <section>
       <title>Other Field Label Options</title>
       <para>The field also provides some additional properties that related to the label.
                 These are:</para>
-      <para><emphasis role="keyword">labelPlacement </emphasis>– Similar to the
-        requiredMessagePlacement of the label component, this property is of type Position. It
-        indicates where the label should be placed in relation to the other field content (the
-        wrapped component(s)). The LEFT, TOP, or RIGHT position may be specified:</para>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="LEFT"/&gt;</programlisting>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="TOP"/&gt;</programlisting>
-      <programlisting linenumbering = "numbered">&lt;bean parent="Uif-DataField" p:label="My Data Field" p:labelPlacement="RIGHT"/&gt;</programlisting>
-      <para>These three configurations are shown in <xref linkend="figplacement"/>. </para>
-       <figure xml:id="figplacement">
-          <title>labelPlacement Options</title>
-          <mediaobject>
-          <imageobject>
-            <imagedata fileref="../images/KRAD_Guide/labelPlacement.png"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
       <para><emphasis role="keyword">shortLabel</emphasis> – On the field component, we can also
         configure an alternate 'short' label. When necessary, the short label can be pulled instead
         of the standard 'long' label. For example, the table layout manager in KRAD will use the
@@ -182,34 +158,18 @@ public class FieldBase extends ComponentBase implements Field {
             them through a field component</para>
         </listitem>
         <listitem>
-          <para>Labels can also include a required message that indicates the field associated with
-            the label has required input</para>
+          <para>Labels can also include a required indicator that indicates the field associated with the label has required input</para>
         </listitem>
         <listitem>
-          <para>The field component will automatically set the for property on the label, along with
-            setting the required message field component's render flag to true if the field is
-            required</para>
+          <para>The field component will automatically set rendering properties for the label and it's required indicator</para>
         </listitem>
         <listitem>
           <para>On the label component we can specify whether a colon should be added with
                         the <emphasis role="keyword">renderColon</emphasis> Boolean</para>
         </listitem>
         <listitem>
-          <para>On the label component we can also specify whether the required message
-                        appears to the left or right of the label using the <emphasis role="keyword">requiredMessagePlacement</emphasis> property</para>
-        </listitem>
-        <listitem>
-          <para>The field component allows us to specify where the label is placed in
-                        relation to the field contents. The options are left, top, or right</para>
-        </listitem>
-        <listitem>
           <para>The field component allows us to specify a short label that can be used instead of
             the 'long' label by some layout managers (for example the table layout manager)</para>
-        </listitem>
-        <listitem>
-          <para>Base beans are provided for data and input fields that have different configurations
-            for a label. The render colon and requirement message placement properties are set based
-            on the label placement</para>
         </listitem>
       </itemizedlist>
     </section>
@@ -1937,6 +1897,33 @@ public List&lt;KeyValue&gt; getKeyValues(ViewModel model) {
             &lt;/bean>
           &lt;/property>
         &lt;/bean></programlisting></para>
+        </section>
+        <section>
+          <title>Grouped Select</title>
+          <para>A grouped select is one that has 'grouping' elements within the drop down of options.
+            The grouping element cannot be selected. This is setup the same way a normal Select control would
+            be set up, except instead of using UifKeyValue object, a UifOptionGroupLabel object is used for the group headers.
+            Here is a sample configuration:
+            <programlisting>
+            &lt;bean parent="Uif-DropdownControl">
+              &lt;property name="options">
+                &lt;list>
+                  &lt;bean parent="Uif-OptionGroupLabel" p:label="American"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>
+                  &lt;bean parent="Uif-OptionGroupLabel" p:label="Japan"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>
+                  &lt;bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            </programlisting>
+            This would be rendered like this:
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/OptGroup.png"/>
+            </imageobject>
+          </para>
         </section>
       </section>
       <section>
@@ -4362,6 +4349,208 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
     </section>
   </section>
   <section>
+    <title>Progress Bars</title>
+    <para>ProgressBar and StepProgressBar are two elements that are used to track progress in some
+      task.  The progress bar can represent a percentage of task complete (with no text), or where
+      in the task a user is and how many more steps they will have to go through to complete it.  It
+      can also represent workflow status/state. </para>
+    <para>The implementation of progress bars are backed by custom bootstrap css styles.  A variety
+      of options are provided to further configure progress bars to suit multiple visual
+      needs.</para>
+    <section>
+      <title>Percentage Progress Bars</title>
+      <para>The base implementation of ProgressBar is designed to work with percentages.  By setting
+        the percentComplete property on a ProgressBar component, the base progress bar element will
+        display a progress bar with that percentage of its bar filled.</para>
+      <para>Setting the percentComplete property (with integer values) on multiple progress
+        bars:<programlisting>        &lt;bean parent="Uif-ProgressBar" p:percentComplete="0"/>
+        &lt;bean parent="Uif-ProgressBar" p:percentComplete="25"/>
+        &lt;bean parent="Uif-ProgressBar" p:percentComplete="50"/>
+        &lt;bean parent="Uif-ProgressBar" p:percentComplete="75"/>
+        &lt;!-- SpringEL is being used to set this value -->
+        &lt;bean parent="Uif-ProgressBar" p:percentComplete="@{percent}"/></programlisting></para>
+      <para>This configuration will result in the following:</para>
+      <figure>
+        <title>Percentage based Progress Bars</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/progressBar_1.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>ProgressBar also has the following properties which can be configured:<itemizedlist>
+          <listitem>
+            <para><emphasis role="bold">vertical </emphasis>- when set to true, the progress bar
+              will appear vertically.  Vertical height is controlled by the css for this
+              implementation.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="bold">segmentPercentages</emphasis> and <emphasis role="bold"
+                >segmentClasses</emphasis> - for the base ProgressBar, these MUST be set together, and
+              these settings will allow you to control the size and style of the bar segments which
+              appear in your bar.  These are settable for advanced configuration (note the usage of
+              boostrap css classes here).</para>
+            <para>Configuration setting custom percentages and
+              classes:<programlisting>        &lt;bean parent="Uif-ProgressBar">
+          &lt;property name="segmentPercentages">
+            &lt;list>
+              &lt;value>20&lt;/value>
+              &lt;value>20&lt;/value>
+              &lt;value>30&lt;/value>
+            &lt;/list>
+          &lt;/property>
+          &lt;property name="segmentClasses">
+            &lt;list>
+              &lt;value>progress-bar progress-bar-info&lt;/value>
+              &lt;value>progress-bar progress-bar-warning&lt;/value>
+              &lt;value>progress-bar progress-bar-danger&lt;/value>
+            &lt;/list>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+            <para>Which would result in a progress bar which looks like:</para>
+            <figure>
+              <title>Customized segment sizes and styles</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_Guide/progressBar_2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+    <section>
+      <title>Step Progress Bars</title>
+      <para>StepProgressBar is a progress bar implementation which allows the visual representation
+        of steps of a task.  A series of String key value pairs in a map can be give to a step
+        progress bar to represent the steps in a task, and the currentStep property is used to
+        indicate which step the task is currently on, by key (SpringEL can be used to set this to
+        some value from the model).  When a currentStep is not set, the bar will appear empty
+        visually.</para>
+      <para>A progress bar with 5 steps and the current step set as the "Save" step (key value
+        "2"):<programlisting>        &lt;bean parent="Uif-StepProgressBar">
+          &lt;property name="currentStep" value="2"/>
+          &lt;property name="steps">
+            &lt;map>
+              &lt;entry key="1" value="Initialize"/>
+              &lt;entry key="2" value="Save"/>
+              &lt;entry key="3" value="Submit"/>
+              &lt;entry key="4" value="Route"/>
+              &lt;entry key="5" value="Approve"/>
+            &lt;/map>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+      <para>Will result in the following progress bar (note the color and visual difference of the
+        current step, completed steps, and future steps):</para>
+      <figure>
+        <title>Step Progress Bar</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/stepProgressBar_1.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>Beyond this basic implementation, the step progress bar can also be manipulated further
+        (and supports the same options as the percentage based progress bar).  These additional
+        options include:<itemizedlist>
+          <listitem>
+            <para><emphasis role="bold">completeStep</emphasis>- by default this is set to the
+              String "SUCCESS".  If the currentStep matches this value, the bar will appear complete
+              (green coloration for the entire bar, no current step highlighted).  This value should
+              NOT be one of the steps listed in your steps map.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="bold">verticalStepHeight</emphasis> - only used when the bar is
+              set to display vertically, this will set how much each segment of the bar will
+              contribute to the total vertical height of the bar.  By default, this value is 75
+              (pixels).</para>
+            <para>Example configuration setting the step height to a smaller default and using the
+              vertical
+              option:<programlisting>        &lt;bean parent="Uif-StepProgressBar">
+          &lt;property name="currentStep" value="1"/>
+          &lt;property name="vertical" value="true"/>
+          &lt;property name="verticalStepHeight" value="30"/>
+          &lt;property name="steps">
+            &lt;map>
+              &lt;entry key="1" value="Step 1"/>
+              &lt;entry key="2" value="Step 2"/>
+              &lt;entry key="3" value="Step 3"/>
+              &lt;entry key="4" value="Step 4"/>
+              &lt;entry key="5" value="Step 5"/>
+              &lt;entry key="6" value="Step 6"/>
+            &lt;/map>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+            <para>Which would look like:</para>
+            <figure>
+              <title>Vertical Step Progress Bar</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_Guide/stepProgressBar_2.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+          <listitem>
+            <para><emphasis role="bold">verticalHeight</emphasis> - if set, <emphasis role="bold"
+                >verticalStepHeight</emphasis> is ignored (otherwise, it is auto-calculated).  Only
+              used when the bar is set to display vertically.</para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="bold">segmentPercentages </emphasis>- unlike the base implementation,
+              this does not need to be set alongside <emphasis role="bold">segmentClasses</emphasis>, as
+              the classes for step progress bars are determined by the framework.  This allows you
+              to give a greater visual weight to some steps.  This MUST be equal in size to the step
+              map's size.</para>
+            <para>Configuration of a step progress bar with 3 different size
+              steps:<programlisting>        &lt;bean parent="Uif-StepProgressBar">
+          &lt;property name="currentStep" value="3"/>
+          &lt;property name="steps">
+            &lt;map>
+              &lt;entry key="1" value="Small Step"/>
+              &lt;entry key="2" value="Big Step"/>
+              &lt;entry key="3" value="Medium Step"/>
+            &lt;/map>
+          &lt;/property>
+          &lt;property name="segmentPercentages">
+            &lt;list>
+              &lt;value>20&lt;/value>
+              &lt;value>50&lt;/value>
+              &lt;value>30&lt;/value>
+            &lt;/list>
+          &lt;/property>
+        &lt;/bean></programlisting></para>
+            <para>Which would look like:</para>
+            <figure>
+              <title>Different size steps</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/KRAD_Guide/stepProgressBar_3.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+    <section role="NotInToc">
+      <title>Recap</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>Progress bars are used to represent progress in a task</para>
+          </listitem>
+          <listitem>
+            <para>Progress bars can be percentage or step based</para>
+          </listitem>
+          <listitem>
+            <para>Progress bar segments can be customized with different segment sizes and styles,
+              and can be displayed horizontally and vertically</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+  <section>
     <title>Message Field</title>
     <para>The last component we will look at in this chapter is the Message Field. In this case,
       there is no corresponding HTML element tag. Instead, the message field is used to render
@@ -4412,7 +4601,10 @@ image&quot; p:source=&quot;@{#ConfigProperties[&apos;krad.externalizable.images.
   </section>
   <section>
     <title>Rich Message Content</title>
-    <para>Rich message content refer to functionality available in various components (above) which accept text.  Rich message functionality allows textual components to be more robust by providing the power to use almost any KRAD component, html, image, link, or css inline with the rest of the text.</para>
+    <para>Rich message content refers to functionality available in various components (above) which
+      accept text. Rich message functionality allows textual components to be more robust by
+      providing the power to use almost any KRAD component, html, image, link, or css inline with
+      the rest of the text.</para>
     <para> To use rich message functionality, you just have to declare text with the appropriate tag
       enclosed in brackets "[]". This means that text that needs to use brackets in its content MUST
       use a backslash to escape that character in text properties that expect the use of rich

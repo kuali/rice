@@ -41,12 +41,11 @@ import java.util.Set;
  * Container implementations are free to add additional content as needed.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  * @see org.kuali.rice.krad.uif.component.Component
  */
 public interface Container extends Component, Helpable {
 
-	/**
+    /**
      * {@code List} of {@code Component} instances that are held by
      * the container
      *
@@ -57,16 +56,16 @@ public interface Container extends Component, Helpable {
      *
      * @return List component instances
      */
-	List<? extends Component> getItems();
+    List<? extends Component> getItems();
 
     /**
      * Setter for the containers list of components
      *
-     * @param items  list of components to set in container
+     * @param items list of components to set in container
      */
     void setItems(List<? extends Component> items);
 
-	/**
+    /**
      * {@code Set} of {@code Component} classes that may be placed
      * into the container
      *
@@ -79,9 +78,9 @@ public interface Container extends Component, Helpable {
      *
      * @return Set component classes
      */
-	Set<Class<? extends Component>> getSupportedComponents();
+    Set<Class<? extends Component>> getSupportedComponents();
 
-	/**
+    /**
      * {@code LayoutManager} that should be used to layout the components
      * in the container
      *
@@ -93,16 +92,14 @@ public interface Container extends Component, Helpable {
      *
      * @return LayoutManager instance
      */
-	LayoutManager getLayoutManager();
+    LayoutManager getLayoutManager();
 
-	/**
-	 * Setter for the containers layout manager
-	 *
-	 * @param layoutManager
-	 */
-	void setLayoutManager(LayoutManager layoutManager);
+    /**
+     * @see #getLayoutManager()
+     */
+    void setLayoutManager(LayoutManager layoutManager);
 
-	/**
+    /**
      * {@code HeaderField} associated with the container
      *
      * <p>
@@ -118,16 +115,14 @@ public interface Container extends Component, Helpable {
      *
      * @return HeaderField instance or Null
      */
-	Header getHeader();
+    Header getHeader();
 
-	/**
-	 * Setter for the containers header field
-	 *
-	 * @param header
-	 */
-	void setHeader(Header header);
+    /**
+     * @see #getHeader()
+     */
+    void setHeader(Header header);
 
-	/**
+    /**
      * Footer {@code Group} associated with the container
      *
      * <p>
@@ -141,16 +136,14 @@ public interface Container extends Component, Helpable {
      *
      * @return Group footer instance or Null
      */
-	Group getFooter();
+    Group getFooter();
 
-	/**
-	 * Setter for the containers footer
-	 *
-	 * @param footer
-	 */
-	void setFooter(Group footer);
+    /**
+     * @see #getFooter()
+     */
+    void setFooter(Group footer);
 
-	/**
+    /**
      * Text for the container that provides a summary description or
      * instructions
      *
@@ -165,16 +158,14 @@ public interface Container extends Component, Helpable {
      *
      * @return Message instance or Null
      */
-	Message getInstructionalMessage();
+    Message getInstructionalMessage();
 
-	/**
-	 * Setter for the containers summary message field
-	 *
-	 * @param instructionalMessage
-	 */
-	void setInstructionalMessage(Message instructionalMessage);
+    /**
+     * @see #getInstructionalMessage()
+     */
+    void setInstructionalMessage(Message instructionalMessage);
 
-	/**
+    /**
      * Field that contains the error messages for the container
      *
      * <p>
@@ -186,18 +177,16 @@ public interface Container extends Component, Helpable {
      *
      * @return ValidationMessages holding the container errors
      */
-	ValidationMessages getValidationMessages();
+    ValidationMessages getValidationMessages();
 
-	/**
-	 * Setter for the containers errors field
-	 *
-	 * @param validationMessages
-	 */
-	void setValidationMessages(ValidationMessages validationMessages);
+    /**
+     * @see #getValidationMessages()
+     */
+    void setValidationMessages(ValidationMessages validationMessages);
 
     /**
      * Performs sorting of the container items based on the order property.
-     * 
+     *
      * <p>
      * Note that the items may be modified by this method to assign order priority where it has not
      * been previously assigned.
@@ -207,9 +196,21 @@ public interface Container extends Component, Helpable {
 
     /**
      * Determine if remote field holders should be processed for this container.
-     * 
+     *
      * @return True if remote field holders should be processed for this container.
      */
     boolean isProcessRemoteFieldHolders();
+
+    /**
+     * Get the key of the action item to invoke upon pressing the enter key.
+     *
+     * @return String enterKeyAction
+     */
+    public String getEnterKeyAction();
+
+    /**
+     * @see #getEnterKeyAction()
+     */
+    public void setEnterKeyAction(String enterKeyAction);
 
 }

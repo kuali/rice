@@ -22,7 +22,7 @@
   <!-- NavigationGroup demo -->
   <bean id="Demo-NavigationGroupView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoNavigationGroup.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.NavigationGroup"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.container.TabNavigationGroup"/>
     <property name="docBookAnchor" value="d6813e8513"/>
     <property name="exampleSize" value="XLARGE"/>
     <property name="demoGroups">

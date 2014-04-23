@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.uif.component.Component;
@@ -23,22 +22,46 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 
 /**
- * Provides methods for implementing the various phases of a <code>View</code>
+ * Provides customization methods at various points of the view lifecycle.
  *
- * <ul>
- * <li>Initialize Phase: Invoked when the view is first requested to setup
- * necessary state</li>
- * </ul>
+ * <p>Custom view helpers can be configured with view property
+ * {@link org.kuali.rice.krad.uif.view.View#getViewHelperServiceClass()}</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ViewHelperService {
+
+    /**
+     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
+     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
+     * request).
+     *
+     * <p>
+     * The <code>View</code> instance is inspected for fields that have the
+     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
+     * request parameter map, the request value is used to set the view property. The Map of
+     * parameter name/values that match are placed in the view so they can be later retrieved to
+     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
+     * parameter key/value pairs to the returned map if necessary.
+     * </p>
+     *
+     * <p>
+     * For each field found, if there is a corresponding key/value pair in the request parameters,
+     * the value is used to populate the field. In addition, any conditional properties of
+     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
+     * parameter value does not get overridden by the dictionary conditional logic
+     * </p>
+     *
+     * @param parameters The request parameters that apply to the view.
+     * @see org.kuali.rice.krad.uif.component.RequestParameter
+     */
+    void populateViewFromRequestParameters(Map<String, String> parameters);
     
     /**
      * Hook for service overrides to perform custom initialization prior to view initialization.
@@ -244,6 +267,17 @@ public interface ViewHelperService {
     void setViewContext();
 
     /**
+     * Invoked to set up the context for an element.
+     *
+     * <p>Context is primarily used for expression evaluation. Any object in the context for a component
+     * will be available as a variable within expressions.</p>
+     *
+     * @param element element to setup context for
+     * @param parent parent of the given element
+     */
+    void setElementContext(LifecycleElement element, LifecycleElement parent);
+
+    /**
      * Invokes the configured <code>PresentationController</code> and </code>Authorizer</code> for
      * the view to get the exported action flags and edit modes that can be used in conditional
      * logic
@@ -338,32 +372,6 @@ public interface ViewHelperService {
      * @param line The model object backing the line.
      */
     void applyDefaultValuesForCollectionLine(CollectionGroup collectionGroup, Object line);
-
-    /**
-     * Uses reflection to find all fields defined on the <code>View</code> instance that have the
-     * <code>RequestParameter</code> annotation (which indicates the field may be populated by the
-     * request).
-     * 
-     * <p>
-     * The <code>View</code> instance is inspected for fields that have the
-     * <code>RequestParameter</code> annotation and if corresponding parameters are found in the
-     * request parameter map, the request value is used to set the view property. The Map of
-     * parameter name/values that match are placed in the view so they can be later retrieved to
-     * rebuild the view. Custom <code>ViewServiceHelper</code> implementations can add additional
-     * parameter key/value pairs to the returned map if necessary.
-     * </p>
-     * 
-     * <p>
-     * For each field found, if there is a corresponding key/value pair in the request parameters,
-     * the value is used to populate the field. In addition, any conditional properties of
-     * <code>PropertyReplacers</code> configured for the field are cleared so that the request
-     * parameter value does not get overridden by the dictionary conditional logic
-     * </p>
-     * 
-     * @param parameters The request parameters that apply to the view.
-     * @see org.kuali.rice.krad.uif.component.RequestParameter
-     */
-    void populateViewFromRequestParameters(Map<String, String> parameters);
 
     /**
      * Gets an expression evaluator factory for use with the current view.

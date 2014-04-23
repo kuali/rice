@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * For test view purposes only
@@ -35,6 +36,7 @@ public class UITestObject implements Serializable {
     private String field3;
     private String field4;
     private boolean bfield;
+    private boolean bfield2;
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
     private UITestObject innerObject;
@@ -49,6 +51,8 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField2", "Banana");
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
+        Random r = new Random();
+        bfield2 = r.nextBoolean();
     }
 
     public UITestObject(String field1, String field2, String field3, String field4) {
@@ -56,6 +60,9 @@ public class UITestObject implements Serializable {
         this.field2 = field2;
         this.field3 = field3;
         this.field4 = field4;
+
+        Random r = new Random();
+        bfield2 = r.nextBoolean();
 
         remoteFieldValuesMap = new HashMap<String, Object>();
         remoteFieldValuesMap.put("remoteField1", "Apple");
@@ -163,6 +170,14 @@ public class UITestObject implements Serializable {
      */
     public void setBfield(boolean bfield) {
         this.bfield = bfield;
+    }
+
+    public boolean isBfield2() {
+        return bfield2;
+    }
+
+    public void setBfield2(boolean bfield2) {
+        this.bfield2 = bfield2;
     }
 
     @Override

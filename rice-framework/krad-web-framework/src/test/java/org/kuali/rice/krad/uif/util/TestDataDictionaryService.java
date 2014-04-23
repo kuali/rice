@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.beans.PropertyEditor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +64,7 @@ public class TestDataDictionaryService implements DataDictionaryService {
     private static final Logger LOG = Logger.getLogger(TestDataDictionaryService.class);
     
     private DataDictionary dataDictionary;
+    private Map<Class<?>, PropertyEditor> propertyEditorMap;
 
     /**
      * @param dataDictionary the dataDictionary to set
@@ -986,4 +988,17 @@ public class TestDataDictionaryService implements DataDictionaryService {
         return blockingClasses;
     }
 
+    @Override
+    public Map<Class<?>, PropertyEditor> getPropertyEditorMap() {
+        return propertyEditorMap;
+    }
+
+    /**
+     * @see #getPropertyEditorMap()
+     *
+     * @param propertyEditorMap mapping from property type to property editor
+     */
+    public void setPropertyEditorMap(Map<Class<?>, PropertyEditor> propertyEditorMap) {
+        this.propertyEditorMap = propertyEditorMap;
+    }
 }

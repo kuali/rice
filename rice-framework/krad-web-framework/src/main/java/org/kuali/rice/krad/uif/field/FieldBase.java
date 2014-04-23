@@ -15,26 +15,25 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.element.Label;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.List;
 
 /**
  * Base class for <code>Field</code> implementations
@@ -52,13 +51,14 @@ import org.kuali.rice.krad.util.KRADUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTags({@BeanTag(name = "fieldBase-bean", parent = "Uif-FieldBase"),
-    @BeanTag(name = "fieldBase-withLabel-bean", parent = "Uif-FieldBase-withLabel")})
+        @BeanTag(name = "fieldBase-withLabel-bean", parent = "Uif-FieldBase-withLabel")})
 public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
+    private static final Logger LOG = Logger.getLogger(FieldBase.class);
 
     private String shortLabel;
     private Label fieldLabel;
-    
+
     private boolean labelRendered;
 
     public FieldBase() {
@@ -71,12 +71,44 @@ public class FieldBase extends ComponentBase implements Field {
      * The following finalization is performed:
      *
      * <ul>
+     * <li>Make sure that a label is defined for any data fields. If not then create hidden label using property
+     * name.</li>
+     * <li>If no label for a non data field then just log a warning.</li>
+     * </ul>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void performApplyModel(Object model, LifecycleElement parent) {
+        super.performApplyModel(model, parent);
+
+        if (!labelRendered && fieldLabel == null) {
+            if (this instanceof DataFieldBase) {
+                LOG.warn("DataField ("
+                        + this.getClass().getName()
+                        + ") ID: "
+                        + this.getId()
+                        + ", propertyName: "
+                        + ((DataFieldBase) this).getPropertyName()
+                        + " has no label. A hidden default label will be created.");
+                this.setLabel(((DataFieldBase) this).getPropertyName());
+                this.setLabelRendered(false);
+                this.setShowLabel(true);
+            } else {
+                if (this instanceof SpaceField == false) {
+                    LOG.warn("Field (" + this.getClass().getName() + ") ID: " + this.getId() + " has no label.");
+                }
+            }
+        }
+    }
+
+    /**
+     * The following finalization is performed:
+     *
+     * <ul>
      * <li>Set the labelForComponentId to this component id</li>
-     * <li>Set the label text on the label field from the field's label property
-     * </li>
-     * <li>Set the render property on the label's required message field if this
-     * field is marked as required</li>
-     * <li>If label placement is right, set render colon to false</li>
+     * <li>Set the label text on the label field from the field's label property</li>
+     * <li>Set the render property on the label's required message field if this field is marked as required</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -90,7 +122,8 @@ public class FieldBase extends ComponentBase implements Field {
 
             if ((getRequired() != null) && getRequired().booleanValue()) {
                 View view = ViewLifecycle.getView();
-                if (view.getViewTypeName() != null && view.getViewTypeName().equals(UifConstants.ViewType.MAINTENANCE)) {
+                if (view.getViewTypeName() != null && view.getViewTypeName().equals(
+                        UifConstants.ViewType.MAINTENANCE)) {
                     fieldLabel.setRenderRequiredIndicator(!view.isReadOnly());
                 } else {
                     fieldLabel.setRenderRequiredIndicator(!isReadOnly());
@@ -102,11 +135,10 @@ public class FieldBase extends ComponentBase implements Field {
 
             fieldLabel.addStyleClass("uif-labelBlock");
 
-
             fieldLabel.addDataAttribute(UifConstants.DataAttributes.LABEL_FOR, this.getId());
-            if(StringUtils.isNotBlank(this.getFieldLabel().getLabelText())){
-                this.addDataAttribute(UifConstants.DataAttributes.LABEL,
-                        MessageStructureUtils.translateStringMessage(this.getFieldLabel().getLabelText()));
+            if (StringUtils.isNotBlank(this.getFieldLabel().getLabelText())) {
+                this.addDataAttribute(UifConstants.DataAttributes.LABEL, MessageStructureUtils.translateStringMessage(
+                        this.getFieldLabel().getLabelText()));
             }
         }
     }
@@ -162,7 +194,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelStyleClasses
      */
-    @BeanTagAttribute(name="labelStyleClasses",type= BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute(name = "labelStyleClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getLabelStyleClasses() {
         if (fieldLabel != null) {
             return fieldLabel.getCssClasses();
@@ -187,7 +219,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelColSpan
      */
-    @BeanTagAttribute(name="labelColSpan")
+    @BeanTagAttribute(name = "labelColSpan")
     public int getLabelColSpan() {
         if (fieldLabel != null) {
             return fieldLabel.getColSpan();
@@ -212,7 +244,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getShortLabel()
      */
-    @BeanTagAttribute(name="shortLabel")
+    @BeanTagAttribute(name = "shortLabel")
     public String getShortLabel() {
         return this.shortLabel;
     }
@@ -228,33 +260,26 @@ public class FieldBase extends ComponentBase implements Field {
      * Sets whether the label should be displayed
      *
      * <p>
-     * Convenience method for configuration that sets the render indicator on
-     * the fields <code>Label</code> instance
+     * Convenience method for configuration that sets the hidden indicator on
+     * the fields <code>Label</code> instance. The label is not really hidden
+     * but set off screen for accessibility.
      * </p>
      *
-     * @param showLabel true if label should be displayed, false if the label
-     * should not be displayed
+     * @param showLabel true if label should be hidden, false if the label
+     * should not be hidden
      */
     public void setShowLabel(boolean showLabel) {
         if (fieldLabel != null) {
-            fieldLabel.setRender(showLabel);
+            fieldLabel.setHidden(showLabel);
         }
     }
 
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
-    @ViewLifecycleRestriction
-    @BeanTagAttribute(name="fieldLabel",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "fieldLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Label getFieldLabel() {
         return this.fieldLabel;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.field.Field#getLabel
-     */
-    public Label getFieldLabelIfNotRendered() {
-        return isLabelRendered() ? null : this.fieldLabel;
     }
 
     /**
@@ -264,11 +289,10 @@ public class FieldBase extends ComponentBase implements Field {
         this.fieldLabel = fieldLabel;
     }
 
-
     /**
      * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()
      */
-    @BeanTagAttribute(name="labelRendered")
+    @BeanTagAttribute(name = "labelRendered")
     public boolean isLabelRendered() {
         return this.labelRendered;
     }
@@ -279,7 +303,7 @@ public class FieldBase extends ComponentBase implements Field {
     public void setLabelRendered(boolean labelRendered) {
         this.labelRendered = labelRendered;
     }
-    
+
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getFieldSecurity()
      */

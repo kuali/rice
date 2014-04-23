@@ -32,9 +32,12 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.container.DialogGroup;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.UrlInfo;
@@ -108,8 +111,13 @@ public class Action extends ContentElementBase {
     private boolean dirtyOnAction;
 
     private String preSubmitCall;
-    private boolean ajaxSubmit;
+    private String confirmationPromptText;
+    private DialogGroup confirmationDialog;
 
+    private String dialogDismissOption;
+    private String dialogResponse;
+
+    private boolean ajaxSubmit;
     private String ajaxReturnType;
     private String refreshId;
     private String refreshPropertyName;
@@ -124,6 +132,8 @@ public class Action extends ContentElementBase {
     private Map<String, String> actionParameters;
 
     private boolean evaluateDisabledOnKeyUp;
+
+    private boolean defaultEnterKeyAction;
 
     private boolean disabled;
     private String disabledReason;
@@ -180,6 +190,43 @@ public class Action extends ContentElementBase {
             ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(ViewLifecycle.getView(),
                     actionUrl, this.getContext());
         }
+
+        if (StringUtils.isNotBlank(confirmationPromptText) && (confirmationDialog != null) && StringUtils.isBlank(
+                confirmationDialog.getPromptText())) {
+            confirmationDialog.setPromptText(confirmationPromptText);
+        }
+
+        addConfirmDialogToView();
+    }
+
+    /**
+     * For confirm text without a dialog, add instance of yes no dialog to view so it is already available
+     * on the client for dynamic dialog creation.
+     */
+    protected void addConfirmDialogToView() {
+        if (StringUtils.isBlank(confirmationPromptText) || (confirmationDialog != null)) {
+            return;
+        }
+
+        boolean containsYesNoDialog = false;
+
+        List<Group> viewDialogs = ViewLifecycle.getView().getDialogs();
+        if (viewDialogs == null) {
+            viewDialogs = new ArrayList<Group>();
+        } else {
+            for (Group dialogGroup : viewDialogs) {
+                if (StringUtils.equals(ComponentFactory.YES_NO_DIALOG, dialogGroup.getId())) {
+                    containsYesNoDialog = true;
+                }
+            }
+        }
+
+        if (!containsYesNoDialog) {
+            Group confirmDialog = ComponentFactory.getYesNoDialog();
+            confirmDialog.setId(ComponentFactory.YES_NO_DIALOG);
+
+            viewDialogs.add(confirmDialog);
+        }
     }
 
     /**
@@ -224,8 +271,7 @@ public class Action extends ContentElementBase {
         enabledWhenChangedPropertyNames = adjustedEnablePropertyNames;
 
         // clear alt text to avoid screen reader confusion when using image in button with text
-        if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(
-                actionLabel)) {
+        if (actionImage != null && StringUtils.isNotBlank(actionImagePlacement) && StringUtils.isNotBlank(actionLabel)) {
             actionImage.setAltText("");
         }
 
@@ -263,7 +309,6 @@ public class Action extends ContentElementBase {
 
         if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
-
             setActionScript(actionScript);
         }
 
@@ -369,6 +414,20 @@ public class Action extends ContentElementBase {
                 UifConstants.ActionDataAttributes.PERFORM_DIRTY_VALIDATION, Boolean.toString(
                 this.performDirtyValidation));
 
+        if (confirmationDialog != null) {
+            addDataAttribute(UifConstants.ActionDataAttributes.CONFIRM_DIALOG_ID, confirmationDialog.getId());
+        } else if (StringUtils.isNotBlank(confirmationPromptText)) {
+            addDataAttribute(UifConstants.ActionDataAttributes.CONFIRM_PROMPT_TEXT, confirmationPromptText);
+        }
+
+        if (StringUtils.isNotBlank(dialogDismissOption)) {
+            addDataAttribute(UifConstants.DataAttributes.DISMISS_DIALOG_OPTION, dialogDismissOption);
+        }
+
+        if (StringUtils.isNotBlank(dialogResponse)) {
+            addDataAttribute(UifConstants.DataAttributes.DISMISS_RESPONSE, dialogResponse);
+        }
+
         // all action parameters should be submitted with action
         Map<String, String> submitData = new HashMap<String, String>();
         for (String key : actionParameters.keySet()) {
@@ -425,6 +484,12 @@ public class Action extends ContentElementBase {
         }
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
+
+        // add data attribute if this is the primary action
+        if (this.isDefaultEnterKeyAction()) {
+            this.addDataAttribute(UifConstants.DataAttributes.DEFAULT_ENTER_KEY_ACTION,
+                    Boolean.toString(this.isDefaultEnterKeyAction()));
+        }
     }
 
     /**
@@ -1117,6 +1182,95 @@ public class Action extends ContentElementBase {
     }
 
     /**
+     * Text to display as a confirmation of the action.
+     *
+     * <p>When this text is displayed the user will receive a confirmation when the action is taken. The user
+     * can then cancel the action, or continue. If set, {@link Action#getConfirmationDialog()} will be used
+     * to build the dialog. Otherwise, the dialog is created dynamically on the client.</p>
+     *
+     * @return text to display in a confirmation for the action
+     */
+    public String getConfirmationPromptText() {
+        return confirmationPromptText;
+    }
+
+    /**
+     * @see Action#getConfirmationPromptText()
+     */
+    public void setConfirmationPromptText(String confirmationPromptText) {
+        this.confirmationPromptText = confirmationPromptText;
+    }
+
+    /**
+     * Dialog to use an a confirmation for the action.
+     *
+     * <p>For custom confirmation dialogs this can be set to any valid dialog group. It is expected that the
+     * dialog have at least one action with the dialog response of 'true' to continue the action.</p>
+     *
+     * @return dialog group instance to use an a confirmation
+     */
+    public DialogGroup getConfirmationDialog() {
+        return confirmationDialog;
+    }
+
+    /**
+     * @see Action#getConfirmationDialog()
+     */
+    public void setConfirmationDialog(DialogGroup confirmationDialog) {
+        this.confirmationDialog = confirmationDialog;
+    }
+
+    /**
+     * If the action is within a {@link org.kuali.rice.krad.uif.container.DialogGroup} it can be configured to
+     * dismiss the dialog using this property.
+     *
+     * <p>A dialog can be dismissed at various points of the action using the values:
+     *    IMMEDIATE - dismiss dialog right away (and do nothig further)
+     *    PRESUBMIT - run the action presubmit (which can include validation), if successful close the dialog and
+     *                do nothing further
+     *    REQUEST - carry out the action request as usual and dismiss the dialog when the server request is made
+     * </p>
+     *
+     * <p>Note the id for the dialog that will be dismissed is automatically associated with the action when
+     * the dialog is shown.</p>
+     *
+     * @return String option for dismissing a dialog
+     */
+    public String getDialogDismissOption() {
+        return dialogDismissOption;
+    }
+
+    /**
+     * @see Action#getDialogDismissOption()
+     */
+    public void setDialogDismissOption(String dialogDismissOption) {
+        this.dialogDismissOption = dialogDismissOption;
+    }
+
+    /**
+     * If the action is within a {@link org.kuali.rice.krad.uif.container.DialogGroup} it can be configured to
+     * return a response using this property.
+     *
+     * <p>Dialogs can be used to get a response from a user, either a simple confirmation (true or false), or to
+     * choice from a list of options. The responses for the dialog are created with action components. The property
+     * specifies the action value that should be returned (when chosen) to the dialog response handlers. For example,
+     * in a simple confirmation one action will have a dialog response 'false', and the other will have a dialog
+     * response 'true'.</p>
+     *
+     * @return String dialog response value
+     */
+    public String getDialogResponse() {
+        return dialogResponse;
+    }
+
+    /**
+     * @see Action#getDialogResponse()
+     */
+    public void setDialogResponse(String dialogResponse) {
+        this.dialogResponse = dialogResponse;
+    }
+
+    /**
      * When this property is set to true it will submit the form using Ajax instead of the browser submit. Will default
      * to updating the page contents
      *
@@ -1372,6 +1526,23 @@ public class Action extends ContentElementBase {
      */
     public void setEvaluateDisabledOnKeyUp(boolean evaluateDisabledOnKeyUp) {
         this.evaluateDisabledOnKeyUp = evaluateDisabledOnKeyUp;
+    }
+
+    /**
+     * Evaluate if this action is the default action for a page, view, group, or section.
+     *
+     * @return true if this action is default, false otherwise
+     */
+    @BeanTagAttribute(name = "defaultEnterKeyAction")
+    public boolean isDefaultEnterKeyAction() {
+        return this.defaultEnterKeyAction;
+    }
+
+    /**
+     * @see  #isDefaultEnterKeyAction()
+     */
+    public void setDefaultEnterKeyAction(boolean defaultEnterKeyAction) {
+        this.defaultEnterKeyAction = defaultEnterKeyAction;
     }
 
     /**

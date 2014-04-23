@@ -338,7 +338,7 @@ public class RichTableTest {
         templateOptions.put(optionKey, optionsOnGroup);
         richTable.setTemplateOptions(templateOptions);
         
-        ViewLifecycle.encapsulateLifecycle(mockView, null, null, null, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(mockView, null, null, new Runnable(){
             @Override
             public void run() {
                 RichTable mutableRichTable = richTable.<RichTable> copy();

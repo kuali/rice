@@ -1,0 +1,718 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-Responsive1" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="No Configuration">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="Col span translation - md 5, md 7">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:colSpan="5" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:colSpan="7" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:colSpan="5" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:colSpan="7" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="Sm 8, Md 6, Lg 3">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="8"
+                        p:cssGridSizes.mdSize="6" p:cssGridSizes.lgSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="8"
+                        p:cssGridSizes.mdSize="6" p:cssGridSizes.lgSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="8"
+                        p:cssGridSizes.mdSize="6" p:cssGridSizes.lgSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="8"
+                        p:cssGridSizes.mdSize="6" p:cssGridSizes.lgSize="3" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="xs 12, sm 6, md 4">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="Different sizes per wrapped 'row', sm 3, 5, 6">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="3" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="5" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="5" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive2" parent="Uif-FormView">
+    <property name="headerText" value="Responsive Offset"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="Md offset 6, Md 6">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.mdOffset="6"
+                        p:cssGridSizes.mdSize="6" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.mdOffset="6"
+                        p:cssGridSizes.mdSize="6" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.mdOffset="6"
+                        p:cssGridSizes.mdSize="6" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.mdOffset="6"
+                        p:cssGridSizes.mdSize="6" p:propertyName="inputField1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="sm-offset 2, sm 8, md-offset 4, md 4"
+                  p:instructionalText="Offset at md+ does not include first item on purpose">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1">
+                    <property name="cssGridSizes.smOffset" value="2"/>
+                    <property name="cssGridSizes.smSize" value="8"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                    <property name="cssGridSizes.mdOffset" value="0"/>
+                  </bean>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1">
+                    <property name="cssGridSizes.smOffset" value="2"/>
+                    <property name="cssGridSizes.smSize" value="8"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                    <property name="cssGridSizes.mdOffset" value="4"/>
+                  </bean>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1">
+                    <property name="cssGridSizes.smOffset" value="2"/>
+                    <property name="cssGridSizes.smSize" value="8"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                    <property name="cssGridSizes.mdOffset" value="0"/>
+                  </bean>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1">
+                    <property name="cssGridSizes.smOffset" value="2"/>
+                    <property name="cssGridSizes.smSize" value="8"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                    <property name="cssGridSizes.mdOffset" value="4"/>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive3" parent="Uif-FormView">
+    <property name="headerText" value="Responsive Separate Label"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection-1FieldLabelColumn">
+              <property name="headerText" value="1 Label Column"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSection-2FieldLabelColumn">
+              <property name="headerText" value="2 Label Columns"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSubSection-1FieldLabelColumn">
+              <property name="headerText" value="Manipulating column sizes"/>
+              <property name="layoutManager.labelColumnSizes.mdSize" value="6"/>
+              <property name="layoutManager.fieldColumnSizes.mdSize" value="6"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSubSection-1FieldLabelColumn">
+              <property name="headerText" value="Manipulating column sizes - different screen sizes"/>
+              <property name="layoutManager.labelColumnSizes.lgSize" value="2"/>
+              <property name="layoutManager.fieldColumnSizes.lgSize" value="2"/>
+              <property name="layoutManager.labelColumnSizes.mdSize" value="3"/>
+              <property name="layoutManager.fieldColumnSizes.mdSize" value="3"/>
+              <property name="layoutManager.labelColumnSizes.smSize" value="6"/>
+              <property name="layoutManager.fieldColumnSizes.smSize" value="6"/>
+              <property name="layoutManager.labelColumnSizes.xsSize" value="10"/>
+              <property name="layoutManager.fieldColumnSizes.xsSize" value="10"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSubSection-1FieldLabelColumn">
+              <property name="headerText" value="Manipulating label and field size directly"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"
+                        p:fieldLabel.cssGridSizes.mdSize="1" p:cssGridSizes.mdSize="5"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"
+                        p:fieldLabel.cssGridSizes.mdSize="1" p:cssGridSizes.mdSize="5"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"
+                        p:fieldLabel.cssGridSizes.mdSize="3" p:cssGridSizes.mdSize="3"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"
+                        p:fieldLabel.cssGridSizes.mdSize="2" p:cssGridSizes.mdSize="4"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"
+                        p:fieldLabel.cssGridSizes.mdSize="8" p:cssGridSizes.mdSize="8"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"
+                        p:fieldLabel.cssGridSizes.mdSize="12" p:cssGridSizes.mdSize="12"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSubSection-1FieldLabelColumn">
+              <property name="headerText" value="Manipulating label and field size directly at different screen sizes"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"
+                        p:fieldLabel.cssGridSizes.xsSize="6" p:cssGridSizes.xsSize="6"
+                        p:fieldLabel.cssGridSizes.smSize="3" p:cssGridSizes.smSize="3"
+                        p:fieldLabel.cssGridSizes.mdSize="2" p:cssGridSizes.mdSize="2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"
+                        p:fieldLabel.cssGridSizes.xsSize="6" p:cssGridSizes.xsSize="6"
+                        p:fieldLabel.cssGridSizes.smSize="3" p:cssGridSizes.smSize="3"
+                        p:fieldLabel.cssGridSizes.mdSize="2" p:cssGridSizes.mdSize="2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"
+                        p:fieldLabel.cssGridSizes.xsSize="12" p:cssGridSizes.xsSize="12"
+                        p:fieldLabel.cssGridSizes.smSize="6" p:cssGridSizes.smSize="6"
+                        p:fieldLabel.cssGridSizes.mdSize="2" p:cssGridSizes.mdSize="2"/>
+                </list>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive4" parent="Uif-FormView">
+    <property name="headerText" value="Nested"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="Section with groups - md 4, md 8">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-CssGridSubSection" p:headerText="SubSection with fields - md 6" p:colSpan="4">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-CssGridSubSection" p:headerText="SubSection with fields - md 4" p:colSpan="8">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="4" p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSection" p:headerText="Section with groups - md 4, sm 6">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-CssGridSubSection" p:headerText="SubSection with fields - md 12"
+                        p:cssGridSizes.smSize="6" p:cssGridSizes.mdSize="4">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="12" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="12" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="12" p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-CssGridSubSection" p:headerText="SubSection with fields - md 4, sm 6"
+                        p:cssGridSizes.smSize="6" p:cssGridSizes.mdSize="4">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6"
+                              p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6"
+                              p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6"
+                              p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.smSize="6"
+                              p:cssGridSizes.mdSize="4" p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-CssGridSubSection" p:headerText="SubSection with fields - md 6"
+                        p:cssGridSizes.smSize="6" p:cssGridSizes.mdSize="4">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive5" parent="Uif-FormView">
+    <property name="headerText" value="Different Content"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="xs 12, sm 6, md 4">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-TextAreaControl"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-DropdownControl"/>
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-VerticalRadioControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Radio 3"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Radio 4"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-CheckboxControl" p:checkboxLabel="Add me to your mailing list"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:cssGridSizes.xsSize="12" p:cssGridSizes.smSize="6"
+                        p:cssGridSizes.mdSize="4" p:propertyName="checkboxesField2" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-VerticalCheckboxesControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Check 1"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Check 2"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Check 3"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSection-2FieldLabelColumn" p:headerText="2 label column layout">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-TextAreaControl"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-DropdownControl"/>
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-VerticalRadioControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Radio 3"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Radio 4"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-CheckboxControl" p:checkboxLabel="Add me to your mailing list"/>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="checkboxesField2" p:required="true">
+                    <property name="control">
+                      <bean parent="Uif-VerticalCheckboxesControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Check 1"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Check 2"/>
+                            <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Check 3"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-CssGridSection" p:headerText="Table collections md 5, md 7">
+              <property name="items">
+                <list>
+
+                  <bean parent="Uif-Disclosure-TableCollectionSection" p:cssGridSizes.mdSize="5">
+                    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                    <property name="propertyName" value="collection1"/>
+                    <property name="layoutManager.renderSequenceField" value="false"/>
+                    <property name="layoutManager.generateAutoSequence" value="false"/>
+                    <property name="layoutManager.richTable.render" value="true"/>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                      </list>
+                    </property>
+                  </bean>
+
+                  <bean parent="Uif-Disclosure-TableCollectionSection" p:cssGridSizes.mdSize="7">
+                    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                    <property name="propertyName" value="collection2"/>
+                    <property name="layoutManager.renderSequenceField" value="false"/>
+                    <property name="layoutManager.generateAutoSequence" value="false"/>
+                    <property name="layoutManager.richTable.render" value="true"/>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                        <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                        <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                      </list>
+                    </property>
+                  </bean>
+
+                </list>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+
+
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive6" parent="Uif-FormView">
+    <property name="headerText" value="Misc tests"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="Default size test - xs 10, sm 6, md 4, lg 3">
+              <property name="layoutManager.defaultItemSizes.xsSize" value="10"/>
+              <property name="layoutManager.defaultItemSizes.smSize" value="6"/>
+              <property name="layoutManager.defaultItemSizes.mdSize" value="4"/>
+              <property name="layoutManager.defaultItemSizes.lgSize" value="3"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field"
+                        p:instructionalText="Instruction Instruction Instruction Instruction Instruction Instruction Instruction Instruction Instruction Instruction Instruction Instruction"
+                        p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:instructionalText="Small Instructions" p:label="Field"
+                        p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:constraintText="Constraint Text" p:label="Field"
+                        p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1">
+                    <property name="control">
+                      <bean parent="Uif-TextControl" p:textExpand="true"/>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-InputField" p:constraintText="Constraint Text" p:label="Field"
+                        p:propertyName="inputField1"/>
+                </list>
+              </property>
+              <property name="footer">
+                <bean parent="Uif-FooterBase">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-SecondaryActionButton" p:actionScript="alert('Button click!');"
+                            p:actionLabel="Button"/>
+                      <bean parent="Uif-SecondaryActionButton" p:actionScript="alert('Button click!');"
+                            p:actionLabel="Button"/>
+                    </list>
+                  </property>
+                </bean>
+              </property>
+            </bean>
+
+            <bean parent="Uif-VerticalBoxSection" p:headerText="Separate nested groups">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-CssGridGroup">
+                    <property name="layoutManager.defaultItemSize" value="3"/>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field 1"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field 2"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field 3"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field 3"
+                              p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-CssGridGroup">
+                    <property name="layoutManager.defaultItemSize" value="3"/>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field A"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field B"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field C"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field D"
+                              p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-VerticalBoxSection" p:headerText="Separate nested label column groups">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-CssGridGroup">
+                    <property name="layoutManager">
+                      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="2"/>
+                    </property>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field 1"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field 2"
+                              p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-CssGridGroup">
+                    <property name="layoutManager">
+                      <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="2"/>
+                    </property>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Field A"
+                              p:propertyName="inputField1"/>
+                        <bean parent="Uif-InputField" p:label="Field B"
+                              p:propertyName="inputField1"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-Responsive7" parent="Uif-FormView">
+    <property name="headerText" value="With Nav present"/>
+    <property name="navigation">
+      <bean parent="Uif-MenuNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:actionScript="alert('cliked');"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:actionScript="alert('cliked');"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:actionScript="alert('cliked');"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-CssGridSection" p:headerText="Col span translation - md 5, md 7">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field" p:colSpan="5" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:colSpan="7" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:colSpan="5" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:colSpan="7" p:propertyName="inputField1"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-CssGridSection" p:headerText="Col span translation - md 6">
+                <property name="layoutManager.defaultItemSize" value="6"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                    <bean parent="Uif-InputField" p:label="Field" p:propertyName="inputField1"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+
+</beans>

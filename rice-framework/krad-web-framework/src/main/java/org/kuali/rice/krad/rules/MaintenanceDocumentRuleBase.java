@@ -69,7 +69,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * Contains all of the business rules that are common to all maintenance documents
+ * Contains all of the business rules that are common to all maintenance documents.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -202,6 +202,12 @@
 
   <bean id="Uif-CssGridGroup" parent="Uif-CssGridGroup-parentBean"/>
   <bean id="Uif-CssGridGroup-parentBean" abstract="true" parent="Uif-GroupBase" scope="prototype">
+    <property name="libraryCssClasses">
+      <list>
+        <value>row</value>
+        <value>multi-columns-row</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-cssGridGroup</value>
@@ -217,11 +223,6 @@
     <property name="header">
       <bean parent="Uif-SectionHeader"/>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-cssGridSection</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="Uif-CssGridSubSection" parent="Uif-CssGridSubSection-parentBean"/>
@@ -229,10 +230,29 @@
     <property name="header">
       <bean parent="Uif-SubSectionHeader"/>
     </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-cssGridSubSection</value>
-      </list>
+  </bean>
+
+  <bean id="Uif-CssGridGroup-FieldLabelColumns" parent="Uif-CssGridGroup-FieldLabelColumns-parentBean"/>
+  <bean id="Uif-CssGridGroup-FieldLabelColumns-parentBean" abstract="true" parent="Uif-CssGridGroup"
+        scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSection-FieldLabelColumns" parent="Uif-CssGridGroup-FieldLabelColumns-parentBean"/>
+  <bean id="Uif-CssGridSection-FieldLabelColumns-parentBean" abstract="true" parent="Uif-CssGridSection"
+        scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CssGridSubSection-FieldLabelColumns" parent="Uif-CssGridGroup-FieldLabelColumns-parentBean"/>
+  <bean id="Uif-CssGridSubSection-FieldLabelColumns-parentBean" abstract="true" parent="Uif-CssGridSubSection"
+        scope="prototype">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout"/>
     </property>
   </bean>
 
@@ -282,6 +302,100 @@
     <property name="layoutManager">
       <bean parent="Uif-CssGridLabelColumnLayout" p:numberOfLabelColumns="3"/>
     </property>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSection" parent="Uif-Disclosure-CssGridSection-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSection-parentBean" abstract="true" parent="Uif-CssGridSection" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSubSection" parent="Uif-Disclosure-CssGridSubSection-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSubSection-parentBean" abstract="true" parent="Uif-CssGridSubSection"
+        scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSection-1FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSection-1FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSection-1FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSection-1FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSection-2FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSection-2FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSection-2FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSection-2FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSection-3FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSection-3FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSection-3FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSection-3FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSubSection-1FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSection-1FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSubSection-1FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSubSection-1FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSubSection-2FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSubSection-2FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSubSection-2FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSubSection-2FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
+  </bean>
+
+  <bean id="Uif-Disclosure-CssGridSubSection-3FieldLabelColumn"
+        parent="Uif-Disclosure-CssGridSubSection-3FieldLabelColumn-parentBean"/>
+  <bean id="Uif-Disclosure-CssGridSubSection-3FieldLabelColumn-parentBean" abstract="true"
+        parent="Uif-CssGridSubSection-3FieldLabelColumn" scope="prototype">
+    <property name="cssClasses">
+      <list>
+        <value>uif-disclosure</value>
+      </list>
+    </property>
+    <property name="disclosure.render" value="true"/>
   </bean>
 
   <!--GridLayout Group & Sections -->
@@ -567,19 +681,6 @@
 
   <!--Navigation groups -->
 
-  <bean id="Uif-NavigationGroupBase" abstract="true" parent="Uif-NavigationGroupBase-parentBean"/>
-  <bean id="Uif-NavigationGroupBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.container.NavigationGroup"
-        scope="prototype">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/navigationGroup.ftl"/>
-    <property name="templateName" value="uif_navigationGroup"/>
-    <property name="cssClasses">
-      <list>
-        <value>uif-navigationGroup</value>
-      </list>
-    </property>
-  </bean>
-
   <bean id="Uif-SidebarNavigationGroup" parent="Uif-SidebarNavigationGroup-parentBean"/>
   <bean id="Uif-SidebarNavigationGroup-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.container.SidebarNavigationGroup"
@@ -599,16 +700,20 @@
 
   <bean id="Uif-MenuNavigationGroup" parent="Uif-MenuNavigationGroup-parentBean"/>
   <bean id="Uif-MenuNavigationGroup-parentBean" abstract="true" parent="Uif-SidebarNavigationGroup">
+    <!-- this is an alias bean for sidebar navigation group -->
   </bean>
 
   <bean id="Uif-TabNavigationGroup" parent="Uif-TabNavigationGroup-parentBean"/>
-  <bean id="Uif-TabNavigationGroup-parentBean" abstract="true" parent="Uif-NavigationGroupBase">
-    <property name="cssClasses">
+  <bean id="Uif-TabNavigationGroup-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.container.TabNavigationGroup">
+    <property name="libraryCssClasses">
       <list>
-        <value>uif-tabNavigationGroup</value>
+        <value>nav</value>
+        <value>nav-tabs</value>
       </list>
     </property>
-    <property name="navigationType" value="TAB_MENU"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/tabNavigationGroup.ftl"/>
+    <property name="templateName" value="uif_tabNavigationGroup"/>
   </bean>
 
   <!-- Tree group and sections -->
@@ -742,6 +847,19 @@
     <property name="displayLength" value="10"/>
   </bean>
 
+  <bean id="Uif-AddLineDialog" parent="Uif-AddLineDialog-parentBean"/>
+  <bean id="Uif-AddLineDialog-parentBean" abstract="true" parent="Uif-DialogGroup" p:headerText="Add Line">
+    <property name="layoutManager">
+      <bean parent="Uif-CssGridLabelColumnLayout"/>
+    </property>
+    <property name="footer.items">
+      <list>
+        <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+        <bean parent="Uif-AddLineAction-Dialog"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-CollectionQuickFinder" parent="Uif-QuickFinder" p:multipleValuesSelect="true">
     <property name="lightBox">
       <bean parent="Uif-LightBox"/>
@@ -769,6 +887,12 @@
     </property>
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-WithGridItems"/>
+    </property>
+    <property name="lineActions">
+      <list>
+        <bean parent="Uif-DeleteLineAction-IconOnly"/>
+        <bean parent="Uif-SaveLineAction-IconOnly"/>
+      </list>
     </property>
     <property name="displayLength" value="5"/>
     <property name="displayStart" value="0"/>
@@ -1171,215 +1295,6 @@
               p:render="@{!#collectionGroup.showInactiveLines and #collectionGroup.renderInactiveToggleButton}"/>
         <bean parent="Uif-HideInactiveCollectionItemsButton"
               p:render="@{#collectionGroup.showInactiveLines and #collectionGroup.renderInactiveToggleButton}"/>
-      </list>
-    </property>
-  </bean>
-
-  <!-- Dialog Groups -->
-  <bean id="Uif-DialogGroup" parent="Uif-DialogGroup-parentBean"/>
-  <bean id="Uif-DialogGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
-        parent="Uif-VerticalBoxSection">
-    <property name="header">
-      <bean parent="Uif-HeaderThree"/>
-    </property>
-    <property name="header.cssClasses" value="uif-dialogHeader"/>
-    <property name="hidden" value="true"/>
-    <property name="promptText" value="Would You Like to Continue?"/>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
-      </list>
-    </property>
-    <property name="forceSessionPersistence" value="true"/>
-    <property name="prompt">
-      <bean parent="Uif-DialogPrompt"/>
-    </property>
-    <property name="explanation">
-      <bean parent="Uif-DialogExplanation"/>
-    </property>
-    <property name="responseInputField">
-      <bean parent="Uif-DialogResponse"/>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-dialogGroup</value>
-      </list>
-    </property>
-    <property name="onDialogResponseScript" value="submitDialogResponse();"/>
-  </bean>
-
-  <bean id="Uif-DialogPrompt" parent="Uif-MessageField">
-    <property name="cssClasses">
-      <list>
-        <value>uif-dialogPrompt</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DialogExplanation" parent="Uif-InputField" p:propertyName="dialogExplanation"
-        p:bindingInfo.bindToForm="true" p:render="false">
-    <property name="control">
-      <bean parent="Uif-TextAreaControl"/>
-    </property>
-    <property name="cssClasses">
-      <list>
-        <value>uif-dialogExplanation</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-DialogResponse" parent="Uif-InputField" p:propertyName="dialogResponse"
-        p:bindingInfo.bindToForm="true">
-    <property name="control">
-      <bean parent="Uif-HorizontalRadioControl">
-        <property name="options">
-          <list>
-            <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
-            <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
-          </list>
-        </property>
-        <property name="cssClasses">
-          <list>
-            <value>uif-dialogButtons</value>
-          </list>
-        </property>
-      </bean>
-    </property>
-  </bean>
-
-  <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Warning: Sensitive Data"/>
-    <property name="items">
-      <list>
-        <bean id="imageWarning" parent="Uif-ImageField" p:width="75px" p:height="75px"
-              p:source="@{#ConfigProperties['krad.externalizable.images.url']}warning.png"/>
-      </list>
-    </property>
-    <property name="promptText" value="Potentially sensitive data was found on the document. Do you wish to continue?"/>
-  </bean>
-
-  <bean id="Uif-OK-Cancel-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Please Confirm to Continue"/>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="Cancel"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-Yes-No-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Please Select"/>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="Y" p:value="Yes"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="No"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-True-False-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Please select from the values below"/>
-    <property name="displayExplanation" value="true"/>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="T" p:value="True"/>
-        <bean parent="Uif-KeyLabelPair" p:key="N" p:value="False"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-Checkbox-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Please Select from the values below"/>
-    <property name="displayExplanation" value="true"/>
-    <property name="explanation">
-      <bean parent="Uif-DialogExplanation">
-        <property name="control">
-          <bean parent="Uif-VerticalCheckboxesControl">
-            <property name="options">
-              <list>
-                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
-                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
-                <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
-              </list>
-            </property>
-          </bean>
-        </property>
-      </bean>
-    </property>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-RadioButton-DialogGroup" parent="Uif-DialogGroup">
-    <property name="displayExplanation" value="true"/>
-    <property name="explanation">
-      <bean parent="Uif-DialogExplanation" p:render="true">
-        <property name="control">
-          <bean parent="Uif-VerticalRadioControl">
-            <property name="options">
-              <list>
-                <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1"/>
-                <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2"/>
-              </list>
-            </property>
-          </bean>
-        </property>
-      </bean>
-    </property>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="O" p:value="OK"/>
-        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Cancel"/>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Uif-SessionTimeoutWarning-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Still there?"/>
-    <property name="promptText">
-      <value>
-        [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]60[/div] minute(s).[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
-        of inactivity.
-      </value>
-    </property>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="continue" p:value="Continue Working"/>
-        <bean parent="Uif-KeyLabelPair" p:key="logout" p:value="Log out"/>
-      </list>
-    </property>
-    <property name="onDialogResponseScript" value="handleTimeoutWarningResponse(e);"/>
-    <property name="onShowDialogScript"
-              value="displayCountdown('UifTimeoutCountdown', @{#view.sessionPolicy.timeoutWarningSeconds});"/>
-  </bean>
-
-  <bean id="Uif-SessionTimeout-DialogGroup" parent="Uif-DialogGroup">
-    <property name="headerText" value="Logged out"/>
-    <property name="promptText">
-      <value>
-        [b]You have been logged out due to inactivity.[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
-        of inactivity.
-        Return to the&amp;nbsp;[0].
-      </value>
-    </property>
-    <property name="availableResponses">
-      <list>
-        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="Okay"/>
-      </list>
-    </property>
-    <property name="onDialogResponseScript" value="handleTimeoutResponse(e);"/>
-    <property name="prompt.inlineComponents">
-      <list>
-        <bean parent="Uif-ActionLink" p:actionLabel="home screen"
-              p:actionScript="redirect('@{#ConfigProperties['application.url']}');"/>
       </list>
     </property>
   </bean>

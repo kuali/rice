@@ -66,14 +66,14 @@
       <list>
         <!-- ex:Demo-CollectionAddLine-Example2 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Add Via Lightbox Top" />
+          <property name="headerText" value="Add With Dialog Top" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection1_2" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
-          <!--  addViaLightBox flag -->
-          <property name="addViaLightBox" value="true" />
+          <!--  addWithDialog flag -->
+          <property name="addWithDialog" value="true" />
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
@@ -83,13 +83,13 @@
         </bean>
 
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Add Via Lightbox Bottom" />
+          <property name="headerText" value="Add With Dialog Bottom" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection1_3" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
-          <property name="addViaLightBox" value="true" />
+          <property name="addWithDialog" value="true" />
           <!--  addLinePlacement flag setting placement-->
           <property name="addLinePlacement" value="BOTTOM" />
           <property name="items">

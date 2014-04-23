@@ -202,7 +202,7 @@ public interface LifecycleElement extends Serializable, Copyable {
      * the object instance for which expressions containing the variable should evaluate against</p>
      *
      * <p>NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
-     * component. Instead you should call #pushAllToContext</p>
+     * component. Instead you should call #pushAllToContextDeep</p>
      *
      * @return Map<String, Object> context
      */
@@ -218,7 +218,7 @@ public interface LifecycleElement extends Serializable, Copyable {
      * 
      * <p>
      * Note this also will push context to property replacers configured on the component. To place
-     * multiple objects in the context, you should use #pushAllToContext since that will call this
+     * multiple objects in the context, you should use #pushAllToContextDeep since that will call this
      * method for each and update property replacers. Using {@link Component#getContext()}{@link
      * Map#putAll(Map) .putAll()} will bypass property replacers.
      * </p>
@@ -232,7 +232,7 @@ public interface LifecycleElement extends Serializable, Copyable {
      * Places each entry of the given Map into the context for the component
      *
      * <p>
-     * Note this will call #pushObjectToContext for each entry which will update any configured property
+     * Note this will call #pushObjectToContextDeep for each entry which will update any configured property
      * replacers as well. This should be used in place of getContext().putAll()
      * </p>
      *
@@ -294,7 +294,13 @@ public interface LifecycleElement extends Serializable, Copyable {
     void performFinalize(Object model, LifecycleElement parent);
 
     /**
-     * Return true if the lifecycle should be skipped for this component
+     * Return true if the lifecycle should be skipped for this component.
+     *
+     * <p>Skipping the lifecycle means do not invoke the performInitialize, performApplyModel, and
+     * performFinalize methods of this component and its children.  This means that content built
+     * by those lifecycle tasks will not be processed or applied.
+     * Skipping the lifecycle on a component helps initial load/setup performance by only performing
+     * the full lifecycle when the component is requested on subsequent requests (ajax retrievals).</p>
      *
      * @return true if lifecycle should be skipped for this component
      */

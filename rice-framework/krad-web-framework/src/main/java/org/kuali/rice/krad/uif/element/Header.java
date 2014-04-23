@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.util.LifecycleElement;

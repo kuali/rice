@@ -18,13 +18,13 @@ package org.kuali.rice.krad.uif.layout;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +44,21 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     private int numberOfLabelColumns = 1;
     private String labelColumnCssClass = "";
 
+    private CssGridSizes labelColumnSizes;
+    private CssGridSizes fieldColumnSizes;
+
+    // Internal local variables
+    protected int xsCurrentFieldSize;
+    protected int smCurrentFieldSize;
+    protected int mdCurrentFieldSize;
+    protected int lgCurrentFieldSize;
+
+    public CssGridLabelColumnLayoutManager() {
+        super();
+        labelColumnSizes = new CssGridSizes();
+        fieldColumnSizes = new CssGridSizes();
+    }
+
     /**
      * CssGridLabelColumnLayoutManager's performFinalize method calculates and separates the items into rows
      *
@@ -54,6 +69,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
         super.performFinalize(model, component);
 
         Container container = (Container) component;
+        cellItems = new ArrayList<Component>();
         processSeparateLabelLayout(container);
     }
 
@@ -65,110 +81,142 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      * @param container the container using this layout manager
      */
     private void processSeparateLabelLayout(Container container) {
+        // Defaults if label and field column sizes are not set directly
         int labelColumnSize = 3;
         int fieldColumnSize = 9;
         if (numberOfLabelColumns > 1) {
             labelColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 1 / 3;
             fieldColumnSize = (NUMBER_OF_COLUMNS / numberOfLabelColumns) * 2 / 3;
         }
-        int itemNumber = 0;
-        int rowIndex = 0;
-        boolean isOdd = true;
 
-        List<Component> currentRow = new ArrayList<Component>();
         for (Component item : container.getItems()) {
+            // Throw exception for non-fields or fields without labels
             if (!(item instanceof Field)) {
-                throw new RuntimeException("Must use fields when separateFieldLabelsIntoColumns option is "
-                        + "true for CssGridLayouts. Item class: "
+                throw new RuntimeException("Must use fields "
+                        + " for CssGridLabelColumnLayouts. Item class: "
                         + item.getClass().getName()
                         +
                         " in Container id: "
                         + container.getId());
+            } else if (((Field) item).getFieldLabel() == null) {
+                throw new RuntimeException(
+                        "Label must exist on fields in CssGridLabelColumnLayoutManager. Item class: " + item.getClass()
+                                .getName() + " in Container id: " + container.getId());
             }
 
-            isOdd = rowIndex % 2 == 0;
+            xsCurrentFieldSize = 0;
+            smCurrentFieldSize = 0;
+            mdCurrentFieldSize = 0;
+            lgCurrentFieldSize = 0;
+
             Field field = (Field) item;
-            Label label;
+            Label label = separateLabel(field);
 
-            // pull out label field
-            if (field.getFieldLabel() != null) {
-                field.getFieldLabel().addStyleClass("displayWith-" + field.getId());
-                if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
-                    field.getFieldLabel().setRender(false);
-                } else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
-                    field.getFieldLabel().setRender(true);
-                    String prefixStyle = "";
-                    if (StringUtils.isNotBlank(field.getFieldLabel().getStyle())) {
-                        prefixStyle = field.getFieldLabel().getStyle();
-                    }
-                    field.getFieldLabel().setStyle(prefixStyle + ";" + "display: none;");
-                }
-
-                label = field.getFieldLabel();
-
-/*                if (field instanceof InputField && field.getRequired() != null && field.getRequired()) {
-                    label.setRenderRequiredIndicator(true);
-                }*/
-
-                // set boolean to indicate label field should not be
-                // rendered with the attribute
-                field.setLabelRendered(true);
-            } else {
-                throw new RuntimeException("Label must exist on fields in CssGridLabelColumnLayoutManager. Item class: "
-                        + item.getClass().getName()
-                        + " in Container id: "
-                        + container.getId());
-            }
-
-            // Determine "cell" label div css and add it to cellCssClassAttributes (retrieved by index in template)
+            // Determine "cell" label div css
             List<String> cellCssClasses = label.getWrapperCssClasses();
             if (cellCssClasses == null) {
                 label.setWrapperCssClasses(new ArrayList<String>());
                 cellCssClasses = label.getWrapperCssClasses();
             }
+
             cellCssClasses.add(0, labelColumnCssClass);
-            cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + labelColumnSize);
+            calculateCssClassAndSize(label, cellCssClasses, labelColumnSizes, labelColumnSize);
+
+            // Add dynamic left clear classes for potential wrapping content at each screen size
+            addLeftClearCssClass(cellCssClasses);
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));
 
             // Add label
-            currentRow.add(label);
+            cellItems.add(label);
 
-            // Determine "cell" field div css and add it to cellCssClassAttributes (retrieved by index in template)
+            // Determine "cell" field div css
             cellCssClasses = field.getWrapperCssClasses();
             if (cellCssClasses == null) {
                 field.setWrapperCssClasses(new ArrayList<String>());
                 cellCssClasses = field.getWrapperCssClasses();
             }
-            cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + fieldColumnSize);
+
+            calculateCssClassAndSize(field, cellCssClasses, fieldColumnSizes, fieldColumnSize);
+
+            // Add dynamic float classes for each size, this is to make the label appear right when content is on
+            // the same "row" as the label, and left (default) when they are on separate lines
+            // assumption here is that content will take up more columns when becoming smaller, so if the float
+            // is right at the smallest level, assume that it will be right for the other levels
+            if (xsCurrentFieldSize > 0 && xsCurrentFieldSize <= CssGridLayoutManagerBase.NUMBER_OF_COLUMNS) {
+                label.addStyleClass(CssConstants.CssGrid.XS_FLOAT_RIGHT);
+            } else if (smCurrentFieldSize > 0 && smCurrentFieldSize <= CssGridLayoutManagerBase.NUMBER_OF_COLUMNS) {
+                label.addStyleClass(CssConstants.CssGrid.SM_FLOAT_RIGHT);
+            } else if (mdCurrentFieldSize > 0 && mdCurrentFieldSize <= CssGridLayoutManagerBase.NUMBER_OF_COLUMNS) {
+                label.addStyleClass(CssConstants.CssGrid.MD_FLOAT_RIGHT);
+            } else if (lgCurrentFieldSize > 0 && lgCurrentFieldSize <= CssGridLayoutManagerBase.NUMBER_OF_COLUMNS) {
+                label.addStyleClass(CssConstants.CssGrid.LG_FLOAT_RIGHT);
+            }
+
+            // Add dynamic left clear classes for potential wrapping content at each screen size
+            addLeftClearCssClass(cellCssClasses);
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));
 
             // Add field
-            currentRow.add(field);
+            cellItems.add(field);
+        }
 
-            itemNumber++;
-            if (itemNumber == numberOfLabelColumns) {
-                rows.add(new ArrayList<Component>(currentRow));
-                currentRow = new ArrayList<Component>();
+    }
 
-                // Determine "row" div css
-                String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
-                        rowIndex, isOdd, null, null);
-                rowCssClassAttributes.add(rowCss);
+    /**
+     * Override is used to calculates total field and label size in addition to calculateCssClassAndSize functionality
+     *
+     * @see org.kuali.rice.krad.uif.layout.CssGridLayoutManagerBase#calculateCssClassAndSize(org.kuali.rice.krad.uif.component.Component,
+     * java.util.List, CssGridSizes, int)
+     */
+    @Override
+    protected void calculateCssClassAndSize(Component item, List<String> cellCssClasses, CssGridSizes defaultSizes,
+            int basicSize) {
+        int xsPrevTotalSize = xsTotalSize;
+        int smPrevTotalSize = smTotalSize;
+        int mdPrevTotalSize = mdTotalSize;
+        int lgPrevTotalSize = lgTotalSize;
 
-                itemNumber = 0;
-                rowIndex++;
+        super.calculateCssClassAndSize(item, cellCssClasses, defaultSizes, basicSize);
+
+        xsCurrentFieldSize += xsTotalSize - xsPrevTotalSize;
+        smCurrentFieldSize += smTotalSize - smPrevTotalSize;
+        mdCurrentFieldSize += mdTotalSize - mdPrevTotalSize;
+        lgCurrentFieldSize += lgTotalSize - lgPrevTotalSize;
+    }
+
+    /**
+     * Returns the label on the field and sets the appropriate display settings and css classes to make it render
+     * correctly
+     *
+     * @param field the field to get the label from
+     * @return the label
+     */
+    private Label separateLabel(Field field) {
+        Label label;
+        // pull out label field
+        field.getFieldLabel().addStyleClass("displayWith-" + field.getId());
+        if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
+            field.getFieldLabel().setRender(false);
+        } else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
+            field.getFieldLabel().setRender(true);
+            String prefixStyle = "";
+            if (StringUtils.isNotBlank(field.getFieldLabel().getStyle())) {
+                prefixStyle = field.getFieldLabel().getStyle();
             }
+            field.getFieldLabel().setStyle(prefixStyle + ";" + "display: none;");
         }
 
-        // Add any extra fields that do not take up a full row
-        if (itemNumber > 0) {
-            // Determine "row" div css
-            String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
-                    rowIndex, isOdd, null, null);
-            rowCssClassAttributes.add(rowCss);
+        label = field.getFieldLabel();
 
-            rows.add(currentRow);
+        if (field instanceof InputField && field.getRequired() != null && field.getRequired()) {
+            label.setRenderRequiredIndicator(true);
         }
+
+        // set boolean to indicate label field should not be
+        // rendered with the attribute
+        field.setLabelRendered(true);
+
+        return label;
     }
 
     /**
@@ -214,4 +262,51 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
         this.numberOfLabelColumns = numberOfLabelColumns;
     }
 
+    /**
+     * CssGridSizes that will be used by every label in this layout, unless the label itself has cssGridSizes
+     * explicitly set; note that this OVERRIDES any framework automation set by numberOfLabelColumns for label sizes.
+     *
+     * <p>
+     * Be careful with the usage of this setting, it's intent is to be set with fieldColumnSizes, or some
+     * combination of custom field and label cssGridSizes, or unintended behavior/layout may result.  This is an
+     * advanced layout configuration setting and requires knowledge of bootstrap css grid layout/behavior.
+     * </p>
+     *
+     * @return the custom labelColumnSizes
+     */
+    @BeanTagAttribute(name = "labelColumnSizes", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public CssGridSizes getLabelColumnSizes() {
+        return labelColumnSizes;
+    }
+
+    /**
+     * @see CssGridLabelColumnLayoutManager#getLabelColumnSizes()
+     */
+    public void setLabelColumnSizes(CssGridSizes labelColumnSizes) {
+        this.labelColumnSizes = labelColumnSizes;
+    }
+
+    /**
+     * CssGridSizes that will be used by every field in this layout, unless the field itself has cssGridSizes
+     * explicitly set; note that this OVERRIDES any framework automation set by numberOfLabelColumns for field sizes.
+     *
+     * <p>
+     * Be careful with the usage of this setting, it's intent is to be set with labelColumnSizes, or some
+     * combination of custom field and label cssGridSizes, or unintended behavior/layout may result.  This is an
+     * advanced layout configuration setting and requires knowledge of bootstrap css grid layout/behavior.
+     * </p>
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "fieldColumnSizes", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public CssGridSizes getFieldColumnSizes() {
+        return fieldColumnSizes;
+    }
+
+    /**
+     * @see CssGridLabelColumnLayoutManager#getFieldColumnSizes()
+     */
+    public void setFieldColumnSizes(CssGridSizes fieldColumnSizes) {
+        this.fieldColumnSizes = fieldColumnSizes;
+    }
 }

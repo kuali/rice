@@ -180,7 +180,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.sun:tools:1.6">
         <CLASSES>
-          <root url="jar:///usr/lib/jvm/java-6-oracle/lib/tools.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../jdks/jdk1_7u21/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

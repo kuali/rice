@@ -1,0 +1,733 @@
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-LayoutTest-View" parent="Uif-FormView">
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Scaffolding" parent="Uif-FormView">
+    <property name="headerText" value="View Title"/>
+    <property name="breadcrumbOptions.homewardPathBreadcrumbs">
+      <list>
+        <bean parent="Uif-BreadcrumbItem">
+          <property name="label" value="Home"/>
+          <property name="url.href" value="@{#ConfigProperties['application.url']}/portal.do"/>
+        </bean>
+      </list>
+    </property>
+    <property name="topGroup">
+      <bean parent="Uif-VerticalBoxGroup" p:style="background:#000;width: 100%;color:#FFF;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="Top Group Content @{viewId}-@{pageId}"
+                  p:style="font-size: 18px; display:block; padding-left:20px;"
+                  p:additionalCssClasses="addTestClass">
+              <property name="cssClasses">
+                <list merge="true">
+                  <value>mergeTestClass</value>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.areaTitleText" value="[color='red']KRAD[/color] Kitchen Sink (areaText)"/>
+    <property name="header.metadataText" value="Metadata Text"/>
+    <property name="header.rightGroup">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="RightGroup Content"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-VerticalBoxGroup" p:style="background-color: #f2f2f2;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="lowerGroup content"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="header.upperGroup">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="background-color:#f2f2f2;">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Message" p:messageText="upperGroup content"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+        </bean>
+      </list>
+    </property>
+    <property name="navigation">
+      <bean parent="Uif-MenuNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page One" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-SidebarToggleMenu" p:toggleText="SubMenu">
+              <property name="menuItems">
+                <list>
+                  <bean parent="Uif-MenuAction" p:actionLabel="Action" p:actionScript="alert('Menu Script1');"/>
+                  <bean parent="Uif-MenuAction" p:actionLabel="Action" p:actionScript="alert('Menu Script2');"/>
+                  <bean parent="Uif-MenuAction" p:actionLabel="Action" p:actionScript="alert('Menu Script3');"/>
+                  <bean parent="Uif-MenuAction" p:actionLabel="Action" p:actionScript="alert('Menu Script4');"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Two" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Three" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Four" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Five" p:actionScript="alert('Does nothing');"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Tabs" parent="Lab-LayoutTest-Scaffolding">
+    <property name="navigation">
+      <bean parent="Uif-TabNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page One" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Two" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Three" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Four" p:actionScript="alert('Does nothing');"/>
+            <bean parent="Uif-ActionLink" p:actionLabel="Page Five" p:actionScript="alert('Does nothing');"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Sections" parent="Lab-LayoutTest-Scaffolding">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean p:headerText="Section Title" parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean p:headerText="SubSection Title" parent="Uif-VerticalBoxSubSection">
+                      <property name="footer">
+                        <bean parent="Uif-VerticalBoxGroup">
+                        </bean>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="footer">
+                  <bean parent="Uif-VerticalBoxGroup">
+                  </bean>
+                </property>
+              </bean>
+              <bean p:headerText="Section Title - Disclosure" parent="Uif-Disclosure-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean p:headerText="SubSection Title - Disclosure" parent="Uif-Disclosure-VerticalBoxSubSection">
+                      <property name="footer">
+                        <bean parent="Uif-VerticalBoxGroup">
+                        </bean>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Content" parent="Lab-LayoutTest-Scaffolding">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean p:headerText="Section Title" parent="Uif-CssGridSection">
+                <property name="layoutManager.defaultItemSize" value="4"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField1" p:constraintText="Additional Info"/>
+                    <bean parent="Uif-InputField" p:label="Field 2"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField2" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-TextAreaControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 3"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField3" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-TextAreaControl" p:textExpand="true"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 4"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField4" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-DropdownControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 5"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="multiSelectField1" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-MultiSelectControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 6"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField6" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-VerticalRadioControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 7"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField7" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-CheckboxControl"
+                              p:checkboxLabel="Checkbox Label"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 8"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField8" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-VerticalCheckboxesControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 9"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField9" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-DateControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 10"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField10" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-FileControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Field 11"
+                          p:instructionalText="These are instructions"
+                          p:propertyName="inputField11" p:constraintText="Additional Info">
+                      <property name="control">
+                        <bean parent="Uif-OptionListControl">
+                          <property name="options">
+                            <list>
+                              <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Option 1"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Option 2"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Option 3"/>
+                              <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Option 4"/>
+                            </list>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="Action Button"
+                          p:actionScript="alert('You clicked a button');"/>
+                    <bean parent="Uif-ActionLink" p:actionLabel="Action Link"
+                          p:actionScript="alert('You clicked a Link');"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Tables" parent="Lab-LayoutTest-Scaffolding">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection">
+                <property name="headerText"
+                          value="TableCollection inside the details itself"/>
+                <property name="instructionalText"
+                          value="Details group contains a collection"/>
+                <property name="collectionObjectClass"
+                          value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection3"/>
+                <property name="readOnly" value="true"/>
+                <property name="layoutManager.renderSequenceField" value="false"/>
+                <property name="layoutManager.expandDetailsActionPrototype">
+                  <bean parent="Uif-ExpandDetailsImageAction"/>
+                </property>
+                <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+                <property name="layoutManager.richTable">
+                  <bean parent="Uif-PagedRichTable">
+                    <property name="templateOptions">
+                      <map merge="true">
+                        <entry key="aaSorting" value="[[1,'desc']]"/>
+                        <entry key="aoColumnDefs"
+                               value="[{'sWidth' : '20px', 'aTargets' : [0]},{'aTargets':[2], 'bSortable':false}]"/>
+                      </map>
+                    </property>
+                  </bean>
+                </property>
+                <property name="layoutManager.rowDetailsGroup">
+                  <bean parent="Uif-VerticalBoxGroup">
+                    <property name="items">
+                      <list>
+                        <bean parent="Lab-LayoutTest-Sub" p:readOnly="true" p:propertyName="subList"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                          p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                          p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                          p:required="true"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-TableCollectionSection">
+                <property name="headerText"
+                          value="TableCollection inside the details itself"/>
+                <property name="instructionalText"
+                          value="Details group contains a collection"/>
+                <property name="collectionObjectClass"
+                          value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection4"/>
+                <property name="readOnly" value="false"/>
+                <property name="layoutManager.renderSequenceField" value="false"/>
+                <property name="layoutManager.expandDetailsActionPrototype">
+                  <bean parent="Uif-ExpandDetailsImageAction"/>
+                </property>
+                <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+                <property name="layoutManager.richTable">
+                  <bean parent="Uif-PagedRichTable">
+                    <property name="templateOptions">
+                      <map merge="true">
+                        <entry key="aaSorting" value="[[1,'desc']]"/>
+                        <entry key="aoColumnDefs"
+                               value="[{'sWidth' : '20px', 'aTargets' : [0]},{'aTargets':[2], 'bSortable':false}]"/>
+                      </map>
+                    </property>
+                  </bean>
+                </property>
+                <property name="layoutManager.rowDetailsGroup">
+                  <bean parent="Uif-VerticalBoxGroup">
+                    <property name="items">
+                      <list>
+                        <bean parent="Lab-LayoutTest-Sub" p:readOnly="false" p:propertyName="subList"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                          p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                          p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"
+                          p:required="true"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Stacked" parent="Lab-LayoutTest-Scaffolding">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-StackedCollectionSection">
+                <property name="headerText"
+                          value="Section 2 Title"/>
+                <property name="collectionObjectClass"
+                          value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="useServerPaging" value="true"/>
+                <property name="addLineActions">
+                  <list>
+                    <bean parent="Uif-AddLineAction" p:focusOnIdAfterSubmit="NEXT_INPUT"/>
+                  </list>
+                </property>
+                <property name="layoutManager.summaryTitle" value="Collection Item Title"/>
+                <property name="layoutManager.summaryFields" value="field1"/>
+                <property name="propertyName" value="collection3"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
+                          p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"
+                          p:required="true"/>
+                  </list>
+                </property>
+                <property name="subCollections">
+                  <list>
+                    <ref bean="Lab-LayoutTest-Sub"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-Sub"
+        parent="Uif-Disclosure-TableSubCollection-WithinSection">
+    <property name="headerText" value="SubCollection Title"/>
+    <property name="collectionObjectClass"
+              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.generateAutoSequence" value="false"/>
+    <property name="layoutManager.sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
+    </property>
+    <property name="layoutManager.numberOfColumns" value="4"/>
+    <property name="propertyName" value="subList"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
+              p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
+              p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
+    <property name="headerText" value="Enter Key Support"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page"
+            p:instructionalText="Uif-FormView enterKeyAction is set to @DEFAULT[br]Using this action will fire the primary action button.">
+        <property name="items">
+          <list>
+            <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1"
+                  p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1"
+                        p:actionScript="alert('button 1');"/>
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section 2" parent="Uif-VerticalBoxSection"
+                  p:instructionalText="enterKeyAction is not set.[br]Press the enter key to fire primary enter key action button.">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2"
+                        p:actionScript="alert('button 2');"/>
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section 3" parent="Uif-VerticalBoxSection" p:enterKeyAction="button2"
+                  p:instructionalText="enterKeyAction is set to button 2.[br]Press the enter key to fire button 2.">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 3" p:id="button3"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 4" p:id="button4"/>
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section 4" parent="Uif-VerticalBoxSection" p:enterKeyAction="button6"
+                  p:instructionalText="enterKeyAction is set to button 6.[br]Press the enter key to fire button 6.">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField19" p:label="Field 2"/>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 5" p:id="button5"
+                        p:actionScript="alert('button 5');"/>
+                  <bean p:headerText="Section 4: Sub Section 1" parent="Uif-VerticalBoxSubSection"
+                        p:enterKeyAction="button5"
+                        p:instructionalText="enterKeyAction is set to button 5.[br]Press the enter key to fire button 5.">
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:propertyName="inputField20" p:label="Field 1"/>
+                        <bean parent="Uif-InputField" p:propertyName="inputField21" p:label="Field 2"/>
+                        <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 6" p:id="button6"
+                              p:actionScript="alert('button 6');"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+            <bean p:headerText="Section 5" parent="Uif-VerticalBoxSection"
+                  p:instructionalText="Section with button set to primary enter key button.">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:id="primary_button"
+                        p:defaultEnterKeyAction="true" p:actionScript="alert('primary button');"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4"
+                    p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
+                <property name="headerText" value="Table Layout Enter Key Support"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection1"/>
+                <property name="layoutManager.generateAutoSequence" value="true"/>
+                <property name="layoutManager.richTable.render" value="true"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTables2" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4"
+                    p:addLineEnterKeyAction="ST-DemoButton01@{#lineSuffix}" p:lineEnterKeyAction="@DEFAULT">
+                <property name="headerText" value="Table Layout Enter Key Support 2"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection1"/>
+                <property name="layoutManager.generateAutoSequence" value="true"/>
+                <property name="layoutManager.richTable.render" value="true"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                  </list>
+                </property>
+                <property name="addLineActions">
+                  <list>
+                    <bean parent="Uif-AddLineAction" p:id="ST-DemoButton01"/>
+                  </list>
+                </property>
+                <property name="lineActions">
+                  <list>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button1" p:id="ST-DemoButton11"
+                          p:actionScript="alert('You clicked a button1');"/>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button2 - primary" p:id="ST-DemoButton12"
+                          p:actionScript="alert('You clicked a button2-primary');" p:defaultEnterKeyAction="true"/>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button3" p:id="ST-DemoButton13"
+                          p:actionScript="alert('You clicked a button3');"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyStacked" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-StackedCollectionSection" p:addLineEnterKeyAction="@DEFAULT"
+                    p:lineEnterKeyAction="ST-DemoButton21@{#lineSuffix}">
+                <property name="headerText" value="Stack Layout Enter Key Support"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection2"/>
+                <property name="layoutManager.summaryTitle" value="Line Summary"/>
+                <property name="layoutManager.summaryFields" value="field1"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+                  </list>
+                </property>
+                <property name="lineActions">
+                  <list>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button" p:id="ST-DemoButton21"
+                          p:actionScript="alert('You clicked a button');"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTableSepAddLine" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionGroup" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT">
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection2"/>
+                <property name="layoutManager.renderSequenceField" value="true"/>
+                <property name="layoutManager.generateAutoSequence" value="true"/>
+                <property name="layoutManager.separateAddLine" value="true"/>
+                <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8"/>
+                <property name="layoutManager.richTable.render" value="true"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2"/>
+                  </list>
+                </property>
+                <property name="addLineItems">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-LayoutTest-EnterKeyTableViaLightBox" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionGroup" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT">
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="collection2"/>
+                <property name="layoutManager.renderSequenceField" value="true"/>
+                <property name="layoutManager.generateAutoSequence" value="true"/>
+                <property name="addWithDialog" value="true"/>
+                <property name="layoutManager.richTable.render" value="true"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

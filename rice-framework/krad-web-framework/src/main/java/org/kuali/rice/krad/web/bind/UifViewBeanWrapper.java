@@ -341,7 +341,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
      *
      * <p>Binding access is determined by default based on the view's post metadata. A set of
      * accessible binding paths (populated during the view lifecycle) is maintained within this data.
-     * Overrides can be specifed using the annotations {@link org.kuali.rice.krad.web.bind.RequestProtected}
+     * Overrides can be specified using the annotations {@link org.kuali.rice.krad.web.bind.RequestProtected}
      * and {@link org.kuali.rice.krad.web.bind.RequestAccessible}.</p>
      *
      * <p>If the path is not accessible, it is recorded in the binding results suppressed fields. Controller
@@ -391,20 +391,18 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-        // iterate through the paths in reverse order so we consider annotations at deeper levels first
-        String[] propertyPaths = ObjectPropertyUtils.splitPropertyPath(propertyPath);
-        for (int i = (propertyPaths.length - 1); i >= 0; i--) {
+        while (!StringUtils.isEmpty(propertyPath)) {
+            String nestedPath = ObjectPropertyUtils.getPathTail(propertyPath);
+            String parentPropertyPath = ObjectPropertyUtils.removePathTail(propertyPath);
+
             Class<?> parentPropertyClass = getWrappedClass();
 
             // for nested paths, we need to get the class of the immediate parent
-            if (i != 0) {
-                String path = org.apache.commons.lang.StringUtils.join(propertyPaths, ".", 0, i);
-
-                parentPropertyClass = ObjectPropertyUtils.getPropertyType(getWrappedInstance(), path);
+            if (!StringUtils.isEmpty(parentPropertyPath)) {
+                parentPropertyClass = ObjectPropertyUtils.getPropertyType(getWrappedInstance(), parentPropertyPath);
             }
 
             // remove index or map key to get the correct property name
-            String nestedPath = propertyPaths[i];
             if (org.apache.commons.lang.StringUtils.endsWith(nestedPath, "]")) {
                 nestedPath = org.apache.commons.lang.StringUtils.substringBefore(nestedPath, "[");
             }
@@ -422,6 +420,8 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
                     request.getMethod())) {
                 return Boolean.TRUE;
             }
+
+            propertyPath = parentPropertyPath;
         }
 
         return null;

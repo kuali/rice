@@ -575,19 +575,19 @@ public class RichMessageTest extends KRADTestCase {
     /**
      * Peform a simulated lifecycle on the component passed in
      *
-     * @param component
+     * @param element
      */
-    private void performSimulatedLifecycle(final Component component) {
+    private void performSimulatedLifecycle(final LifecycleElement element) {
         if (model == null) {
             model = new SampleForm();
         }
 
-        ViewLifecycle.encapsulateLifecycle(view, model, null, null, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(view, model, null, new Runnable(){
             @Override
             public void run() {
-                component.performInitialization(model);
-                component.performApplyModel(model, view);
-                component.performFinalize(model, view);
+                element.performInitialization(model);
+                element.performApplyModel(model, view);
+                element.performFinalize(model, view);
             }});
     }
 

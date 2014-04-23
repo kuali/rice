@@ -76,7 +76,7 @@ public class InputFieldTest {
         testObj.setReadOnly(true);
         testObj.setOptionsFinder(optionsFinder);
         
-        ViewLifecycle.encapsulateLifecycle(view, model, new ViewPostMetadata(), null, null, null, new Runnable(){
+        ViewLifecycle.encapsulateLifecycle(view, model, new ViewPostMetadata(), null, null, new Runnable(){
             @Override
             public void run() {
                 testObj.performFinalize(model, testObj);

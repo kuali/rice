@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -46,6 +48,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -60,6 +63,16 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface TestAnnotation {
         String afoo();
+    }
+
+    @Before
+    public void setup() throws Exception {
+        UifUnitTestUtils.establishMockConfig("ObjectPropertyUtilsTest");
+    }
+
+    @After
+    public void teardown() throws Exception {
+        UifUnitTestUtils.tearDownMockConfig();
     }
 
     public static class TestBean implements Serializable {
@@ -319,7 +332,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     @Test
-    public void testSet() {
+    public void testSet() throws Throwable {
         TestBean tb = new TestBean();
         ObjectPropertyUtils.setPropertyValue(tb, "rwProp", "foobar");
         assertEquals("foobar", tb.getRwProp());
@@ -337,6 +350,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         long now = System.currentTimeMillis();
         ObjectPropertyUtils.setPropertyValue(tb, "dateProp", new java.sql.Date(now));
         assertEquals(now, tb.getDateProp().getTime());
+
+        String dateStr = "01/03/2013";
+        ObjectPropertyUtils.setPropertyValue(tb, "dateProp", dateStr);
+        Date expectedDate = new SimpleDateFormat("MM/dd/yy").parse(dateStr);
+        assertEquals(expectedDate, tb.getDateProp());
     }
 
     @Test
@@ -531,7 +549,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         collectionBindingInfo.setBindingPath("foo.bar");
         collectionGroup.setBindingInfo(collectionBindingInfo);
 
-        ViewLifecycle.encapsulateLifecycle(view, form, null, null, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(view, form, null, new Runnable() {
             @Override
             public void run() {
                 collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());

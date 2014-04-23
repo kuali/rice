@@ -29,6 +29,28 @@
 
   <!-- Indicates whether Less files should be included instead of CSS files. Only applies if rice.krad.dev.mode is true -->
   <param name="rice.krad.include.less" override="false">false</param>
+  
+  <!-- View Lifecycle debug level settings.  These may be used for troubleshooting in development,
+  	but should be disabled for production to avoid performance issues and assertion errors -->
+  <param name="rice.krad.lifecycle.strict" override="false">false</param>
+  <param name="rice.krad.lifecycle.trace" override="false">false</param>
+
+  <!-- KRAD view lifecycle asynchronous mode settings.  When enabled, all view lifecycle processing
+  	will be broken up into multiple threads.  This may improve performance for systems with multiple
+  	cores. -->
+  <param name="rice.krad.lifecycle.asynchronous" override="false">false</param>
+  <!-- Minimum number of lifecycle worker threads to maintain in the pool -->
+  <param name="rice.krad.lifecycle.asynchronous.minThreads" override="false">4</param>
+  <!-- Maximum number of lifecycle worker threads to maintain in the pool -->
+  <param name="rice.krad.lifecycle.asynchronous.maxThreads" override="false">48</param>
+  <!-- Time, in milliseconds, to wait for view lifecycle to complete before interrupting -->
+  <param name="rice.krad.lifecycle.asynchronous.timeout" override="false">30000</param>
+  
+  <!-- Indicates whether or not KRAD will perform incremental FreeMarker rendering within the view 
+  	lifecycle, or if all rendering will be deferred for the Spring MVC view phase.  Depending on the
+  	components involved in the view, this may improve performance, particularly when running with the
+  	view lifecycle in asynchronous mode -->
+  <param name="rice.krad.lifecycle.render" override="false">false</param>
 
   <!-- Indicates whether the hidden script inputs should be removed from the html after executing -->
   <param name="rice.krad.script.cleanup" override="false">true</param>

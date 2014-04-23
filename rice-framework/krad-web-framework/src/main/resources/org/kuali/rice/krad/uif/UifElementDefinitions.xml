@@ -45,6 +45,7 @@
   <util:map id="Uif-GroupValidationMessages-DataDefaults">
     <entry key="summarize" value="true"/>
     <entry key="displayMessages" value="true"/>
+    <entry key="closeable" value="true"/>
     <entry key="collapseFieldMessages" value="true"/>
     <entry key="showPageSummaryHeader" value="true"/>
     <entry key="displayLabel" value="true"/>
@@ -87,6 +88,7 @@
   <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
   <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase"
         class="org.kuali.rice.krad.uif.element.GroupValidationMessages">
+    <property name="closeable" value="true"/>
     <property name="displayFieldLabelWithMessages" value="true"/>
     <property name="collapseAdditionalFieldLinkMessages" value="true"/>
     <property name="displayHeaderMessageSummary" value="true"/>
@@ -158,6 +160,11 @@
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/label.ftl"/>
     <property name="templateName" value="uif_label"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>clearfix</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-label</value>
@@ -404,6 +411,42 @@
     <property name="cssClasses">
       <list>
         <value>uif-message</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ProgressBar" parent="Uif-ProgressBar-parentBean"/>
+  <bean id="Uif-ProgressBar-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.ProgressBar"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/progressBar.ftl"/>
+    <property name="templateName" value="uif_progressBar"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>progress</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ProgressBar-Vertical" parent="Uif-ProgressBar-Vertical-parentBean"/>
+  <bean id="Uif-ProgressBar-Vertical-parentBean" abstract="true" parent="Uif-ProgressBar" scope="prototype">
+    <property name="vertical" value="true"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-progressBar-vertical</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-StepProgressBar" parent="Uif-StepProgressBar-parentBean"/>
+  <bean id="Uif-StepProgressBar-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.StepProgressBar"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/stepProgressBar.ftl"/>
+    <property name="templateName" value="uif_stepProgressBar"/>
+    <property name="completeStep" value="SUCCESS"/>
+    <property name="verticalStepHeight" value="75"/>
+    <property name="libraryCssClasses">
+      <list>
+        <value>well</value>
       </list>
     </property>
   </bean>

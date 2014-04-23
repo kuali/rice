@@ -17,7 +17,10 @@ package org.kuali.rice.krad.rules;
 
 
 /**
- * This class contains all of the business rules that are common to all transactional documents.
+ * Contains business rules that are common to all transactional documents.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TransactionalDocumentRuleBase extends DocumentRuleBase {
+
 }

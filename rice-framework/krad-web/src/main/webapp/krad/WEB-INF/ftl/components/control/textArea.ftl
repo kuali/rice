@@ -55,8 +55,14 @@ Standard HTML TextArea Input
         <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>
     </#if>
 
+    <#if control.disabled>
+        <#local readOnly="true"/>
+    <#else>
+        <#local readOnly="false"/>
+    </#if>
+
     <#if control.textExpand>
-        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}');" />
+        <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}', ${readOnly});" />
     </#if>
 
     <@krad.disable control=field.control type="textArea"/>

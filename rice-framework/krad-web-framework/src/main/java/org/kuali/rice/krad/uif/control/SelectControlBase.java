@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,19 +39,22 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
     }
 
     /**
-     * Vertical size of the control. This determines how many options can be
-     * seen without using the control scoll bar. Defaults to 1
-     *
-     * @return size
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.control.SelectControl#getSize()
      */
+    @Override
     @BeanTagAttribute(name="size")
     public int getSize() {
         return this.size;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.krad.uif.control.SelectControl#setSize(int)
      */
+    @Override
     public void setSize(int size) {
         this.size = size;
     }
@@ -65,6 +68,7 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
      * @return true if multiple values can be selected, false if only
      *         one value can be selected
      */
+    @Override
     @BeanTagAttribute(name="multiple")
     public boolean isMultiple() {
         return this.multiple;
@@ -75,8 +79,8 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
      *
      * @param multiple
      */
+    @Override
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
     }
-
 }

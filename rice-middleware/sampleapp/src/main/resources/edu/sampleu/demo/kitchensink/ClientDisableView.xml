@@ -251,6 +251,17 @@
             <bean parent="Uif-TextControl" p:disabled="@{#lp.field2 eq 'disable' or #lp.field3 eq '10'}"/>
           </property>
         </bean>
+        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="bfield"
+              p:constraintText="Disabled randomly by Field 5">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl" p:disabled="@{#lp.bfield2}"/>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="bfield2">
+          <property name="control">
+            <bean parent="Uif-CheckboxControl"/>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="addLineActions">

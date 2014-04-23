@@ -31,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifBeanFactoryPostProcessor;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -266,7 +267,7 @@ public class Validator {
                 continue;
             }
             if (tracer.getValidationStage() == ValidationTrace.START_UP) {
-                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph((Component) temp, false);
+                ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph((UifDictionaryBean) temp, false);
             }
             if (((Component) temp).isRender()) {
                 ((DataDictionaryEntry) temp).completeValidation(tracer.getCopy());

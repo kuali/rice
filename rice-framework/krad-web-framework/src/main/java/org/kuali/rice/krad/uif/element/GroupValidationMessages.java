@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -38,6 +33,11 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * ValidationMessages for logic and options specific to groups.
  *
@@ -46,6 +46,8 @@ import org.kuali.rice.krad.util.GlobalVariables;
 @BeanTag(name = "groupValidationMessages-bean", parent = "Uif-GroupValidationMessages")
 public class GroupValidationMessages extends ValidationMessages {
     private static final long serialVersionUID = -5389990220206079052L;
+
+    private boolean closeable;
 
     private boolean displayFieldLabelWithMessages;
     private boolean collapseAdditionalFieldLinkMessages;
@@ -141,6 +143,8 @@ public class GroupValidationMessages extends ValidationMessages {
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
                 UifConstants.DataAttributes.DISPLAY_MESSAGES, this.isDisplayMessages());
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
+                UifConstants.DataAttributes.CLOSEABLE, this.isCloseable());
+        this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
                 UifConstants.DataAttributes.COLLAPSE_FIELD_MESSAGES, collapseAdditionalFieldLinkMessages);
         this.addValidationDataSettingsValue(validationMessagesDataAttributes, dataDefaults,
                 UifConstants.DataAttributes.SHOW_PAGE_SUMMARY_HEADER, showPageSummaryHeader);
@@ -198,7 +202,7 @@ public class GroupValidationMessages extends ValidationMessages {
 
         if (items != null) {
             for (Component component : items) {
-                String id = StringUtils.replace( component.getId(), "@id@", "");
+                String id = StringUtils.replace(component.getId(), "@id@", "");
                 if (component instanceof Container || component instanceof FieldGroup) {
                     if (component instanceof FieldGroup) {
                         if (!skipSections &&
@@ -217,18 +221,16 @@ public class GroupValidationMessages extends ValidationMessages {
                         }
                     }
 
-                    id = StringUtils.replace( component.getId(), "@id@", "");
+                    id = StringUtils.replace(component.getId(), "@id@", "");
                     //If any kind of header text is showing consider this group a section
-                    if (!skipSections
-                            && ((Container) component).getHeader() != null
-                            && ((Container) component).getHeader().isRender()
-                            && (StringUtils.isNotBlank(((Container) component).getHeader().getHeaderText()) || StringUtils
-                            .isNotBlank(component.getTitle()))) {
+                    if (!skipSections && ((Container) component).getHeader() != null && ((Container) component)
+                            .getHeader().isRender() && (StringUtils.isNotBlank(
+                            ((Container) component).getHeader().getHeaderText()) || StringUtils.isNotBlank(
+                            component.getTitle()))) {
                         sectionIds.add(id);
                         order.add(SECTION_TOKEN + id);
-                    } else if ((component instanceof CollectionGroup
-                                    && ((CollectionGroup) component).getLayoutManager() instanceof TableLayoutManager)
-                                    || component instanceof LightTable){
+                    } else if ((component instanceof CollectionGroup && ((CollectionGroup) component)
+                            .getLayoutManager() instanceof TableLayoutManager) || component instanceof LightTable) {
                         order.add(TABLE_COLLECTION_TOKEN + id);
                     } else {
                         collectIdsFromItems(((Container) component).getItems(), sectionIds, order, skipSections);
@@ -238,6 +240,23 @@ public class GroupValidationMessages extends ValidationMessages {
                 }
             }
         }
+    }
+
+    /**
+     * If true, validation message divs are closeable(dismissable) by the user and
+     * they do not return until another page level validation/component refresh/page refresh is invoked
+     *
+     * @return true
+     */
+    public boolean isCloseable() {
+        return closeable;
+    }
+
+    /**
+     * @see GroupValidationMessages#isCloseable()
+     */
+    public void setCloseable(boolean closeable) {
+        this.closeable = closeable;
     }
 
     /**

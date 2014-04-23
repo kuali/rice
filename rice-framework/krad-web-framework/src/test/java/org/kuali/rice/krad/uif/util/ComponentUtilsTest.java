@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.CollectionGroupBase;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.DataFieldBase;
@@ -273,8 +274,9 @@ public class ComponentUtilsTest {
         }
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
-                    collectionGroupCopy.getAddLineActions().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch(
+                    (Component) collectionGroupOriginal.getAddLineActions().get(i).unwrap(),
+                    (Component) collectionGroupCopy.getAddLineActions().get(i).unwrap()));
         }
     }
 
@@ -475,7 +477,7 @@ public class ComponentUtilsTest {
     }
 
     /**
-     * Test {@link ComponentUtils#cleanContextDeap} using a BreadcrumbItem object
+     * Test {@link ContextUtils#cleanContextDeep} using a BreadcrumbItem object
      */
     @Test
     public void testCleanContextDeap() {
@@ -505,7 +507,7 @@ public class ComponentUtilsTest {
 
         breadcrumbItem.setToolTip(tooltip);
 
-        ComponentUtils.cleanContextDeap(breadcrumbItem);
+        ContextUtils.cleanContextDeep(breadcrumbItem);
 
         assertEquals(0, breadcrumbItem.getContext().size());
         assertEquals(0, inputField.getContext().size());

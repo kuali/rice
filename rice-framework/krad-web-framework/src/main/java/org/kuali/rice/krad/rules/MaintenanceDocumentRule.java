@@ -21,7 +21,7 @@ import org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 
 /**
- * Rule event interface for implementing business rules against a <code>MaintenanceDocument</code>
+ * Rule event interface for implementing business rules against a maintenance document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

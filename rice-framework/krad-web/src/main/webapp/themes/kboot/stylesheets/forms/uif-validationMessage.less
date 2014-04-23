@@ -1,5 +1,5 @@
 /** Validation Messages Framework **********************************************************************/
-.uif-correctedError {
+span.uif-correctedError {
   text-decoration: line-through;
   color: #a9a9a9;
 }
@@ -99,15 +99,15 @@
   margin: 0 0 0.2em;
   font-size: 18px;
 }
-
-
-
-
-
 .uif-hasInfo > fieldset[data-type="RadioSet"], .uif-hasWarning > fieldset[data-type="RadioSet"], .uif-hasInfo > fieldset[data-type="CheckboxSet"], .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
   border: 1px solid gray !important;
 }
-
+.uif-tableCollectionLayout .uif-hasInfo > [data-role="Control"], .uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="RadioSet"], .uif-tableCollectionLayout .uif-hasInfo > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #3366CC !important;
+}
+.uif-tableCollectionLayout .uif-hasWarning > [data-role="Control"], .uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="RadioSet"], .uif-tableCollectionLayout .uif-hasWarning > fieldset[data-type="CheckboxSet"] {
+  border: 2px solid #FF9900 !important;
+}
 .uif-hasError > [data-role="Control"], .uif-hasError > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasError > fieldset[data-type="RadioSet"], .uif-hasError > fieldset[data-type="CheckboxSet"] {
   border: 2px solid #ff2300 !important;
 }
@@ -120,17 +120,31 @@
   border: 2px solid #f7941e !important;
 }
 
-
-
-
-
-
 .uif-hasError-modified > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="InputSet"] > [data-role="Control"], .uif-hasError-modified > fieldset[data-type="RadioSet"], .uif-hasError-modified > fieldset[data-type="CheckboxSet"] {
   border: 2px solid gray !important;
 }
+
+.popover.uif-tooltip-error-cs {
+    background-color: @alert-danger-bg;
+}
+
+.popover.uif-tooltip-error-cs.top > .arrow:after {
+    border-top-color: @alert-danger-bg;
+}
+
+.popover.uif-tooltip-error-cs.bottom > .arrow:after {
+    border-bottom-color: @alert-danger-bg;
+}
+
+/** needed for tooltips to work in fancybox **/
+.fancybox-inner {
+  overflow: visible !important;
+}
+
 .uif-validationMessages li a {
   white-space: normal;
 }
+
 .uif-validationMessagesList {
   margin-left: 10px;
 }

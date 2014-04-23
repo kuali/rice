@@ -19,72 +19,78 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
-
 /**
- *  builds <meta> tags with various attributes
- *  in the <head> of the html document
+ * Renders a meta tag in the head of the html document.
  *
+ * <p>The meta tag component can be used to create meta tags by defining the attributes:
+ * name, content and http_equiv</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
-@BeanTags({@BeanTag(name = "view-MetaTag", parent = "Uif-MetaTag")})
-public class MetaTag extends ContentElementBase  {
-
+@BeanTag(name = "view-MetaTag", parent = "Uif-MetaTag")
+public class MetaTag extends ContentElementBase {
+    private static final long serialVersionUID = -3479173950568700937L;
 
     private String name;
     private String content;
     private String http_equiv;
-
 
     public MetaTag() {
         super();
     }
 
     /**
+     * Name attribute for meta tag.
      *
-     * @return  name
+     * <p>Name attribute to be rendered on this meta tag</p>
+     *
+     * @return  name attribute of meta tag
      */
     @BeanTagAttribute(name = "name")
     public String getName() {
         return name;
     }
 
-    /**  sets name attribute for <meta>
-     *
-     * @param name
+    /**
+     * @see MetaTag#getName()
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * Content attribute for meta tag.
      *
-     * @return  content
+     * <p>Content attribute to be rendered on this meta tag</p>
+     *
+     * @return  content attribute of meta tag
      */
     @BeanTagAttribute(name = "content")
     public String getContent() {
         return content;
     }
 
-    /**  sets content attribute for <meta>
-     *
-     * @param content
+    /**
+     * @see MetaTag#getContent()
      */
     public void setContent(String content) {
         this.content = content;
     }
 
     /**
+     * Http_equiv attribute for meta tag.
      *
-     * @return  http_equiv
+     * <p>Http_equiv attribute to be rendered on this meta tag</p>
+     *
+     * @return  http_equiv attribute of meta tag
      */
     @BeanTagAttribute(name = "http_equiv")
     public String getHttp_equiv() {
         return http_equiv;
     }
 
-    /**  sets http_equiv attribute for <meta>
-     *
-     * @param http_equiv
+    /**
+     * @see MetaTag#getHttp_equiv()
      */
     public void setHttp_equiv(String http_equiv) {
         this.http_equiv = http_equiv;

@@ -1,0 +1,167 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- Enter key demo -->
+  <bean id="Demo-EnterKeySupport" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoEnterKeySupport.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.component.ComponentBase"/>
+
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-EnterKeySupport-Example1"/>
+        <ref bean="Demo-EnterKeySupport-Example2"/>
+        <ref bean="Demo-EnterKeySupport-Example3"/>
+        <ref bean="Demo-EnterKeySupport-Example4"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default View Key -->
+  <bean id="Demo-EnterKeySupport-Example1"  parent="Uif-VerticalBoxSection" p:headerText="Default View Key">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Default View Key"
+              p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Demo-EnterKeySupport-View1"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-EnterKeySupport-Example1 start-->
+  <bean id="Demo-EnterKeySupport-View1" parent="Uif-FormView" p:enterKeyAction="button1">
+    <property name="headerText" value="Default View Key"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page" p:instructionalText="Uif-FormView enterKeyAction is set to button 1">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" />
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1 was clicked');"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-EnterKeySupport-Example1 start-->
+
+  <!-- Default Page Key -->
+  <bean id="Demo-EnterKeySupport-Example2"  parent="Uif-VerticalBoxSection" p:headerText="Default Page Key">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Default Page Key"
+              p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Demo-EnterKeySupport-View2"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-EnterKeySupport-View2" parent="Uif-FormView" >
+    <property name="headerText" value="Default Page Key"/>
+    <property name="navigation">
+      <ref bean="Demo-EnterKeySupport-Example2-Menu"/>
+    </property>
+    <property name="items">
+      <list>
+        <!-- ex:Demo-EnterKeySupport-Example2 start-->
+        <bean id="Demo-EnterKeySupport-Example2-Page1" parent="Uif-Page" p:instructionalText="Uif-Page 1 enterKeyAction is set to button 1" p:enterKeyAction="button1">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" />
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1 was clicked');"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="Demo-EnterKeySupport-Example2-Page2" parent="Uif-Page" p:instructionalText="Uif-Page 2 enterKeyAction is set to button 2" p:enterKeyAction="button2">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" />
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2 was clicked');"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-EnterKeySupport-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-EnterKeySupport-Example2-Menu" parent="Uif-MenuNavigationGroup">
+    <property name="items">
+      <list>
+        <bean parent="Uif-HeaderTwo" p:headerText="Navigation"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 1" p:navigateToPageId= "Demo-EnterKeySupport-Example2-Page1"/>
+        <bean parent="Uif-NavigationActionLink" p:actionLabel="Page 2" p:navigateToPageId="Demo-EnterKeySupport-Example2-Page2"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default Group Key -->
+  <!-- ex:Demo-EnterKeySupport-Example3 start-->
+  <bean id="Demo-EnterKeySupport-Example3" p:headerText="Default Group Key" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 4.[br]Press the enter key to fire button 4.">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1 was clicked');"/>
+        <bean p:headerText="Sub Section 1" parent="Uif-VerticalBoxSubSection" p:enterKeyAction="button2" p:instructionalText="enterKeyAction is set to button 2.[br]Press the enter key to fire button 2.">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2');"/>
+            </list>
+          </property>
+        </bean>
+        <bean p:headerText="Sub Section 2" parent="Uif-VerticalBoxSubSection" p:instructionalText="enterKeyAction is not set[br]Press the enter key to fire button 1.">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField3" p:label="Field 3"/>
+              <bean parent="Uif-PrimaryActionButton" p:actionLabel="button 3" p:id="button3" p:actionScript="alert('button 3');"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-EnterKeySupport-Example3 end-->
+
+
+  <!-- Collection Line Enter Keys -->
+  <bean id="Demo-EnterKeySupport-Example4"  parent="Uif-VerticalBoxSection" p:headerText="Collection Line Enter Keys">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-EnterKeySupport-Example4 start-->
+        <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
+          <property name="headerText" value="Table Layout Enter Key Support" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-EnterKeySupport-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+</beans>

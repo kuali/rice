@@ -40,7 +40,7 @@ public class KradLabsForm extends UifFormBase {
 
     //InputField
     private String inputField1;
-    private String inputField2;
+    private String inputField2 = "02/13/2014";
     private String inputField3;
     private String inputField4;
     private String inputField5;
@@ -50,7 +50,7 @@ public class KradLabsForm extends UifFormBase {
     private String inputField9;
     private String inputField10;
     private String inputField11;
-    private String inputField12;
+    private String inputField12 = "testing";
     private String inputField13;
     private String inputField14;
     private String inputField15;

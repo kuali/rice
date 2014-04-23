@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -222,8 +222,18 @@ public interface DataField extends DataBinding, Helpable, Field {
      */
     void setDefaultValues(Object[] defaultValues);
 
+    /**
+     * For read only DataFields, if forcedValue has a value, the value of it will be used instead of the value
+     * received from the propertyName specified for this field;
+     * this can be combined with SpringEL to format a property value in some way, for example.
+     *
+     * @return the forced value
+     */
     String getForcedValue();
 
+    /**
+     * @see org.kuali.rice.krad.uif.field.DataField#setForcedValue(String)
+     */
     void setForcedValue(String forcedValue);
 
     /**

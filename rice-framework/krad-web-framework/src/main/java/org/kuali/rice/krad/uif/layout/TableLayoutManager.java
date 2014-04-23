@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,6 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
-import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 
 /**
@@ -35,7 +34,111 @@ import org.kuali.rice.krad.uif.widget.RichTable;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutManager {
+public interface TableLayoutManager extends CollectionLayoutManager {
+
+    /**
+     * Indicates the number of columns that should make up one row of data.
+     *
+     * <p>If the item count is greater than the number of columns, a new row will
+     * be created to render the remaining items (and so on until all items are
+     * placed).</p>
+     *
+     * <p>Note this does not include any generated columns by the layout manager,
+     * so the final column count could be greater (if label fields are
+     * separate).</p>
+     *
+     * @return int number of columns
+     */
+    int getNumberOfColumns();
+
+    /**
+     * @see TableLayoutManager#getNumberOfColumns()
+     */
+    void setNumberOfColumns(int numberOfColumns);
+
+    /**
+     * Indicates whether the number of columns for the table data should match
+     * the number of fields given in the container's items list (so that each
+     * field takes up one column without wrapping), this overrides the configured
+     * numberOfColumns.
+     *
+     * <p>If set to true during the initialize phase the number of columns will be
+     * set to the size of the container's field list, if false the configured
+     * number of columns is used</p>
+     *
+     * @return true if the column count should match the container's
+     *         field count, false to use the configured number of columns
+     */
+    boolean isSuppressLineWrapping();
+
+    /**
+     * @see TableLayoutManager#isSuppressLineWrapping()
+     */
+    void setSuppressLineWrapping(boolean suppressLineWrapping);
+
+    /**
+     * Indicates whether alternating row styles should be applied.
+     *
+     * <p>Indicator to layout manager templates to apply alternating row styles.
+     * See the configured template for the actual style classes used</p>
+     *
+     * @return true if alternating styles should be applied, false if
+     *         all rows should have the same style
+     */
+    boolean isApplyAlternatingRowStyles();
+
+    /**
+     * @see TableLayoutManager#isApplyAlternatingRowStyles()
+     */
+    void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles);
+
+    /**
+     * Indicates whether the manager should default the cell widths.
+     *
+     * <p>If true, the manager will set the cell width by equally dividing by the
+     * number of columns</p>
+     *
+     * @return true if default cell widths should be applied, false if
+     *         no defaults should be applied
+     */
+    boolean isApplyDefaultCellWidths();
+
+    /**
+     * @see TableLayoutManager#isApplyDefaultCellWidths()
+     */
+    void setApplyDefaultCellWidths(boolean applyDefaultCellWidths);
+
+    /**
+     * List of styles for each row.
+     *
+     * <p>Each entry in the list gives the style for the row with the same index. This style will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines
+     * and other special cases like the add item row.</p>
+     *
+     * @return list of styles for the rows
+     */
+    List<String> getRowCssClasses();
+
+    /**
+     * @see TableLayoutManager#getRowCssClasses()
+     */
+    void setRowCssClasses(List<String> rowCssClasses);
+
+    /**
+     * List of data attributes for each row.
+     *
+     * <p>Each entry in the list gives the data attributes for the row with the same index. These data attributes will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the data attributes for newly added lines
+     * and other special cases like the add item row.</p>
+     *
+     * @return list of styles for the rows
+     */
+    List<String> getRowDataAttributes();
+
+    /**
+     * @see TableLayoutManager#getRowDataAttributes()
+     */
+    void setRowDataAttributes(List<String> rowDataAttributes);
 
     /**
      * Indicates whether the short label for the collection field should be used as the table header
@@ -172,43 +275,6 @@ public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutM
     void setActionFieldPrototype(FieldGroup actionFieldPrototype);
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
-     */
-    FieldGroup getSubCollectionFieldGroupPrototype();
-
-    /**
-     * Setter for the sub-collection field group prototype
-     *
-     * @param subCollectionFieldGroupPrototype
-     */
-    void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype);
-
-    /**
-     * Field instance that serves as a prototype for creating the select field on each line when
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is
-     * true
-     *
-     * <p>
-     * This prototype can be used to set the control used for the select field (generally will be a
-     * checkbox control) in addition to styling and other setting. The binding path will be formed
-     * with using the
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if
-     * not set the framework will use
-     * {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}
-     * </p>
-     *
-     * @return select field prototype instance
-     */
-    Field getSelectFieldPrototype();
-
-    /**
-     * Setter for the prototype instance for select fields
-     *
-     * @param selectFieldPrototype
-     */
-    void setSelectFieldPrototype(Field selectFieldPrototype);
-
-    /**
      * Indicates whether the add line should be rendered in a separate group, or as part of the
      * table (first line)
      *
@@ -232,29 +298,6 @@ public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutM
     void setSeparateAddLine(boolean separateAddLine);
 
     /**
-     * When {@link #isSeparateAddLine()} is true, this group will be used to render the add line
-     *
-     * <p>
-     * This group can be used to configure how the add line will be rendered. For example the layout
-     * manager configured on the group will be used to rendered the add line fields. If the header
-     * (title) is not set on the group, it will be set from
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()}. In addition,
-     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()} will be added
-     * to the group footer items.
-     * </p>
-     *
-     * @return Group instance for the collection add line
-     */
-    Group getAddLineGroup();
-
-    /**
-     * Setter for the add line Group
-     *
-     * @param addLineGroup
-     */
-    void setAddLineGroup(Group addLineGroup);
-
-    /**
      * List of {@link Field} instances that make up all the table's rows of data
      *
      * @return table body fields
@@ -267,27 +310,6 @@ public interface TableLayoutManager extends GridLayoutManager, CollectionLayoutM
      * @return list of field instances
      */
     List<Field> getFirstRowFields();
-
-    /**
-     * The Pager widget for this TableLayoutManager which defines settings for paging
-     *
-     * <p>
-     * The settings in this widget are only used by TableLayoutManagers which DO NOT take advantage
-     * of the RichTable option (this has its own paging implementation). To turn off RichTable and
-     * use a basic table with server paging set richTable.render="false" and useServerPaging="true"
-     * on the CollectionGroup which uses this layout manager.
-     * </p>
-     *
-     * @return the Pager widget
-     */
-    Pager getPagerWidget();
-
-    /**
-     * Set the Pager widget
-     *
-     * @param pagerWidget
-     */
-    void setPagerWidget(Pager pagerWidget);
 
     /**
      * Widget associated with the table to add functionality such as sorting, paging, and export

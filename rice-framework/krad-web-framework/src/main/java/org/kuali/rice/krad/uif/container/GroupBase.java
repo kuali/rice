@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -153,18 +153,11 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Sets the bindByNamePrefix if blank on any InputField and
-     * FieldGroup instances within the items List</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
-        if (isClosedAjaxDisclosure()) {
+        if (isAjaxDisclosureGroup()) {
             this.setItems(new ArrayList<Component>());
         }
 
@@ -262,16 +255,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * Binding prefix string to set on each of the groups <code>DataField</code> instances
-     *
-     * <p>
-     * As opposed to setting the bindingPrefix on each attribute field instance,
-     * it can be set here for the group. During initialize the string will then
-     * be set on each attribute field instance if the bindingPrefix is blank and
-     * not a form field
-     * </p>
-     *
-     * @return String binding prefix to set
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "fieldBindByNamePrefix")
@@ -280,79 +264,60 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * Setter for the field binding prefix
-     *
-     * @param fieldBindByNamePrefix
+     * {@inheritDoc}
      */
+    @Override
     public void setFieldBindByNamePrefix(String fieldBindByNamePrefix) {
         this.fieldBindByNamePrefix = fieldBindByNamePrefix;
     }
 
     /**
-     * Object binding path to set on each of the group's
-     * <code>InputField</code> instances
-     *
-     * <p>
-     * When the attributes of the group belong to a object whose path is
-     * different from the default then this property can be given to set each of
-     * the attributes instead of setting the model path on each one. The object
-     * path can be overridden at the attribute level. The object path is set to
-     * the fieldBindingObjectPath during the initialize phase.
-     * </p>
-     *
-     * @return String model path to set
-     * @see org.kuali.rice.krad.uif.component.BindingInfo#getBindingObjectPath()
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "fieldBindingObjectPath")
     public String getFieldBindingObjectPath() {
         return this.fieldBindingObjectPath;
     }
 
     /**
-     * Setter for the field object binding path
-     *
-     * @param fieldBindingObjectPath
+     * {@inheritDoc}
      */
+    @Override
     public void setFieldBindingObjectPath(String fieldBindingObjectPath) {
         this.fieldBindingObjectPath = fieldBindingObjectPath;
     }
 
     /**
-     * Disclosure widget that provides collapse/expand functionality for the
-     * group
-     *
-     * @return Disclosure instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "Disclosure", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Disclosure getDisclosure() {
         return this.disclosure;
     }
 
     /**
-     * Setter for the group's disclosure instance
-     *
-     * @param disclosure
+     * {@inheritDoc}
      */
+    @Override
     public void setDisclosure(Disclosure disclosure) {
         this.disclosure = disclosure;
     }
 
     /**
-     * Scrollpane widget that provides scrolling functionality for the
-     * group
-     *
-     * @return Scrollpane instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "scrollpane", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Scrollpane getScrollpane() {
         return this.scrollpane;
     }
 
     /**
-     * Setter for the group's scrollpane instance
-     *
-     * @param scrollpane
+     * {@inheritDoc}
      */
+    @Override
     public void setScrollpane(Scrollpane scrollpane) {
         this.scrollpane = scrollpane;
     }
@@ -360,7 +325,6 @@ public class GroupBase extends ContainerBase implements Group {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
@@ -371,9 +335,7 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * Setter for the Group's list of components
-     *
-     * @param items
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -410,19 +372,15 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @return true if this group has a Disclosure widget that is currently closed and using ajax disclosure
      */
-    protected boolean isClosedAjaxDisclosure() {
+    protected boolean isAjaxDisclosureGroup() {
         ViewModel model = (ViewModel) ViewLifecycle.getModel();
         View view = ViewLifecycle.getView();
 
-        if (this.getDisclosure() == null) {
-            return false;
-        }
-
-        ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(this, false);
+        ExpressionUtils.populatePropertyExpressionsFromGraph(this);
         // Evaluate the disclosure.defaultOpen expression early so that ajax disclosure mechanisms
-        // can take its state into account
+        // can take its state into account when replacing items with Placeholders in ContainerBase#performInitialization
         if (this.getDisclosure() != null && StringUtils.isNotBlank(this.getDisclosure().getPropertyExpression(
-                UifPropertyPaths.DEFAULT_OPEN))) {
+                UifPropertyPaths.DEFAULT_OPEN))){
             ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
             String expression = this.getDisclosure().getPropertyExpression(UifPropertyPaths.DEFAULT_OPEN);
@@ -432,26 +390,15 @@ public class GroupBase extends ContainerBase implements Group {
             ObjectPropertyUtils.setPropertyValue(this.getDisclosure(), UifPropertyPaths.DEFAULT_OPEN, expression);
         }
 
-        if (disclosure.getId() == null) {
-            disclosure.setId(AssignIdsTask.generateId(disclosure, view));
-        }
-
         // Ensure that the disclosure has the correct state before evaluate ajax-based placeholder replacement
         if (this.getDisclosure() != null) {
             KRADUtils.syncClientSideStateForComponent(this.getDisclosure(), model.getClientStateForSyncing());
         }
 
-        boolean closed = !this.getDisclosure().isDefaultOpen();
-
-        boolean open = (closed && ViewLifecycle.isRefreshComponent(ViewLifecycle.getPhase().getViewPhase(),
-                this.getViewPath())) || !closed;
-
-        if (open) {
-            this.getDisclosure().setDefaultOpen(true);
-        }
-
-        // Considered closed when not a retrieveViaAjax group and not set to open in this phase
-        return !this.isRetrieveViaAjax() && this.getDisclosure().isAjaxRetrievalWhenOpened() && !open;
+        // This this will be replaced with a PlaceholderDisclosure group if it is not opened and the
+        // ajaxRetrievalWhenOpened option is set
+        return !this.isRetrieveViaAjax() && this.getDisclosure() != null && this.getDisclosure()
+                        .isAjaxRetrievalWhenOpened() && !this.getDisclosure().isDefaultOpen();
     }
 
     /**
@@ -464,7 +411,7 @@ public class GroupBase extends ContainerBase implements Group {
         // Checks that no invalid items are present
         for (int i = 0; i < getItems().size(); i++) {
             if (getItems().get(i).getClass() == PageGroup.class || getItems().get(i).getClass()
-                    == NavigationGroup.class) {
+                    == TabNavigationGroup.class) {
                 String currentValues[] = {"item(" + i + ").class =" + getItems().get(i).getClass()};
                 tracer.createError("Items in Group cannot be PageGroup or NaviagtionGroup", currentValues);
             }
@@ -482,10 +429,9 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
-     * Determine the group should be rendered on initial load, or if a loading message should be rendered instead.
-     *
-     * @return True if a loading message should be rendered, false if the group should be rendered now.
+     * {@inheritDoc}
      */
+    @Override
     public boolean isRenderLoading() {
         return disclosure != null && disclosure.isAjaxRetrievalWhenOpened() && (!disclosure.isRender() || !disclosure
                 .isDefaultOpen());

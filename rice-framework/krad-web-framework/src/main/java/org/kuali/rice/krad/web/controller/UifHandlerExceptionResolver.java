@@ -127,7 +127,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
         try {
-            UifControllerHelper.postControllerHandle(request, response, handler, modelAndView);
+            UifControllerHelper.prepareView(request, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }

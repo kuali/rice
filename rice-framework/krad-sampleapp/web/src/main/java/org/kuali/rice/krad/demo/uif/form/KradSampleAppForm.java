@@ -149,6 +149,10 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     private String fakeTotal = "123(server value)";
 
+    // ProgressBar
+    private String barStep = "4";
+    private int barPercent = 40;
+
     //preset fields
     private List<String> optionListSelection = Arrays.asList("2", "4");
 
@@ -1022,6 +1026,22 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         this.fakeTotal = fakeTotal;
     }
 
+    public String getBarStep() {
+        return barStep;
+    }
+
+    public void setBarStep(String barStep) {
+        this.barStep = barStep;
+    }
+
+    public int getBarPercent() {
+        return barPercent;
+    }
+
+    public void setBarPercent(int barPercent) {
+        this.barPercent = barPercent;
+    }
+
     public String getRichMessageField() {
         return richMessageField;
     }
@@ -1116,7 +1136,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     }
 
     /**
-     * @param tree2 the tree2 to set
+     * @param tree1 the tree2 to set
      */
     public void setTree2(Tree<UITestObject, String> tree2) {
         this.tree2 = tree2;

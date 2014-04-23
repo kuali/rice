@@ -7,39 +7,86 @@
   margin-right: auto;
 }
 
-
-
-.uif-cssGridLabelCol {
-  text-align: right;
-  //padding-top: 5px;
-}
-
-.uif-cssGridLabelCol label {
-  float: right;
-  white-space: pre-wrap;
-}
-
-
-.uif-cssGridSection .row {
+.uif-cssGridGroup .row {
   margin-bottom: 15px;
 }
 
-.uif-cssGridSection .row .uif-inputField input[type="text"], .uif-cssGridSection .row .uif-inputField .uif-textAreaControl {
+.uif-cssGridGroup .row .uif-inputField input[type="text"], .uif-cssGridGroup .row .uif-inputField .uif-textAreaControl {
   width: 100%;
 }
 
-.uif-cssGridSection .row .uif-inputField .form-control {
+.uif-cssGridGroup .row .uif-inputField .form-control {
   width: 100%;
 }
 
 
-.uif-cssGridSection .form-control {
+.uif-cssGridGroup .form-control {
   width: 100%;
   height: 32px;
 }
 
 
-.uif-cssGridSection textarea.form-control {
+.uif-cssGridGroup textarea.form-control {
   width: 100%;
   height: inherit;
+}
+
+.uif-cssGridGroup > [class*="col-"] {
+    padding-bottom: 5px;
+}
+
+.uif-cssGridLabelCol {
+  padding-top: .5em;
+}
+
+/** Custom classes for css grid - do not remove, it will break functionality **/
+
+.xs-float-right {
+  float: right;
+}
+
+.xs-clear-left {
+  clear: left;
+}
+
+@media (min-width: @screen-sm) {
+  .sm-float-right {
+    float: right;
+  }
+
+  [class*='col-sm-'] {
+    clear: none;
+  }
+
+  .sm-clear-left {
+    clear: left;
+  }
+}
+
+@media (min-width: @screen-md) {
+  .md-float-right {
+    float: right;
+  }
+
+  [class*='col-md-'] {
+    clear: none;
+  }
+
+  .md-clear-left {
+    clear: left;
+  }
+}
+
+@media (min-width: @screen-lg) {
+  .lg-float-right {
+    float: right;
+  }
+
+  [class*='col-lg-'] {
+    clear: none;
+  }
+
+  .lg-clear-left {
+    clear: left;
+  }
 }

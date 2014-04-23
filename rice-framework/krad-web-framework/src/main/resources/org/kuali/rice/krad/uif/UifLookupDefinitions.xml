@@ -75,9 +75,9 @@
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="refresh" p:actionLabel="Refine Search"
               p:additionalSubmitData="displayResults:false" p:iconClass="icon-chevron-left" p:ajaxSubmit="false"
               p:render="@{displayResults}"/>
-        <bean parent="Uif-ActionLink" p:methodToCall="cancel" p:actionLabel="Cancel"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
               p:render="@{!renderedInLightBox and displayResults}"/>
-        <bean parent="Uif-ActionLink" p:actionLabel="Close" p:render="@{renderedInLightBox and displayResults}"
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{renderedInLightBox and displayResults}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:render="@{!displayResults}" p:ajaxSubmit="false"/>
@@ -228,14 +228,14 @@
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
-              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"/>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
+              p:render="@{!#form.renderedInLightBox}"/>
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
+              p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:ajaxSubmit="false"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
-              p:render="@{!#form.renderedInLightBox}"/>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
-              p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"/>
       </list>
     </property>
   </bean>

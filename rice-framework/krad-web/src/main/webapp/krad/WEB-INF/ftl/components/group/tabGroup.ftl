@@ -19,26 +19,56 @@
 
     <@krad.groupWrap group=group>
 
-        <div id="${group.id}_tabs">
-
-            <#-- render items in list -->
-            <ul id="${group.id}_tabList">
-                <#list group.items as item>
-                    <li data-tabfor="${item.id}">
-                        <a href="#${item.id}_tab">${(item.header.headerText)}</a>
-                    </li>
-                </#list>
-            </ul>
-
+    <!-- Tab panes -->
+    <#local tabPanes>
+        <div class="${group.tabsWidget.tabContentClass}">
             <#list group.items as item>
-                <div data-tabwrapperfor="${item.id}" data-type="TabWrapper" id="${item.id}_tab">
-                    <@krad.template component=item/>
-                </div>
+                <#if group.tabsWidget.defaultActiveTabId?has_content && group.tabsWidget.defaultActiveTabId == item.id>
+                    <div id="${item.id}_tabPanel" class="tab-pane active"
+                         role="tabpanel" aria-hidden="false" tabindex="0"
+                         aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
+                        <@krad.template component=item/>
+                    </div>
+                <#else>
+                    <div id="${item.id}_tabPanel" class="tab-pane" role="tabpanel" aria-hidden="true" tabindex="-1"
+                         aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
+                        <@krad.template component=item/>
+                    </div>
+                </#if>
             </#list>
         </div>
+    </#local>
 
-        <#-- render tabs widget -->
-        <@krad.template component=group.tabsWidget parent=group/>
+    <#if group.tabsWidget.position == "BOTTOM" || group.tabsWidget.position == "RIGHT">
+        ${tabPanes}
+    </#if>
+
+        <!-- Nav tabs -->
+        <ul id="${group.id}_tabList" class="${group.tabsWidget.tabNavClass}" role="tablist">
+            <#list group.items as item>
+                <#if group.tabsWidget.defaultActiveTabId?has_content && group.tabsWidget.defaultActiveTabId == item.id>
+                    <li data-tabfor="${item.id}" class="active" role="presentation">
+                        <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="0"
+                           aria-controls="${item.id}_tabPanel" aria-expanded="true"
+                           aria-selected="true" data-toggle="tab">
+                            ${(item.header.headerText)}
+                        </a>
+                    </li>
+                <#else>
+                    <li data-tabfor="${item.id}" role="presentation">
+                        <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="-1"
+                           aria-controls="${item.id}_tabPanel" aria-expanded="false"
+                           aria-selected="false" data-toggle="tab">
+                            ${(item.header.headerText)}
+                        </a>
+                    </li>
+                </#if>
+            </#list>
+        </ul>
+
+    <#if group.tabsWidget.position == "TOP" || group.tabsWidget.position == "LEFT">
+        ${tabPanes}
+    </#if>
 
     </@krad.groupWrap>
 

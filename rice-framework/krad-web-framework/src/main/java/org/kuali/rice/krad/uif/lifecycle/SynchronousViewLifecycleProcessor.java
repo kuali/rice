@@ -251,8 +251,8 @@ public class SynchronousViewLifecycleProcessor extends ViewLifecycleProcessorBas
     public LifecycleRenderingContext getRenderingContext() {
         if (renderingContext == null && ViewLifecycle.isRenderInLifecycle()) {
             ViewLifecycle lifecycle = getLifecycle();
-            this.renderingContext = new LifecycleRenderingContext(lifecycle.model, lifecycle.request,
-                    lifecycle.response);
+//            this.renderingContext = new LifecycleRenderingContext(lifecycle.model, lifecycle.request,
+//                    lifecycle.response);
         }
 
         return this.renderingContext;

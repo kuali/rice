@@ -71,12 +71,6 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/cssGrid.ftl"/>
     <property name="templateName" value="uif_cssGrid"/>
-    <property name="cssClasses">
-      <list>
-        <value>uif-cssGridLayout</value>
-      </list>
-    </property>
-    <property name="rowLayoutCssClass" value="row"/>
   </bean>
 
   <bean id="Uif-CssGridLayout" abstract="true" parent="Uif-CssGridLayout-parentBean"/>
@@ -85,7 +79,7 @@
         class="org.kuali.rice.krad.uif.layout.CssGridLayoutManager"
         scope="prototype">
     <!-- this means items which don't define their colSpan will take up a whole "row" -->
-    <property name="defaultItemColSpan" value="12"/>
+    <property name="defaultItemSize" value="12"/>
   </bean>
 
   <bean id="Uif-CssGridLabelColumnLayout" abstract="true" parent="Uif-CssGridLabelColumnLayout-parentBean"/>
@@ -185,7 +179,6 @@
     </property>
     <property name="applyAlternatingRowStyles" value="true"/>
     <property name="applyDefaultCellWidths" value="false"/>
-    <property name="renderAlternatingHeaderColumns" value="false"/>
     <property name="headerLabelPrototype">
       <bean parent="Uif-Label" p:renderColon="false" p:cssClasses="infoline"/>
     </property>
@@ -233,7 +226,6 @@
     </property>
     <property name="showPageTotal" value="true"/>
     <property name="showTotal" value="true"/>
-
   </bean>
 
   <!--Stacked Collection Layout Managers-->
@@ -244,6 +236,7 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/layout/stacked.ftl"/>
     <property name="templateName" value="uif_stacked"/>
+    <property name="renderLineActionsInHeader" value="true"/>
     <property name="cssClasses">
       <list>
         <value>uif-stackedCollectionLayout</value>

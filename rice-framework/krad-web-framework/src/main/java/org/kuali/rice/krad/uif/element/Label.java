@@ -84,10 +84,11 @@ public class Label extends ContentElementBase {
      * The following finalization is performed:
      *
      * <ul>
-     * <li>Set the requiredIndicator</li>
      * <li>If label text is blank, set render to false for field</li>
+     * <li>Set the requiredIndicator</li>
      * <li>Set the label text on the label field from the field's label property</li>
      * <li>Set the render property on the label's required message field if this field is marked as required</li>
+     * <li>If the label is hidden then add CSS class to render off screen for accessibility</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -111,6 +112,11 @@ public class Label extends ContentElementBase {
 
         if ((getRequired() != null) && getRequired().booleanValue()) {
             setRenderRequiredIndicator(true);
+        }
+
+        // if hidden then add CSS class to render label off screen for accessibility
+        if (this.isHidden()) {
+            this.addStyleClass("sr-only");
         }
     }
 

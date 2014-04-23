@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -176,24 +176,35 @@ public interface GridLayoutManager extends LayoutManager {
     void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns);
 
     /**
-     * The list of styles for each row
+     * List of styles for each row.
      *
-     * <p>
-     * Each entry in the list gives the style for the row with the same index. This style will be added the the <tr>
-     * tag
-     * when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines and
-     * other special cases like the add item row.
-     * </p>
+     * <p>Each entry in the list gives the style for the row with the same index. This style will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines
+     * and other special cases like the add item row.</p>
      *
      * @return list of styles for the rows
      */
     List<String> getRowCssClasses();
 
     /**
-     * Setter for the list that stores the css style names of each row
-     *
-     * @param rowCssClasses
+     * @see #getRowCssClasses()
      */
     void setRowCssClasses(List<String> rowCssClasses);
+
+    /**
+     * List of data attributes for each row.
+     *
+     * <p>Each entry in the list gives the data attributes for the row with the same index. These data attributes will be added to
+     * the <tr> tag when the table rows are rendered in the grid.tag. This is used to store the data attributes for newly added lines
+     * and other special cases like the add item row.</p>
+     *
+     * @return list of styles for the rows
+     */
+    List<String> getRowDataAttributes();
+
+    /**
+     * @see #getRowDataAttributes()
+     */
+    void setRowDataAttributes(List<String> rowDataAttributes);
 
 }

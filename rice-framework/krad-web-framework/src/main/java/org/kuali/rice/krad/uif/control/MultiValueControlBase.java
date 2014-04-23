@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UifKeyValueLocation;
+import org.kuali.rice.krad.uif.util.UifOptionGroupLabel;
 import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -69,6 +70,12 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
             internalMessageComponents = new ArrayList<Message>();
 
             for (KeyValue option : options) {
+
+                // do this??
+                if (option instanceof UifOptionGroupLabel) {
+                    continue;
+                }
+
                 Message message = ComponentFactory.getMessage();
 
                 String key = option.getKey();

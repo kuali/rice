@@ -68,7 +68,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Contains all of the business rules that are common to all documents
+ * Contains all of the business rules that are common to all documents.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

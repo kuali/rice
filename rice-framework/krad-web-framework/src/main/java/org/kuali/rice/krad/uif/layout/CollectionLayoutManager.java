@@ -16,8 +16,11 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.widget.Pager;
 
 /**
  * Layout manager implementations that work with a collection (such as a table layout) should implement
@@ -47,6 +50,34 @@ public interface CollectionLayoutManager extends LayoutManager {
     void buildLine(LineBuilderContext lineBuilderContext);
 
     /**
+     * Invoked when a paging request occurs to carry out the paging request.
+     *
+     * @param model object containing the view's data
+     * @param collectionGroup collection group the request was made for
+     */
+    void processPagingRequest(Object model, CollectionGroup collectionGroup);
+
+    /**
+     * Group for rendering the add line when separate (always the case for stacked layout, and a configuration
+     * for table layout).
+     *
+     * <p>This group can be used to configure how the add line will be rendered. For example the layout
+     * manager configured on the group will be used to rendered the add line fields. If the header
+     * (title) is not set on the group, it will be set from
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLabel()}. In addition,
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActions()} will be added
+     * to the group footer items.</p>
+     *
+     * @return Group instance for the collection add line
+     */
+    Group getAddLineGroup();
+
+    /**
+     * @see CollectionLayoutManager#getAddLineGroup()
+     */
+    void setAddLineGroup(Group addLineGroup);
+
+    /**
      * Field group instance that is used as a prototype for creating the sub-collection field groups.
      *
      * @return GroupField instance to use as prototype
@@ -54,10 +85,45 @@ public interface CollectionLayoutManager extends LayoutManager {
     FieldGroup getSubCollectionFieldGroupPrototype();
 
     /**
-     * Invoked when a paging request occurs to carry out the paging request.
-     *
-     * @param model object containing the view's data
-     * @param collectionGroup collection group the request was made for
+     * @see CollectionLayoutManager#getSubCollectionFieldGroupPrototype()
      */
-    void processPagingRequest(Object model, CollectionGroup collectionGroup);
+    void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype);
+
+    /**
+     * Field instance that serves as a prototype for creating the select field on each line when
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#isIncludeLineSelectionField()} is
+     * true.
+     *
+     * <p>This prototype can be used to set the control used for the select field (generally will be a
+     * checkbox control) in addition to styling and other setting. The binding path will be formed
+     * with using the
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getLineSelectPropertyName()} or if
+     * not set the framework will use
+     * {@link org.kuali.rice.krad.web.form.UifFormBase#getSelectedCollectionLines()}</p>
+     *
+     * @return select field prototype instance
+     */
+    Field getSelectFieldPrototype();
+
+    /**
+     * @see CollectionLayoutManager#getSelectFieldPrototype()
+     */
+    void setSelectFieldPrototype(Field selectFieldPrototype);
+
+    /**
+     * Widget used to page the collection.
+     *
+     * <p>The settings in this widget are only used by TableLayoutManagers which DO NOT take advantage
+     * of the RichTable option (this has its own paging implementation). To turn off RichTable and
+     * use a basic table with server paging set richTable.render="false" and useServerPaging="true"
+     * on the CollectionGroup which uses this layout manager.</p>
+     *
+     * @return the Pager widget
+     */
+    Pager getPagerWidget();
+
+    /**
+     * @see CollectionLayoutManager#getPagerWidget()
+     */
+    void setPagerWidget(Pager pagerWidget);
 }

@@ -201,18 +201,3 @@ function checkForIncidentReport(content) {
         return false;
     }
 }
-
-/**
- * Called when client side validation is performed (for an action) and are errors
- * are present to display a notification to the user
- *
- * @param message - (optional) message for notification, default to generic message if not given
- */
-function showClientSideErrorNotification(message) {
-    if (!message) {
-        message = getMessage(kradVariables.MESSAGE_FORM_CONTAINS_ERRORS);
-    }
-
-    showGrowl(message, getMessage(kradVariables.MESSAGE_ERROR), 'errorGrowl');
-}
-

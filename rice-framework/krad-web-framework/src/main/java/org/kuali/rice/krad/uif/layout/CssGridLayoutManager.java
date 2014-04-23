@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Css Grid Layout manager is a layout manager which creates div "rows" and "cells" to replicate a
@@ -41,11 +40,19 @@ import org.kuali.rice.krad.util.KRADUtils;
 public class CssGridLayoutManager extends CssGridLayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 
-    private int defaultItemColSpan;
+    private int defaultItemSize;
+
+    private CssGridSizes defaultItemSizes;
+
+    public CssGridLayoutManager() {
+        super();
+
+        defaultItemSizes = new CssGridSizes();
+    }
 
     /**
      * CssGridLayoutManager's performFinalize method calculates and separates the items into rows
-     * based on their colSpan settings and the defaultItemColSpan setting
+     * based on their colSpan settings and the defaultItemSize setting
      *
      * {@inheritDoc}
      */
@@ -54,6 +61,7 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
         super.performFinalize(model, component);
 
         Container container = (Container) component;
+        cellItems = new ArrayList<Component>();
         processNormalLayout(container);
 
     }
@@ -65,97 +73,77 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
      * @param container the container using this layout manager
      */
     private void processNormalLayout(Container container) {
-        int rowSpaceLeft = NUMBER_OF_COLUMNS;
-        int rowIndex = 0;
-        boolean isOdd = true;
-        List<Component> currentRow = new ArrayList<Component>();
         for (Component item : container.getItems()) {
             if (item == null) {
                 continue;
             }
-            isOdd = rowIndex % 2 == 0;
 
             // set colSpan to default setting (12 is the default)
-            int colSpan = this.defaultItemColSpan;
+            int colSpan = this.defaultItemSize;
 
-            // if the item's set colSpan is greater than 1 set it to that number; 1 is the default colSpan for Component
+            // if the item's mdSize is set, use that as the col span for calculations below
             if (item.getColSpan() > 1 && item.getColSpan() <= NUMBER_OF_COLUMNS) {
                 colSpan = item.getColSpan();
             }
 
-            // determine "cell" div css
             List<String> cellCssClasses = item.getWrapperCssClasses();
             if (cellCssClasses == null) {
                 item.setWrapperCssClasses(new ArrayList<String>());
                 cellCssClasses = item.getWrapperCssClasses();
             }
-            cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + colSpan);
+
+            // Determine "cell" div css
+            calculateCssClassAndSize(item, cellCssClasses, defaultItemSizes, colSpan);
+
+            // Add dynamic left clear classes for potential wrapping content at each screen size
+            addLeftClearCssClass(cellCssClasses);
+
             cellCssClassAttributes.add(getCellStyleClassesAsString(cellCssClasses));
-
-            // calculate space left in row
-            rowSpaceLeft = rowSpaceLeft - colSpan;
-
-            if (rowSpaceLeft > 0) {
-                // space is left, just add item to row
-                currentRow.add(item);
-            } else if (rowSpaceLeft < 0) {
-                // went over, add item to next new row
-                rows.add(new ArrayList<Component>(currentRow));
-                currentRow = new ArrayList<Component>();
-                currentRow.add(item);
-
-                // determine "row" div css
-                String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
-                        rowIndex, isOdd, null, null);
-                rowCssClassAttributes.add(rowCss);
-
-                rowIndex++;
-                rowSpaceLeft = NUMBER_OF_COLUMNS - colSpan;
-            } else if (rowSpaceLeft == 0) {
-                // last item in row, create new row
-                currentRow.add(item);
-                rows.add(new ArrayList<Component>(currentRow));
-                currentRow = new ArrayList<Component>();
-
-                // determine "row" div css
-                String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
-                        rowIndex, isOdd, null, null);
-                rowCssClassAttributes.add(rowCss);
-
-                rowIndex++;
-                rowSpaceLeft = NUMBER_OF_COLUMNS;
-            }
-        }
-
-        isOdd = rowIndex % 2 == 0;
-        // add the last row if it wasn't full (but has items)
-        if (!currentRow.isEmpty()) {
-            // determine "row" div css
-            String rowCss = rowLayoutCssClass + " " + KRADUtils.generateRowCssClassString(conditionalRowCssClasses,
-                    rowIndex, isOdd, null, null);
-            rowCssClassAttributes.add(rowCss);
-
-            rows.add(currentRow);
+            cellItems.add(item);
         }
     }
 
     /**
-     * The default cell colSpan to use for this layout (max setting, and the bean default, is 12)
+     * The default "cell" size to use for this layout - this converts to medium size
+     * (max setting, and the default, is 12)
+     *
+     * <p>
+     * This is a quick and easy setter for default mdSize for this layout, as a common use case is to have
+     * a different layout for medium devices and up, while small and extra small will consume the full screen.
+     * For customizations at every screen size, use defaultItemSizes.
+     * </p>
      *
      * @return int representing the default colSpan for cells in this layout
      */
-    @BeanTagAttribute(name = "defaultItemColSpan")
-    public int getDefaultItemColSpan() {
-        return defaultItemColSpan;
+    @BeanTagAttribute(name = "defaultItemSize")
+    public int getDefaultItemSize() {
+        return defaultItemSize;
     }
 
     /**
      * Set the default colSpan for this layout's items
      *
-     * @param defaultItemColSpan
+     * @param defaultItemSize
      */
-    public void setDefaultItemColSpan(int defaultItemColSpan) {
-        this.defaultItemColSpan = defaultItemColSpan;
+    public void setDefaultItemSize(int defaultItemSize) {
+        this.defaultItemSize = defaultItemSize;
     }
 
+    /**
+     * Default sizes for each item in this css grid layout, these settings will override the setting in
+     * defaultItemSize,
+     * but will not override item specific cssGridSizes.
+     *
+     * @return cssGridSizes containing the sizes of items in this group to use as default
+     */
+    public CssGridSizes getDefaultItemSizes() {
+        return defaultItemSizes;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.CssGridLayoutManager#getDefaultItemSizes()
+     */
+    public void setDefaultItemSizes(CssGridSizes defaultItemSizes) {
+        this.defaultItemSizes = defaultItemSizes;
+    }
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
+import java.beans.PropertyEditor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -508,4 +509,13 @@ public interface DataDictionaryService {
      * @return id for the view that matches the view type and index or null if a match is not found
      */
     String getViewIdByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
+
+    /**
+     * Returns a mapping from property type to property editor, for use in defining editors
+     * for {@link org.springframework.beans.PropertyEditorRegistry}.
+     *
+     * @return Mapping of property editors by property type
+     */
+    Map<Class<?>, PropertyEditor> getPropertyEditorMap();
+
 }

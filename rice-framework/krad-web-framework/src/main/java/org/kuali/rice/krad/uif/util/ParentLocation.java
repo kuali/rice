@@ -24,6 +24,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;

@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.layout.CssGridSizes;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -116,6 +117,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<String> wrapperCssClasses;
     private String wrapperStyle;
     private String cellWidth;
+    private CssGridSizes cssGridSizes;
+
+    private List<String> layoutCssClasses;
 
     private String style;
 
@@ -174,6 +178,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private Map<String, String> dataAttributes;
     private Map<String, String> scriptDataAttributes;
+    
+    private String role;
+    private Map<String, String> ariaAttributes;
 
     @ReferenceCopy(referenceTransient = true)
     private transient Map<String, Component> componentsForLifecycle;
@@ -187,6 +194,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         order = 0;
         colSpan = 1;
         rowSpan = 1;
+        cssGridSizes = new CssGridSizes();
 
         viewStatus = ViewStatus.CREATED;
 
@@ -203,11 +211,20 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         context = Collections.emptyMap();
         dataAttributes = Collections.emptyMap();
         scriptDataAttributes = Collections.emptyMap();
+        ariaAttributes = Collections.emptyMap();
         templateOptions = Collections.emptyMap();
 
         cssClasses = Collections.emptyList();
         libraryCssClasses = Collections.emptyList();
         additionalCssClasses = Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean skipLifecycle() {
+            return this.isRetrieveViaAjax();
     }
 
     /**
@@ -255,15 +272,14 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates what lifecycle phase the component instance is in
-     *
+     * 
      * <p>
-     * The view lifecycle begins with the CREATED status. In this status a new
-     * instance of the view has been retrieved from the dictionary, but no
-     * further processing has been done. After the initialize phase has been run
-     * the status changes to INITIALIZED. After the model has been applied and
-     * the view is ready for render the status changes to FINAL
+     * The view lifecycle begins with the CREATED status. In this status a new instance of the view
+     * has been retrieved from the dictionary, but no further processing has been done. After the
+     * initialize phase has been run the status changes to INITIALIZED. After the model has been
+     * applied and the view is ready for render the status changes to FINAL
      * </p>
-     *
+     * 
      * @return view status
      * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
      */
@@ -308,7 +324,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates whether the component has been initialized.
-     *
+     * 
      * @return True if the component has been initialized, false if not.
      */
     public boolean isInitialized() {
@@ -317,7 +333,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates whether the component has been updated from the model.
-     *
+     * 
      * @return True if the component has been updated, false if not.
      */
     public boolean isModelApplied() {
@@ -325,9 +341,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Indicates whether the component has been updated from the model and final
-     * updates made.
-     *
+     * Indicates whether the component has been updated from the model and final updates made.
+     * 
      * @return True if the component has been updated, false if not.
      */
     public boolean isFinal() {
@@ -336,7 +351,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Indicates whether the component has been fully rendered.
-     *
+     * 
      * @return True if the component has fully rendered, false if not.
      */
     public boolean isRendered() {
@@ -344,6 +359,12 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
+     * The following updates are done here:
+     *
+     * <ul>
+     * <li>tooltip is removed if content is null</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
@@ -493,6 +514,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                     + timerScript;
 
             setOnDocumentReadyScript(timerScript);
+        }
+
+        // Add tooltip class
+        if (this.getToolTip() != null && StringUtils.isNotBlank(this.getToolTip().getTooltipContent())) {
+            this.addStyleClass(CssConstants.Classes.TOOLTIP);
         }
 
         // put together all css class names for this component, in order
@@ -864,6 +890,20 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setCellWidth(String cellWidth) {
         checkMutable(true);
         this.cellWidth = cellWidth;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public CssGridSizes getCssGridSizes() {
+        return cssGridSizes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setCssGridSizes(CssGridSizes cssGridSizes) {
+        this.cssGridSizes = cssGridSizes;
     }
 
     /**
@@ -2011,8 +2051,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
     @Override
+    @BeanTagAttribute(name = "additionalComponentsToRefresh", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalComponentsToRefresh() {
         return additionalComponentsToRefresh;
     }
@@ -2297,6 +2337,81 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "ariaAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    public Map<String, String> getAriaAttributes() {
+        if (ariaAttributes == Collections.EMPTY_MAP) {
+            ariaAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+
+        return ariaAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAriaAttributes(Map<String, String> ariaAttributes) {
+        checkMutable(true);
+        if (ariaAttributes == null) {
+            this.ariaAttributes = Collections.emptyMap();
+        } else {
+            this.ariaAttributes = new LifecycleAwareMap<String, String>(this, ariaAttributes);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAriaAttribute(String key, String value) {
+        checkMutable(true);
+
+        if (ariaAttributes == Collections.EMPTY_MAP) {
+            ariaAttributes = new LifecycleAwareMap<String, String>(this);
+        }
+
+        ariaAttributes.put(key, value);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getAriaAttributesAsString() {
+        String attributes = "";
+
+        if (getAriaAttributes() == null) {
+            return attributes;
+        }
+
+        for (Map.Entry<String, String> aria : getAriaAttributes().entrySet()) {
+            if (aria != null && aria.getValue() != null) {
+                attributes = attributes + " " + "aria-" + aria.getKey() + "=\"" +
+                        KRADUtils.convertToHTMLAttributeSafeString(aria.getValue()) + "\"";
+            }
+        }
+
+        return attributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @BeanTagAttribute(name = "preRenderContent")
     @Override
     public String getPreRenderContent() {
@@ -2366,14 +2481,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         viewStatus = UifConstants.ViewStatus.CACHED;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean skipLifecycle() {
-            return this.isRetrieveViaAjax();
     }
 
     /**

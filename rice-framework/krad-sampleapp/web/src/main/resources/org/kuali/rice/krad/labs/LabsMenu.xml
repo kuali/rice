@@ -76,6 +76,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
                           <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal"/>
+                          <bean parent="Uif-Link" p:linkText="KC Proposal - Fixed" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal2"/>
                           <bean parent="Uif-Link" p:linkText="Page Form Post URL" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PageForm"/>
                           <bean parent="Uif-Link" p:linkText="Html head link tags" p:target="_self"
@@ -86,6 +88,54 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
                           <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
+                          <bean parent="Uif-Link" p:linkText="Disable Widgets" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-DisableWidgets"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables 2" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables2"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Stacked" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyStacked"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Separate" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableSepAddLine"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Lightbox" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
+                          <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
+                          <bean parent="Uif-Link" p:linkText="Dialog with Explanation in ReadOnly mode" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection" p:headerText="Responsive Design"
+                    p:additionalCssClasses="panel,panel-default" p:style="width:50%">
+                <property name="header.additionalCssClasses" value="panel-heading"/>
+                <property name="header.headerTagCssClasses" value="panel-title"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-VerticalBoxGroup" p:additionalCssClasses="panel-body">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-Link" p:linkText="Css Grid Layout" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive1"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid Offset Test" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive2"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid Layout - Field Label Column" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive3"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid Nested test" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive4"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid - Multiple content types" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive5"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid - Footer and subsequent groups" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive6"/>
+                          <bean parent="Uif-Link" p:linkText="Css Grid - With Nav present Test" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive7"/>
                         </list>
                       </property>
                     </bean>

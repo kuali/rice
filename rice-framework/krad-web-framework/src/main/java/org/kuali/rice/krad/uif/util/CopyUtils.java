@@ -40,6 +40,8 @@ import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -33,7 +33,7 @@
     </#if>
 
     <#if element.headerLevel?has_content>
-        <#local headerOpenTag="<${element.headerLevel} ${style!} ${styleClass!}>"/>
+        <#local headerOpenTag="<${element.headerLevel} id='${element.id}_header' ${style!} ${styleClass!}>"/>
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 
@@ -47,51 +47,51 @@
         ${headerCloseTag}
     <#else>
 
-    <#local renderContentAs="header"/>
-
-    <#-- Only render wrapper when upper and lower group content exist -->
-    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-      <header class="clearfix uif-header-contentWrapper">
-        <#local renderContentAs="div"/>
-        <#-- upper group -->
-        <@krad.template component=element.upperGroup/>
-
-    </#if>
-
         <#-- Main header content -->
-        <@krad.wrap renderAs="${renderContentAs}" component=element>
+        <@krad.wrap renderAs="header" component=element>
 
-            <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+            <#-- upper group -->
+            <@krad.template component=element.upperGroup/>
 
-                ${headerOpenTag}
-                <span class="uif-headerText-span">
-                    <#-- rich message support -->
-                    <#if element.richHeaderMessage?has_content>
-                        <@krad.template component=element.richHeaderMessage/>
-                    <#else>
-                        ${element.headerText}
-                    </#if>
-                </span>
-
-                <#if element.context?? && element.context['parent']?has_content>
-                    <#local group=element.context['parent']/>
-                    <@krad.template component=group.help/>
-                </#if>
-
-                ${headerCloseTag}
-
+            <#if element.rightGroup?has_content && element.rightGroup.render && element.upperGroup?has_content
+                && element.upperGroup.render>
+                <div class="uif-header-inner">
             </#if>
 
-            <#-- right group -->
-            <@krad.template component=element.rightGroup/>
+                <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+
+                    ${headerOpenTag}
+
+                        <span class="uif-headerText-span">
+                            <#-- rich message support -->
+                            <#if element.richHeaderMessage?has_content>
+                                <@krad.template component=element.richHeaderMessage/>
+                            <#else>
+                                ${element.headerText}
+                            </#if>
+                        </span>
+
+                        <#if element.context?? && element.context['parent']?has_content>
+                            <#local group=element.context['parent']/>
+                            <@krad.template component=group.help/>
+                        </#if>
+
+                    ${headerCloseTag}
+
+                </#if>
+
+                <#-- right group -->
+                <@krad.template component=element.rightGroup/>
+
+            <#if element.rightGroup?has_content && element.rightGroup.render && element.upperGroup?has_content
+                && element.upperGroup.render>
+                </div>
+            </#if>
+
+            <#-- lower group -->
+            <@krad.template component=element.lowerGroup/>
 
         </@krad.wrap>
-
-      <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-           <#-- lower group -->
-           <@krad.template component=element.lowerGroup/>
-        </header>
-      </#if>
 
     </#if>
 

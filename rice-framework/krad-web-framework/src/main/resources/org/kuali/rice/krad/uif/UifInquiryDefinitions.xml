@@ -72,7 +72,7 @@
   <bean id="Uif-InquiryFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="export"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="Export"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"
               p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"

@@ -36,7 +36,7 @@ jQuery(function () {
  * Update the html code viewer with the html output for the example being viewed
  */
 function updateHtmlViewer(){
-    var content = jQuery("[data-parent='ComponentLibrary-TabGroup']:visible");
+    var content = jQuery("#ComponentLibrary-TabGroup > .tab-content > .tab-pane.active > [data-parent='ComponentLibrary-TabGroup']");
 
     // If the content has a single child, and that child is a link opening another view, then don't show the html
     // because this is showing an example outside of the scope of what should be shown here
@@ -51,7 +51,7 @@ function updateHtmlViewer(){
     // Remove extraneous content from a copy of the content to only show relevant html
     content = content.clone();
     content.find("> [data-header_for='" + content.attr("id") + "']").remove();
-    content.find("> .uif-instructionalMessage[data-parent='" + content.attr("id") + "']").remove();
+    content.find("> .uif-instructionalMessage").remove();
     var exampleHtml = content.html();
 
     if (exampleHtml){
@@ -73,11 +73,10 @@ function updateHtmlViewer(){
  * based on tab index and write the tabIndex value to the Demo-CurrentExampleIndex_control
  */
 function setupExhibitHandlers() {
-    jQuery("#ComponentLibrary-TabGroup_tabs").on("tabsactivate", function (event, ui) {
-        var tabIndex = ui.newTab.index();
+    jQuery("#ComponentLibrary-TabGroup_tabList").on("shown.bs.tab", function (event, ui) {
+        var tabIndex = jQuery("#ComponentLibrary-TabGroup_tabList li.active").index();
         jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
 
-        //alert("got here");
         //main source code viewer
         var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
         if (source != null && source.length) {
@@ -162,10 +161,11 @@ function handleTabSwap(control) {
         else {
             var tabDom = tab[0];
             var tabNum = tabDom.selectedIndex;
-            jQuery("#ComponentLibrary-TabGroup_tabs").tabs("option", "active", tabNum);
+            jQuery("#ComponentLibrary-TabGroup_tabList li:eq(" + tabNum + ") a").tab('show');
         }
     }
     else{
+        updateHtmlViewer();
         showAdditionalSource(0);
     }
 }
@@ -247,6 +247,44 @@ function showItemOutlines(button) {
     }
     else {
         items.addClass("demo-outlineItem");
+    }
+}
+
+function demoDialogResponse1(event) {
+    if (event.response === 'true') {
+        alert('You selected true. Totals have been calculated.');
+    }
+    else {
+        alert('You selected false. Totals were not calculated.');
+    }
+}
+
+function demoDialogResponse2(event) {
+    alert('Your favorite book is: ' + event.response);
+}
+
+function handleTimeoutWarningResponse(event) {
+    if (event.response === 'continue') {
+        alert('Session had been reestablished.');
+    }
+    else if (event.response === 'logout') {
+        alert('You have been logged out.');
+    }
+}
+
+function displayCountdown(targetId, until, overrideOptions) {
+    var options = {until: until, format: 'MS', compact: true};
+
+    jQuery.extend(true, options, overrideOptions);
+
+    var target = jQuery('#' + targetId);
+
+    if (target.length > 0) {
+        // in the case of redisplaying a countdown we need to clear the target's contents
+        target.removeClass(kradVariables.COUNTDOWN_CLASS);
+        target.empty();
+
+        target.countdown(options);
     }
 }
 

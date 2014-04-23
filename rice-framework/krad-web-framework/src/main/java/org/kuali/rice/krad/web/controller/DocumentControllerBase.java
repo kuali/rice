@@ -21,6 +21,8 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -55,6 +57,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
+import org.kuali.rice.krad.web.form.DialogResponse;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.validation.BindingResult;
@@ -74,13 +77,10 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Base controller class for all KRAD <code>DocumentView</code> screens working
- * with <code>Document</code> models
+ * Base controller class for all KRAD document view screens working with document models.
  *
- * <p>
- * Provides default controller implementations for the standard document actions including: doc handler
- * (retrieve from doc search and action list), save, route (and other KEW actions)
- * </p>
+ * <p>Provides default controller implementations for the standard document actions including: doc handler
+ * (retrieve from doc search and action list), save, route (and other KEW actions)</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -92,6 +92,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     protected static final String[] DOCUMENT_LOAD_COMMANDS =
             {KewApiConstants.ACTIONLIST_COMMAND, KewApiConstants.DOCSEARCH_COMMAND, KewApiConstants.SUPERUSER_COMMAND,
                     KewApiConstants.HELPDESK_ACTIONLIST_COMMAND};
+    protected static final String SENSITIVE_DATA_DIALOG = "DialogGroup-SensitiveData";
+    protected static final String EXPLANATION_DIALOG = "DisapproveExplanationDialog";
 
     private LegacyDataAdapter legacyDataAdapter;
     private DataDictionaryService dataDictionaryService;
@@ -236,10 +238,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     public ModelAndView cancel(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         DocumentFormBase documentForm = (DocumentFormBase) form;
-
-        // TODO: prompt user to confirm the cancel, need question framework
-
-        performWorkflowAction(documentForm, WorkflowAction.CANCEL, false);
+        performWorkflowAction(documentForm, WorkflowAction.CANCEL);
 
         return returnToHub(form);
     }
@@ -253,7 +252,17 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     @RequestMapping(params = "methodToCall=save")
     public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.SAVE, true);
+        Document document = form.getDocument();
+
+        // get the explanation from the document and check it for sensitive data
+        String explanation = document.getDocumentHeader().getExplanation();
+        ModelAndView sensitiveDataDialogModelAndView = checkSensitiveDataAndWarningDialog(explanation, form);
+
+        // if a sensitive data warning dialog is returned then display it
+        if(sensitiveDataDialogModelAndView != null){
+            return sensitiveDataDialogModelAndView;
+        }
+        performWorkflowAction(form, WorkflowAction.SAVE);
 
         return getUIFModelAndView(form);
     }
@@ -267,7 +276,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     @RequestMapping(params = "methodToCall=complete")
     public ModelAndView complete(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.COMPLETE, true);
+        performWorkflowAction(form, WorkflowAction.COMPLETE);
 
         return getUIFModelAndView(form);
     }
@@ -281,21 +290,21 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     @RequestMapping(params = "methodToCall=route")
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        performWorkflowAction(form, WorkflowAction.ROUTE, true);
+        performWorkflowAction(form, WorkflowAction.ROUTE);
 
         return getUIFModelAndView(form);
     }
 
     /**
-     * Performs the blanket approve workflow action on the form document instance
+     * Performs the blanket approve workflow action on the form document instance.
      *
-     * @param form - document form base containing the document instance that will be blanket approved
+     * @param form document form base containing the document instance that will be blanket approved
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=blanketApprove")
     public ModelAndView blanketApprove(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.BLANKETAPPROVE, true);
+        performWorkflowAction(form, WorkflowAction.BLANKETAPPROVE);
 
         if (GlobalVariables.getMessageMap().hasErrors()) {
             return getUIFModelAndView(form);
@@ -306,98 +315,96 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Performs the approve workflow action on the form document instance
+     * Performs the approve workflow action on the form document instance.
      *
-     * @param form - document form base containing the document instance that will be approved
+     * @param form document form base containing the document instance that will be approved
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=approve")
     public ModelAndView approve(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.APPROVE, true);
+        performWorkflowAction(form, WorkflowAction.APPROVE);
 
         return returnToPrevious(form);
     }
 
     /**
-     * Performs the disapprove workflow action on the form document instance
+     * Performs the disapprove workflow action on the form document instance.
      *
-     * @param form - document form base containing the document instance that will be disapproved
+     * @param form document form base containing the document instance that will be disapproved
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=disapprove")
     public ModelAndView disapprove(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // TODO: need to prompt for disapproval note text
-        performWorkflowAction(form, WorkflowAction.DISAPPROVE, true);
+
+        // get the explanation for disapproval from the disapprove dialog and check it for sensitive data
+        String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
+        ModelAndView sensitiveDataDialogModelAndView = checkSensitiveDataAndWarningDialog(explanationData, form);
+
+        // if a sensitive data warning dialog is returned then display it
+        if(sensitiveDataDialogModelAndView != null) {
+            return sensitiveDataDialogModelAndView;
+        }
+        performWorkflowAction(form, WorkflowAction.DISAPPROVE);
 
         return returnToPrevious(form);
     }
 
     /**
-     * Performs the fyi workflow action on the form document instance
+     * Performs the fyi workflow action on the form document instance.
      *
-     * @param form - document form base containing the document instance the fyi will be taken on
+     * @param form document form base containing the document instance the fyi will be taken on
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=fyi")
     public ModelAndView fyi(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.FYI, false);
+        performWorkflowAction(form, WorkflowAction.FYI);
 
         return returnToPrevious(form);
     }
 
     /**
-     * Performs the acknowledge workflow action on the form document instance
+     * Performs the acknowledge workflow action on the form document instance.
      *
-     * @param form - document form base containing the document instance the acknowledge will be taken on
+     * @param form document form base containing the document instance the acknowledge will be taken on
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=acknowledge")
     public ModelAndView acknowledge(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        performWorkflowAction(form, WorkflowAction.ACKNOWLEDGE, false);
+        performWorkflowAction(form, WorkflowAction.ACKNOWLEDGE);
 
         return returnToPrevious(form);
     }
 
     /**
-     * Sends a AdHoc Request of the document instance contained on the form to the AdHoc Recipients
+     * Sends a AdHoc Request of the document instance contained on the form to the AdHoc Recipients.
      *
-     * @param form - document form base containing the document instance that will be sent
+     * @param form document form base containing the document instance that will be sent
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=sendAdHocRequests")
     public ModelAndView sendAdHocRequests(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        performWorkflowAction(form, WorkflowAction.SENDADHOCREQUESTS, true);
+        performWorkflowAction(form, WorkflowAction.SENDADHOCREQUESTS);
 
         return getUIFModelAndView(form);
     }
 
     /**
      * Invokes the {@link DocumentService} to carry out a request workflow action and adds a success message, if
-     * requested a check for sensitive data is also performed
+     * requested a check for sensitive data is also performed.
      *
      * @param form - document form instance containing the document for which the action will be taken on
      * @param action - {@link WorkflowAction} enum indicating what workflow action to take
-     * @param checkSensitiveData - boolean indicating whether a check for sensitive data should occur
      */
-    protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action, boolean checkSensitiveData) {
+    protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action) {
         Document document = form.getDocument();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Performing workflow action " + action.name() + "for document: " + document.getDocumentNumber());
-        }
-
-        // TODO: need question and prompt framework
-        if (checkSensitiveData) {
-            //        String viewName = checkAndWarnAboutSensitiveData(form, request, response,
-            //                KRADPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "route", "");
-            //        if (viewName != null) {
-            //            return new ModelAndView(viewName);
-            //        }
         }
 
         try {
@@ -423,8 +430,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_APPROVED;
                     break;
                 case DISAPPROVE:
-                    // TODO: need to get disapprove note from user
-                    String disapprovalNoteText = generateDisapprovalNote(form, checkSensitiveData);
+                    String disapprovalNoteText = "";
                     document = getDocumentService().disapproveDocument(document, disapprovalNoteText);
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED;
                     break;
@@ -483,7 +489,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Redirects to the supervisor functions page
+     * Redirects to the supervisor functions page.
      *
      * @return ModelAndView - model and view configured for the redirect URL
      */
@@ -504,10 +510,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Called by the add note action for adding a note. Method validates, saves attachment and adds the
-     * time stamp and author. Calls the UifControllerBase.addLine method to handle generic actions.
+     * Called by the add note action for adding a note, this method validates, saves attachment, adds the
+     * time stamp and author and calls the UifControllerBase.addLine method to handle generic actions.
      *
-     * @param uifForm - document form base containing the note instance that will be inserted into the document
+     * @param uifForm document form base containing the note instance that will be inserted into the document
      * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=insertNote")
@@ -588,6 +594,14 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             if (attachment != null) {
                 newNote.addAttachment(attachment);
             }
+
+            // check for sensitive data within the note and display warning dialog if necessary
+            ModelAndView sensitiveDataDialogModelAndView =
+                    checkSensitiveDataAndWarningDialog(newNote.getNoteText(), uifForm);
+            if(sensitiveDataDialogModelAndView != null) {
+                return sensitiveDataDialogModelAndView;
+            }
+
             // Save the note if the document is already saved
             if (!documentHeader.getWorkflowDocument().isInitiated() && StringUtils.isNotEmpty(
                     document.getNoteTarget().getObjectId()) && !(document instanceof MaintenanceDocument && NoteType
@@ -692,7 +706,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         if (note != null) {
             Attachment attachment = note.getAttachment();
             if (attachment != null) {
-                //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
+                //make sure attachment is setup with backwards reference to note (rather then doing this we could also
+                // just call the attachment service (with a new method that took in the note)
                 attachment.setNote(note);
 
                 // Add attachment to response
@@ -706,8 +721,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Called by the cancel attachment action on a note. Method
-     * removes the attachment file from the form.
+     * Called by the cancel attachment action on a note, this method removes the attachment file from the form.
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=cancelAttachment")
     public ModelAndView cancelAttachment(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
@@ -718,90 +732,40 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Checks if the given value matches patterns that indicate sensitive data
-     * and if configured to give a warning for sensitive data will prompt the
-     * user to continue.
+     * Helper method to check if sensitive data is present in a given string and dialog display.
      *
-     * @param form
-     * @param request
-     * @param response
-     * @param fieldName - name of field with value being checked
-     * @param fieldValue - value to check for sensitive data
-     * @param caller - method that should be called back from question
-     * @param context - additional context that needs to be passed back with the
-     * question response
-     * @return - view for spring to forward to, or null if processing should
-     * continue
-     * @throws Exception
+     * <p>If the string is sensitive we want to return a dialog box to make sure user wants to continue,
+     * else we just return null</p>
+     *
+     * @param field the string to check for sensitive data
+     * @param form the form to add the dialog to
+     * @return the model and view for the dialog or null if there isn't one
      */
-    protected String checkAndWarnAboutSensitiveData(DocumentFormBase form, HttpServletRequest request,
-            HttpServletResponse response, String fieldName, String fieldValue, String caller,
-            String context) throws Exception {
+    protected ModelAndView checkSensitiveDataAndWarningDialog(String field, UifFormBase form) {
 
-        String viewName = null;
-        Document document = form.getDocument();
+        boolean hasSensitiveData = KRADUtils.containsSensitiveDataPatternMatch(field);
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator
+                .getParameterService().getParameterValueAsBoolean(
+                        KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                        KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
-        // TODO: need to move containsSensitiveDataPatternMatch to util class in krad
-        //        boolean containsSensitiveData = false;
-        //        //boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-        //
-        //        // check if warning is configured in which case we will prompt, or if
-        //        // not business rules will thrown an error
-        //        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-        //                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-        //                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
-        //
-        //        // determine if the question has been asked yet
-        //        Map<String, String> ticketContext = new HashMap<String, String>();
-        //        ticketContext.put(KRADPropertyConstants.DOCUMENT_NUMBER, document.getDocumentNumber());
-        //        ticketContext.put(KRADConstants.CALLING_METHOD, caller);
-        //        ticketContext.put(KRADPropertyConstants.NAME, fieldName);
-        //
-        //        boolean questionAsked = GlobalVariables.getUserSession().hasMatchingSessionTicket(
-        //                KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET, ticketContext);
-        //
-        //        // start in logic for confirming the sensitive data
-        //        if (containsSensitiveData && warnForSensitiveData && !questionAsked) {
-        //            Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        //            if (question == null || !KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION.equals(question)) {
-        //
-        //                // TODO not ready for question framework yet
-        //                /*
-        //                     * // question hasn't been asked, prompt to continue return
-        //                     * this.performQuestionWithoutInput(mapping, form, request,
-        //                     * response, KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION,
-        //                     * getKualiConfigurationService()
-        //                     * .getPropertyValueAsString(RiceKeyConstants
-        //                     * .QUESTION_SENSITIVE_DATA_DOCUMENT),
-        //                     * KRADConstants.CONFIRMATION_QUESTION, caller, context);
-        //                     */
-        //                viewName = "ask_user_questions";
-        //            } else {
-        //                Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
-        //
-        //                // if no button clicked just reload the doc
-        //                if (ConfirmationQuestion.NO.equals(buttonClicked)) {
-        //                    // TODO figure out what to return
-        //                    viewName = "user_says_no";
-        //                }
-        //
-        //                // answered yes, create session ticket so we not to ask question
-        //                // again if there are further question requests
-        //                SessionTicket ticket = new SessionTicket(KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET);
-        //                ticket.setTicketContext(ticketContext);
-        //                GlobalVariables.getUserSession().putSessionTicket(ticket);
-        //            }
-        //        }
-
-        // returning null will indicate processing should continue (no redirect)
-        return viewName;
+        // if there is sensitive data and the flag to warn for sensitive data is set,
+        // then we want a dialog returned if there is not already one
+        if(hasSensitiveData && warnForSensitiveData) {
+            DialogResponse sensitiveDataDialogResponse = form.getDialogResponse(SENSITIVE_DATA_DIALOG);
+            if (sensitiveDataDialogResponse == null) {
+                // no sensitive data dialog found, so create one on the form and return it
+                return showDialog(SENSITIVE_DATA_DIALOG, true, form);
+            }
+        }
+        return null;
     }
 
     /**
      * Convenience method to combine the two lists of ad hoc recipients into one which should be done before
-     * calling any of the document service methods that expect a list of ad hoc recipients
+     * calling any of the document service methods that expect a list of ad hoc recipients.
      *
-     * @param form - document form instance containing the ad hod lists
+     * @param form document form instance containing the ad hod lists
      * @return List<AdHocRouteRecipient> combined ad hoc recipients
      */
     protected List<AdHocRouteRecipient> combineAdHocRecipients(DocumentFormBase form) {
@@ -815,10 +779,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Convenience method for building authorization exceptions
+     * Convenience method for building authorization exceptions.
      *
-     * @param action - the action that was requested
-     * @param document - document instance the action was requested for
+     * @param action the action that was requested
+     * @param document document instance the action was requested for
      */
     protected DocumentAuthorizationException buildAuthorizationException(String action, Document document) {
         return new DocumentAuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),

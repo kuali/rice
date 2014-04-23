@@ -24,7 +24,7 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-	 
+
 	<bean id="viewService" class="org.kuali.rice.krad.uif.util.TestViewService">
 		<property name="dataDictionary" ref="dataDictionary" />
 	</bean>

@@ -18,7 +18,10 @@
 <#--
     Table Layout Manager:
 
-      Works on a collection group to lay out the items as a table.
+    Works on a collection group to lay out the items as a table.
+    items => CollectionGroup.getItems()
+    manager => CollectionGroup.getLayoutManager()
+    container => CollectionGroup
  -->
 
 <#macro uif_table items manager container>
@@ -31,7 +34,7 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
-    <#if manager.separateAddLine>
+    <#if manager.separateAddLine && !container.addWithDialog>
         <@krad.template component=manager.addLineGroup/>
     </#if>
 
@@ -96,7 +99,8 @@
                     applyAlternatingRowStyles=manager.applyAlternatingRowStyles
                     applyDefaultCellWidths=manager.applyDefaultCellWidths
                     renderAlternatingHeaderColumns=false
-                    rowCssClasses=manager.rowCssClasses/>
+                    rowCssClasses=manager.rowCssClasses
+                    rowDataAttributes=manager.rowDataAttributes/>
                 </tbody>
             </#if>
 

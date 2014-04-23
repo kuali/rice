@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,6 +49,8 @@ import freemarker.template.TemplateException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FreeMarkerInlineRenderBootstrap implements InitializingBean, ApplicationContextAware, ServletContextAware {
+
+    private static final Logger LOG = Logger.getLogger(FreeMarkerInlineRenderBootstrap.class);
     
     /**
      * The freemarker configuration.
@@ -194,6 +197,8 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean, Applic
             }
             
             servletContextHashModel = new ServletContextHashModel(servlet, ObjectWrapper.DEFAULT_WRAPPER);
+            
+            LOG.info("Freemarker configuration complete");
         }
     }
 
@@ -205,6 +210,7 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean, Applic
         try {
             freeMarkerConfig = ((FreeMarkerConfigurer) applicationContext.getBean("freemarkerConfig"))
                     .createConfiguration();
+            LOG.info("Set freemarker bootstrap " + freeMarkerConfig);
         } catch (IOException e) {
             throw new IllegalStateException("Error loading freemarker configuration", e);
         } catch (TemplateException e) {

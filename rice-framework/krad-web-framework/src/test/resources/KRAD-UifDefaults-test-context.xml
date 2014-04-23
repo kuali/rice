@@ -44,7 +44,9 @@
 	<bean id="viewDictionaryService" class="org.kuali.rice.krad.uif.util.TestViewDictionaryService" />
 
 	<bean id="parameterService" class="org.kuali.rice.krad.uif.util.MockParameterService" />
-	
+
+  <bean id="dateTimeService" class="org.kuali.rice.krad.uif.util.MockDateTimeService" />
+
 	<bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
 
 	<util:list id="uifDictionaryBeans">

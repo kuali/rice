@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.layout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -35,13 +37,18 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.layout.collections.CollectionLayoutManagerBase;
 import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -72,23 +79,20 @@ import org.kuali.rice.krad.web.form.UifFormBase;
         @BeanTag(name = "stackedCollectionLayout-withBoxItems-bean",
                 parent = "Uif-StackedCollectionLayout-WithBoxItems"),
         @BeanTag(name = "stackedCollectionLayout-list-bean", parent = "Uif-StackedCollectionLayout-List")})
-public class StackedLayoutManagerBase extends LayoutManagerBase implements StackedLayoutManager {
+public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implements StackedLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
 
     @KeepExpression
     private String summaryTitle;
     private List<String> summaryFields;
 
-    private Group addLineGroup;
     private Group lineGroupPrototype;
-    private FieldGroup subCollectionFieldGroupPrototype;
-    private Field selectFieldPrototype;
     private Group wrapperGroup;
-    private Pager pagerWidget;
 
     private List<Group> stackedGroups;
 
-    private boolean actionsInLineGroup;
+    private boolean renderLineActionsInLineGroup;
+    private boolean renderLineActionsInHeader;
 
     public StackedLayoutManagerBase() {
         super();
@@ -131,7 +135,7 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
 
         // set the appropriate page, total pages, and link script into the Pager
         if (serverPagingEnabled && this.getPagerWidget() != null) {
-            CollectionLayoutUtils.setupPagerWidget(pagerWidget, (CollectionGroup) element, model);
+            CollectionLayoutUtils.setupPagerWidget(getPagerWidget(), (CollectionGroup) element, model);
         }
     }
 
@@ -140,36 +144,51 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     @Override
     public void buildLine(LineBuilderContext lineBuilderContext) {
+        View view = ViewLifecycle.getView();
+
         List<Field> lineFields = lineBuilderContext.getLineFields();
         CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
         int lineIndex = lineBuilderContext.getLineIndex();
         String idSuffix = lineBuilderContext.getIdSuffix();
         Object currentLine = lineBuilderContext.getCurrentLine();
-        List<? extends Component> actions = lineBuilderContext.getLineActions();
+
         String bindingPath = lineBuilderContext.getBindingPath();
+
+        Map<String, Object> lineContext = new HashMap<String, Object>();
+        lineContext.putAll(this.getContext());
+        lineContext.put(UifConstants.ContextVariableNames.LINE, currentLine);
+        lineContext.put(UifConstants.ContextVariableNames.MANAGER, this);
+        lineContext.put(UifConstants.ContextVariableNames.VIEW, view);
+        lineContext.put(UifConstants.ContextVariableNames.LINE_SUFFIX, idSuffix);
+        lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+        lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, lineBuilderContext.isAddLine());
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
         // construct new group
         Group lineGroup = null;
         if (lineBuilderContext.isAddLine()) {
             stackedGroups = new ArrayList<Group>();
 
-            if (addLineGroup == null) {
+            if (getAddLineGroup() == null) {
                 lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
             } else {
                 lineGroup = ComponentUtils.copy(getAddLineGroup(), idSuffix);
                 lineGroup.addStyleClass(collectionGroup.getAddItemCssClass());
             }
 
-            if (collectionGroup.isAddViaLightBox()) {
-                String actionScript = "showLightboxComponent('" + lineGroup.getId() + "');";
-                if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
-                    actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
-                }
-                collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
-                lineGroup.setStyle("display: none");
-            }
-        } else {
+            // add line enter key action
+            addEnterKeyDataAttributeToGroup(lineGroup, lineContext, expressionEvaluator,
+                    collectionGroup.getAddLineEnterKeyAction());
+        }
+        else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
+
+            // existing line enter key action
+            addEnterKeyDataAttributeToGroup(lineGroup, lineContext, expressionEvaluator,
+                    collectionGroup.getLineEnterKeyAction());
         }
 
         if (((UifFormBase) lineBuilderContext.getModel()).isAddedCollectionItem(currentLine)) {
@@ -181,10 +200,10 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         List<Action> lineGroupActions = ViewLifecycleUtils.getElementsOfTypeDeep(lineGroup, Action.class);
         if (lineGroupActions != null) {
             collectionGroup.getCollectionGroupBuilder().initializeActions(lineGroupActions, collectionGroup, lineIndex);
-            ComponentUtils.updateContextsForLine(lineGroupActions, collectionGroup, currentLine, lineIndex, idSuffix);
+            ContextUtils.updateContextsForLine(lineGroupActions, collectionGroup, currentLine, lineIndex, idSuffix);
         }
 
-        ComponentUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
+        ContextUtils.updateContextForLine(lineGroup, collectionGroup, currentLine, lineIndex, idSuffix);
 
         // build header for the group
         if (lineBuilderContext.isAddLine()) {
@@ -213,16 +232,8 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             groupFields.addAll(lineBuilderContext.getSubCollectionFields());
         }
 
-        // set line actions on group footer
-        if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly() && (lineGroup.getFooter() != null)) {
-            // add the actions to the line group if isActionsInLineGroup flag is true
-            if (isActionsInLineGroup()) {
-                groupFields.addAll(actions);
-                lineGroup.setRenderFooter(false);
-            } else {
-                lineGroup.getFooter().setItems(actions);
-            }
-        }
+        // Place actions in the appropriate location for the stacked group line
+        determineLineActionPlacement(lineGroup, collectionGroup, lineBuilderContext, groupFields);
 
         lineGroup.setItems(groupFields);
         
@@ -233,6 +244,49 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
         }
 
         stackedGroups.add(lineGroup);
+    }
+
+    /**
+     * Places actions in the appropriate location for the stacked group line based on placement
+     * flags set on this layout manager
+     *
+     * @param lineGroup the current line group
+     * @param collectionGroup the current collection group
+     * @param lineBuilderContext the line's building context
+     * @param groupFields the list of fields which will be added to the line group
+     */
+    protected void determineLineActionPlacement(Group lineGroup, CollectionGroup collectionGroup,
+            LineBuilderContext lineBuilderContext, List<Component> groupFields) {
+        List<? extends Component> actions = lineBuilderContext.getLineActions();
+
+        boolean showActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        if (!showActions)  {
+            return;
+        }
+
+        if (renderLineActionsInHeader && lineGroup.getHeader() != null && !lineBuilderContext.isAddLine()) {
+            // add line actions to header when the option is true
+            Group headerGroup = lineGroup.getHeader().getRightGroup();
+
+            if (headerGroup == null) {
+                headerGroup = ComponentFactory.getHorizontalBoxGroup();
+            }
+
+            List<Component> items = new ArrayList<Component>();
+            items.addAll(headerGroup.getItems());
+            items.addAll(actions);
+
+            headerGroup.setItems(items);
+            lineGroup.getHeader().setRightGroup(headerGroup);
+        } else if (isRenderLineActionsInLineGroup()) {
+            // add the actions to the line group if isRenderLineActionsInLineGroup flag is true
+            groupFields.addAll(actions);
+            lineGroup.setRenderFooter(false);
+        } else if ((lineGroup.getFooter() != null) && ((lineGroup.getFooter().getItems() == null) || lineGroup
+                .getFooter().getItems().isEmpty())) {
+            // add to footer in the default case
+            lineGroup.getFooter().setItems(actions);
+        }
     }
 
     /**
@@ -345,24 +399,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Group getAddLineGroup() {
-        return this.addLineGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setAddLineGroup(Group addLineGroup) {
-        this.addLineGroup = addLineGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
@@ -380,42 +416,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * {@inheritDoc}
      */
     @Override
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public FieldGroup getSubCollectionFieldGroupPrototype() {
-        return this.subCollectionFieldGroupPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSubCollectionFieldGroupPrototype(FieldGroup subCollectionFieldGroupPrototype) {
-        this.subCollectionFieldGroupPrototype = subCollectionFieldGroupPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Field getSelectFieldPrototype() {
-        return selectFieldPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSelectFieldPrototype(Field selectFieldPrototype) {
-        this.selectFieldPrototype = selectFieldPrototype;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @BeanTagAttribute(name = "wrapperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Group getWrapperGroup() {
         return wrapperGroup;
@@ -427,22 +427,6 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
     @Override
     public void setWrapperGroup(Group wrapperGroup) {
         this.wrapperGroup = wrapperGroup;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Pager getPagerWidget() {
-        return pagerWidget;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPagerWidget(Pager pagerWidget) {
-        this.pagerWidget = pagerWidget;
     }
 
     /**
@@ -475,15 +459,29 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
      * {@inheritDoc}
      */
     @Override
-    public boolean isActionsInLineGroup() {
-        return actionsInLineGroup;
+    public boolean isRenderLineActionsInLineGroup() {
+        return renderLineActionsInLineGroup;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setActionsInLineGroup(boolean actionsInLineGroup) {
-        this.actionsInLineGroup = actionsInLineGroup;
+    public void setRenderLineActionsInLineGroup(boolean renderLineActionsInLineGroup) {
+        this.renderLineActionsInLineGroup = renderLineActionsInLineGroup;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isRenderLineActionsInHeader() {
+        return renderLineActionsInHeader;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRenderLineActionsInHeader(boolean renderLineActionsInHeader) {
+        this.renderLineActionsInHeader = renderLineActionsInHeader;
     }
 }

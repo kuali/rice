@@ -93,5 +93,48 @@ public class CssConstants {
         public static final String HAS_HELPER = "has-helper";
         public static final String IGNORE_VALID = "ignoreValid";
         public static final String NEW_COLLECTION_ITEM = "uif-newCollectionItem";
+        public static final String TOOLTIP = "uif-tooltip";
+    }
+
+    public static class ProgressBar {
+        public static final String VERTICAL_STEP_PROGRESS_BAR = "uif-stepProgressBar-vertical";
+        public static final String PROGRESS_BAR = "progress-bar";
+        public static final String SUCCESS_PROGRESS_BAR = "progress-bar-success";
+        public static final String WARNING_PROGRESS_BAR = "progress-bar-warning";
+        public static final String INFO_PROGRESS_BAR = "progress-bar-info";
+        public static final String EMPTY_PROGRESS_BAR = "progress-bar-empty";
+        public static final String STEP_LABEL = "uif-step";
+        public static final String ACTIVE = "active";
+        public static final String COMPLETE = "complete";
+    }
+
+    public static class Tabs {
+        public static final String TABS_LEFT = "tabs-left";
+        public static final String TABS_RIGHT = "tabs-right";
+        public static final String TABS_BOTTOM = "tabs-below";
+    }
+
+    public static class CssGrid {
+        public static final String CONTAINER = "container";
+        public static final String ROW = "row";
+
+        public static final String XS_COL_PREFIX = "col-xs-";
+        public static final String SM_COL_PREFIX = "col-sm-";
+        public static final String MD_COL_PREFIX = "col-md-";
+        public static final String LG_COL_PREFIX = "col-lg-";
+
+        public static final String SM_OFFSET_PREFIX = "col-sm-offset-";
+        public static final String MD_OFFSET_PREFIX = "col-md-offset-";
+        public static final String LG_OFFSET_PREFIX = "col-lg-offset-";
+
+        public static final String XS_FLOAT_RIGHT = "xs-float-right";
+        public static final String SM_FLOAT_RIGHT = "sm-float-right";
+        public static final String MD_FLOAT_RIGHT = "md-float-right";
+        public static final String LG_FLOAT_RIGHT = "lg-float-right";
+
+        public static final String XS_CLEAR_LEFT = "xs-clear-left";
+        public static final String SM_CLEAR_LEFT = "sm-clear-left";
+        public static final String MD_CLEAR_LEFT = "md-clear-left";
+        public static final String LG_CLEAR_LEFT = "lg-clear-left";
     }
 }

@@ -100,6 +100,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoNavigationGroupResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoHelpResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTooltipResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPopoverContentResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDatePickerResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoSyntaxHighlighterResources</value>
         <!--<value>org.kuali.rice.krad.demo.uif.library.resources.DemoBlockUIResources</value>-->
@@ -145,6 +146,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLightTableResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoPasswordControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoIconResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoProgressBarResources</value>
         <!-- kitchen sink -->
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewResources</value>
         <value>org.kuali.rice.krad.labs.kitchensink.UifComponentsViewP2Resources</value>

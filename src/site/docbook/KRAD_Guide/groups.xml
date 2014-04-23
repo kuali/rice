@@ -1390,16 +1390,16 @@
       <section>
         <title>Other Css Grid Layout Options</title>
         <para>The CssGridLayoutManager contains a property called<emphasis role="bold"
-            >defaultItemColSpan</emphasis>. As mentioned above, if an item of a group which uses
+            >defaultItemSize</emphasis>. As mentioned above, if an item of a group which uses
           CssGridLayoutManager does not define colSpan, normally this item would take up the entire
           row (default is 12). This property allows you define what the default fallback is for
           items which do not define colSpan. This makes it easy to make a css grid layout that has a
           consistent size for all of its items. </para>
         <para>The following example shows a group that would have two rows of four items because the
-          defaultItemColSpan is set to 3, and each item automatically gets a colspan of 3 if they do
+          defaultItemSize is set to 3, and each item automatically gets a colspan of 3 if they do
           not define their own colSpan:
           <programlisting>        &lt;bean parent="Uif-CssGridGroup">
-            &lt;property name="layoutManager.defaultItemColSpan" value="3"/>
+            &lt;property name="layoutManager.defaultItemSize" value="3"/>
             &lt;property name="items">
             &lt;list>
             &lt;bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField22"/>
@@ -1589,7 +1589,7 @@
         </listitem>
         <listitem>
           <para>The items of groups backed by CssGridLayoutManager must define colSpan or the item
-            will take up the entire row, unless defaultItemColSpan is set
+            will take up the entire row, unless defaultItemSize is set
           </para>
         </listitem>
         <listitem>
@@ -2021,7 +2021,7 @@
         normal collection setup would do, and not allow the user to add invalid content.
       </para>
       <para>To enable this feature, the
-        <emphasis role="keyword">addViaLightBox</emphasis>
+        <emphasis role="keyword">addWithDialog</emphasis>
         property on
         CollectionGroup must be set to true. This can be set on stacked as well as table collection
         layouts. This will cause the default add line actions not to be rendered inside the items
@@ -2044,7 +2044,7 @@
         &lt;bean id=&quot;Collections-AddViaLightBox-TableLayout&quot; parent=&quot;Uif-Disclosure-TableCollectionSection&quot;
         p:layoutManager.numberOfColumns=&quot;4&quot;&gt;
         ...
-        &lt;property name=&quot;addViaLightBox&quot; value=&quot;true&quot; /&gt;
+        &lt;property name=&quot;addWithDialog&quot; value=&quot;true&quot; /&gt;
         &lt;property name=&quot;addLinePlacement&quot; value=&quot;TOP&quot; /&gt;
         ...
         &lt;/bean&gt;
@@ -2557,7 +2557,7 @@
         <listitem>
           <para>Collections can be configured to allow the user to add items to the collection via a
             modal dialog. To enable this feature the
-            <emphasis role="keyword">addViaLightBox</emphasis>
+            <emphasis role="keyword">addWithDialog</emphasis>
             property on CollectionGroup must be set to true
           </para>
         </listitem>

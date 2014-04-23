@@ -73,8 +73,6 @@ public class ViewLifecycle implements Serializable {
     final Object model;
 
     final HttpServletRequest request;
-    final HttpServletResponse response;
-
     private ViewPostMetadata viewPostMetadata;
 
     /**
@@ -85,15 +83,13 @@ public class ViewLifecycle implements Serializable {
      * @param refreshComponentPostMetadata when a refresh lifecycle is requested, post metadata for the component
      * that is being refreshed
      * @param request The active servlet request
-     * @param response The active servlet response
      * @see #getActiveLifecycle() For access to a thread-local instance.
      */
     private ViewLifecycle(View view, Object model, ComponentPostMetadata refreshComponentPostMetadata,
-            HttpServletRequest request, HttpServletResponse response) {
+            HttpServletRequest request) {
         this.view = view;
         this.model = model;
         this.request = request;
-        this.response = response;
         this.refreshComponentPostMetadata = refreshComponentPostMetadata;
         this.helper = view.getViewHelperService();
         this.eventRegistrations = new ArrayList<EventRegistration>();
@@ -105,12 +101,11 @@ public class ViewLifecycle implements Serializable {
      * @param view The view to perform lifecycle processing on.
      * @param model The model associated with the view.
      * @param request The active servlet request.
-     * @param response The active servlet response.
      * @param lifecycleProcess The lifecycle process to encapsulate.
      */
     public static void encapsulateLifecycle(View view, Object model, HttpServletRequest request,
-            HttpServletResponse response, Runnable lifecycleProcess) {
-        encapsulateLifecycle(view, model, null, null, request, response, lifecycleProcess);
+            Runnable lifecycleProcess) {
+        encapsulateLifecycle(view, model, null, null, request, lifecycleProcess);
     }
 
     /**
@@ -119,16 +114,14 @@ public class ViewLifecycle implements Serializable {
      * @param lifecycleProcess The lifecycle process to encapsulate.
      */
     public static void encapsulateLifecycle(View view, Object model, ViewPostMetadata viewPostMetadata,
-            ComponentPostMetadata refreshComponentPostMetadata, HttpServletRequest request,
-            HttpServletResponse response, Runnable lifecycleProcess) {
+            ComponentPostMetadata refreshComponentPostMetadata, HttpServletRequest request, Runnable lifecycleProcess) {
         ViewLifecycleProcessor processor = PROCESSOR.get();
         if (processor != null) {
             throw new IllegalStateException("Another lifecycle is already active on this thread");
         }
 
         try {
-            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, refreshComponentPostMetadata, request,
-                    response);
+            ViewLifecycle viewLifecycle = new ViewLifecycle(view, model, refreshComponentPostMetadata, request);
             processor = isAsynchronousLifecycle() ? new AsynchronousViewLifecycleProcessor(viewLifecycle) :
                     new SynchronousViewLifecycleProcessor(viewLifecycle);
             PROCESSOR.set(processor);
@@ -154,7 +147,7 @@ public class ViewLifecycle implements Serializable {
      * @param view view to preprocess
      */
     public static void preProcess(View view) {
-        encapsulateLifecycle(view, null, null, null, new ViewLifecyclePreProcessBuild());
+        encapsulateLifecycle(view, null, null, new ViewLifecyclePreProcessBuild());
     }
 
     /**
@@ -176,17 +169,16 @@ public class ViewLifecycle implements Serializable {
      * @param view view instance that should be built
      * @param model object instance containing the view data
      * @param request The active servlet request.
-     * @param response The active servlet response.
      * @param parameters - Map of key values pairs that provide configuration for the
      * <code>View</code>, this is generally comes from the request and can be the request
      * parameter Map itself. Any parameters not valid for the View will be filtered out
      */
     public static ViewPostMetadata buildView(View view, Object model, HttpServletRequest request,
-            HttpServletResponse response, final Map<String, String> parameters) {
+            final Map<String, String> parameters) {
         ViewPostMetadata postMetadata = new ViewPostMetadata(view.getId());
 
-        ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, request, response, new ViewLifecycleBuild(
-                parameters, null));
+        ViewLifecycle.encapsulateLifecycle(view, model, postMetadata, null, request, new ViewLifecycleBuild(parameters,
+                null));
 
         // Validation of the page's beans
         if (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(
@@ -205,13 +197,12 @@ public class ViewLifecycle implements Serializable {
      * @param view view instance the component belongs to
      * @param model object containing the full view data
      * @param request The active servlet request.
-     * @param response The active servlet response.
      * @param viewPostMetadata post metadata for the view
      * @param componentId id of the component within the view, used to pull the current component from the view
      * @return component instance the lifecycle has been run on
      */
     public static Component performComponentLifecycle(View view, Object model, HttpServletRequest request,
-            HttpServletResponse response, ViewPostMetadata viewPostMetadata, String componentId) {
+            ViewPostMetadata viewPostMetadata, String componentId) {
         ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
         if ((componentPostMetadata == null) || componentPostMetadata.isDetachedComponent()) {
             if (componentPostMetadata == null) {
@@ -223,8 +214,8 @@ public class ViewLifecycle implements Serializable {
 
         Map<String, List<String>> refreshPathMappings = componentPostMetadata.getRefreshPathMappings();
 
-        encapsulateLifecycle(view, model, viewPostMetadata, componentPostMetadata, request, response,
-                new ViewLifecycleBuild(null, refreshPathMappings));
+        encapsulateLifecycle(view, model, viewPostMetadata, componentPostMetadata, request, new ViewLifecycleBuild(null,
+                refreshPathMappings));
 
         return ObjectPropertyUtils.getPropertyValue(view, componentPostMetadata.getPath());
     }
@@ -670,7 +661,7 @@ public class ViewLifecycle implements Serializable {
      * <p>
      * This method is intended only for use by {@link AsynchronousViewLifecycleProcessor} in setting
      * the context for worker threads. Use
-     * {@link #encapsulateLifecycle(View, Object, HttpServletRequest, HttpServletResponse, Runnable)}
+     * {@link #encapsulateLifecycle(View, Object, HttpServletRequest, Runnable)}
      * to populate an appropriate processor for for web request and other transaction threads.
      * </p>
      *

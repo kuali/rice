@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+  <bean id="decimalEditor" scope="prototype" class="org.springframework.beans.propertyeditors.CustomNumberEditor">
+    <constructor-arg value="java.math.BigDecimal" />
+    <constructor-arg>
+      <bean class="java.text.DecimalFormat" p:maximumFractionDigits="340" />
+    </constructor-arg>
+    <constructor-arg value="true" />
+  </bean>
+
+  <bean id="currencyEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifCurrencyEditor" />
+
+  <bean id="intCurrencyEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifKualiIntegerCurrencyEditor" />
+
+  <bean id="percentEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifPercentageEditor" />
+
+  <bean id="timeEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifTimeEditor" />
+
+  <bean id="dateEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifDateEditor" />
+
+  <bean id="timestampEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifTimestampEditor" />
+
+  <bean id="booleanEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifBooleanEditor" />
+
+  <bean id="stringEditor" scope="prototype" class="org.springframework.beans.propertyeditors.StringTrimmerEditor">
+    <constructor-arg value="false" />
+  </bean>
+
+  <bean id="stringArrayEditor" scope="prototype" class="org.springframework.beans.propertyeditors.StringArrayPropertyEditor">
+    <constructor-arg value="," />
+    <constructor-arg value="false" />
+  </bean>
+
+  <bean id="byteArrayEditor" scope="prototype" class="org.springframework.web.multipart.support.ByteArrayMultipartFileEditor" />
+
+</beans>

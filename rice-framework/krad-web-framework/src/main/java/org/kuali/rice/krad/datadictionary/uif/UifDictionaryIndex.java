@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -118,6 +119,7 @@ public class UifDictionaryIndex implements Runnable {
             }
             ProcessLogger.trace("view:init:" + viewId);
            
+            ProcessLogger.trace("view:init:" + viewId);
             View view = ddBeans.getBean(beanName, View.class);
             ProcessLogger.trace("view:getBean");
             

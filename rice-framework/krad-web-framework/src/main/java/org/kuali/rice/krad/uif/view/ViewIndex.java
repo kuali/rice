@@ -248,7 +248,7 @@ public class ViewIndex implements Serializable {
             Map<String, Component> indexCopy = new HashMap<String, Component>();
             for (Map.Entry<String, Component> indexEntry : this.index.entrySet()) {
                 if (indexEntry.getValue() instanceof View) {
-                    LOG.warn("view reference at " + indexEntry);
+                    LOG.warn("View reference at " + indexEntry);
                 } else {
                     indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
                 }

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -37,6 +34,9 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base <code>Container</code> implementation which container implementations
  * can extend
@@ -50,99 +50,102 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
-	private static final long serialVersionUID = -4182226230601746657L;
+    private static final long serialVersionUID = -4182226230601746657L;
 
-	private int defaultItemPosition;
+    private int defaultItemPosition;
 
-	private Help help;
-	
-	private LayoutManager layoutManager;
+    private Help help;
 
-	private Header header;
-	private Group footer;
+    private LayoutManager layoutManager;
 
-	private String instructionalText;
-	private Message instructionalMessage;
+    private Header header;
+    private Group footer;
 
-	@DelayedCopy
+    private String instructionalText;
+    private Message instructionalMessage;
+
+    @DelayedCopy
     private ValidationMessages validationMessages;
 
-	/**
-	 * Default Constructor
-	 */
-	public ContainerBase() {
-		defaultItemPosition = 1;
-	}
+    private String enterKeyAction;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isProcessRemoteFieldHolders() {
-	    return true;
-	}
+    /**
+     * Default Constructor
+     */
+    public ContainerBase() {
+        defaultItemPosition = 1;
+    }
 
-	/**
-	 * The following initialization is performed:
-	 *
-	 * <ul>
-	 * <li>Sorts the containers list of components</li>
-     * <li>Initializes the instructional field if necessary</li>
-	 * <li>Initializes LayoutManager</li>
-	 * </ul>
-	 *
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("deprecation")
+    /**
+     * {@inheritDoc}
+     */
     @Override
-	public void performInitialization(Object model) {
-		super.performInitialization(model);
+    public boolean isProcessRemoteFieldHolders() {
+        return true;
+    }
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Sorts the containers list of components</li>
+     * <li>Initializes the instructional field if necessary</li>
+     * <li>Initializes LayoutManager</li>
+     * </ul>
+     *
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public void performInitialization(Object model) {
+        super.performInitialization(model);
 
         if ((StringUtils.isNotBlank(instructionalText) || (getPropertyExpression("instructionalText") != null)) && (
-                instructionalMessage == null)) {
+                instructionalMessage
+                        == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
         }
 
-		if (layoutManager != null && !this.getItems().isEmpty()) {
-			layoutManager.performInitialization(model);
-		}
-	}
+        if (layoutManager != null && !this.getItems().isEmpty()) {
+            layoutManager.performInitialization(model);
+        }
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("deprecation")
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("deprecation")
     @Override
-	public void performApplyModel(Object model, LifecycleElement parent) {
-		super.performApplyModel(model, parent);
+    public void performApplyModel(Object model, LifecycleElement parent) {
+        super.performApplyModel(model, parent);
 
-		// setup summary message field if necessary
-		if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
-			instructionalMessage.setMessageText(instructionalText);
-		}
+        // setup summary message field if necessary
+        if (instructionalMessage != null && StringUtils.isBlank(instructionalMessage.getMessageText())) {
+            instructionalMessage.setMessageText(instructionalText);
+        }
 
         if (layoutManager != null && !this.getItems().isEmpty()) {
             layoutManager.performApplyModel(model, this);
         }
-	}
+    }
 
-	/**
-	 * The following finalization is performed:
-	 *
-	 * <ul>
-	 * <li>Sets the headerText of the header Group if it is blank</li>
-	 * <li>Set the messageText of the summary Message if it is blank</li>
-	 * <li>Finalizes LayoutManager</li>
-	 * </ul>
-	 *
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("deprecation")
+    /**
+     * The following finalization is performed:
+     *
+     * <ul>
+     * <li>Sets the headerText of the header Group if it is blank</li>
+     * <li>Set the messageText of the summary Message if it is blank</li>
+     * <li>Finalizes LayoutManager</li>
+     * </ul>
+     *
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("deprecation")
     @Override
-	public void performFinalize(Object model, LifecycleElement parent) {
-		super.performFinalize(model, parent);
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
 
-        if(header != null){
+        if (header != null) {
             header.addDataAttribute(UifConstants.DataAttributes.HEADER_FOR, this.getId());
         }
 
@@ -153,6 +156,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         // Generate validation messages
         if (validationMessages != null) {
             validationMessages.generateMessages(ViewLifecycle.getView(), model, this);
+        }
+
+        // add data attributes to help identify enter key actions
+        if (this.getEnterKeyAction() != null && StringUtils.isNotBlank(this.getEnterKeyAction())) {
+            this.addDataAttribute(UifConstants.DataAttributes.ENTER_KEY, this.getEnterKeyAction());
         }
     }
 
@@ -169,7 +177,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
             }
             additionalTemplates.add(layoutManager.getTemplate());
         }
-        
+
         return additionalTemplates;
     }
 
@@ -183,40 +191,40 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         setItems(sortedItems);
     }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
-	 */
-	@Override
+    /**
+     * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
+     */
+    @Override
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name="validationMessages",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public ValidationMessages getValidationMessages() {
-		return this.validationMessages;
-	}
+    @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public ValidationMessages getValidationMessages() {
+        return this.validationMessages;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setValidationMessages(ValidationMessages validationMessages) {
-		this.validationMessages = validationMessages;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setValidationMessages(ValidationMessages validationMessages) {
+        this.validationMessages = validationMessages;
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
-	 */
-	@Override
-    @BeanTagAttribute(name="help",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Help getHelp() {
-		return this.help;
-	}
+    /**
+     * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
+     */
+    @Override
+    @BeanTagAttribute(name = "help", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Help getHelp() {
+        return this.help;
+    }
 
-	/**
-	 * @see org.kuali.rice.krad.uif.widget.Helpable#setHelp(org.kuali.rice.krad.uif.widget.Help)
-	 */
-	@Override
-	public void setHelp(Help help) {
-		this.help = help;
-	}
+    /**
+     * @see org.kuali.rice.krad.uif.widget.Helpable#setHelp(org.kuali.rice.krad.uif.widget.Help)
+     */
+    @Override
+    public void setHelp(Help help) {
+        this.help = help;
+    }
 
     /**
      * For containers the help tooltip is placed on the header.
@@ -232,7 +240,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      * Return the container header text for the help title
      *
      * @return container title
-     *
      * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
      */
     @Override
@@ -241,118 +248,118 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-	 * {@inheritDoc}
-	 */
-	@Override
-    @BeanTagAttribute(name="items",type= BeanTagAttribute.AttributeType.LISTBEAN)
-	public abstract List<? extends Component> getItems();
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    public abstract List<? extends Component> getItems();
 
-	/**
-	 * Setter for the containers list of components
-	 *
-	 * @param items
-	 */
-	public abstract void setItems(List<? extends Component> items);
+    /**
+     * Setter for the containers list of components
+     *
+     * @param items
+     */
+    public abstract void setItems(List<? extends Component> items);
 
-	/**
-	 * For <code>Component</code> instances in the container's items list that
-	 * do not have an order set, a default order number will be assigned using
-	 * this property. The first component found in the list without an order
-	 * will be assigned the configured initial value, and incremented by one for
-	 * each component (without an order) found afterwards
-	 *
-	 * @return int order sequence
-	 */
-    @BeanTagAttribute(name="defaultItemPosition")
-	public int getDefaultItemPosition() {
-		return this.defaultItemPosition;
-	}
+    /**
+     * For <code>Component</code> instances in the container's items list that
+     * do not have an order set, a default order number will be assigned using
+     * this property. The first component found in the list without an order
+     * will be assigned the configured initial value, and incremented by one for
+     * each component (without an order) found afterwards
+     *
+     * @return int order sequence
+     */
+    @BeanTagAttribute(name = "defaultItemPosition")
+    public int getDefaultItemPosition() {
+        return this.defaultItemPosition;
+    }
 
-	/**
-	 * Setter for the container's item ordering sequence number (initial value)
-	 *
-	 * @param defaultItemPosition
-	 */
-	public void setDefaultItemPosition(int defaultItemPosition) {
-		this.defaultItemPosition = defaultItemPosition;
-	}
+    /**
+     * Setter for the container's item ordering sequence number (initial value)
+     *
+     * @param defaultItemPosition
+     */
+    public void setDefaultItemPosition(int defaultItemPosition) {
+        this.defaultItemPosition = defaultItemPosition;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-    @BeanTagAttribute(name="layoutManager",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public LayoutManager getLayoutManager() {
-		return this.layoutManager;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "layoutManager", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public LayoutManager getLayoutManager() {
+        return this.layoutManager;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setLayoutManager(LayoutManager layoutManager) {
-		this.layoutManager = layoutManager;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLayoutManager(LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-    @BeanTagAttribute(name="header",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Header getHeader() {
-		return this.header;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "header", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Header getHeader() {
+        return this.header;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setHeader(Header header) {
-		this.header = header;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setHeader(Header header) {
+        this.header = header;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-    @BeanTagAttribute(name="footer",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Group getFooter() {
-		return this.footer;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "footer", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Group getFooter() {
+        return this.footer;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setFooter(Group footer) {
-		this.footer = footer;
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFooter(Group footer) {
+        this.footer = footer;
+    }
 
-	/**
-	 * Convenience setter for configuration to turn rendering of the header
-	 * on/off
-	 *
-	 * <p>
-	 * For nested groups (like Field Groups) it is often necessary to only show
-	 * the container body (the contained components). This method allows the
-	 * header to not be displayed
-	 * </p>
-	 *
-	 * @param renderHeader
-	 */
-	public void setRenderHeader(boolean renderHeader) {
-		if (header != null) {
-			header.setRender(renderHeader);
-		}
-	}
+    /**
+     * Convenience setter for configuration to turn rendering of the header
+     * on/off
+     *
+     * <p>
+     * For nested groups (like Field Groups) it is often necessary to only show
+     * the container body (the contained components). This method allows the
+     * header to not be displayed
+     * </p>
+     *
+     * @param renderHeader
+     */
+    public void setRenderHeader(boolean renderHeader) {
+        if (header != null) {
+            header.setRender(renderHeader);
+        }
+    }
 
     /**
      * Convenience getter for the header text
      *
      * @return The text that should be displayed on the header
      */
-    @BeanTagAttribute(name="headertext")
-    public String getHeaderText () {
+    @BeanTagAttribute(name = "headertext")
+    public String getHeaderText() {
         if (header != null && header.getHeaderText() != null) {
             return header.getHeaderText();
         } else {
@@ -365,29 +372,29 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @param headerText the text that should be displayed on the header.
      */
-    public void setHeaderText (String headerText) {
+    public void setHeaderText(String headerText) {
         if (header != null) {
             header.setHeaderText(headerText);
         }
     }
 
-	/**
-	 * Convenience setter for configuration to turn rendering of the footer
-	 * on/off
-	 *
-	 * <p>
-	 * For nested groups it is often necessary to only show the container body
-	 * (the contained components). This method allows the footer to not be
-	 * displayed
-	 * </p>
-	 *
-	 * @param renderFooter
-	 */
-	public void setRenderFooter(boolean renderFooter) {
-		if (footer != null) {
-			footer.setRender(renderFooter);
-		}
-	}
+    /**
+     * Convenience setter for configuration to turn rendering of the footer
+     * on/off
+     *
+     * <p>
+     * For nested groups it is often necessary to only show the container body
+     * (the contained components). This method allows the footer to not be
+     * displayed
+     * </p>
+     *
+     * @param renderFooter
+     */
+    public void setRenderFooter(boolean renderFooter) {
+        if (footer != null) {
+            footer.setRender(renderFooter);
+        }
+    }
 
     /**
      * Text explaining how complete the group inputs, including things like what values should be selected
@@ -395,19 +402,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return instructional message
      */
-    @BeanTagAttribute(name="instructionalText")
-	public String getInstructionalText() {
-		return this.instructionalText;
-	}
+    @BeanTagAttribute(name = "instructionalText")
+    public String getInstructionalText() {
+        return this.instructionalText;
+    }
 
     /**
      * Setter for the instructional message
      *
      * @param instructionalText
      */
-	public void setInstructionalText(String instructionalText) {
-		this.instructionalText = instructionalText;
-	}
+    public void setInstructionalText(String instructionalText) {
+        this.instructionalText = instructionalText;
+    }
 
     /**
      * Message field that displays instructional text
@@ -419,10 +426,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return instructional message field
      */
-    @BeanTagAttribute(name="instructionalMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-	public Message getInstructionalMessage() {
-		return this.instructionalMessage;
-	}
+    @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public Message getInstructionalMessage() {
+        return this.instructionalMessage;
+    }
 
     /**
      * Setter for the instructional text message field
@@ -434,24 +441,41 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @param instructionalMessage
      */
-	public void setInstructionalMessage(Message instructionalMessage) {
-		this.instructionalMessage = instructionalMessage;
-	}
+    public void setInstructionalMessage(Message instructionalMessage) {
+        this.instructionalMessage = instructionalMessage;
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks for over writing of the instructional text or message
-        if(getInstructionalText()!=null && getInstructionalMessage()!=null){
-            String currentValues [] = {"instructionalMessage.text = "+getInstructionalMessage().getMessageText(),"instructionalText = "+getInstructionalText()};
-            tracer.createWarning("InstructionalMessage will override instructioanlText",currentValues);
+        if (getInstructionalText() != null && getInstructionalMessage() != null) {
+            String currentValues[] = {"instructionalMessage.text = " + getInstructionalMessage().getMessageText(),
+                    "instructionalText = " + getInstructionalText()};
+            tracer.createWarning("InstructionalMessage will override instructioanlText", currentValues);
         }
 
         super.completeValidation(tracer.getCopy());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "enterKeyAction")
+    public String getEnterKeyAction() {
+        return this.enterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setEnterKeyAction(String enterKeyAction) {
+        this.enterKeyAction = enterKeyAction;
     }
 
 }

@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +37,6 @@ public class LightBox extends WidgetBase {
     private String width;
 
     private boolean addAppParms;
-    private boolean lookupReturnByScript;
 
     public LightBox() {
         super();
@@ -121,23 +119,5 @@ public class LightBox extends WidgetBase {
      */
     public void setAddAppParms(boolean addAppParms) {
         this.addAppParms = addAppParms;
-    }
-
-    /**
-     * @return the lookupReturnByScript flag
-     */
-    @BeanTagAttribute(name = "lookupReturnByScript")
-    public boolean isLookupReturnByScript() {
-        return lookupReturnByScript;
-    }
-
-    /**
-     * Setter for the flag to indicate that lookups will return the value
-     * by script and not a post
-     *
-     * @param lookupReturnByScript the lookupReturnByScript flag
-     */
-    public void setLookupReturnByScript(boolean lookupReturnByScript) {
-        this.lookupReturnByScript = lookupReturnByScript;
     }
 }

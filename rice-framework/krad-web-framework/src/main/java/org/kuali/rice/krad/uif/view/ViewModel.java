@@ -19,6 +19,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.web.form.DialogResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -41,16 +42,23 @@ public interface ViewModel extends Serializable {
     /**
      * Called before Spring binds the request to the form to allow for pre-processing before setting values.
      *
-     * @param request - request object containing the query parameters
+     * @param request request object containing the query parameters
      */
-    public void preBind(HttpServletRequest request);
+    void preBind(HttpServletRequest request);
     
     /**
      * Called after Spring binds the request to the form and before the controller method is invoked
      *
-     * @param request - request object containing the query parameters
+     * @param request request object containing the query parameters
      */
-    public void postBind(HttpServletRequest request);
+    void postBind(HttpServletRequest request);
+
+    /**
+     * Called after the controller has finished executing, but before rendering occurs.
+     *
+     * @param request request object containing the query parameters
+     */
+    void preRender(HttpServletRequest request);
 
     /**
      * Unique Id for the <code>View</code> instance. This is specified for a
@@ -225,6 +233,18 @@ public interface ViewModel extends Serializable {
     public void setNewCollectionLines(Map<String, Object> newCollectionLines);
 
     /**
+     * When the request has been triggered by an action component, gives the id for the action.
+     *
+     * @return String action id, or null if request was not triggered by an action component
+     */
+    String getTriggerActionId();
+
+    /**
+     * @see ViewModel#getTriggerActionId()
+     */
+    void setTriggerActionId(String triggerActionId);
+
+    /**
      * Map of parameters sent for the invoked action
      *
      * <p>
@@ -313,20 +333,6 @@ public interface ViewModel extends Serializable {
      * @param growlScript
      */
     public void setGrowlScript(String growlScript);
-
-    /**
-     * Script that will run on render (view or component) for a lightbox
-     *
-     * @return String JS lightbox script
-     */
-    public String getLightboxScript();
-
-    /**
-     * Setter for the script that generates a lightbox on render
-     *
-     * @param lightboxScript
-     */
-    public void setLightboxScript(String lightboxScript);
 
     /**
      * Gets the state.  This is the default location for state on KRAD forms.
@@ -497,6 +503,49 @@ public interface ViewModel extends Serializable {
      * @see ViewModel#isCollectionPagingRequest()
      */
     void setCollectionPagingRequest(boolean collectionPagingRequest);
+
+    /**
+     * Contains values for dialog explanation fields present on the page.
+     *
+     * <p>Since multiple dialogs can be present on the same page using the generic explanation field, the values
+     * are maintained in this map using the dialog id as the key. Values are cleared on each request.</p>
+     *
+     * @return map of dialog explanations, where key is the dialog id and map value is the explanation
+     */
+    Map<String, String> getDialogExplanations();
+
+    /**
+     * @see ViewModel#getDialogExplanations()
+     */
+    void setDialogExplanations(Map<String, String> dialogExplanations);
+
+    /**
+     * Map containing dialog responses for a request 'conversation'.
+     *
+     * <p>When a controller methods requests a dialog, the response is collected on the return call and placed
+     * into this map. The key to the map is the id for the dialog. Since a single controller method can spawn multiple
+     * dialogs in a single conversation (these are actually multiple requests/responses, but part of the same action
+     * request), the responses are collected in this map. Whenever a request is encountered that is not a return, the
+     * map is cleared. This means the responses will be cleared in case the action is triggered action.</p>
+     *
+     * @return map of dialog responses, where map key is the dialog id and the map value is the dialog response
+     * object
+     */
+    Map<String, DialogResponse> getDialogResponses();
+
+    /**
+     * Helper method to get a dialog response for the given dialog id.
+     *
+     * @param dialogId id of the dialog to get response for
+     * @return dialog response object, or null if response does not exist
+     * @see ViewModel#getDialogResponses()
+     */
+    DialogResponse getDialogResponse(String dialogId);
+
+    /**
+     * @see ViewModel#getDialogResponses()
+     */
+    void setDialogResponses(Map<String, DialogResponse> dialogResponses);
 
     /**
      * A generic map for framework pieces (such as component modifiers) that need to dynamically store

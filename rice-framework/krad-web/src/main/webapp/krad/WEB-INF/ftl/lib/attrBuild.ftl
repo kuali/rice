@@ -27,7 +27,7 @@ variables -->
 			org.kuali.rice.krad.uif.freemarker.FreeMarkerInlineRenderUtils.renderAttrBuild().
 			When updating this template, also update that method. -->
 
-    <#if component.styleClassesAsString?has_content>
+    <#if component.cssClasses?has_content>
         <#local styleClass="class=\"${component.styleClassesAsString}\""/>
     </#if>
 
@@ -39,6 +39,14 @@ variables -->
         <#local title="title=\"${component.title}\""/>
     </#if>
 
-    <#return "${styleClass!} ${style!} ${title!}">
+    <#if component.role?has_content>
+        <#local role="role=\"${component.role}\""/>
+    </#if>
+
+    <#if component.ariaAttributes?has_content>
+        <#local ariaAttributes="${component.ariaAttributesAsString}"/>
+    </#if>
+
+    <#return "${styleClass!} ${style!} ${title!} ${role!} ${ariaAttributes!}">
 
 </#function>

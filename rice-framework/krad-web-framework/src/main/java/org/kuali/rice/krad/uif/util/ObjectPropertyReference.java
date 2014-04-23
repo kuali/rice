@@ -107,6 +107,7 @@ public class ObjectPropertyReference {
                 resolved.beanClass = current.beanClass;
                 resolved.beanType = current.beanType;
                 resolved.name = null;
+                resolved.parentPath = null;
                 return resolved;
             }
 
@@ -147,6 +148,7 @@ public class ObjectPropertyReference {
             current.beanClass = beanClass;
             current.beanType = beanType;
             current.name = next;
+            current.parentPath = parentPath;
 
             return current;
         }
@@ -449,6 +451,11 @@ public class ObjectPropertyReference {
     private String name;
 
     /**
+     * The parent property path.
+     */
+    private String parentPath;
+
+    /**
      * Internal private constructor.
      */
     private ObjectPropertyReference() {}
@@ -473,9 +480,9 @@ public class ObjectPropertyReference {
 
         } else {
 
-            // TODO: Determine if a different PropertyEditor registry exists for KRAD
-            PropertyEditor editor = PropertyEditorManager
-                    .findEditor(getPrimitiveType(propertyType));
+            Class<?> rawType = getPrimitiveType(propertyType);
+            PropertyEditor editor = ObjectPropertyUtils.getPropertyEditor(getPrimitiveType(propertyType),
+                    parentPath + '.' + name);
             if (editor == null) {
                 throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
                         + "' to " + propertyType);

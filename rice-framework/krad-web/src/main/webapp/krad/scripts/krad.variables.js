@@ -28,20 +28,32 @@ JavascriptKradVariables.prototype = {
     APP_ID: "Uif-Application",
     APPLICATION_URL: "applicationUrl",
     ATTRIBUTES: {
+        ID: "id",
         DATA_OPEN: "data-open",
-        DATA_RETURN: "data-return"
+        DATA_RETURN: "data-return",
+        DATA_RESPONSE: "data-response",
+        DATA_RESPONSE_HANDLER: "data-response_handler",
+        DATA_SHOW_HANDLER: "data-show_handler",
+        DATA_HIDE_HANDLER: "data-hide_handler",
+        DATA_ROLE: "data-role",
+        DISMISS_DIALOG_OPTION: "data-dismissdialogoption",
+        DIALOG_ID: "data-dismissdialogid"
     },
 
     CACHE_KEY: "cacheKey",
     CHANGED_HEADER_ICON_CLASS: "uif-changedHeaderIcon",
     CHANGE_COMPONENT_PROPERTIES: "changeProperties",
     CLASSES: {
-        PLACEHOLDER: "uif-placeholder"
+        PLACEHOLDER: "uif-placeholder",
+        MODAL: "modal",
+        IN: "in"
     },
 
     CLEAR_FORM_METHOD_TO_CALL: "clearForm",
     CLIENT_MESSAGE_ITEMS_CLASS: "uif-clientMessageItems",
-    CLIENT_WARNING_DIV_CLASS: "uif-clientWarningDiv",
+    CLIENT_ERROR_DIV_CLASS: "alert-danger",
+    CLIENT_WARNING_DIV_CLASS: "alert-warning",
+    CLIENT_INFO_DIV_CLASS: "alert-info",
     COLLAPSED_ERRORS_CLASS: "uif-collapsedErrors",
     COLLAPSED_INFO_CLASS: "uif-collapsedInfo",
     COLLAPSED_WARNINGS_CLASS: "uif-collapsedWarnings",
@@ -52,14 +64,26 @@ JavascriptKradVariables.prototype = {
     // constants for data role attribute values
     DATA_ROLES: {
         DISCLOSURE_LINK: "disclosureLink",
-        PLACEHOLDER: "placeholder"
+        PLACEHOLDER: "placeholder",
+        ACTION: "Action",
+        PROMPTTEXT: "prompttext",
+        DIALOGHEADER: "dialogheader"
     },
 
+    DIALOG_DISMISS_OPTIONS: {
+        IMMEDIATE: "IMMEDIATE",
+        PRESUBMIT: "PRESUBMIT",
+        REQUEST: "REQUEST"
+    },
+
+    DIALOG_SELECTOR: "[role='dialog']",
     DIRTY_CLASS: "dirty",
     DIRTY_FORM: "dirtyForm",
     DISABLE_BROWSER_CACHE: "view.disableBrowserCache",
     DISABLED_CLASS: "disabled",
     DIALOG_PLACEHOLDER: "_dialogPlaceholder",
+    ENTER_KEY_SUFFIX: "enter_key",
+    ENTER_KEY_DEFAULT: "@DEFAULT",
     ERROR_HIGHLIGHT_SECTION_CLASS: "uif-errorHighlight-section",
     ERROR_MESSAGE_ITEM_CLASS: "uif-errorMessageItem-field",
     FIELD_CLASS: "uif-field",
@@ -76,7 +100,9 @@ JavascriptKradVariables.prototype = {
 
     // constants for element ids
     IDS: {
-        DIALOGS: "Uif-Dialogs"
+        DIALOGS: "Uif-Dialogs",
+        DIALOG_OKCANCEL: "Uif-DialogGroup-OkCancel",
+        DIALOG_YESNO: "Uif-DialogGroup-YesNo"
     },
 
     // constants for id suffixes
@@ -134,8 +160,12 @@ JavascriptKradVariables.prototype = {
     PAGE_VALIDATION_HEADER_CLASS: "uif-pageValidationHeader",
     PAGE_VALIDATION_MESSAGE_ERROR_CLASS: "alert-danger",
     PAGE_VALIDATION_MESSAGE_INFO_CLASS: "alert-info",
+    PAGE_VALIDATION_MESSAGE_SUCCESS_CLASS: "alert-success",
+    PAGE_VALIDATION_MESSAGE_WARNING_CLASS: "alert-warning",
+    PARENT_DATA_ATTRIBUTE: "parent",
     PERFORM_DIRTY_VALIDATION: "performdirtyvalidation",
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
+    POPOVER_DATA: "bs.popover",
     RENDERED_IN_LIGHTBOX: "renderedInLightBox",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
@@ -162,7 +192,6 @@ JavascriptKradVariables.prototype = {
     TOP_GROUP_UPDATE: "Uif-TopGroupUpdate",
     TABLE_COLLECTION_LAYOUT_CLASS: "uif-tableCollectionLayout",
     TAB_GROUP_CLASS: "Uif-TabGroup",
-    TAB_MENU_CLASS: "uif-tabMenu",
     TOGGLE_ARROW_CLASS: "arrow",
     TOOLTIP_CLASS: "uif-tooltip",
     VALIDATION_IMAGE_CLASS: "uif-validationImage",
@@ -188,22 +217,15 @@ JavascriptKradVariables.prototype = {
     ADD_CONTROLS: "add_controls",
     SUBMIT_DATA: "submit_data",
     DETAILS_DEFAULT_OPEN: "details_default_open",
-    BUBBLEPOPUP_THEME_PATH: "/plugins/tooltip/jquerybubblepopup-theme/",
-    FORM_BUBBLEPOPUP_DEFAULT_OPTIONS: {
-        position: 'bottom',
-        align: 'left',
-        tail: { align: 'left', hidden: false },
-        manageMouseEvents: false,
-        themeName: 'popup-form'
-    },
     EVENT_NAMESPACE: "uif",
     EVENTS: {
         ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
         ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
         DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
-        SHOW_DIALOG : "showdialog." + JavascriptKradVariables.EVENT_NAMESPACE,
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE,
-        PAGE_UPDATE_COMPLETE : "pageUpdateComplete" + JavascriptKradVariables.EVENT_NAMESPACE
+        PAGE_UPDATE_COMPLETE : "pageUpdateComplete" + JavascriptKradVariables.EVENT_NAMESPACE,
+        SHOW_MODAL : "show.bs.modal",
+        HIDE_MODAL : "hide.bs.modal"
     }
 }
 

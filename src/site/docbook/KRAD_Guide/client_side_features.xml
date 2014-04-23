@@ -568,6 +568,189 @@
     </itemizedlist>
   </section>
   <section>
+    <title>Enter Key Support </title>
+  	<para>Default enter key support on a web page can vary from browser to browser but the most common approach is that when a user
+  	  presses the enter key within an input field the browser will look for the first submittable element on the page and use it to submit the form.
+  	  For example, in the setup shown below the 'Details' button will be submitted even though the 'Add' button would be more appropriate if in the
+  	  'travelAccount' input field.
+  	  <programlisting>
+&lt;div id="Uif-Page">
+  &lt;div id="TravelInfoSection>
+     &lt;input type="text" name="travelerFirstName"/>
+     &lt;input type="text" name="travelerLastName"/>
+     &lt;button id="details" type="button">Details&lt;/button>
+  &lt;/div>
+  &lt;div id="TravelAccounts">
+     &lt;input type="text" name="travelAccount"/>
+     &lt;input type="text" name="travelSubAccount"/>
+     &lt;button id="add" type="button">Add&lt;/button>
+  &lt;/div>
+  &lt;button id="save" type="button">Save&lt;/button>
+&lt;/div>
+  	  </programlisting>
+  	</para>
+  	<para>
+      Using the enter key support properties the determination of what button to submit can be controlled. This is done by defining at a group
+      component level the ID of the action component to act on when the enter key is pressed within that group. If no ID is defined at the immediate
+      group level then the search will move out to the next level. This will continue until no other group components are found. If the outer most group
+      has no ID set then default browser enter key support will be used. In this modified example, the 'Add' button will be submitted if in the
+      'travelAccount' input field.
+  		<programlisting>
+&lt;div id="Uif-Page">
+  &lt;div id="TravelInfoSection data-enter_key="details">
+     &lt;input type="text" name="travelerFirstName"/>
+     &lt;input type="text" name="travelerLastName"/>
+     &lt;button id="details" type="button">Details&lt;/button>
+  &lt;/div>
+  &lt;div id="TravelAccounts" data-enter_key="add">
+     &lt;input type="text" name="travelAccount"/>
+     &lt;input type="text" name="travelSubAccount"/>
+     &lt;button id="add" type="button">Add&lt;/button>
+  &lt;/div>
+  &lt;button id="save" type="button">Save&lt;/button>
+&lt;/div>
+  	  </programlisting>
+      This would be configured like this:
+      <programlisting>
+  &lt;bean id="View" parent="Uif-FormView">
+    &lt;property name="singlePageView" value="true"/>
+    &lt;property name="page">
+      &lt;bean parent="Uif-Page">
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean p:headerText="TravelInfoSection" parent="Uif-VerticalBoxSection" p:enterKeyAction="details">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="travelerFirstName" p:label="travelerFirstName"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="travelerLastName" p:label="travelerLastName"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Details" p:id="details"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            &lt;bean p:headerText="TravelAccounts" parent="Uif-VerticalBoxSection" p:enterKeyAction="add">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="travelAccount" p:label="travelAccount"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="travelSubAccount" p:label="travelSubAccount"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="Add" p:id="add"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+    &lt;property name="formClass" value="formClass"/>
+  &lt;/bean>
+      </programlisting>
+  	</para>
+  	<para>
+  		One place that setting enter key support is difficult is within collections. Because of the dynamic nature of the
+  		collections it is not always possible to set the ID of the action component to invoke on a collection row. As a result
+  		of this there are special ways to define enter key support. Within a collection a specific action component can be designated
+  		as the default enter key. The other piece of the collection setup is the use of '@DEFAULT' in place of entering the ID of
+  		the action component. Here is a sample collection configuration:
+  		<programlisting>
+  &lt;bean id="View" parent="Uif-FormView">
+    &lt;property name="items">
+      &lt;list>
+        &lt;bean p:headerText="Page Title" parent="Uif-Page">
+          &lt;property name="items">
+            &lt;list>
+              &lt;bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@DEFAULT">
+                &lt;property name="headerText" value="Table Layout" />
+                &lt;property name="collectionObjectClass" value="collectionObjectClass" />
+                &lt;property name="propertyName" value="collection1" />
+                &lt;property name="layoutManager.generateAutoSequence" value="true" />
+                &lt;property name="layoutManager.richTable.render" value="true" />
+                &lt;property name="items">
+                  &lt;list>
+                    &lt;bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" />
+                    &lt;bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" />
+                  &lt;/list>
+                &lt;/property>
+                &lt;property name="lineActions">
+                  &lt;list>
+                    &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button1" p:id="ST-DemoButton11" p:actionScript="alert('You clicked a button1');" />
+                    &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button2 - primary" p:id="ST-DemoButton12" p:actionScript="alert('You clicked a button2-primary');" p:defaultEnterKeyAction="true" />
+                    &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button3" p:id="ST-DemoButton13" p:actionScript="alert('You clicked a button3');" />
+                  &lt;/list>
+                &lt;/property>
+              &lt;/bean>
+            &lt;/list>
+          &lt;/property>
+        &lt;/bean>
+      &lt;/list>
+    &lt;/property>
+  &lt;/bean>
+  		</programlisting>
+  		In this configuration the 'add' button will be submitted for the add line (the 'add' button will have it designated as default in KRAD) and
+  		'button2' will be submitted for other lines within the collection. Note that the use of the '@DEFAULT' value can be used in nonCollection
+  		setups as well. Such as perhaps specifing an action component in the footer as the 'defaultEnterKeyAction'. Then if the outer most page component
+  		had an 'enterKeyAction' value of '@DEFAULT', all non-caught enter key presses would go to the footer action component.
+  	</para>
+    <para>
+      As a design principle, it might be good to define one default button on each page within a view. Then any uncaught '@DEFAULT' values will find
+      a button to invoke on the page. For example:
+      <programlisting>
+  &lt;bean id="View1" parent="Uif-FormView">
+    &lt;property name="headerText" value="Enter Key Support"/>
+    &lt;property name="singlePageView" value="true"/>
+    &lt;property name="page">
+      &lt;bean parent="Uif-Page" p:enterKeyAction="@DEFAULT"
+            p:instructionalText="Uif-Page enterKeyAction is set to @DEFAULT[br]Using this action will fire the primary action button.">
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1"
+                  p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 2"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1');"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            &lt;bean p:headerText="Section 2" parent="Uif-VerticalBoxSection"
+                  p:instructionalText="enterKeyAction is not set.[br]Press the enter key to fire primary enter key action button.">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 1"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 2"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button 2" p:id="button2" p:actionScript="alert('button 2');"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+            &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="primary button" p:defaultEnterKeyAction="true" p:actionScript="alert('primary button');"/>
+          &lt;/list>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/property>
+    &lt;property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  &lt;/bean>
+      </programlisting>
+      In this example notice that the enclosing Uif-Page has p:enterKeyAction="@DEFAULT". If the user presses the enter key in section one then the button
+      within it will fire since that button is explicitly defined in the section one group. However if the user presses enter in section two it will move up
+      to the page level and see that it has the enterKeyAction property set, therefore Uif-PrimaryActionButton will fire. If the page did not have the property
+      set then the default browser implementation would have been used. 
+    </para>
+  	<section role="NotInToc">
+  		<title>RECAP</title>
+  		<itemizedlist>
+  			<listitem>
+  				<para> Use the property 'enterKeyAction' on a group component to designate the ID of the action component
+  					to invoke when the enter key is pressed</para>
+  			</listitem>
+  			<listitem>
+  				<para> Use the property 'defaultEnterKeyAction' on an action component to designate it as the primary action component</para>
+  			</listitem>
+  			<listitem>
+  				<para> Use the 'enterKeyAction' property value of '@DEFAULT' to look for a primary designated action component within a group component</para>
+  			</listitem>
+  		</itemizedlist>
+  	</section>
+  </section>
+  <section>
     <title>Utilities </title>
 <!-- TODO: Add content here -->    <para/>
   </section>

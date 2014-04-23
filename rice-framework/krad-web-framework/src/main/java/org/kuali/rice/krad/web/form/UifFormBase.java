@@ -28,8 +28,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -41,7 +39,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
-import org.kuali.rice.krad.uif.view.DialogManager;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -127,9 +124,6 @@ public class UifFormBase implements ViewModel {
     protected String growlScript;
 
     @SessionTransient
-    protected String lightboxScript;
-
-    @SessionTransient
     protected View view;
     protected ViewPostMetadata viewPostMetadata;
 
@@ -139,6 +133,9 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Object> newCollectionLines;
 
     @RequestAccessible
+    @SessionTransient
+    protected String triggerActionId;
+
     @SessionTransient
     protected Map<String, String> actionParameters;
 
@@ -177,12 +174,13 @@ public class UifFormBase implements ViewModel {
     // dialog fields
     @RequestAccessible
     @SessionTransient
-    protected String dialogExplanation;
+    protected String returnDialogId;
 
-    @RequestAccessible
     @SessionTransient
-    protected String dialogResponse;
-    protected DialogManager dialogManager;
+    protected String returnDialogResponse;
+
+    protected Map<String, String> dialogExplanations;
+    protected Map<String, DialogResponse> dialogResponses;
 
     @SessionTransient
     protected boolean requestRedirected;
@@ -211,7 +209,8 @@ public class UifFormBase implements ViewModel {
         selectedCollectionLines = new HashMap<String, Set<String>>();
         selectedLookupResultsCache = new HashSet<String>();
         addedCollectionItems = new ArrayList<Object>();
-        dialogManager = new DialogManager();
+        dialogExplanations = new HashMap<String, String>();
+        dialogResponses = new HashMap<String,DialogResponse>();
         extensionData = new HashMap<String, Object>();
         queryParameters = new HashMap<String, String>();
     }
@@ -225,7 +224,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#postBind(javax.servlet.http.HttpServletRequest)
+     * {@inheritDoc}
      */
     @Override
     public void postBind(HttpServletRequest request) {
@@ -248,24 +247,37 @@ public class UifFormBase implements ViewModel {
 
         // get any sent client view state and parse into map
         if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
-                    String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
-                    if (StringUtils.isNotBlank(clientStateJSON)) {
-                        // change single quotes to double quotes (necessary because the reverse was done for sending)
-                        clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
+            String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
+            if (StringUtils.isNotBlank(clientStateJSON)) {
+                // change single quotes to double quotes (necessary because the reverse was done for sending)
+                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
 
-                        ObjectMapper mapper = new ObjectMapper();
-                        try {
-                            clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
-                        } catch (IOException e) {
-                            throw new RuntimeException("Unable to decode client side state JSON", e);
-                        }
-                    }
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
+                } catch (IOException e) {
+                    throw new RuntimeException("Unable to decode client side state JSON", e);
                 }
+            }
+        }
 
         // populate read only fields list
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
             setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
+        }
+
+        // collect dialog response, or initialize new map of responses
+        if (request.getParameter(UifParameters.RETURN_FROM_DIALOG) != null) {
+            String dialogExplanation = null;
+            if ((dialogExplanations != null) && dialogExplanations.containsKey(returnDialogId)) {
+                dialogExplanation = dialogExplanations.get(returnDialogId);
+            }
+
+            DialogResponse response = new DialogResponse(returnDialogId, returnDialogResponse, dialogExplanation);
+            this.dialogResponses.put(this.returnDialogId, response);
+        } else {
+            this.dialogResponses = new HashMap<String, DialogResponse>();
         }
 
         // clean parameters from XSS attacks that will be written out as hiddens
@@ -279,6 +291,17 @@ public class UifFormBase implements ViewModel {
         this.returnLocation = KRADUtils.stripXSSPatterns(this.returnLocation);
         this.returnFormKey = KRADUtils.stripXSSPatterns(this.returnFormKey);
         this.requestUrl = KRADUtils.stripXSSPatterns(this.requestUrl);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void preRender(HttpServletRequest request) {
+        // clear dialog properties so previous values do not appear for new dialogs
+        this.returnDialogId = null;
+        this.returnDialogResponse = null;
+        this.dialogExplanations = new HashMap<String, String>();
     }
 
     /**
@@ -594,6 +617,22 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
         this.newCollectionLines = newCollectionLines;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTriggerActionId() {
+        return triggerActionId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTriggerActionId(String triggerActionId) {
+        this.triggerActionId = triggerActionId;
     }
 
     /**
@@ -1103,22 +1142,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getLightboxScript()
-     */
-    @Override
-    public String getLightboxScript() {
-        return lightboxScript;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setLightboxScript(String)
-     */
-    @Override
-    public void setLightboxScript(String lightboxScript) {
-        this.lightboxScript = lightboxScript;
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.view.ViewModel#isAjaxRequest()
      */
     @Override
@@ -1229,70 +1252,87 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * Returns the String entered by the user when presented a dialog
+     * Used by the dialog framework to set the dialog id for a return dialog call (when the server has
+     * triggered a dialog).
      *
-     * <p>
-     * Field defined here so all forms will be able to bind to a dialog using the same property
-     * </p>
+     * <p>Note this is a request only property. On a return call the value for this gets pulled and used to
+     * create an entry in {@link UifFormBase#getDialogResponses()}</p>
      *
-     * @return String - the text entered by a user as a reply in a modal dialog.
+     * @return String id for the dialog being returned from
      */
-    public String getDialogExplanation() {
-        return dialogExplanation;
+    public String getReturnDialogId() {
+        return returnDialogId;
     }
 
     /**
-     * Sets the dialogExplanation text value.
-     *
-     * @param dialogExplanation - text entered by user when replying to a modal dialog
+     * @see UifFormBase#getReturnDialogId()
      */
-    public void setDialogExplanation(String dialogExplanation) {
-        this.dialogExplanation = dialogExplanation;
+    public void setReturnDialogId(String returnDialogId) {
+        this.returnDialogId = returnDialogId;
     }
 
     /**
-     * Represents the option chosen by the user when interacting with a modal dialog
+     * Used by the dialog framework to set the dialog response for a return dialog call (when the server has
+     * triggered a dialog).
      *
-     * <p>
-     * This is used to determine which option was chosen by the user. The value is the key in the key/value pair
-     * selected in the control.
-     * </p>
+     * <p>Note this is a request only property. On a return call the value for this gets pulled and used to
+     * create an entry in {@link UifFormBase#getDialogResponses()}</p>
      *
-     * @return - String key selected by the user
+     * @return String response for the dialog being returned from
      */
-    public String getDialogResponse() {
-        return dialogResponse;
+    public String getReturnDialogResponse() {
+        return returnDialogResponse;
     }
 
     /**
-     * Sets the response key text selected by the user as a response to a modal dialog
-     *
-     * @param dialogResponse - the key of the option chosen by the user
+     * @see UifFormBase#getReturnDialogResponse()
      */
-    public void setDialogResponse(String dialogResponse) {
-        this.dialogResponse = dialogResponse;
+    public void setReturnDialogResponse(String returnDialogResponse) {
+        this.returnDialogResponse = returnDialogResponse;
     }
 
     /**
-     * Gets the DialogManager for this view/form
-     *
-     * <p>
-     * The DialogManager tracks modal dialog interactions with the user
-     * </p>
-     *
-     * @return dialog manager
+     * {@inheritDoc}
      */
-    public DialogManager getDialogManager() {
-        return dialogManager;
+    @Override
+    public Map<String, String> getDialogExplanations() {
+        return dialogExplanations;
     }
 
     /**
-     * Sets the DialogManager for this view
-     *
-     * @param dialogManager - DialogManager instance for this view
+     * {@inheritDoc}
      */
-    public void setDialogManager(DialogManager dialogManager) {
-        this.dialogManager = dialogManager;
+    @Override
+    public void setDialogExplanations(Map<String, String> dialogExplanations) {
+        this.dialogExplanations = dialogExplanations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, DialogResponse> getDialogResponses() {
+        return dialogResponses;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DialogResponse getDialogResponse(String dialogId) {
+        if ((dialogResponses != null) && dialogResponses.containsKey(dialogId)) {
+            return dialogResponses.get(dialogId);
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDialogResponses(Map<String, DialogResponse> dialogResponses) {
+        this.dialogResponses = dialogResponses;
     }
 
     /**

@@ -1,0 +1,197 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-ProgressBar" parent="Uif-FormView">
+    <property name="headerText" value="Progress Bars"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibView</value>
+      </list>
+    </property>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <ref bean="Lab-ProgressBar-Page"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+
+  <!-- Default -->
+  <bean id="Lab-ProgressBar-Page"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-ProgressBar" p:percentComplete="0"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="25"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="50"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="75"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="100"/>
+        <bean parent="Uif-StepProgressBar">
+          <property name="steps">
+            <map>
+              <entry key="1" value="Initialize"/>
+              <entry key="2" value="Save"/>
+              <entry key="3" value="Submit"/>
+              <entry key="4" value="Route"/>
+              <entry key="5" value="Approve"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="2"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Initialize"/>
+              <entry key="2" value="Save"/>
+              <entry key="3" value="Submit"/>
+              <entry key="4" value="Route"/>
+              <entry key="5" value="Approve"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="3"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Initialize"/>
+              <entry key="2" value="Save"/>
+              <entry key="3" value="Submit"/>
+              <entry key="4" value="Route"/>
+              <entry key="5" value="Approve"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="5"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Initialize"/>
+              <entry key="2" value="Save"/>
+              <entry key="3" value="Submit"/>
+              <entry key="4" value="Route"/>
+              <entry key="5" value="Approve"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="SUCCESS"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Initialize"/>
+              <entry key="2" value="Save"/>
+              <entry key="3" value="Submit"/>
+              <entry key="4" value="Route"/>
+              <entry key="5" value="Approve"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="2"/>
+          <property name="vertical" value="true"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Step 1"/>
+              <entry key="2" value="Step 2"/>
+              <entry key="3" value="Step 3"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="1"/>
+          <property name="vertical" value="true"/>
+          <property name="verticalStepHeight" value="50"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Step 1"/>
+              <entry key="2" value="Step 2"/>
+              <entry key="3" value="Step 3"/>
+            </map>
+          </property>
+        </bean>
+        <bean parent="Uif-HorizontalBoxGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="0"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="33"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="66"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="100"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="3"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Small Step"/>
+              <entry key="2" value="Big Step"/>
+              <entry key="3" value="Medium Step"/>
+            </map>
+          </property>
+          <property name="segmentPercentages">
+            <list>
+              <value>20</value>
+              <value>50</value>
+              <value>30</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-ProgressBar">
+          <property name="segmentPercentages">
+            <list>
+              <value>20</value>
+              <value>20</value>
+              <value>30</value>
+            </list>
+          </property>
+          <property name="segmentClasses">
+            <list>
+              <value>progress-bar progress-bar-info</value>
+              <value>progress-bar progress-bar-warning</value>
+              <value>progress-bar progress-bar-danger</value>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-ProgressBarField" p:label="Current Progress">
+          <property name="progressBar.percentComplete" value="80"/>
+        </bean>
+
+        <bean parent="Uif-StepProgressBarField" p:label="Step Progress">
+          <property name="progressBar.currentStep" value="C"/>
+          <property name="progressBar.steps">
+            <map>
+              <entry key="A" value="Step A"/>
+              <entry key="B" value="Step B"/>
+              <entry key="C" value="Step C"/>
+            </map>
+          </property>
+        </bean>
+
+      </list>
+    </property>
+  </bean>
+
+</beans>

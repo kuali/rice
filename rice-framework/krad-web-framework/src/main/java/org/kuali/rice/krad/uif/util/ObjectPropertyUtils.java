@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
 import java.beans.PropertyEditorManager;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -43,6 +41,16 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
+import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.PropertyEditorRegistrySupport;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * Utility methods to get/set property values and working with objects.
@@ -68,6 +76,16 @@ public final class ObjectPropertyUtils {
      */
     private static final Map<Class<?>, ObjectPropertyMetadata> METADATA_CACHE = Collections
             .synchronizedMap(new WeakHashMap<Class<?>, ObjectPropertyMetadata>(2048));
+
+    /**
+     * Property editor registry to use for converting string values to objects when setting properties.
+     */
+    private static final PropertyEditorRegistry PROPERTY_EDITOR_REGISTRY = new PropertyEditorRegistrySupport();
+
+    /**
+     * Initialization state for {@link #PROPERTY_EDITOR_REGISTRY}.
+     */
+    private static boolean globalPropertyEditorRegistryInitialized;
 
     /**
      * Get a mapping of property descriptors by property name for a bean class.
@@ -97,6 +115,29 @@ public final class ObjectPropertyUtils {
         } else {
             throw new IllegalArgumentException("Property " + propertyName
                     + " not found for bean " + beanClass);
+        }
+    }
+
+    /**
+     * Registers a default set of property editors for use with KRAD in a given property editor registry.
+     *
+     * @param registry property editor registry
+     */
+    public static void registerPropertyEditors(PropertyEditorRegistry registry) {
+        Map<Class<?>, PropertyEditor> propertyEditorMap =
+                KRADServiceLocatorWeb.getDataDictionaryService().getPropertyEditorMap();
+
+        if (propertyEditorMap == null) {
+            LOG.warn("No propertyEditorMap defined in data dictionary");
+            return;
+        }
+
+        for (Entry<Class<?>, PropertyEditor> propertyEditorEntry : propertyEditorMap.entrySet()) {
+            registry.registerCustomEditor(propertyEditorEntry.getKey(), propertyEditorEntry.getValue());
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("registered " + propertyEditorEntry);
+            }
         }
     }
 
@@ -306,6 +347,52 @@ public final class ObjectPropertyUtils {
             }
         }
 
+    }
+
+    /**
+     * Get a property editor given a property type.
+     *
+     * @param propertyType The property type to look up an editor for.
+     * @param path The property path, if applicable.
+     * @return property editor
+     */
+    public static PropertyEditor getPropertyEditor(Class<?> propertyType, String path) {
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+
+        PropertyEditorRegistry registry = null;
+        if (attributes != null) {
+            registry = (PropertyEditorRegistry) attributes
+                    .getAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, RequestAttributes.SCOPE_REQUEST);
+        }
+
+        if (registry == null) {
+            try {
+                synchronized (PROPERTY_EDITOR_REGISTRY) {
+                    if (!globalPropertyEditorRegistryInitialized) {
+                        registerPropertyEditors(PROPERTY_EDITOR_REGISTRY);
+                        globalPropertyEditorRegistryInitialized = true;
+                    }
+                }
+
+                registry = PROPERTY_EDITOR_REGISTRY;
+
+            } catch (Throwable e) {
+                LOG.warn("Error initializing global property editor registry", e);
+            }
+        }
+
+        PropertyEditor editor = null;
+
+        if (registry != null) {
+            editor = registry.findCustomEditor(propertyType, path);
+        }
+
+        if (editor == null) {
+            // Fall back to default beans lookup
+            editor = PropertyEditorManager.findEditor(propertyType);
+        }
+
+        return editor;
     }
 
     /**
@@ -672,6 +759,36 @@ public final class ObjectPropertyUtils {
 
         return split.toArray(new String[split.size()]);
     }
+
+    /**
+     * Returns the tail of a given property path (if nested, the nested path).
+     *
+     * <p>For example, if path is "nested1.foo", this will return "foo". If path is just "foo", "foo" will be
+     * returned.</p>
+     *
+     * @param path path to return tail for
+     * @return String tail of path
+     */
+    public static String getPathTail(String path) {
+        String[] propertyPaths = splitPropertyPath(path);
+
+        return propertyPaths[propertyPaths.length - 1];
+    }
+
+    /**
+     * Removes the tail of the path from the return path.
+     *
+     * <p>For example, if path is "nested1.foo", this will return "nested1". If path is just "foo", "" will be
+     * returned.</p>
+     *
+     * @param path path to remove tail from
+     * @return String path with tail removed (may be empty string)
+     */
+    public static String removePathTail(String path) {
+        String[] propertyPaths = splitPropertyPath(path);
+
+        return StringUtils.join(propertyPaths, ".", 0, propertyPaths.length - 1);
+    }
     
     /**
      * Private constructor - utility class only.
@@ -886,6 +1003,10 @@ public final class ObjectPropertyUtils {
          * @param beanClass The bean class.
          */
         private ObjectPropertyMetadata(Class<?> beanClass) {
+            if (beanClass == null) {
+                throw new RuntimeException("Class to retrieve property from was null");
+            }
+
             BeanInfo beanInfo;
             try {
                 beanInfo = Introspector.getBeanInfo(beanClass);

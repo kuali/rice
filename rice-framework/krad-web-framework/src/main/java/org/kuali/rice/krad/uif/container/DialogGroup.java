@@ -16,75 +16,65 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.control.MultiValueControl;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.ScriptUtils;
 
 /**
- * Special type of <code>Group</code> that presents a the content for a modal dialog
+ * Special type of group that presents the content in a modal dialog.
  *
- * <p>
- * This type of group will be hidden when the main view is displayed. It will be used as
- * content inside the LightBox widget when the modal dialog is displayed.
- * For convenience, this group contains a standard set of components for commonly used modal dialogs
- * <ul>
- * <li>a prompt to display in the lightbox</li>
- * <li>an optional explanation <code>InputField</code> for holding the user's textual response</li>
- * <li>a set of response options for the user to choose from</li>
- * </ul>
+ * <p>A dialog group can be used for many different purposes. First it can be used to give a simple confirmation (
+ * a prompt with ok/cancel or yes/no options). The {@link org.kuali.rice.krad.uif.element.Action} component contains
+ * properties for adding a confirmation dialog. Next, a dialog can be used to prompt for a response or to gather
+ * addition data on the client. In this situation, the dialog is configured either in the view or external to the view,
+ * and the developers triggers the display of the dialog using the javascript method showDialog. See krad.modal.js
+ * for more information. Dialogs can also be triggered from a controller method (or other piece of server code). Again
+ * the dialog is configured with the view or external to the view, and the controller method triggers the show using
+ * the method {@link org.kuali.rice.krad.web.controller.UifControllerBase#showDialog}.</p>
  *
- * <p>
- * The DialogGroup may also serve as a base class for more complex dialogs.
- * The default settings for this DialogGroup is to display a prompt message
- * with two buttons labeled OK and Cancel.
- * The optional explanation <code>TextAreaControl</code> is hidden by default.
- * </p>
- *
- * <p>
- * The prompt text, number of user options and their corresponding label are configurable.
- * The <code>InputField</code> for the explanation is <code>TextAreaControl</code> by default.
- * It may be configured to other types of InputFields.
- * The Component for ResponseInputField is a <code>HorizontalCheckboxGroup</code> by default.
- * JQuery styling is then used to style the checkboxes as buttons. The ResponseInputField may
- * be configured to other <code>InputField</code> types.
- * </p>
+ * <p>A dialog is a group and can be configured like any other general group. For building basic dialogs, there are
+ * convenience properties that can be used. In addition, there are base beans provided with definitions for these
+ * properties. This includes a basic prompt message and responses. Note to have responses with different action properties,
+ * set the items of the dialog groups footer directly.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dialogGroup-bean", parent = "Uif-DialogGroup"),
-        @BeanTag(name = "sensitiveData-dialogGroup-bean", parent = "Uif-SensitiveData-DialogGroup"),
-        @BeanTag(name = "ok-cancel-dialogGroup-bean", parent = "Uif-OK-Cancel-DialogGroup"),
-        @BeanTag(name = "yes-no-dialogGroup-bean", parent = "Uif-Yes-No-DialogGroup"),
-        @BeanTag(name = "true-false-dialogGroup-bean", parent = "Uif-True-False-DialogGroup"),
-        @BeanTag(name = "checkbox-dialogGroup-bean", parent = "Uif-Checkbox-DialogGroup"),
-        @BeanTag(name = "radioButton-dialogGroup-bean", parent = "Uif-RadioButton-DialogGroup")})
+@BeanTags({@BeanTag(name = "dialog", parent = "Uif-DialogGroup"),
+        @BeanTag(name = "dialogOkCancel", parent = "Uif-DialogGroup-OkCancel"),
+        @BeanTag(name = "dialogOkCancelExpl", parent = "Uif-DialogGroup-OkCancelExpl"),
+        @BeanTag(name = "dialogYesNo", parent = "Uif-DialogGroup-YesNo"),
+        @BeanTag(name = "actionConfirmation", parent = "Uif-ActionConfirmation"),
+        @BeanTag(name = "actionConfirmationExpl", parent = "Uif-ActionConfirmationExpl")})
 public class DialogGroup extends GroupBase {
     private static final long serialVersionUID = 1L;
 
-    private String promptText;
-    private List<KeyValue> availableResponses;
-
     private MessageField prompt;
     private InputField explanation;
-    private InputField responseInputField;
 
-    private boolean reverseButtonOrder;
-    private boolean displayExplanation;
+    private List<KeyValue> availableResponses;
+
+    private boolean modalLarge;
 
     private String onDialogResponseScript;
     private String onShowDialogScript;
+    private String onHideDialogScript;
 
+    /**
+     * Default Constructor.
+     */
     public DialogGroup() {
         super();
     }
@@ -93,8 +83,9 @@ public class DialogGroup extends GroupBase {
      * The following actions are performed in this phase:
      *
      * <ul>
-     * <li>Move custom dialogGroup properties prompt, explanation, and responseInputField into items collection if they
-     * are not already present</li>
+     * <li>If property name nor binding path is set on the explanation field, sets to generic form property</li>
+     * <li>Move custom dialogGroup properties prompt and explanation into items collection if the
+     * items list is not already populated</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -103,41 +94,33 @@ public class DialogGroup extends GroupBase {
     public void performInitialization(Object model) {
         super.performInitialization(model);
 
-        // move dialogGroup custom properties into the items property.
-        // where they will be rendered by group.jsp
-        List<Component> newItems = new ArrayList<Component>();
-        List<? extends Component> items = getItems();
-
-        // do not add the custom properties if they are already present
-        if (!(items.contains(prompt))) {
-            newItems.add(prompt);
+        if ((explanation != null) && StringUtils.isBlank(explanation.getPropertyName()) && StringUtils.isBlank(
+                explanation.getBindingInfo().getBindingPath())) {
+            explanation.setPropertyName(UifPropertyPaths.DIALOG_EXPLANATIONS + "['" + getId() + "']");
+            explanation.getBindingInfo().setBindToForm(true);
         }
 
-        if (!(items.contains(explanation))) {
-            newItems.add(explanation);
+        if ((getItems() == null) || getItems().isEmpty()) {
+            List<Component> items = new ArrayList<Component>();
+
+            if (prompt != null) {
+                items.add(prompt);
+            }
+
+            if (explanation != null) {
+                items.add(explanation);
+            }
+
+            setItems(items);
         }
-
-        newItems.addAll(getItems());
-
-        if (!(items.contains(responseInputField))) {
-            newItems.add(responseInputField);
-        }
-
-        this.setItems(newItems);
     }
 
     /**
      * The following actions are performed in this phase:
      *
-     * <p>
      * <ul>
-     * <li>set the promptText in the message</li>
-     * <li>sets whether to render explanation field</li>
-     * <li>set the options for the checkbox control to the availableResponses KeyValue property of
-     * this dialogGroup</li>
-     * <li>orders response buttons</li>
+     * <li>For each configured key value response, create an action component and add to the footer items.</li>
      * </ul>
-     * </p>
      *
      * {@inheritDoc}
      */
@@ -145,171 +128,135 @@ public class DialogGroup extends GroupBase {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
-        // set the messageTest to the promptText
-        prompt.setMessageText(promptText);
+        // create action in footer for each configured key value response
+        if ((availableResponses != null) && !availableResponses.isEmpty()) {
+            List<Component> footerItems = new ArrayList<Component>();
 
-        // hide or show explanation
-        explanation.setRender(displayExplanation);
+            for (KeyValue keyValue : availableResponses) {
+                Action responseAction = ComponentFactory.getSecondaryAction();
 
-        // add options to checkbox
-        if (responseInputField.getControl() != null && responseInputField.getControl() instanceof MultiValueControl) {
-            MultiValueControl multiValueControl = (MultiValueControl) responseInputField.getControl();
+                responseAction.setDialogDismissOption(UifConstants.DialogDismissOption.PRESUBMIT.name());
+                responseAction.setDialogResponse(keyValue.getKey());
 
-            if (reverseButtonOrder) {
-                // reverse the button order (without changing original list)
-                List<KeyValue> buttonList = new ArrayList<KeyValue>(availableResponses);
-                Collections.reverse(buttonList);
-                multiValueControl.setOptions(buttonList);
-            } else {
-                multiValueControl.setOptions(availableResponses);
+                responseAction.setActionLabel(keyValue.getValue());
+
+                footerItems.add(responseAction);
             }
+
+            if (getFooter() == null) {
+                setFooter(ComponentFactory.getFooter());
+            }
+
+            if (getFooter().getItems() != null) {
+                footerItems.addAll(getFooter().getItems());
+            }
+
+            getFooter().setItems(footerItems);
         }
     }
 
     /**
      * The following actions are performed in this phase:
      *
-     * <p>
      * <ul>
-     * <li>handle render via ajax configuration</li>
-     * <li>adds script to the response input field for trigger the 'response' event</li>
+     * <li>Add data attributes for any configured event handlers</li>
      * </ul>
-     * </p>
      *
-     * @param model top level object containing the data
-     * @param parent parent component
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        if (responseInputField != null) {
-            String responseInputSelector = "#" + responseInputField.getId() + " [name='" +
-                    responseInputField.getBindingInfo().getBindingPath() + "']";
-
-            String onChangeScript = "var value = coerceValue(\"" + responseInputField.getBindingInfo().getBindingPath()
-                    + "\");";
-            onChangeScript += "jQuery('#" + getId() + "').trigger({type:'" + UifConstants.JsEvents.DIALOG_RESPONSE
-                    + "',value:value});";
-
-            String onChangeHandler = "jQuery(\"" + responseInputSelector + "\").change(function(e){" + onChangeScript
-                    + "});";
-
-            String onReadyScript = ScriptUtils.appendScript(getOnDocumentReadyScript(), onChangeHandler);
-            setOnDocumentReadyScript(onReadyScript);
+        if (StringUtils.isNotBlank(this.onDialogResponseScript)) {
+            addDataAttribute(UifConstants.DataAttributes.DIALOG_RESPONSE_HANDLER, this.onDialogResponseScript);
         }
+
+        if (StringUtils.isNotBlank(this.onShowDialogScript)) {
+            addDataAttribute(UifConstants.DataAttributes.DIALOG_SHOW_HANDLER, this.onShowDialogScript);
+        }
+
+        if (StringUtils.isNotBlank(this.onHideDialogScript)) {
+            addDataAttribute(UifConstants.DataAttributes.DIALOG_HIDE_HANDLER, this.onHideDialogScript);
+        }
+
+        // Dialogs do not have a visual "parent" on the page so remove this data attribute
+        this.getDataAttributes().remove(UifConstants.DataAttributes.PARENT);
     }
 
     /**
-     * Override to add the handler script for the dialog response and show dialog events
+     * Text to be displayed as the prompt or main message in this simple dialog.
      *
-     * {@inheritDoc}
-     */
-    @Override
-    public String getEventHandlerScript() {
-        String handlerScript = super.getEventHandlerScript();
-
-        handlerScript += ScriptUtils.buildEventHandlerScript(getId(), UifConstants.JsEvents.DIALOG_RESPONSE,
-                getOnDialogResponseScript());
-
-        handlerScript += ScriptUtils.buildEventHandlerScript(getId(), UifConstants.JsEvents.SHOW_DIALOG,
-                getOnShowDialogScript());
-
-        return handlerScript;
-    }
-
-    /**
-     * Returns the text to be displayed as the prompt or main message in this simple dialog
+     * <p>This is a convenience method for setting the message text on {@link DialogGroup#getPrompt()}</p>
      *
      * @return String containing the prompt text
      */
-
     @BeanTagAttribute(name = "promptText")
     public String getPromptText() {
-        return promptText;
+        if (prompt != null) {
+            return prompt.getMessage().getMessageText();
+        }
+
+        return null;
     }
 
     /**
-     * Sets the text String to display as the main message in this dialog
-     *
-     * @param promptText the String to be displayed as the main message
+     * @see DialogGroup#getPromptText()
      */
     public void setPromptText(String promptText) {
-        this.promptText = promptText;
+        if (prompt == null) {
+            prompt = ComponentFactory.getMessageField();
+        }
+
+        prompt.setMessageText(promptText);
     }
 
     /**
-     * Retrieves the Message element for this dialog
+     * Message component to use for the dialog prompt.
      *
-     * @return Message the text element containing the message string
+     * @return Message component for prompt
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "prompt", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MessageField getPrompt() {
         return prompt;
     }
 
     /**
-     * Sets the prompt Message for this dialog
-     *
-     * @param prompt The Message element for this dialog
+     * @see DialogGroup#getPrompt()
      */
     public void setPrompt(MessageField prompt) {
         this.prompt = prompt;
     }
 
     /**
-     * Retrieves the explanation InputField used to gather user input text from the dialog
+     * Input field use to gather explanation text with the dialog.
      *
-     * <p>
-     * By default, the control for this input is configured as a TextAreaControl. It may be configured for
-     * other types of input fields.
-     * </p>
+     * <p>By default, the control for this input is configured as a TextAreaControl. It may be configured for
+     * other types of input fields.</p>
      *
      * @return InputField component
      */
+    @ViewLifecycleRestriction
     @BeanTagAttribute(name = "explanation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public InputField getExplanation() {
         return explanation;
     }
 
     /**
-     * Sets the InputField for gathering user text input
-     *
-     * @param explanation InputField
+     * @see DialogGroup#getExplanation()
      */
     public void setExplanation(InputField explanation) {
         this.explanation = explanation;
     }
 
     /**
-     * determines if the explanation InputField is to be displayed in this dialog
+     * List of options that are available for the user to choice as a response to the dialog.
      *
-     * <p>
-     * False by default.
-     * </p>
+     * <p>If given, the list of key value pairs is used to create action components that are inserted into the
+     * dialog footer. The key will be used as the response value, and the value as the label for the action.</p>
      *
-     * @return true if this user input is to be rendered, false if not
-     */
-    @BeanTagAttribute(name = "displayExplanation")
-    public boolean isDisplayExplanation() {
-        return displayExplanation;
-    }
-
-    /**
-     * Sets whether to display the Explanation InputField on this dialog
-     *
-     * @param displayExplanation true if explanation control is to be displayed, false if not
-     */
-    public void setDisplayExplanation(boolean displayExplanation) {
-        this.displayExplanation = displayExplanation;
-    }
-
-    /**
-     * Gets the choices provided for user response.
-     *
-     * <p>
-     * A List of KeyValue pairs for each of the choices provided on this dialog.
-     * </p>
+     * <p>Note responses can be also be created by populating the footer items with action components.</p>
      *
      * @return the List of response actions to provide the user
      */
@@ -319,78 +266,40 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Sets the list of user responses to provide on this dialog
-     *
-     * @param availableResponses a List of KeyValue pairs representing the user response choices
+     * @see DialogGroup#getAvailableResponses()
      */
     public void setAvailableResponses(List<KeyValue> availableResponses) {
         this.availableResponses = availableResponses;
     }
 
     /**
-     * Retrieves the InputField containing the choices displayed in this dialog
+     * Indicates whether the dialog should be rendered as a large modal (default is small).
      *
-     * <p>
-     * By default, this InputField is configured to be a HorizontalCheckboxControl.
-     * Styling is then used to make the checkboxes appear to be buttons.
-     * The values of the availableResponses List are used as labels for the "buttons".
-     * </p>
-     *
-     * @return InputField component within this dialog
+     * @return boolean true if large modal should be rendered, false if not (small)
      */
-    @BeanTagAttribute(name = "responseInputField", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public InputField getResponseInputField() {
-        return responseInputField;
+    public boolean isModalLarge() {
+        return modalLarge;
     }
 
     /**
-     * Sets the type of InputField used to display the user choices in this dialog
-     *
-     * @param responseInputField a component used to display the response choices
+     * @see DialogGroup#isModalLarge()
      */
-    public void setResponseInputField(InputField responseInputField) {
-        this.responseInputField = responseInputField;
+    public void setModalLarge(boolean modalLarge) {
+        this.modalLarge = modalLarge;
     }
 
     /**
-     * Determines the positioning order of the choices displayed on this dialog
+     * Script that will be invoked when the dialog response event is thrown.
      *
-     * <p>
-     * Some page designers like the positive choice on the left and the negative choice on the right.
-     * Others, prefer just the opposite. This allows the order to easily be switched.
-     * </p>
+     * <p>The dialog group will throw a custom event type 'dialogresponse.uif' when an response action within the
+     * dialog is selected. Script given here will bind to that event as a handler</p>
      *
-     * @return true if choices left to right
-     *         false if choices right to left
-     */
-    @BeanTagAttribute(name = "reverseButtonOrder")
-    public boolean isReverseButtonOrder() {
-        return reverseButtonOrder;
-    }
-
-    /**
-     * Sets the display order of the choices displayed on this dialog
+     * <p>The event object contains:
+     * event.response - response value for the action that was selected
+     * event.action - jQuery object for the action element that was selected
+     * event.dialogId - id for the dialog the response applies to</p>
      *
-     * <p>
-     * By default, the choices are displayed left to right
-     * </p>
-     *
-     * @param reverseButtonOrder true if buttons displayed left to right, false if right to left
-     */
-    public void setReverseButtonOrder(boolean reverseButtonOrder) {
-        this.reverseButtonOrder = reverseButtonOrder;
-    }
-
-    /**
-     * Script that will be invoked when the response event is thrown
-     *
-     * <p>
-     * The dialog group will throw a custom event type 'dialogresponse.uif' when a change occurs for the response
-     * input field (for example one of the response options is selected). Script given here will bind to that
-     * event as a handler
-     * </p>
-     *
-     * @return javascript that will execute for the response event
+     * @return js that will execute for the response event
      */
     @BeanTagAttribute(name = "onDialogResponseScript")
     public String getOnDialogResponseScript() {
@@ -398,24 +307,20 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Setter for the 'dialogresponse.uif' event handler code
-     *
-     * @param onDialogResponseScript
+     * @see DialogGroup#getOnDialogResponseScript()
      */
     public void setOnDialogResponseScript(String onDialogResponseScript) {
         this.onDialogResponseScript = onDialogResponseScript;
     }
 
     /**
-     * Script that will get invoked when the dialog group is shown
+     * Script that will get invoked when the dialog group is shown.
      *
-     * <p>
-     * Initially a dialog group will either be hidden in the DOM or not present at all (if retrieved via Ajax).
-     * When the dialog is triggered and shown, the 'showdialog.uif' event will be thrown and this script will
-     * be executed
-     * </p>
+     * <p>Initially a dialog group will either be hidden in the DOM or not present at all (if retrieved via Ajax).
+     * When the dialog is triggered and shown, a show event will be thrown and this script will
+     * be executed</p>
      *
-     * @return JavaScript code to execute when the dialog is shown
+     * @return js code to execute when the dialog is shown
      */
     @BeanTagAttribute(name = "onShowDialogScript")
     public String getOnShowDialogScript() {
@@ -423,11 +328,25 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Setter for the 'showdialog.uif' event handler code
-     *
-     * @param onShowDialogScript
+     * @see DialogGroup#getOnShowDialogScript()
      */
     public void setOnShowDialogScript(String onShowDialogScript) {
         this.onShowDialogScript = onShowDialogScript;
+    }
+
+    /**
+     * Script that will get invoked when the dialog group is hidden.
+     *
+     * @return js code to execute when the dialog is hidden
+     */
+    public String getOnHideDialogScript() {
+        return onHideDialogScript;
+    }
+
+    /**
+     * @see DialogGroup#getOnHideDialogScript()
+     */
+    public void setOnHideDialogScript(String onHideDialogScript) {
+        this.onHideDialogScript = onHideDialogScript;
     }
 }

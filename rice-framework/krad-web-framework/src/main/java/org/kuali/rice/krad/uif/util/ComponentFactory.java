@@ -45,7 +45,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.LinkGroup;
-import org.kuali.rice.krad.uif.container.NavigationGroup;
+import org.kuali.rice.krad.uif.container.TabNavigationGroup;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.container.TreeGroup;
@@ -78,6 +78,7 @@ import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.field.SpaceField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -117,6 +118,7 @@ public class ComponentFactory {
     public static final String LOOKUP_INPUT_FIELD = "Uif-LookupCriteriaInputField";
     public static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
     public static final String ACTION = "Uif-PrimaryActionButton";
+    public static final String SECONDARY_ACTION = "Uif-SecondaryActionButton";
     public static final String ACTION_LINK = "Uif-ActionLink";
     public static final String LINK_FIELD = "Uif-LinkField";
     public static final String IFRAME = "Uif-Iframe";
@@ -167,10 +169,12 @@ public class ComponentFactory {
     public static final String INQUIRY = "Uif-Inquiry";
 
     public static final String ADD_BLANK_LINE_ACTION = "Uif-AddBlankLineAction";
-    public static final String ADD_VIA_LIGHTBOX_ACTION = "Uif-AddViaLightBoxAction";
+    public static final String ADD_WITH_DIALOG_ACTION = "Uif-AddWithDialogAction";
+    public static final String ADD_LINE_DIALOG = "Uif-AddLineDialog";
 
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";
+    public static final String YES_NO_DIALOG = "Uif-DialogGroup-YesNo";
 
     public static final String INQUIRY_VIEW = "Uif-InquiryView";
     public static final String LOOKUP_VIEW = "Uif-LookupView";
@@ -180,6 +184,29 @@ public class ComponentFactory {
     public static final String URL_INFO = "Uif-Url";
 
     private static Map<String, Component> cache = new HashMap<String, Component>();
+
+    /**
+     * Returns a new {@link Component} instance for the given bean id from the spring factory.
+     *
+     * @param id id for the component in the view index
+     * @return Component new instance
+     */
+    public static Component getNewInstanceForRefresh(ViewPostMetadata viewPostMetadata, String id) {
+        String baseId = (String) viewPostMetadata.getComponentPostMetadata(id)
+                .getData(UifConstants.PostMetadata.BASE_ID);
+        if (baseId == null) {
+            throw new RuntimeException(
+                    "Cannot create new instance for refresh. Base id not found for component id: " + id);
+        }
+
+        Component component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(baseId);
+
+        if (component != null) {
+            component = ComponentUtils.copy(component);
+        }
+
+        return component;
+    }
 
     /**
      * Returns a new {@link Component} instance for the given bean id from the spring factory.
@@ -770,6 +797,15 @@ public class ComponentFactory {
     }
 
     /**
+     * Returns an instance of a secondary action component.
+     *
+     * @return action
+     */
+    public static Action getSecondaryAction() {
+        return (Action) getNewComponentInstance(SECONDARY_ACTION);
+    }
+
+    /**
      * Gets the action link
      *
      * @return action link
@@ -985,8 +1021,8 @@ public class ComponentFactory {
      *
      * @return navigation group
      */
-    public static NavigationGroup getNavigationGroup() {
-        return (NavigationGroup) getNewComponentInstance(NAVIGATION_GROUP);
+    public static TabNavigationGroup getNavigationGroup() {
+        return (TabNavigationGroup) getNewComponentInstance(NAVIGATION_GROUP);
     }
 
     /**
@@ -1167,6 +1203,15 @@ public class ComponentFactory {
      */
     public static DialogGroup getSessionTimeoutDialog() {
         return (DialogGroup) getNewComponentInstance(SESSION_TIMEOUT_DIALOG);
+    }
+
+    /**
+     * Gets an instance of the yes no dialog
+     *
+     * @return instance of yes no dialog
+     */
+    public static DialogGroup getYesNoDialog() {
+        return (DialogGroup) getNewComponentInstance(YES_NO_DIALOG);
     }
 
     /**

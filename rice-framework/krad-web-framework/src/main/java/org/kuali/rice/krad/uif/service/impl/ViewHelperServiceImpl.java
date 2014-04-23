@@ -42,6 +42,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -968,6 +969,32 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     variableExpression.getValue());
             view.pushObjectToContext(variableName, value);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setElementContext(LifecycleElement element, LifecycleElement parent) {
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        View view = ViewLifecycle.getView();
+        Map<String, Object> viewContext = view.getContext();
+        if (viewContext != null) {
+            context.putAll(viewContext);
+        }
+
+        context.put(UifConstants.ContextVariableNames.COMPONENT, element instanceof Component ? element : parent);
+
+        if (parent != null) {
+            context.put(UifConstants.ContextVariableNames.PARENT, parent);
+        }
+
+        if (element instanceof LayoutManager) {
+            context.put(UifConstants.ContextVariableNames.MANAGER, element);
+        }
+
+        element.pushAllToContext(context);
     }
 
     /**

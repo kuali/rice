@@ -15,18 +15,8 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.lookup.LookupUtils;
@@ -35,11 +25,12 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRefreshBuild;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.view.DialogManager;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -50,6 +41,7 @@ import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,7 +49,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -80,7 +79,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
 
-    private UrlBasedViewResolver viewResolver;
+    protected @Autowired HttpServletRequest request;
 
     /**
      * Create/obtain the model(form) object before it is passed to the Binder/BeanWrapper. This method
@@ -261,7 +260,7 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+                 new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
@@ -295,7 +294,7 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+                 new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
@@ -334,7 +333,7 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+                 new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
@@ -375,7 +374,7 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                response, new Runnable() {
+                 new Runnable() {
             @Override
             public void run() {
                 ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
@@ -511,7 +510,7 @@ public abstract class UifControllerBase {
     public ModelAndView refresh(@ModelAttribute("KualiForm") final UifFormBase form, BindingResult result,
             final HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request, response,
+        ViewLifecycle.encapsulateLifecycle(form.getView(), form, form.getViewPostMetadata(), null, request,
                 new ViewLifecycleRefreshBuild());
 
         return getUIFModelAndView(form);
@@ -653,6 +652,11 @@ public abstract class UifControllerBase {
     AttributeQueryResult performFieldQuery(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        String formKey = request.getParameter(UifParameters.FORM_KEY);
+
+        UifFormBase currentForm = uifFormManager.getSessionForm(formKey);
+
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
@@ -680,198 +684,56 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * returns whether this dialog has been displayed on the client
+     * Invoked by controller methods to show a dialog to the user.
      *
-     * @param dialogId - the id of the dialog
-     * @param form - form instance containing the request data
-     * @return boolean - true if dialog has been displayed, false if not
+     * <p>This will return back to the view and display the dialog to the user. When the users chooses a response,
+     * the initial action that triggered the controller method (which called showDialog) will be triggered again. The
+     * response will be captured in the form property
+     * {@link org.kuali.rice.krad.web.form.UifFormBase#getDialogResponses()}. In the case of a confirmation, if 'false'
+     * (typically labeled cancel) is choosen the initial action will simply not be triggered again.</p>
+     *
+     * @param dialogId id for the dialog group to show
+     * @param confirmation whether the dialog should be shown as a confirmation, in this case it is expected the
+     * options are true (continue) or false (stop)
+     * @param form form instance
+     * @return model and view for rendering
      */
-    protected boolean hasDialogBeenDisplayed(String dialogId, UifFormBase form) {
-        return (form.getDialogManager().hasDialogBeenDisplayed(dialogId));
-    }
-
-    /**
-     * returns whether the dialog has already been answered by the user
-     *
-     * @param dialogId - identifier for the dialog group
-     * @param form - form instance containing the request data
-     * @return boolean - true if client has already responded to the dialog, false otherwise
-     */
-    protected boolean hasDialogBeenAnswered(String dialogId, UifFormBase form) {
-        return (form.getDialogManager().hasDialogBeenAnswered(dialogId));
-    }
-
-    /**
-     * Sets the status of the dialog tracking record to indicate that this dialog
-     * has not yet been asked or answered
-     *
-     * @param dialogId - the id of the dialog
-     * @param form - form instance containing the request data
-     */
-    protected void resetDialogStatus(String dialogId, UifFormBase form) {
-        form.getDialogManager().resetDialogStatus(dialogId);
-    }
-
-    /**
-     * Handles a modal dialog interaction with the client user when a @{boolean} response is desired
-     *
-     * <p>
-     * If this modal dialog has not yet been presented to the user, a runtime exception is thrown.   Use the following
-     * code in the view controller to ensure the dialog has been displayed and answered:
-     * <pre>{@code
-     *  DialogManager dm = form.getDialogManager();
-     *  if (!dm.hasDialogBeenAnswered(dialogId)) {
-     *      return showDialog(dialogId, form, request, response);
-     *  }
-     *  answer = getBooleanDialogResponse(dialogId, form, request, response);
-     * }</pre>
-     * </p>
-     *
-     * <p>
-     * If the dialog has already been answered by the user.  The boolean value representing the
-     * option chosen by the user is returned back to the calling controller
-     * </p>
-     *
-     * @param dialogId - identifier of the dialog group
-     * @param form - form instance containing the request data
-     * @param request - the http request
-     * @param response - the http response
-     * @return boolean - true if user chose affirmative response, false if negative response was chosen
-     * @throws RiceRuntimeException when dialog has not been answered.
-     */
-    protected boolean getBooleanDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
-        DialogManager dm = form.getDialogManager();
-        if (!dm.hasDialogBeenAnswered(dialogId)) {
-
-            // ToDo: It would be nice if showDialog could be called here and avoid this exception.
-            //       This would also remove the need of having to call showDialog explicitly.
-
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
-                    "Check that hasDialogBeenAnswered(id) returns true.");
-        }
-
-        return dm.wasDialogAnswerAffirmative(dialogId);
-    }
-
-    /**
-     * Handles a modal dialog interaction with the client user when a @{code String} response is desired
-     *
-     * <p>
-     * If this modal dialog has not yet been presented to the user, a runtime exception is thrown.   Use the following
-     * code in the view controller to ensure the dialog has been displayed and answered:
-     * <pre>{@code
-     *  DialogManager dm = form.getDialogManager();
-     *  if (!dm.hasDialogBeenAnswered(dialogId)) {
-     *      return showDialog(dialogId, form, request, response);
-     *  }
-     *  answer = getBooleanDialogResponse(dialogId, form, request, response);
-     * }</pre>
-     * </p>
-     *
-     * <p>
-     * If the dialog has already been answered by the user.  The string value is the key string of the key/value pair
-     * assigned to the button that the user chose.
-     * </p>
-     *
-     * @param dialogId - identifier of the dialog group
-     * @param form - form instance containing the request data
-     * @param request - the http request
-     * @param response - the http response
-     * @return the key string of the response button
-     * @throws RiceRuntimeException when dialog has not been answered.
-     */
-
-    protected String getStringDialogResponse(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
-        DialogManager dm = form.getDialogManager();
-        if (!dm.hasDialogBeenAnswered(dialogId)) {
-            // ToDo: It would be nice if showDialog could be called here and avoid this exception.
-            //       This would also remove the need of having to call showDialog explicitly.
-
-            throw new RiceRuntimeException("Dialog has not yet been answered by client. " +
-                    "Check that hasDialogBeenAnswered(id) returns true.");
-        }
-
-        return dm.getDialogAnswer(dialogId);
-    }
-
-    /**
-     * Complete the response directly and launch lightbox with dialog content upon returning back to the client. If it
-     * is an ajax request then set the ajaxReturnType and set the updateComponentId to the dialogId.
-     *
-     * <p>
-     * Need to build up the view/component properly as we would if we returned normally back to the DispatcherServlet
-     * from the controller method.
-     * </p>
-     *
-     * @param dialogId - id of the dialog or group to use as content in the lightbox.
-     * @param form - the form associated with the view
-     * @param request - the http request
-     * @param response - the http response
-     * @return will return void.  actually, won't return at all.
-     * @throws Exception
-     */
-    protected ModelAndView showDialog(String dialogId, UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
-        // js script to invoke lightbox: runs onDocumentReady
-        form.setLightboxScript("openLightboxOnLoad('" + dialogId + "');");
-        form.getDialogManager().addDialog(dialogId, form.getMethodToCall());
-
-        // if the dialog is being invoked sever side via ajax set the ajaxReturnType to update-dialog
-        // and set the updateComponentId to the dialogId
+    protected ModelAndView showDialog(String dialogId, boolean confirmation, UifFormBase form) {
         if (form.isAjaxRequest()) {
             form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEDIALOG.getKey());
             form.setUpdateComponentId(dialogId);
         }
 
-        return getUIFModelAndView(form);
-    }
+        StringBuilder showDialogScript = new StringBuilder();
 
-    /**
-     * Common return point for dialogs
-     *
-     * <p>
-     * Determines the user responses to the dialog. Performs dialog management and then redirects to the
-     * original contoller method.
-     * </p>
-     *
-     * @param form - current form
-     * @param result - binding result
-     * @param request - http request
-     * @param response - http response
-     * @return ModelAndView setup for redirect to original controller methodToCall
-     * @throws Exception
-     */
-    @MethodAccessible
-    @RequestMapping(params = "methodToCall=returnFromLightbox")
-    public ModelAndView returnFromLightbox(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-        String newMethodToCall = "";
+        showDialogScript.append(UifConstants.JsFunctions.SHOW_DIALOG);
+        showDialogScript.append("('");
+        showDialogScript.append(dialogId);
+        showDialogScript.append("', {responseHandler: ");
+        showDialogScript.append(UifConstants.JsFunctions.HANDLE_SERVER_DIALOG_RESPONSE);
+        showDialogScript.append(",responseEventData:{triggerActionId:'");
+        showDialogScript.append(form.getTriggerActionId());
+        showDialogScript.append("',confirmation:");
+        showDialogScript.append(confirmation);
+        showDialogScript.append("}});");
 
-        // Save user responses from dialog
-        DialogManager dm = form.getDialogManager();
-        String dialogId = dm.getCurrentDialogId();
-        if (dialogId == null) {
-            // may have been invoked by client.
-            // TODO:  handle this case (scheduled for 2.2-m3)
-            // for now, log WARNING and default to start, can we add a growl?
-            newMethodToCall = "start";
+        ModelAndView modelAndView = getUIFModelAndView(form);
+        UifControllerHelper.prepareView(request, modelAndView);
+
+        Component updateComponent;
+        if (form.isAjaxRequest()) {
+            updateComponent = form.getUpdateComponent();
         } else {
-            dm.setDialogAnswer(dialogId, form.getDialogResponse());
-            dm.setDialogExplanation(dialogId, form.getDialogExplanation());
-            newMethodToCall = dm.getDialogReturnMethod(dialogId);
-            dm.setCurrentDialogId(null);
+            updateComponent = form.getView();
         }
 
-        // call intended controller method
-        Properties props = new Properties();
-        props.put(UifParameters.METHOD_TO_CALL, newMethodToCall);
-        props.put(UifParameters.VIEW_ID, form.getViewId());
-        props.put(UifParameters.FORM_KEY, form.getFormKey());
-        props.put(UifParameters.AJAX_REQUEST, "false");
+        String onReadyScript = ScriptUtils.appendScript(updateComponent.getOnDocumentReadyScript(),
+                showDialogScript.toString());
+        updateComponent.setOnDocumentReadyScript(onReadyScript);
 
-        return performRedirect(form, form.getFormPostUrl(), props);
+        request.setAttribute(UifParameters.Attributes.VIEW_LIFECYCLE_COMPLETE, "true");
+
+        return modelAndView;
     }
 
     /**

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.lookup;
 
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.web.form.DialogResponse;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,17 +40,17 @@ public class TravelAccountController extends MaintenanceDocumentController {
     @Override
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        String dialog = "TravelAccount-RouteConfirmationDialog";
-        if (!hasDialogBeenAnswered(dialog, form)) {
-            return showDialog(dialog, form, request, response);
+        String dialog = "TravelAuthorization-RouteConfirmationDialog";
+        DialogResponse routeConfirmDialog = form.getDialogResponse(dialog);
+        if (routeConfirmDialog == null) {
+            return showDialog(dialog, true, form);
         }
 
-        boolean dialogAnswer = getBooleanDialogResponse(dialog, form, request, response);
+        boolean dialogAnswer = routeConfirmDialog.getResponseAsBoolean();
         if (dialogAnswer) {
             return super.route(form, result, request, response);
-        } else {
-            resetDialogStatus(dialog, form);
-            return getUIFModelAndView(form);
         }
+
+        return getUIFModelAndView(form);
     }
 }

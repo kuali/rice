@@ -15,12 +15,26 @@
     limitations under the License.
 
 -->
-<#macro uif_tabs widget parent>
+<#--
+    Generates span and label then invoked template for message component
 
-    <@krad.script component=parent value="createTabs('${parent.id}', '${widget.id}',
-        ${widget.templateOptionsJSString}, '${widget.position.toString()}');"/>
+ -->
+
+<#macro uif_progressBarField field>
+
+    <@krad.div component=field>
+
+    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
+        <#local renderLabel=field.label?has_content && !field.labelRendered/>
+
+    <#-- render field label top -->
+        <#if renderLabel>
+            <@krad.template component=field.fieldLabel/>
+        </#if>
+
+        <@krad.template component=field.progressBar/>
+
+
+    </@krad.div>
 
 </#macro>
-
-
-

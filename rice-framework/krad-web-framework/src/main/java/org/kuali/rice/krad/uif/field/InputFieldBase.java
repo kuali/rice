@@ -55,6 +55,7 @@ import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -157,18 +158,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * The following initialization is performed:
-     *
-     * <ul>
-     * <li>Initializes instructional and constraint message fields if necessary</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
     public void performInitialization(Object model) {
         super.performInitialization(model);
-        
+
         if ((StringUtils.isNotBlank(constraintText) || (getPropertyExpression("constraintText") != null)) && (
                 constraintMessage
                         == null)) {
@@ -180,7 +175,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
                         == null)) {
             instructionalMessage = ComponentFactory.getInstructionalMessage();
         }
-
     }
 
     /**
@@ -239,10 +233,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         if (this.enableAutoDirectInquiry && (getInquiry() == null) && !isReadOnly()) {
             buildAutomaticInquiry(model, true);
+            ContextUtils.pushAllToContextDeep(getInquiry(), this.getContext());
         }
 
         if (this.enableAutoQuickfinder && (getQuickfinder() == null)) {
             buildAutomaticQuickfinder(model);
+            ContextUtils.pushAllToContextDeep(quickfinder, this.getContext());
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
@@ -265,18 +261,19 @@ public class InputFieldBase extends DataFieldBase implements InputField {
                 }
             }
         }
+
+        if(control != null && quickfinder != null && quickfinder.getQuickfinderAction() != null) {
+            String disabledExpression = control.getPropertyExpression("disabled");
+            if(StringUtils.isNotBlank(disabledExpression)) {
+                quickfinder.getQuickfinderAction().getPropertyExpressions().put("disabled", disabledExpression);
+            }  else {
+                quickfinder.getQuickfinderAction().setDisabled(control.isDisabled());
+            }
+        }
+
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Set the ids for the various attribute components</li>
-     * <li>Sets up the client side validation for constraints on this field. In
-     * addition, it sets up the messages applied to this field</li>
-     * <li>Disable native autocomplete with the suggest widget is configured</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
@@ -343,7 +340,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
         StateMapping stateMapping = view.getStateMapping();
         String nextStateReqIndicator = (String) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(
-                        UifConstants.REQUIRED_NEXT_STATE_INDICATOR_ID);
+                UifConstants.REQUIRED_NEXT_STATE_INDICATOR_ID);
 
         if (stateMapping != null) {
             String validationState = ConstraintStateUtils.getClientViewValidationState(model, view);
@@ -521,8 +518,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      */
     protected void setupFieldQuery() {
         if (getAttributeQuery() != null) {
-            getAttributeQuery().defaultQueryTarget(ViewLifecycle.getHelper());
-
             // adjust paths on query mappings
             getAttributeQuery().updateQueryFieldMapping(getBindingInfo());
             getAttributeQuery().updateReturnFieldMapping(getBindingInfo());
@@ -538,7 +533,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             this.setRenderInfoMessageSpan(true);
 
             if (StringUtils.isNotBlank(getControl().getOnBlurScript())) {
-                script = getControl().getOnBlurScript() + ";" + script;
+                script = getControl().getOnBlurScript() + script;
             }
             getControl().setOnBlurScript(script);
         }
@@ -565,14 +560,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Defaults the properties of the {@code InputField} to the
-     * corresponding properties of its {@code AttributeDefinition}
-     * retrieved from the dictionary (if such an entry exists). If the field
-     * already contains a value for a property, the definitions value is not
-     * used.
-     *
-     * @param attributeDefinition AttributeDefinition instance the property values should be
-     * copied from
+     * {@inheritDoc}
      */
     @Override
     public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
@@ -682,80 +670,61 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * {@code Control} instance that should be used to input data for the
-     * field
-     *
-     * <p>
-     * When the field is editable, the control will be rendered so the user can
-     * input a value(s). Controls typically are part of a Form and render
-     * standard HTML control elements such as text input, select, and checkbox
-     * </p>
-     *
-     * @return Control instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Control getControl() {
         return this.control;
     }
 
     /**
-     * Setter for the field's control
-     *
-     * @param control
+     * {@inheritDoc}
      */
+    @Override
     public void setControl(Control control) {
         this.control = control;
     }
 
     /**
-     * Field that contains the messages (errors) for the input field. The
-     * {@code ValidationMessages} holds configuration on associated messages along
-     * with information on rendering the messages in the user interface
-     *
-     * @return ValidationMessages instance
+     * {@inheritDoc}
      */
     @ViewLifecycleRestriction
+    @Override
     @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public ValidationMessages getValidationMessages() {
         return this.validationMessages;
     }
 
     /**
-     * Setter for the input field's errors field
-     *
-     * @param validationMessages
+     * {@inheritDoc}
      */
+    @Override
     public void setValidationMessages(ValidationMessages validationMessages) {
         this.validationMessages = validationMessages;
     }
 
     /**
-     * Instance of {@code KeyValuesFinder} that should be invoked to
-     * provide a List of values the field can have. Generally used to provide
-     * the options for a multi-value control or to validate the submitted field
-     * value
-     *
-     * @return KeyValuesFinder instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "optionsFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
 
     /**
-     * Setter for the field's KeyValuesFinder instance
-     *
-     * @param optionsFinder
+     * {@inheritDoc}
      */
+    @Override
     public void setOptionsFinder(KeyValuesFinder optionsFinder) {
         this.optionsFinder = optionsFinder;
     }
 
     /**
-     * Get the class of the optionsFinder being used by this InputField
-     *
-     * @return the class of the set optionsFinder, if not set or not applicable, returns null
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "optionsFinderClass")
     public Class<? extends KeyValuesFinder> getOptionsFinderClass() {
         if (this.optionsFinder != null) {
@@ -766,178 +735,124 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Setter that takes in the class name for the options finder and creates a
-     * new instance to use as the finder for the input field
-     *
-     * @param optionsFinderClass the options finder class to set
+     * {@inheritDoc}
      */
+    @Override
     public void setOptionsFinderClass(Class<? extends KeyValuesFinder> optionsFinderClass) {
         this.optionsFinder = KRADUtils.createNewObjectFromClass(optionsFinderClass);
     }
 
     /**
-     * Indicates whether direct inquiries should be automatically set when a relationship for
-     * the field's property is found
-     *
-     * <p>
-     * Note this only applies when the {@link #getInquiry()} widget has not been configured (is null)
-     * and is set to true by default
-     * </p>
-     *
-     * @return true if auto direct inquiries are enabled, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean isEnableAutoDirectInquiry() {
         return enableAutoDirectInquiry;
     }
 
     /**
-     * Setter for enabling automatic direct inquiries
-     *
-     * @param enableAutoDirectInquiry
+     * {@inheritDoc}
      */
+    @Override
     public void setEnableAutoDirectInquiry(boolean enableAutoDirectInquiry) {
         this.enableAutoDirectInquiry = enableAutoDirectInquiry;
     }
 
     /**
-     * Lookup finder widget for the field
-     *
-     * <p>
-     * The quickfinder widget places a small icon next to the field that allows
-     * the user to bring up a search screen for finding valid field values. The
-     * {@code Widget} instance can be configured to point to a certain
-     * {@code LookupView}, or the framework will attempt to associate the
-     * field with a lookup based on its metadata (in particular its
-     * relationships in the model)
-     * </p>
-     *
-     * @return QuickFinder lookup widget
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "quickfinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public QuickFinder getQuickfinder() {
         return this.quickfinder;
     }
 
     /**
-     * Setter for the lookup widget
-     *
-     * @param quickfinder the field lookup widget to set
+     * {@inheritDoc}
      */
+    @Override
     public void setQuickfinder(QuickFinder quickfinder) {
         this.quickfinder = quickfinder;
     }
 
     /**
-     * Indicates whether quickfinders should be automatically set when a relationship for the field's
-     * property is found
-     *
-     * <p>
-     * Note this only applies when the {@link #getQuickfinder()} widget has not been configured (is null)
-     * and is set to true by default
-     * </p>
-     *
-     * @return true if auto quickfinders are enabled, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean isEnableAutoQuickfinder() {
         return enableAutoQuickfinder;
     }
 
     /**
-     * Setter for enabling automatic quickfinders
-     *
-     * @param enableAutoQuickfinder
+     * {@inheritDoc}
      */
+    @Override
     public void setEnableAutoQuickfinder(boolean enableAutoQuickfinder) {
         this.enableAutoQuickfinder = enableAutoQuickfinder;
     }
 
     /**
-     * Suggest box widget for the input field
-     *
-     * <p>
-     * If enabled (by render flag), as the user inputs data into the
-     * fields control a dynamic query is performed to provide the user
-     * suggestions on values which they can then select
-     * </p>
-     *
-     * <p>
-     * Note the Suggest widget is only valid when using a standard TextControl
-     * </p>
-     *
-     * @return Suggest instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "suggest", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Suggest getSuggest() {
         return suggest;
     }
 
     /**
-     * Setter for the fields suggest widget
-     *
-     * @param suggest the field suggest widget to  set
+     * {@inheritDoc}
      */
+    @Override
     public void setSuggest(Suggest suggest) {
         this.suggest = suggest;
     }
 
     /**
-     * Indicates indicates whether the field can only be updated through a widget
-     *
-     * widgetInputOnly behaves similar to ReadOnly with the exception that the value of the input field
-     * can be changed via the associated widget (e.g. spinner, date picker, quickfinder, etc).
-     *
-     * @return true if only widget input is allowed, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "widgetInputOnly")
     public boolean isWidgetInputOnly() {
         return this.widgetInputOnly;
     }
 
     /**
-     * Setter for the widget input only indicator
-     *
-     * @param widgetInputOnly
+     * {@inheritDoc}
      */
+    @Override
     public void setWidgetInputOnly(boolean widgetInputOnly) {
         this.widgetInputOnly = widgetInputOnly;
     }
 
     /**
-     * Forces rendering of the input group div around the control.
-     *
-     * <p>If other components add content through script that should be grouped with the control, this flag
-     * can be set to true to generate the input group, even though {@link InputField#getPostInputAddons()} may
-     * be empty</p>
-     *
-     * @return boolean true to force rendering of the input group, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean isRenderInputAddonGroup() {
         return renderInputAddonGroup;
     }
 
     /**
-     * @see InputField#isRenderInputAddonGroup()
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderInputAddonGroup(boolean renderInputAddonGroup) {
         this.renderInputAddonGroup = renderInputAddonGroup;
     }
 
     /**
-     * List of CSS classes that will be applied to the span that wraps the post input components.
-     *
-     * TODO: revisist this, possibly getting the classes from component wrapper css classes once created
-     *
-     * @return List of CSS classes
+     * {@inheritDoc}
      */
+    @Override
     public List<String> getPostInputCssClasses() {
         return postInputCssClasses;
     }
 
     /**
-     * Returns the list of post input css classes as a string formed by joining the classes with a space.
-     *
-     * @return post input css classes string
+     * {@inheritDoc}
      */
+    @Override
     public String getPostInputCssClassesAsString() {
         if (postInputCssClasses != null) {
             return StringUtils.join(postInputCssClasses, " ");
@@ -947,38 +862,33 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * @see InputField#getPostInputCssClasses()
+     * {@inheritDoc}
      */
+    @Override
     public void setPostInputCssClasses(List<String> postInputCssClasses) {
         this.postInputCssClasses = postInputCssClasses;
     }
 
     /**
-     * List of components that will be grouped with the input field control to form an input group.
-     *
-     * <p>Generally these are icon, link, or button components that should be rendered with the control.</p>
-     *
-     * <p>See <a href="http://getbootstrap.com/components/#input-groups">Bootstrap Input Groups</a></p>
-     *
-     * @return List of post input components
+     * {@inheritDoc}
      */
+    @Override
     public List<Component> getPostInputAddons() {
         return postInputAddons;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.InputField#getPostInputAddons()
+     * {@inheritDoc}
      */
+    @Override
     public void setPostInputAddons(List<Component> postInputAddons) {
         this.postInputAddons = postInputAddons;
     }
 
     /**
-     * Adds a component to the list of post input addon components.
-     *
-     * @param addOn component to add
-     * @see InputField#getPostInputAddons()
+     * {@inheritDoc}
      */
+    @Override
     public void addPostInputAddon(Component addOn) {
         if (postInputAddons == null) {
             postInputAddons = new ArrayList<Component>();
@@ -988,132 +898,91 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Instructional text that display an explanation of the field usage
-     *
-     * <p>
-     * Text explaining how to use the field, including things like what values should be selected
-     * in certain cases and so on (instructions)
-     * </p>
-     *
-     * @return instructional message
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "instructionalText")
     public String getInstructionalText() {
         return this.instructionalText;
     }
 
     /**
-     * Setter for the instructional message
-     *
-     * @param instructionalText the instructional text to set
+     * {@inheritDoc}
      */
+    @Override
     public void setInstructionalText(String instructionalText) {
         this.instructionalText = instructionalText;
     }
 
     /**
-     * Message field that displays instructional text
-     *
-     * <p>
-     * This message field can be configured to for adjusting how the instructional text will display. Generally
-     * the styleClasses property will be of most interest
-     * </p>
-     *
-     * @return instructional message field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getInstructionalMessage() {
         return this.instructionalMessage;
     }
 
     /**
-     * Setter for the instructional text message field
-     *
-     * <p>
-     * Note this is the setter for the field that will render the instructional text. The actual text can be
-     * set on the field but can also be set using {@link #setInstructionalText(String)}
-     * </p>
-     *
-     * @param instructionalMessage the instructional message to set
+     * {@inheritDoc}
      */
+    @Override
     public void setInstructionalMessage(Message instructionalMessage) {
         this.instructionalMessage = instructionalMessage;
     }
 
     /**
-     * Help text that displays under the control and is disclosed on focus.
-     *
-     * @return String help text for input
+     * {@inheritDoc}
      */
+    @Override
     public String getHelperText() {
         return helperText;
     }
 
     /**
-     * @see InputField#getHelperText()
+     * {@inheritDoc}
      */
+    @Override
     public void setHelperText(String helperText) {
         this.helperText = helperText;
     }
 
     /**
-     * Text that display a restriction on the value a field can hold
-     *
-     * <p>
-     * For example when the value must be a valid format (phone number, email), certain length, min/max value and
-     * so on this text can be used to indicate the constraint to the user. Generally displays with the control so
-     * it is visible when the user tabs to the field
-     * </p>
-     *
-     * @return text to display for the constraint message
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "constraintText")
     public String getConstraintText() {
         return this.constraintText;
     }
 
     /**
-     * Setter for the constraint message text
-     *
-     * @param constraintText the constraint text to set
+     * {@inheritDoc}
      */
+    @Override
     public void setConstraintText(String constraintText) {
         this.constraintText = constraintText;
     }
 
     /**
-     * Message field that displays constraint text
-     *
-     * <p>
-     * This message field can be configured to for adjusting how the constrain text will display. Generally
-     * the styleClasses property will be of most interest
-     * </p>
-     *
-     * @return constraint message field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "constraintMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Message getConstraintMessage() {
         return this.constraintMessage;
     }
 
     /**
-     * Setter for the constraint text message field
-     *
-     * <p>
-     * Note this is the setter for the field that will render the constraint text. The actual text can be
-     * set on the field but can also be set using {@link #setConstraintText(String)}
-     * </p>
-     *
-     * @param constraintMessage the constrain message field to set
+     * {@inheritDoc}
      */
+    @Override
     public void setConstraintMessage(Message constraintMessage) {
         this.constraintMessage = constraintMessage;
     }
 
     /**
-     * The {@code ValidCharactersConstraint} that applies to this {@code InputField}
-     *
-     * @return the valid characters constraint for this input field
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "validCharactersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1122,18 +991,15 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Setter for {@code validCharacterConstraint}
-     *
-     * @param validCharactersConstraint the {@code ValidCharactersConstraint} to set
+     * {@inheritDoc}
      */
+    @Override
     public void setValidCharactersConstraint(ValidCharactersConstraint validCharactersConstraint) {
         this.validCharactersConstraint = validCharactersConstraint;
     }
 
     /**
-     * The {@code CaseConstraint} that applies to this {@code InputField}
-     *
-     * @return the case constraint for this input field
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1142,42 +1008,40 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Setter for {@code caseConstraint}
-     *
-     * @param caseConstraint the {@code CaseConstraint} to set
+     * {@inheritDoc}
      */
+    @Override
     public void setCaseConstraint(CaseConstraint caseConstraint) {
         this.caseConstraint = caseConstraint;
     }
 
     /**
-     * List of {@code PrerequisiteConstraint} that apply to this {@code InputField}
-     *
-     * @return the dependency constraints for this input field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "dependencyConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return this.dependencyConstraints;
     }
 
     /**
-     * Setter for {@code dependencyConstraints}
-     *
-     * @param dependencyConstraints list of {@code PrerequisiteConstraint} to set
+     * {@inheritDoc}
      */
+    @Override
     public void setDependencyConstraints(List<PrerequisiteConstraint> dependencyConstraints) {
         this.dependencyConstraints = dependencyConstraints;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
         return dependencyConstraints;
     }
 
     /**
-     * List of {@code MustOccurConstraint} that apply to this {@code InputField}
-     *
-     * @return the must occur constraints for this input field
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
@@ -1186,23 +1050,15 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Setter for {@code mustOccurConstraints}
-     *
-     * @param mustOccurConstraints list of {@code MustOccurConstraint} to set
+     * {@inheritDoc}
      */
+    @Override
     public void setMustOccurConstraints(List<MustOccurConstraint> mustOccurConstraints) {
         this.mustOccurConstraints = mustOccurConstraints;
     }
 
     /**
-     * Simple constraints for the input field
-     *
-     * <p>
-     * A simple constraint which store the values for constraints such as required,
-     * min/max length, and min/max value.
-     * </p>
-     *
-     * @return the simple constraint of the input field
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "simpleConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -1211,95 +1067,68 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Setter for simple constraint
-     *
-     * <p>
-     * When a simple constraint is set on this object ALL simple validation
-     * constraints set directly will be overridden - recommended to use this or
-     * the other gets/sets for defining simple constraints, not both.
-     * </p>
-     *
-     * @param simpleConstraint the simple constraint to set
+     * {@inheritDoc}
      */
+    @Override
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
     }
 
     /**
-     * This does not have to be set, represents the DataType constraint of this field.
-     * This is only checked during server side validation.
-     *
-     * @param dataType the dataType to set
+     * {@inheritDoc}
      */
+    @Override
     public void setDataType(DataType dataType) {
         this.simpleConstraint.setDataType(dataType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDataType(String dataType) {
         this.simpleConstraint.setDataType(DataType.valueOf(dataType));
     }
 
     /**
-     * Gets the DataType of this InputField, note that DataType set to be date
-     * when this field is using a date picker with a TextControl and has not otherwise been
-     * explicitly set.
-     *
-     * @return DataType
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         return this.simpleConstraint.getDataType();
     }
 
     /**
-     * Maximum number of characters the input field value is allowed to have
-     *
-     * <p>
-     * The maximum length determines the maximum allowable length of the value
-     * for data entry editing purposes.  The maximum length is inclusive and can
-     * be smaller or longer than the actual control size.  The constraint
-     * is enforced on all data types (e.g. a numeric data type needs to meet the
-     * maximum length constraint in which digits and symbols are counted).
-     * </p>
-     *
-     * @return the maximum length of the input field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "maxLength")
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
 
     /**
-     * Setter for input field max length
-     *
-     * @param maxLength the maximum length to set
+     * {@inheritDoc}
      */
+    @Override
     public void setMaxLength(Integer maxLength) {
         simpleConstraint.setMaxLength(maxLength);
     }
 
     /**
-     * Minimum number of characters the input field value needs to be
-     *
-     * <p>
-     * The minimum length determines the minimum required length of the value for
-     * data entry editing purposes.  The minimum length is inclusive. The constraint
-     * is enforced on all data types (e.g. a numeric data type needs to meet the
-     * minimum length requirement in which digits and symbols are counted).
-     * </p>
-     *
-     * @return the minimum length of the input field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "minLength")
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
 
     /**
-     * Setter for input field minimum length
-     *
-     * @param minLength the minLength to set
+     * {@inheritDoc}
      */
+    @Override
     public void setMinLength(Integer minLength) {
         simpleConstraint.setMinLength(minLength);
     }
@@ -1322,137 +1151,92 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * The exclusive minimum value for numeric or date field.
-     *
-     * <p>
-     * The exclusiveMin element determines the minimum allowable value for data
-     * entry editing purposes. This constrain is supported for numeric and
-     * date fields and to be used in conjunction with the appropriate
-     * {@link ValidCharactersConstraint}.
-     *
-     * For numeric constraint the value can be an integer or decimal such as -.001 or 99.
-     * </p>
-     *
-     * @return the exclusive minimum numeric value of the input field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "exclusiveMin")
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
 
     /**
-     * Setter for the field's exclusive minimum value
-     *
-     * @param exclusiveMin the minimum value to set
+     * {@inheritDoc}
      */
+    @Override
     public void setExclusiveMin(String exclusiveMin) {
         simpleConstraint.setExclusiveMin(exclusiveMin);
     }
 
     /**
-     * The inclusive maximum value for numeric or date field.
-     *
-     * <p>
-     * The inclusiveMax element determines the maximum allowable value for data
-     * entry editing purposes. This constrain is supported for numeric and
-     * date fields and to be used in conjunction with the appropriate
-     * {@link ValidCharactersConstraint}.
-     *
-     * For numeric constraint the value can be an integer or decimal such as -.001 or 99.
-     * </p>
-     *
-     * @return the inclusive maximum numeric value of the input field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "inclusiveMax")
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
 
     /**
-     * Setter for the field's inclusive maximum value
-     *
-     * @param inclusiveMax the maximum value to set
+     * {@inheritDoc}
      */
+    @Override
     public void setInclusiveMax(String inclusiveMax) {
         simpleConstraint.setInclusiveMax(inclusiveMax);
     }
 
     /**
-     * Attribute query instance configured for this field to dynamically pull information back for
-     * updates other fields or providing messages
-     *
-     * <p>
-     * If field attribute query is not null, associated event script will be generated to trigger the
-     * query from the UI. This will invoke the {@code AttributeQueryService} to
-     * execute the query and return an instance of {@code AttributeQueryResult} that is then
-     * read by the script to update the UI. Typically used to update informational property values or
-     * other field values
-     * </p>
-     *
-     * @return AttributeQuery instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "attributeQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public AttributeQuery getAttributeQuery() {
         return attributeQuery;
     }
 
     /**
-     * Setter for this field's attribute query
-     *
-     * @param attributeQuery
+     * {@inheritDoc}
      */
+    @Override
     public void setAttributeQuery(AttributeQuery attributeQuery) {
         this.attributeQuery = attributeQuery;
     }
 
     /**
-     * Perform uppercase flag for this field to force input to uppercase.
-     *
-     * <p>
-     * It this flag is set to true the 'text-transform' style on the field will be set to 'uppercase'
-     * which will automatically change any text input into the field to uppercase.
-     * </p>
-     *
-     * @return performUppercase flag
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "uppercaseValue")
     public boolean isUppercaseValue() {
         return uppercaseValue;
     }
 
     /**
-     * Setter for this field's performUppercase flag
-     *
-     * @param uppercaseValue boolean flag
+     * {@inheritDoc}
      */
+    @Override
     public void setUppercaseValue(boolean uppercaseValue) {
         this.uppercaseValue = uppercaseValue;
     }
 
     /**
-     * Indicates whether the browser autocomplete functionality should be disabled for the
-     * input field (adds autocomplete="off")
-     *
-     * <p>
-     * The browser's native autocomplete functionality can cause issues with security fields and also fields
-     * with the UIF suggest widget enabled
-     * </p>
-     *
-     * @return true if the native autocomplete should be turned off for the input field, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean isDisableNativeAutocomplete() {
         return disableNativeAutocomplete;
     }
 
     /**
-     * Setter to disable browser autocomplete for the input field
-     *
-     * @param disableNativeAutocomplete
+     * {@inheritDoc}
      */
+    @Override
     public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
         this.disableNativeAutocomplete = disableNativeAutocomplete;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isRenderFieldset() {
         return super.isRenderFieldset() || (quickfinder != null
@@ -1479,6 +1263,10 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setCustomValidatorClass(String customValidatorClass) {
         this.customValidatorClass = customValidatorClass;
     }

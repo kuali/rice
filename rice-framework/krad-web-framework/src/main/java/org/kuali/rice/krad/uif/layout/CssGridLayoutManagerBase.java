@@ -17,13 +17,11 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Css Grid Layout managers are a layout managers which creates div "rows" and "cells" to replicate a
@@ -38,26 +36,104 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
     protected static final int NUMBER_OF_COLUMNS = 12;
     protected static final String BOOTSTRAP_SPAN_PREFIX = "col-md-";
 
-    protected Map<String, String> conditionalRowCssClasses;
-    protected String rowLayoutCssClass;
-
-    // non-settable
-    protected List<List<Component>> rows;
-    protected List<String> rowCssClassAttributes;
+    // Cannot be set by bean
+    protected List<Component> cellItems;
     protected List<String> cellCssClassAttributes;
 
+    // Internal local variables
+    protected int xsTotalSize = 0;
+    protected int smTotalSize = 0;
+    protected int mdTotalSize = 0;
+    protected int lgTotalSize = 0;
+
     public CssGridLayoutManagerBase() {
-        rows = new ArrayList<List<Component>>();
-        conditionalRowCssClasses = new HashMap<String, String>();
         cellCssClassAttributes = new ArrayList<String>();
-        rowCssClassAttributes = new ArrayList<String>();
+        cellItems = new ArrayList<Component>();
+    }
+
+    /**
+     * Determines the css class(es) and based on what settings the item, defaultSizes and basicSize have
+     *
+     * <p>
+     * Priority of what sizes to apply are as follows:
+     * 1. cssGridSizes on the item itself
+     * 2. Sizes in the defaultSizes object
+     * 3. basicSize passed in the if the above two contain no settings, defaults to md (medium) col size
+     * </p>
+     *
+     * @param item the item to process classes for
+     * @param cellCssClasses the list of classes to add the new class string to
+     * @param defaultSizes the default fallback sizes to use if items have none
+     * @param basicSize the fallback md size to use if both item and default size have none
+     */
+    protected void calculateCssClassAndSize(Component item, List<String> cellCssClasses, CssGridSizes defaultSizes,
+            int basicSize) {
+
+        if (StringUtils.isNotBlank(item.getCssGridSizes().getCssClassString())) {
+            cellCssClasses.add(0, item.getCssGridSizes().getCssClassString());
+
+            xsTotalSize += item.getCssGridSizes().getXsSize();
+            smTotalSize += item.getCssGridSizes().getTotalSmSize();
+            mdTotalSize += item.getCssGridSizes().getTotalMdSize();
+            lgTotalSize += item.getCssGridSizes().getTotalLgSize();
+        } else if (StringUtils.isNotBlank(defaultSizes.getCssClassString())) {
+            cellCssClasses.add(0, defaultSizes.getCssClassString());
+
+            xsTotalSize += defaultSizes.getXsSize();
+            smTotalSize += defaultSizes.getTotalSmSize();
+            mdTotalSize += defaultSizes.getTotalMdSize();
+            lgTotalSize += defaultSizes.getTotalLgSize();
+        } else {
+            cellCssClasses.add(0, BOOTSTRAP_SPAN_PREFIX + basicSize);
+
+            mdTotalSize += basicSize;
+        }
+    }
+
+    /**
+     * Adds a class (or classeees) which will clear the left float for wrapped content at each screen size, which
+     * will prevent natural float from taking available space instead of wrapping to a new "row".
+     *
+     * @param cellCssClasses the set of css classes to add the left clear class to
+     */
+    protected void addLeftClearCssClass(List<String> cellCssClasses) {
+        String classString = getCellStyleClassesAsString(cellCssClasses);
+
+        // We explicitly check for the col prefix to avoid unnecessary class additions since the clear will be
+        // inherited from a smaller size screen if no size/offset has been specified for this size specifically
+        // see KRAD css grid css
+        if (lgTotalSize > 12) {
+            if (classString.contains(CssConstants.CssGrid.LG_COL_PREFIX)) {
+                cellCssClasses.add(0, CssConstants.CssGrid.LG_CLEAR_LEFT);
+            }
+            lgTotalSize = lgTotalSize - 12;
+        }
+
+        if (mdTotalSize > 12) {
+            if (classString.contains(CssConstants.CssGrid.MD_COL_PREFIX)) {
+                cellCssClasses.add(0, CssConstants.CssGrid.MD_CLEAR_LEFT);
+            }
+            mdTotalSize = mdTotalSize - 12;
+        }
+
+        if (smTotalSize > 12) {
+            if (classString.contains(CssConstants.CssGrid.SM_COL_PREFIX)) {
+                cellCssClasses.add(0, CssConstants.CssGrid.SM_CLEAR_LEFT);
+            }
+            smTotalSize = smTotalSize - 12;
+        }
+
+        if (xsTotalSize > 12) {
+            cellCssClasses.add(0, CssConstants.CssGrid.XS_CLEAR_LEFT);
+            xsTotalSize = xsTotalSize - 12;
+        }
     }
 
     /**
      * Builds the HTML class attribute string by combining the cellStyleClasses list with a space
      * delimiter
-     * @param cellCssClasses list of cell CSS classes
      *
+     * @param cellCssClasses list of cell CSS classes
      * @return class attribute string
      */
     protected String getCellStyleClassesAsString(List<String> cellCssClasses) {
@@ -69,21 +145,13 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
     }
 
     /**
-     * Get the rows (which are a list of components each)
+     * Get the items which will make up each "cell" divs of this css grid layout, these divs will have appropriate
+     * css class applied to them based on the values stored in cellCssClassAttributes
      *
-     * @return the List of Lists of Components which represents rows for this layout
+     * @return the items of this cssGrid
      */
-    public List<List<Component>> getRows() {
-        return rows;
-    }
-
-    /**
-     * List of css class HTML attribute values ordered by index of row
-     *
-     * @return the list of css class HTML attributes for rows
-     */
-    public List<String> getRowCssClassAttributes() {
-        return rowCssClassAttributes;
+    public List<Component> getCellItems() {
+        return cellItems;
     }
 
     /**
@@ -93,50 +161,6 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
      */
     public List<String> getCellCssClassAttributes() {
         return cellCssClassAttributes;
-    }
-
-    /**
-     * The row css classes for the rows of this layout
-     *
-     * <p>
-     * To set a css class on all rows, use "all" as a key. To set a class for even rows, use "even"
-     * as a key, for odd rows, use "odd". Use a one-based index to target a specific row by index.
-     * </p>
-     *
-     * @return a map which represents the css classes of the rows of this layout
-     */
-    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
-    public Map<String, String> getConditionalRowCssClasses() {
-        return conditionalRowCssClasses;
-    }
-
-    /**
-     * Set conditionalRowCssClasses
-     *
-     * @param conditionalRowCssClasses
-     */
-    public void setConditionalRowCssClasses(Map<String, String> conditionalRowCssClasses) {
-        this.conditionalRowCssClasses = conditionalRowCssClasses;
-    }
-
-    /**
-     * The layout css class used by the framework to represent the row as a row visually (currently
-     * using a bootstrap class), which should not be manually reset in most situations
-     *
-     * @return the css structure class for the rows of this layout
-     */
-    @BeanTagAttribute(name = "rowLayoutCssClass")
-    public String getRowLayoutCssClass() {
-        return rowLayoutCssClass;
-    }
-
-    /**
-     * Set the rowLayoutCssClass
-     *
-     * @param rowLayoutCssClass
-     */
-    public void setRowLayoutCssClass(String rowLayoutCssClass) {
-        this.rowLayoutCssClass = rowLayoutCssClass;
     }
 
 }

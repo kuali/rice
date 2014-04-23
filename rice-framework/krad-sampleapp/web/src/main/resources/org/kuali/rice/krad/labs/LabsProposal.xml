@@ -67,6 +67,100 @@
     <!--</property>-->
   </bean>
 
+  <bean id="LabsProposal2" parent="Demo-AppHeader-View2">
+    <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="header">
+      <bean parent="Uif-ViewHeader" p:headerText="Proposal: #23533" p:areaTitleText="Proposal Development"
+            p:supportTitleText="PI: [em]Not yet assigned[/em]">
+        <property name="rightGroup">
+          <ref bean="LabsProposal-DocInfo"/>
+        </property>
+        <property name="lowerGroup">
+          <ref bean="LabsProposal-DocActionBar"/>
+        </property>
+      </bean>
+    </property>
+    <property name="navigation" ref="LabsProposal-Menu"/>
+    <property name="items">
+      <list>
+        <ref bean="LabsProposal-Page"/>
+      </list>
+    </property>
+    <property name="stickyFooter" value="true"/>
+    <property name="footer">
+      <bean parent="Uif-FooterBase">
+        <property name="items">
+          <list>
+            <bean parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"/>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="saveContinue" p:actionLabel="Save and Continue"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
+    <property name="additionalCssFiles">
+      <list merge="true">
+        <value>css/labsProposal.css</value>
+      </list>
+    </property>
+    <!--<property name="dialogs">-->
+    <!--<list>-->
+    <!--<ref bean="LabsProposal-wizard"/>-->
+    <!--</list>-->
+    <!--</property>-->
+  </bean>
+
+  <bean id="LabsProposalFixed" parent="Demo-AppHeader-View2">
+    <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="header">
+      <bean parent="Uif-ViewHeader" p:headerText="Proposal: #23533" p:areaTitleText="Proposal Development"
+            p:supportTitleText="PI: [em]Not yet assigned[/em]">
+        <property name="rightGroup">
+          <ref bean="LabsProposal-DocInfo"/>
+        </property>
+        <property name="lowerGroup">
+          <ref bean="LabsProposal-DocActionBar"/>
+        </property>
+      </bean>
+    </property>
+    <property name="navigation" ref="LabsProposal-Menu"/>
+    <property name="items">
+      <list>
+        <ref bean="LabsProposal-Page"/>
+      </list>
+    </property>
+    <property name="stickyFooter" value="true"/>
+    <property name="footer">
+      <bean parent="Uif-FooterBase">
+        <property name="items">
+          <list>
+            <bean parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"/>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="saveContinue" p:actionLabel="Save and Continue"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
+    <property name="additionalCssFiles">
+      <list merge="true">
+        <value>css/labsProposal.css</value>
+      </list>
+    </property>
+    <!--<property name="dialogs">-->
+    <!--<list>-->
+    <!--<ref bean="LabsProposal-wizard"/>-->
+    <!--</list>-->
+    <!--</property>-->
+  </bean>
+
   <bean id="LabsProposal-Menu" parent="Uif-MenuNavigationGroup">
     <property name="items">
       <list>
@@ -396,7 +490,7 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Enter Known Details">
+              <bean parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Enter Known Details" p:enterKeyAction="button1">
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField" p:label="Last name"
@@ -442,7 +536,7 @@
                         p:actionLabel="Continue..."
                         p:refreshId="LabsProposal-wizard"
                         p:methodToCall="refresh"
-                        p:actionParameters="LabsProposal-wizard.step:1"/>
+                        p:actionParameters="LabsProposal-wizard.step:1" id="button1"/>
                 </list>
               </property>
             </bean>

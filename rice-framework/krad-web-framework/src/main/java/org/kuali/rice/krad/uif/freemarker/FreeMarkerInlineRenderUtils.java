@@ -238,7 +238,8 @@ public class FreeMarkerInlineRenderUtils {
                 || component.isRetrieveViaAjax()) {
             out.write("<span id=\"");
             out.write(component.getId());
-            out.write("\" data-role=\"placeholder\" class=\"uif-placeholder\"></span>");
+            out.write("\" data-role=\"placeholder\" class=\"uif-placeholder "
+                    + component.getStyleClassesAsString() + "\"></span>");
         }
 
         if (StringUtils.hasText(component.getProgressiveRender())) {
@@ -301,7 +302,6 @@ public class FreeMarkerInlineRenderUtils {
             script += "createTooltip('" + component.getId() + "', '" + tt.getTooltipContent() + "', "
                     + (templateOptionsJSString == null ? "''" : templateOptionsJSString) + ", " + tt.isOnMouseHover()
                     + ", " + tt.isOnFocus() + ");";
-            script += "addAttribute('" + component.getId() + "', 'class', 'uif-tooltip', true);";
 
             renderScript(script, component, null, out);
         }
@@ -369,6 +369,18 @@ public class FreeMarkerInlineRenderUtils {
             out.write(" title=\"");
             out.write(s);
             out.write("\"");
+        }
+
+        s = component.getRole();
+        if (StringUtils.hasText(s)) {
+            out.write(" role=\"");
+            out.write(s);
+            out.write("\"");
+        }
+
+        s = component.getAriaAttributesAsString();
+        if (StringUtils.hasText(s)) {
+            out.write(s);
         }
     }
 
@@ -445,10 +457,6 @@ public class FreeMarkerInlineRenderUtils {
     public static void renderOpenGroupWrap(Environment env, Group group) throws IOException, TemplateException {
         Writer out = env.getOut();
         renderTemplate(env, group.getHeader(), null, false, false, null);
-
-        if (!StringUtils.isEmpty(group.getHeaderText())) {
-
-        }
 
         if (group.isRenderLoading()) {
             out.write("<div id=\"");
@@ -531,8 +539,8 @@ public class FreeMarkerInlineRenderUtils {
                 renderTemplate(env, group.getAddBlankLineAction(), null, false, false, null);
             }
 
-            if (group.isAddViaLightBox()) {
-                renderTemplate(env, group.getAddViaLightBoxAction(), null, false, false, null);
+            if (group.isAddWithDialog()) {
+                renderTemplate(env, group.getAddWithDialogAction(), null, false, false, null);
             }
         }
 
@@ -561,9 +569,13 @@ public class FreeMarkerInlineRenderUtils {
                 renderTemplate(env, group.getAddBlankLineAction(), null, false, false, null);
             }
 
-            if (group.isAddViaLightBox()) {
-                renderTemplate(env, group.getAddViaLightBoxAction(), null, false, false, null);
+            if (group.isAddWithDialog()) {
+                renderTemplate(env, group.getAddWithDialogAction(), null, false, false, null);
             }
+        }
+
+        if (group.isAddWithDialog()) {
+            renderTemplate(env, group.getAddLineDialog(), null, false, false, null);
         }
 
         renderCloseGroupWrap(env, group);

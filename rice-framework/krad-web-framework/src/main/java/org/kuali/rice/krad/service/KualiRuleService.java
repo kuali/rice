@@ -23,22 +23,25 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 
 import java.util.List;
 
-
 /**
- * Defines the interface to the business-rule evaluation service, used to evauluate document-type-specific business rules using
- * document-related events to drive the process.
+ * Defines the interface to the business-rule evaluation service, used to evauluate document-type-specific business
+ * rules using document-related events to drive the process.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KualiRuleService {
 
     /**
-     * Retrieves and instantiates the businessRulesClass associated with the event's document type (if any), and calls the
-     * appropriate process* method of that businessRule for handling the given event type. This is a helper method that takes in the
-     * generic KualiDocumentEvent class and determines which event call to make.
+     * Retrieves and instantiates the businessRulesClass associated with the event's document type (if any), and calls
+     * the appropriate process* method of that businessRule for handling the given event type.
+     *
+     * <p>This is a helper method that takes in the generic KualiDocumentEvent class and determines which event call to
+     * make.</p>
      *
      * @param event
      * @return true if no rule is applied, or all rules are applied successfully, false otherwise
      */
-    public boolean applyRules(KualiDocumentEvent event);
+    boolean applyRules(KualiDocumentEvent event);
 
     /**
      * Builds a list containing ad hoc route person events appropriate for the context.
@@ -46,7 +49,7 @@ public interface KualiRuleService {
      * @param document
      * @return List
      */
-    public List<AddAdHocRoutePersonEvent> generateAdHocRoutePersonEvents(Document document);
+    List<AddAdHocRoutePersonEvent> generateAdHocRoutePersonEvents(Document document);
 
     /**
      * Builds a list containing ad hoc route workgroup events appropriate for the context.
@@ -54,7 +57,7 @@ public interface KualiRuleService {
      * @param document
      * @return List
      */
-    public List<AddAdHocRouteWorkgroupEvent> generateAdHocRouteWorkgroupEvents(Document document);
+    List<AddAdHocRouteWorkgroupEvent> generateAdHocRouteWorkgroupEvents(Document document);
 
     /**
      * Allows code in actions or business objects to directly access rule methods in the class.
@@ -63,5 +66,5 @@ public interface KualiRuleService {
      * @param ruleInterface
      * @return BusinessRule
      */
-    public BusinessRule getBusinessRulesInstance(Document document, Class<? extends BusinessRule> ruleInterface);
+    BusinessRule getBusinessRulesInstance(Document document, Class<? extends BusinessRule> ruleInterface);
 }

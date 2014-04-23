@@ -17,6 +17,8 @@
 -->
 <@krad.html view=view>
 
+    <a href="#mainContent" class="sr-only">Skip to main content</a>
+
     <@krad.script value="${KualiForm.growlScript!}"/>
 
     <!-- APPLICATION HEADER -->
@@ -83,8 +85,6 @@
             </span>
         </#if>
     </@krad.form>
-
-    <@krad.script value="${KualiForm.lightboxScript!}"/>
 
     <#-- set focus and perform jump to -->
     <#if KualiForm.view.currentPage?has_content>

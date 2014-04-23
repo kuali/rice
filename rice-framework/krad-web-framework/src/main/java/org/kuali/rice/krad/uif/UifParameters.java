@@ -58,6 +58,7 @@ public class UifParameters {
     public static final String RETURN_BY_SCRIPT = "returnByScript";
 	public static final String RETURN_LOCATION = "returnLocation";
 	public static final String RETURN_FORM_KEY = "returnFormKey";
+    public static final String RETURN_FROM_DIALOG = "returnFromDialog";
     public static final String REQUESTED_COMPONENT_ID = "reqComponentId";
     public static final String REQUEST = "request";
     public static final String SHOW_INACTIVE_RECORDS = "showInactiveRecords";
@@ -85,4 +86,8 @@ public class UifParameters {
     public static final String UPDATE_COMPONENT_ID = "updateComponentId";
     public static final String REQUESTED_FORM_KEY = "requestedFormKey";
     public static final String MESSAGE_TO_DISPLAY = "messageToDisplay";
+
+    public static class Attributes {
+        public static final String VIEW_LIFECYCLE_COMPLETE = "ViewLifecycleComplete";
+    }
 }

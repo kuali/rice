@@ -18,9 +18,11 @@ package org.kuali.rice.krad.uif.widget;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
@@ -39,6 +41,9 @@ public class Tabs extends WidgetBase {
 
     @ClientSideState(variableName = "activeTab")
     private String defaultActiveTabId;
+
+    private String tabContentClass;
+    private String tabNavClass;
 
     private UifConstants.Position position = UifConstants.Position.TOP;
 
@@ -63,31 +68,21 @@ public class Tabs extends WidgetBase {
 
         TabGroup tabGroup = (TabGroup) parent;
 
-        if (StringUtils.isNotBlank(defaultActiveTabId)) {
-            // need to find the index of the item to set the plugin active option
-            int index = 0;
+        if (StringUtils.isBlank(defaultActiveTabId) && CollectionUtils.isNotEmpty(tabGroup.getItems())) {
+            defaultActiveTabId = tabGroup.getItems().get(0).getId();
+        }
 
-            boolean found = false;
-            for (Component tabComponent : tabGroup.getItems()) {
-                if (StringUtils.equals(defaultActiveTabId, tabComponent.getId())) {
-                    found = true;
+        if (position.equals(UifConstants.Position.LEFT) || position.equals(UifConstants.Position.RIGHT)) {
+            tabNavClass = tabNavClass + " col-sm-3";
+            tabContentClass = tabContentClass + " col-sm-9";
+        }
 
-                    break;
-                }
-
-                index += 1;
-            }
-
-            // if active tab index is set, add the plugin active option
-            if (found) {
-                Map<String, String> oTemplateOptions = this.getTemplateOptions();
-                
-                if (oTemplateOptions == null) {
-                    setTemplateOptions(oTemplateOptions = new HashMap<String, String>());
-                }
-                
-                oTemplateOptions.put(UifConstants.TabOptionKeys.ACTIVE, Integer.toString(index));
-            }
+        if (position.equals(UifConstants.Position.LEFT)) {
+            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_LEFT);
+        } else if (position.equals(UifConstants.Position.RIGHT)) {
+            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_RIGHT);
+        } else if (position.equals(UifConstants.Position.BOTTOM)) {
+            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_BOTTOM);
         }
     }
 
@@ -128,5 +123,39 @@ public class Tabs extends WidgetBase {
      */
     public void setPosition(UifConstants.Position position) {
         this.position = position;
+    }
+
+    /**
+     * Css class for the div which wraps the tab content panels, the default bean defines this as "tabs-content"
+     *
+     * @return css tab content css class
+     */
+    @BeanTagAttribute(name = "tabContentClass")
+    public String getTabContentClass() {
+        return tabContentClass;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.widget.Tabs#getTabContentClass()
+     */
+    public void setTabContentClass(String tabContentClass) {
+        this.tabContentClass = tabContentClass;
+    }
+
+    /**
+     * Css class for the ul list of tab navigation links, the default bean defines this as "nav nav-tabs"
+     *
+     * @return the ul tab navigation css class
+     */
+    @BeanTagAttribute(name = "tabNavClass")
+    public String getTabNavClass() {
+        return tabNavClass;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.widget.Tabs#getTabNavClass()
+     */
+    public void setTabNavClass(String tabNavClass) {
+        this.tabNavClass = tabNavClass;
     }
 }

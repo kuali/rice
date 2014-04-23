@@ -1,0 +1,216 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- ProgressBar demo -->
+  <bean id="Demo-ProgressBarView" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoProgressBar.xml"/>
+    <property name="javaFullClassPath"
+              value="org.kuali.rice.krad.uif.element.ProgressBar"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-ProgressBar-Example1"/>
+        <ref bean="Demo-ProgressBar-Example2"/>
+        <ref bean="Demo-ProgressBar-Example3"/>
+        <ref bean="Demo-ProgressBar-Example4"/>
+        <ref bean="Demo-ProgressBar-Example5"/>
+        <ref bean="Demo-ProgressBar-Example6"/>
+        <ref bean="Demo-ProgressBar-Example7"/>
+        <ref bean="Demo-ProgressBar-Example8"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Basic example -->
+  <bean id="Demo-ProgressBar-Example1" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example1 start-->
+        <bean parent="Uif-ProgressBar" p:percentComplete="0"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="25"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="50"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="75"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="100"/>
+        <bean parent="Uif-ProgressBar" p:percentComplete="@{barPercent}"/>
+        <!-- ex:Demo-ProgressBar-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-ProgressBar-Example2 start-->
+  <bean id="Demo-StepProgressBar" parent="Uif-StepProgressBar">
+    <property name="steps">
+      <map>
+        <entry key="1" value="Initialize"/>
+        <entry key="2" value="Save"/>
+        <entry key="3" value="Submit"/>
+        <entry key="4" value="Route"/>
+        <entry key="5" value="Approve"/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-ProgressBar-Example2 end-->
+
+  <bean id="Demo-ProgressBar-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example2 start-->
+        <bean parent="Demo-StepProgressBar"/>
+        <bean parent="Demo-StepProgressBar" p:currentStep="2"/>
+        <bean parent="Demo-StepProgressBar" p:currentStep="5"/>
+        <bean parent="Demo-StepProgressBar" p:currentStep="@{barStep}"/>
+        <!-- ex:Demo-ProgressBar-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example3 start-->
+        <bean parent="Demo-StepProgressBar">
+          <property name="currentStep" value="SUCCESS"/>
+        </bean>
+        <bean parent="Demo-StepProgressBar">
+          <property name="completeStep" value="COMPLETE"/>
+          <property name="currentStep" value="COMPLETE"/>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example4 start-->
+        <bean parent="Uif-HorizontalBoxGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="0"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="33"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="66"/>
+              <bean parent="Uif-ProgressBar-Vertical" p:percentComplete="100"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example5 start-->
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="B"/>
+          <property name="vertical" value="true"/>
+          <property name="steps">
+            <map>
+              <entry key="A" value="Step A"/>
+              <entry key="B" value="Step B"/>
+              <entry key="C" value="Step C"/>
+            </map>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example6 start-->
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="1"/>
+          <property name="vertical" value="true"/>
+          <property name="verticalStepHeight" value="30"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Step 1"/>
+              <entry key="2" value="Step 2"/>
+              <entry key="3" value="Step 3"/>
+              <entry key="4" value="Step 4"/>
+              <entry key="5" value="Step 5"/>
+              <entry key="6" value="Step 6"/>
+            </map>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example7" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example7 start-->
+        <bean parent="Uif-ProgressBar">
+          <property name="segmentPercentages">
+            <list>
+              <value>20</value>
+              <value>20</value>
+              <value>30</value>
+            </list>
+          </property>
+          <property name="segmentClasses">
+            <list>
+              <value>progress-bar progress-bar-info</value>
+              <value>progress-bar progress-bar-warning</value>
+              <value>progress-bar progress-bar-danger</value>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-ProgressBar-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-ProgressBar-Example8 start-->
+        <bean parent="Uif-StepProgressBar">
+          <property name="currentStep" value="3"/>
+          <property name="steps">
+            <map>
+              <entry key="1" value="Small Step"/>
+              <entry key="2" value="Big Step"/>
+              <entry key="3" value="Medium Step"/>
+            </map>
+          </property>
+          <property name="segmentPercentages">
+            <list>
+              <value>20</value>
+              <value>50</value>
+              <value>30</value>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-ProgressBar-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+</beans>

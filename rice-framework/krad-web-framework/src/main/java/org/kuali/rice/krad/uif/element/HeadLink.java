@@ -20,12 +20,13 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
- *  builds <link> tags with various attributes
- *  in the <head> of the html document
+ * Renders a link tag in the head of the html document.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "view-headLink", parent = "Uif-HeadLink")})
+@BeanTag(name = "view-headLink", parent = "Uif-HeadLink")
 public class HeadLink extends ContentElementBase  {
+    private static final long serialVersionUID = -2295905449114970348L;
 
     private String media;
     private String href;
@@ -33,15 +34,16 @@ public class HeadLink extends ContentElementBase  {
     private String type;
     private String includeCondition;
 
-
     public HeadLink() {
         super();
     }
 
-
     /**
+     * Media attribute for link tag.
      *
-     * @return   media
+     * <p>Media attribute to be rendered on this link tag</p>
+     *
+     * @return  media attribute of link tag
      */
     @BeanTagAttribute(name = "media")
     public String getMedia() {
@@ -49,16 +51,18 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     *
-     * @param media
+     * @see HeadLink#getMedia()
      */
     public void setMedia(String media) {
         this.media = media;
     }
 
     /**
+     * Href attribute for link tag.
      *
-     * @return  href
+     * <p>Href attribute to be rendered on this link tag</p>
+     *
+     * @return  href attribute of link tag
      */
     @BeanTagAttribute(name = "href")
     public String getHref() {
@@ -66,17 +70,18 @@ public class HeadLink extends ContentElementBase  {
     }
 
     /**
-     *
-     * @param href
+     * @see HeadLink#getHref()
      */
     public void setHref(String href) {
         this.href = href;
     }
 
     /**
-     *  rel attribute for <link>
+     * Rel attribute for link tag.
      *
-     * @return relation
+     * <p>Rel attribute to be rendered on this link tag</p>
+     *
+     * @return  rel attribute of link tag
      */
     @BeanTagAttribute(name = "relation")
     public String getRelation() {
@@ -85,15 +90,18 @@ public class HeadLink extends ContentElementBase  {
 
     /**
      *
-     * @param rel
+     * @see HeadLink#getRelation()
      */
     public void setRelation(String relation) {
         this.relation = relation;
     }
 
     /**
+     * Type attribute for link tag.
      *
-     * @return type
+     * <p>Type attribute to be rendered on this link tag</p>
+     *
+     * @return  type attribute of link tag
      */
     @BeanTagAttribute(name = "type")
     public String getType() {
@@ -102,24 +110,26 @@ public class HeadLink extends ContentElementBase  {
 
     /**
      *
-     * @param type
+     * @see HeadLink#getType()
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * includeCondition wraps conditional html comments for
-     * choosing css files based on browser info
-     * exampe:
-     * for the folling code
+     * IncludeCondition wraps custom html comments around link tags.
+     *
+     * <p>IncludeCondition wraps conditional html comments for
+     * choosing css files based on browser info.
+     * e.g.
+     * for the following code
      *  {@code
      *      <!--[if  ie 9]>
      *         <link href="ie9.css" type="text/stylesheet"></link>
      *      <![endif]-->
      *  }
      *
-     *  the includeCondition would be   "if  ie 9"
+     *  the includeCondition would be  "if  ie 9"</p>
      *
      * @return  includeCondition
      */
@@ -130,7 +140,7 @@ public class HeadLink extends ContentElementBase  {
 
     /**
      *
-     * @param includeCondition
+     * @see HeadLink#getIncludeCondition()
      */
     public void setIncludeCondition(String includeCondition) {
         this.includeCondition = includeCondition;

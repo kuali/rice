@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,9 +17,9 @@ package org.kuali.rice.krad.uif.container;
 
 import java.util.List;
 
-import org.kuali.rice.krad.uif.util.BreadcrumbItem;
-import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
-import org.kuali.rice.krad.uif.util.PageBreadcrumbOptions;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
+import org.kuali.rice.krad.uif.element.PageBreadcrumbOptions;
 
 /**
  * Interface for top-level page components, to be used as items in a multi-page view. 

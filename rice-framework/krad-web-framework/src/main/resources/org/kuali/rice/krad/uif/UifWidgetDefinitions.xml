@@ -32,8 +32,8 @@
   <bean id="Uif-Tabs" parent="Uif-Tabs-parentBean"/>
   <bean id="Uif-Tabs-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tabs" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/ftl/components/widget/tabs.ftl"/>
-    <property name="templateName" value="uif_tabs"/>
+    <property name="tabContentClass" value="tab-content"/>
+    <property name="tabNavClass" value="nav nav-tabs"/>
   </bean>
 
   <bean id="Uif-Accordion" parent="Uif-Accordion-parentBean"/>
@@ -185,24 +185,14 @@
       </bean>
     </property>
     <property name="directInquiryAction">
-      <bean parent="Uif-ActionImage">
-        <property name="actionImage">
-          <bean parent="Uif-DirectInquiryImage"/>
-        </property>
-      </bean>
+      <bean parent="Uif-DirectInquiryAction"/>
     </property>
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
-  <bean id="Uif-DirectInquiryImage" parent="Uif-Image"
-        p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
-        p:altText="Direct Inquiry" p:title="Direct Inquiry">
-    <property name="cssClasses">
-      <list>
-        <value>uif-directInquiryImage</value>
-      </list>
-    </property>
-  </bean>
+  <bean id="Uif-DirectInquiryAction" parent="Uif-ActionLink"
+        p:iconClass="icon-book" p:title="Direct Inquiry"
+        p:wrapperCssClasses="input-group-btn"/>
 
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
   <bean id="Uif-Disclosure-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Disclosure"
@@ -317,18 +307,6 @@
   <bean id="Uif-Tooltip" parent="Uif-Tooltip-parentBean"/>
   <bean id="Uif-Tooltip-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Tooltip" scope="prototype">
     <property name="onMouseHover" value="true"/>
-    <property name="templateOptions">
-      <map>
-        <entry key="position" value="top"/>
-        <entry key="align" value="left"/>
-        <entry key="alwaysVisible" value="false"/>
-        <entry key="tail" value="{ align:'left', hidden: false }"/>
-        <entry key="themePath"
-               value="@{#ConfigProperties['application.url']}/plugins/tooltip/jquerybubblepopup-theme/"/>
-        <entry key="themeName" value="black"/>
-        <entry key="selectable" value="true"/>
-      </map>
-    </property>
   </bean>
 
   <bean id="Uif-TooltipHelp" parent="Uif-TooltipHelp-parentBean"/>

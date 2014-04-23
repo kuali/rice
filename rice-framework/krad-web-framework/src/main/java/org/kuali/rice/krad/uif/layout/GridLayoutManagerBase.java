@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,10 +61,13 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
 
     private List<String> rowCssClasses;
 
+    private List<String> rowDataAttributes;
+
     public GridLayoutManagerBase() {
         super();
 
         rowCssClasses = new ArrayList<String>();
+        rowDataAttributes = new ArrayList<String>();
     }
 
     /**
@@ -145,214 +148,155 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
     }
 
     /**
-     * Indicates the number of columns that should make up one row of data
-     *
-     * <p>
-     * If the item count is greater than the number of columns, a new row will
-     * be created to render the remaining items (and so on until all items are
-     * placed).
-     * </p>
-     *
-     * <p>
-     * Note this does not include any generated columns by the layout manager,
-     * so the final column count could be greater (if label fields are
-     * separate).
-     * </p>
-     *
-     * @return int
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "numberOfColumns")
     public int getNumberOfColumns() {
         return this.numberOfColumns;
     }
 
     /**
-     * Setter for the number of columns (each row)
-     *
-     * @param numberOfColumns
+     * {@inheritDoc}
      */
+    @Override
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
     }
 
     /**
-     * Indicates whether the number of columns for the table data should match
-     * the number of fields given in the container's items list (so that each
-     * field takes up one column without wrapping), this overrides the configured
-     * numberOfColumns
-     *
-     * <p>
-     * If set to true during the initialize phase the number of columns will be
-     * set to the size of the container's field list, if false the configured
-     * number of columns is used
-     * </p>
-     *
-     * @return true if the column count should match the container's
-     *         field count, false to use the configured number of columns
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "suppressLineWrapping")
     public boolean isSuppressLineWrapping() {
         return this.suppressLineWrapping;
     }
 
     /**
-     * Setter for the suppressLineWrapping indicator
-     *
-     * @param suppressLineWrapping
+     * {@inheritDoc}
      */
+    @Override
     public void setSuppressLineWrapping(boolean suppressLineWrapping) {
         this.suppressLineWrapping = suppressLineWrapping;
     }
 
     /**
-     * Indicates whether alternating row styles should be applied
-     *
-     * <p>
-     * Indicator to layout manager templates to apply alternating row styles.
-     * See the configured template for the actual style classes used
-     * </p>
-     *
-     * @return true if alternating styles should be applied, false if
-     *         all rows should have the same style
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "applyAlternatingRowStyles")
     public boolean isApplyAlternatingRowStyles() {
         return this.applyAlternatingRowStyles;
     }
 
     /**
-     * Setter for the alternating row styles indicator
-     *
-     * @param applyAlternatingRowStyles
+     * {@inheritDoc}
      */
+    @Override
     public void setApplyAlternatingRowStyles(boolean applyAlternatingRowStyles) {
         this.applyAlternatingRowStyles = applyAlternatingRowStyles;
     }
 
     /**
-     * Indicates whether the manager should default the cell widths
-     *
-     * <p>
-     * If true, the manager will set the cell width by equally dividing by the
-     * number of columns
-     * </p>
-     *
-     * @return true if default cell widths should be applied, false if
-     *         no defaults should be applied
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "applyDefaultCellWidths")
     public boolean isApplyDefaultCellWidths() {
         return this.applyDefaultCellWidths;
     }
 
     /**
-     * Setter for the default cell width indicator
-     *
-     * @param applyDefaultCellWidths
+     * {@inheritDoc}
      */
+    @Override
     public void setApplyDefaultCellWidths(boolean applyDefaultCellWidths) {
         this.applyDefaultCellWidths = applyDefaultCellWidths;
     }
 
     /**
-     * Indicates whether the first cell of each row should be rendered as a header cell (th)
-     *
-     * <p>
-     * When this flag is turned on, the first cell for each row will be rendered as a header cell. If
-     * {@link #isRenderAlternatingHeaderColumns()} is false, the remaining cells for the row will be rendered
-     * as data cells, else they will alternate between cell headers
-     * </p>
-     *
-     * @return true if first cell of each row should be rendered as a header cell
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderRowFirstCellHeader")
     public boolean isRenderRowFirstCellHeader() {
         return renderRowFirstCellHeader;
     }
 
     /**
-     * Setter for render first row column as header indicator
-     *
-     * @param renderRowFirstCellHeader
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderRowFirstCellHeader(boolean renderRowFirstCellHeader) {
         this.renderRowFirstCellHeader = renderRowFirstCellHeader;
     }
 
     /**
-     * Indicates whether the first row of items rendered should all be rendered as table header (th) cells
-     *
-     * <p>
-     * Generally when using a grid layout all the cells will be tds or alternating th/td (with the label in the
-     * th cell). However in some cases it might be desired to display the labels in one row as table header cells (th)
-     * followed by a row with the corresponding fields in td cells. When this is enabled this type of layout is
-     * possible
-     * </p>
-     *
-     * @return true if first row should be rendered as header cells
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderFirstRowHeader")
     public boolean isRenderFirstRowHeader() {
         return renderFirstRowHeader;
     }
 
     /**
-     * Setter for the first row as header indicator
-     *
-     * @param renderFirstRowHeader
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderFirstRowHeader(boolean renderFirstRowHeader) {
         this.renderFirstRowHeader = renderFirstRowHeader;
     }
 
     /**
-     * Indicates whether header columns (th for tables) should be rendered for
-     * every other item (alternating)
-     *
-     * <p>
-     * If true the first cell of each row will be rendered as an header, with
-     * every other cell in the row as a header
-     * </p>
-     *
-     * @return true if alternating headers should be rendered, false if not
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "renderAlternatingHeaderColumns")
     public boolean isRenderAlternatingHeaderColumns() {
         return this.renderAlternatingHeaderColumns;
     }
 
     /**
-     * Setter for the render alternating header columns indicator
-     *
-     * @param renderAlternatingHeaderColumns
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderAlternatingHeaderColumns(boolean renderAlternatingHeaderColumns) {
         this.renderAlternatingHeaderColumns = renderAlternatingHeaderColumns;
     }
 
     /**
-     * The list of styles for each row
-     *
-     * <p>
-     * Each entry in the list gives the style for the row with the same index. This style will be added the the <tr>
-     * tag
-     * when the table rows are rendered in the grid.tag. This is used to store the styles for newly added lines and
-     * other special cases like the add item row.
-     * </p>
-     *
-     * @return list of styles for the rows
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "rowCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getRowCssClasses() {
         return rowCssClasses;
     }
 
     /**
-     * Setter for the list that stores the css style names of each row
-     *
-     * @param rowCssClasses
+     * {@inheritDoc}
      */
+    @Override
     public void setRowCssClasses(List<String> rowCssClasses) {
         this.rowCssClasses = rowCssClasses;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "rowDataAttributes", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getRowDataAttributes() {
+        return rowDataAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRowDataAttributes(List<String> rowDataAttributes) {
+        this.rowDataAttributes = rowDataAttributes;
     }
 }

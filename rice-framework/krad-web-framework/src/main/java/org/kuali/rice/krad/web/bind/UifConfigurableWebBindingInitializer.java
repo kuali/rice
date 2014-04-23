@@ -19,6 +19,8 @@ import org.kuali.rice.core.api.util.type.AbstractKualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -41,36 +43,7 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
     @Override
     public void initBinder(WebDataBinder binder, WebRequest request) {
         super.initBinder(binder, request);
-
-        binder.registerCustomEditor(KualiDecimal.class, new UifCurrencyEditor());
-        binder.registerCustomEditor(KualiInteger.class, new UifKualiIntegerCurrencyEditor());
-
-        binder.registerCustomEditor(KualiPercent.class, new UifPercentageEditor());
-
-        binder.registerCustomEditor(java.sql.Time.class, new UifTimeEditor());
-        binder.registerCustomEditor(java.sql.Date.class, new UifDateEditor());
-        binder.registerCustomEditor(java.util.Date.class, new UifDateEditor());
-        binder.registerCustomEditor(Timestamp.class, new UifTimestampEditor());
-
-        // TODO do we need this since we are switching to spring tags
-        binder.registerCustomEditor(boolean.class, new UifBooleanEditor());
-        binder.registerCustomEditor(Boolean.class, new UifBooleanEditor());
-        binder.registerCustomEditor(Boolean.TYPE, new UifBooleanEditor());
-
-        // Use the spring custom number editor for Big decimals
-        DecimalFormat bigIntFormatter = new DecimalFormat();
-        bigIntFormatter.setMaximumFractionDigits(340);
-        binder.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, bigIntFormatter, true));
-        binder.registerCustomEditor(AbstractKualiDecimal.class, new CustomNumberEditor(AbstractKualiDecimal.class,
-                bigIntFormatter, true));
-
-        // Use the spring StringTrimmerEditor editor for Strings
-        binder.registerCustomEditor(String.class, new StringTrimmerEditor(false));
-
-        // Use the StringArrayPropertyEditor for string arrays with "," as the
-        // separator
-        binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(",", false));
-
-        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+        ObjectPropertyUtils.registerPropertyEditors(binder);
     }
+
 }

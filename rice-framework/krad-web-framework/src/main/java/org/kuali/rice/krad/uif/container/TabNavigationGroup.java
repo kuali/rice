@@ -25,26 +25,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Special <code>Group</code> that renders a navigation section
+ * Special <code>Group</code> that renders a tab navigation section
  *
  * <p>
  * Only supports <code>Action</code> instances within the container. These
  * are used to provide the items (or individual links) within the navigation.
- * The navigationType determines how the navigation will be rendered (menu,
- * tabs, dropdown, ...)
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "navigationGroup-bean", parent = "Uif-NavigationGroupBase"),
-        @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup"),
-        @BeanTag(name = "tabNavigationGroup-bean", parent = "Uif-TabNavigationGroup")})
-public class NavigationGroup extends GroupBase {
+@BeanTag(name = "tabNavigationGroup-bean", parent = "Uif-TabNavigationGroup")
+public class TabNavigationGroup extends GroupBase {
     private static final long serialVersionUID = -7263923392768546340L;
 
-    private String navigationType;
-
-    public NavigationGroup() {
+    public TabNavigationGroup() {
         super();
     }
 
@@ -57,26 +51,5 @@ public class NavigationGroup extends GroupBase {
         supportedComponents.add(Action.class);
 
         return supportedComponents;
-    }
-
-    /**
-     * Type of navigation that should be rendered. For example a menu or tab
-     * navigation. Used by the rendering script to choose an appropriate plug-in
-     *
-     * @return navigation type
-     * @see org.kuali.rice.krad.uif.UifConstants.NavigationType
-     */
-    @BeanTagAttribute(name = "navigationType")
-    public String getNavigationType() {
-        return this.navigationType;
-    }
-
-    /**
-     * Setter for the navigation type
-     *
-     * @param navigationType
-     */
-    public void setNavigationType(String navigationType) {
-        this.navigationType = navigationType;
     }
 }

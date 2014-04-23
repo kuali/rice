@@ -128,6 +128,18 @@
     <property name="stickyApplicationHeader" value="true"/>
     <!-- ex:Demo-StickyHeader-Example5 end-->
     <property name="header.metadataText" value="Sticky: All Top Content"/>
+    <property name="navigation">
+      <bean parent="Uif-TabNavigationGroup">
+        <property name="items">
+          <list>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-Page1"/>
+            <bean parent="Uif-NavigationActionLink" p:actionLabel="Fake Item"
+                  p:navigateToPageId="Demo-StickyHeaderFooter-Page2"/>
+          </list>
+        </property>
+      </bean>
+    </property>
   </bean>
 
 

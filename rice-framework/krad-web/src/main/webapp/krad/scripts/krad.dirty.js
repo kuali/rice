@@ -136,18 +136,6 @@ DirtyFormState.prototype = {
                 event.preventDefault();
                 event.stopImmediatePropagation();
 
-                // change the current nav button class to 'current' if user doesn't wants to leave the page
-                var ul = jQuery("#" + event.target.id).closest("ul");
-                if (ul.length > 0) {
-                    var pageId = jQuery("[name='view.currentPageId']").val();
-                    if (ul.hasClass(kradVariables.TAB_MENU_CLASS)) {
-                        jQuery("#" + ul.attr("id")).selectTab({selectPage: pageId});
-                    }
-                    else {
-                        jQuery("#" + ul.attr("id")).selectMenuItem({selectPage: pageId});
-                    }
-                }
-
                 return true;
             }
         }

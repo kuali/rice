@@ -5228,44 +5228,44 @@ Extends MethodInvoker to add properties for specifying
   </xsd:element>
   <xsd:element name="navigationGroup-bean" type="navigationGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.NavigationGroup
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.uif.container.TabNavigationGroup
 
 Special Group that renders a navigation section
 
- 
+
  Only supports Action instances within the container. These
  are used to provide the items (or individual links) within the navigation.
  The navigationType determines how the navigation will be rendered (menu,
  tabs, dropdown, ...)
- ]]></xsd:documentation>
+ ]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="menuNavigationGroup-bean" type="navigationGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.NavigationGroup
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.uif.container.TabNavigationGroup
 
 Special Group that renders a navigation section
 
- 
+
  Only supports Action instances within the container. These
  are used to provide the items (or individual links) within the navigation.
  The navigationType determines how the navigation will be rendered (menu,
  tabs, dropdown, ...)
- ]]></xsd:documentation>
+ ]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="tabNavigationGroup-bean" type="navigationGroup-bean-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.container.NavigationGroup
+      <xsd:documentation source="org.kuali.rice.krad.uif.container.NavigationGroup" xml:lang="en"><![CDATA[<![CDATA[Backing Class: org.kuali.rice.krad.uif.container.TabNavigationGroup
 
 Special Group that renders a navigation section
 
- 
+
  Only supports Action instances within the container. These
  are used to provide the items (or individual links) within the navigation.
  The navigationType determines how the navigation will be rendered (menu,
  tabs, dropdown, ...)
- ]]></xsd:documentation>
+ ]]>]]></xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <xsd:element name="page-bean" type="page-bean-type">

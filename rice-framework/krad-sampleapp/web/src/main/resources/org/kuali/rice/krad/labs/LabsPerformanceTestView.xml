@@ -26,7 +26,7 @@
   <!-- View definitions -->
   <bean id="Demo-Performance-LightTable" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -110,7 +110,7 @@
 
   <bean id="Demo-Performance-LightTable-DisableSort" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -194,7 +194,7 @@
 
   <bean id="Demo-Performance-BasicTableCollection" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -255,7 +255,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="items">
@@ -286,7 +286,7 @@
 
   <bean id="Demo-Performance-RichTable-ServerSidePaging" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -344,7 +344,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="layoutManager.richTable">
@@ -378,7 +378,7 @@
 
   <bean id="Demo-Performance-RichTable-NoServerSidePaging" parent="Uif-FormView">
     <property name="headerText" value="Simple Performance Test Page"/>
-    <property name="formClass" value="org.kuali.rice.krad.labs.KitchenSinkPerformanceForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.coursesearch.CourseSearchForm"/>
     <property name="footer.render" value="false"/>
     <property name="header.render" value="false"/>
     <property name="applicationHeader">
@@ -434,7 +434,7 @@
                         <bean parent="Uif-HeaderThree"/>
                       </property>
                       <property name="collectionObjectClass"
-                                value="org.kuali.rice.krad.labs.CourseSearchResult"/>
+                                value="org.kuali.rice.krad.labs.coursesearch.CourseSearchResult"/>
                       <property name="layoutManager.renderSequenceField" value="false"/>
                       <property name="renderAddLine" value="false"/>
                       <property name="layoutManager.richTable">

@@ -108,7 +108,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         DummyLoginForm loginForm = new DummyLoginForm();
         request.setParameter(UifParameters.VIEW_ID, "DummyLoginView");
         new UifServletRequestDataBinder(loginForm).bind(request);
-        UifControllerHelper.prepareViewForRendering(request, response, loginForm);
+        UifControllerHelper.invokeViewLifecycle(request, loginForm);
         View dummyLogin = loginForm.getView();
         assertEquals(UifConstants.ViewStatus.RENDERED, dummyLogin.getViewStatus());
         assertEquals("LoginPage", dummyLogin.getCurrentPage().getId());
@@ -132,7 +132,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
         request.setParameter(UifParameters.VIEW_ID, viewName);
         new UifServletRequestDataBinder(form).bind(request);
-        UifControllerHelper.prepareViewForRendering(request, response, form);
+        UifControllerHelper.invokeViewLifecycle(request, form);
         view = form.getView();
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
 //        ViewCleaner.cleanView(view);
@@ -167,7 +167,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         ViewService viewService = KRADServiceLocatorWeb.getViewService();
         final View transactionView = viewService.getViewById("TransactionView");
         final UifFormBase tform = new UifFormBase();
-        ViewLifecycle.encapsulateLifecycle(transactionView, tform, null, null, new Runnable() {
+        ViewLifecycle.encapsulateLifecycle(transactionView, tform, null, new Runnable() {
             @Override
             public void run() {
                 View view = ViewLifecycle.getView();
@@ -285,7 +285,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
 
         HttpServletResponse response = new MockHttpServletResponse();
         ViewLifecycle.encapsulateLifecycle(view, form, viewPostMetadata,
-                viewPostMetadata.getComponentPostMetadata(table.getId()), request, response, new Runnable() {
+                viewPostMetadata.getComponentPostMetadata(table.getId()), request, new Runnable() {
                     @Override
                     public void run() {
                         DataTablesPagingHelper.processPagingRequest(ViewLifecycle.getView(),

@@ -75,13 +75,12 @@ public class ViewHeader extends Header {
             }
         }
 
-        // Add content to the header if the wrapper will not be rendered due to lack of upper or lower groups
-        if (this.getUpperGroup() == null && this.getLowerGroup() == null) {
-            this.getCssClasses().addAll(0, view.getContentContainerCssClasses());
+        // Add content container classes
+        this.getCssClasses().addAll(0, view.getContentContainerCssClasses());
 
-            if (this.isSticky()) {
-                this.addDataAttribute(UifConstants.DataAttributes.STICKY, "true");
-            }
+        // Add sticky data attribute marker
+        if (this.isSticky()) {
+            this.addDataAttribute(UifConstants.DataAttributes.STICKY, "true");
         }
     }
 

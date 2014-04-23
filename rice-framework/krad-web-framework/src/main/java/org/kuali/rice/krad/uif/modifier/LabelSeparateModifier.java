@@ -71,6 +71,7 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 				// pull out label field
 				Label label = field.getFieldLabel();
 				if (label != null && label.isRender()) {
+                    label.getLibraryCssClasses().clear();
 				    label.addStyleClass("displayWith-" + field.getId());
                     if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
                        label.setRender(false);

@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -165,6 +166,10 @@ public class Inquiry extends WidgetBase {
         }
 
         setupLink(model, (DataField) parent);
+
+        if (isRender() && !isParentReadOnly() && enableDirectInquiry) {
+            ((InputField) parent).addPostInputAddon(directInquiryAction);
+        }
     }
 
     /**
@@ -235,6 +240,7 @@ public class Inquiry extends WidgetBase {
     @SuppressWarnings("deprecation")
     public void buildInquiryLink(Object dataObject, String propertyName, Class<?> inquiryObjectClass,
             Map<String, String> inquiryParams) {
+        MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
         Properties urlParameters = new Properties();
         Map<String,String> inquiryKeyValues = new HashMap<String, String>();
@@ -336,6 +342,15 @@ public class Inquiry extends WidgetBase {
             boolean lightBoxShow = (getInquiryLink().getLightBox() != null);
             if (lightBoxShow) {
                 lightBoxOptions = getInquiryLink().getLightBox().getTemplateOptionsJSString();
+            }
+            else {
+                String title = this.getTitle();
+                if (StringUtils.isNotBlank(title)) {
+                    this.setTitle(title + " - " + messageService.getMessageText("accessibility.link.opensTab"));
+                }
+                else{
+                    this.setTitle(messageService.getMessageText("accessibility.link.opensTab"));
+                }
             }
 
             // Create onlick script to open the inquiry window on the click event

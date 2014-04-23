@@ -60,7 +60,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(true).when(theme).inDevMode();
         view.setTheme(theme);
 
-        ViewLifecycle.buildView(view, new UifFormBase(), request, response, new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), request, new HashMap<String, String>());
 
         assertEquals(2, theme.getCssFiles().size());
         assertEquals(2, theme.getScriptFiles().size());
@@ -75,7 +75,7 @@ public class ViewThemeTest extends KRADTestCase {
         doReturn(false).when(theme).inDevMode();
         view.setTheme(theme);
 
-        ViewLifecycle.buildView(view, new UifFormBase(), request, response, new HashMap<String, String>());
+        ViewLifecycle.buildView(view, new UifFormBase(), request, new HashMap<String, String>());
 
         assertEquals(1, theme.getCssFiles().size());
         assertEquals(1, theme.getScriptFiles().size());

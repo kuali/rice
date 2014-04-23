@@ -37,16 +37,19 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
         @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup")})
 public class SidebarNavigationGroup extends GroupBase {
 
+    private static final long serialVersionUID = 5914880937439989439L;
     private boolean renderCollapse;
     private String openedToggleIconClass;
     private String closedToggleIconClass;
     private String defaultItemIconClass;
 
+    private static final String ARROW_CSS = "arrow";
+
     /**
      * Adds icons and classes to {@link Action} and {@link ToggleMenu} items which exist in its items
-     * for rendering purposes
+     * for rendering purposes.
      *
-     * <p>{@inheritDoc}</p>
+     * {@inheritDoc}
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
@@ -55,7 +58,7 @@ public class SidebarNavigationGroup extends GroupBase {
         for (Component item: this.getItems()){
             if (item instanceof ToggleMenu){
                 ((ToggleMenu) item).setRenderedInList(true);
-                ((ToggleMenu) item).setToggleCaretClass("arrow " + closedToggleIconClass);
+                ((ToggleMenu) item).setToggleCaretClass(ARROW_CSS + " " + closedToggleIconClass);
 
                 if (StringUtils.isBlank(((ToggleMenu) item).getIconClass())){
                     ((ToggleMenu) item).setIconClass(defaultItemIconClass);
@@ -72,7 +75,7 @@ public class SidebarNavigationGroup extends GroupBase {
     }
 
     /**
-     * When true, render the collapse icon (an icon that the user can click to close/open the sidebar navigation)
+     * When true, render the collapse icon (an icon that the user can click to close/open the sidebar navigation).
      *
      * @return true if the collapse icon should be rendered, false otherwise
      */
@@ -90,7 +93,7 @@ public class SidebarNavigationGroup extends GroupBase {
 
     /**
      * Icon class to use to render a opened icon for sub menus (the {@link ToggleMenu} items) that exist
-     * in this navigation menu
+     * in this navigation menu.
      *
      * @return the opened ToggleMenu icon
      */
@@ -108,7 +111,7 @@ public class SidebarNavigationGroup extends GroupBase {
 
     /**
      * Icon class to use to render a closed icon for sub menus (the {@link ToggleMenu} items) that exist
-     * in this navigation menu
+     * in this navigation menu.
      *
      * @return the closed ToggleMenu icon
      */
@@ -126,7 +129,7 @@ public class SidebarNavigationGroup extends GroupBase {
 
     /**
      * The default css class to use for the icons of the items which exist in this navigation menu if they are not set
-     * on the items themselves (icons are required by {@link Action} and {@link ToggleMenu} items in this menu)
+     * on the items themselves (icons are required by {@link Action} and {@link ToggleMenu} items in this menu).
      *
      * @return the default icon class
      */

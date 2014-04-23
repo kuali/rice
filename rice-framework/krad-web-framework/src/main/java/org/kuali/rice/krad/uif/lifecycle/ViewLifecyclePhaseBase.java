@@ -358,7 +358,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         if (ViewLifecycle.isRefreshLifecycle() && (refreshPaths != null)) {
             String currentPath = getViewPath();
 
-            boolean withinRefreshComponent = currentPath.startsWith(ViewLifecycle.getRefreshComponentPhasePath(getViewPhase()));
+            boolean withinRefreshComponent = currentPath.startsWith(ViewLifecycle.getRefreshComponentPhasePath(
+                    getViewPhase()));
             if (withinRefreshComponent) {
                 initializeAllLifecycleSuccessors(successors);
             } else if (refreshPaths.contains(currentPath) || StringUtils.isBlank(currentPath)) {

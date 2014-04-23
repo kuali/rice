@@ -115,6 +115,11 @@
     <property name="metadataMessage">
       <bean parent="Uif-Message" p:cssClasses="uif-viewHeader-metadata"/>
     </property>
+    <property name="libraryCssClasses">
+      <list>
+        <value>uif-viewHeader-contentWrapper</value>
+      </list>
+    </property>
     <property name="cssClasses">
       <list>
         <value>uif-viewHeader</value>

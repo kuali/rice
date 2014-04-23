@@ -66,7 +66,7 @@ KradResponse.prototype = {
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
         var pageInLayout = "#" + kradVariables.VIEW_CONTENT_WRAPPER + " [data-role='Page']:first";
-        hideBubblePopups(pageInLayout);
+        hideTooltips(pageInLayout);
 
         var $pageInLayout = jQuery(pageInLayout);
 
@@ -108,9 +108,12 @@ KradResponse.prototype = {
         var $dialog = jQuery("#" + id);
         if ($dialog.length) {
             $dialog.replaceWith(component.html());
-
-            $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
         }
+        else {
+            jQuery('#' + kradVariables.IDS.DIALOGS).append(component.html());
+        }
+
+        $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         runHiddenScripts(id);
     },
@@ -125,7 +128,7 @@ KradResponse.prototype = {
 
         var $componentInDom = jQuery("#" + id);
 
-        hideBubblePopups($componentInDom);
+        hideTooltips($componentInDom);
 
         var component = jQuery("#" + id + "_update", content);
 
@@ -149,14 +152,19 @@ KradResponse.prototype = {
 
         // replace component
         if ($componentInDom.length) {
-            // only do highlighting if the is the first time the content is being displayed, and it is not
-            // a dialog
-            var componentInDialog = jQuery('#' + kradVariables.IDS.DIALOGS + ' #' + id).length > 0;
-            if (!componentInDialog && $componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
-                var isNewlyDisclosed = true;
-            }
+            var wasPlaceholder = $componentInDom.hasClass(kradVariables.CLASSES.PLACEHOLDER);
 
-            $componentInDom.replaceWith(component.html());
+            var componentContent = component.html();
+
+            // for modal content update, we just want to replace the contents within the component
+            var displayedModal = isDisplayedModal($componentInDom);
+            if (displayedModal) {
+                var innerComponentContent = jQuery(componentContent).html();
+                $componentInDom.html(innerComponentContent);
+            }
+            else {
+                $componentInDom.replaceWith(componentContent);
+            }
 
             $componentInDom = jQuery("#" + id);
 
@@ -187,7 +195,10 @@ KradResponse.prototype = {
             }
 
             $componentInDom.unblock({onUnblock: function () {
-                if (isNewlyDisclosed) {
+                var isDialog = $componentInDom.hasClass(kradVariables.CLASSES.MODAL);
+
+                // if this is the first time the content is being shown, and it is not a dialog, add highlighting
+                if (wasPlaceholder && !isDialog) {
                     $componentInDom.addClass(kradVariables.PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS);
                     $componentInDom.animate({backgroundColor: "transparent"}, 6000);
                 }
@@ -262,7 +273,5 @@ KradResponse.prototype = {
         // update form action with content
 
         jQuery("form#" + kradVariables.KUALI_FORM).attr('action', jQuery.trim(action));
-
-
     }
 }

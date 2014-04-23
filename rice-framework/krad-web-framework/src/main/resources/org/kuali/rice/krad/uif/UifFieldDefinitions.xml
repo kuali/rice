@@ -207,6 +207,28 @@
     </property>
   </bean>
 
+  <bean id="Uif-ProgressBarField" parent="Uif-ProgressBarField-parentBean"/>
+  <bean id="Uif-ProgressBarField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ProgressBarField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/progressBarField.ftl"/>
+    <property name="templateName" value="uif_progressBarField"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-progressBarField</value>
+      </list>
+    </property>
+    <property name="progressBar">
+      <bean parent="Uif-ProgressBar"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-StepProgressBarField" parent="Uif-StepProgressBarField-parentBean"/>
+  <bean id="Uif-StepProgressBarField-parentBean" abstract="true" parent="Uif-ProgressBarField" scope="prototype">
+    <property name="progressBar">
+      <bean parent="Uif-StepProgressBar"/>
+    </property>
+  </bean>
+
   <bean id="Uif-SpaceField" parent="Uif-SpaceField-parentBean"/>
   <bean id="Uif-SpaceField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.SpaceField"
         parent="Uif-FieldBase" scope="prototype">

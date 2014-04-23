@@ -54,11 +54,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.BreadcrumbItem;
-import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -75,13 +74,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Root of the component tree which encompasses a set of related
- * <code>GroupContainer</code> instances tied together with a common page layout
+ * GroupContainer instances tied together with a common page layout
  * and navigation.
  *
  * <p>
- * The <code>View</code> component ties together all the components and
+ * The View component ties together all the components and
  * configuration of the User Interface for a piece of functionality. In Rice
- * applications the view is typically associated with a <code>Document</code>
+ * applications the view is typically associated with a Document
  * instance.
  * </p>
  *
@@ -94,7 +93,7 @@ import org.slf4j.LoggerFactory;
  *
  * <p>
  * Configuration of UIF features such as model validation is also done through
- * the <code>View</code>
+ * the View
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -121,6 +120,7 @@ public class View extends ContainerBase {
     // application
     private Header applicationHeader;
     private Group applicationFooter;
+    private String applicationTitleText;
 
     // sticky flags
     private boolean stickyTopGroup;
@@ -198,9 +198,9 @@ public class View extends ContainerBase {
 
     @DelayedCopy
     private List<? extends Component> items;
-    
+
     private List<String> viewTemplates;
-    
+
     private Class<? extends ViewHelperService> viewHelperServiceClass;
 
     @ReferenceCopy
@@ -234,8 +234,6 @@ public class View extends ContainerBase {
         items = Collections.emptyList();
         viewTemplates = new LifecycleAwareList<String>(this);
     }
-
-
 
     /**
      * The following initialization is performed:
@@ -324,8 +322,7 @@ public class View extends ContainerBase {
 
         View view = ViewLifecycle.getView();
         if (theme != null) {
-            ViewLifecycle.getExpressionEvaluator()
-                .evaluateExpressionsOnConfigurable(view, theme, getContext());
+            ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, theme, getContext());
 
             theme.configureThemeDefaults();
         }
@@ -348,9 +345,9 @@ public class View extends ContainerBase {
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
-        
+
         assert this == ViewLifecycle.getView();
-        
+
         String preLoadScript = "";
         if (this.getPreLoadScript() != null) {
             preLoadScript = this.getPreLoadScript();
@@ -430,14 +427,13 @@ public class View extends ContainerBase {
                 UifConstants.REQUIRED_INDICATOR_ID);
 
         // Add data defaults for common components to the view for use in js (to reduce size of individual components)
-        this.addScriptDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) groupValidationDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) fieldValidationDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS,
-                ScriptUtils.convertToJsValue((Map<String, String>) actionDataDefaults));
-        this.addScriptDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR,
-                (String) requiredIndicator);
+        this.addScriptDataAttribute(UifConstants.DataAttributes.GROUP_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) groupValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.FIELD_VALIDATION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) fieldValidationDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.ACTION_DEFAULTS, ScriptUtils.convertToJsValue(
+                (Map<String, String>) actionDataDefaults));
+        this.addScriptDataAttribute(UifConstants.DataAttributes.REQ_INDICATOR, (String) requiredIndicator);
 
         // give view role attribute for js selections
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.VIEW);
@@ -445,8 +441,7 @@ public class View extends ContainerBase {
         // Add state mapping to post metadata
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateObjectBindingPath",
                 stateObjectBindingPath);
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping",
-                stateMapping);
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping", stateMapping);
     }
 
     /**
@@ -482,15 +477,15 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Gets all breadcrumb items related to this view's parent location. 
-     * 
+     * Gets all breadcrumb items related to this view's parent location.
+     *
      * @return breadcrumb items
      */
     public List<BreadcrumbItem> getBreadcrumbItems() {
         if (parentLocation == null) {
             return Collections.emptyList();
         }
-        
+
         List<BreadcrumbItem> breadcrumbItems = new ArrayList<BreadcrumbItem>();
         breadcrumbItems.add(parentLocation.getPageBreadcrumbItem());
         breadcrumbItems.add(parentLocation.getViewBreadcrumbItem());
@@ -499,7 +494,7 @@ public class View extends ContainerBase {
                 breadcrumbItems.add(item);
             }
         }
-        
+
         return breadcrumbItems;
     }
 
@@ -528,7 +523,7 @@ public class View extends ContainerBase {
      *
      * @return page group instance
      */
-    @ViewLifecycleRestriction(exclude=UifConstants.ViewPhases.PRE_PROCESS)
+    @ViewLifecycleRestriction(exclude = UifConstants.ViewPhases.PRE_PROCESS)
     public PageGroup getCurrentPage() {
         for (Component item : this.getItems()) {
             if (!(item instanceof PageGroup)) {
@@ -567,8 +562,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Override sort method to prevent sorting in the case of a single page view, since the items
-     * will get pushed into the configured page and sorted through the page
+     * {@inheritDoc}
      */
     @Override
     public void sortItems() {
@@ -578,12 +572,10 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Namespace code the view should be associated with
+     * Namespace code the view should be associated with.
      *
-     * <p>
-     * The namespace code is used within the framework in such places as permission checks and parameter
-     * retrieval
-     * </p>
+     * <p>The namespace code is used within the framework in such places as permission checks and parameter
+     * retrieval</p>
      *
      * @return namespace code
      */
@@ -593,9 +585,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's namespace code
-     *
-     * @param namespaceCode
+     * @see View#getNamespaceCode()
      */
     public void setNamespaceCode(String namespaceCode) {
         checkMutable(true);
@@ -604,15 +594,14 @@ public class View extends ContainerBase {
 
     /**
      * View name provides an identifier for a view within a type. That is if a
-     * set of <code>View</code> instances have the same values for the
+     * set of View instances have the same values for the
      * properties that are used to retrieve them by their type, the name can be
      * given to further qualify the view that should be retrieved.
-     * <p>
-     * A view type like the <code>LookupView</code> might have several views for
+     *
+     * <p>A view type like the LookupView might have several views for
      * the same object class, but one that is the 'default' lookup and another
      * that is the 'advanced' lookup. Therefore the name on the first could be
-     * set to 'default', and likewise the name for the second 'advanced'.
-     * </p>
+     * set to 'default', and likewise the name for the second 'advanced'</p>
      *
      * @return name of view
      */
@@ -622,9 +611,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's name
-     *
-     * @param viewName
+     * @see View#getViewName()
      */
     public void setViewName(String viewName) {
         checkMutable(true);
@@ -633,7 +620,7 @@ public class View extends ContainerBase {
 
     /**
      * When true, this view will use a unified header - the page header will be omitted and its title will be used
-     * in the ViewHeader supportTitle property (dynamically updated on page change)
+     * in the ViewHeader supportTitle property (dynamically updated on page change).
      *
      * @return true if using a unified header
      */
@@ -643,9 +630,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true, to use unified header functionality
-     *
-     * @param unifiedHeader
+     * @see View#isUnifiedHeader()
      */
     public void setUnifiedHeader(boolean unifiedHeader) {
         checkMutable(true);
@@ -653,7 +638,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * TopGroup is an optional group of content that appears above the breadcrumbs and view header
+     * TopGroup is an optional group of content that appears above the breadcrumbs and view header.
      *
      * @return the topGroup component
      */
@@ -663,9 +648,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set the topGroup component which appears the breadcrumbs and view header
-     *
-     * @param topGroup
+     * @see View#getTopGroup()
      */
     public void setTopGroup(Group topGroup) {
         checkMutable(true);
@@ -673,13 +656,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Header for the application containing the view
+     * Header for the application containing the view.
      *
-     * <p>
-     * When deploying outside a portal, the application header and footer property can be configured to
+     * <p>When deploying outside a portal, the application header and footer property can be configured to
      * display a consistent header/footer across all views. Here application logos, menus, login controls
-     * and so on can be rendered.
-     * </p>
+     * and so on can be rendered</p>
      *
      * @return application header
      */
@@ -689,9 +670,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the application header
-     *
-     * @param applicationHeader
+     * @see View#getApplicationHeader()
      */
     public void setApplicationHeader(Header applicationHeader) {
         checkMutable(true);
@@ -699,13 +678,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Footer for the application containing the view
+     * Footer for the application containing the view.
      *
-     * <p>
-     * When deploying outside a portal, the application header and footer property can be configured to
+     * <p>When deploying outside a portal, the application header and footer property can be configured to
      * display a consistent header/footer across all views. Here such things as application links, copyrights
-     * and so on can be rendered.
-     * </p>
+     * and so on can be rendered</p>
      *
      * @return application footer
      */
@@ -715,9 +692,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the application footer
-     *
-     * @param applicationFooter
+     * @see View#getApplicationFooter()
      */
     public void setApplicationFooter(Group applicationFooter) {
         checkMutable(true);
@@ -725,7 +700,24 @@ public class View extends ContainerBase {
     }
 
     /**
-     * If true, the top group will be sticky (fixed to top of window)
+     * Title text to be displayed on browser tab.
+     *
+     * @return
+     */
+    @BeanTagAttribute(name = "applicationTitleText")
+    public String getApplicationTitleText() {
+        return applicationTitleText;
+    }
+
+    /**
+     * @see View#getApplicationTitleText()
+     */
+    public void setApplicationTitleText(String applicationTitleText) {
+        this.applicationTitleText = applicationTitleText;
+    }
+
+    /**
+     * If true, the top group will be sticky (fixed to top of window).
      *
      * @return true if the top group is sticky, false otherwise
      */
@@ -735,9 +727,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the top group sticky (fixed to top of window)
-     *
-     * @param stickyTopGroup
+     * @see View#isStickyTopGroup()
      */
     public void setStickyTopGroup(boolean stickyTopGroup) {
         checkMutable(true);
@@ -745,7 +735,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * If true, the breadcrumb widget will be sticky (fixed to top of window)
+     * If true, the breadcrumb widget will be sticky (fixed to top of window).
      *
      * @return true if breadcrumbs are sticky, false otherwise
      */
@@ -755,9 +745,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the breadcrumbs sticky
-     *
-     * @param stickyBreadcrumbs
+     * @see View#isStickyBreadcrumbs()
      */
     public void setStickyBreadcrumbs(boolean stickyBreadcrumbs) {
         checkMutable(true);
@@ -765,7 +753,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * If true, the ViewHeader for this view will be sticky (fixed to top of window)
+     * If true, the ViewHeader for this view will be sticky (fixed to top of window).
      *
      * @return true if the header is sticky, false otherwise
      */
@@ -779,9 +767,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the ViewHeader sticky
-     *
-     * @param stickyHeader
+     * @see View#isStickyHeader()
      */
     public void setStickyHeader(boolean stickyHeader) {
         checkMutable(true);
@@ -802,9 +788,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the applicationHeader sticky
-     *
-     * @param stickyApplicationHeader
+     * @see View#isStickyApplicationHeader()
      */
     public void setStickyApplicationHeader(boolean stickyApplicationHeader) {
         checkMutable(true);
@@ -812,7 +796,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * If true, the view footer will become sticky (fixed to bottom of window)
+     * If true, the view footer will become sticky (fixed to bottom of window).
      *
      * @return ture if the view footer is sticky, false otherwise
      */
@@ -822,9 +806,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the view footer sticky
-     *
-     * @param stickyFooter
+     * @see View#isStickyFooter()
      */
     public void setStickyFooter(boolean stickyFooter) {
         checkMutable(true);
@@ -836,7 +818,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * If true, the applicationFooter will become sticky (fixed to bottom of window)
+     * If true, the applicationFooter will become sticky (fixed to bottom of window).
      *
      * @return true if the application footer is sticky, false otherwise
      */
@@ -846,9 +828,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set to true to make the application footer sticky
-     *
-     * @param stickyApplicationFooter
+     * @see View#isStickyApplicationFooter()
      */
     public void setStickyApplicationFooter(boolean stickyApplicationFooter) {
         checkMutable(true);
@@ -894,7 +874,7 @@ public class View extends ContainerBase {
 
     /**
      * Specifies what page should be rendered by default. This is the page that
-     * will be rendered when the <code>View</code> is first rendered or when the
+     * will be rendered when the View is first rendered or when the
      * current page is not set
      *
      * @return id of the page to render by default
@@ -905,9 +885,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for default Page id
-     *
-     * @param entryPageId
+     * @see View#getEntryPageId()
      */
     public void setEntryPageId(String entryPageId) {
         checkMutable(true);
@@ -915,12 +893,10 @@ public class View extends ContainerBase {
     }
 
     /**
-     * The id for the page within the view that should be displayed in the UI.
-     * Other pages of the view will not be rendered
+     * The id for the page within the view that should be displayed in the UI. Other pages of the view will not be
+     * rendered.
      *
-     * <p>
-     * If current page id is not set, it is set to the configured entry page or first item in list id
-     * </p>
+     * <p>If current page id is not set, it is set to the configured entry page or first item in list id</p>
      *
      * @return id of the page that should be displayed
      */
@@ -941,9 +917,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the page id to display
-     *
-     * @param currentPageId
+     * @see View#getCurrentPageId()
      */
     public void setCurrentPageId(String currentPageId) {
         checkMutable(true);
@@ -951,12 +925,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * <code>NavigationGroup</code> instance for the <code>View</code>
-     * <p>
-     * Provides configuration necessary to render the navigation. This includes
+     * NavigationGroup instance for the View<
+     *
+     * <p>Provides configuration necessary to render the navigation. This includes
      * navigation items in addition to configuration for the navigation
-     * renderer.
-     * </p>
+     * renderer</p>
      *
      * @return NavigationGroup
      */
@@ -966,9 +939,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the View's <code>NavigationGroup</code>
-     *
-     * @param navigation
+     * @see View#getNavigation()
      */
     public void setNavigation(Group navigation) {
         checkMutable(true);
@@ -976,10 +947,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Class of the Form that should be used with the <code>View</code>
-     * instance. The form is the top level object for all the view's data and is
+     * Class of the Form that should be used with the View instance.
+     *
+     * <p>The form is the top level object for all the view's data and is
      * used to present and accept data in the user interface. All form classes
-     * should extend UifFormBase
+     * should extend UifFormBase</p>
      *
      * @return class for the view's form
      * @see org.kuali.rice.krad.web.form.UifFormBase
@@ -990,9 +962,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the form class
-     *
-     * @param formClass
+     * @see View#getFormClass()
      */
     public void setFormClass(Class<?> formClass) {
         checkMutable(true);
@@ -1000,11 +970,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     * For <code>View</code> types that work primarily with one nested object of
+     * For View types that work primarily with one nested object of
      * the form (for instance document, or bo) the default binding object path
-     * can be set for each of the views <code>DataBinding</code> components. If
+     * can be set for each of the views DataBinding components. If
      * the component does not set its own binding object path it will inherit
-     * the default
+     * the default.
      *
      * @return binding path to the object from the form
      */
@@ -1014,9 +984,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the default binding object path to use for the view
-     *
-     * @param defaultBindingObjectPath
+     * @see View#getDefaultBindingObjectPath()
      */
     public void setDefaultBindingObjectPath(String defaultBindingObjectPath) {
         checkMutable(true);
@@ -1025,37 +993,35 @@ public class View extends ContainerBase {
 
     /**
      * Configures the concrete classes that will be used for properties in the
-     * form object graph that have an abstract or interface type
+     * form object graph that have an abstract or interface type.
      *
-     * <p>
-     * For properties that have an abstract or interface type, it is not
+     * <p>For properties that have an abstract or interface type, it is not
      * possible to perform operations like getting/settings property values and
      * getting information from the dictionary. When these properties are
-     * encountered in the object graph, this <code>Map</code> will be consulted
-     * to determine the concrete type to use.
-     * </p>
+     * encountered in the object graph, this Map will be consulted
+     * to determine the concrete type to use</p>
      *
-     * <p>
-     * e.g. Suppose we have a property document.accountingLine.accountNumber and
+     * <p>e.g. Suppose we have a property document.accountingLine.accountNumber and
      * the accountingLine property on the document instance has an interface
      * type 'AccountingLine'. We can then put an entry into this map with key
      * 'document.accountingLine', and value
      * 'org.kuali.rice.sampleapp.TravelAccountingLine'. When getting the
      * property type or an entry from the dictionary for accountNumber, the
-     * TravelAccountingLine class will be used.
-     * </p>
+     * TravelAccountingLine class will be used</p>
      *
      * @return Map<String, Class> of class implementations keyed by path
      */
     @BeanTagAttribute(name = "objectPathConcreteClassMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, Class<?>> getObjectPathToConcreteClassMapping() {
+        if (objectPathToConcreteClassMapping == Collections.EMPTY_MAP) {
+            objectPathToConcreteClassMapping = new HashMap<String, Class<?>>();
+        }
+
         return this.objectPathToConcreteClassMapping;
     }
 
     /**
-     * Setter for the Map of class implementations keyed by path
-     *
-     * @param objectPathToConcreteClassMapping
+     * @see View#getObjectPathToConcreteClassMapping()
      */
     public void setObjectPathToConcreteClassMapping(Map<String, Class<?>> objectPathToConcreteClassMapping) {
         checkMutable(true);
@@ -1064,14 +1030,15 @@ public class View extends ContainerBase {
 
     /**
      * Declares additional script files that should be included with the
-     * <code>View</code>. These files are brought into the HTML page along with
+     * View.
+     *
+     * <p>These files are brought into the HTML page along with
      * common script files configured for the Rice application. Each entry
      * contain the path to the CSS file, either a relative path, path from web
-     * root, or full URI
-     * <p>
-     * e.g. '/krad/scripts/myScript.js', '../scripts/myScript.js',
-     * 'http://my.edu/web/myScript.js'
-     * </p>
+     * root, or full URI</p>
+     *
+     * <p>e.g. '/krad/scripts/myScript.js', '../scripts/myScript.js',
+     * 'http://my.edu/web/myScript.js'</p>
      *
      * @return script file locations
      */
@@ -1080,15 +1047,12 @@ public class View extends ContainerBase {
         if (additionalScriptFiles == Collections.EMPTY_LIST && isMutable(true)) {
             additionalScriptFiles = new LifecycleAwareList<String>(this);
         }
-        
+
         return additionalScriptFiles;
     }
 
     /**
-     * Setter for the List of additional script files to included with the
-     * <code>View</code>
-     *
-     * @param additionalScriptFiles
+     * @see View#getAdditionalScriptFiles()
      */
     public void setAdditionalScriptFiles(List<String> additionalScriptFiles) {
         checkMutable(true);
@@ -1100,15 +1064,15 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Declares additional CSS files that should be included with the
-     * <code>View</code>. These files are brought into the HTML page along with
+     * Declares additional CSS files that should be included with the View.
+     *
+     * <p>These files are brought into the HTML page along with
      * common CSS files configured for the Rice application. Each entry should
      * contain the path to the CSS file, either a relative path, path from web
-     * root, or full URI
-     * <p>
-     * e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
-     * 'http://my.edu/web/stacked-view.css'
-     * </p>
+     * root, or full URI</p>
+     *
+     * <p>e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
+     * 'http://my.edu/web/stacked-view.css'</p>
      *
      * @return CSS file locations
      */
@@ -1117,15 +1081,12 @@ public class View extends ContainerBase {
         if (additionalCssFiles == Collections.EMPTY_LIST && isMutable(true)) {
             additionalCssFiles = new LifecycleAwareList<String>(this);
         }
-        
+
         return additionalCssFiles;
     }
 
     /**
-     * Setter for the List of additional CSS files to included with the
-     * <code>View</code>
-     *
-     * @param additionalCssFiles
+     * @see View#getAdditionalCssFiles()
      */
     public void setAdditionalCssFiles(List<String> additionalCssFiles) {
         checkMutable(true);
@@ -1137,15 +1098,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Declares additional link tags that should be included with the
-     * <code>View</code> in the <head></head>. These files are brought into the HTML page along with
-     * common CSS files configured for the Rice application. Each entry should
-     * contain the path to the CSS file, either a relative path, path from web
-     * root, or full URI
-     * <p>
-     * e.g. '/krad/css/stacked-view.css', '../css/stacked-view.css',
-     * 'http://my.edu/web/stacked-view.css'
-     * </p>
+     * List of additional link tags that should be included with the View in the html head.
      *
      * @return headlink objects
      */
@@ -1155,10 +1108,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the List of additional <link> tags to included in the
-     * <head></head>
-     *
-     * @param additionalHeadLinks
+     * @see View#getAdditionalHeadLinks()
      */
     public void setAdditionalHeadLinks(List<HeadLink> additionalHeadLinks) {
 
@@ -1166,6 +1116,7 @@ public class View extends ContainerBase {
     }
 
     /**
+     * List of additional meta tags that should be included with the View in the html head tag.
      *
      * @return   additionalMetaTags
      */
@@ -1175,14 +1126,11 @@ public class View extends ContainerBase {
     }
 
     /**
-     *
-     * @param additionalMetaTags
+     * @see View#getAdditionalMetaTags()
      */
     public void setAdditionalMetaTags(List<MetaTag> additionalMetaTags) {
         this.additionalMetaTags = additionalMetaTags;
     }
-
-
 
     /**
      * True if the libraryCssClasses set on components will be output to their class attribute, false otherwise.
@@ -1194,9 +1142,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set useLibraryCssClasses
-     *
-     * @param useLibraryCssClasses
+     * @see View#isUseLibraryCssClasses()
      */
     public void setUseLibraryCssClasses(boolean useLibraryCssClasses) {
         checkMutable(true);
@@ -1204,20 +1150,16 @@ public class View extends ContainerBase {
     }
 
     /**
-     * List of templates that are used to render the view
+     * List of templates that are used to render the view.
      *
-     * <p>
-     * This list will be populated by unique template names as the components of the view are being processed.
+     * <p>This list will be populated by unique template names as the components of the view are being processed.
      * Additional templates can be added in the view configuration if desired. At the beginning of the the view
-     * rendering, each template in the list will then be included or processed by the template language
-     * </p>
+     * rendering, each template in the list will then be included or processed by the template language</p>
      *
-     * <p>
-     * Note the user of this depends on the template language being used for rendering. Some languages might require
+     * <p>Note the user of this depends on the template language being used for rendering. Some languages might require
      * including the template for each component instance (for example JSP templates). While others might simply
      * include markup that is then available for rendering each component instance (for example FreeMarker which has
-     * a macro for each component that the template defines)
-     * </p>
+     * a macro for each component that the template defines)</p>
      *
      * @return list of template names that should be included for rendering the view
      */
@@ -1227,7 +1169,7 @@ public class View extends ContainerBase {
 
     /**
      * This method ...
-     * 
+     *
      * @param template
      */
     public void addViewTemplate(String template) {
@@ -1249,7 +1191,7 @@ public class View extends ContainerBase {
      */
     public void setViewTemplates(List<String> viewTemplates) {
         checkMutable(true);
-        
+
         if (viewTemplates == null) {
             this.viewTemplates = new LifecycleAwareList<String>(this);
         } else {
@@ -1260,13 +1202,11 @@ public class View extends ContainerBase {
     /**
      * View type name the view is associated with the view instance
      *
-     * <p>
-     * Views that share common features and functionality can be grouped by the
+     * <p>Views that share common features and functionality can be grouped by the
      * view type. Usually view types extend the <code>View</code> class to
      * provide additional configuration and to set defaults. View types can also
      * implement the <code>ViewTypeService</code> to add special indexing and
-     * retrieval of views.
-     * </p>
+     * retrieval of views</p>
      *
      * @return view type name for the view
      */
@@ -1276,9 +1216,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's type name
-     *
-     * @param viewTypeName
+     * @see View#getViewTypeName()
      */
     public void setViewTypeName(ViewType viewTypeName) {
         checkMutable(true);
@@ -1286,8 +1224,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Class name of the <code>ViewHelperService</code> that handles the various
-     * phases of the Views lifecycle
+     * Class name of the ViewHelperService that handles the various phases of the Views lifecycle.
      *
      * @return Class for the spring bean
      * @see org.kuali.rice.krad.uif.service.ViewHelperService
@@ -1322,9 +1259,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the <code>ViewHelperService</code>
-     *
-     * @param viewHelperService
+     * @see View#getViewHelperServiceClass()
      */
     public void setViewHelperService(ViewHelperService viewHelperService) {
         checkMutable(true);
@@ -1342,7 +1277,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Holds field indexes of the <code>View</code> instance for retrieval
+     * Holds field indexes of the View instance for retrieval.
      *
      * @return ViewIndex instance
      */
@@ -1376,9 +1311,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's request parameters map
-     *
-     * @param viewRequestParameters
+     * @see View#getViewRequestParameters()
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         checkMutable(true);
@@ -1386,10 +1319,9 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the form (model) associated with the view should be stored in the user session
+     * Indicates whether the form (model) associated with the view should be stored in the user session.
      *
-     * <p>
-     * The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
+     * <p>The form class (or model) is used to hold the data that backs the view along with the built view object. Storing
      * the form instance in session allows many things:
      *
      * <ul>
@@ -1403,13 +1335,10 @@ public class View extends ContainerBase {
      * </ul>
      *
      * Setting this flag to false will prevent the form from being kept in session and as a result will limit what can
-     * be done by the framework. In almost all cases this is not recommended.
-     * </p>
+     * be done by the framework. In almost all cases this is not recommended</p>
      *
-     * <p>
-     * Note all forms will be cleared when the user session expires (based on the rice configuration). In addition, the
-     * framework enables clear points on certain actions to remove the form when it is no longer needed
-     * </p>
+     * <p>Note all forms will be cleared when the user session expires (based on the rice configuration). In addition, the
+     * framework enables clear points on certain actions to remove the form when it is no longer needed</p>
      *
      * @return true if the form should be stored in the user session, false if only request based
      */
@@ -1419,9 +1348,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the persist form to session indicator
-     *
-     * @param persistFormToSession
+     * @see View#isPersistFormToSession()
      */
     public void setPersistFormToSession(boolean persistFormToSession) {
         checkMutable(true);
@@ -1438,15 +1365,13 @@ public class View extends ContainerBase {
     }
 
     /**
-     * PresentationController that should be used for the <code>View</code> instance
+     * PresentationController that should be used for the View instance.
      *
-     * <p>
-     * The presentation controller is consulted to determine component (group,
+     * <p>The presentation controller is consulted to determine component (group,
      * field) state such as required, read-only, and hidden. The presentation
      * controller does not take into account user permissions. The presentation
      * controller can also output action flags and edit modes that will be set
-     * onto the view instance and can be referred to by conditional expressions
-     * </p>
+     * onto the view instance and can be referred to by conditional expressions</p>
      *
      * @return PresentationController
      */
@@ -1456,9 +1381,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's presentation controller
-     *
-     * @param presentationController
+     * @see View#getPresentationController()
      */
     public void setPresentationController(ViewPresentationController presentationController) {
         checkMutable(true);
@@ -1477,18 +1400,16 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Authorizer that should be used for the <code>View</code> instance
+     * Authorizer that should be used for the View instance
      *
-     * <p>
-     * The authorizer class is consulted to determine component (group, field)
+     * <p>The authorizer class is consulted to determine component (group, field)
      * state such as required, read-only, and hidden based on the users
      * permissions. It typically communicates with the Kuali Identity Management
      * system to determine roles and permissions. It is used with the
      * presentation controller and dictionary conditional logic to determine the
      * final component state. The authorizer can also output action flags and
      * edit modes that will be set onto the view instance and can be referred to
-     * by conditional expressions
-     * </p>
+     * by conditional expressions</p>
      *
      * @return Authorizer
      */
@@ -1498,9 +1419,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's authorizer
-     *
-     * @param authorizer
+     * @see View#getAuthorizer()
      */
     public void setAuthorizer(ViewAuthorizer authorizer) {
         checkMutable(true);
@@ -1518,11 +1437,10 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Map of strings that flag what actions can be taken in the UI
-     * <p>
-     * These can be used in conditional expressions in the dictionary or by
-     * other UI logic
-     * </p>
+     * Map of strings that flag what actions can be taken in the UI.
+     *
+     * <p>These can be used in conditional expressions in the dictionary or by
+     * other UI logic</p>
      *
      * @return action flags
      */
@@ -1531,14 +1449,12 @@ public class View extends ContainerBase {
         if (actionFlags == Collections.EMPTY_MAP && isMutable(true)) {
             actionFlags = new LifecycleAwareMap<String, Boolean>(this);
         }
-        
+
         return actionFlags;
     }
 
     /**
-     * Setter for the action flags Map
-     *
-     * @param actionFlags
+     * @see View#getActionFlags()
      */
     public void setActionFlags(Map<String, Boolean> actionFlags) {
         checkMutable(true);
@@ -1550,12 +1466,10 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Map of edit modes that enabled for the view
+     * Map of edit modes that enabled for the view.
      *
-     * <p>
-     * These can be used in conditional expressions in the dictionary or by
-     * other UI logic
-     * </p>
+     * <p>These can be used in conditional expressions in the dictionary or by
+     * other UI logic</p>
      *
      * @return edit modes
      */
@@ -1564,14 +1478,12 @@ public class View extends ContainerBase {
         if (editModes == Collections.EMPTY_MAP && isMutable(true)) {
             editModes = new LifecycleAwareMap<String, Boolean>(this);
         }
-        
+
         return editModes;
     }
 
     /**
-     * Setter for the edit modes Map
-     *
-     * @param editModes
+     * @see View#getEditModes()
      */
     public void setEditModes(Map<String, Boolean> editModes) {
         checkMutable(true);
@@ -1584,16 +1496,14 @@ public class View extends ContainerBase {
 
     /**
      * Map that contains expressions to evaluate and make available as variables
-     * for conditional expressions within the view
+     * for conditional expressions within the view.
      *
-     * <p>
-     * Each Map entry contains one expression variables, where the map key gives
+     * <p>Each Map entry contains one expression variables, where the map key gives
      * the name for the variable, and the map value gives the variable
      * expression. The variables expressions will be evaluated before
      * conditional logic is run and made available as variables for other
      * conditional expressions. Variable expressions can be based on the model
-     * and any object contained in the view's context
-     * </p>
+     * and any object contained in the view's context</p>
      *
      * @return variable expressions
      */
@@ -1603,9 +1513,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the view's map of variable expressions
-     *
-     * @param expressionVariables
+     * @see View#getExpressionVariables()
      */
     public void setExpressionVariables(Map<String, String> expressionVariables) {
         checkMutable(true);
@@ -1613,15 +1521,16 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the <code>View</code> only has a single page
-     * <code>Group</code> or contains multiple page <code>Group</code>
-     * instances. In the case of a single page it is assumed the group's items
+     * Indicates whether the View only has a single page
+     * Group or contains multiple page Group instances.
+     *
+     * <p>In the case of a single page it is assumed the group's items
      * list contains the section groups for the page, and the page itself is
      * given by the page property ({@link #getPage()}. This is for convenience
-     * of configuration and also can drive other configuration like styling.
+     * of configuration and also can drive other configuration like styling</p>
      *
      * @return true if the view only contains one page group, false if
-     *         it contains multple pages
+     * it contains multple pages
      */
     @BeanTagAttribute(name = "singlePageView")
     public boolean isSinglePageView() {
@@ -1629,9 +1538,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the single page indicator
-     *
-     * @param singlePageView
+     * @see View#isSinglePageView()
      */
     public void setSinglePageView(boolean singlePageView) {
         checkMutable(true);
@@ -1643,16 +1550,14 @@ public class View extends ContainerBase {
      * should be included for this view.  This only applies to single paged views.
      *
      * @return true if the view should contain the default sections
-     *         specified in the page
+     * specified in the page
      */
     public boolean isMergeWithPageItems() {
         return mergeWithPageItems;
     }
 
     /**
-     * Setter for the include page default sections indicator
-     *
-     * @param mergeWithPageItems
+     * @see View#isMergeWithPageItems()
      */
     public void setMergeWithPageItems(boolean mergeWithPageItems) {
         checkMutable(true);
@@ -1661,7 +1566,7 @@ public class View extends ContainerBase {
 
     /**
      * For single paged views ({@link #isSinglePageView()}, gives the page
-     * <code>Group</code> the view should render. The actual items for the page
+     * Group the view should render. The actual items for the page
      * is taken from the group's items list ({@link #getItems()}, and set onto
      * the give page group. This is for convenience of configuration.
      *
@@ -1674,9 +1579,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the page group for single page views
-     *
-     * @param page
+     * @see View#getPage()
      */
     public void setPage(PageGroup page) {
         checkMutable(true);
@@ -1693,20 +1596,18 @@ public class View extends ContainerBase {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
             items = new LifecycleAwareList<Component>(this);
         }
-        
+
         return items;
     }
 
     /**
-     * Setter for the view's <code>Group</code> instances
-     *
-     * @param items
+     * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
     @Override
     public void setItems(List<? extends Component> items) {
         checkMutable(true);
-        
+
         if (items == null) {
             this.items = Collections.emptyList();
         } else {
@@ -1716,7 +1617,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Provide a list of dialog groups associated with this view
+     * Provide a list of dialog groups associated with this view.
      *
      * @return List of dialog Groups
      */
@@ -1730,9 +1631,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Sets the list of dialog groups for this view
-     *
-     * @param dialogs List of dialog groups
+     * @see View#getDialogs()
      */
     public void setDialogs(List<Group> dialogs) {
         checkMutable(true);
@@ -1756,9 +1655,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the views link field
-     *
-     * @param viewMenuLink
+     * @see View#getViewMenuLink()
      */
     public void setViewMenuLink(Link viewMenuLink) {
         checkMutable(true);
@@ -1767,7 +1664,7 @@ public class View extends ContainerBase {
 
     /**
      * Provides a grouping string for the view to group its menu link (within a
-     * portal for instance)
+     * portal for instance).
      *
      * @return menu grouping
      */
@@ -1777,9 +1674,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the views menu grouping
-     *
-     * @param viewMenuGroupName
+     * @see View#getViewMenuGroupName()
      */
     public void setViewMenuGroupName(String viewMenuGroupName) {
         checkMutable(true);
@@ -1787,7 +1682,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Breadcrumb widget used for displaying homeward path and history
+     * Breadcrumb widget used for displaying homeward path and history.
      *
      * @return the breadcrumbs
      */
@@ -1821,9 +1716,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set the breadcrumbOptions
-     *
-     * @param breadcrumbOptions
+     * @see View#getBreadcrumbOptions()
      */
     public void setBreadcrumbOptions(BreadcrumbOptions breadcrumbOptions) {
         checkMutable(true);
@@ -1842,9 +1735,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set the breadcrumbItem
-     *
-     * @param breadcrumbItem
+     * @see View#getBreadcrumbItem()
      */
     public void setBreadcrumbItem(BreadcrumbItem breadcrumbItem) {
         checkMutable(true);
@@ -1854,14 +1745,12 @@ public class View extends ContainerBase {
     /**
      * The parentLocation defines urls that represent the parent of a View in a conceptial site hierarchy.
      *
-     * <p>
-     * By defining a parent with these urls defined, a breadcrumb chain can be generated and displayed automatically
+     * <p>By defining a parent with these urls defined, a breadcrumb chain can be generated and displayed automatically
      * before this View's breadcrumbItem(s).  To chain multiple views, the urls must be defining viewId and
      * controllerMapping settings instead of setting an href directly (this will end the chain).  If labels are
      * not set on parentLocations, the labels will attempt to be derived from parent views/pages breadcrumbItem
      * and headerText - if these contain expressions which cannot be evaluated in the current context an exception
-     * will be thrown.
-     * </p>
+     * will be thrown</p>
      *
      * @return the parentLocation
      */
@@ -1871,9 +1760,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set the parentLocation
-     *
-     * @param parentLocation
+     * @see View#getParentLocation()
      */
     public void setParentLocation(ParentLocation parentLocation) {
         checkMutable(true);
@@ -1896,13 +1783,13 @@ public class View extends ContainerBase {
      */
     public void setPathBasedBreadcrumbs(List<BreadcrumbItem> pathBasedBreadcrumbs) {
         checkMutable(true);
-        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs == null ? null :
-            new LifecycleAwareList<BreadcrumbItem>(this, pathBasedBreadcrumbs);
+        this.pathBasedBreadcrumbs = pathBasedBreadcrumbs == null ? null : new LifecycleAwareList<BreadcrumbItem>(this,
+                pathBasedBreadcrumbs);
     }
 
     /**
      * Growls widget which sets up global settings for the growls used in this
-     * view and its pages
+     * view and its pages.
      *
      * @return the growls
      */
@@ -1958,7 +1845,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * whether to use growls to show messages - info, warning and error
+     * Determines whether to use growls to show messages - info, warning and error.
      *
      * <p>Growls use the messages contained in the message map. If enabled, info
      * messages in their entirety will be displayed in growls, for warning and
@@ -1988,14 +1875,12 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the form should be validated for dirtyness
+     * Indicates whether the form should be validated for dirtyness.
      *
-     * <p>
-     * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
+     * <p>For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
      * InputFields will be validated on refresh, navigate, cancel or close Action or on form
      * unload and if dirty, displays a message and user can decide whether to continue with
-     * the action or stay on the form. For lookup and inquiry, it's not needed to validate.
-     * </p>
+     * the action or stay on the form. For lookup and inquiry, it's not needed to validate</p>
      *
      * @return true if dirty validation is set
      */
@@ -2005,7 +1890,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for dirty validation.
+     * @see View#isApplyDirtyCheck()
      */
     public void setApplyDirtyCheck(boolean applyDirtyCheck) {
         checkMutable(true);
@@ -2013,9 +1898,9 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Indicates whether the Name of the Code should be displayed when a property is of type <code>KualiCode</code>
+     * Indicates whether the Name of the Code should be displayed when a property is of type KualiCode.
      *
-     * @param translateCodesOnReadOnlyDisplay indicates whether <code>KualiCode</code>'s name should be included.
+     * @param translateCodesOnReadOnlyDisplay indicates whether KualiCode's name should be included.
      */
     public void setTranslateCodesOnReadOnlyDisplay(boolean translateCodesOnReadOnlyDisplay) {
         checkMutable(true);
@@ -2023,7 +1908,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Returns whether the current view supports displaying <code>KualiCode</code>'s name as additional display value
+     * Returns whether the current view supports displaying KualiCode's name as additional display value.
      *
      * @return true if the current view supports
      */
@@ -2034,11 +1919,9 @@ public class View extends ContainerBase {
 
     /**
      * Indicates whether the view allows read only fields to be specified on the request URL which will
-     * override the view setting
+     * override the view setting.
      *
-     * <p>
-     * If enabled, the readOnlyFields request parameter can be sent to indicate fields that should be set read only
-     * </p>
+     * <p>If enabled, the readOnlyFields request parameter can be sent to indicate fields that should be set read only</p>
      *
      * @return true if read only request overrides are allowed, false if not
      */
@@ -2048,9 +1931,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the the read only field override indicator
-     *
-     * @param supportsRequestOverrideOfReadOnlyFields
+     * @see View#isSupportsRequestOverrideOfReadOnlyFields()
      */
     public void setSupportsRequestOverrideOfReadOnlyFields(boolean supportsRequestOverrideOfReadOnlyFields) {
         checkMutable(true);
@@ -2059,12 +1940,10 @@ public class View extends ContainerBase {
 
     /**
      * Indicates whether the browser autocomplete functionality should be disabled for the
-     * entire form (adds autocomplete="off")
+     * entire form (adds autocomplete="off").
      *
-     * <p>
-     * The browser's native autocomplete functionality can cause issues with security fields and also fields
-     * with the UIF suggest widget enabled
-     * </p>
+     * <p>The browser's native autocomplete functionality can cause issues with security fields and also fields
+     * with the UIF suggest widget enabled</p>
      *
      * @return true if the native autocomplete should be turned off for the form, false if not
      */
@@ -2073,9 +1952,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter to disable browser autocomplete for the view's form
-     *
-     * @param disableNativeAutocomplete
+     * @see View#isDisableNativeAutocomplete()
      */
     public void setDisableNativeAutocomplete(boolean disableNativeAutocomplete) {
         checkMutable(true);
@@ -2083,15 +1960,13 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Enables functionality to bust the browsers cache by appending an unique cache key
+     * Enables functionality to bust the browsers cache by appending an unique cache key.
      *
-     * <p>
-     * Since response headers are unreliable for preventing caching in all browsers, the
+     * <p>Since response headers are unreliable for preventing caching in all browsers, the
      * framework uses a technique for updating the URL to include an unique cache key. If the
      * HTML 5 History API is supported a parameter can be added to the URL which causes the browser
      * to not find the cached page when the user goes back. If not the framework falls back to using
-     * a hash key and resubmitting using script to pull the latest
-     * </p>
+     * a hash key and resubmitting using script to pull the latest</p>
      *
      * @return true if cache for the view should be disabled, false if not
      */
@@ -2100,9 +1975,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter to disable browser caching of the view
-     *
-     * @param disableBrowserCache
+     * @see View#isDisableBrowserCache()
      */
     public void setDisableBrowserCache(boolean disableBrowserCache) {
         checkMutable(true);
@@ -2110,11 +1983,9 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Script that is executed at the beginning of page load (before any other script)
+     * Script that is executed at the beginning of page load (before any other script).
      *
-     * <p>
-     * Many used to set server variables client side
-     * </p>
+     * <p>Many used to set server variables client side</p>
      *
      * @return pre load script
      */
@@ -2124,9 +1995,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for the pre load script
-     *
-     * @param preLoadScript
+     * @see View#getPreLoadScript()
      */
     public void setPreLoadScript(String preLoadScript) {
         checkMutable(true);
@@ -2134,7 +2003,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * The theme which contains stylesheets for this view
+     * The theme which contains stylesheets for this view.
      *
      * @return ViewTheme
      */
@@ -2144,9 +2013,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Setter for The theme which contains stylesheets for this view
-     *
-     * @return
+     * @see View#getTheme()
      */
     public void setTheme(ViewTheme theme) {
         checkMutable(true);
@@ -2185,7 +2052,7 @@ public class View extends ContainerBase {
      * state information or replacements (ie, they will function as they did in version 2.1).</p>
      *
      * @return information needed for state based validation, if null no state based validation
-     *         functionality will exist and configured constraints will apply regardless of state
+     * functionality will exist and configured constraints will apply regardless of state
      * @since 2.2
      */
     @BeanTagAttribute(name = "stateMapping", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -2194,9 +2061,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * Set the stateMapping
-     *
-     * @param stateMapping
+     * @see View#getStateMapping()
      */
     public void setStateMapping(StateMapping stateMapping) {
         checkMutable(true);
@@ -2206,7 +2071,7 @@ public class View extends ContainerBase {
     /**
      * Returns the general context that is available before the apply model phase (during the
      * initialize phase)
-     * 
+     *
      * @return context map
      */
     public Map<String, Object> getPreModelContext() {
@@ -2225,17 +2090,15 @@ public class View extends ContainerBase {
             context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
             context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
             context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
-            
+
             preModelContext = Collections.unmodifiableMap(context);
         }
-        
+
         return preModelContext;
     }
 
     /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
+     * {@inheritDoc}
      */
     @Override
     public View clone() throws CloneNotSupportedException {
@@ -2249,7 +2112,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.DictionaryBeanBase#copyProperties(Object)
+     * {@inheritDoc}
      */
     @Override
     public void completeValidation(ValidationTrace tracer) {

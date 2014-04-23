@@ -15,12 +15,28 @@
     limitations under the License.
 
 -->
-<#macro grid items rowCssClasses=[] numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
+<#--
+    items=TableLayoutManager.getAllRowFields() returns List<Field>
+    numberOfColumns=GridLayoutManager.getNumberOfColumns()
+ -->
+
+<#macro grid items rowCssClasses=[] rowDataAttributes=[] numberOfColumns=2 renderFirstRowHeader=false renderHeaderRow=false applyAlternatingRowStyles=false
 applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHeaderColumns=false>
 
     <#if numberOfColumns == 0>
         <#return/>
     </#if>
+
+<#--
+rowCssClasses<br>
+<#list rowCssClasses as x>
+  ${x_index} => ${x}<br>
+</#list>
+rowDataAttributes<br>
+<#list rowDataAttributes as x>
+  ${x_index} => ${x}<br>
+</#list>
+ -->
 
     <#local defaultCellWidth=100/numberOfColumns/>
 
@@ -65,10 +81,11 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
             </#if>
 
             <#local trClasses="${evenOddClass!} ${rowCssClasses[rowCount]!}"/>
+            <#local trDataAttributes="${rowDataAttributes[rowCount]!}"/>
             <#if trClasses?trim?has_content>
-                <tr class="${trClasses?trim}">
+                <tr class="${trClasses?trim}" ${trDataAttributes?trim}>
             <#else>
-                <tr>
+                <tr ${trDataAttributes?trim}>
             </#if>
 
             <#-- if alternating header columns, force first cell of row to be header -->
@@ -86,8 +103,7 @@ applyDefaultCellWidths=true renderRowFirstCellHeader=false renderAlternatingHead
         </#if>
 
         <#local singleCellRow=(numberOfColumns == 1) || (item.colSpan == numberOfColumns)/>
-        <#local renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow)
-                 || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
+        <#local renderHeaderColumn=renderHeaderRow || (renderFirstRowHeader && firstRow) || ((renderFirstCellHeader || renderAlternateHeader) && !singleCellRow)/>
 
         <#-- build cells for row if value @ columnArray itemIndex = 1 -->
         <#local index = columnArray[columnIndex]?number />

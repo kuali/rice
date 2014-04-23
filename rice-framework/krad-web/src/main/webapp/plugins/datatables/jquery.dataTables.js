@@ -1,15 +1,15 @@
 /*
  * File:        jquery.dataTables.js
- * Version:     1.7.5
+ * Version:     1.9.X
  * Description: Paginate, search and sort HTML tables
  * Author:      Allan Jardine (www.sprymedia.co.uk)
- * Created:     28/3/2008
+ * Created:     unknown
  * Language:    Javascript
  * License:     GPL v2 or BSD 3 point style
  * Project:     Mtaala
  * Contact:     allan.jardine@sprymedia.co.uk
  *
- * Copyright 2008-2010 Allan Jardine, all rights reserved.
+ * Copyright 2008-2014 Allan Jardine, all rights reserved.
  *
  * This source file is free software, under either the GPL v2 license or a
  * BSD style license, as supplied with this software.

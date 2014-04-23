@@ -22,9 +22,12 @@ import org.kuali.rice.krad.theme.util.ThemeBuilderUtils;
 import org.lesscss.LessCompiler;
 import org.lesscss.LessException;
 import org.lesscss.LessSource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,6 +43,8 @@ import java.util.Properties;
  */
 public class LessThemePreProcessor implements ThemePreProcessor {
     private static final Logger LOG = Logger.getLogger(LessThemePreProcessor.class);
+
+    private static final String LESS_JS_FILE = "less-1.7.0.min.js";
 
     /**
      * Processes Less files that should be included for the given theme
@@ -69,6 +74,9 @@ public class LessThemePreProcessor implements ThemePreProcessor {
                 stylesheetsDirectory);
 
         LessCompiler lessCompiler = new LessCompiler();
+
+        URL lessJS = this.getClass().getClassLoader().getResource(LESS_JS_FILE);
+        lessCompiler.setLessJs(lessJS);
 
         // not compressing here since that will be done later in the build process
         lessCompiler.setCompress(false);

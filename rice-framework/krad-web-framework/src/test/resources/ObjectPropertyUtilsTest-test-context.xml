@@ -25,4 +25,37 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+  <import resource="classpath:org/kuali/rice/krad/uif/PropertyEditors.xml"/>
+
+  <bean id="dataDictionaryService" class="org.kuali.rice.krad.uif.util.TestDataDictionaryService">
+    <property name="dataDictionary" ref="dataDictionary" />
+    <property name="propertyEditorMap">
+      <map>
+        <entry key="org.kuali.rice.core.api.util.type.KualiDecimal" value-ref="currencyEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.KualiInteger" value-ref="intCurrencyEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.KualiPercent" value-ref="percentEditor" />
+        <entry key="java.sql.Time" value-ref="timeEditor" />
+        <entry key="java.sql.Date" value-ref="dateEditor" />
+        <entry key="java.util.Date" value-ref="dateEditor" />
+        <entry key="java.sql.Timestamp" value-ref="timestampEditor" />
+        <entry key="boolean" value-ref="booleanEditor" />
+        <entry key="java.lang.Boolean" value-ref="booleanEditor" />
+        <entry key="java.math.BigDecimal" value-ref="decimalEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.AbstractKualiDecimal" value-ref="decimalEditor" />
+        <entry key="java.lang.String" value-ref="stringEditor" />
+        <entry key="[Ljava.lang.String;" value-ref="stringArrayEditor" />
+        <entry key="[B" value-ref="byteArrayEditor" />
+      </map>
+    </property>
+  </bean>
+
+  <bean name="dataDictionary" class="org.kuali.rice.krad.datadictionary.DataDictionary">
+    <property name="moduleLoadOrder">
+      <list />
+    </property>
+    <property name="moduleDictionaryFiles">
+      <map />
+    </property>
+  </bean>
+
 </beans>

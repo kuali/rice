@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,10 +37,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -127,13 +123,6 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * The following initialization is performed:
-     *
-     * <ul>
-     * <li>Set defaults for binding</li>
-     * <li>Default the model path if not set</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
@@ -146,11 +135,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * The following updates are done here:
-     *
-     * <ul>
-     * <li>If readOnlyHidden set to true, set field to readonly and add to hidden property names</li>
-     * </ul>
+     * {@inheritDoc}
      */
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
@@ -167,16 +152,6 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * The following actions are performed:
-     *
-     * <ul>
-     * <li>Set the ids for the various attribute components</li>
-     * <li>Sets up the client side validation for constraints on this field. In
-     * addition, it sets up the messages applied to this field</li>
-     * <li>If this field is of type list and readOnly, generates the appropriate readOnly output.  Handles other
-     * readOnlyReplacement cases, as well.</li>
-     * </ul>
-     *
      * {@inheritDoc}
      */
     @Override
@@ -236,23 +211,11 @@ public class DataFieldBase extends FieldBase implements DataField {
                         this.getBindingInfo().getBindingPath());
             }
         }
-
+        
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
         if (isRender() && viewPostMetadata != null) {
-            viewPostMetadata.addDataFieldPropertyPath(getBindingInfo().getBindingPath());
+            viewPostMetadata.addRenderedPropertyPath(getBindingInfo().getBindingPath());
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
-        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
-            pendingTasks.offer(LifecycleTaskFactory.getTask(InitializeDataFieldFromDictionaryTask.class, phase));
-        }
-        
-        super.initializePendingTasks(phase, pendingTasks);
     }
 
     /**
@@ -383,7 +346,6 @@ public class DataFieldBase extends FieldBase implements DataField {
         // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
         if (isApplyMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-
             if (getMaskFormatter() != null) {
                 readOnlyDisplayReplacement = getMaskFormatter().maskValue(fieldValue);
             }
@@ -438,16 +400,9 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Defaults the properties of the <code>DataField</code> to the
-     * corresponding properties of its <code>AttributeDefinition</code>
-     * retrieved from the dictionary (if such an entry exists). If the field
-     * already contains a value for a property, the definitions value is not
-     * used.
-     *
-     * @param view view instance the field belongs to
-     * @param attributeDefinition AttributeDefinition instance the property values should be
-     * copied from
+     * {@inheritDoc}
      */
+    @Override
     public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
         // label
         if (StringUtils.isEmpty(getLabel())) {
@@ -486,284 +441,208 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Indicates whether the data field instance allows input, subclasses should override and set to
-     * true if input is allowed
-     *
-     * @return true if input is allowed, false if read only
+     * {@inheritDoc}
      */
+    @Override
     public boolean isInputAllowed() {
         return false;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "propertyName")
     public String getPropertyName() {
         return this.propertyName;
     }
 
     /**
-     * Setter for the component's property name
-     *
-     * @param propertyName
+     * {@inheritDoc}
      */
+    @Override
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
     }
 
     /**
-     * Performs formatting of the field value for display and then converting the value back to its
-     * expected type from a string
-     *
-     * <p>
-     * Note property editors exist and are already registered for the basic Java types and the
-     * common Kuali types such as [@link KualiDecimal}. Registration with this property is only
-     * needed for custom property editors
-     * </p>
-     *
-     * @return PropertyEditor property editor instance to use for this field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
 
     /**
-     * Setter for the custom property editor to use for the field
-     *
-     * @param propertyEditor
+     * {@inheritDoc}
      */
+    @Override
     public void setPropertyEditor(PropertyEditor propertyEditor) {
         this.propertyEditor = propertyEditor;
     }
 
     /**
-     * Convenience setter for configuring a property editor by class
-     *
-     * @param propertyEditorClass
+     * {@inheritDoc}
      */
+    @Override
     public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
         this.propertyEditor = KRADUtils.createNewObjectFromClass(propertyEditorClass);
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
 
     /**
-     * Setter for the field's binding info
-     *
-     * @param bindingInfo
+     * {@inheritDoc}
      */
+    @Override
     public void setBindingInfo(BindingInfo bindingInfo) {
         this.bindingInfo = bindingInfo;
     }
 
     /**
-     * Returns the full binding path (the path used in the name attribute of the input).
-     * This differs from propertyName in that it uses BindingInfo to determine the path.
-     *
-     * @return full binding path name
+     * {@inheritDoc}
      */
+    @Override
     public String getName() {
         return this.getBindingInfo().getBindingPath();
     }
 
     /**
-     * Name of the attribute within the data dictionary the attribute field is
-     * associated with
-     *
-     * <p>
-     * During the initialize phase for the <code>View</code>, properties for
-     * attribute fields are defaulted from a corresponding
-     * <code>AttributeDefinition</code> in the data dictionary. Based on the
-     * propertyName and parent object class the framework attempts will
-     * determine the attribute definition that is associated with the field and
-     * set this property. However this property can also be set in the fields
-     * configuration to use another dictionary attribute.
-     * </p>
-     *
-     * <p>
-     * The attribute name is used along with the dictionary object entry to find
-     * the <code>AttributeDefinition</code>
-     * </p>
-     *
-     * @return attribute name
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "dictionaryAttributeName")
     public String getDictionaryAttributeName() {
         return this.dictionaryAttributeName;
     }
 
     /**
-     * Setter for the dictionary attribute name
-     *
-     * @param dictionaryAttributeName
+     * {@inheritDoc}
      */
+    @Override
     public void setDictionaryAttributeName(String dictionaryAttributeName) {
         this.dictionaryAttributeName = dictionaryAttributeName;
     }
 
     /**
-     * Object entry name in the data dictionary the associated attribute is
-     * apart of
-     *
-     * <p>
-     * During the initialize phase for the <code>View</code>, properties for
-     * attribute fields are defaulted from a corresponding
-     * <code>AttributeDefinition</code> in the data dictionary. Based on the
-     * parent object class the framework will determine the object entry for the
-     * associated attribute. However the object entry can be set in the field's
-     * configuration to use another object entry for the attribute
-     * </p>
-     *
-     * <p>
-     * The attribute name is used along with the dictionary object entry to find
-     * the <code>AttributeDefinition</code>
-     * </p>
-     *
-     * @return String
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "dictionaryObjectEntry")
     public String getDictionaryObjectEntry() {
         return this.dictionaryObjectEntry;
     }
 
     /**
-     * Setter for the dictionary object entry
-     *
-     * @param dictionaryObjectEntry
+     * {@inheritDoc}
      */
+    @Override
     public void setDictionaryObjectEntry(String dictionaryObjectEntry) {
         this.dictionaryObjectEntry = dictionaryObjectEntry;
     }
 
     /**
-     * Default value for the model property the field points to
-     *
-     * <p>
-     * When a new <code>View</code> instance is requested, the corresponding
-     * model will be newly created. During this initialization process the value
-     * for the model property will be set to the given default value, if it was null.
-     * This will only work on properties which can be determined to be null.
-     * Therefore a String property with an empty string value will
-     * not be ovewritten with the defaultValue set here.
-     * </p>
-     *
-     * <p>
-     * In addition, int, boolean, and other primitive types
-     * will not use this default value because they inherently have a value in Java (0 for int, false for boolean, etc).
-     * To use such types either using a primitive wrapper type (Integer, Boolean, etc) so an unset variable can
-     * be determined to be null, or explicitly set the default value on the form/object itself for these types and
-     * not through this property.
-     * </p>
-     *
-     * @return default value
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "defaultValue")
     public Object getDefaultValue() {
         return this.defaultValue;
     }
 
     /**
-     * Setter for the fields default value
-     *
-     * @param defaultValue
+     * {@inheritDoc}
      */
+    @Override
     public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
     }
 
     /**
-     * Gives Class that should be invoked to produce the default value for the
-     * field
-     *
-     * @return default value finder class
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "defaultValueFinderClass")
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
         return this.defaultValueFinderClass;
     }
 
     /**
-     * Setter for the default value finder class
-     *
-     * @param defaultValueFinderClass
+     * {@inheritDoc}
      */
+    @Override
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
         this.defaultValueFinderClass = defaultValueFinderClass;
     }
 
     /**
-     * Array of default values for the model property the field points to
-     *
-     * <p>
-     * When a new <code>View</code> instance is requested, the corresponding
-     * model will be newly created. During this initialization process the value
-     * for the model property will be set to the given default values (if set)
-     * </p>
-     *
-     * @return default value
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "defaultValues", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public Object[] getDefaultValues() {
         return this.defaultValues;
     }
 
     /**
-     * Setter for the fields default values
-     *
-     * @param defaultValues
+     * {@inheritDoc}
      */
+    @Override
     public void setDefaultValues(Object[] defaultValues) {
         this.defaultValues = defaultValues;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getForcedValue() {
         return forcedValue;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setForcedValue(String forcedValue) {
         this.forcedValue = forcedValue;
     }
 
     /**
-     * Summary help text for the field
-     *
-     * @return summary help text
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "helpSummary")
     public String getHelpSummary() {
         return this.help.getTooltipHelpContent();
     }
 
     /**
-     * Setter for the summary help text
-     *
-     * @param helpSummary
+     * {@inheritDoc}
      */
+    @Override
     public void setHelpSummary(String helpSummary) {
         this.help.setTooltipHelpContent(helpSummary);
     }
 
     /**
-     * Data Field Security object that indicates what authorization (permissions) exist for the field
-     *
-     * @return DataFieldSecurity instance
+     * {@inheritDoc}
      */
+    @Override
     public DataFieldSecurity getDataFieldSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
     }
 
     /**
-     * Override to assert a {@link DataFieldSecurity} instance is set
-     *
-     * @param componentSecurity instance of DataFieldSecurity
+     * {@inheritDoc}
      */
     @Override
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
@@ -785,89 +664,57 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Indicates the field should be read-only but also a hidden should be generated for the field
-     *
-     * <p>
-     * Useful for when a value is just displayed but is needed by script
-     * </p>
-     *
-     * @return true if field should be readOnly hidden, false if not
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "addHiddenWhenReadOnly")
     public boolean isAddHiddenWhenReadOnly() {
         return addHiddenWhenReadOnly;
     }
 
     /**
-     * Setter for the read-only hidden indicator
-     *
-     * @param addHiddenWhenReadOnly
+     * {@inheritDoc}
      */
+    @Override
     public void setAddHiddenWhenReadOnly(boolean addHiddenWhenReadOnly) {
         this.addHiddenWhenReadOnly = addHiddenWhenReadOnly;
     }
 
     /**
-     * Inquiry widget for the field
-     *
-     * <p>
-     * The inquiry widget will render a link for the field value when read-only
-     * that points to the associated inquiry view for the field. The inquiry can
-     * be configured to point to a certain <code>InquiryView</code>, or the
-     * framework will attempt to associate the field with a inquiry based on its
-     * metadata (in particular its relationships in the model)
-     * </p>
-     *
-     * @return Inquiry field inquiry
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "inquiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Inquiry getInquiry() {
         return this.inquiry;
     }
 
     /**
-     * Setter for the inquiry widget
-     *
-     * @param inquiry
+     * {@inheritDoc}
      */
+    @Override
     public void setInquiry(Inquiry inquiry) {
         this.inquiry = inquiry;
     }
 
     /**
-     * Indicates whether inquiries should be automatically set when a relationship for the field's property
-     * is found
-     *
-     * <p>
-     * Note this only applies when the {@link #getInquiry()} widget has not been configured (is null)
-     * and is set to true by default
-     * </p>
-     *
-     * @return true if auto inquiries are enabled, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean isEnableAutoInquiry() {
         return enableAutoInquiry;
     }
 
     /**
-     * Setter for enabling automatic inquiries
-     *
-     * @param enableAutoInquiry
+     * {@inheritDoc}
      */
+    @Override
     public void setEnableAutoInquiry(boolean enableAutoInquiry) {
         this.enableAutoInquiry = enableAutoInquiry;
     }
 
     /**
-     * Help configuration object for the datafield
-     *
-     * <p>
-     * External help information can be configured for the datafield. The
-     * <code>Help</code> object can the configuration for rendering a link to
-     * that help information.
-     * </p>
-     *
-     * @return Help for datafield
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "help", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -876,9 +723,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Setter for the datafield help content
-     *
-     * @param help
+     * {@inheritDoc}
      */
     @Override
     public void setHelp(Help help) {
@@ -886,45 +731,39 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * When true, render the info message span which contains can contain additional information
-     * about the field (used by Field Query functionality)
-     *
-     * @return true if the span will be rendered, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean isRenderInfoMessageSpan() {
         return renderInfoMessageSpan;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.DataField#isRenderInfoMessageSpan()
-     * @param renderInfoMessageSpan
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderInfoMessageSpan(boolean renderInfoMessageSpan) {
         this.renderInfoMessageSpan = renderInfoMessageSpan;
     }
 
     /**
-     * When true, render the marker icon span to show icons related to the field (used by CompareFieldCreateModifier on
-     * maintenance documetnts to mark editted fields)
-     *
-     * @return true if the the marker icon span will be rendered, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean isRenderMarkerIconSpan() {
         return renderMarkerIconSpan;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.field.DataField#isRenderMarkerIconSpan()
-     * @param renderMarkerIconSpan
+     * {@inheritDoc}
      */
+    @Override
     public void setRenderMarkerIconSpan(boolean renderMarkerIconSpan) {
         this.renderMarkerIconSpan = renderMarkerIconSpan;
     }
 
     /**
-     * For data fields the help tooltip is placed on the label.
-     *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip))
+     * {@inheritDoc}
      */
     @Override
     @BeanTagAttribute(name = "tooltipOfComponent", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
@@ -933,10 +772,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Return the field label for the help title
-     *
-     * @return field label
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     * {@inheritDoc}
      */
     @Override
     public String getHelpTitle() {
@@ -944,191 +780,143 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Additional display attribute name, which will be displayed next to the actual field value
-     * when the field is readonly with hyphen in between like PropertyValue - AdditionalPropertyValue
-     *
-     * @param readOnlyDisplaySuffixPropertyName name of the additional display property
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyDisplaySuffixPropertyName(String readOnlyDisplaySuffixPropertyName) {
         this.readOnlyDisplaySuffixPropertyName = readOnlyDisplaySuffixPropertyName;
     }
 
     /**
-     * Returns the additional display attribute name to be displayed when the field is readonly
-     *
-     * @return additional display attribute name
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "readOnlyDisplaySuffixPropertyName")
+    @Override
+    @BeanTagAttribute(name = "readOnlyDisplaceSuffixPropertyName")
     public String getReadOnlyDisplaySuffixPropertyName() {
         return this.readOnlyDisplaySuffixPropertyName;
     }
 
     /**
-     * Sets the alternate display attribute name to be displayed when the field is readonly.
-     * This properties value will be displayed instead of actual fields value when the field is readonly.
-     *
-     * @param readOnlyDisplayReplacementPropertyName alternate display property name
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyDisplayReplacementPropertyName(String readOnlyDisplayReplacementPropertyName) {
         this.readOnlyDisplayReplacementPropertyName = readOnlyDisplayReplacementPropertyName;
     }
 
     /**
-     * Returns the alternate display attribute name to be displayed when the field is readonly.
-     *
-     * @return alternate Display Property Name
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "readOnlyDisplayReplacementPropertyName")
     public String getReadOnlyDisplayReplacementPropertyName() {
         return this.readOnlyDisplayReplacementPropertyName;
     }
 
     /**
-     * Returns the alternate display value
-     *
-     * @return the alternate display value set for this field
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "readOnlyDisplayReplacement")
     public String getReadOnlyDisplayReplacement() {
         return readOnlyDisplayReplacement;
     }
 
     /**
-     * Setter for the alternative display value
-     *
-     * @param value
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyDisplayReplacement(String value) {
         this.readOnlyDisplayReplacement = value;
     }
 
     /**
-     * Returns the additional display value.
-     *
-     * @return the additional display value set for this field
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "readOnlyDisplaySuffix")
+    @Override
+    @BeanTagAttribute(name = "readOnlyDispalySuffix")
     public String getReadOnlyDisplaySuffix() {
         return readOnlyDisplaySuffix;
     }
 
     /**
-     * Setter for the additional display value
-     *
-     * @param value
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyDisplaySuffix(String value) {
         this.readOnlyDisplaySuffix = value;
     }
 
     /**
-     * Gets the readOnlyListDisplayType.
-     *
-     * <p>When this is not set, the list will default to the delimited list display with a default of comma and space
-     * (", ") - if readOnlyListDelimiter is not set as well.  The type can be set as the following:
-     * <ul>
-     * <li>"DELIMITED" - list will be output with delimiters between each item defined by readOnlyListDelimiter</li>
-     * <li>"BREAK" - list will be output with breaks between each item</li>
-     * <li>"OL" - list will be output in ordered list format (numbered)</li>
-     * <li>"UL" - list will be output in unordered list format (bulleted)</li>
-     * </ul>
-     * </p>
-     *
-     * @return the display type to use
+     * {@inheritDoc}
      */
+    @Override
     public String getReadOnlyListDisplayType() {
         return readOnlyListDisplayType;
     }
 
     /**
-     * Set the readOnlyListDisplayType
-     *
-     * @param readOnlyListDisplayType
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyListDisplayType(String readOnlyListDisplayType) {
         this.readOnlyListDisplayType = readOnlyListDisplayType;
     }
 
     /**
-     * The readOnlyListDelimiter is used to set the delimiter used when "DELIMITED" type is set for
-     * readOnlyListDisplayType
-     *
-     * @return the delimiter to use in readOnly list output with "DELIMITED" type set
+     * {@inheritDoc}
      */
+    @Override
     public String getReadOnlyListDelimiter() {
         return readOnlyListDelimiter;
     }
 
     /**
-     * Set the readOnlyListDelimiter
-     *
-     * @param readOnlyListDelimiter
+     * {@inheritDoc}
      */
+    @Override
     public void setReadOnlyListDelimiter(String readOnlyListDelimiter) {
         this.readOnlyListDelimiter = readOnlyListDelimiter;
     }
 
     /**
-     * Indicates whether the value for the field should be masked (or partially masked) on display
-     *
-     * <p>
-     * If set to true, the field value will be masked by applying the configured {@link #getMaskFormatter()}
-     * </p>
-     *
-     * <p>
-     * If a KIM permission exists that should be checked to determine whether the value should be masked or not,
-     * this value should not be set but instead the mask or partialMask property on {@link #getComponentSecurity()}
-     * should be set to true. This indicates there is a mask permission that should be consulted. If the user
-     * does not have the permission, this flag will be set to true by the framework and the value masked using
-     * the mask formatter configured on the security object
-     * </p>
-     *
-     * @return true if the field value should be masked, false if not
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "applyMask")
     public boolean isApplyMask() {
         return applyMask;
     }
 
     /**
-     * Setter for the apply value mask flag
-     *
-     * @param applyMask
+     * {@inheritDoc}
      */
+    @Override
     public void setApplyMask(boolean applyMask) {
         this.applyMask = applyMask;
     }
 
     /**
-     * MaskFormatter instance that will be used to mask the field value when {@link #isApplyMask()} is true
-     *
-     * <p>
-     * Note in cases where the mask is applied due to security (KIM permissions), the mask or partial mask formatter
-     * configured on {@link #getComponentSecurity()} will be used instead of this mask formatter
-     * </p>
-     *
-     * @return MaskFormatter instance
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "maskFormatter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
 
     /**
-     * Setter for the MaskFormatter instance to apply when the value is masked
-     *
-     * @param maskFormatter
+     * {@inheritDoc}
      */
+    @Override
     public void setMaskFormatter(MaskFormatter maskFormatter) {
         this.maskFormatter = maskFormatter;
     }
 
     /**
-     * Allows specifying hidden property names without having to specify as a
-     * field in the group config (that might impact layout)
-     *
-     * @return hidden property names
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "additionalHiddenPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getAdditionalHiddenPropertyNames() {
         if (additionalHiddenPropertyNames == Collections.EMPTY_LIST && isMutable(true)) {
@@ -1139,10 +927,9 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Setter for the hidden property names
-     *
-     * @param additionalHiddenPropertyNames
+     * {@inheritDoc}
      */
+    @Override
     public void setAdditionalHiddenPropertyNames(List<String> additionalHiddenPropertyNames) {
         if (additionalHiddenPropertyNames == null) {
             this.additionalHiddenPropertyNames = Collections.emptyList();
@@ -1153,23 +940,9 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * List of property names whose values should be displayed read-only under this field
-     *
-     * <p>
-     * In the attribute field template for each information property name given its values is
-     * outputted read-only. Informational property values can also be updated dynamically with
-     * the use of field attribute query
-     * </p>
-     *
-     * <p>
-     * Simple property names can be given if the property has the same binding parent as this
-     * field, in which case the binding path will be adjusted by the framework. If the property
-     * names starts with org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX, no binding
-     * prefix will be added.
-     * </p>
-     *
-     * @return informational property names
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "propertyNamesForAdditionalDisplay", type = BeanTagAttribute.AttributeType.LISTVALUE)
     public List<String> getPropertyNamesForAdditionalDisplay() {
         if (propertyNamesForAdditionalDisplay == Collections.EMPTY_LIST && isMutable(true)) {
@@ -1180,10 +953,9 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Setter for the list of informational property names
-     *
-     * @param propertyNamesForAdditionalDisplay
+     * {@inheritDoc}
      */
+    @Override
     public void setPropertyNamesForAdditionalDisplay(List<String> propertyNamesForAdditionalDisplay) {
         if (propertyNamesForAdditionalDisplay == null) {
             this.propertyNamesForAdditionalDisplay = Collections.emptyList();
@@ -1194,56 +966,42 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Sets HTML escaping for this property value. HTML escaping will be handled in alternate and additional fields
-     * also.
+     * {@inheritDoc}
      */
+    @Override
     public void setEscapeHtmlInPropertyValue(boolean escapeHtmlInPropertyValue) {
         this.escapeHtmlInPropertyValue = escapeHtmlInPropertyValue;
     }
 
     /**
-     * Returns true if HTML escape allowed for this field
-     *
-     * @return true if escaping allowed
+     * {@inheritDoc}
      */
+    @Override
     @BeanTagAttribute(name = "escapeHtmlInPropertyValue")
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
     }
 
     /**
-     * Returns true if this field is of type {@code TextAreaControl}.
-     *
-     * <p>
-     * Used to preserve text formatting in a textarea when the view
-     * is readOnly by enclosing the text in a </pre> tag.
-     * </p>
-     *
-     * @return true if the field is of type {@code TextAreaControl}
+     * {@inheritDoc}
      */
+    @Override
     public boolean isMultiLineReadOnlyDisplay() {
         return multiLineReadOnlyDisplay;
     }
 
     /**
-     * Setter for multiLineReadOnlyDisplay
-     *
-     * @param multiLineReadOnlyDisplay
+     * {@inheritDoc}
      */
+    @Override
     public void setMultiLineReadOnlyDisplay(boolean multiLineReadOnlyDisplay) {
         this.multiLineReadOnlyDisplay = multiLineReadOnlyDisplay;
     }
 
     /**
-     * Indicates whether the value for the field is secure.
-     *
-     * <p>
-     * A value will be secured if masking has been applied (by configuration or a failed KIM permission) or the field
-     * has been marked as hidden due to a required KIM permission check failing.
-     * </p>
-     *
-     * @return true if value is secure, false if not
+     * {@inheritDoc}
      */
+    @Override
     public boolean hasSecureValue() {
         boolean hasHideAuthz = false;
 
@@ -1270,6 +1028,10 @@ public class DataFieldBase extends FieldBase implements DataField {
         return isApplyMask() || (hasHideAuthz && isHidden());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isRenderFieldset() {
         return (!this.isReadOnly()
                 && inquiry != null

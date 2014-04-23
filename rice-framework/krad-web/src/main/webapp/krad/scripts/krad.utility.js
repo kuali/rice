@@ -203,6 +203,19 @@ function findElement(selector) {
 }
 
 /**
+ * Finds element(s) within the given context that have the data role attribute equal to the given role.
+ *
+ * @param role data attribute role value to find
+ * @param $context (optional) content to find elements, if empty the entire document will be used
+ * @returns {*} found elements, if any
+ */
+function findByDataRole(role, $context) {
+    $context = $context || jQuery(document);
+
+    return $context.find("[" + kradVariables.ATTRIBUTES.DATA_ROLE + "='" + role + "']");
+}
+
+/**
  * Sets a configuration parameter that will be accessible with script
  *
  * <p>
@@ -364,8 +377,7 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
 
         //Interpret new server message state for refreshed InputFields and write them out
         if (!skipValidationBubbling) {
-            //reinitialize BubblePopup
-            initBubblePopups();
+            pageValidationPhase = true;
 
             jQuery(selector).find("div[data-role='InputField']").andSelf().filter("div[data-role='InputField']").each(function () {
                 var id = jQuery(this).attr('id');
@@ -377,13 +389,11 @@ function runHiddenScripts(id, isSelector, skipValidationBubbling) {
             });
 
             writeMessagesForPage();
+            pageValidationPhase = false;
         }
     }
     else {
         evaluateScripts();
-
-        //reinitialize BubblePopup
-        initBubblePopups();
     }
 
     profile(false, "run-scripts:" + id);
@@ -497,10 +507,10 @@ function writeHiddenToForm(propertyName, propertyValue) {
     //removing because of performFinalize bug
     jQuery('input[name="' + escapeName(propertyName) + '"]').remove();
 
-    if (propertyValue.indexOf("'") != -1) {
-        jQuery("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
+    if (propertyValue && typeof propertyValue === 'string' &&  propertyValue.indexOf("'") != -1) {
+        jQuery("<input type='hidden' name='" + escapeName(propertyName) + "'" + ' value="' + escapeName(propertyValue) + '"/>').appendTo(jQuery("#formComplete"));
     } else {
-        jQuery("<input type='hidden' name='" + propertyName + "' value='" + propertyValue + "'/>").appendTo(jQuery("#formComplete"));
+        jQuery("<input type='hidden' name='" + escapeName(propertyName) + "' value='" + escapeName(propertyValue) + "'/>").appendTo(jQuery("#formComplete"));
     }
 }
 
@@ -848,23 +858,6 @@ function resizeTheRouteLogFrame() {
 }
 
 /**
- * Adds or adds value to the attribute on the element.
- *
- * @param id - element id
- * @param attributeName - name of the attribute to add/add to
- * @param attributeValue - value of the attribute
- * @param concatFlag - indicate if value should be added to current value
- */
-function addAttribute(id, attributeName, attributeValue, concatFlag) {
-    hasAttribute = jQuery("#" + id).is('[' + attributeName + ']');
-    if (concatFlag && hasAttribute) {
-        jQuery("#" + id).attr(attributeName, jQuery("#" + id).attr(attributeName) + " " + attributeValue);
-    } else {
-        jQuery("#" + id).attr(attributeName, attributeValue);
-    }
-}
-
-/**
  * Open new browser window for the specified help url
  *
  * The help window is positioned in the center of the screen and resized to 1/4th of the screen.
@@ -1064,6 +1057,19 @@ function collectionLineChanged(inputField, highlightItemClass) {
 }
 
 /**
+ * Takes a string argument that contains javascript code and wraps in a function that accepts an
+ * event argument.
+ *
+ * @param source string containing event script
+ * @returns {Object} event handler function
+ */
+function wrapAsHandler(source) {
+    var script = "(function (e) { " + source + "})"
+
+    return eval(script);
+}
+
+/**
  * Display the component of the id in a light box.
  *
  * <p>The specified component is used as the content of the fancy box.
@@ -1091,20 +1097,13 @@ function showLightboxComponent(componentId, overrideOptions, alwaysRefresh) {
         }});
     }
 
-    if (jQuery('#' + componentId).length > 0 && !alwaysRefresh && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
+    if (jQuery('#' + componentId).length > 0 && !alwaysRefresh
+            && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         _showLightboxComponentHelper(componentId, overrideOptions);
     } else {
-        var placeholderSpan = '<span id="' + componentId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
-                '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
-        if (jQuery('#' + componentId).length == 0) {
-            jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
-        } else {
-            jQuery('#' + componentId).replaceWith(placeholderSpan);
-        }
-
-        retrieveComponent(componentId, undefined, function () {
+        createPlaceholderAndRetrieve(componentId, function () {
             _showLightboxComponentHelper(componentId, overrideOptions);
-            }, {}, true);
+        });
     }
 }
 
@@ -2398,15 +2397,13 @@ function initStickyContent(currentScroll) {
     var navigation = jQuery("#" + kradVariables.NAVIGATION_ID);
     var navigationHeightAdjust = 0;
 
-    if (navigation.length) {
-        if (navigation.is(".tab-navigation-block")) {
-            navigationHeightAdjust = navigation.height();
-        }
+    if (navigation.length && navigation.has(".nav-tabs").length === 0) {
+        navigation.attr("style", "position:absolute;");
 
         //move the navigation with total height of the header pieces - the scroll
         // TODO support both absolute and fixed
         //navigation.attr("style", "position:fixed; top: " + (topOffset - currentScroll) + "px;");
-        navigation.attr("style", "position:absolute;");
+
     }
 
     // Determine which div to apply the margin to by figuring out the first applicable div that exists after all
@@ -2464,7 +2461,9 @@ function handleStickyContent() {
         /* jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; top: " +
                 (navAdjust) + "px;");*/
         var nav = jQuery("#" + kradVariables.NAVIGATION_ID);
-        nav.attr("style", "position:absolute;");
+        if (nav.length && nav.has(".nav-tabs").length === 0) {
+            nav.attr("style", "position:absolute;");
+        }
 
         currentHeaderHeight = navAdjust;
 
@@ -2692,4 +2691,10 @@ function formatHtml(html) {
     }
 
     return formatted;
+}
+
+function getGroupHeaderElement(groupId) {
+    var headerWrapper = jQuery("[data-header_for='" + groupId + "']");
+    var wrapperId = headerWrapper.attr("id");
+    return headerWrapper.find("#" + wrapperId + "_header");
 }

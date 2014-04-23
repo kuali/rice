@@ -35,8 +35,16 @@
         <#local style="style=\"${manager.style}\""/>
     </#if>
 
+    <#if manager.renderLayoutWrapper>
+       <div id="${manager.id}" ${style!} ${styleClass!}>
+    </#if>
+
     <#list items as item>
-       <@krad.template component=item/>
-   </#list>
+        <@krad.template component=item/>
+    </#list>
+
+    <#if manager.renderLayoutWrapper>
+       </div>
+    </#if>
 
 </#macro>

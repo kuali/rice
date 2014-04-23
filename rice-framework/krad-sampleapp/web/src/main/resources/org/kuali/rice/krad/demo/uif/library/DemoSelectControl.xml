@@ -32,6 +32,7 @@
         <ref bean="Demo-SelectControl-Example2"/>
         <ref bean="Demo-SelectControl-Example3"/>
         <ref bean="Demo-SelectControl-Example4"/>
+        <ref bean="Demo-SelectControl-Example5"/>
       </list>
     </property>
   </bean>
@@ -83,7 +84,6 @@
   <bean id="Demo-SelectControl-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-
           <!-- ex:Demo-SelectControl-Example3 start-->
         <bean parent="Uif-InputField" p:propertyName="inputField1" p:width="auto" >
           <property name="control">
@@ -94,7 +94,6 @@
           </property>
         </bean>
         <!-- ex:Demo-SelectControl-Example3 end-->
-
       </list>
     </property>
   </bean>
@@ -103,9 +102,8 @@
   <bean id="Demo-SelectControl-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
-
           <!-- ex:Demo-SelectControl-Example4 start-->
-        <bean parent="Uif-InputField" p:label='Dropdown Navigation' p:instructionalText="Navigate on dropdown selection"
+        <bean parent="Uif-InputField" p:label="Dropdown Navigation" p:instructionalText="Navigate on dropdown selection"
               p:width="auto">
           <property name="control">
             <bean parent="Uif-DropdownControl">
@@ -125,10 +123,54 @@
           </property>
         </bean>
         <!-- ex:Demo-SelectControl-Example4 end-->
-
       </list>
     </property>
   </bean>
 
+  <!-- Grouping select -->
+  <bean id="Demo-SelectControl-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-SelectControl-Example5 start-->
+        <bean parent="Uif-InputField" p:label='Grouped Dropdown' p:instructionalText="Grouped dropdown selection"
+              p:width="auto">
+          <property name="control">
+            <bean parent="Uif-DropdownControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-OptionGroupLabel" p:label="American"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>
+                  <bean parent="Uif-OptionGroupLabel" p:label="Japan"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <bean parent="Uif-InputField" p:label='Multiple select grouped Dropdown' p:instructionalText="Multiple select grouped dropdown selection"
+              p:width="auto">
+          <property name="control">
+            <bean parent="Uif-DropdownControl" p:multiple="true">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-OptionGroupLabel" p:label="American"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>
+                  <bean parent="Uif-OptionGroupLabel" p:label="Japan"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-SelectControl-Example5 end-->
+      </list>
+    </property>
+  </bean>
 
 </beans>

@@ -23,6 +23,7 @@ import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.util.Link;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.service.ViewService;
@@ -162,6 +163,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         form.preBind((HttpServletRequest) request);
 
         _bind(request);
+
+        request.setAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, this.bindingResult.getPropertyEditorRegistry());
 
         executeAutomaticLinking(request, form);
         

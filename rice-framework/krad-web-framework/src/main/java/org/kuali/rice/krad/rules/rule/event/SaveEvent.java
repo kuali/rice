@@ -16,8 +16,9 @@
 package org.kuali.rice.krad.rules.rule.event;
 
 /**
- * This class is used to define Events that are allowed to be used as Custom Save events
+ * Interface for events that can be applied on a save operation.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface SaveEvent {
 

@@ -261,7 +261,7 @@
 }
 
 .demo-componentLibView  .demo-sampleAppPage .uif-pageHeader {
-    min-height: 60px;
+    min-height: 65px;
 }
 
 .demo-componentLibView .demo-sampleAppPage .uif-pageHeader select {
@@ -315,8 +315,6 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     margin-top: 20px;
-    position: absolute;
-    right: 0px;
     width: 170px;
 }
 
@@ -377,13 +375,12 @@
     color: black;
 }
 
-.demo-noTabs > div.ui-tabs > ul.nav-tabs {
+.demo-noTabs > .nav-tabs {
     display: none;
 }
 
-.demo-noTabs > #ComponentLibrary-TabGroup_tabs > div.ui-tabs-panel {
-    width: 675px;
-    float: left;
+.demo-noTabs > .tab-content {
+    width: 100%;
 }
 
 #ComponentLibrary-TabGroup_tabList .ui-widget-header { background: none}
@@ -656,9 +653,7 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 #ComponentLibrary-TabGroup div[data-type="TabWrapper"] {
     margin-top: 0px;
 }
-#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > section,
-#ComponentLibrary-TabGroup_tabs > div[data-type="TabWrapper"] > div{
-    width: 530px;
+#ComponentLibrary-TabGroup > .tab-content {
     min-height: 400px;
     border: 1px #ddd solid;
 

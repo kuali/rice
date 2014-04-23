@@ -1,11 +1,11 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl2.php
+ * http://www.opensource.org/licenses/ecl1.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,12 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface CollectionGroup extends Group, DataBinding {
+
+    /**
+     * Sets a reference in the context map for all nested components in the collection group
+     * instance, and sets selected collection path and id data attributes on nested actions of this group.
+     */
+    void pushCollectionGroupToReference();
 
     /**
      * New collection lines are handled in the framework by maintaining a map on
@@ -105,8 +111,7 @@ public interface CollectionGroup extends Group, DataBinding {
     /**
      * Indicates whether an add line should be rendered for the collection
      *
-     * @return true if add line should be rendered, false if it should
-     *         not be
+     * @return true if add line should be rendered, false if it should not be
      */
     boolean isRenderAddLine();
 
@@ -116,6 +121,38 @@ public interface CollectionGroup extends Group, DataBinding {
      * @param renderAddLine
      */
     void setRenderAddLine(boolean renderAddLine);
+
+    /**
+     * Get the id of the add line action to invoke when the enter key is pressed.
+     *
+     * <p>Use '@DEFAULT' if supposed to use first action where 'defaultEnterKeyAction'
+     * property is set to true.</p>
+     * 
+     * @return id or '@DEFAULT'
+     */
+    String getAddLineEnterKeyAction();
+
+    /**
+     * @see #getAddLineEnterKeyAction()
+     */
+    void setAddLineEnterKeyAction(String addLineEnterKeyAction);
+
+    /**
+     * Get the id of the nonAdd line action to invoke when the enter key is pressed.
+     *
+     * <p>Use '@DEFAULT' if supposed to use first action where 'defaultEnterKeyAction'
+     * property is set to true. In a collection may have to use SpringEL to identify
+     * line ID values. Here is a sample value: DemoButton@{#lineSuffix}. Notice the use
+     * of '@{#lineSuffix}' to help append line suffix information.</p>
+     * 
+     * @return id or '@DEFAULT'
+     */
+    String getLineEnterKeyAction();
+
+    /**
+     * @see #getLineEnterKeyAction()
+     */
+    void setLineEnterKeyAction(String lineEnterKeyAction);
 
     /**
      * Convenience getter for the add line label field text. The text is used to
@@ -345,6 +382,18 @@ public interface CollectionGroup extends Group, DataBinding {
      * @param filters
      */
     void setFilters(List<CollectionFilter> filters);
+
+    /**
+     * List of property names that should be checked for duplicates in the collection.
+     *
+     * @return the list of property names that should be checked for duplicates in the collection
+     */
+    List<String> getDuplicateLinePropertyNames();
+
+    /**
+     * @see CollectionGroup#getDuplicateLinePropertyNames()
+     */
+    void setDuplicateLinePropertyNames(List<String> duplicateLinePropertyNames);
 
     /**
      *  List of {@link BindingInfo} instances that represent lines not authorized to be viewed or edited by the user.
@@ -591,28 +640,45 @@ public interface CollectionGroup extends Group, DataBinding {
      *
      * @return boolean
      */
-    boolean isAddViaLightBox();
+    boolean isAddWithDialog();
 
     /**
      * Setter for the flag to indicate that add groups should be displayed in a light box
      *
      * @param addViaLightBox
      */
-    void setAddViaLightBox(boolean addViaLightBox);
+    void setAddWithDialog(boolean addViaLightBox);
 
     /**
      * The {@link Action} that will be displayed that will open the add line group in a lightbox
      *
      * @return Action
      */
-    Action getAddViaLightBoxAction();
+    Action getAddWithDialogAction();
 
     /**
      * Setter for the add line via lightbox {@link Action}
      *
      * @param addViaLightBoxAction
      */
-    void setAddViaLightBoxAction(Action addViaLightBoxAction);
+    void setAddWithDialogAction(Action addViaLightBoxAction);
+
+    /**
+     * Dialog group to use for the add line when {@link CollectionGroup#isAddWithDialog()} is true.
+     *
+     * <p>If dialog group is not set by add with dialog is true, a default dialog group will be created.</p>
+     *
+     * <p>The add line items and actions are still used as usual, unless the items and footer items have been
+     * explicity set in the dialog group</p>
+     *
+     * @return dialog group instance for add line
+     */
+    DialogGroup getAddLineDialog();
+
+    /**
+     * @see CollectionGroup#getAddLineDialog()
+     */
+    void setAddLineDialog(DialogGroup addLineDialog);
 
     /**
      * Gets useServerPaging, the flag that indicates whether server side paging is enabled.  Defaults to false.
@@ -686,18 +752,5 @@ public interface CollectionGroup extends Group, DataBinding {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     void completeValidation(ValidationTrace tracer);
-
-    /**
-     * This method ...
-     * 
-     */
-    void pushCollectionGroupToReference();
-    
-    /**
-     * This method ...
-     * 
-     * @return
-     */
-    List<String> getDuplicateLinePropertyNames();
 
 }

@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.krad.demo.uif.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.widget.SyntaxHighlighter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The ComponentExhibit component is used to display demostrations of various components along with their source code

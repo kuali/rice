@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Authorization demo -->
-  <bean id="Demo-AuthorizationView" parent="ComponentLibraryView">
+  <bean id="Demo-Authorization-View" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAuthorization.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
     <property name="docBookAnchor" value="d7339e4811"/>
@@ -145,7 +145,7 @@
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-HorizontalFieldGroup">
+              <bean id="UifCompView-SecureFieldGroup1" parent="Uif-HorizontalFieldGroup">
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField8">
@@ -164,7 +164,7 @@
                 <property name="viewAuthz" value="true"/>
               </bean>
 
-              <bean parent="Uif-HorizontalFieldGroup">
+              <bean id="UifCompView-SecureFieldGroup2" parent="Uif-HorizontalFieldGroup">
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField10">
@@ -335,4 +335,4 @@
       </list>
     </property>
   </bean>
-</beans>
+</beans>

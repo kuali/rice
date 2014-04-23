@@ -76,6 +76,7 @@ public class UifConstants {
     public static final String KUALI_FORM_ATTR = "KualiForm";
 
     public static final String ICON_ONLY_PLACEMENT = "ICON_ONLY";
+    public static final String PROPERTY_EDITOR_REGISTRY = "rice.krad.uif.propertyEditorRegistry";
 
     public static enum ReadOnlyListTypes {
         DELIMITED, BREAK, OL, UL
@@ -135,6 +136,28 @@ public class UifConstants {
 
     public static enum WindowTargets {
         _blank, _self, _parent, _top
+    }
+
+    public static enum DialogDismissOption {
+        IMMEDIATE, PRESUBMIT, REQUEST
+    }
+
+    public enum WizardAction {
+        NONE(0), BACK(-1), CONTINUE(1);
+
+        private int step;
+
+        WizardAction(int step) {
+            this.step = step;
+        }
+
+        public int getStep() {
+            return step;
+        }
+
+        public void setStep(int step) {
+            this.step = step;
+        }
     }
 
     public static class ControllerMappings {
@@ -219,7 +242,8 @@ public class UifConstants {
     
     public static class PostMetadata {
         public static final String INPUT_FIELD_ATTRIBUTE_QUERY = "attributeQuery";
-
+        public static final String INPUT_FIELD_SUGGEST = "suggest";
+        public static final String INPUT_FIELD_SUGGEST_QUERY = "suggestQuery";
         public static final String INPUT_FIELD_IS_UPPERCASE = "isUppercase";
         public static final String LABEL = "label";
         public static final String PATH = "path";
@@ -232,6 +256,7 @@ public class UifConstants {
         public static final String BINDING_INFO = "bindingInfo";
         public static final String ADD_LINE_BINDING_INFO = "addLineBindingInfo";
         public static final String ADD_LINE_PLACEMENT = "addLinePlacement";
+        public static final String BASE_ID = "BASE_ID";
         public static final String COLL_DISPLAY_START = "displayStart";
         public static final String COLL_DISPLAY_LENGTH = "displayLength";
         public static final String COLL_LABEL = "collectionLabel";
@@ -239,6 +264,7 @@ public class UifConstants {
         public static final String COLL_OBJECT_CLASS = "collectionObjectClass";
         public static final String DUPLICATE_LINE_PROPERTY_NAMES = "duplicateLinePropertyNames";
         public static final String DUPLICATE_LINE_LABEL_STRING = "duplicateLineLabelString";
+        public static final String RESET_DATA_ON_REFRESH = "resetDataOnRefresh";
         public static final String STATE_MAPPING = "stateMapping";
         public static final String STATE_OBJECT_BINDING_PATH = "stateObjectBindingPath";
         public static final String SUGGEST = "suggest";
@@ -266,6 +292,7 @@ public class UifConstants {
         public static final String VIEW = "view";
         public static final String VIEW_HELPER = "ViewHelper";
         public static final String PARENT_LINE = "parentLine";
+        public static final String WIZARD = "wizard";
     }
 
     public static class TableToolsKeys {
@@ -420,6 +447,7 @@ public class UifConstants {
         public static final String PARENT = "parent";
         public static final String SUMMARIZE = "summarize";
         public static final String DISPLAY_MESSAGES = "displayMessages";
+        public static final String CLOSEABLE = "closeable";
         public static final String COLLAPSE_FIELD_MESSAGES = "collapseFieldMessages";
         public static final String DISPLAY_LABEL = "displayLabel";
         public static final String SHOW_PAGE_SUMMARY_HEADER = "showPageSummaryHeader";
@@ -448,12 +476,22 @@ public class UifConstants {
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
+        public static final String ENTER_KEY = "enter_key";
+        public static final String DEFAULT_ENTER_KEY_ACTION = "default_enter_key_action";
+        public static final String DISMISS = "dismiss";
+        public static final String DISMISS_DIALOG_OPTION = "dismissdialogoption";
+        public static final String DISMISS_RESPONSE = "response";
+        public static final String DIALOG_RESPONSE_HANDLER = "response_handler";
+        public static final String DIALOG_SHOW_HANDLER = "show_handler";
+        public static final String DIALOG_HIDE_HANDLER = "hide_handler";
     }
 
     public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");
 
     public static final class ActionDataAttributes {
         public static final String AJAX_SUBMIT = "ajaxSubmit";
+        public static final String CONFIRM_DIALOG_ID = "confirmDialogId";
+        public static final String CONFIRM_PROMPT_TEXT = "confirm_prompttext";
         public static final String SUCCESS_CALLBACK = "successCallback";
         public static final String ERROR_CALLBACK = "errorCallback";
         public static final String PRE_SUBMIT_CALL = "preSubmitCall";
@@ -470,6 +508,21 @@ public class UifConstants {
         public static final String JUMP_TO_NAME = "jumpToName";
     }
 
+    public static final class AriaAttributes {
+        public static final String VALUE_NOW= "valuenow";
+        public static final String VALUE_MAX = "valuemax";
+        public static final String VALUE_MIN = "valuemin";
+        public static final String VALUE_TEXT = "valuetext";
+    }
+
+    public static final class AriaRoles {
+        public static final String PROGRESS_BAR = "progressbar";
+    }
+
+    public static final class HtmlAttributeValues {
+        public static final String TARGET_BLANK = "_blank";
+    }
+
     public static final class CaseConstraintOperators {
         public static final String HAS_VALUE = "has_value";
         public static final String EQUALS = "equals";
@@ -484,23 +537,23 @@ public class UifConstants {
     public static final class JsFunctions {
         public static final String COLLECTION_LINE_CHANGED = "collectionLineChanged";
         public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
+        public static final String HANDLE_SERVER_DIALOG_RESPONSE = "handleServerDialogResponse";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";
         public static final String REDIRECT = "redirect";
         public static final String SET_CONFIG_PARM = "setConfigParam";
         public static final String SET_VALUE = "setValue";
         public static final String SHOW_GROWL = "showGrowl";
+        public static final String SHOW_DIALOG = "showDialog";
+        public static final String VALIDATE_ADD_LINE = "validateAddLine";
+        public static final String VALIDATE_LINE = "validateLine";
+        public static final String WRITE_CURRENT_PAGE_TO_SESSION = "writeCurrentPageToSession";
     }
 
     public static final String EVENT_NAMESPACE = "uif";
     
     public static final String BOX_LAYOUT_HORIZONTAL_ITEM_CSS = "uif-boxLayoutHorizontalItem";
     public static final String BOX_LAYOUT_VERTICAL_ITEM_CSS = "uif-boxLayoutVerticalItem";
-
-    public static final class JsEvents {
-        public static final String DIALOG_RESPONSE = "dialogresponse." + EVENT_NAMESPACE;
-        public static final String SHOW_DIALOG = "showdialog." + EVENT_NAMESPACE;
-    }
 
     public static final class ConfigProperties {
         public static final String KRAD_IMAGES_URL = "krad.externalizable.images.url";

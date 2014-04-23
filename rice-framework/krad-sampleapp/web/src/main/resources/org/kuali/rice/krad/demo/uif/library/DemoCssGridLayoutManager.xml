@@ -35,6 +35,11 @@
         <ref bean="Demo-CssGridLayoutManager-Example5"/>
         <ref bean="Demo-CssGridLayoutManager-Example6"/>
         <ref bean="Demo-CssGridLayoutManager-Example7"/>
+        <ref bean="Demo-CssGridLayoutManager-Example8"/>
+        <ref bean="Demo-CssGridLayoutManager-Example9"/>
+        <ref bean="Demo-CssGridLayoutManager-Example10"/>
+        <ref bean="Demo-CssGridLayoutManager-Example11"/>
+        <ref bean="Demo-CssGridLayoutManager-Example12"/>
       </list>
     </property>
   </bean>
@@ -84,29 +89,29 @@
       <list>
         <!-- ex:Demo-CssGridLayoutManager-Example3 start-->
         <bean parent="Uif-CssGridSection-1FieldLabelColumn">
-            <property name="headerText" value="1 Label Column"/>
-            <property name="items">
-              <list>
-                <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3"/>
-              </list>
-            </property>
-          </bean>
+          <property name="headerText" value="1 Label Column"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3"/>
+            </list>
+          </property>
+        </bean>
 
-          <bean parent="Uif-CssGridSubSection-2FieldLabelColumn">
-            <property name="headerText" value="2 Label Columns"/>
-            <property name="items">
-              <list>
-                <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"/>
-                <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"/>
-              </list>
-            </property>
-          </bean>
+        <bean parent="Uif-CssGridSubSection-2FieldLabelColumn">
+          <property name="headerText" value="2 Label Columns"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField17" p:label="Field 5"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField18" p:label="Field 6"/>
+            </list>
+          </property>
+        </bean>
         <!-- ex:Demo-CssGridLayoutManager-Example3 end-->
       </list>
     </property>
@@ -118,13 +123,6 @@
         <!-- ex:Demo-CssGridLayoutManager-Example5 start-->
         <!-- Grid group is backed by a CssGridLayoutManager -->
         <bean parent="Uif-CssGridGroup">
-          <property name="layoutManager.conditionalRowCssClasses">
-            <map>
-              <entry key="all" value="demo-border"/>
-              <entry key="odd" value="demo-odd"/>
-              <entry key="even" value="demo-even"/>
-            </map>
-          </property>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:colSpan="4" p:propertyName="inputField17"/>
@@ -146,7 +144,7 @@
         <!-- ex:Demo-CssGridLayoutManager-Example6 start-->
         <!-- Grid group is backed by a CssGridLayoutManager -->
         <bean parent="Uif-CssGridGroup">
-          <property name="layoutManager.defaultItemColSpan" value="4"/>
+          <property name="layoutManager.defaultItemSize" value="4"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField22"/>
@@ -181,6 +179,251 @@
         <!-- ex:Demo-CssGridLayoutManager-Example7 end-->
       </list>
     </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayoutManager-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="defaultItemSizes configuration object demo"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayout-Responsive1"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayout-Responsive1" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <!-- ex:Demo-CssGridLayoutManager-Example8 start-->
+            <bean parent="Uif-CssGridSection" p:headerText="Default size - xs 11, sm 6, md 4, lg 3">
+              <property name="instructionalText" value="Amount of space taken by the components will change as the screen size
+                changes.  Try resizing your window!"/>
+              <property name="layoutManager.defaultItemSizes.xsSize" value="11"/>
+              <property name="layoutManager.defaultItemSizes.smSize" value="6"/>
+              <property name="layoutManager.defaultItemSizes.mdSize" value="4"/>
+              <property name="layoutManager.defaultItemSizes.lgSize" value="3"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField2"/>
+                  <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="inputField3"/>
+                  <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="inputField4"/>
+                  <bean parent="Uif-InputField" p:label="Field 5" p:propertyName="inputField5"/>
+                  <bean parent="Uif-InputField" p:label="Field 6" p:propertyName="inputField6"/>
+                  <bean parent="Uif-InputField" p:label="Field 7" p:propertyName="inputField7"/>
+                  <bean parent="Uif-InputField" p:label="Field 8" p:propertyName="inputField8"/>
+                </list>
+              </property>
+            </bean>
+            <!-- ex:Demo-CssGridLayoutManager-Example8 end-->
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Demo-CssGridLayoutManager-Example9" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="cssGridSizes configuration object demo"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayout-Responsive2"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayout-Responsive2" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <!-- ex:Demo-CssGridLayoutManager-Example9 start-->
+            <bean parent="Uif-CssGridSection" p:headerText="Manipulating individual cssGridSizes">
+              <property name="instructionalText" value="Amount of space taken by the components will change as the screen size
+                changes.  Try resizing your window!"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field 1" p:instructionalText="xs 10, sm 6, md 4, lg 3"
+                        p:propertyName="inputField1">
+                    <property name="cssGridSizes.xsSize" value="10"/>
+                    <property name="cssGridSizes.smSize" value="6"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                    <property name="cssGridSizes.lgSize" value="3"/>
+                  </bean>
+                  <!-- This does the same as above in a convenience setter -->
+                  <bean parent="Uif-InputField" p:label="Field 2" p:instructionalText="xs 10, sm 6, md 4, lg 3"
+                        p:propertyName="inputField2" p:cssGridSizes.sizes="10, 6, 4, 3"/>
+                  <bean parent="Uif-InputField" p:label="Field 3" p:instructionalText="xs 11, sm 5, md 2"
+                        p:propertyName="inputField3">
+                    <property name="cssGridSizes.xsSize" value="11"/>
+                    <property name="cssGridSizes.smSize" value="5"/>
+                    <property name="cssGridSizes.mdSize" value="2"/>
+                  </bean>
+                  <!-- The size convenience setter requires all 4 values, but ignores 0 and below values -->
+                  <bean parent="Uif-InputField" p:label="Field 4" p:instructionalText="xs 12, sm 7, md 2"
+                        p:propertyName="inputField4" p:cssGridSizes.sizes="12, 7, 2, 0"/>
+                </list>
+              </property>
+            </bean>
+            <!-- ex:Demo-CssGridLayoutManager-Example9 end-->
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Demo-CssGridLayoutManager-Example10" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Css Grid Offset demo"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayout-Responsive3"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayout-Responsive3" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <!-- ex:Demo-CssGridLayoutManager-Example10 start-->
+            <bean parent="Uif-CssGridSection" p:headerText="Using Css Grid Offset">
+              <property name="instructionalText" value="Amount of space taken by the components will change as the screen size
+                  changes.  Try resizing your window!"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Field 1" p:instructionalText="xs size (default) 12,
+                    sm offset 2, sm size 10, md offset 4, md size 8, lg offset 6, lg size 6"
+                        p:propertyName="inputField1">
+                    <property name="cssGridSizes.smOffset" value="2"/>
+                    <property name="cssGridSizes.smSize" value="10"/>
+                    <property name="cssGridSizes.mdOffset" value="4"/>
+                    <property name="cssGridSizes.mdSize" value="8"/>
+                    <property name="cssGridSizes.lgOffset" value="6"/>
+                    <property name="cssGridSizes.lgSize" value="6"/>
+                  </bean>
+                  <!-- Using the convenience setters, note that offset uses -1 and below in its convenience setter
+                  to ignore values (since 0 is a valid value for offset) and that no xs offset exists (only 3 integers
+                  for sm, md, lg) -->
+                  <bean parent="Uif-InputField" p:label="Field 2"
+                        p:instructionalText="md offset 4, md size 8, lg offset 6, lg size 6"
+                        p:propertyName="inputField2" p:cssGridSizes.sizes="0,0,8,6"
+                        p:cssGridSizes.offsets="-1,4,6"/>
+                </list>
+              </property>
+            </bean>
+            <!-- ex:Demo-CssGridLayoutManager-Example10 end-->
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Demo-CssGridLayoutManager-Example11" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Label Column Css Grid Default Manipulation"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayout-Responsive4"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayout-Responsive4" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <!-- ex:Demo-CssGridLayoutManager-Example11 start-->
+            <bean parent="Uif-CssGridSection-FieldLabelColumns" p:headerText="Label/Field Default Manipulation - Labels md 6, Field md 6">
+              <property name="instructionalText" value="Amount of space taken by the components will change as the screen size
+                    changes.  Try resizing your window!"/>
+              <!-- Label columns will take up 6 columns wide, and field columns will take up 6, instead of KRAD
+               automated defaults-->
+              <property name="layoutManager.labelColumnSizes.mdSize" value="6"/>
+              <property name="layoutManager.fieldColumnSizes.mdSize" value="6"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4"/>
+                </list>
+              </property>
+            </bean>
+            <!-- ex:Demo-CssGridLayoutManager-Example11 end-->
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Demo-CssGridLayoutManager-Example12" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Link" p:linkText="Label Column Css Grid Direct item size manipulation"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CssGridLayout-Responsive5"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CssGridLayout-Responsive5" parent="Uif-FormView">
+    <property name="headerText" value="Responsive"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <!-- ex:Demo-CssGridLayoutManager-Example12 start-->
+            <bean parent="Uif-CssGridSection-FieldLabelColumns"
+                  p:headerText="Label/Field CssGridSizes">
+              <property name="instructionalText" value="Amount of space taken by the components will change as the screen size
+                      changes.  Try resizing your window!"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 1">
+                    <property name="fieldLabel.cssGridSizes.mdSize" value="3"/>
+                    <property name="fieldLabel.cssGridSizes.lgSize" value="2"/>
+                    <property name="cssGridSizes.mdSize" value="9"/>
+                    <property name="cssGridSizes.lgSize" value="10"/>
+                  </bean>
+                  <!-- setting the same thing as above except using convenience setters -->
+                  <bean parent="Uif-InputField" p:propertyName="inputField14" p:label="Field 2"
+                        p:fieldLabel.cssGridSizes.sizes="0,0,3,2" p:cssGridSizes.sizes="0,0,9,10"/>
+
+                  <bean parent="Uif-InputField" p:propertyName="inputField15" p:label="Field 3">
+                    <property name="fieldLabel.cssGridSizes.mdSize" value="3"/>
+                    <property name="cssGridSizes.mdSize" value="3"/>
+                  </bean>
+                  <bean parent="Uif-InputField" p:propertyName="inputField16" p:label="Field 4">
+                    <property name="fieldLabel.cssGridSizes.mdSize" value="2"/>
+                    <property name="cssGridSizes.mdSize" value="4"/>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+            <!-- ex:Demo-CssGridLayoutManager-Example12 end-->
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
 </beans>

@@ -19,13 +19,9 @@
 
     <#--
     Renders an inquiry link for a field value
-    Check if the field is read only
-    Render the direct inquiry for editable fields
     -->
     <#if readOnly=true>
         <@krad.template component=widget.inquiryLink body=body/>
-    <#else>
-        <@krad.template component=widget.directInquiryAction/>
     </#if>
 
 </#macro>

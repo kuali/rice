@@ -13,13 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.util;
+package org.kuali.rice.krad.uif.element;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.ContentElementBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.UrlInfo;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.util.HashMap;

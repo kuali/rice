@@ -104,6 +104,11 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
                 return;
             }
 
+            // TODO: REMOVE this restriction
+            //            if (ViewLifecycle.getPhase() != elementState) {
+            //                throw new IllegalStateException("The phase this task is a part of is not active.");
+            //            }
+
             if (ProcessLogger.isTraceActive()) {
                 ProcessLogger.countBegin("lc-task-" + elementState.getViewPhase());
             }

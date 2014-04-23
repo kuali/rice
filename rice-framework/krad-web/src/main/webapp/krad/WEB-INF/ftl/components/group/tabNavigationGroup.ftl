@@ -15,23 +15,19 @@
     limitations under the License.
 
 -->
-<#-- Used to wrap field templates and handle the label rendering -->
+<#-- renders standard unordered list and calls doNavigation function -->
 
-<#macro fieldLbl field>
+<#macro uif_tabNavigationGroup group currentPageId>
 
-    <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-    <#local renderLabel=field.label?has_content && !field.labelRendered/>
+    <!-- NAVIGATION -->
+    <@krad.wrap component=group renderAs="ul">
+        <#list group.items as item>
+            <li>
+                <@krad.template component=item/>
+            </li>
+        </#list>
+    </@krad.wrap>
 
-    <#-- render field label left -->
-    <#if renderLabel && ((field.labelPlacement == 'LEFT') || (field.labelPlacement == 'TOP'))>
-        <@template component=field.fieldLabel/>
-    </#if>
-
-    <#nested>
-
-    <#-- render field label right -->
-    <#if renderLabel && (field.labelPlacement == 'RIGHT')>
-        <@template component=field.fieldLabel/>
-    </#if>
+    <@krad.script value="initTabMenu('${group.id}', '${currentPageId!}');"/>
 
 </#macro>

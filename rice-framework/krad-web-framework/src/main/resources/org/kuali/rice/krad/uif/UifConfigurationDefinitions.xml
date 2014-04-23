@@ -102,6 +102,10 @@
     </property>
   </bean>
 
+  <bean id="Uif-OptionGroupLabel" class="org.kuali.rice.krad.uif.util.UifOptionGroupLabel" scope="prototype"/>
+
+  <bean id="Uif-CssGridSizes" class="org.kuali.rice.krad.uif.layout.CssGridSizes" scope="prototype"/>
+
   <bean id="Uif-ColumnCalculationInfo" class="org.kuali.rice.krad.uif.util.ColumnCalculationInfo" scope="prototype"
         abstract="true">
     <property name="showTotal" value="true"/>
@@ -191,7 +195,7 @@
     <property name="minVersionSuffix" value="${rice.version}"/>
   </bean>
 
-  <bean id="Uif-BreadcrumbItem" class="org.kuali.rice.krad.uif.util.BreadcrumbItem" scope="prototype">
+  <bean id="Uif-BreadcrumbItem" class="org.kuali.rice.krad.uif.element.BreadcrumbItem" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/widget/breadcrumb.ftl"/>
     <property name="templateName" value="uif_breadcrumb"/>
     <property name="renderAsLink" value="true"/>
@@ -200,7 +204,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-PageBreadcrumbOptions" class="org.kuali.rice.krad.uif.util.PageBreadcrumbOptions" scope="prototype">
+  <bean id="Uif-PageBreadcrumbOptions" class="org.kuali.rice.krad.uif.element.PageBreadcrumbOptions" scope="prototype">
     <property name="renderViewBreadcrumb" value="true"/>
     <property name="renderHomewardPathBreadcrumbs" value="true"/>
     <property name="renderPrePageBreadcrumbs" value="true"/>
@@ -209,7 +213,7 @@
   </bean>
 
 
-  <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.util.BreadcrumbOptions" scope="prototype">
+  <bean id="Uif-BreadcrumbOptions" class="org.kuali.rice.krad.uif.element.BreadcrumbOptions" scope="prototype">
   </bean>
 
   <bean id="Uif-Url" class="org.kuali.rice.krad.uif.util.UrlInfo" scope="prototype">

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2014 The Kuali Foundation
+ * Copyright 2005-2013 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.layout.CollectionLayoutUtils;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.io.Serializable;
@@ -162,7 +163,7 @@ public class TableRowBuilder implements Serializable {
         // sequenceField.setRowSpan(rowSpan);
         //   setCellAttributes(sequenceField);
 
-        ComponentUtils.updateContextForLine(sequenceField, collectionGroup, lineBuilderContext.getCurrentLine(),
+        ContextUtils.updateContextForLine(sequenceField, collectionGroup, lineBuilderContext.getCurrentLine(),
                 lineBuilderContext.getLineIndex(), lineBuilderContext.getIdSuffix());
 
         columnCollector.addColumn(sequenceField);
@@ -182,7 +183,7 @@ public class TableRowBuilder implements Serializable {
         CollectionLayoutUtils.prepareSelectFieldForLine(selectField, collectionGroup,
                 lineBuilderContext.getBindingPath(), lineBuilderContext.getCurrentLine());
 
-        ComponentUtils.updateContextForLine(selectField, collectionGroup, lineBuilderContext.getCurrentLine(),
+        ContextUtils.updateContextForLine(selectField, collectionGroup, lineBuilderContext.getCurrentLine(),
                 lineBuilderContext.getLineIndex(), lineBuilderContext.getIdSuffix());
 
         //setCellAttributes(selectField);
@@ -302,7 +303,7 @@ public class TableRowBuilder implements Serializable {
             FieldGroup lineActionsField = ComponentUtils.copy(tableLayoutManager.getActionFieldPrototype(),
                     lineBuilderContext.getIdSuffix());
 
-            ComponentUtils.updateContextForLine(lineActionsField, collectionGroup, lineBuilderContext.getCurrentLine(),
+            ContextUtils.updateContextForLine(lineActionsField, collectionGroup, lineBuilderContext.getCurrentLine(),
                     lineBuilderContext.getLineIndex(), lineBuilderContext.getIdSuffix());
 
             // lineActionsField.setRowSpan(rowSpan);

@@ -1377,7 +1377,8 @@ var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&
         var cs = elements[k];
         var className = cs.className;
         /* Kuali customization begin - allows multiple syntax highlighter on same view/between refreshes etc**/
-        if (className.indexOf('prettyprint') >= 0  && !jQuery(cs).data('prettified')) {
+        if (className.indexOf('prettyprint') >= 0
+                && !jQuery(cs).data('prettified') && jQuery(cs).find("> ol").length == 0) {
           jQuery(cs).data('prettified', true);
         /* Kuali customization end **/
           // If the classes includes a language extensions, use it.

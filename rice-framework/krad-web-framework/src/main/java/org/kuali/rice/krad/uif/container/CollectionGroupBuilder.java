@@ -27,34 +27,21 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
-import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
-import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -286,10 +273,8 @@ public class CollectionGroupBuilder implements Serializable {
     /**
      * Creates new {@code Action} instances for the line.
      *
-     * <p>
-     * Adds context to the action fields for the given line so that the line the
-     * action was performed on can be determined when that action is selected
-     * </p>
+     * <p>Adds context to the action fields for the given line so that the line the action was performed on can be
+     * determined when that action is selected</p>
      *
      * @param lineActions the actions to copy
      * @param view view instance the collection belongs to
@@ -300,17 +285,28 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view,
             Object model, CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
+        List<? extends Component> actionComponents = ComponentUtils.copy(lineActions);
+
+        for (Component actionComponent : actionComponents) {
+            view.getViewHelperService().setElementContext(actionComponent, collectionGroup);
+        }
+
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
+        ContextUtils.updateContextsForLine(actionComponents, collectionGroup, collectionLine, lineIndex, lineSuffix);
 
-        List<? extends Component> actionComponents = ComponentUtils.copyComponentList(lineActions, lineSuffix);
+        ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
+        for (Component actionComponent : actionComponents) {
+            expressionEvaluator.evaluatePropertyExpression(view, actionComponent.getContext(), actionComponent,
+                    UifPropertyPaths.ID, true);
+        }
+
+        ComponentUtils.updateIdsWithSuffixNested(actionComponents, lineSuffix);
 
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         initializeActions(actions, collectionGroup, lineIndex);
-
-        ComponentUtils.updateContextsForLine(actionComponents, collectionGroup, collectionLine, lineIndex, lineSuffix);
 
         return actionComponents;
     }
@@ -358,7 +354,7 @@ public class CollectionGroupBuilder implements Serializable {
             // if marked for validation, add call to validate the line and set validation flag to false
             // so the entire form will not be validated
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "var valid=validateLine('" +
+                String preSubmitScript = "var valid=" + UifConstants.JsFunctions.VALIDATE_LINE + "('" +
                         collectionGroup.getBindingInfo().getBindingPath() + "'," + Integer.toString(lineIndex) +
                         ");";
 
@@ -394,9 +390,22 @@ public class CollectionGroupBuilder implements Serializable {
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
+
         List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(
                 collectionGroup.getAddLineActions(), lineSuffix);
+
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineActionComponents, Action.class);
+
+        if (collectionGroup.isAddWithDialog() && (collectionGroup.getAddLineDialog().getFooter() != null) &&
+                !collectionGroup.getAddLineDialog().getFooter().getItems().isEmpty()) {
+            List<Action> addLineDialogActions = ViewLifecycleUtils.getElementsOfTypeDeep(
+                    collectionGroup.getAddLineDialog().getFooter().getItems(), Action.class);
+
+            if (addLineDialogActions != null) {
+                actions.addAll(addLineDialogActions);
+            }
+        }
+
         for (Action action : actions) {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
                     collectionGroup.getBindingInfo().getBindingPath());
@@ -407,12 +416,8 @@ public class CollectionGroupBuilder implements Serializable {
             action.setRefreshId(collectionGroup.getId());
 
             if (action.isPerformClientSideValidation()) {
-                String preSubmitScript = "var valid=";
-                if (collectionGroup.isAddViaLightBox()) {
-                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "', true);";
-                } else {
-                    preSubmitScript += "validateAddLine('" + collectionGroup.getId() + "');";
-                }
+                String preSubmitScript = "var valid=" + UifConstants.JsFunctions.VALIDATE_ADD_LINE + "('" +
+                        collectionGroup.getId() + "');";
 
                 // prepend custom presubmit script which should evaluate to a boolean
                 if (StringUtils.isNotBlank(action.getPreSubmitCall())) {
@@ -420,9 +425,6 @@ public class CollectionGroupBuilder implements Serializable {
                             "if(valid){valid=function(){" + action.getPreSubmitCall() + "}();}");
                 }
 
-                if (collectionGroup.isAddViaLightBox()) {
-                    preSubmitScript += " if(valid){closeLightbox();}";
-                }
                 preSubmitScript += "return valid;";
 
                 action.setPreSubmitCall(preSubmitScript);
@@ -434,7 +436,7 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ComponentUtils.updateContextsForLine(lineActionComponents, collectionGroup, addLine, -1, lineSuffix);
+        ContextUtils.updateContextsForLine(lineActionComponents, collectionGroup, addLine, -1, lineSuffix);
 
         return lineActionComponents;
     }

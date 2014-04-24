@@ -136,6 +136,7 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String triggerActionId;
 
+    @RequestAccessible
     @SessionTransient
     protected Map<String, String> actionParameters;
 

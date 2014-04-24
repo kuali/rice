@@ -104,8 +104,10 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
                           <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
-                          <bean parent="Uif-Link" p:linkText="Dialog with Explanation in ReadOnly mode" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
+                          <bean parent="Uif-Link" p:linkText="Stacked Collection Section w/ AddBlankLine and upload" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Stacked-Upload-AddBlankLine"/>
+                          <bean parent="Uif-Link" p:linkText="Bootstrap multi-select plugin" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Labs-BootstrapMultiSelect"/>
                         </list>
                       </property>
                     </bean>

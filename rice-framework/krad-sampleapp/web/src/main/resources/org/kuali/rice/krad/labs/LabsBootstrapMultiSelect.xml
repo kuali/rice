@@ -1,0 +1,116 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Labs-BootstrapMultiSelect" parent="Uif-FormView">
+    <property name="additionalCssFiles">
+      <list merge="true">
+        <value>http://silviomoreto.github.io/bootstrap-select/stylesheets/bootstrap-select.css</value>
+        <value>http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css</value>
+      </list>
+    </property>
+    <property name="additionalScriptFiles">
+      <list merge="true">
+        <value>http://paegle.net/javascript/bootstrap-select.js</value>
+        <!--<value>http://silviomoreto.github.io/bootstrap-select/javascripts/bootstrap-select.js</value>-->
+        <value>http://davidstutz.github.io/bootstrap-multiselect/js/bootstrap-multiselect.js</value>
+      </list>
+    </property>
+    <property name="headerText" value="Bootstrap select plugin test"/>
+    <property name="items">
+      <list>
+        <ref bean="Lab-BootstrapMultiSelect-Page1"/>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase">
+        <property name="items">
+          <list>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="Refresh - Ajax"/>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="Refresh - Non-Ajax"
+                  p:ajaxSubmit="false"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <!--<util:list id="test-options2">-->
+    <!--<bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select 1"/>-->
+    <!--<bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>-->
+    <!--<bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select 3"/>-->
+    <!--<bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 4"/>-->
+    <!--<bean parent="Uif-KeyLabelPair" p:key="5" p:value="Select 5"/>-->
+  <!--</util:list>-->
+
+  <bean id="Lab-BootstrapMultiSelect-Page1" parent="Uif-Page" p:headerText="Page 1"
+        p:instructionalText="View for testing Bootstrap select plugins">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField7"  p:onDocumentReadyScript="jQuery('.multiselect').multiselect();" p:fieldLabel.renderColon="false">
+                <property name="label">
+                  <value>Bootstrap multi-select [a href="http://davidstutz.github.io/bootstrap-multiselect" target="_blank"]source[/a]</value>
+                </property>
+                <property name="control">
+                  <bean parent="Uif-MultiSelectControl">
+                    <property name="cssClasses">
+                      <list merge="true">
+                        <value>multiselect</value>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="true"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" id="testing" p:propertyName="inputField7" p:onDocumentReadyScript="jQuery('.selectpicker').selectpicker();" p:fieldLabel.renderColon="false">
+                <property name="label">
+                  <value>Bootstrap select [a href="http://silviomoreto.github.io/bootstrap-select" target="_blank"]source[/a]</value>
+                </property>
+
+                <property name="control">
+                  <bean parent="Uif-MultiSelectControl">
+                    <property name="cssClasses">
+                      <list merge="true">
+                        <value>selectpicker</value>
+                      </list>
+                    </property>
+                    <property name="dataAttributes">
+                      <map>
+                        <entry key="live-search" value="true"/>
+                      </map>
+                    </property>
+                  </bean>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="true"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

@@ -42,8 +42,6 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     @Override
     protected void navigate() throws Exception {
        waitAndClickByXpath("//img[@alt='doc search']"); 
-       selectFrameIframePortlet();
-       waitAndClickByName("toggleAdvancedSearch");
     }
 
     @Test
@@ -137,7 +135,10 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
     
     private void searchByApplicationDocumentId() throws Exception {
-        //Unknown - no idea from where can we get these fields - Skipped as of now.
+        waitAndTypeByName("applicationDocumentId","7777777");
+        waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
+        waitForElementPresentByXpath("//a[contains(text(),'3221')]");
+        waitAndClickByName("methodToCall.clearValues");
     }
     
     private void searchByDocumentStatus() throws Exception {

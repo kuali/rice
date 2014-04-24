@@ -181,16 +181,31 @@
     <property name="items">
       <list>
         <!-- ex:Demo-CheckboxControl-Example9 start-->
-        <bean id="ST-DemoCheckboxControlExample9-Input1" parent="Uif-InputField" p:propertyName="inputField5"
-              p:instructionalText="Type in a value to enable the checkbox">
+        <bean id="ST-DemoCheckboxControlExample9-Input1" parent="Uif-InputField" p:propertyName="inputField5" p:label="Field1"
+              p:instructionalText="Type in a value to disable the checkbox">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
+        <bean parent="Uif-HorizontalFieldGroup">
+          <property name="items">
+            <list>
+              <bean id="ST-DemoCheckboxControlExample9-Input3" parent="Uif-InputField" p:label="Field2" p:propertyName="inputField15" p:instructionalText="Type in a value to enable the checkbox"/>
+              <bean id="ST-DemoCheckboxControlExample9-Input4" parent="Uif-InputField" p:label="Field3" p:propertyName="inputField16" p:instructionalText="Type in a value to disable the checkbox"/>
+            </list>
+          </property>
+        </bean>
         <bean id="ST-DemoCheckboxControlExample9-Input2" parent="Uif-InputField" p:propertyName="inputField6">
           <property name="control">
-            <bean parent="Uif-CheckboxControl" p:disabledWhenChangedPropertyNames="inputField5"
-                  p:checkboxLabel="Add me to your mailing list"/>
+            <bean parent="Uif-CheckboxControl" p:enabledWhenChangedPropertyNames="inputField15"
+                  p:checkboxLabel="Add me to your mailing list">
+              <property name="disabledWhenChangedPropertyNames">
+                <list>
+                  <value>inputField5</value>
+                  <value>inputField16</value>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <!-- ex:Demo-CheckboxControl-Example9 end-->

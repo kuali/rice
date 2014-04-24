@@ -594,7 +594,9 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
         });
     }
     else {
-        jQuery(document).off(eventType);
+        // if disabledWhenChangedPropertyNames is configured with multiple property names the eventtype is the same
+        // adding the controlName to make it specific
+        jQuery(document).off(eventType,"[name='" + escapeName(controlName) + "']");
         jQuery(document).on(eventType, "[name='" + escapeName(controlName) + "']", function () {
             var disableControl = jQuery("#" + disableCompId);
             if (condition()) {

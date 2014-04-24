@@ -895,6 +895,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @BeanTagAttribute(name = "cssGridSizes", type=BeanTagAttribute.AttributeType.SINGLEBEAN)
     public CssGridSizes getCssGridSizes() {
         return cssGridSizes;
     }

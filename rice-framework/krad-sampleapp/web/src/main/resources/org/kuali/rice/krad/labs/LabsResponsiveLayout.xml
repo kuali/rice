@@ -745,5 +745,85 @@
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
+  <bean id="Lab-Responsive8" parent="Uif-FormView">
+      <property name="headerText" value="Width Testing"/>
+      <property name="items">
+        <list>
+          <bean parent="Uif-Page">
+            <property name="items">
+              <list>
+                <bean parent="Uif-CssGridSection" p:headerText="With 100% width">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+
+                <bean parent="Uif-CssGridSection" p:headerText="With 100% Width and smaller sizes per item">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+
+                <bean parent="Uif-CssGridSection" p:additionalCssClasses="md-normal-width" p:headerText="With Inherited Width at Md+">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+
+                <bean parent="Uif-CssGridSection" p:additionalCssClasses="md-normal-width" p:headerText="With Inherited Width at Md+ and smaller sizes per item">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="3" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+
+                <bean parent="Uif-CssGridSection" p:style="max-width: 920px;" p:headerText="With set max-width">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+
+                <bean parent="Uif-CssGridSection" p:style="width: 920px;" p:headerText="With set width (unacceptable, here for completeness)">
+                  <property name="items">
+                    <list>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                      <bean parent="Uif-InputField" p:label="Field" p:colSpan="6" p:propertyName="inputField1"/>
+                    </list>
+                  </property>
+                </bean>
+              </list>
+            </property>
+          </bean>
+        </list>
+      </property>
+      <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+    </bean>
+
 
 </beans>

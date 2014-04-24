@@ -42,39 +42,47 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
     }
 
     protected void testLibraryElementsLink() throws Exception {
-        assertElementPresentByXpath("//section[@id='Demo-Link-Example1']/a[@target='_self']");
+    	waitAndClickByLinkText("Default");
+        waitAndClickByXpath("//section[@id='Demo-Link-Example1']/a[@target='_self']");
+        waitForElementPresentByXpath("//input[@placeholder='Search Kuali']");
     }
     
     protected void testLibraryElementsCustomTarget() throws Exception {
         waitAndClickByLinkText("Custom Target");
-        assertElementPresentByXpath("//section[@id='Demo-Link-Example2']/a[@target='_blank']");
+        waitAndClickByXpath("//section[@id='Demo-Link-Example2']/a[@target='_blank']");
+        switchToWindow("Kuali Foundation");
+        switchToWindow("Kuali");
     }
     
     protected void testLibraryElementsLinkUsingLightbox() throws Exception {
         waitAndClickByLinkText("Link using lightbox");
-        assertElementPresentByXpath("//section[@id='Demo-Link-Example3']/a");
+        waitAndClickByXpath("//section[@id='Demo-Link-Example3']/a");
+        waitForElementPresentByXpath("//iframe[@src='http://www.kuali.org']");
+        waitAndClickByXpath("//a[@title='Close']");
     }
     
     protected void testLibraryElementsLinkUsingBootstrapIcon() throws Exception {
         waitAndClickByLinkText("Link with a bootstrap icon");
-        assertElementPresentByXpath("//section[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
+        waitAndClickByXpath("//section[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
+        switchToWindow("Kuali Foundation");
+        switchToWindow("Kuali");
     }
     
     @Test
     public void testElementsLinkBookmark() throws Exception {
-        testLibraryElementsLink();
-        testLibraryElementsCustomTarget();
+    	testLibraryElementsCustomTarget();
         testLibraryElementsLinkUsingLightbox();
         testLibraryElementsLinkUsingBootstrapIcon();
+        testLibraryElementsLink();
         passed();
     }
 
     @Test
     public void testElementsLinkNav() throws Exception {
-        testLibraryElementsLink();
         testLibraryElementsCustomTarget();
         testLibraryElementsLinkUsingLightbox();
         testLibraryElementsLinkUsingBootstrapIcon();
+    	testLibraryElementsLink();
         passed();
     }  
 }

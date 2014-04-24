@@ -591,8 +591,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             DocumentHeader documentHeader = document.getDocumentHeader();
 
             // adding the attachment after refresh gets called, since the attachment record doesn't get persisted
-            // until the note does (and therefore refresh doesn't have any attachment to autoload based on the id, nor does it
-            // autopopulate the id since the note hasn't been persisted yet)
+            // until the note does (and therefore refresh doesn't have any attachment to autoload based on the id, nor
+            // does it autopopulate the id since the note hasn't been persisted yet)
             if (attachment != null) {
                 newNote.addAttachment(attachment);
             }

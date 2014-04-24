@@ -72,7 +72,7 @@ import java.util.Map;
  *
  */
 public class RuleDelegationLookupableHelperServiceImpl extends AbstractRuleLookupableHelperServiceImpl {
-    private List<Row> rows = new ArrayList<Row>();
+
     private static final String PARENT_RESPONSIBILITY_ID_PROPERTY_NAME = "responsibilityId";
     private static final String PARENT_RULE_ID_PROPERTY_NAME = "ruleResponsibility.ruleBaseValuesId";
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "delegationRule.ruleTemplate.name";
@@ -86,52 +86,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends AbstractRuleLooku
     public boolean checkForAdditionalFields(Map<String, String> fieldValues) {
         String ruleTemplateNameParam = fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
 
-        if (StringUtils.isNotBlank(ruleTemplateNameParam)) {
-            rows = new ArrayList<Row>();
-            RuleTemplate ruleTemplate = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateNameParam);
-
-            for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
-                    continue;
-                }
-                // run through the attributes fields once to populate field values we have to do this
-                // to allow rows dependent on another row value to populate correctly in the loop below
-                WorkflowRuleAttributeRows workflowRuleAttributeRows =
-                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
-                for (Row row : workflowRuleAttributeRows.getRows()) {
-                    List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
-                        Field field = (Field) iterator2.next();
-                        if (fieldValues.get(field.getPropertyName()) != null) {
-                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
-                        }
-                        fields.add(field);
-                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-                    }
-                }
-                // now run through a second time with our shiny new field values
-                // ...by the way, just trying to preserve behavior from Rice 1.0.x here...generally speaking, this stuff is crazy!!!
-                workflowRuleAttributeRows =
-                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
-                for (Row row : workflowRuleAttributeRows.getRows()) {
-                    List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
-                        Field field = iterator2.next();
-                        if (fieldValues.get(field.getPropertyName()) != null) {
-                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
-                        }
-                        fields.add(field);
-                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-                    }
-                    row.setFields(fields);
-                    rows.add(row);
-
-                }
-            }
-            return true;
-        }
-        rows.clear();
-        return false;
+        return super.checkForAdditionalFields(fieldValues, ruleTemplateNameParam);
     }
 
     @Override
@@ -211,7 +166,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends AbstractRuleLooku
             }
 
             if (ruleTemplate == null) {
-                rows.clear();
+                super.clearRows();
                 LOG.info("Returning empty result set for Delegation Rule Lookup because a RuleTemplate Name or ID was provided, but no valid RuleTemplates were retrieved by the service.");
                 return new ArrayList<RuleDelegationBo>();
             }
@@ -470,7 +425,5 @@ public class RuleDelegationLookupableHelperServiceImpl extends AbstractRuleLooku
             
         return htmlDataList;
     }
-
-
 
 }

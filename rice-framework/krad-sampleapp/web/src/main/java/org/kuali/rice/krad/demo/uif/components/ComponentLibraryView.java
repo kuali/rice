@@ -38,6 +38,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
@@ -622,7 +623,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the details group
      */
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public Group getDetailsGroup() {
         return detailsGroup;
     }
@@ -641,7 +642,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the ComponentExhibit for this component demo view
      */
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public ComponentExhibit getExhibit() {
         return exhibit;
     }
@@ -661,7 +662,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the demoGroups
      */
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public List<Group> getDemoGroups() {
         return demoGroups;
     }
@@ -754,7 +755,7 @@ public class ComponentLibraryView extends FormView {
      *
      * @return the SyntaxHighlighter
      */
-    @ViewLifecycleRestriction
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
     public SyntaxHighlighter getHtmlCodeViewer() {
         return htmlCodeViewer;
     }

@@ -141,13 +141,53 @@ public class DemoElementsActionAft extends DemoLibraryBase {
 
         findElement(By.xpath("//button[contains(text(),'Disabled Button') and @disabled]"));
     }
+    
+    protected void testActionStyleVarities() throws Exception {
+    	waitAndClickByLinkText("Style Varieties");
+    	
+    	//Assertion of Large Buttons
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	
+    	//Assertion of Small Buttons
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	
+    	//Assertion of Mini Buttons
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	
+    	//ICON Examples
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
+    }
 
+    protected void testActionIcons() throws Exception {
+    	waitAndClickByXpath("//a[@href='#Demo-Action-Example6_tab' and contains(text(),'Icons')]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-office']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix icon-office']");
+    }
+    
     private void testAllActionTabs() throws Exception {
         testActionDefault();
         testActionSuccessCallback();
         testActionValidation();
         testActionImages();
         testActionButton();
+        testActionStyleVarities();
+        testActionIcons();
         testActionPresubmit(); // last because it is failing https://jira.kuali.org/browse/KULRICE-10961 Library Action Presubmit Pre submit returning true Link redirects to Library Action Default
     }
 

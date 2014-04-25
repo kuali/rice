@@ -89,7 +89,7 @@ public final class MaxValueIncrementerFactory {
      *
      * @throws IllegalArgumentException if dataSource or incrementerName are null or blank.
      */
-    public static DataFieldMaxValueIncrementer getIncrementer(DataSource dataSource, String incrementerName) {
+    public static synchronized DataFieldMaxValueIncrementer getIncrementer(DataSource dataSource, String incrementerName) {
         if (dataSource == null) {
             throw new IllegalArgumentException("DataSource must not be null");
         }

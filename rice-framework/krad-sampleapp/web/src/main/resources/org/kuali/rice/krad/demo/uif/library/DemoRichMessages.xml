@@ -21,11 +21,11 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <!-- RichMessages demo -->
-  <bean id="Demo-RichMessagesView" parent="ComponentLibraryView">
+  <bean id="Demo-RichMessagesView" parent="ComponentLibraryView" p:componentName="Rich Messages">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoRichMessages.xml"/>
-    <property name="javaFullClassPath"
-              value="org.kuali.rice.krad.uif.element.Message"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.Message"/>
     <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-RichMessages-Example1"/>

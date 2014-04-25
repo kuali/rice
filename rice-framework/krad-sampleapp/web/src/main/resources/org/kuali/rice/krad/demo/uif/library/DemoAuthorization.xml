@@ -20,10 +20,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Authorization demo -->
-  <bean id="Demo-AuthorizationView" parent="ComponentLibraryView">
+  <bean id="Demo-AuthorizationView" parent="ComponentLibraryView" p:componentName="Authorization">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAuthorization.xml"/>
-    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.layout.LayoutManager"/>
     <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
     <property name="demoGroups">
       <list>
         <ref bean="Demo-Authorization-Example1"/>

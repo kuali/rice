@@ -35,6 +35,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -77,8 +79,8 @@ public final class MaxValueIncrementerFactory {
      */
     public static final String PLATFORM_INCREMENTER_PREFIX = "rice.krad.data.platform.incrementer.";
 
-    private static final ConcurrentMap<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>> cache =
-            new ConcurrentHashMap<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>>(8, 0.9f, 1);
+    private static final Map<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>> cache
+            = Collections.synchronizedMap(new IdentityHashMap<DataSource, ConcurrentMap<String, DataFieldMaxValueIncrementer>>(8));
 
     /**
      * Either constructs a new incrementer or retrieves a cached instance for the given DataSource and target
@@ -106,26 +108,17 @@ public final class MaxValueIncrementerFactory {
 
         // yes, we want to check if it's there first, then put if absent, for max speed! This is like ConcurrentMap's
         // version of double-checked locking.
-        ConcurrentMap<String, DataFieldMaxValueIncrementer> incrementerCache = null;
-        for(DataSource cacheDataSource: cache.keySet()) {
-           if(dataSource.hashCode() == cacheDataSource.hashCode()) {
-               incrementerCache = cache.get(cacheDataSource);
-           }
-        }
+        ConcurrentMap<String, DataFieldMaxValueIncrementer> incrementerCache = cache.get(dataSource);
 
         if (incrementerCache == null) {
-            incrementerCache = cache.putIfAbsent(dataSource,
+            cache.put(dataSource,
                     new ConcurrentHashMap<String, DataFieldMaxValueIncrementer>(8, 0.9f, 1));
 
             LOG.info("processing cache size: " + cache.size());
             LOG.info("processing datasource hashcode: " + dataSource.hashCode());
 
             if (incrementerCache == null) {
-                for(DataSource cacheDataSource: cache.keySet()) {
-                    if(dataSource.hashCode() == cacheDataSource.hashCode()) {
-                        incrementerCache = cache.get(cacheDataSource);
-                    }
-                }
+                incrementerCache = cache.get(dataSource);
 
                 LOG.info("processing datasource hashcode: " + dataSource.hashCode());
             }

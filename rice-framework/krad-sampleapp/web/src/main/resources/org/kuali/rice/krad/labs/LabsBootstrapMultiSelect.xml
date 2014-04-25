@@ -23,14 +23,14 @@
   <bean id="Labs-BootstrapMultiSelect" parent="Uif-FormView">
     <property name="additionalCssFiles">
       <list merge="true">
-        <value>http://silviomoreto.github.io/bootstrap-select/stylesheets/bootstrap-select.css</value>
+        <value>css/bootstrap-select.css</value>
         <value>http://davidstutz.github.io/bootstrap-multiselect/css/bootstrap-multiselect.css</value>
       </list>
     </property>
     <property name="additionalScriptFiles">
       <list merge="true">
-        <value>http://paegle.net/javascript/bootstrap-select.js</value>
-        <value>http://paegle.net/javascript/select-group.js</value>
+        <value>scripts/bootstrap-select.js</value>
+        <value>scripts/bootstrap-select-group.js</value>
         <value>http://davidstutz.github.io/bootstrap-multiselect/js/bootstrap-multiselect.js</value>
         <value>scripts/bootstrapSelectPluginOverrides.js</value>
       </list>
@@ -74,7 +74,7 @@
                   </bean>
                 </property>
                 <property name="optionsFinder">
-                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="true"/>
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="false"/>
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:required="true" p:propertyName="multiSelectField2" p:onDocumentReadyScript="jQuery('.selectpicker').selectpicker();" p:fieldLabel.renderColon="false">
@@ -93,15 +93,6 @@
                         <entry key="live-search" value="true"/>
                       </map>
                     </property>
-                    <!--<property name="options">-->
-                      <!--<list>-->
-                        <!--<bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>-->
-                        <!--<bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>-->
-                        <!--<bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>-->
-                        <!--<bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>-->
-                        <!--<bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>-->
-                      <!--</list>-->
-                    <!--</property>-->
                   </bean>
                 </property>
                 <property name="optionsFinder">

@@ -43,11 +43,15 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
 
     protected void testLibraryControlSelectDefault() throws Exception {
         assertElementPresentByXpath("//select[@name='inputField1']");
+        selectByName("inputField1","Option 1");
     }
     
     protected void testLibraryControlSelectMultiSelect() throws Exception {
         waitAndClickByLinkText("MultiSelect");
         assertElementPresentByXpath("//select[@name='inputField2' and @multiple='multiple']");
+        selectByName("inputField2","Select 1");
+        selectByName("inputField2","Select 2");
+        selectByName("inputField2","Select 3");
     }
     
     protected void testLibraryControlSelectDisabled() throws Exception {
@@ -58,6 +62,8 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
     protected void testLibraryControlSelectNavigation() throws Exception {
         waitAndClickByXpath("//li[@data-tabfor='Demo-SelectControl-Example4']/a");
         assertElementPresentByXpath("//div[@data-parent='Demo-SelectControl-Example4']/select/option[@data-location='http://www.kuali.org']");
+        selectByXpath("//div[@data-parent='Demo-SelectControl-Example4']/select","Kuali.org");
+        //After this step it might throw some Javascript error on console as browser may invoke popup with "Stay on page" or "Leave Page" option.
     }
     
     @Test

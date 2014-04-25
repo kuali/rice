@@ -106,7 +106,13 @@ public final class MaxValueIncrementerFactory {
 
         // yes, we want to check if it's there first, then put if absent, for max speed! This is like ConcurrentMap's
         // version of double-checked locking.
-        ConcurrentMap<String, DataFieldMaxValueIncrementer> incrementerCache = cache.get(dataSource);
+        ConcurrentMap<String, DataFieldMaxValueIncrementer> incrementerCache = null;
+        for(DataSource cacheDataSource: cache.keySet()) {
+           if(dataSource.hashCode() == cacheDataSource.hashCode()) {
+               incrementerCache = cache.get(cacheDataSource);
+           }
+        }
+
         if (incrementerCache == null) {
             incrementerCache = cache.putIfAbsent(dataSource,
                     new ConcurrentHashMap<String, DataFieldMaxValueIncrementer>(8, 0.9f, 1));
@@ -115,7 +121,11 @@ public final class MaxValueIncrementerFactory {
             LOG.info("processing datasource hashcode: " + dataSource.hashCode());
 
             if (incrementerCache == null) {
-                incrementerCache = cache.get(dataSource);
+                for(DataSource cacheDataSource: cache.keySet()) {
+                    if(dataSource.hashCode() == cacheDataSource.hashCode()) {
+                        incrementerCache = cache.get(cacheDataSource);
+                    }
+                }
 
                 LOG.info("processing datasource hashcode: " + dataSource.hashCode());
             }

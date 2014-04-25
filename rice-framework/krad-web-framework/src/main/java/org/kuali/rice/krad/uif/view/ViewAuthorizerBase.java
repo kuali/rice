@@ -84,15 +84,20 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
         Object dataObjectForContext = getDataObjectContext(view, model);
 
+        // loop through supplied editModes and make sure KIM permission exists
         for (String editMode : editModes) {
             Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
             additionalPermissionDetails.put(KimConstants.AttributeConstants.EDIT_MODE, editMode);
-            if (permissionExistsByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
-                    KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, additionalPermissionDetails)
-                    && !isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
-                    KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId(),
-                    additionalPermissionDetails, null)) {
-                unauthorizedEditModes.add(editMode);
+            additionalPermissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
+            boolean exists = permissionExistsByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.USE_VIEW, additionalPermissionDetails);
+            if (exists) {
+                boolean authorized = isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+                        KimConstants.PermissionTemplateNames.USE_VIEW, user.getPrincipalId(),
+                        additionalPermissionDetails, null);
+                if (!authorized) {
+                    unauthorizedEditModes.add(editMode);
+                }
             }
         }
         editModes.removeAll(unauthorizedEditModes);

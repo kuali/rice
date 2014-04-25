@@ -1490,7 +1490,7 @@ public class View extends ContainerBase {
         if (editModes == null) {
             this.editModes = Collections.emptyMap();
         } else {
-            this.editModes = new LifecycleAwareMap<String, Boolean>(this, actionFlags);
+            this.editModes = new LifecycleAwareMap<String, Boolean>(this, editModes);
         }
     }
 

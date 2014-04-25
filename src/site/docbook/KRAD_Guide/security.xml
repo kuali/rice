@@ -157,4 +157,82 @@
       view (or screen) since it prevents someone form invoking a controller method they should not
       have access to (which might indirectly prevent them from accessing a screen). </para>
   </section>
+  <section>
+    <title>Edit Modes</title>
+    <para>Edit Modes is a type of security that uses the 'viewId' and an 'editMode' to control screen rendering and other aspects of the
+      user interface.</para>
+    <para>Each View object has an associated ViewPresentationController and ViewAuthorizer interface objects. During the apply model phase of the view
+      life cycle these objects are used for permission checking. The ViewPresentationController is typically where a set of editModes are determined by looking
+      at the state of the model. The ViewAuthorizer then checks this set of editModes against KIM looking to see if the user has the correct
+      permission for that 'viewId' and 'editMode' combination. Here is a portion of the code from ViewLifecycleBuild class:
+      <programlisting>
+    protected void runApplyModelPhase() {
+        ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        View view = ViewLifecycle.getView();
+        ViewHelperService helper = ViewLifecycle.getHelper();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+
+...
+
+        // get action flag and edit modes from authorizer/presentation controller
+        helper.retrieveEditModesAndActionFlags();
+
+...
+
+        processor.performPhase(LifecyclePhaseFactory.applyModel(view, model, "", refreshPaths));
+    }        
+      </programlisting>
+      and this is from the ViewHelperServiceImpl class:
+      <programlisting>
+    public void retrieveEditModesAndActionFlags() {
+        View view = ViewLifecycle.getView();
+        UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
+
+        Set&lt;String> actionFlags = presentationController.getActionFlags(view, model);
+        Set&lt;String> editModes = presentationController.getEditModes(view, model);
+
+        // if user session is not established cannot invoke authorizer
+        if (GlobalVariables.getUserSession() != null) {
+            Person user = GlobalVariables.getUserSession().getPerson();
+
+            actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
+            editModes = authorizer.getEditModes(view, model, user, editModes);
+        }
+
+        view.setActionFlags(new BooleanMap(actionFlags));
+        view.setEditModes(new BooleanMap(editModes));
+    }      </programlisting>
+      Here you can see the ViewPresentationController being called to get the editModes and then the ViewAuthorizer to check this set. Finally the editModes
+      are set on the view itself.</para>
+    <para>The ViewPresentationController getEditModes method is called with the view and model passed in as parameters. An application would implement this
+      interface to return a set of application specific editMode strings.</para>
+    <para>Here is an example of defining a component to use the application specific editMode of 'superUser' for the rendering of a Uif-VerticalBoxSection:
+      <programlisting>
+  &lt;bean id="View1" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
+    &lt;property name="headerText" value="Sample View"/>
+    &lt;property name="singlePageView" value="true"/>
+    &lt;property name="page">
+      &lt;bean parent="Uif-Page">
+        &lt;property name="items">
+          &lt;list>
+            &lt;bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:render="@{#editModes['superUser']}">
+              &lt;property name="items">
+                &lt;list>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 1"/>
+                  &lt;bean parent="Uif-InputField" p:propertyName="inputField13" p:label="Field 2"/>
+                  &lt;bean parent="Uif-PrimaryActionButton" p:actionLabel="button 1" p:id="button1" p:actionScript="alert('button 1');"/>
+                &lt;/list>
+              &lt;/property>
+            &lt;/bean>
+      </programlisting>
+    </para>
+    <para>Once this is done a permission can be created using the 'KR-KRAD:Use View' template for this 'viewId' and 'editMode'. This permission is then
+      added to a role which is then assigned to a user:
+      <inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/editModePermission.png" align="center"></imagedata></imageobject></inlinemediaobject>
+    </para>
+  </section>
+  
 </chapter>

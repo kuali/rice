@@ -127,6 +127,7 @@ public final class KimConstants {
     	public static final String DELETE_NOTE_ATTACHMENT = "Delete Note / Attachment";
 
     	public static final String USE_TRANSACTIONAL_DOCUMENT = "Use Transactional Document";
+        public static final String USE_VIEW = "Use View";
 
     	public static final String POPULATE_GROUP = "Populate Group";
     	public static final String ASSIGN_ROLE = "Assign Role";

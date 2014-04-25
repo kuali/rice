@@ -485,6 +485,53 @@
     </property>
   </bean>
 
+  <bean id="Lab-LayoutTest-Stacked-Upload-AddBlankLine" parent="Uif-FormView">
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+    <property name="items">
+      <list>
+        <bean p:headerText="Page Title" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-StackedCollectionSection">
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="headerText" value="Stack Layout Section w/ upload and Add Blank Line"/>
+                <property name="propertyName" value="collection2"/>
+                <property name="layoutManager.summaryTitle" value="Line Summary"/>
+                <property name="layoutManager.summaryFields" value="field1"/>
+                <property name="renderAddBlankLineButton" value="true" />
+                <property name="addLineActions">
+                  <list>
+                    <bean parent="Uif-AddLineAction" p:actionLabel="Add Blank Line"/>
+                  </list>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                    <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+                    <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
+                    <!--<bean parent="Uif-InputField" p:label="File" p:propertyName="fileUpload" p:render="@{#fp.field1 eq 'A'}">-->
+                    <bean parent="Uif-InputField" p:label="File" p:propertyName="fileUpload">
+                      <property name="control">
+                        <bean parent="Uif-FileControl" p:size="30"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="lineActions">
+                  <list>
+                    <bean parent="Uif-PrimaryActionButton" p:actionLabel="button"/>
+                    <bean parent="Uif-DeleteLineAction" p:actionLabel="Delete"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Lab-LayoutTest-EnterKey" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="headerText" value="Enter Key Support"/>
     <property name="singlePageView" value="true"/>
@@ -562,7 +609,6 @@
         </property>
       </bean>
     </property>
-    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">

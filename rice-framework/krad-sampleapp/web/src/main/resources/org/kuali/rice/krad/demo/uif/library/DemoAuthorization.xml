@@ -20,7 +20,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
   <!-- Authorization demo -->
-  <bean id="Demo-Authorization-View" parent="ComponentLibraryView">
+  <bean id="Demo-AuthorizationView" parent="ComponentLibraryView">
     <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoAuthorization.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
     <property name="docBookAnchor" value="d7339e4811"/>
@@ -36,6 +36,7 @@
         <ref bean="Demo-Authorization-Example8"/>
         <ref bean="Demo-Authorization-Example9"/>
         <ref bean="Demo-Authorization-Example10"/>
+        <ref bean="Demo-Authorization-Example11"/>
       </list>
     </property>
   </bean>
@@ -335,4 +336,33 @@
       </list>
     </property>
   </bean>
-</beans>
+
+  <bean id="Demo-Authorization-Example11" parent="Uif-VerticalBoxSection" p:headerText="Edit Modes"
+        p:instructionalText="Example of using 'editMode' to customize user interface that is controlled by a KIM permission. The XML shows the use of the 'editMode' 'superUser' to control the rendering of Section 1. A permission using template 'Use View' would need to be created and assigned. Note that the absence of a permission is true.">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-Authorization-Example11 start-->
+        <bean p:headerText="Section 1" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1"
+              p:instructionalText="editMode\[superUser\]=>@{#editModes['superUser']}"
+              p:render="@{#editModes['superUser']}">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="Field 2"/>
+            </list>
+          </property>
+        </bean>
+        <bean p:headerText="Section 2" parent="Uif-VerticalBoxSection"
+              p:instructionalText="editMode\[superUser\]=>@{#editModes['superUser']}">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField3" p:label="Field 3"/>
+              <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Field 4"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-Authorization-Example11 end-->
+      </list>
+    </property>
+  </bean>
+</beans>

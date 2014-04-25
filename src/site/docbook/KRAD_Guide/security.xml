@@ -232,7 +232,7 @@
     <para>Once this is done a permission can be created using the 'KR-KRAD:Use View' template for this 'viewId' and 'editMode'. This permission is then
       added to a role which is then assigned to a user:
       <inlinemediaobject><imageobject><imagedata fileref="../images/KRAD_Guide/editModePermission.png" align="center"></imagedata></imageobject></inlinemediaobject>
-    </para>
+      Note that the absence of a permission with the corresponding 'viewId' and 'editMode' will result in a 'true' result.</para>
   </section>
   
 </chapter>

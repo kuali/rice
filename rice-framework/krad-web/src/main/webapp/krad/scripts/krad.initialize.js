@@ -414,7 +414,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] option",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
-
+                if(!id){ return; }
                 // keep track of what errors it had on initial focus
                 var data = getValidationData(jQuery("#" + id));
                 if (data && data.errors) {
@@ -435,6 +435,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
+                if(!id){ return; }
                 var data = getValidationData(jQuery("#" + id));
                 var hadError = false;
                 if (data && data.focusedErrors) {
@@ -483,6 +484,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] input:radio",
             function () {
                 var id = getAttributeId(jQuery(this).attr('id'));
+                if(!id){ return; }
                 var field = jQuery("#" + id);
 
                 var data = getValidationData(field);
@@ -527,6 +529,7 @@ function initFieldHandlers() {
             function () {
                 var parent = jQuery(this).parent();
                 var id = getAttributeId(jQuery(this).attr('id'));
+                if(!id){ return; }
                 var data = getValidationData(jQuery("#" + id));
                 //mouse in tooltip check
                 var mouseInTooltip = false;
@@ -848,6 +851,7 @@ jQuery.validator.setDefaults({
     onkeyup: function (element) {
         if (validateClient) {
             var id = getAttributeId(jQuery(element).attr('id'));
+            if(!id){ return; }
             var data = getValidationData(jQuery("#" + id));
 
             // if this field previously had errors validate on key up
@@ -868,6 +872,7 @@ jQuery.validator.setDefaults({
         jQuery(element).removeAttr("aria-invalid");
 
         var id = getAttributeId(jQuery(element).attr("id"));
+        if(!id){ return; }
         var field = jQuery("#" + id);
         var data = getValidationData(field);
 
@@ -898,6 +903,7 @@ jQuery.validator.setDefaults({
             var element = elementObjectList[i].element;
             var message = elementObjectList[i].message;
             var id = getAttributeId(jQuery(element).attr('id'));
+            if(!id){ return; }
             var field = jQuery("#" + id);
             var data = getValidationData(field);
 
@@ -936,10 +942,12 @@ jQuery.validator.setDefaults({
         var id = "";
         if (htmlFor.indexOf("_control") >= 0) {
             id = getAttributeId(htmlFor);
+            if(!id){ return; }
         }
         else {
             id = jQuery("[name='" + escapeName(htmlFor) + "']:first").attr("id");
             id = getAttributeId(id);
+            if(!id){ return; }
         }
 
         var field = jQuery("#" + id);

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.labs;
 
+import org.kuali.rice.kew.exception.WorkflowServiceError;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -36,6 +38,17 @@ import javax.servlet.http.HttpServletResponse;
 
 @RequestMapping(value = "/labs")
 public class KradLabsController extends UifControllerBase {
+
+    @Override
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=start")
+    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,HttpServletResponse response) {
+
+        if (form.getViewId().equals("Labs-BootstrapMultiSelect")) {
+            GlobalVariables.getMessageMap().putWarning("multiSelectField2", "validation.equals");
+        }
+            return super.start(form, request, response);
+     }
 
     @Override
     protected KradLabsForm createInitialForm(HttpServletRequest request) {

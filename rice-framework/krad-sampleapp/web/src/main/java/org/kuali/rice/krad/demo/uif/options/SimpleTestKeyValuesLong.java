@@ -18,9 +18,13 @@ package org.kuali.rice.krad.demo.uif.options;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
+import org.kuali.rice.krad.uif.util.UifKeyValue;
+import org.kuali.rice.krad.uif.util.UifOptionGroupLabel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -44,11 +48,23 @@ public class SimpleTestKeyValuesLong extends KeyValuesBase {
         }
 
         int x = 1;
-
-        while( x < 101 ) {
-            keyValues.add(new ConcreteKeyValue(Integer.toString(x), (String) "Option " + x));
-            x++;
-        }
+        int y =1;
+        HashMap<String, Vector<String>> data = new HashMap();
+            while(x<5){
+                data.put((String) "group" + x, new Vector());
+                while(y<5){
+                    data.get((String) "group" + x).add((String) "sub" + y);
+                    y++;
+                }
+                y=1;
+                x++;
+            }
+            for (String key : data.keySet()) {
+                keyValues.add(new UifOptionGroupLabel(key));
+                for (String subs : data.get(key)) {
+                    keyValues.add(new UifKeyValue(subs, subs));
+                }
+            }
 
         return keyValues;
     }

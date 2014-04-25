@@ -632,6 +632,7 @@ function occursBefore(name1, name2) {
  */
 function getAttributeId(elementId) {
     var id = elementId;
+    if(!id) { return ''; }
     id = elementId.replace(/_control\S*/, "");
     return id;
 }

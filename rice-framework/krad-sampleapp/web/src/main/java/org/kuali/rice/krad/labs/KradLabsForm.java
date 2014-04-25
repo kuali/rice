@@ -74,6 +74,7 @@ public class KradLabsForm extends UifFormBase {
     private List<String> checkboxesField3;
     private List<String> checkboxesField4;
     private List<String> multiSelectField1;
+    private List<String> multiSelectField2;
 
     private String testPersonId;
     private Person testPerson;
@@ -829,6 +830,14 @@ public class KradLabsForm extends UifFormBase {
 
     public void setMultiSelectField1(List<String> multiSelectField1) {
         this.multiSelectField1 = multiSelectField1;
+    }
+
+    public List<String> getMultiSelectField2() {
+        return multiSelectField2;
+    }
+
+    public void setMultiSelectField2(List<String> multiSelectField2) {
+        this.multiSelectField2 = multiSelectField2;
     }
 
     public boolean isBooleanField1() {

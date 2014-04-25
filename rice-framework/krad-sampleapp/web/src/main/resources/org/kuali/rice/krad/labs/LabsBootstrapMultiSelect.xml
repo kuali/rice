@@ -30,8 +30,9 @@
     <property name="additionalScriptFiles">
       <list merge="true">
         <value>http://paegle.net/javascript/bootstrap-select.js</value>
-        <!--<value>http://silviomoreto.github.io/bootstrap-select/javascripts/bootstrap-select.js</value>-->
+        <value>http://paegle.net/javascript/select-group.js</value>
         <value>http://davidstutz.github.io/bootstrap-multiselect/js/bootstrap-multiselect.js</value>
+        <value>scripts/bootstrapSelectPluginOverrides.js</value>
       </list>
     </property>
     <property name="headerText" value="Bootstrap select plugin test"/>
@@ -52,15 +53,6 @@
       </bean>
     </property>
   </bean>
-
-  <!--<util:list id="test-options2">-->
-    <!--<bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select 1"/>-->
-    <!--<bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>-->
-    <!--<bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select 3"/>-->
-    <!--<bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select 4"/>-->
-    <!--<bean parent="Uif-KeyLabelPair" p:key="5" p:value="Select 5"/>-->
-  <!--</util:list>-->
-
   <bean id="Lab-BootstrapMultiSelect-Page1" parent="Uif-Page" p:headerText="Page 1"
         p:instructionalText="View for testing Bootstrap select plugins">
     <property name="items">
@@ -68,9 +60,9 @@
         <bean parent="Uif-VerticalBoxSection">
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="inputField7"  p:onDocumentReadyScript="jQuery('.multiselect').multiselect();" p:fieldLabel.renderColon="false">
+              <bean parent="Uif-InputField" p:propertyName="multiSelectField1"  p:onDocumentReadyScript="jQuery('.multiselect').multiselect({enableFiltering:true});" p:fieldLabel.renderColon="false">
                 <property name="label">
-                  <value>Bootstrap multi-select [a href="http://davidstutz.github.io/bootstrap-multiselect" target="_blank"]source[/a]</value>
+                  <value>Bootstrap multi-select</value>
                 </property>
                 <property name="control">
                   <bean parent="Uif-MultiSelectControl">
@@ -85,11 +77,10 @@
                   <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="true"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" id="testing" p:propertyName="inputField7" p:onDocumentReadyScript="jQuery('.selectpicker').selectpicker();" p:fieldLabel.renderColon="false">
+              <bean parent="Uif-InputField" p:required="true" p:propertyName="multiSelectField2" p:onDocumentReadyScript="jQuery('.selectpicker').selectpicker();" p:fieldLabel.renderColon="false">
                 <property name="label">
-                  <value>Bootstrap select [a href="http://silviomoreto.github.io/bootstrap-select" target="_blank"]source[/a]</value>
+                  <value>Bootstrap select</value>
                 </property>
-
                 <property name="control">
                   <bean parent="Uif-MultiSelectControl">
                     <property name="cssClasses">
@@ -102,10 +93,19 @@
                         <entry key="live-search" value="true"/>
                       </map>
                     </property>
+                    <!--<property name="options">-->
+                      <!--<list>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="a1" p:value="Ford"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="a2" p:value="Chevy"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="a3" p:value="Buick"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="j1" p:value="Toyota"/>-->
+                        <!--<bean parent="Uif-KeyLabelPair" p:key="j2" p:value="Honda"/>-->
+                      <!--</list>-->
+                    <!--</property>-->
                   </bean>
                 </property>
                 <property name="optionsFinder">
-                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="true"/>
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValuesLong" p:blankOption="false"/>
                 </property>
               </bean>
             </list>

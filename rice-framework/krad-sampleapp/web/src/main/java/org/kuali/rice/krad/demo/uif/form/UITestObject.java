@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,10 @@ public class UITestObject implements Serializable {
     private String field8;
     private boolean bfield;
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
+
+    private MultipartFile fileUpload;
+
+   // private String fileUploadName;
 
     private UITestObject innerObject;
 
@@ -174,6 +180,23 @@ public class UITestObject implements Serializable {
     public void setField8(String field8) {
         this.field8 = field8;
     }
+
+    public MultipartFile getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(MultipartFile fileUpload) {
+        this.fileUpload = fileUpload;
+      // this.fileUploadName = fileUpload.getOriginalFilename();
+    }
+
+//    public String getFileUploadName() {
+//        return fileUploadName;
+//    }
+//
+//    public void setFileUploadName(String fileUploadName) {
+//        this.fileUploadName = fileUploadName;
+//    }
 
     /**
      * @param subList the subList to set

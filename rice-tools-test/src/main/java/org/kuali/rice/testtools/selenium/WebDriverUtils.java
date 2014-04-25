@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.Proxy;
@@ -309,6 +310,7 @@ public class WebDriverUtils {
 
         if (!System.getProperty(SauceLabsWebDriverHelper.SAUCE_BROWSER_PROPERTY,"ff").equals("opera")) {
             driver.manage().window().maximize();
+//            driver.manage().window().setSize(new Dimension(800,600));
         }
 
         // TODO Got into the situation where the first url doesn't expect server, but all others do.  Readdress once

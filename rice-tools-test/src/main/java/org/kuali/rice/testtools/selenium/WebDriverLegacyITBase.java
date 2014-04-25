@@ -2907,7 +2907,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByName("addText", "Note Added.");
         waitAndClickByXpath("//td[@class='datacell']/div/img");
         waitAndClickByXpath("//input[@value='submit']");
-        assertEquals(Boolean.FALSE,(Boolean) isElementPresentByXpath("//input[@value='submit']"));
+        assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='submit']"));
         assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='save']"));
         assertEquals(Boolean.FALSE, (Boolean) isElementPresentByXpath("//input[@value='cancel']"));
         waitForPageToLoad();
@@ -2922,7 +2922,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testTermLookUp() throws Exception {
         testLookUp();
         assertTextPresent("Term Parameters");
-        waitAndClick(By.xpath(CANCEL2_XPATH));
+        waitAndClickButtonByText("Cancel");
         passed();
     }
 
@@ -3897,6 +3897,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickButtonByExactText(String buttonText, String message) throws InterruptedException {
         jGrowl("Click " + buttonText + " button.");
         waitAndClickByXpath("//button[normalize-space(.)='" + buttonText + "']", message);
+    }
+
+    protected void waitAndClickButtonIndexByText(String buttonText, int index) throws InterruptedException {
+        jGrowl("Click " + buttonText + " button.");
+        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')][" + index + "]", this.getClass().getSimpleName());
+    }
+
+    protected void waitAndClickButtonIndexByText(String buttonText, int index, String message) throws InterruptedException {
+        jGrowl("Click " + buttonText + " button.");
+        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')][" + index + "]", message);
     }
 
     protected void waitAndClickAllByName(String name) throws InterruptedException{

@@ -59,7 +59,7 @@ public class DocSearchToAnotherViewAft extends WebDriverLegacyITBase {
 		fireEvent("document.documentHeader.explanation", "focus");
 		waitAndTypeByName("document.documentHeader.explanation", "sample explanation");		
 //		((JavascriptExecutor)driver).executeScript("document.getElementById(\"uif-cancel\").focus();");
-		waitAndClickByLinkText("Cancel");
+        waitAndClickButtonIndexByText("Cancel", 2); // first Cancel is for attachments
 		Thread.sleep(5000);
 		final String text = "Form has unsaved data. Do you want to leave anyway?";
 		Alert a=driver.switchTo().alert();

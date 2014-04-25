@@ -27,7 +27,9 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
      * /kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start&pageId=ConfigurationTestView-Help-Page
      */
     public static final String BOOKMARK_URL = "/kr-krad/configuration-test-view-uif-controller?viewId=ConfigurationTestView&methodToCall=start&pageId=ConfigurationTestView-Help-Page";
-   
+    public static final String HELP_FOR_CONFIGURATION_TEST_VIEW_XPATH =
+            "//a[@title='Help for Configuration Test View']";
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -70,7 +72,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         waitForTextPresent("Sample text for section help - tooltip help");
 
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
+        waitAndClickByXpath(HELP_FOR_CONFIGURATION_TEST_VIEW_XPATH);
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);
@@ -125,7 +127,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         // test tooltip help of section header
         fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
         Thread.sleep(500);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        assertTrue("https://jira.kuali.org/browse/RICEQA-347 AFT Failure update selectors for HelpAftBase", isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
@@ -205,7 +207,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         waitForTextPresent("Sample text for field help - label left");
 
         // test external help
-        waitAndClickByXpath("//input[@alt='Help for Configuration Test View']");
+        waitAndClickByXpath(HELP_FOR_CONFIGURATION_TEST_VIEW_XPATH);
         Thread.sleep(5000);
         switchToWindow("Kuali Foundation");
         Thread.sleep(5000);

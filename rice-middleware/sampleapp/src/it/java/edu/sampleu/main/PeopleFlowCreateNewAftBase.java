@@ -96,7 +96,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     protected void testPeopleFlowCreateNew() throws Exception {
         String docId = peopleFlowCreateNew();
 
-        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("Submit");
         Thread.sleep(3000);
         checkForDocError();
         checkForIncidentReport();
@@ -157,7 +157,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         clearTextByName("document.newMaintainableObject.dataObject.name");
         String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
-        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("Submit");
         waitForTextPresent("Document was successfully submitted.");
         selectTopFrame();
         waitAndClickByLinkText("Main Menu");
@@ -169,7 +169,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
         clearTextByName("document.newMaintainableObject.dataObject.name");
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
-        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("Submit");
         waitForTextPresent("A PeopleFlow already exists with the name");
     }
 }

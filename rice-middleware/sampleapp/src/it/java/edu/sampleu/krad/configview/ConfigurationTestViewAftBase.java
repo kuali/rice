@@ -80,7 +80,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         selectByXpath(amPmSelectLocator, "PM");
         assertEquals("PM", waitAndGetAttributeByXpath(amPmSelectLocator, "value"));
         Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added
@@ -97,7 +97,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         waitAndClickByXpath(allDayId);
         checkForIncidentReport();
         Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that line has been added
@@ -111,7 +111,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         waitAndClickByXpath(allDayId);
         checkForIncidentReport();
         Thread.sleep(5000); //allow for ajax refresh
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         Thread.sleep(5000); //allow for line to be added
 
         //confirm that another line has been added (by checking the number of delete buttons)

@@ -108,6 +108,10 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Stacked-Upload-AddBlankLine"/>
                           <bean parent="Uif-Link" p:linkText="Bootstrap multi-select plugin" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Labs-BootstrapMultiSelect"/>
+                          <bean parent="Uif-Link" p:linkText="Dialog with Explanation in ReadOnly mode" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
+                          <bean parent="Uif-Link" p:linkText="QuickFinder Callback" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/quickfinder?viewId=Lab-QuickFinderCallback"/>
                         </list>
                       </property>
                     </bean>

@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -81,6 +82,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     private Boolean renderMaintenanceLinks;
     private Boolean multipleValuesSelect;
 
+    private String callbackMethodToCall;
+    private MethodInvokerConfig callbackMethod;
+    private Map<String, String> callbackContext;
+
     public QuickFinder() {
         super();
 
@@ -111,6 +116,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * <ul>
      * <li>Sets up the quickfinder based on whether the parent is an input field or collection group</li>
      * <li>Adds action parameters to the quickfinder action based on the quickfinder configuration</li>
+     * <li>Adds callback parameters to post data if present</li>
      * </ul>
      *
      * {@inheritDoc}
@@ -143,6 +149,8 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         }
 
         setupQuickfinderAction(view, model, parent);
+
+        addCallbackParametersIfPresent();
     }
 
     /**
@@ -435,6 +443,25 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
                 UifConstants.PostMetadata.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
                 UifConstants.PostMetadata.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
+    }
+
+    /**
+     * Adds callback method and its parameters to post data so that when a refresh occurs it knows
+     * which view is returned from and possibly which collection line the quickfinder was on.
+     */
+    protected void addCallbackParametersIfPresent() {
+        if( StringUtils.isNotBlank( callbackMethodToCall ) ) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD_TO_CALL, callbackMethodToCall );
+        }
+        if( callbackMethod != null ) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD, callbackMethod );
+        }
+        if( callbackContext != null && !callbackContext.isEmpty() ) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT, callbackContext );
+        }
     }
 
     /**
@@ -859,5 +886,54 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      */
     public void setAdditionalLookupParameters(Map<String, String> additionalLookupParameters) {
         this.additionalLookupParameters = additionalLookupParameters;
+    }
+
+    /**
+     * The name of the callback method to invoke in the view helper service that checks
+     * request parameters to indicate what view is being returned from.
+     *
+     * @return callbackMethodToCall - the name of the callback method
+     */
+    public String getCallbackMethodToCall() {
+        return callbackMethodToCall;
+    }
+
+    /**
+     * @see QuickFinder#getCallbackMethodToCall()
+     */
+    public void setCallbackMethodToCall(String callbackMethodToCall) {
+        this.callbackMethodToCall = callbackMethodToCall;
+    }
+
+    /**
+     * The specific method invoker to use to invoke the callback method to call.
+     *
+     * @return callbackMethod - the method invoker
+     */
+    public MethodInvokerConfig getCallbackMethod() {
+        return callbackMethod;
+    }
+
+    /**
+     * @see QuickFinder#getCallbackMethod()
+     */
+    public void setCallbackMethod(MethodInvokerConfig callbackMethod) {
+        this.callbackMethod = callbackMethod;
+    }
+
+    /**
+     * The context of parameters to be provided to the callback method to call.
+     *
+     * @return callbackContext - map of parameters
+     */
+    public Map<String, String> getCallbackContext() {
+        return callbackContext;
+    }
+
+    /**
+     * @see QuickFinder#getCallbackContext()
+     */
+    public void setCallbackContext(Map<String, String> callbackContext) {
+        this.callbackContext = callbackContext;
     }
 }

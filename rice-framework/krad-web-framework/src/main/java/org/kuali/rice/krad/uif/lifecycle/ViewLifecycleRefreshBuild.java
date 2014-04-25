@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -95,6 +98,7 @@ public class ViewLifecycleRefreshBuild implements Runnable {
         }
 
         // set focus and jump position for returning from a quickfinder
+        // check and invoke callback method
         if (request.getParameterMap().containsKey(UifParameters.QUICKFINDER_ID)) {
             String quickfinderId = request.getParameter(UifParameters.QUICKFINDER_ID);
 
@@ -108,6 +112,47 @@ public class ViewLifecycleRefreshBuild implements Runnable {
                                 UifConstants.PostMetadata.QUICKFINDER_JUMP_TO_ID);
             if (StringUtils.isNotBlank(jumpToId)) {
                 form.setJumpToId(jumpToId);
+            }
+
+            // check for callback method and invoke it if present
+            String callbackMethodToCall = ( String ) form.getViewPostMetadata().getComponentPostData( quickfinderId,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD_TO_CALL );
+            MethodInvokerConfig callbackMethod = ( MethodInvokerConfig ) form.getViewPostMetadata().
+                    getComponentPostData( quickfinderId, UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD );
+
+            if( StringUtils.isNotBlank( callbackMethodToCall ) || callbackMethod != null ) {
+                // if the callbackMethod is not set, then we set it
+                if( callbackMethod == null ) {
+                    callbackMethod = new MethodInvokerConfig();
+                }
+                // get additional parameters to be passed to the callback method
+                Map<String, String> callbackContext = ( Map<String, String> ) form.getViewPostMetadata().
+                        getComponentPostData( quickfinderId, UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT );
+
+                // if target class or object not set, use view helper service
+                if( ( callbackMethod.getTargetClass() == null ) && ( callbackMethod.getTargetObject() == null ) ) {
+                    callbackMethod.setTargetObject( ViewLifecycle.getHelper() );
+                }
+                callbackMethod.setTargetMethod( callbackMethodToCall );
+                Object[] arguments = new Object[3];
+                arguments[0] = form;
+                arguments[1] = quickfinderId;
+                arguments[2] = callbackContext;
+                callbackMethod.setArguments( arguments );
+
+                // invoke callback method
+                try {
+                    callbackMethod.prepare();
+
+                    Class<?> methodReturnType = callbackMethod.getPreparedMethod().getReturnType();
+                    if( StringUtils.equals( "void", methodReturnType.getName() ) ) {
+                        callbackMethod.invoke();
+                    } else {
+                        // TODO : can the return type be anything else other than void? if so, what?
+                    }
+                } catch( Exception e ) {
+                    throw new RuntimeException( "Error invoking callback method for quickfinder: " + quickfinderId, e );
+                }
             }
         }
 

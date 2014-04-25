@@ -17,12 +17,16 @@ package org.kuali.rice.krad.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -736,9 +740,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // build action title if not set
         if (StringUtils.isBlank(actionLink.getTitle())) {
-            String prependTitleText = actionLink.getLinkText() + " " +
-                    getDataDictionaryService().getDataDictionary().getDataObjectEntry(getDataObjectClass().getName())
-                            .getObjectLabel() + " " +
+            String objectLabel = "";
+            DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary()
+                    .getDataObjectEntry(getDataObjectClass().getName());
+            // check to see if there was a data object entry found for the class
+            // if there is a data entry object, then set the object label, else let it be empty string
+            if( dataObjectEntry != null && dataObjectEntry.getObjectLabel() != null ) {
+                objectLabel = dataObjectEntry.getObjectLabel();
+            }
+            ConfigurationService service = getConfigurationService();
+            String val = service.getPropertyValueAsString( KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY );
+            String prependTitleText = actionLink.getLinkText() + " " + objectLabel + " " +
                     getConfigurationService().getPropertyValueAsString(
                             KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
 

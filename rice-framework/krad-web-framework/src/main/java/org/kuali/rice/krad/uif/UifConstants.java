@@ -270,6 +270,10 @@ public class UifConstants {
         public static final String SUGGEST = "suggest";
         public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
         public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
+        public static final String QUICKFINDER_CALLBACK_METHOD_TO_CALL = "quickfinderCallbackMethodToCall";
+        public static final String QUICKFINDER_CALLBACK_METHOD = "quickfinderCallbackMethod";
+        public static final String QUICKFINDER_CALLBACK_CONTEXT = "quickfinderCallbackContext";
+        public static final String QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX = "lineIndex";
     }
 
     public static class ContextVariableNames {

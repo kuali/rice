@@ -23,6 +23,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -48,8 +51,8 @@ public final class DatabasePlatforms {
      */
     public static final String MYSQL = "MySQL";
 
-    private static final ConcurrentMap<DataSource, DatabasePlatformInfo> platformCache =
-            new ConcurrentHashMap<DataSource, DatabasePlatformInfo>();
+    private static final Map<DataSource, DatabasePlatformInfo> platformCache
+            = Collections.synchronizedMap(new IdentityHashMap<DataSource, DatabasePlatformInfo>(8));
 
     /**
      * Gets the platform information from the {@link DataSource}.
@@ -64,16 +67,15 @@ public final class DatabasePlatforms {
         DatabasePlatformInfo platformInfo = platformCache.get(dataSource);
         if (platformInfo == null) {
             JdbcTemplate template = new JdbcTemplate(dataSource);
-            platformInfo = platformCache.putIfAbsent(dataSource, template.execute(
-                    new ConnectionCallback<DatabasePlatformInfo>() {
-                        @Override
-                        public DatabasePlatformInfo doInConnection(
-                                Connection connection) throws SQLException, DataAccessException {
-                            DatabaseMetaData metadata = connection.getMetaData();
-                            String vendorName = metadata.getDatabaseProductName();
-                            int version = metadata.getDatabaseMajorVersion();
-                            return new DatabasePlatformInfo(vendorName, version);
-                        }
+                platformCache.put(dataSource, template.execute(new ConnectionCallback<DatabasePlatformInfo>() {
+                            @Override
+                            public DatabasePlatformInfo doInConnection(
+                                    Connection connection) throws SQLException, DataAccessException {
+                                DatabaseMetaData metadata = connection.getMetaData();
+                                String vendorName = metadata.getDatabaseProductName();
+                                int version = metadata.getDatabaseMajorVersion();
+                                return new DatabasePlatformInfo(vendorName, version);
+                            }
                     }));
             if (platformInfo == null) {
                 platformInfo = platformCache.get(dataSource);

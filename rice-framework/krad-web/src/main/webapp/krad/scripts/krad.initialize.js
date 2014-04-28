@@ -631,12 +631,20 @@ function setupDisclosureHandler() {
                 if (isOpen == "true") {
                     disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, false);
 
-                    disclosureContent.slideUp(animationSpeed);
+                    var options = {
+                        duration: animationSpeed,
+                        step: function(){
+                            disclosureContent.trigger(kradVariables.EVENTS.ADJUST_STICKY);
+                        }
+                    };
+
+                    disclosureContent.slideUp(options);
 
                     link.find("#" + linkId + "_exp").hide();
                     link.find("#" + linkId + "_col").show();
 
                     setComponentState(widgetId, 'open', false);
+                    disclosureContent.trigger(kradVariables.EVENTS.ADJUST_STICKY);
                 }
                 else {
                     disclosureContent.attr(kradVariables.ATTRIBUTES.DATA_OPEN, true);
@@ -653,13 +661,21 @@ function setupDisclosureHandler() {
                         // If there is a placeholder present, retrieve the new content
                         showLoading("Loading...", disclosureContent, true);
                         disclosureContent.show();
+                        disclosureContent.trigger(kradVariables.EVENTS.ADJUST_STICKY);
 
                         // This a specialized methodToCall passed in for retrieving the originally generated component
                         retrieveComponent(linkId.replace("_toggle", ""), null, null, null, true);
                     }
                     else{
                         // If no ajax retrieval, slide down animationg
-                        disclosureContent.slideDown(animationSpeed);
+                        var options = {
+                            duration: animationSpeed,
+                            step: function(){
+                                disclosureContent.trigger(kradVariables.EVENTS.ADJUST_STICKY);
+                            }
+                        };
+                        disclosureContent.slideDown(options);
+
                     }
                 }
             });
@@ -737,7 +753,7 @@ function setupPage(validate) {
     setupImages();
 
     // reinitialize sticky footer content because page footer can be sticky
-    jQuery("[data-role='Page']").on(kradVariables.EVENTS.ADJUST_STICKY, function(){
+    jQuery(document).on(kradVariables.EVENTS.ADJUST_STICKY, function(){
         stickyFooterContent = jQuery("[data-sticky_footer='true']");
         initStickyFooterContent();
         handleStickyFooterContent();

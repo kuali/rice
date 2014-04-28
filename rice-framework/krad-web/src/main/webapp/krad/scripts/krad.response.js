@@ -205,6 +205,7 @@ KradResponse.prototype = {
               }
             });
 
+            $componentInDom.trigger(kradVariables.EVENTS.ADJUST_STICKY);
             $componentInDom.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
         }
     },

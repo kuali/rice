@@ -2345,7 +2345,7 @@ function initStickyContent(currentScroll) {
         currentScroll = jQuery(window).scrollTop();
     }
 
-    var topOffset = Math.round(stickyContentOffset.top);
+    var topOffset = Math.floor(stickyContentOffset.top);
 
     var totalHeight = 0;
     var margin = 0;
@@ -2358,7 +2358,7 @@ function initStickyContent(currentScroll) {
     stickyContent.each(function () {
         var height = jQuery(this).outerHeight();
         var thisOffset = jQuery(this).data("offset");
-        var thisOffsetTop = Math.round(thisOffset.top);
+        var thisOffsetTop = Math.floor(thisOffset.top);
         jQuery(this).addClass(kradVariables.STICKY_CLASS);
 
         if (thisOffsetTop < 1) {
@@ -2374,7 +2374,7 @@ function initStickyContent(currentScroll) {
         }
 
         //this means there is inner non-sticky content in the header
-        if (thisOffsetTop > topOffset) {
+        if (thisOffsetTop > topOffset + 1) {
             margin = margin + totalHeight;
             innerNonStickyCount++;
             topOffset = thisOffsetTop;
@@ -2432,7 +2432,7 @@ function handleStickyContent() {
         return;
     }
 
-    if (jQuery(window).scrollTop() >= Math.round(stickyContentOffset.top)) {
+    if (jQuery(window).scrollTop() >= Math.floor(stickyContentOffset.top)) {
         var topOffset = 0;
         var navAdjust = 0;
 
@@ -2441,7 +2441,7 @@ function handleStickyContent() {
             var height = jQuery(this).outerHeight();
 
             var thisOffset = jQuery(this).data("offset");
-            var thisOffsetTop = Math.round(thisOffset.top);
+            var thisOffsetTop = Math.floor(thisOffset.top);
             //content exist between this sticky and last sticky
             if (thisOffset && thisOffsetTop - jQuery(window).scrollTop() > topOffset) {
                 var diff = thisOffsetTop - jQuery(window).scrollTop();
@@ -2469,7 +2469,7 @@ function handleStickyContent() {
         currentHeaderHeight = navAdjust;
 
     }
-    else if (jQuery(window).scrollTop() < Math.round(stickyContentOffset.top)) {
+    else if (jQuery(window).scrollTop() < Math.floor(stickyContentOffset.top)) {
         //the content is back to past the first sticky element (topmost)
         initStickyContent(jQuery(window).scrollTop());
     }
@@ -2504,9 +2504,9 @@ function initStickyFooterContent() {
 
     var contentWindowDiff = jQuery(window).height() - jQuery("#" + kradVariables.APP_ID).height();
     if (bottomOffset > contentWindowDiff) {
-        jQuery("#" + kradVariables.APP_ID).css("paddingBottom", bottomOffset + "px");
+        jQuery("[data-role='View']").css("paddingBottom", bottomOffset + "px");
     } else {
-        jQuery("#" + kradVariables.APP_ID).css("paddingBottom", contentWindowDiff + "px");
+        jQuery("[data-role='View']").css("paddingBottom", contentWindowDiff + "px");
     }
 }
 
@@ -2527,8 +2527,8 @@ function handleStickyFooterContent() {
     var scrollTop = jQuery(window).scrollTop();
 
     //reposition elements when the scroll exceeds the footer's top (and footer content exists)
-    if (windowHeight + scrollTop >= Math.round(appFooterOffset.top) && scrollTop != 0 && applicationFooter.height() > 0) {
-        var bottomOffset = (windowHeight + scrollTop) - Math.round(appFooterOffset.top);
+    if (windowHeight + scrollTop >= Math.floor(appFooterOffset.top) && scrollTop != 0 && applicationFooter.height() > 0) {
+        var bottomOffset = (windowHeight + scrollTop) - Math.floor(appFooterOffset.top);
 
         jQuery(stickyFooterContent.get().reverse()).each(function () {
             var height = jQuery(this).outerHeight();

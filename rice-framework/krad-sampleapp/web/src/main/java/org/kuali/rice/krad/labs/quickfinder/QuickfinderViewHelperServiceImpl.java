@@ -15,11 +15,8 @@
  */
 package org.kuali.rice.krad.labs.quickfinder;
 
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.lookup.LookupableImpl;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.List;
@@ -40,17 +37,13 @@ public class QuickfinderViewHelperServiceImpl extends LookupableImpl {
      */
     public void doCallback( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
         QuickfinderForm qForm = ( QuickfinderForm ) form;
-        // retrieve the collection to manipulate
         List<PersonAccount> collection = qForm.getPeopleAccounts();
-        // check context parameters and manipulate the collection
         if( callbackContext != null ) {
-            // get the index of the object to manipulate in the collection
             String lineIndexAsString = callbackContext
                     .get( UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX );
             if( lineIndexAsString != null ) {
                 int lineIndex = Integer.parseInt( lineIndexAsString );
                 if( lineIndex >= 0 ) {
-                    // manipulate the collection object retrieved
                     PersonAccount personAccount = collection.get(lineIndex);
                     personAccount.setAccountName("Foo Bar");
                 }

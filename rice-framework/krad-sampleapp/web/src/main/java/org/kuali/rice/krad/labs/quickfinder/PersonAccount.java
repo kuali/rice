@@ -20,6 +20,8 @@ import org.kuali.rice.kim.api.identity.Person;
 import java.io.Serializable;
 
 /**
+ * Class to associate a person with a travel account
+ *
  * Created by nigupta on 4/23/2014.
  */
 public class PersonAccount implements Serializable {
@@ -36,26 +38,48 @@ public class PersonAccount implements Serializable {
         this.name = name;
     }
 
+    /**
+     * The name of the travel account for this person
+     *
+     * @return accountName
+     */
     public String getAccountName() {
         return accountName;
     }
 
+    /**
+     * @see PersonAccount#getAccountName()
+     */
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
+    /**
+     * The number of the travel account for this person
+     *
+     * @return accountNumber
+     */
     public String getAccountNumber () {
         return accountNumber;
     }
-
+    /**
+     * @see PersonAccount#getAccountNumber()
+     */
     public void setAccountNumber(String number) {
         this.accountNumber = number;
     }
-
+    /**
+     * The name of this person
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @see PersonAccount#getName()
+     */
     public void setName(String name) {
         this.name = name;
     }

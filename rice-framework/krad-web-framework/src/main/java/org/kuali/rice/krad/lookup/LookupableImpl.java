@@ -743,11 +743,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String objectLabel = "";
             DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary()
                     .getDataObjectEntry(getDataObjectClass().getName());
+
             // check to see if there was a data object entry found for the class
             // if there is a data entry object, then set the object label, else let it be empty string
             if( dataObjectEntry != null && dataObjectEntry.getObjectLabel() != null ) {
                 objectLabel = dataObjectEntry.getObjectLabel();
             }
+
             ConfigurationService service = getConfigurationService();
             String val = service.getPropertyValueAsString( KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY );
             String prependTitleText = actionLink.getLinkText() + " " + objectLabel + " " +

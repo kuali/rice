@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.component.Component;
-
 import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.Collections;
@@ -25,6 +23,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.web.bind.UifEncryptionPropertyEditorWrapper;
 
 /**
  * Holds data about the rendered view that might be needed to handle a post request.
@@ -41,6 +43,7 @@ import java.util.Set;
  */
 public class ViewPostMetadata implements Serializable {
     private static final long serialVersionUID = -515221881981451818L;
+    private static final Logger LOG = Logger.getLogger(ViewPostMetadata.class);
 
     private String id;
 
@@ -420,4 +423,48 @@ public class ViewPostMetadata implements Serializable {
 
         this.accessibleMethodToCalls.add(methodToCall);
     }
+    
+    /**
+     * Look up a field editor.
+     *
+     * @param propertyName name of the property to find field and editor for
+     */
+    public PropertyEditor getFieldEditor(String propertyName) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
+        }
+
+        PropertyEditor propertyEditor = null;
+        boolean requiresEncryption = false;
+
+        if (fieldPropertyEditors != null && fieldPropertyEditors
+                .containsKey(propertyName)) {
+            propertyEditor = fieldPropertyEditors.get(propertyName);
+        } else if (secureFieldPropertyEditors != null && secureFieldPropertyEditors.containsKey(propertyName)) {
+            propertyEditor = secureFieldPropertyEditors.get(propertyName);
+            requiresEncryption = true;
+        }
+
+        if (propertyEditor != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Registering custom editor for property path '"
+                        + propertyName
+                        + "' and property editor class '"
+                        + propertyEditor.getClass().getName()
+                        + "'");
+            }
+
+            if (requiresEncryption) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Enabling encryption for custom editor '" + propertyName +
+                            "' and property editor class '" + propertyEditor.getClass().getName() + "'");
+                }
+                
+                return new UifEncryptionPropertyEditorWrapper(propertyEditor);
+            }
+        }
+        
+        return propertyEditor;
+    }
+
 }

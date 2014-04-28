@@ -726,6 +726,21 @@ public class DataDictionary {
     }
 
     /**
+     * Returns a prototype object from the dictionary by its spring bean name
+     * 
+     * @param beanName id or name for the bean definition
+     * @return Object object instance created
+     */
+    public Object getDictionaryPrototype(final String beanName) {
+        if (!ddBeans.isPrototype(beanName)) {
+            throw new IllegalArgumentException("Bean name " + beanName
+                    + " doesn't refer to a prototype bean in the data dictionary");
+        }
+        
+        return getDictionaryBean(beanName);
+    }
+
+    /**
      * Returns a property value for the bean with the given name from the dictionary.
      *
      * @param beanName id or name for the bean definition

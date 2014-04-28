@@ -33,7 +33,7 @@ public class MockDateTimeService implements DateTimeService {
     
     @Override
     public String toDateString(Date date) {
-        return null;
+        return date == null ? null : new SimpleDateFormat("MM/dd/yy").format(date);
     }
 
     @Override

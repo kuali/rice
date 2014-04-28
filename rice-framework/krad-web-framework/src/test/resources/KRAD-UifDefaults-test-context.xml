@@ -45,9 +45,11 @@
 
 	<bean id="parameterService" class="org.kuali.rice.krad.uif.util.MockParameterService" />
 
-  <bean id="dateTimeService" class="org.kuali.rice.krad.uif.util.MockDateTimeService" />
+	<bean id="dateTimeService" class="org.kuali.rice.krad.uif.util.MockDateTimeService" />
 
 	<bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
+	
+	<bean id="dataObjectAuthorizationService" class="org.kuali.rice.krad.uif.util.MockDataObjectAuthorizationService" />
 
 	<util:list id="uifDictionaryBeans">
 		<value>classpath:/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
@@ -61,9 +63,11 @@
 		<value>classpath:/org/kuali/rice/krad/datadictionary/NoteType.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/PessimisticLock.xml</value>
 		<value>classpath:/org/kuali/rice/krad/login/DummyLoginView.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/PropertyEditors.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifActionDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
+		<value>classpath:/org/kuali/rice/krad/uif/UifDialogDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifDocumentDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
 		<value>classpath:/org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>

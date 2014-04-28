@@ -65,7 +65,7 @@ import org.kuali.rice.krad.uif.view.View;
 public class DataDictionaryServiceImpl implements DataDictionaryService {
 
     private DataDictionary dataDictionary;
-    private Map<Class<?>, PropertyEditor> propertyEditorMap;
+    private Map<Class<?>, String> propertyEditorMap;
 
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
@@ -949,7 +949,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     @Override
-    public Map<Class<?>, PropertyEditor> getPropertyEditorMap() {
+    public Map<Class<?>, String> getPropertyEditorMap() {
         return propertyEditorMap;
     }
 
@@ -958,7 +958,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      *
      * @param propertyEditorMap mapping from property type to property editor
      */
-    public void setPropertyEditorMap(Map<Class<?>, PropertyEditor> propertyEditorMap) {
+    public void setPropertyEditorMap(Map<Class<?>, String> propertyEditorMap) {
         this.propertyEditorMap = propertyEditorMap;
     }
 

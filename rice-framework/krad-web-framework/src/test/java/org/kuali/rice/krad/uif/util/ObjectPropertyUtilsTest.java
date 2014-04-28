@@ -15,12 +15,35 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.junit.After;
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditorSupport;
+import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiPercent;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.CollectionGroupBase;
@@ -37,24 +60,17 @@ import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
+import org.kuali.rice.krad.web.bind.UifConfigurableWebBindingInitializer;
+import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
+import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
@@ -65,13 +81,13 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         String afoo();
     }
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         UifUnitTestUtils.establishMockConfig("ObjectPropertyUtilsTest");
     }
 
-    @After
-    public void teardown() throws Exception {
+    @AfterClass
+    public static void teardown() throws Exception {
         UifUnitTestUtils.tearDownMockConfig();
     }
 
@@ -81,7 +97,9 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
         public TestBean() {}
 
+        @RequestAccessible
         private String rwProp;
+        
         private TestBeanTwo complexProp;
 
         public String getRwProp() {
@@ -358,6 +376,59 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     @Test
+    public void testGetAsText() throws Throwable {
+        String dateStr = "01/03/2013";
+        Date expectedDate = new SimpleDateFormat("MM/dd/yy").parse(dateStr);
+        TestBean tb = new TestBean();
+        tb.setDateProp(expectedDate);
+        assertEquals("01/03/13", ObjectPropertyUtils.getPropertyValueAsText(tb, "dateProp"));
+    }
+
+    public static class TestForm extends UifFormBase {
+        
+        private static final long serialVersionUID = 6597388705374534394L;
+        private TestBean bean;
+
+        /**
+         * @return the bean
+         */
+        public TestBean getBean() {
+            return this.bean;
+        }
+
+        /**
+         * @param bean the bean to set
+         */
+        public void setBean(TestBean bean) {
+            this.bean = bean;
+        }
+        
+    }
+    
+    public static class FooEditor extends PropertyEditorSupport {
+
+        @Override
+        public String getAsText() {
+            return "foobar";
+        }
+        
+    }
+    
+    @Test
+    public void testCustomEditor() throws Throwable {
+        TestForm form = new TestForm();
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setParameter(UifParameters.VIEW_ID, "TestView");
+        request.setParameter("bean.next.rwProp", "not foobar");
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form);
+        new UifConfigurableWebBindingInitializer().initBinder(binder, new ServletWebRequest(request));
+        binder.bind(request);
+        UifControllerHelper.invokeViewLifecycle(request, form);
+        assertEquals("foobar", ObjectPropertyUtils.getPropertyValueAsText(form, "bean.next.rwProp"));
+    }
+
+    @Test
     public void testPathSet() {
         TestBean tb = new TestBean();
         ObjectPropertyUtils.setPropertyValue(tb, "rwProp", "bar");
@@ -513,52 +584,53 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         UifUnitTestUtils.establishMockConfig(ObjectPropertyUtilsTest.class.getSimpleName());
         UifUnitTestUtils.establishMockUserSession("testuser");
         try {
-        // Performance medium generates this property path:
-        // newCollectionLines['newCollectionLines_'mediumCollection1'_.subList']
+            // Performance medium generates this property path:
+            // newCollectionLines['newCollectionLines_'mediumCollection1'_.subList']
 
-        // Below recreates the stack trace that ensued due to poorly escaped quotes,
-        // and proves that the parser works around bad quoting in a manner similar to BeanWrapper 
+            // Below recreates the stack trace that ensued due to poorly escaped quotes,
+            // and proves that the parser works around bad quoting in a manner similar to BeanWrapper 
 
-        final CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
-        final CollectionTestForm form = new CollectionTestForm();
-        CollectionTestItem item = new CollectionTestItem();
-        item.setFoobar("barfoo");
-        ObjectPropertyUtils.setPropertyValue(form, "foo.baz['foo_bar_'badquotes'_.foobar']", item);
-        assertEquals("barfoo", form.foo.baz.get("foo_bar_'badquotes'_.foobar").foobar);
+            final CollectionGroupBuilder collectionGroupBuilder = new CollectionGroupBuilder();
+            final CollectionTestForm form = new CollectionTestForm();
+            CollectionTestItem item = new CollectionTestItem();
+            item.setFoobar("barfoo");
+            ObjectPropertyUtils.setPropertyValue(form, "foo.baz['foo_bar_'badquotes'_.foobar']", item);
+            assertEquals("barfoo", form.foo.baz.get("foo_bar_'badquotes'_.foobar").foobar);
 
-        final FormView view = new FormView();
-        view.setFormClass(CollectionTestForm.class);
-        view.setViewHelperService(new ViewHelperServiceImpl());
-        view.setPresentationController(new ViewPresentationControllerBase());
-        view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
+            final FormView view = new FormView();
+            view.setFormClass(CollectionTestForm.class);
+            view.setViewHelperService(new ViewHelperServiceImpl());
+            view.setPresentationController(new ViewPresentationControllerBase());
+            view.setAuthorizer(UifUnitTestUtils.getAllowMostViewAuthorizer());
 
-        final CollectionGroup collectionGroup = new CollectionGroupBase();
-        collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
-        collectionGroup.setAddLinePropertyName("addLineFoo");
+            final CollectionGroup collectionGroup = new CollectionGroupBase();
+            collectionGroup.setCollectionObjectClass(CollectionTestItem.class);
+            collectionGroup.setAddLinePropertyName("addLineFoo");
 
-        StackedLayoutManager layoutManager = new StackedLayoutManagerBase();
-        Group lineGroupPrototype = new GroupBase();
-        layoutManager.setLineGroupPrototype(lineGroupPrototype);
-        collectionGroup.setLayoutManager(layoutManager);
+            StackedLayoutManager layoutManager = new StackedLayoutManagerBase();
+            Group lineGroupPrototype = new GroupBase();
+            layoutManager.setLineGroupPrototype(lineGroupPrototype);
+            collectionGroup.setLayoutManager(layoutManager);
 
-        BindingInfo addLineBindingInfo = new BindingInfo();
-        addLineBindingInfo.setBindingPath("foo.baz['foo_bar_'badquotes'_.foobar']");
-        collectionGroup.setAddLineBindingInfo(addLineBindingInfo);
+            BindingInfo addLineBindingInfo = new BindingInfo();
+            addLineBindingInfo.setBindingPath("foo.baz['foo_bar_'badquotes'_.foobar']");
+            collectionGroup.setAddLineBindingInfo(addLineBindingInfo);
 
-        BindingInfo collectionBindingInfo = new BindingInfo();
-        collectionBindingInfo.setBindingPath("foo.bar");
-        collectionGroup.setBindingInfo(collectionBindingInfo);
+            BindingInfo collectionBindingInfo = new BindingInfo();
+            collectionBindingInfo.setBindingPath("foo.bar");
+            collectionGroup.setBindingInfo(collectionBindingInfo);
 
-        ViewLifecycle.encapsulateLifecycle(view, form, null, new Runnable() {
-            @Override
-            public void run() {
-                collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
-            }});
-    } finally {
-        GlobalVariables.setUserSession(null);
-        GlobalVariables.clear();
-        GlobalResourceLoader.stop();
-    }
+            ViewLifecycle.encapsulateLifecycle(view, form, null, new Runnable() {
+                @Override
+                public void run() {
+                    collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
+                }
+            });
+        } finally {
+            GlobalVariables.setUserSession(null);
+            GlobalVariables.clear();
+            GlobalResourceLoader.stop();
+        }
     }
 
     @Test
@@ -571,7 +643,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     @Test
     public void testClassNavigation() {
         assertEquals(String.class, ObjectPropertyUtils.getPropertyType(TestBean.class, "complexProp.fooProp"));
-        
+
         try {
             // valid first reference, invalid second reference
             assertEquals(null, ObjectPropertyUtils.getPropertyType(TestBean.class, "complexProp.foobar"));
@@ -580,7 +652,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
             // IAE is not ok - KULRICE-10677 is this ok?
             throw e;
         }
-        
+
         try {
             // invalid single reference
             assertEquals(null, ObjectPropertyUtils.getPropertyType(TestBean.class, "foo"));
@@ -697,12 +769,15 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
     }
 
     /**
-     * Verifies (at least when run on Linux in JDK6) our fix for the JDK6 Introspector bug/shortcoming WRT covariant
-     * return types that results in a wider getter method being preferred over a more specific implementation getter
-     * method.
-     *
-     * <p>This makes the type reported by Introspector for read methods depending on the order of Methods depend on the
-     * order that they are returned by reflection on a class, which has been demonstrated to vary between platforms.</p>
+     * Verifies (at least when run on Linux in JDK6) our fix for the JDK6 Introspector
+     * bug/shortcoming WRT covariant return types that results in a wider getter method being
+     * preferred over a more specific implementation getter method.
+     * 
+     * <p>
+     * This makes the type reported by Introspector for read methods depending on the order of
+     * Methods depend on the order that they are returned by reflection on a class, which has been
+     * demonstrated to vary between platforms.
+     * </p>
      */
     @Test
     public void testGetterInInterfaceOrSuperHasWiderType() {

@@ -76,7 +76,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
      *
      * @param propertyName name of the property to find field and editor for
      */
-    protected void registerEditorFromView(String propertyName) {
+    private void registerEditorFromView(String propertyName) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
         }
@@ -91,46 +91,22 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
-        PropertyEditor propertyEditor = null;
-        boolean requiresEncryption = false;
-
-        if ((viewPostMetadata.getFieldPropertyEditors() != null) && viewPostMetadata.getFieldPropertyEditors()
-                .containsKey(propertyName)) {
-            propertyEditor = viewPostMetadata.getFieldPropertyEditors().get(propertyName);
-        } else if ((viewPostMetadata.getSecureFieldPropertyEditors() != null) && viewPostMetadata
-                .getSecureFieldPropertyEditors().containsKey(propertyName)) {
-            propertyEditor = viewPostMetadata.getSecureFieldPropertyEditors().get(propertyName);
-            requiresEncryption = true;
-        }
-
+        PropertyEditor propertyEditor = viewPostMetadata.getFieldEditor(propertyName);
         if (propertyEditor != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Registering custom editor for property path '"
-                        + propertyName
-                        + "' and property editor class '"
-                        + propertyEditor.getClass().getName()
-                        + "'");
-            }
-
-            if (requiresEncryption) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Enabling encryption for custom editor '" + propertyName +
-                            "' and property editor class '" + propertyEditor.getClass().getName() + "'");
-                }
-                this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(propertyEditor));
-            } else {
-                this.registerCustomEditor(null, propertyName, propertyEditor);
-            }
-        } else if (requiresEncryption) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No custom formatter for property path '"
-                        + propertyName
-                        + "' but property does require encryption");
-            }
-
-            this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(
-                    findEditorForPropertyName(propertyName)));
+            registerCustomEditor(null, propertyName, propertyEditor);
         }
+        
+        // TODO: Confirm that this else was not have been reachable, and remove
+//        } else if (requiresEncryption) {
+//            if (LOG.isDebugEnabled()) {
+//                LOG.debug("No custom formatter for property path '"
+//                        + propertyName
+//                        + "' but property does require encryption");
+//            }
+//
+//            this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(
+//                    findEditorForPropertyName(propertyName)));
+//        }
 
         processedProperties.add(propertyName);
     }

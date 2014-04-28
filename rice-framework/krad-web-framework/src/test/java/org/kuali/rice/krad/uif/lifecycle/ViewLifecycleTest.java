@@ -22,12 +22,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -55,7 +54,6 @@ import org.kuali.rice.krad.web.login.DummyLoginForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -104,7 +102,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     @Test
     public void testSanity() throws Throwable {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         DummyLoginForm loginForm = new DummyLoginForm();
         request.setParameter(UifParameters.VIEW_ID, "DummyLoginView");
         new UifServletRequestDataBinder(loginForm).bind(request);
@@ -115,8 +112,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         assertEquals("Rice-UserName",
                 ObjectPropertyUtils.getPropertyValue(dummyLogin,
                         "currentPage.items[0].items[1].items[1].items[1].items[3].id"));
-
-//        ViewCleaner.cleanView(dummyLogin);
     }
 
     private UifFormBase testFormView(String viewName, String initialStateId) throws Throwable {
@@ -129,13 +124,11 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
             form = (UifFormBase) view.getFormClass().newInstance();
         }
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         request.setParameter(UifParameters.VIEW_ID, viewName);
         new UifServletRequestDataBinder(form).bind(request);
         UifControllerHelper.invokeViewLifecycle(request, form);
         view = form.getView();
         assertEquals(UifConstants.ViewStatus.RENDERED, view.getViewStatus());
-//        ViewCleaner.cleanView(view);
         return form;
     }
 
@@ -283,7 +276,6 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         request.setParameter("bSortable_9", "true");
         request.setParameter("bSortable_10", "false");
 
-        HttpServletResponse response = new MockHttpServletResponse();
         ViewLifecycle.encapsulateLifecycle(view, form, viewPostMetadata,
                 viewPostMetadata.getComponentPostMetadata(table.getId()), request, new Runnable() {
                     @Override

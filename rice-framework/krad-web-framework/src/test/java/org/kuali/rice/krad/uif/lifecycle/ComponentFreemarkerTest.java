@@ -113,14 +113,13 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
         visit.setAccessible(true);
         visit.invoke(env, macro, args, null, null, null);
 
-        assertEquals("<span id=\"_span\" class=\"uif-message\"   >\r\n" +
+        assertEquals("<span id=\"_span\" class=\"uif-message\"     >\r\n" +
                 "foobar  </span>", out.toString().trim());
     }
 
     @Test
     public void testMessageNoReflection() throws Throwable {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
         View view = mock(View.class);
         ViewLifecycle.encapsulateLifecycle(view, new Object(), request, new Runnable() {
             @Override
@@ -129,7 +128,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 msg.setMessageText("foobar");
                 msg.setId("_naps");
                 msg.setWrapperTag("pans");
-//                ViewLifecycle.getRenderingContext().importTemplate(msg.getTemplate());
+
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
                 RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, "", null);
@@ -137,7 +136,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getProcessor().performPhase(renderPhase);
 
                 assertTrue(msg.isSelfRendered());
-                assertEquals("<pans id=\"_naps\" class=\"uif-message\"   >\r\n" +
+                assertEquals("<pans id=\"_naps\" class=\"uif-message\"     >\r\n" +
                         "foobar  </pans>", msg.getRenderedHtmlOutput().trim());
             }
         });

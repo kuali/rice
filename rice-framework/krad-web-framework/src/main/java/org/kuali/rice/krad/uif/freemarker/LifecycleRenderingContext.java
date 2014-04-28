@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -41,6 +40,7 @@ import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 
@@ -92,7 +92,7 @@ public class LifecycleRenderingContext {
      * @param request The active servlet request.
      * @param rawresponse The active servlet response.
      */
-    public LifecycleRenderingContext(Object model, HttpServletRequest request, HttpServletResponse rawresponse) {
+    public LifecycleRenderingContext(Object model, HttpServletRequest request) {
         try {
             ProcessLogger.countBegin("render");
             Map<String, Object> modelAttrs = new HashMap<String, Object>();
@@ -120,7 +120,7 @@ public class LifecycleRenderingContext {
                     .getServletContextHashModel();
             TaglibFactory taglibFactory = FreeMarkerInlineRenderBootstrap.getTaglibFactory();
 
-            Response response = new Response(rawresponse);
+            Response response = new Response(new MockHttpServletResponse());
             AllHttpScopesHashModel global =
                     new AllHttpScopesHashModel(objectWrapper, servletContext, request);
             global.put(FreemarkerServlet.KEY_JSP_TAGLIBS, taglibFactory);

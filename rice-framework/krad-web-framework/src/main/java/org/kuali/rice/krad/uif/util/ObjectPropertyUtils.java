@@ -44,11 +44,14 @@ import java.util.WeakHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.beans.PropertyEditorRegistrySupport;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -78,16 +81,6 @@ public final class ObjectPropertyUtils {
             .synchronizedMap(new WeakHashMap<Class<?>, ObjectPropertyMetadata>(2048));
 
     /**
-     * Property editor registry to use for converting string values to objects when setting properties.
-     */
-    private static final PropertyEditorRegistry PROPERTY_EDITOR_REGISTRY = new PropertyEditorRegistrySupport();
-
-    /**
-     * Initialization state for {@link #PROPERTY_EDITOR_REGISTRY}.
-     */
-    private static boolean globalPropertyEditorRegistryInitialized;
-
-    /**
      * Get a mapping of property descriptors by property name for a bean class.
      * 
      * @param beanClass The bean class.
@@ -96,7 +89,7 @@ public final class ObjectPropertyUtils {
     public static Map<String, PropertyDescriptor> getPropertyDescriptors(Class<?> beanClass) {
         return getMetadata(beanClass).propertyDescriptors;
     }
-
+    
     /**
      * Get a property descriptor from a class by property name.
      * 
@@ -124,16 +117,19 @@ public final class ObjectPropertyUtils {
      * @param registry property editor registry
      */
     public static void registerPropertyEditors(PropertyEditorRegistry registry) {
-        Map<Class<?>, PropertyEditor> propertyEditorMap =
-                KRADServiceLocatorWeb.getDataDictionaryService().getPropertyEditorMap();
+        DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        Map<Class<?>, String> propertyEditorMap = dataDictionaryService.getPropertyEditorMap();
 
         if (propertyEditorMap == null) {
             LOG.warn("No propertyEditorMap defined in data dictionary");
             return;
         }
 
-        for (Entry<Class<?>, PropertyEditor> propertyEditorEntry : propertyEditorMap.entrySet()) {
-            registry.registerCustomEditor(propertyEditorEntry.getKey(), propertyEditorEntry.getValue());
+        for (Entry<Class<?>, String> propertyEditorEntry : propertyEditorMap.entrySet()) {
+            
+            PropertyEditor editor = (PropertyEditor) dataDictionaryService.getDataDictionary().getDictionaryPrototype(
+                    propertyEditorEntry.getValue());
+            registry.registerCustomEditor(propertyEditorEntry.getKey(), editor);
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("registered " + propertyEditorEntry);
@@ -350,13 +346,28 @@ public final class ObjectPropertyUtils {
     }
 
     /**
-     * Get a property editor given a property type.
+     * Looks up a property value, then convert to text using a registered property editor.
      *
-     * @param propertyType The property type to look up an editor for.
-     * @param path The property path, if applicable.
-     * @return property editor
+     * @param bean bean instance to look up a property value for
+     * @param path property path relative to the bean
+     * @return The property value, converted to text using a registered property editor.
      */
-    public static PropertyEditor getPropertyEditor(Class<?> propertyType, String path) {
+    public static String getPropertyValueAsText(Object bean, String path) {
+        Object propertyValue = getPropertyValue(bean, path);
+        PropertyEditor editor = getPropertyEditor(bean, path);
+
+        if (editor == null) {
+            return propertyValue == null ? null : propertyValue.toString();
+        } else {
+            editor.setValue(propertyValue);
+            return editor.getAsText();
+        }
+    }
+    
+    /**
+     * Gets the property editor registry configured for the active request.
+     */
+    public static PropertyEditorRegistry getPropertyEditorRegistry() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
 
         PropertyEditorRegistry registry = null;
@@ -365,29 +376,110 @@ public final class ObjectPropertyUtils {
                     .getAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, RequestAttributes.SCOPE_REQUEST);
         }
 
-        if (registry == null) {
-            try {
-                synchronized (PROPERTY_EDITOR_REGISTRY) {
-                    if (!globalPropertyEditorRegistryInitialized) {
-                        registerPropertyEditors(PROPERTY_EDITOR_REGISTRY);
-                        globalPropertyEditorRegistryInitialized = true;
-                    }
+        return registry;
+    }
+
+    /**
+     * Convert to a primitive type if available.
+     * 
+     * @param type The type to convert.
+     * @return A primitive type, if available, that corresponds to the type.
+     */
+    public static Class<?> getPrimitiveType(Class<?> type) {
+        if (Byte.class.equals(type)) {
+            return Byte.TYPE;
+
+        } else if (Short.class.equals(type)) {
+            return Short.TYPE;
+
+        } else if (Integer.class.equals(type)) {
+            return Integer.TYPE;
+
+        } else if (Long.class.equals(type)) {
+            return Long.TYPE;
+
+        } else if (Boolean.class.equals(type)) {
+            return Boolean.TYPE;
+
+        } else if (Float.class.equals(type)) {
+            return Float.TYPE;
+
+        } else if (Double.class.equals(type)) {
+            return Double.TYPE;
+        }
+
+        return type;
+    }
+
+    /**
+     * Gets a property editor given a specific bean and property path.
+     * 
+     * @param bean The bean instance.
+     * @param path The property path.
+     * @return property editor
+     */
+    public static PropertyEditor getPropertyEditor(Object bean, String path) {
+        Class<?> propertyType = getPrimitiveType(getPropertyType(bean, path));
+        
+        PropertyEditor editor = null;
+
+        PropertyEditorRegistry registry = getPropertyEditorRegistry();
+        if (registry != null) {
+            editor = registry.findCustomEditor(propertyType, path);
+            
+            if (editor != null) {
+                if (editor != registry.findCustomEditor(propertyType, null)) {
+                    return editor;
                 }
+            }
+            
+            if (registry instanceof BeanWrapper
+                    && bean == ((BeanWrapper) registry).getWrappedInstance()
+                    && (bean instanceof ViewModel)) {
+                
+                ViewModel viewModel = (ViewModel) bean;
+                ViewPostMetadata viewPostMetadata = viewModel.getViewPostMetadata();
+                PropertyEditor editorFromView = viewPostMetadata.getFieldEditor(path);
 
-                registry = PROPERTY_EDITOR_REGISTRY;
-
-            } catch (Throwable e) {
-                LOG.warn("Error initializing global property editor registry", e);
+                if (editorFromView != null) {
+                    registry.registerCustomEditor(propertyType, path, editorFromView);
+                    editor = registry.findCustomEditor(propertyType, path);
+                }
             }
         }
 
+        if (editor != null) {
+            return editor;
+        }
+        
+        return getPropertyEditor(propertyType);
+    }
+    
+    /**
+     * Get a property editor given a property type.
+     *
+     * @param propertyType The property type to look up an editor for.
+     * @param path The property path, if applicable.
+     * @return property editor
+     */
+    public static PropertyEditor getPropertyEditor(Class<?> propertyType) {
+        PropertyEditorRegistry registry = getPropertyEditorRegistry();
         PropertyEditor editor = null;
-
+        
         if (registry != null) {
-            editor = registry.findCustomEditor(propertyType, path);
+            editor = registry.findCustomEditor(propertyType, null);
+        } else {
+            
+            DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+            Map<Class<?>, String> editorMap = dataDictionaryService.getPropertyEditorMap();
+            String editorPrototypeName = editorMap == null ? null : editorMap.get(propertyType);
+            
+            if (editorPrototypeName != null) {
+                editor = (PropertyEditor) dataDictionaryService.getDataDictionary().getDictionaryPrototype(editorPrototypeName);
+            }
         }
 
-        if (editor == null) {
+        if (editor == null && propertyType != null) {
             // Fall back to default beans lookup
             editor = PropertyEditorManager.findEditor(propertyType);
         }

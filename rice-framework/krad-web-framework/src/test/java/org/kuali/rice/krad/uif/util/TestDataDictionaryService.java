@@ -64,7 +64,7 @@ public class TestDataDictionaryService implements DataDictionaryService {
     private static final Logger LOG = Logger.getLogger(TestDataDictionaryService.class);
     
     private DataDictionary dataDictionary;
-    private Map<Class<?>, PropertyEditor> propertyEditorMap;
+    private Map<Class<?>, String> propertyEditorMap;
 
     /**
      * @param dataDictionary the dataDictionary to set
@@ -989,7 +989,7 @@ public class TestDataDictionaryService implements DataDictionaryService {
     }
 
     @Override
-    public Map<Class<?>, PropertyEditor> getPropertyEditorMap() {
+    public Map<Class<?>, String> getPropertyEditorMap() {
         return propertyEditorMap;
     }
 
@@ -998,7 +998,7 @@ public class TestDataDictionaryService implements DataDictionaryService {
      *
      * @param propertyEditorMap mapping from property type to property editor
      */
-    public void setPropertyEditorMap(Map<Class<?>, PropertyEditor> propertyEditorMap) {
+    public void setPropertyEditorMap(Map<Class<?>, String> propertyEditorMap) {
         this.propertyEditorMap = propertyEditorMap;
     }
 }

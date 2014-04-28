@@ -1,61 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright 2005-2014 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
+<!-- Copyright 2005-2014 The Kuali Foundation Licensed under the Educational 
+	Community License, Version 2.0 (the "License"); you may not use this file 
+	except in compliance with the License. You may obtain a copy of the License 
+	at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
+	law or agreed to in writing, software distributed under the License is distributed 
+	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+	express or implied. See the License for the specific language governing permissions 
+	and limitations under the License. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <import resource="classpath:org/kuali/rice/krad/uif/PropertyEditors.xml"/>
+	<bean id="dataDictionaryService" class="org.kuali.rice.krad.uif.util.TestDataDictionaryService">
+		<property name="dataDictionary" ref="dataDictionary" />
+		<property name="propertyEditorMap">
+			<map>
+				<entry key="org.kuali.rice.core.api.util.type.KualiDecimal"
+					value="currencyEditor" />
+				<entry key="org.kuali.rice.core.api.util.type.KualiInteger"
+					value="intCurrencyEditor" />
+				<entry key="org.kuali.rice.core.api.util.type.KualiPercent"
+					value="percentEditor" />
+				<entry key="java.sql.Time" value="timeEditor" />
+				<entry key="java.sql.Date" value="dateEditor" />
+				<entry key="java.util.Date" value="dateEditor" />
+				<entry key="java.sql.Timestamp" value="timestampEditor" />
+				<entry key="boolean" value="booleanEditor" />
+				<entry key="java.lang.Boolean" value="booleanEditor" />
+				<entry key="java.math.BigDecimal" value="decimalEditor" />
+				<entry key="org.kuali.rice.core.api.util.type.AbstractKualiDecimal"
+					value="decimalEditor" />
+				<entry key="java.lang.String" value="stringEditor" />
+				<entry key="[Ljava.lang.String;" value="stringArrayEditor" />
+				<entry key="[B" value="byteArrayEditor" />
+			</map>
+		</property>
+	</bean>
 
-  <bean id="dataDictionaryService" class="org.kuali.rice.krad.uif.util.TestDataDictionaryService">
-    <property name="dataDictionary" ref="dataDictionary" />
-    <property name="propertyEditorMap">
-      <map>
-        <entry key="org.kuali.rice.core.api.util.type.KualiDecimal" value-ref="currencyEditor" />
-        <entry key="org.kuali.rice.core.api.util.type.KualiInteger" value-ref="intCurrencyEditor" />
-        <entry key="org.kuali.rice.core.api.util.type.KualiPercent" value-ref="percentEditor" />
-        <entry key="java.sql.Time" value-ref="timeEditor" />
-        <entry key="java.sql.Date" value-ref="dateEditor" />
-        <entry key="java.util.Date" value-ref="dateEditor" />
-        <entry key="java.sql.Timestamp" value-ref="timestampEditor" />
-        <entry key="boolean" value-ref="booleanEditor" />
-        <entry key="java.lang.Boolean" value-ref="booleanEditor" />
-        <entry key="java.math.BigDecimal" value-ref="decimalEditor" />
-        <entry key="org.kuali.rice.core.api.util.type.AbstractKualiDecimal" value-ref="decimalEditor" />
-        <entry key="java.lang.String" value-ref="stringEditor" />
-        <entry key="[Ljava.lang.String;" value-ref="stringArrayEditor" />
-        <entry key="[B" value-ref="byteArrayEditor" />
-      </map>
-    </property>
-  </bean>
+	<bean id="viewService" class="org.kuali.rice.krad.uif.util.TestViewService">
+		<property name="dataDictionary" ref="dataDictionary" />
+	</bean>
 
-  <bean name="dataDictionary" class="org.kuali.rice.krad.datadictionary.DataDictionary">
-    <property name="moduleLoadOrder">
-      <list />
-    </property>
-    <property name="moduleDictionaryFiles">
-      <map />
-    </property>
-  </bean>
+	<bean id="uifDefaultingService"
+		class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
+		<property name="dataDictionaryService" ref="dataDictionaryService" />
+	</bean>
+
+	<bean id="testAttributeQueryService"
+		class="org.kuali.rice.krad.demo.uif.library.TestAttributeQueryServiceImpl" />
+
+	<bean id="dataObjectAuthorizationService"
+		class="org.kuali.rice.krad.service.TestDataObjectAuthorizationService" />
+
+	<bean id="kualiModuleService" class="org.kuali.rice.krad.uif.util.MockKualiModuleService">
+		<property name="resourceBundleNames">
+			<map />
+		</property>
+	</bean>
+
+	<bean name="dataDictionary" class="org.kuali.rice.krad.datadictionary.DataDictionary">
+		<property name="moduleLoadOrder">
+			<list>
+	 			<value>kr</value>
+				<value>test</value>
+			</list>
+		</property>
+		<property name="moduleDictionaryFiles">
+			<map>
+	 			<entry key="kr">
+	 				<bean class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+	 					<property name="serviceName" value="uifDictionaryBeans" />
+	 				</bean>
+	 			</entry>
+				<entry key="test">
+					<list>
+						<value>classpath:/org/kuali/rice/krad/demo/uif/test/TestView.xml</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean>
 
 </beans>

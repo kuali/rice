@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.beans.PropertyEditor;
-import java.beans.PropertyEditorManager;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -103,6 +102,8 @@ public class ObjectPropertyReference {
             // due to object reference parsing.
             if (next == null) {
                 ObjectPropertyReference resolved = new ObjectPropertyReference();
+                resolved.rootBean = current.bean;
+                resolved.rootPath = current.rootPath;
                 resolved.bean = current.bean;
                 resolved.beanClass = current.beanClass;
                 resolved.beanType = current.beanType;
@@ -337,13 +338,16 @@ public class ObjectPropertyReference {
             // methods could potentially call this method recursively.
             ObjectPropertyReference reference = new ObjectPropertyReference();
             reference.beanClass = beanClass;
+            reference.rootPath = propertyPath;
             if (bean instanceof Copyable) {
                 reference.bean = ((Copyable) bean).unwrap();
+                reference.rootBean = reference.bean;
                 if (!(beanClass.isInstance(reference.bean))) {
                     reference.beanClass = reference.bean.getClass();
                 }
             } else {
                 reference.bean = bean;
+                reference.rootBean = bean;
             }
 
             ObjectPropertyReference resolved = (ObjectPropertyReference) ObjectPathExpressionParser
@@ -393,42 +397,17 @@ public class ObjectPropertyReference {
         } else {
             reference.bean = bean;
         }
+        reference.rootBean = reference.bean;
+        reference.rootPath = propertyPath;
         reference.beanType = reference.beanClass;
         reference.name = propertyPath;
         return reference;
     }
 
     /**
-     * Convert to a primitive type if available.
-     * 
-     * @param type The type to convert.
-     * @return A primitive type, if available, that corresponds to the type.
+     * The root bean, may be null for traversing only class data.
      */
-    private static Class<?> getPrimitiveType(Class<?> type) {
-        if (Byte.class.equals(type)) {
-            return Byte.TYPE;
-
-        } else if (Short.class.equals(type)) {
-            return Short.TYPE;
-
-        } else if (Integer.class.equals(type)) {
-            return Integer.TYPE;
-
-        } else if (Long.class.equals(type)) {
-            return Long.TYPE;
-
-        } else if (Boolean.class.equals(type)) {
-            return Boolean.TYPE;
-
-        } else if (Float.class.equals(type)) {
-            return Float.TYPE;
-
-        } else if (Double.class.equals(type)) {
-            return Double.TYPE;
-        }
-
-        return type;
-    }
+    private Object rootBean;
 
     /**
      * The bean, may be null for traversing only class data.
@@ -456,6 +435,11 @@ public class ObjectPropertyReference {
     private String parentPath;
 
     /**
+     * The root property path.
+     */
+    private String rootPath;
+
+    /**
      * Internal private constructor.
      */
     private ObjectPropertyReference() {}
@@ -480,9 +464,7 @@ public class ObjectPropertyReference {
 
         } else {
 
-            Class<?> rawType = getPrimitiveType(propertyType);
-            PropertyEditor editor = ObjectPropertyUtils.getPropertyEditor(getPrimitiveType(propertyType),
-                    parentPath + '.' + name);
+            PropertyEditor editor = ObjectPropertyUtils.getPropertyEditor(rootBean, rootPath);
             if (editor == null) {
                 throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
                         + "' to " + propertyType);
@@ -523,9 +505,8 @@ public class ObjectPropertyReference {
 
         } else {
 
-            // TODO: Determine if a different PropertyEditor registry exists for KRAD
-            PropertyEditor editor = PropertyEditorManager
-                    .findEditor(getPrimitiveType(propertyValue.getClass()));
+            PropertyEditor editor = ObjectPropertyUtils
+                    .getPropertyEditor(ObjectPropertyUtils.getPrimitiveType(propertyValue.getClass()));
             if (editor == null) {
                 throw new IllegalArgumentException("No property editor available for converting '" + propertyValue
                         + "' from " + propertyValue.getClass());

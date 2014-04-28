@@ -40,8 +40,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
  *
+ * <p>
+ * Common code used by both the RuleBaseValuesLookupableHelperServiceImpl and the
+ * RuleDelegationLookupableHelperServiceImpl
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -61,52 +63,56 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
     protected static final String INVALID_PERSON_ERROR = "The Person Reviewer is not valid";
 
     protected boolean checkForAdditionalFields(Map<String, String> fieldValues, String ruleTemplateNameParam) {
-
         if (StringUtils.isNotBlank(ruleTemplateNameParam)) {
             rows = new ArrayList<Row>();
             RuleTemplate ruleTemplate = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateNameParam);
             for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
                 if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
                     continue;
-                }
-                // run through the attributes fields once to populate field values we have to do this
-                // to allow rows dependent on another row value to populate correctly in the loop below
-                WorkflowRuleAttributeRows workflowRuleAttributeRows =
-                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
-                for (Row row : workflowRuleAttributeRows.getRows()) {
-                    List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
-                        Field field = (Field) iterator2.next();
-                        if (fieldValues.get(field.getPropertyName()) != null) {
-                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
-                        }
-                        fields.add(field);
-                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-                    }
-                }
-                // now run through a second time with our shiny new field values
-                // ...by the way, just trying to preserve behavior from Rice 1.0.x here...generally speaking, this stuff is crazy!!!
-                workflowRuleAttributeRows =
-                        KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
-                for (Row row : workflowRuleAttributeRows.getRows()) {
-                    List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
-                        Field field = iterator2.next();
-                        if (fieldValues.get(field.getPropertyName()) != null) {
-                            field.setPropertyValue(fieldValues.get(field.getPropertyName()));
-                        }
-                        fields.add(field);
-                        fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-                    }
-                    row.setFields(fields);
-                    rows.add(row);
 
                 }
+
+                // run through the attributes fields once to populate field values we have to do this
+                // to allow rows dependent on another row value to populate correctly in the loop below
+                populateFieldsHelperMethod(fieldValues, ruleTemplateAttribute, false);
+
+                // now run through a second time with our shiny new field values
+                // ...by the way, just trying to preserve behavior from Rice 1.0.x here...generally speaking, this stuff is crazy!!!
+                populateFieldsHelperMethod(fieldValues, ruleTemplateAttribute, true);
+
             }
+
             return true;
+
         }
+
         rows.clear();
+
         return false;
+    }
+
+    private void populateFieldsHelperMethod(Map<String, String> fieldValues,
+            RuleTemplateAttribute ruleTemplateAttribute, boolean setAndAddValuesToRow) {
+
+        WorkflowRuleAttributeRows workflowRuleAttributeRows =
+                KEWServiceLocator.getWorkflowRuleAttributeMediator().getSearchRows(fieldValues, ruleTemplateAttribute);
+        for (Row row : workflowRuleAttributeRows.getRows()) {
+            List<Field> fields = new ArrayList<Field>();
+            for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext(); ) {
+                Field field = iterator2.next();
+                if (fieldValues.get(field.getPropertyName()) != null) {
+                    field.setPropertyValue(fieldValues.get(field.getPropertyName()));
+                }
+
+                fields.add(field);
+                fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+            }
+
+            if (setAndAddValuesToRow) {
+                row.setFields(fields);
+                rows.add(row);
+            }
+        }
     }
 
     @Override
@@ -116,10 +122,11 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
         }
         List<Row> returnRows = new ArrayList<Row>();
         returnRows.addAll(rows);
+
         return returnRows;
     }
 
-    public void clearRows() {
+    protected void clearRows() {
         rows.clear();
     }
 
@@ -172,8 +179,11 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
                 newColumn.setMaxLength(field.getMaxLength());
                 newColumn.setPropertyName(field.getPropertyName());
                 columns.add(newColumn);
+
             }
+
         }
+
         return columns;
     }
 

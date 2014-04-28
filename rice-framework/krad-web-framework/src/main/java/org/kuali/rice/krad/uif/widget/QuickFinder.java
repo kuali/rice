@@ -454,10 +454,12 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
                     UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD_TO_CALL, callbackMethodToCall );
         }
+
         if( callbackMethod != null ) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
                     UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD, callbackMethod );
         }
+
         if( callbackContext != null && !callbackContext.isEmpty() ) {
             ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
                     UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT, callbackContext );

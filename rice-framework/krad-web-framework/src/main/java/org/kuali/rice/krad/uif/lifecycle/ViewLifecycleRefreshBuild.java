@@ -125,6 +125,7 @@ public class ViewLifecycleRefreshBuild implements Runnable {
                 if( callbackMethod == null ) {
                     callbackMethod = new MethodInvokerConfig();
                 }
+
                 // get additional parameters to be passed to the callback method
                 Map<String, String> callbackContext = ( Map<String, String> ) form.getViewPostMetadata().
                         getComponentPostData( quickfinderId, UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT );
@@ -133,6 +134,7 @@ public class ViewLifecycleRefreshBuild implements Runnable {
                 if( ( callbackMethod.getTargetClass() == null ) && ( callbackMethod.getTargetObject() == null ) ) {
                     callbackMethod.setTargetObject( ViewLifecycle.getHelper() );
                 }
+
                 callbackMethod.setTargetMethod( callbackMethodToCall );
                 Object[] arguments = new Object[3];
                 arguments[0] = form;

@@ -169,19 +169,7 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
      */
     @BeanTagAttribute(name="constraintText")
     public String getConstraintText() {
-        if ( constraintText == null ) {
-            constraintText = deriveConstraintText();
-        }
         return constraintText;
-    }
-
-    protected String deriveConstraintText() {
-        if ( getDataObjectAttribute() != null ) {
-            if ( getDataObjectAttribute().getDataType().equals(DataType.DATE) ) {
-                return "mm/dd/yyyy";
-            }
-        }
-        return "";
     }
 
     /**

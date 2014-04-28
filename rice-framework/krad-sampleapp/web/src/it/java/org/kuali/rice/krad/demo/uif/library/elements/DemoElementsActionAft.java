@@ -47,6 +47,8 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertTrue(getTextByClassName("uif-instructionalMessage").contains(
                 "Action with action script"));
         assertElementPresentByLinkText("Action Link");
+        waitAndClickByLinkText("Action Link");
+        acceptAlertIfPresent();
     }
 
     protected void testActionPresubmit() throws Exception {
@@ -100,9 +102,12 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         waitForElementPresentByClassName("uif-headerText-span");
         assertTextPresent("Images");
         assertTextPresent("Action Field with images");
-
         findElement(By.partialLinkText("Action Link with left image")).findElement(By.className("leftActionImage"));
         findElement(By.partialLinkText("Action Link with right image")).findElement(By.className("rightActionImage"));
+        waitAndClickByLinkText("Action Link with left image");
+        acceptAlertIfPresent();
+        waitAndClickByLinkText("Action Link with right image");
+        acceptAlertIfPresent();
     }
 
     protected void testActionButton() throws Exception {
@@ -146,38 +151,38 @@ public class DemoElementsActionAft extends DemoLibraryBase {
     	waitAndClickByLinkText("Style Varieties");
     	
     	//Assertion of Large Buttons
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
     	
     	//Assertion of Small Buttons
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
     	
     	//Assertion of Mini Buttons
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix disabled' and @disabled]");
     	
     	//ICON Examples
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem pull-left clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix']/span[@class='icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-lg uif-action uif-boxLayoutVerticalItem pull-left clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem pull-left clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-sm uif-action uif-boxLayoutVerticalItem pull-left clearfix icon-ok']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary btn-xs uif-action uif-boxLayoutVerticalItem pull-left clearfix icon-ok']");
     }
 
     protected void testActionIcons() throws Exception {
-    	waitAndClickByXpath("//a[@href='#Demo-Action-Example6_tab' and contains(text(),'Icons')]");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix']/span[@class='icon-office']");
-    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem clearfix icon-office']");
+    	waitAndClickByXpath("//a[@href='#Demo-Action-Example6_tabPanel' and contains(text(),'Icons')]");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem pull-left clearfix']/span[@class='icon-office']");
+    	waitForElementPresentByXpath("//button[@class='btn btn-primary uif-action uif-boxLayoutVerticalItem pull-left clearfix icon-office']");
     }
     
     private void testAllActionTabs() throws Exception {

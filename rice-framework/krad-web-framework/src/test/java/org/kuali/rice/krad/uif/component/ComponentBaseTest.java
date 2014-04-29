@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
@@ -76,7 +77,7 @@ public class ComponentBaseTest {
         ViewLifecycle.encapsulateLifecycle(view, null, null, new Runnable(){
             @Override
             public void run() {
-                Component copy = component.copy();
+                Component copy = CopyUtils.copy(component);
                 copy.setDataAttributes(null);
                 assertEquals("simple attributes did not match", "", copy.getSimpleDataAttributes());
             }});

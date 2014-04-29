@@ -203,7 +203,7 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
         form.setView(null);
 
         final CollectionGroup table = (CollectionGroup) ((PageGroup) view.getItems().get(0)).getItems().get(1);
-        assertEquals("uek5db", table.getId());
+        assertEquals("u1c5ay4e", table.getId());
 
         final MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter("methodToCall", "tableJsonRetrieval");

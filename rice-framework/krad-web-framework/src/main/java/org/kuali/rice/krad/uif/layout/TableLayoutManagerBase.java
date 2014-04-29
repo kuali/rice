@@ -48,6 +48,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.collections.CollectionLayoutManagerBase;
 import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
+import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
@@ -58,10 +59,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.widget.Pager;
 import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**

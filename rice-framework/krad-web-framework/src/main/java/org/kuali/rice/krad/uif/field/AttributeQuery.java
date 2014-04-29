@@ -15,22 +15,20 @@
  */
 package org.kuali.rice.krad.uif.field;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
-import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
-import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
-import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
-import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.CloneUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
+import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 /**
  * Holds configuration for executing a dynamic query on an <code>InputField</code> to

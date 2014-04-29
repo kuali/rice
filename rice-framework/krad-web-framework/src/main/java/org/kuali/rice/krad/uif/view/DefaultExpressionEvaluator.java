@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -27,7 +36,7 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.springframework.expression.Expression;
@@ -35,15 +44,6 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Evaluates expression language statements using the Spring EL engine
@@ -472,7 +472,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         String expression = propertyExpressions.get(propertyName);
 
         // check whether expression should be evaluated or property should retain the expression
-        if (CloneUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
+        if (CopyUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
             // set expression as property value to be handled by the component
             ObjectPropertyUtils.setPropertyValue(expressionConfigurable, propertyName, expression);
             return;

@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krad.uif.component;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
-
-import java.io.Serializable;
-import java.lang.reflect.Method;
 
 /**
  * Extends <code>MethodInvoker</code> to add properties for specifying
@@ -149,29 +148,5 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
     public MethodInvokerConfig clone() throws CloneNotSupportedException {
         return (MethodInvokerConfig) super.clone();
     }
-
-    /**
-     * @see Copyable#copy()
-     * @see CopyUtils#copy(Copyable)
-     */
-    public final <T> T copy() {
-        return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
-    }
-
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    public void preventModification() {}
 
 }

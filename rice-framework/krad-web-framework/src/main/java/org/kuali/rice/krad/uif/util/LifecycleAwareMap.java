@@ -33,7 +33,7 @@ import org.kuali.rice.krad.datadictionary.Copyable;
  * @param <K> map key type
  * @param <V> map value type
  */
-public class LifecycleAwareMap<K, V> implements Map<K, V>, UifCloneable, Copyable, Serializable {
+public class LifecycleAwareMap<K, V> implements Map<K, V>, Copyable, Serializable {
     private static final long serialVersionUID = -2872079344892779899L;
 
     /**
@@ -155,40 +155,11 @@ public class LifecycleAwareMap<K, V> implements Map<K, V>, UifCloneable, Copyabl
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.Copyable#copy()
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T copy() {
-        try {
-            return (T) clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException("Unexpected error in clone()", e);
-        }
-    }
-
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
      * @see java.lang.Object#clone()
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
     }
 
 }

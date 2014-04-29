@@ -27,7 +27,6 @@ import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.HistoryFlow;
@@ -294,27 +293,4 @@ public class BreadcrumbOptions implements Serializable, Copyable {
         return (BreadcrumbOptions) super.clone();
     }
 
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
-     * @see Copyable#copy()
-     * @see org.kuali.rice.krad.uif.util.CopyUtils#copy(Copyable)
-     */
-    public final <T> T copy() {
-        return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
-    }
 }

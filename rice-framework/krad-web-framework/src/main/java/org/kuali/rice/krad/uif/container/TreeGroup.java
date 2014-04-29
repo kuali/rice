@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -334,7 +335,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         nodeCopy.setNodeType(node.getNodeType());
 
         if (node.getData() != null) {
-            nodeCopy.setData((Group) node.getData().copy());
+            nodeCopy.setData((Group) CopyUtils.copy(node.getData()));
         }
 
         if (node.getNodeLabel() != null) {

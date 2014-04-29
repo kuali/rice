@@ -28,14 +28,21 @@ import java.util.WeakHashMap;
 import org.kuali.rice.krad.datadictionary.Copyable;
 
 /**
- * TODO mark don't forget to fill this in. 
+ * Proxy invocation handler for delaying deep copy for framework objects that may not need to be
+ * fully traversed by each transaction.
+ * 
+ * <p>
+ * Proxied objects served by this handler will refer to the original source object until a
+ * potentially read-write method is invoked. Once such a method is invoked, then the original source
+ * is copied to a new object on the fly and the call is forwarded to the copy.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DelayedCopyableHandler implements InvocationHandler {
 
     private static final String COPY = "copy";
-    
+
     private final Copyable original;
     private Copyable copy;
 
@@ -44,9 +51,16 @@ public class DelayedCopyableHandler implements InvocationHandler {
     }
 
     /**
-     * This overridden method ...
+     * Intercept method calls, and copy the original source object as needed. The determination that
+     * a method is read-write is made based on the method name and/or return type as follows:
      * 
-     * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+     * <ul>
+     * <li>Methods starting with "get" or "is", are considered read-only</li>
+     * <li>Methods returning Copyable, List, Map, or an array, are considered read-write regardless
+     * of name</li>
+     * </ul>
+     * 
+     * {@inheritDoc}
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -59,12 +73,12 @@ public class DelayedCopyableHandler implements InvocationHandler {
                         && !Map.class.isAssignableFrom(returnType)
                         && !returnType.isArray()));
         ProcessLogger.ntrace("delay-" + (copy != null ? "dup" : atomic ? "atomic" : "copy") +
-                ":", ":"+methodName+":"+original.getClass().getSimpleName(), 1000);
-        
+                ":", ":" + methodName + ":" + original.getClass().getSimpleName(), 1000);
+
         if (copy == null && !atomic) {
-            copy = original.copy();
+            copy = CopyUtils.copy(original);
         }
-        
+
         try {
             return method.invoke(copy == null ? original : copy, args);
         } catch (InvocationTargetException e) {
@@ -76,9 +90,47 @@ public class DelayedCopyableHandler implements InvocationHandler {
         }
     }
 
+    /**
+     * Copy a source object if needed, and unwrap from the proxy.
+     * 
+     * @param source The object to unwrap.
+     * @return The non-proxied bean represented by source, copied if needed. When source is not
+     *         copyable, or not proxied, it is returned as-is.
+     */
+    static <T> T unwrap(T source) {
+        if (!(source instanceof Copyable)) {
+            return source;
+        }
+
+        Class<?> sourceClass = source.getClass();
+        if (!Proxy.isProxyClass(sourceClass)) {
+            return source;
+        }
+
+        InvocationHandler handler = Proxy.getInvocationHandler(source);
+        if (!(handler instanceof DelayedCopyableHandler)) {
+            return source;
+        }
+
+        DelayedCopyableHandler sourceHandler = (DelayedCopyableHandler) handler;
+        if (sourceHandler.copy == null) {
+            sourceHandler.copy = CopyUtils.copy(sourceHandler.original);
+        }
+        
+        @SuppressWarnings("unchecked")
+        T rv = (T) sourceHandler.copy;
+        return unwrap(rv);
+    }
+
+    /**
+     * Determins if a source object is a delayed copy proxy that hasn't been copied yet.
+     * 
+     * @param source The object to check.
+     * @return True if source is a delayed copy proxy instance, and hasn't been copied yet.
+     */
     public static boolean isPendingDelayedCopy(Copyable source) {
         Class<?> sourceClass = source.getClass();
-        
+
         // Unwrap proxied source objects from an existing delayed copy handler, if applicable
         if (Proxy.isProxyClass(sourceClass)) {
             InvocationHandler handler = Proxy.getInvocationHandler(source);
@@ -87,10 +139,10 @@ public class DelayedCopyableHandler implements InvocationHandler {
                 return sourceHandler.copy == null;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Get a proxy instance providing delayed copy behavior on a source component.
      * @param source The source object
@@ -98,7 +150,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
      */
     public static Copyable getDelayedCopy(Copyable source) {
         Class<?> sourceClass = source.getClass();
-        
+
         // Unwrap proxied source objects from an existing delayed copy handler, if applicable
         if (Proxy.isProxyClass(sourceClass)) {
             InvocationHandler handler = Proxy.getInvocationHandler(source);
@@ -132,7 +184,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
          */
         private ClassMetadata(Class<?> targetClass) {
             List<Class<?>> interfaceList = new ArrayList<Class<?>>();
-            
+
             Class<?> currentClass = targetClass;
             while (currentClass != Object.class && currentClass != null) {
                 for (Class<?> ifc : currentClass.getInterfaces()) {
@@ -142,7 +194,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
                 }
                 currentClass = currentClass.getSuperclass();
             }
-            
+
             // Seal index collections to prevent external modification.
             interfaces = interfaceList.toArray(new Class<?>[interfaceList.size()]);
         }

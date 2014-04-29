@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 
 /**
@@ -77,27 +76,11 @@ public abstract class DictionaryBeanBase implements DictionaryBean, Copyable {
     }
 
     /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
      * @see Copyable#copy()
      * @see CopyUtils#copy(Copyable)
      */
     public <T> T copy() {
         return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
     }
 
     @Override

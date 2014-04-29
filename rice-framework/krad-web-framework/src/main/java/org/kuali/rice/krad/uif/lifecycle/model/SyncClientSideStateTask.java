@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
-import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -68,7 +68,7 @@ public class SyncClientSideStateTask extends ViewLifecycleTaskBase<Component> {
 
         // if state was sent, match with fields on the component that are annotated to have client state
         if ((clientSideState != null) && (!clientSideState.isEmpty())) {
-            Map<String, Annotation> annotatedFields = CloneUtils.getFieldsWithAnnotation(component.getClass(),
+            Map<String, Annotation> annotatedFields = CopyUtils.getFieldsWithAnnotation(component.getClass(),
                     ClientSideState.class);
 
             for (Entry<String, Annotation> annotatedField : annotatedFields.entrySet()) {

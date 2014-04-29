@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.AfterClass;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,6 +49,7 @@ import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManagerBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -117,7 +117,6 @@ public class RichTableTest {
 
         layoutManager = spy(layoutManager);
         doReturn(items).when(layoutManager).getFirstRowFields();
-        doReturn(layoutManager).when(layoutManager).copy();
         doReturn(layoutManager).when(layoutManager).clone();
 
         group.setLayoutManager(layoutManager);
@@ -342,7 +341,7 @@ public class RichTableTest {
             @Override
             public void run() {
                 RichTable mutableRichTable = richTable.<RichTable> copy();
-                mutableRichTable.performFinalize(new UifFormBase(), group.<Group> copy());
+                mutableRichTable.performFinalize(new UifFormBase(), (Group) CopyUtils.copy(group));
                 assertEquals(optionsOnRichTable, mutableRichTable.getTemplateOptions().get(optionKey));
             }});
     }

@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
@@ -110,7 +111,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
             this.viewPath = parentViewPath + "." + path;
         }
 
-        this.element = (LifecycleElement) element.unwrap();
+        this.element = CopyUtils.unwrap(element);
         this.refreshPaths = refreshPaths;
         this.parent = parent;
         this.nextPhase = nextPhase;
@@ -152,40 +153,12 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 if (viewStatus != null &&
                         !viewStatus.equals(getStartViewStatus())) {
                     trace("dup " + getStartViewStatus() + " " + getEndViewStatus() + " " + viewStatus);
-                    // TODO: Consider a warning here instead of the "dup" trace, or short-circuit to
-                    // prevent duplicate processing of components.  Either way, this is not an illegal
-                    // state in that the lifecycle can most likely complete without further issue
-//                    ViewLifecycle.reportIllegalState("Component is not in the expected status " + getStartViewStatus() +
-//                            " at the start of this phase, found " + element.getClass() + " " + element.getId() + " " +
-//                            viewStatus + "\nThis phase: " + this);
                 }
 
                 processor.setActivePhase(this);
 
                 trace("path-update " + element.getViewPath());
                 
-                // TODO: this cannot be enforced currently due to help tooltip getting pushed to header
-//                if (ViewLifecycle.isStrict()) {
-//                    if (element == view) {
-//                        if (!StringUtils.isEmpty(viewPath)) {
-//                            ViewLifecycle.reportIllegalState("View path is not empty " + viewPath);
-//                        }
-//                    } else {
-//                        LifecycleElement referredElement = ObjectPropertyUtils.getPropertyValue(view, viewPath);
-//                        if (referredElement != null) {
-//                            referredElement = (LifecycleElement) referredElement.unwrap();
-//                            if (element != referredElement) {
-//                                ViewLifecycle.reportIllegalState(
-//                                        "View path " + viewPath + " refers to an element other than " +
-//                                                element.getClass() + " " + element.getId() + " " +
-//                                                element.getViewPath() + (referredElement == null ? "" :
-//                                                " " + referredElement.getClass() + " " + referredElement.getId() + " " +
-//                                                        referredElement.getViewPath()));
-//                            }
-//                        }
-//                    }
-//                }
-
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());
 
@@ -208,7 +181,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                     }
                 }
 
-                element.setViewStatus(this);
+                element.setViewStatus(getEndViewStatus());
                 processed = true;
 
             } finally {

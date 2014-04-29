@@ -24,7 +24,6 @@ import java.util.Map.Entry;
 import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
@@ -294,21 +293,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void setViewStatus(String status) {
-        if (!UifConstants.ViewStatus.CREATED.equals(status)) {
+        if (!UifConstants.ViewStatus.CREATED.equals(status) && !UifConstants.ViewStatus.CACHED.equals(status)) {
             checkMutable(true);
         }
 
         this.viewStatus = status;
-    }
-
-    /**
-     * Setter for the view status
-     *
-     * @param phase completed view lifecycle phase
-     */
-    @Override
-    public void setViewStatus(ViewLifecyclePhase phase) {
-        this.viewStatus = phase.getEndViewStatus();
     }
 
     /**
@@ -2462,26 +2451,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         return copy;
-    }
-
-    /**
-     * Set view status to {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED} to prevent modification.
-     *
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {
-        if (!UifConstants.ViewStatus.CREATED.equals(viewStatus) && !UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
-            ViewLifecycle.reportIllegalState("View status is "
-                    + viewStatus
-                    + " prior to caching "
-                    + getClass().getName()
-                    + " "
-                    + getId()
-                    + ", expected C or X");
-        }
-
-        viewStatus = UifConstants.ViewStatus.CACHED;
     }
 
     /**

@@ -61,7 +61,7 @@ public class ComponentUtils {
             return null;
         }
 
-        T copy = component.copy();
+        T copy = CopyUtils.copy(component);
 
         if (StringUtils.isNotBlank(idSuffix)) {
             updateIdsWithSuffixNested(copy, idSuffix);

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 
 /**
  * Object that is returned for Ajax attribute queries and exposed
@@ -126,27 +125,4 @@ public class AttributeQueryResult implements Serializable, Copyable {
         return (AttributeQueryResult) super.clone();
     }
 
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
-     * @see Copyable#copy()
-     * @see CopyUtils#copy(Copyable)
-     */
-    public final <T> T copy() {
-        return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
-    }
 }

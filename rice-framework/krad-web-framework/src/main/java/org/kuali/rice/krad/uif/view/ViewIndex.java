@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
@@ -250,7 +251,7 @@ public class ViewIndex implements Serializable {
                 if (indexEntry.getValue() instanceof View) {
                     LOG.warn("View reference at " + indexEntry);
                 } else {
-                    indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
+                    indexCopy.put(indexEntry.getKey(), (Component) CopyUtils.copy(indexEntry.getValue()));
                 }
             }
 
@@ -260,7 +261,7 @@ public class ViewIndex implements Serializable {
         if (this.dataFieldIndex != null) {
             Map<String, DataField> dataFieldIndexCopy = new HashMap<String, DataField>();
             for (Map.Entry<String, DataField> indexEntry : this.dataFieldIndex.entrySet()) {
-                dataFieldIndexCopy.put(indexEntry.getKey(), (DataField) indexEntry.getValue().copy());
+                dataFieldIndexCopy.put(indexEntry.getKey(), (DataField) CopyUtils.copy(indexEntry.getValue()));
             }
 
             viewIndexCopy.dataFieldIndex = dataFieldIndexCopy;
@@ -269,7 +270,7 @@ public class ViewIndex implements Serializable {
         if (this.collectionsIndex != null) {
             Map<String, CollectionGroup> collectionsIndexCopy = new HashMap<String, CollectionGroup>();
             for (Map.Entry<String, CollectionGroup> indexEntry : this.collectionsIndex.entrySet()) {
-                collectionsIndexCopy.put(indexEntry.getKey(), (CollectionGroup) indexEntry.getValue().copy());
+                collectionsIndexCopy.put(indexEntry.getKey(), (CollectionGroup) CopyUtils.copy(indexEntry.getValue()));
             }
 
             viewIndexCopy.collectionsIndex = collectionsIndexCopy;

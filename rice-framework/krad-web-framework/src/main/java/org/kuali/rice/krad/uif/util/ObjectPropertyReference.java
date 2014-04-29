@@ -117,7 +117,7 @@ public class ObjectPropertyReference {
             Class<?> beanClass = current.getPropertyType();
             Object bean = current.get();
             if (bean instanceof Copyable) {
-                bean = ((Copyable) bean).unwrap();
+                bean = CopyUtils.unwrap((Copyable) bean);
                 if (!beanClass.isInstance(bean)) {
                     beanClass = bean.getClass();
                 }
@@ -340,7 +340,7 @@ public class ObjectPropertyReference {
             reference.beanClass = beanClass;
             reference.rootPath = propertyPath;
             if (bean instanceof Copyable) {
-                reference.bean = ((Copyable) bean).unwrap();
+                reference.bean = CopyUtils.unwrap((Copyable) bean);
                 reference.rootBean = reference.bean;
                 if (!(beanClass.isInstance(reference.bean))) {
                     reference.beanClass = reference.bean.getClass();
@@ -390,7 +390,7 @@ public class ObjectPropertyReference {
         }
         reference.beanClass = beanClass;
         if (bean instanceof Copyable) {
-            reference.bean = ((Copyable) bean).unwrap();
+            reference.bean = CopyUtils.unwrap((Copyable) bean);
             if (!(beanClass.isInstance(reference.bean)) && reference.bean != null) {
                 reference.beanClass = reference.bean.getClass();
             }

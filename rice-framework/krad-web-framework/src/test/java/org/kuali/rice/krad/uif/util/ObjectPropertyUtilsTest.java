@@ -623,7 +623,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
             ViewLifecycle.encapsulateLifecycle(view, form, null, new Runnable() {
                 @Override
                 public void run() {
-                    collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
+                    collectionGroupBuilder.build(view, form, (CollectionGroup) CopyUtils.copy(collectionGroup));
                 }
             });
         } finally {
@@ -716,7 +716,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     // Holds an interface that is implemented by Integer
     public interface ComparableHolder {
-        Comparable getComparable();
+        Comparable<?> getComparable();
     }
 
     // Holds an abstract class that is extended by Integer

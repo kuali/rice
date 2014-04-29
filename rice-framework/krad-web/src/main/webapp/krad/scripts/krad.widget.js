@@ -380,57 +380,40 @@ function handleLightboxOpen(link, options, addAppParms, event) {
  */
 function createLightBoxPost(componentId, options, lookupReturnByScript) {
     jQuery(function () {
-        // get data that should be submitted when the action is selected
         var data = {};
-
         var submitData = jQuery("#" + componentId).data(kradVariables.SUBMIT_DATA);
         jQuery.extend(data, submitData);
 
         // Check if this is not called within a lightbox
         var renderedInLightBox = isCalledWithinLightbox();
         if (!renderedInLightBox) {
-            data['jumpToId'] = componentId;
-            data['ajaxRequest'] = 'true';
-            data['actionParameters[renderedInLightBox]'] = 'true';
-            data['actionParameters[flowKey]'] = 'start';
-            data['actionParameters[returnByScript]'] = '' + lookupReturnByScript;
-
-            if (top == self) {
+            if (top === self) {
                 data['actionParameters[returnTarget]'] = '_parent';
             } else {
                 data['actionParameters[returnTarget]'] = 'iframeportlet';
             }
 
-            var jsonViewState = getSerializedViewState();
-            if (jsonViewState) {
-                jQuery.extend(data, {clientViewState: jsonViewState});
+            var baseURI = this.documentURI;
+            if (baseURI.indexOf("?") > -1) {
+                baseURI = baseURI.substring(0, baseURI.indexOf("?"));
             }
 
-            // if refreshing the view on return from lookup need to clear dirty fields else
-            // a warning is given
-            if (!lookupReturnByScript) {
-                dirtyFormState.skipDirtyChecks = true;
-            }
+            var lookupUrl = baseURI.replace("kradsampleapp", "lookup?");
+            lookupUrl += "returnLocation=" + encodeURIComponent(baseURI);
+            lookupUrl += "&renderedInLightBox=true";
+            lookupUrl += "&returnByScript=" + lookupReturnByScript;
+            lookupUrl += "&dataObjectClassName=" + data['actionParameters[dataObjectClassName]'];
+            lookupUrl += "&methodToCall=start";
+            lookupUrl += "&quickfinderId=" + data['actionParameters[quickfinderId]'];
+            lookupUrl += "&conversionFields=" + data['actionParameters[conversionFields]'];
+            lookupUrl += "&flowKey=start";
+            lookupUrl += "&returnFormKey=" + jQuery("#formInfo").children("input[name='formKey']").val();
+            lookupUrl += "&returnTarget=" + data['actionParameters[returnTarget]'];
+            lookupUrl += "&multipleValuesSelect=" + data['actionParameters[multipleValuesSelect]'];
 
-            // Do the Ajax submit on the kualiForm form
-            jQuery("#kualiForm").ajaxSubmit({
-                data: data,
-                success: function (data) {
-                    // Perform cleanup when lightbox is closed
-                    // TODO: this stomps on the post form (clear out) so need to another
-                    // way to clear forms when the lightbox performs a post back
-                    // options['beforeClose'] = cleanupClosedLightboxForms;
+            options['href'] = lookupUrl.replace(/&amp;/g, '&');
 
-                    // get the lookup redirect URL from the response
-                    var lookupUrl = jQuery(data).text();
-
-                    // Add the returned URL to the FancyBox href setting
-                    options['href'] = lookupUrl.replace(/&amp;/g, '&');
-
-                    // Open the light box
-                    getContext().fancybox(options);
-                }
-            });
+            getContext().fancybox(options);
         } else {
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInLightBox]'] = 'true';

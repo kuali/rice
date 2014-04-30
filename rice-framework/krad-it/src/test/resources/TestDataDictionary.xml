@@ -89,6 +89,7 @@
             <value>classpath:org/kuali/rice/krad/uif/UifElementDefinitions.xml</value>
             <value>classpath:org/kuali/rice/krad/uif/UifInitiateDocumentInfoDefinitions.xml</value>
             <value>classpath:org/kuali/rice/krad/uif/UifMenuDefinitions.xml</value>
+            <value>classpath:org/kuali/rice/krad/uif/UifDialogDefinitions.xml</value>
           </list>
         </entry>
       </map>

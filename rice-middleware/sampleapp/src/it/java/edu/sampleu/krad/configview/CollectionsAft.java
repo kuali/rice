@@ -47,6 +47,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void navigate() throws Exception {
         waitAndClickKRAD();
+        jGrowl("Click Collections Configuration Test View link");
         waitAndClickByXpath(TEXT_COLLECTIONS_CONFIGURATION_TEST_VIEW_XPATH);
         switchToWindow(KUALI_COLLECTION_WINDOW_TITLE);
     }

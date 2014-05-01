@@ -427,10 +427,8 @@ public final class ObjectPropertyUtils {
         if (registry != null) {
             editor = registry.findCustomEditor(propertyType, path);
             
-            if (editor != null) {
-                if (editor != registry.findCustomEditor(propertyType, null)) {
-                    return editor;
-                }
+            if (editor != null && editor != registry.findCustomEditor(propertyType, null)) {
+                return editor;
             }
             
             if (registry instanceof BeanWrapper
@@ -439,7 +437,7 @@ public final class ObjectPropertyUtils {
                 
                 ViewModel viewModel = (ViewModel) bean;
                 ViewPostMetadata viewPostMetadata = viewModel.getViewPostMetadata();
-                PropertyEditor editorFromView = viewPostMetadata.getFieldEditor(path);
+                PropertyEditor editorFromView = viewPostMetadata == null ? null : viewPostMetadata.getFieldEditor(path);
 
                 if (editorFromView != null) {
                     registry.registerCustomEditor(propertyType, path, editorFromView);

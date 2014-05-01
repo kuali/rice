@@ -54,6 +54,7 @@ public class DemoClientResponsivenessComponentRefreshAft extends WebDriverLegacy
         assertIsVisibleByXpath("//input[@name='booleanField1']", "Is Visible");
         waitAndTypeByName("inputField1","asdf");
         waitAndClickByName("booleanField1");
+        waitForTextNotPresent("Loading...");
         assertTrue("Input field not empty assertion", "asdf".equals(waitAndGetAttributeByName("inputField1", "value")));
     }
 
@@ -66,6 +67,7 @@ public class DemoClientResponsivenessComponentRefreshAft extends WebDriverLegacy
         assertIsVisibleByXpath("//input[@name='booleanField2']", "Is Visible");
         waitAndTypeByName("inputField2","yada");
         waitAndClickByName("booleanField2");
+        waitForTextNotPresent("Loading...");
         assertFalse("Input field empty assertion", "yada".equals(waitAndGetAttributeByName("inputField2", "value")));
     }
 

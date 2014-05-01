@@ -22,7 +22,6 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -290,14 +289,6 @@ public class ActionTakenValue implements Serializable {
 
     public void setCurrentIndicator(Boolean currentIndicator) {
         this.currentIndicator = currentIndicator;
-    }
-
-    public Collection getRootActionRequests() {
-        return getActionRequestService().getRootRequests(getActionRequests());
-    }
-
-    private ActionRequestService getActionRequestService() {
-        return KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
 
     public String getActionDateString() {

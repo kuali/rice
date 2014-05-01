@@ -163,6 +163,9 @@ public class SqlBuilder {
 		String[] splitPropVal = StringUtils.split(propertyValue, SearchOperator.NOT.op());
 
 		int strLength = splitPropVal.length;
+        // if Not'ed empty criteria, ignore
+        if (strLength == 0) {
+            throw new IllegalArgumentException("Improper syntax of NOT operator in " + propertyName);}
 		// if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
 		if (strLength > 1) {
 			String expandedNot = SearchOperator.NOT + StringUtils.join(splitPropVal, SearchOperator.AND.op() + SearchOperator.NOT.op());
@@ -230,6 +233,9 @@ public class SqlBuilder {
 
 		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
+            if (rangeValues.length < 2)
+                throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
 			criteria.between(propertyName, parseDate(SQLUtils.cleanDate(rangeValues[0])), parseDate(cleanUpperBound(SQLUtils.cleanDate(rangeValues[1]))), propertyType);
 		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
 			criteria.gte(propertyName, parseDate(SQLUtils.cleanDate(propertyValue)), propertyType);
@@ -293,6 +299,9 @@ public class SqlBuilder {
 
 		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
+            if (rangeValues.length < 2)
+                throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
 			criteria.between(propertyName, stringToBigDecimal(rangeValues[0]), stringToBigDecimal(rangeValues[1]), propertyType);
 		} else if (propertyValue.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
 			criteria.gte(propertyName, stringToBigDecimal(propertyValue), propertyType);
@@ -311,6 +320,9 @@ public class SqlBuilder {
 
 		if (StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
+            if (rangeValues.length < 2)
+                throw new IllegalArgumentException("Improper syntax of BETWEEN operator in " + propertyName);
+
 			propertyName = this.getCaseAndLiteralPropertyName(propertyName, caseInsensitive);
 			String val1 = this.getCaseAndLiteralPropertyValue(rangeValues[0], caseInsensitive, allowWildcards);
 			String val2 = this.getCaseAndLiteralPropertyValue(rangeValues[1], caseInsensitive, allowWildcards);

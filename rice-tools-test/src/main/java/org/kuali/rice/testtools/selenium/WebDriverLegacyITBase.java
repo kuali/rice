@@ -27,6 +27,7 @@ import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.OutputType;
@@ -3675,6 +3676,14 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
                 "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
         blanketApproveTest(docId);
+    }
+
+    protected void typeEnter() {
+        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
+    }
+
+    protected void typeTab() {
+        driver.switchTo().activeElement().sendKeys(Keys.TAB);
     }
 
     protected void uncheck(By by) throws InterruptedException {

@@ -151,7 +151,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
 
 
     protected void unfocusElement() {
-        driver.switchTo().activeElement().sendKeys(Keys.TAB);
+        typeTab();
     }
 
     /**

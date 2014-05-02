@@ -257,7 +257,23 @@
     &lt;property name="allowNewOrCopy" value="true"/&gt;
     &lt;property name="allowsRecordDeletion" value="true"/&gt;    
   &lt;/bean>
-      </programlisting>      
+      </programlisting>
+      <para> An optional property that can be set on the MaintenanceDocumentEntry bean is clearValueOnCopyPropertyNames.
+        The list of property names specified will not be copied on the new record when a maintenance copy action is
+        performed.  The fields will be populated with the default value if applicable,
+        otherwise they will be blank. </para>
+      <programlisting linenumbering="numbered">
+  &lt;bean id="ExampleDataObjectMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    ...
+    &lt;property name="clearValueOnCopyPropertyNames"&gt;
+      &lt;list&gt;
+        &lt;value&gt;testField1&lt;/value&gt;
+        &lt;value&gt;testObject1&lt;/value&gt;
+        &lt;value&gt;testObject2.testField2&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean>
+      </programlisting>
     </section>
     <section>
       <title>Maintenance View</title>
@@ -334,16 +350,47 @@
           primary keys of the data object.
         </para>
         <programlisting linenumbering = "numbered">
-&lt;bean id="BookMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
- ...
-&lt;property name="lockingKeys" &gt;
-&lt;list&gt;
-&lt;value&gt;id&lt;/value&gt;
-&lt;/list&gt;
-&lt;/property&gt;
- ...
-&lt;/bean&gt;
+  &lt;bean id="BookMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    ...
+    &lt;property name="lockingKeys" &gt;
+      &lt;list&gt;
+        &lt;value&gt;id&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+    ...
+  &lt;/bean&gt;
         </programlisting>
+        <para>In some situations there is a need to copy the locking keys when a maintenance copy action is performed.
+          To enable this, the optional preserveLockingKeysOnCopy property can be set to true.  This property overrides
+          the default behavior and copies the locking key field values to the maintenance document.  If none of the
+          locking key values are changed before the document is submitted, an existence check error will still occur.
+        </para>
+        <programlisting linenumbering = "numbered">
+  &lt;bean id="TravelMileageRateMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    ...
+      &lt;property name="preserveLockingKeysOnCopy" value="true"/&gt;
+      &lt;property name="lockingKeys" &gt;
+        &lt;list&gt;
+          &lt;value&gt;mileageRateCd&lt;/value&gt;
+          &lt;value&gt;mileageRateName&lt;/value&gt;
+        &lt;/list&gt;
+      &lt;/property&gt;
+      &lt;property name="clearValueOnCopyPropertyNames"&gt;
+        &lt;list&gt;
+          &lt;value&gt;mileageRate&lt;/value&gt;
+        &lt;/list&gt;
+      &lt;/property&gt;
+    ...
+  &lt;/bean&gt;
+        </programlisting>
+        <figure>
+          <title>PreserveLockingKeysOnCopy set to true and clearValueOnCopyPropertyNames contains mileageRate </title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/maintenanceViewPropertyExamples.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
       </section>
     </section>
     <section>

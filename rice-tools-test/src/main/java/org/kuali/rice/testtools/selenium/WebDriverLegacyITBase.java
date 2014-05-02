@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.Keys;
 
 /**
  * <p>
@@ -4523,5 +4524,26 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     public void setUiFramework(String uiFramework) {
         this.uiFramework = uiFramework;
+    }
+    
+    /**
+     * presses Enter Key by Name
+     */
+    public void pressEnterByName(String locator){
+    	pressEnter(By.name(locator));
+    }
+    
+    /**
+     * presses Enter Key by Xpath
+     */
+    public void pressEnterByXpath(String locator){
+    	pressEnter(By.xpath(locator));
+    }
+    
+    /**
+     * presses Enter Key
+     */
+    public void pressEnter(By by){
+    	 findElement(by).sendKeys(Keys.ENTER);
     }
 }

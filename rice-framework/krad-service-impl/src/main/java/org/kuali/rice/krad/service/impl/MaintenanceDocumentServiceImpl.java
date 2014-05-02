@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -141,8 +142,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
             Object newDataObject = null;
 
-            // TODO should we be using ObjectUtils? also, this needs dictionary
-            // enhancement to indicate fields to/not to copy
+            // TODO should we be using ObjectUtils?
             if (dataObjectService.supports(oldDataObject.getClass())) {
                 newDataObject = dataObjectService.copyInstance(oldDataObject);
             } else {
@@ -176,6 +176,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                         ObjectPropertyUtils.setPropertyValue(maintainable.getDataObject(), "objectId", null);
                    }
                 }
+
+                clearValuesForPropertyNames(newDataObject, maintainable.getDataObjectClass());
 
                 if (!getDocumentDictionaryService().getPreserveLockingKeysOnCopy(maintainable.getDataObjectClass())) {
                     clearPrimaryKeyFields(newDataObject, maintainable.getDataObjectClass());
@@ -314,6 +316,71 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
         List<String> keyFieldNames = legacyDataAdapter.listPrimaryKeyFieldNames(dataObjectClass);
         for (String keyFieldName : keyFieldNames) {
             ObjectPropertyUtils.setPropertyValue(maintenanceObject, keyFieldName, null);
+        }
+    }
+
+    /**
+     * Clears the value of the particular fields on the maintenance object
+     *
+     * @param maintenanceObject - document to clear the fields on
+     * @param dataObjectClass - class to use for retrieving list of fields to clear
+     */
+    protected void clearValuesForPropertyNames(Object maintenanceObject, Class<?> dataObjectClass) {
+        List<String> clearValueOnCopyPropertyNames = getDocumentDictionaryService().getClearValueOnCopyPropertyNames(
+                dataObjectClass);
+
+        for (String clearValueOnCopyPropertyName : clearValueOnCopyPropertyNames) {
+            if (!StringUtils.contains(clearValueOnCopyPropertyName, ".")) {
+                if (ObjectPropertyUtils.isWritableProperty(maintenanceObject, clearValueOnCopyPropertyName)) {
+                    ObjectPropertyUtils.setPropertyValue(maintenanceObject, clearValueOnCopyPropertyName, null);
+                }
+            } else {
+                String objectName = StringUtils.substringBeforeLast(clearValueOnCopyPropertyName, ".");
+                String objectToClear = StringUtils.substringAfterLast(clearValueOnCopyPropertyName, ".");
+
+                clearValuesInNestedObjects(objectName, maintenanceObject, objectToClear);
+            }
+        }
+    }
+
+    /**
+     * Clears the value of objects in nested objects on the maintenance object
+     *
+     * @param objectName -  name of the object which contains the field to be cleared
+     * @param maintenanceObject - Object to clear the fields on
+     * @param objectToClear - the object to be cleared on the nested object
+     */
+    private void clearValuesInNestedObjects(String objectName, Object maintenanceObject, String objectToClear) {
+        if (objectName.contains(".")) {
+            String newObjectName = StringUtils.substringAfter(objectName, ".");
+            objectName = StringUtils.substringBefore(objectName, ".");
+
+            if (ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName) instanceof Collection<?>) {
+                Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName);
+
+                for (Object object : collection) {
+                    clearValuesInNestedObjects(newObjectName, object, objectToClear);
+                }
+            } else {
+                Object object = ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName);
+                clearValuesInNestedObjects(newObjectName, object, objectToClear);
+            }
+        } else {
+            if (ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName) instanceof Collection<?>) {
+                Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName);
+
+                for (Object object : collection) {
+                    if (ObjectPropertyUtils.isWritableProperty(object, objectToClear)) {
+                        ObjectPropertyUtils.setPropertyValue(object, objectToClear, null);
+                    }
+                }
+            } else {
+                Object object = ObjectPropertyUtils.getPropertyValue(maintenanceObject, objectName);
+
+                if (ObjectPropertyUtils.isWritableProperty(object, objectToClear)) {
+                    ObjectPropertyUtils.setPropertyValue(object, objectToClear, null);
+                }
+            }
         }
     }
 

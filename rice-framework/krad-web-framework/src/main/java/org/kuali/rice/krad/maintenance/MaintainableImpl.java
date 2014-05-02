@@ -621,10 +621,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
          }
      }
 
-
     /**
-     * For the copy action, clears out primary key values and replaces any new fields that the current user is
-     * unauthorized for with default values in the old record.
+     * For the copy action, clears out primary key values, applies defaults to previously cleared fields,
+     * and replaces any new fields that the current user is unauthorized for with default values in the old record.
      *
      * {@inheritDoc}
      */
@@ -645,6 +644,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
             if (element instanceof DataField) {
                 DataField field = (DataField) element;
+
+                applyDefaultValuesForPreviouslyClearedFields(view, form, field);
 
                 clearUnauthorizedField(view, form, field);
             } else if (element instanceof CollectionGroup) {
@@ -676,7 +677,26 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         }
     }
 
+    /**
+     * Applies the default value of a field if it was a field that was previously cleared
+     *
+     * @param view view instance that contains the fields being checked
+     * @param model model instance that contains the fields being checked
+     * @param field field being checked to see if it has been cleared
+     */
+    private void applyDefaultValuesForPreviouslyClearedFields(View view, ViewModel model, DataField field) {
+        List<String> clearValueOnCopyPropertyNames =
+                KRADServiceLocatorWeb.getDocumentDictionaryService().getClearValueOnCopyPropertyNames(
+                        ((MaintenanceDocumentView) view).getDataObjectClassName());
 
+        for (String clearValueOnCopyPropertyName : clearValueOnCopyPropertyNames) {
+            if (field.getPropertyName().equalsIgnoreCase(clearValueOnCopyPropertyName)) {
+                String bindingPath = field.getBindingInfo().getBindingPath();
+
+                view.getViewHelperService().populateDefaultValueForField(model, field, bindingPath);
+            }
+        }
+    }
 
     /**
      * Determines if the current field is restricted and replaces its value with a default value if so.

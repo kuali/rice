@@ -347,6 +347,22 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
     }
 
     /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getClearValueOnCopyPropertyNames
+     */
+    @Override
+    public List<String> getClearValueOnCopyPropertyNames(Class dataObjectClass) {
+        List clearValueOnCopyPropertyNames = null;
+
+        MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(dataObjectClass);
+
+        if (docEntry != null) {
+            clearValueOnCopyPropertyNames = docEntry.getClearValueOnCopyPropertyNames();
+        }
+
+        return clearValueOnCopyPropertyNames;
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentAuthorizer(java.lang.String)
      */
     public DocumentAuthorizer getDocumentAuthorizer(String documentType) {

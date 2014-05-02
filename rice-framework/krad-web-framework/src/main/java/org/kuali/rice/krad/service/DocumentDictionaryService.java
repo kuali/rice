@@ -208,6 +208,15 @@ public interface DocumentDictionaryService {
     public boolean getPreserveLockingKeysOnCopy(Class dataObjectClass);
 
     /**
+     * Retrieves the list of property names that should be cleared when an object of type dataObjectClass
+     * is copied.
+     *
+     * @param dataObjectClass - class for the data object to check
+     * @return List<String> list of property names to be cleared
+     */
+    public List<String> getClearValueOnCopyPropertyNames(Class dataObjectClass);
+
+    /**
      * Retrieves the {@link DocumentAuthorizer} configured on the document entry with the given document type
      * name
      *

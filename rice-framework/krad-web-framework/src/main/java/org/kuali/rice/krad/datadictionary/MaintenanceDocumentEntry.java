@@ -42,6 +42,7 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     protected Class<? extends Maintainable> maintainableClass;
 
     protected List<String> lockingKeys = new ArrayList<String>();
+    protected List<String> clearValueOnCopyPropertyNames = new ArrayList<String>();
 
     protected boolean allowsNewOrCopy = true;
     protected boolean preserveLockingKeysOnCopy = false;
@@ -147,8 +148,19 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
                 String currentValues[] = {"lockingKeys = " + lockingKeys};
                 tracer.createError("invalid (blank) lockingKey", currentValues);
             } else if (!DataDictionary.isPropertyOf(dataObjectClass, lockingKey)) {
-                String currentValues[] = {"dataObjectClass = " + lockingKeys, "lockingKey = " + lockingKey};
+                String currentValues[] = {"dataObjectClass = " + dataObjectClass, "lockingKey = " + lockingKey};
                 tracer.createError("lockingKey not found in data object class", currentValues);
+            }
+        }
+
+        for (String clearValueOnCopyPropertyName : clearValueOnCopyPropertyNames) {
+            if (StringUtils.isBlank(clearValueOnCopyPropertyName)) {
+                String currentValues[] = {"clearValueOnCopyPropertyNames = " + clearValueOnCopyPropertyNames};
+                tracer.createError("invalid (blank) clearValueOnCopyPropertyNames", currentValues);
+            } else if (!DataDictionary.isPropertyOf(dataObjectClass, clearValueOnCopyPropertyName)) {
+                String currentValues[] = {"dataObjectClass = " + dataObjectClass,
+                        "clearValueOnCopyPropertyName = " + clearValueOnCopyPropertyName};
+                tracer.createError("clearValueOnCopyPropertyName not found in data object class", currentValues);
             }
         }
 
@@ -194,6 +206,21 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
      */
     public void setPreserveLockingKeysOnCopy(boolean preserveLockingKeysOnCopy) {
         this.preserveLockingKeysOnCopy = preserveLockingKeysOnCopy;
+    }
+
+    /**
+     * @return the clearValueOnCopyPropertyNames
+     */
+    @BeanTagAttribute(name = "clearValueOnCopyPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    public List<String> getClearValueOnCopyPropertyNames() {
+        return clearValueOnCopyPropertyNames;
+    }
+
+    /**
+     * @param clearValueOnCopyPropertyNames the clearValueOnCopyPropertyNames to set
+     */
+    public void setClearValueOnCopyPropertyNames(List<String> clearValueOnCopyPropertyNames) {
+        this.clearValueOnCopyPropertyNames = clearValueOnCopyPropertyNames;
     }
 
     /**

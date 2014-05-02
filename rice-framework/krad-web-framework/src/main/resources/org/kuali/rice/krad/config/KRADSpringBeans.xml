@@ -52,6 +52,7 @@
         <value>classpath:org/kuali/rice/krad/datadictionary/Note.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/NoteType.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/PessimisticLock.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/PropertyEditors.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifActionDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
@@ -94,7 +95,8 @@
     <property name="listItem" value="classpath:org/kuali/rice/krad/dwr-core.xml"/>
   </bean>
 
-  <bean id="dataDictionaryService" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
+  <bean id="dataDictionaryService" parent="dataDictionaryService-parent"/>
+  <bean id="dataDictionaryService-parent" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
     <property name="propertyEditorMap">

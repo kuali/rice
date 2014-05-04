@@ -582,8 +582,8 @@ class IdentityServiceImplTest {
     public void testUpdatePrincipalWithNonExistingPrincipalFails()
     {
         // create a matching scenario where no results are returned
-        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, QueryByCriteria map -> return GenericQueryResults.Builder.create().build();
+        mockDataObjectService.demand.find(1..samplePrincipals.size()) {
+            Class clazz, String id -> return samplePrincipals.get(id)
         }
 
         injectDataObjectServiceIntoIdentityService();
@@ -596,11 +596,9 @@ class IdentityServiceImplTest {
     public void testUpdatePrincipalSucceeds()
     {
         PrincipalBo existingPrincipalBo = samplePrincipals.get("P1");
-        GenericQueryResults.Builder b = GenericQueryResults.Builder.create();
-        b.setResults(Collections.singletonList(existingPrincipalBo));
 
-        mockDataObjectService.demand.findMatching(1..samplePrincipals.size()) {
-            Class clazz, QueryByCriteria map -> return b.build();
+        mockDataObjectService.demand.find(1..samplePrincipals.size()) {
+            Class clazz, String id -> return samplePrincipals.get(id)
         }
 
         mockDataObjectService.demand.save(1..1) {

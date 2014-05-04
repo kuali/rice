@@ -98,9 +98,9 @@ public class IdentityServiceTest extends KIMTestCase {
 
     @Test
     public void testUpdatePrincipal() {
-        String principalName = "newacctusr";
-        String principalId = "newaccountuser";
-        String newPrincipalName = "newacctusrUpdatedName";
+        String principalName = "kuluser";
+        String principalId = "KULUSER";
+        String newPrincipalName = "kuluserUpdatedName";
 
         Principal principal = identityService.getPrincipalByPrincipalName(principalName);
         assertNotNull("principal must not be null", principal);
@@ -119,6 +119,14 @@ public class IdentityServiceTest extends KIMTestCase {
         assertNotNull("principal must not be null", principalById);
         assertEquals("principal name should be " + newPrincipalName, newPrincipalName,
                 principalById.getPrincipalName());
+
+        // Set the princpalName back to kuluser to prevent issues with other tests
+        Principal.Builder builder2 = Principal.Builder.create(principalById);
+        builder2.setPrincipalName(principalName);
+        Principal revertedPrincipal = identityService.updatePrincipal(builder2.build());
+        assertNotNull("principal must not be null", revertedPrincipal);
+        assertEquals("principal id should be " + principalId, principalId, revertedPrincipal.getPrincipalId());
+        assertEquals("principal name should be " + principalName, principalName, revertedPrincipal.getPrincipalName());
     }
 
 	@Test

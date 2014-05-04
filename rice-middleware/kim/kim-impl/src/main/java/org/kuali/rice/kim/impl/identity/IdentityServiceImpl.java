@@ -218,27 +218,29 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Principal updatePrincipal(Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
+    public Principal updatePrincipal(
+            Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(principal, "principal");
+
         PrincipalBo originalPrincipal = null;
-        if (StringUtils.isEmpty(principal.getEntityId()) || StringUtils.isBlank(principal.getEntityId())
-                || StringUtils.isEmpty(principal.getPrincipalName()) || StringUtils.isBlank(principal.getPrincipalName())) {
-            throw new RiceIllegalStateException("Principal's entityId and PrincipalName must be populated before update");
-        }  else {
-             originalPrincipal = getPrincipalBoByPrincipalName(principal.getPrincipalName());
-            if (StringUtils.isEmpty(principal.getPrincipalId()) || originalPrincipal == null) {
+        if (StringUtils.isBlank(principal.getEntityId()) || StringUtils.isBlank(principal.getPrincipalName())) {
+            throw new RiceIllegalStateException(
+                    "Principal's entityId and PrincipalName must be populated before update");
+        } else {
+            originalPrincipal = getPrincipalBo(principal.getPrincipalId());
+            if (StringUtils.isBlank(principal.getPrincipalId()) || originalPrincipal == null) {
                 throw new RiceIllegalStateException("the Principal to update does not exist: " + principal);
             }
         }
-        
+
         PrincipalBo bo = PrincipalBo.from(principal);
         //Password is not set on the principal DTO, so we need to make sure the value is kept from existing principal
         bo.setPassword(originalPrincipal.getPassword());
         PrincipalBo updatedPrincipal = dataObjectService.save(bo);
-        if (originalPrincipal.isActive()
-                && !updatedPrincipal.isActive()) {
+        if (originalPrincipal.isActive() && !updatedPrincipal.isActive()) {
             KimImplServiceLocator.getRoleInternalService().principalInactivated(updatedPrincipal.getPrincipalId());
         }
+
         return PrincipalBo.to(updatedPrincipal);
     }
 

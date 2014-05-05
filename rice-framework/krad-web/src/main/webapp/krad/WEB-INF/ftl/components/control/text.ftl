@@ -58,15 +58,9 @@
     <#if control.watermarkText?has_content>
         <@krad.script value="createWatermark('${control.id}', '${control.watermarkText?js_string}');"/>
     </#if>
-    <#if control.disabled>
-        <#local disabled="true"/>
-    <#else>
-        <#local disabled="false"/>
-    </#if>
 
     <#-- render date picker widget -->
-    <#--<@krad.template component=control.datePicker componentId="${control.id}"/>-->
-    <@krad.template component=control.datePicker componentId="${control.id}" disabled=disabled/>
+    <@krad.template component=control.datePicker componentId="${control.id}" disabled=control.disabled?string/>
 
     <#if control.textExpand>
         <@krad.script value="setupTextPopout('${control.id}', '${field.label!}', '${(field.instructionalMessage.messageText?js_string)!}', '${(field.constraintMessage.messageText?js_string)!}');" />

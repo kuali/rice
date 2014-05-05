@@ -819,7 +819,7 @@ function createTable(tableId, additionalOptions, groupingOptions) {
 
         //handle row details related functionality setup
         if (detailsOpen != undefined) {
-            jQuery(oTable).on("dataTables.tableDraw", function () {
+            jQuery(oTable).on("dataTables.tableDraw", function (event) {
                 if (event.currentTarget != event.target) {
                     return;
                 }

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.data.platform;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
@@ -65,8 +64,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 public final class MaxValueIncrementerFactory {
 
-    private static final Logger LOG = Logger.getLogger(MaxValueIncrementerFactory.class);
-
     private static final String ID_COLUMN_NAME = "ID";
 
     /**
@@ -102,10 +99,6 @@ public final class MaxValueIncrementerFactory {
             throw new IllegalArgumentException("Incrementer name must not be null or blank");
         }
 
-        LOG.info("processing incrementer name: " + incrementerName);
-        LOG.info("processing cache size: " + cache.size());
-        LOG.info("processing datasource hashcode: " + dataSource.hashCode());
-
         // yes, we want to check if it's there first, then put if absent, for max speed! This is like ConcurrentMap's
         // version of double-checked locking.
         ConcurrentMap<String, DataFieldMaxValueIncrementer> incrementerCache = cache.get(dataSource);
@@ -113,19 +106,9 @@ public final class MaxValueIncrementerFactory {
         if (incrementerCache == null) {
             cache.put(dataSource,
                     new ConcurrentHashMap<String, DataFieldMaxValueIncrementer>(8, 0.9f, 1));
-
-            LOG.info("processing cache size: " + cache.size());
-            LOG.info("processing datasource hashcode: " + dataSource.hashCode());
-
             if (incrementerCache == null) {
                 incrementerCache = cache.get(dataSource);
-
-                LOG.info("processing datasource hashcode: " + dataSource.hashCode());
             }
-        }
-
-        if (incrementerCache == null) {
-            throw new IllegalArgumentException("incrementerCache must not be null");
         }
 
         // now check if we have a cached incrementer

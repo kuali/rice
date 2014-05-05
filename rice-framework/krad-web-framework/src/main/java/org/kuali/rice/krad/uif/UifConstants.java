@@ -276,6 +276,14 @@ public class UifConstants {
         public static final String QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX = "lineIndex";
     }
 
+    public static class LookupCriteriaPostMetadata {
+        public static final String COMPONENT_ID = "componentId";
+        public static final String DISABLE_WILDCARDS_AND_OPERATORS = "disableWildcardsAndOperators";
+        public static final String HIDDEN = "hidden";
+        public static final String REQUIRED = "required";
+        public static final String SECURE_VALUE = "secureValue";
+    }
+
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";
         public static final String CONFIG_PROPERTIES = "ConfigProperties";

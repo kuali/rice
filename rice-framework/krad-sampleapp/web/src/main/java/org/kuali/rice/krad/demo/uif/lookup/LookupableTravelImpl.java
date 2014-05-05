@@ -18,67 +18,33 @@ package org.kuali.rice.krad.demo.uif.lookup;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.lookup.LookupForm;
-import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.lookup.LookupableImpl;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LookupableTravelImpl extends LookupableImpl {
 
+    /**
+     * Add additional validation to check that numeric values are positive
+     *
+     * @see LookupableImpl#validateSearchParameters(org.kuali.rice.krad.lookup.LookupForm, java.util.Map)
+     */
     @Override
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
-        boolean valid = true;
+        boolean valid = super.validateSearchParameters(form, searchCriteria);
 
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
-                form);
+        for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
+            String propertyName = lookupCriteria.getKey();
 
-        // TODO: this should be an error condition but we have an issue when the search is performed from
-        // the initial request and there is not a posted view
-        if ((criteriaFields == null) || criteriaFields.isEmpty()) {
-            return valid;
-        }
-
-        // build list of hidden properties configured with criteria fields so they are excluded from validation
-        List<String> hiddenCriteria = new ArrayList<String>();
-        for (InputField field : criteriaFields.values()) {
-            if (field.getAdditionalHiddenPropertyNames() != null) {
-                hiddenCriteria.addAll(field.getAdditionalHiddenPropertyNames());
-            }
-        }
-
-        for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
-            String searchPropertyName = searchKeyValue.getKey();
-            String searchPropertyValue = searchKeyValue.getValue();
-
-            InputField inputField = criteriaFields.get(searchPropertyName);
-
-            String adjustedSearchPropertyPath = UifPropertyPaths.LOOKUP_CRITERIA + "[" + searchPropertyName + "]";
-            if (inputField == null && hiddenCriteria.contains(adjustedSearchPropertyPath)) {
-                return valid;
-            }
-
-            // if there is not an input field, then this is invalid search criteria
-            if (inputField == null) {
-                throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
-            }
-
-            if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
-                GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
-                        inputField.getLabel());
-            }
-
-            validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
-            validateSearchParameterPositiveValues(inputField, searchPropertyValue);
+            validateSearchParameterPositiveValues(form, propertyName, searchCriteria.get(propertyName));
         }
 
         if (GlobalVariables.getMessageMap().hasErrors()) {
@@ -89,13 +55,13 @@ public class LookupableTravelImpl extends LookupableImpl {
     }
 
     /**
-     * Validates that any wildcards contained within the search value are valid wildcards and allowed for the
-     * property type for which the field is searching.
+     * Validates that any numeric value is non-negative.
      *
-     * @param inputField attribute field instance for the field that is being searched
+     * @param form lookup form instance containing the lookup data
+     * @param propertyName property name of the search criteria field to be validated
      * @param searchPropertyValue value given for field to search for
      */
-    protected void validateSearchParameterPositiveValues(InputField inputField, String searchPropertyValue) {
+    protected void validateSearchParameterPositiveValues(LookupForm form, String propertyName, String searchPropertyValue) {
         if (StringUtils.isBlank(searchPropertyValue)) {
             return;
         }
@@ -109,9 +75,8 @@ public class LookupableTravelImpl extends LookupableImpl {
         }
 
         if (Math.signum(number.doubleValue()) < 0) {
-            String attributeLabel = inputField.getLabel();
-            GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
-                        RiceKeyConstants.ERROR_NEGATIVES_NOT_ALLOWED_ON_FIELD, attributeLabel);
+            GlobalVariables.getMessageMap().putError(propertyName,
+                        RiceKeyConstants.ERROR_NEGATIVES_NOT_ALLOWED_ON_FIELD, getCriteriaLabel(form, propertyName));
         }
     }
 }

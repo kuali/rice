@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -24,9 +25,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
-import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -34,7 +33,6 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
@@ -56,9 +54,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * View helper service that implements {@link Lookupable} and executes a search using the
@@ -253,6 +253,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     /**
      * Invoked to perform validation on the search criteria before the search is performed.
      *
+     * <li>Check required criteria have a value</li>
+     * <li>Check that criteria data type supports wildcards/operators</li>
+     * <li>Check that wildcards/operators are not used on a secure criteria</li>
+     * <li>Display info message when wildcards/operators are disabled</li>
+     * <li>Throw exception when invalid criteria are specified</li>
+     *
      * @param form lookup form instance containing the lookup data
      * @param searchCriteria map of criteria where key is search property name and value is
      * search value (which can include wildcards)
@@ -262,47 +268,35 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
 
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
-                form);
-
-        // TODO: this should be an error condition but we have an issue when the search is performed from
-        // the initial request and there is not a posted view
-        if ((criteriaFields == null) || criteriaFields.isEmpty()) {
+        // The form view can't be relied upon since the complete lifecycle hasn't ran against it.  Instead
+        // the viewPostMetadata is being used for the validation.
+        // If the view was not previously posted then it's impossible to validate the search parameters because
+        // of the missing viewPostMetadata.  When this happens we assume the search parameters are correct.
+        // (Calling the search controller method directly without displaying the lookup first can cause
+        // this situation.)
+        if (form.getViewPostMetadata() == null) {
             return valid;
         }
 
-        // build list of hidden properties configured with criteria fields so they are excluded from validation
-        List<String> hiddenCriteria = new ArrayList<String>();
-        for (InputField field : criteriaFields.values()) {
-            if (field.getAdditionalHiddenPropertyNames() != null) {
-                hiddenCriteria.addAll(field.getAdditionalHiddenPropertyNames());
+        Set<String> unprocessedSearchCriteria = new HashSet<String>(searchCriteria.keySet());
+        for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
+            String propertyName = lookupCriteria.getKey();
+            Map<String, Object> lookupCriteriaAttributes = lookupCriteria.getValue();
+
+            unprocessedSearchCriteria.remove(propertyName);
+
+            if (isCriteriaRequired(lookupCriteriaAttributes) && StringUtils.isBlank(searchCriteria.get(propertyName))) {
+                GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_REQUIRED,
+                        getCriteriaLabel(form, UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID));
+            }
+
+            if (searchCriteria.containsKey(propertyName)) {
+                validateSearchParameterWildcardAndOperators(form, propertyName, lookupCriteriaAttributes, searchCriteria.get(propertyName));
             }
         }
 
-        for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
-            String searchPropertyName = searchKeyValue.getKey();
-            String searchPropertyValue = searchKeyValue.getValue();
-
-            InputField inputField = criteriaFields.get(searchPropertyName);
-
-            String adjustedSearchPropertyPath = UifPropertyPaths.LOOKUP_CRITERIA + "[" + searchPropertyName + "]";
-            //TODO: Currently the validation is called before the performLifeCycle is completed on the view and
-            // hence any additionalHiddenPropertyNames will not be set on the InputFields. For now if the
-            // inputField is not found for the criteria, it is treated as "Valid"
-            if (inputField == null || hiddenCriteria.contains(adjustedSearchPropertyPath)) {
-                return valid;
-            }
-
-            //            if (inputField == null) {
-            //                throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
-            //            }
-
-            if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
-                GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
-                        inputField.getLabel());
-            }
-
-            validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
+        if (!unprocessedSearchCriteria.isEmpty()) {
+            throw new RuntimeException("Invalid search value sent for property name(s): " + unprocessedSearchCriteria.toString());
         }
 
         if (GlobalVariables.getMessageMap().hasErrors()) {
@@ -316,10 +310,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Validates that any wildcards contained within the search value are valid wildcards and allowed for the
      * property type for which the field is searching.
      *
-     * @param inputField attribute field instance for the field that is being searched
+     * @param form lookup form instance containing the lookup data
+     * @param propertyName property name of the search criteria field to be validated
      * @param searchPropertyValue value given for field to search for
      */
-    protected void validateSearchParameterWildcardAndOperators(InputField inputField, String searchPropertyValue) {
+    protected void validateSearchParameterWildcardAndOperators(LookupForm form, String propertyName, Map<String, Object> lookupCriteriaAttributes, String searchPropertyValue) {
         if (StringUtils.isBlank(searchPropertyValue)) {
             return;
         }
@@ -339,24 +334,61 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
 
-        String attributeLabel = inputField.getLabel();
-        if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
-                .isDisableWildcardsAndOperators())) {
-            Class<?> propertyType = ObjectPropertyUtils.getPropertyType(getDataObjectClass(),
-                    inputField.getPropertyName());
+        if (isCriteriaWildcardDisabled(lookupCriteriaAttributes)) {
+            Class<?> propertyType = ObjectPropertyUtils.getPropertyType(getDataObjectClass(), propertyName);
 
             if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ||
                     TypeUtils.isTemporalClass(propertyType)) {
-                GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
-                        RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
+                GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD,
+                        getCriteriaLabel(form, propertyName));
             } else if (TypeUtils.isStringClass(propertyType)) {
-                GlobalVariables.getMessageMap().putInfo(inputField.getPropertyName(),
-                        RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
+                GlobalVariables.getMessageMap().putInfo(propertyName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY,
+                        getCriteriaLabel(form, propertyName));
             }
-        } else if (inputField.hasSecureValue()) {
-            GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_SECURE_FIELD,
-                    attributeLabel);
+        } else if (isCriteriaSecure(lookupCriteriaAttributes)) {
+            GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_SECURE_FIELD, getCriteriaLabel(form, propertyName));
         }
+    }
+
+    /**
+     * Returns the label of the search criteria field.
+     *
+     * @param form lookup form instance containing the lookup data
+     * @param componentId component id of the search criteria field
+     * @return label of the search criteria field
+     */
+    protected String getCriteriaLabel(LookupForm form, String componentId) {
+        return (String) form.getViewPostMetadata().getComponentPostData(componentId, UifConstants.PostMetadata.LABEL);
+    }
+
+    /**
+     * Indicator if wildcards and operators are disabled on this search criteria.
+     *
+     * @param lookupCriteria the viewPostMetadata with the attributes of the search criteria field
+     * @return true if wildcards and operators are disabled, false otherwise
+     */
+    protected boolean isCriteriaWildcardDisabled(Map lookupCriteria) {
+        return BooleanUtils.isTrue((Boolean) lookupCriteria.get(UifConstants.LookupCriteriaPostMetadata.DISABLE_WILDCARDS_AND_OPERATORS));
+    }
+
+    /**
+     * Indicator if the search criteria is required.
+     *
+     * @param lookupCriteria the viewPostMetadata with the attributes of the search criteria field
+     * @return true if the search criteria is required, false otherwise
+     */
+    protected boolean isCriteriaRequired(Map lookupCriteria) {
+        return BooleanUtils.isTrue((Boolean) lookupCriteria.get(UifConstants.LookupCriteriaPostMetadata.REQUIRED));
+    }
+
+    /**
+     * Indicator if the search criteria is on a secure field.
+     *
+     * @param lookupCriteria the viewPostMetadata with the attributes of the search criteria field
+     * @return true if the search criteria is a secure field, false otherwise
+     */
+    protected boolean isCriteriaSecure(Map lookupCriteria) {
+        return BooleanUtils.isTrue((Boolean) lookupCriteria.get(UifConstants.LookupCriteriaPostMetadata.SECURE_VALUE));
     }
 
     /**

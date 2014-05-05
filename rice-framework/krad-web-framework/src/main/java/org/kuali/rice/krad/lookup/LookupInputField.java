@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
@@ -33,6 +35,7 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.InputFieldBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.KeyMessage;
@@ -86,6 +89,50 @@ public class LookupInputField extends InputFieldBase {
                 message.setRenderWrapperTag(false);
 
                 multiValueControl.getRichOptions().add(0, new KeyMessage("", allOptionText, message));
+            }
+        }
+    }
+
+    /**
+     * Invoked during the finalize phase to capture state of the component needs to support post operations.
+     */
+    @Override
+    protected void addComponentPostMetadata() {
+        super.addComponentPostMetadata();
+
+        Map<String, Map<String, Object>> lookupCriteriaFields = ViewLifecycle.getViewPostMetadata().getLookupCriteria();
+
+        Map<String, Object> criteriaAttributes = new HashMap<String, Object>();
+        criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID, this.getId());
+        if (this.isDisableWildcardsAndOperators()) {
+            criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.DISABLE_WILDCARDS_AND_OPERATORS, true);
+        }
+        if (this.getRequired()) {
+            criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.REQUIRED, true);
+        }
+        if (this.hasSecureValue()) {
+            criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.SECURE_VALUE, true);
+        }
+
+        lookupCriteriaFields.put(this.getPropertyName(), criteriaAttributes);
+
+        addHiddenComponentPostMetadata(lookupCriteriaFields);
+    }
+
+    /**
+     * Add hidden search criteria components.
+     *
+     * @param lookupCriteriaFields
+     */
+    protected void addHiddenComponentPostMetadata(Map<String, Map<String, Object>> lookupCriteriaFields) {
+        for (String hiddenPropertyName: this.getAdditionalHiddenPropertyNames()) {
+            hiddenPropertyName = StringUtils.substringBetween(hiddenPropertyName, UifPropertyPaths.LOOKUP_CRITERIA + "[", "]");
+
+            // Prevent overwriting of visible components. Note, hidden components are allowed to be overwritten.
+            if (!lookupCriteriaFields.containsKey(hiddenPropertyName)) {
+                Map<String, Object> criteriaAttributes = new HashMap<String, Object>();
+                criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.HIDDEN, true);
+                lookupCriteriaFields.put(hiddenPropertyName, criteriaAttributes);
             }
         }
     }

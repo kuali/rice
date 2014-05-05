@@ -56,11 +56,13 @@ public class ViewPostMetadata implements Serializable {
     private Set<String> allRenderedPropertyPaths;
     private Map<String, List<Object>> addedCollectionObjects;
 
+    private Map<String, Map<String, Object>> lookupCriteria;
+
     private Set<String> accessibleBindingPaths;
     private Set<String> accessibleMethodToCalls;
 
     /**
-     * Default contructor.
+     * Default constructor.
      */
     public ViewPostMetadata() {
         fieldPropertyEditors = Collections.synchronizedMap(new HashMap<String, PropertyEditor>());
@@ -68,6 +70,7 @@ public class ViewPostMetadata implements Serializable {
         inputFieldIds = Collections.synchronizedSet(new HashSet<String>());
         allRenderedPropertyPaths = Collections.synchronizedSet(new HashSet<String>());
         addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
+        lookupCriteria = Collections.synchronizedMap(new HashMap<String, Map<String, Object>>());
         accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
         accessibleMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
     }
@@ -356,6 +359,27 @@ public class ViewPostMetadata implements Serializable {
      */
     public void setAddedCollectionObjects(Map<String, List<Object>> addedCollectionObjects) {
         this.addedCollectionObjects = addedCollectionObjects;
+    }
+
+    /**
+     * Set the metadata of the lookup criteria.
+     *
+     * <p>
+     * The lookup criteria property name is the key of the map.  The value is a map of criteria attributes as specified
+     * by {@link org.kuali.rice.krad.uif.UifConstants.LookupCriteriaPostMetadata}.  Not all criteria attribute types
+     * need to be specified.  A missing boolean attribute equals to false.
+     * </p>
+     * @return
+     */
+    public Map<String, Map<String, Object>> getLookupCriteria() {
+        return lookupCriteria;
+    }
+
+    /**
+     * @see ViewPostMetadata#getLookupCriteria()
+     */
+    public void setLookupCriteria(Map<String, Map<String, Object>> lookupCriteria) {
+        this.lookupCriteria = lookupCriteria;
     }
 
     /**

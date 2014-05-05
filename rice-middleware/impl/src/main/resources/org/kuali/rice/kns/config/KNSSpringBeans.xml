@@ -125,7 +125,29 @@
 
   <bean id="knsDictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl" parent="dictionaryValidationService" />
 
-  <bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl" scope="singleton" parent="dataDictionaryService-parent" />
+  <bean id="dataDictionaryService" parent="dataDictionaryService-parent"/>
+  <bean id="dataDictionaryService-parent" abstract="true" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl" scope="singleton">
+    <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
+    <property name="propertyEditorMap">
+      <map>
+        <entry key="org.kuali.rice.core.api.util.type.KualiDecimal" value="currencyEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.KualiInteger" value="intCurrencyEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.KualiPercent" value="percentEditor" />
+        <entry key="java.sql.Time" value="timeEditor" />
+        <entry key="java.sql.Date" value="dateEditor" />
+        <entry key="java.util.Date" value="dateEditor" />
+        <entry key="java.sql.Timestamp" value="timestampEditor" />
+        <entry key="boolean" value="booleanEditor" />
+        <entry key="java.lang.Boolean" value="booleanEditor" />
+        <entry key="java.math.BigDecimal" value="decimalEditor" />
+        <entry key="org.kuali.rice.core.api.util.type.AbstractKualiDecimal" value="decimalEditor" />
+        <entry key="java.lang.String" value="stringEditor" />
+        <entry key="[Ljava.lang.String;" value="stringArrayEditor" />
+        <entry key="[B" value="byteArrayEditor" />
+      </map>
+    </property>
+  </bean>
 
   <bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
     <property name="lookupableHelperService">

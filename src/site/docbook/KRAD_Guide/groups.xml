@@ -1668,6 +1668,13 @@
         <listitem>
           <para>Css grid layouts are fluid and will react to changes in page size</para>
         </listitem>
+        <listitem>
+          <para>CssGridLabelColumnLayoutManagers are used to separate labels into separate "columns"
+            per row</para>
+        </listitem>
+        <listitem>
+          <para>CssGridSizes are used to control sizes of content in CssGridLayouts</para>
+        </listitem>
       </itemizedlist>
     </section>
   </section>

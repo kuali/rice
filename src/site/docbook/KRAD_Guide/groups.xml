@@ -1673,7 +1673,7 @@
             per row</para>
         </listitem>
         <listitem>
-          <para>CssGridSizes are used to control sizes of content in CssGridLayouts</para>
+          <para>CssGridSizes objects are used to control sizes of content in CssGridLayouts</para>
         </listitem>
       </itemizedlist>
     </section>

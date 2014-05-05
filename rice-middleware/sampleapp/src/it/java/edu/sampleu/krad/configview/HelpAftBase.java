@@ -126,47 +126,42 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
 
         // test tooltip help of section header
         fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
-        Thread.sleep(500);
-        assertTrue("https://jira.kuali.org/browse/RICEQA-347 AFT Failure update selectors for HelpAftBase", isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
 
         // test tooltip help of field with label to the left
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
 
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
-
+        waitForElementPresentByXpath("//div[@class='popover top in']");
+        
         // verify that standalone help with tooltip is not rendered
         assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
 
         // test tooltip help when it overrides a tooltip
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
         }
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        waitForElementPresentByXpath("//div[@class='popover top in']");
     }
 
     /**

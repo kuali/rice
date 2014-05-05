@@ -155,7 +155,6 @@
       <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:methodToCall="performLookup"
             p:focusOnIdAfterSubmit="NEXT_INPUT" p:wrapperCssClasses="input-group-btn"/>
     </property>
-    <property name="render" value="@{!#parent.readOnly}"/>
   </bean>
 
   <bean id="Uif-QuickFinderByScript" parent="Uif-QuickFinder-parentBean" p:returnByScript="true"/>
@@ -187,7 +186,6 @@
     <property name="directInquiryAction">
       <bean parent="Uif-DirectInquiryAction"/>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
   <bean id="Uif-DirectInquiryAction" parent="Uif-ActionLink"

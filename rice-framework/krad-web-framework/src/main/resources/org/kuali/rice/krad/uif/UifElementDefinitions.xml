@@ -23,9 +23,7 @@
 
   <bean id="Uif-ContentElementBase" abstract="true" parent="Uif-ContentElementBase-parentBean"/>
   <bean id="Uif-ContentElementBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.element.ContentElementBase">
-    <property name="readOnly" value="@{#parent.readOnly}"/>
-  </bean>
+        class="org.kuali.rice.krad.uif.element.ContentElementBase" />
 
   <bean id="Uif-Div" abstract="true" parent="Uif-Div-parentBean"/>
   <bean id="Uif-Div-parentBean" parent="Uif-ContentElementBase"

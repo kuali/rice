@@ -180,6 +180,21 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    public void afterEvaluateExpression() {
+        // populate readOnly from parent before calling super, to prevent DataField
+        // from forcing to true.
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
+        
+        super.afterEvaluateExpression();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
@@ -230,7 +245,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             }
         }
 
-        if (this.enableAutoDirectInquiry && (getInquiry() == null) && !isReadOnly()) {
+        if (this.enableAutoDirectInquiry && (getInquiry() == null) && !Boolean.TRUE.equals(getReadOnly())) {
             buildAutomaticInquiry(model, true);
             ContextUtils.pushAllToContextDeep(getInquiry(), this.getContext());
         }
@@ -241,7 +256,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
-        if (isReadOnly()
+        if (Boolean.TRUE.equals(getReadOnly())
                 && !fieldOptions.isEmpty()
                 && StringUtils.isBlank(getReadOnlyDisplayReplacement())
                 && StringUtils.isBlank(getReadOnlyDisplaySuffix())
@@ -284,7 +299,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.INPUT_FIELD);
 
         // if read only or the control is null no input can be given so no need to setup validation
-        if (isReadOnly() || getControl() == null) {
+        if (Boolean.TRUE.equals(getReadOnly()) || getControl() == null) {
             return;
         }
 
@@ -407,7 +422,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE,
                 isUppercaseValue());
 
-        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !isReadOnly()) {
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !Boolean.TRUE.equals(getReadOnly())) {
             viewPostMetadata.addAccessibleBindingPath(getBindingInfo().getBindingPath());
         }
     }

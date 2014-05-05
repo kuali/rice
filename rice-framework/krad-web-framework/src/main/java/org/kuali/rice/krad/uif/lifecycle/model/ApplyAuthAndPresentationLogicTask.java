@@ -88,7 +88,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
 
         // check top level view edit authorization
         if (component instanceof View) {
-            if (!view.isReadOnly()) {
+            if (!Boolean.TRUE.equals(view.getReadOnly())) {
                 boolean canEditView = authorizer.canEditView(view, model, user);
                 if (canEditView) {
                     canEditView = presentationController.canEditView(view, model);
@@ -112,7 +112,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
             }
 
             // if group is editable, do authorization for editing the group
-            if (!group.isReadOnly()) {
+            if (!Boolean.TRUE.equals(group.getReadOnly())) {
                 boolean canEditGroup = authorizer.canEditGroup(view, model, group, group.getId(), user);
                 if (canEditGroup) {
                     canEditGroup = presentationController.canEditGroup(view, model, group, group.getId());
@@ -141,7 +141,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
             }
 
             // if field is not readOnly, check edit authorization
-            if (!field.isReadOnly()) {
+            if (!Boolean.TRUE.equals(field.getReadOnly())) {
                 // check field edit authorization
                 boolean canEditField = authorizer.canEditField(view, model, field, propertyName, user);
                 if (canEditField) {
@@ -216,7 +216,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
             }
 
             // if widget is not readOnly, check edit authorization
-            if (!widget.isReadOnly()) {
+            if (!Boolean.TRUE.equals(widget.getReadOnly())) {
                 boolean canEditWidget = authorizer.canEditWidget(view, model, widget, widget.getId(), user);
                 if (canEditWidget) {
                     canEditWidget = presentationController.canEditWidget(view, model, widget, widget.getId());

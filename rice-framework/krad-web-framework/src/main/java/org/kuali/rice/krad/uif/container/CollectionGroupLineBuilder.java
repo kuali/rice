@@ -256,7 +256,7 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         for (Field field : lineFields) {
             boolean isInputField = (field instanceof InputField);
-            if (field.isHidden() || field.isReadOnly() || !isInputField) {
+            if (field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || !isInputField) {
                 continue;
             }
 
@@ -363,7 +363,7 @@ public class CollectionGroupLineBuilder implements Serializable {
      * @return boolean true if the user can edit the line, false if not
      */
     protected boolean checkEditLineAuthorization(List<Field> lineFields) {
-        boolean canEditLine = !lineBuilderContext.getCollectionGroup().isReadOnly();
+        boolean canEditLine = !Boolean.TRUE.equals(lineBuilderContext.getCollectionGroup().getReadOnly());
 
         if (!canEditLine) {
             ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
@@ -378,7 +378,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                 expressionEvaluator.evaluatePropertyExpression(view, field.getContext(), field,
                         UifPropertyPaths.READ_ONLY, true);
 
-                if (!field.isReadOnly()) {
+                if (!Boolean.TRUE.equals(field.getReadOnly())) {
                     canEditLine = true;
                     break;
                 }

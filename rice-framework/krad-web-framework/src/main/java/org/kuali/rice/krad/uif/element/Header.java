@@ -90,26 +90,6 @@ public class Header extends ContentElementBase {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void performInitialization(Object model) {
-        super.performInitialization(model);
-        
-        if (isReadOnly()) {
-            if (upperGroup != null) {
-                upperGroup.setReadOnly(true);
-            }
-            if (lowerGroup != null) {
-                lowerGroup.setReadOnly(true);
-            }
-            if (rightGroup != null) {
-                rightGroup.setReadOnly(true);
-            }
-        }
-    }
-
-    /**
      * Sets up rich message content for the label, if any exists
      *
      * {@inheritDoc}

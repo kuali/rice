@@ -67,11 +67,11 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
         InputField field = (InputField) parent;
         field.getAdditionalHiddenPropertyNames().add(principalIdPropertyName);
 
-        if (isRender() && !isHidden() && !isReadOnly()) {
+        if (isRender() && !isHidden() && !Boolean.TRUE.equals(getReadOnly())) {
             ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(principalIdPropertyName);
         }
 
-        if (!field.isReadOnly()) {
+        if (!Boolean.TRUE.equals(field.getReadOnly())) {
             // add information fields
             if (StringUtils.isNotBlank(personNamePropertyName)) {
                 field.getPropertyNamesForAdditionalDisplay().add(personNamePropertyName);
@@ -93,7 +93,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
             setOnChangeScript(onChangeScript);
         }
 
-        if (field.isReadOnly() && StringUtils.isBlank(field.getReadOnlyDisplaySuffixPropertyName())) {
+        if (Boolean.TRUE.equals(field.getReadOnly()) && StringUtils.isBlank(field.getReadOnlyDisplaySuffixPropertyName())) {
             if (StringUtils.isNotBlank(personNamePropertyName)) {
                 field.setReadOnlyDisplaySuffixPropertyName(personNamePropertyName);
             } else {

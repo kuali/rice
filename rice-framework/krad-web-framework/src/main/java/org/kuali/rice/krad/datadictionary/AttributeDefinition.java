@@ -647,7 +647,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
             // If there is no constraint set, attempt to derive one
             if ( GlobalResourceLoader.isInitialized() ) {
                 // We don't set a default validation pattern if the field is hidden
-                if ( getControlField() != null && !getControlField().isHidden() && !getControlField().isReadOnly() ) {
+                if ( getControlField() != null && !getControlField().isHidden() && !Boolean.TRUE.equals(getControlField().getReadOnly()) ) {
                     validCharactersConstraint = KRADServiceLocatorWeb.getUifDefaultingService().deriveValidCharactersConstraint( this );
                 }
             }

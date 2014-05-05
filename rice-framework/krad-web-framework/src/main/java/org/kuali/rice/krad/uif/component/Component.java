@@ -74,6 +74,16 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return True if the component has fully rendered, false if not.
      */
     boolean isRendered();
+    
+    /**
+     * Invoked by the view lifecycle after expressions are evaluated at the apply model phase.
+     * 
+     * <p>
+     * In general, this method is preferred to {@link #performApplyModel(Object, LifecycleElement)}
+     * for populating model data via code, since it is called before client-side state is synchronize.
+     * </p>
+     */
+    void afterEvaluateExpression();
 
     /**
      * Set the view lifecycle processing status for this component, explicitly.
@@ -271,14 +281,14 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return boolean true if the component should be readOnly, false if is
      * allows editing
      */
-    boolean isReadOnly();
+    Boolean getReadOnly();
 
     /**
      * Setter for the read only indicator
      *
      * @param readOnly
      */
-    void setReadOnly(boolean readOnly);
+    void setReadOnly(Boolean readOnly);
 
     /**
      * Indicates whether the component is required

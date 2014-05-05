@@ -90,6 +90,21 @@ public class Inquiry extends WidgetBase {
     }
 
     /**
+     * Inherits readOnly from parent if not explicitly populated.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+        
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -105,7 +120,7 @@ public class Inquiry extends WidgetBase {
 
         // used to determine whether a normal or direct inquiry should be enabled
         if (parent instanceof Component) {
-            setParentReadOnly(((Component) parent).isReadOnly());
+            setParentReadOnly(((Component) parent).getReadOnly());
         }
 
         // Do checks for inquiry when read only

@@ -221,6 +221,19 @@ public class GroupBase extends ContainerBase implements Group {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+     
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
+    }
+
+    /**
      * Sets the section boolean to true if this group has a rendering header with text
      *
      * {@inheritDoc}

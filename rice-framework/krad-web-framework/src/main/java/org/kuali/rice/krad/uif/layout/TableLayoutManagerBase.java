@@ -170,7 +170,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     public void performInitialization(Object model) {
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
         
-        if (collectionGroup.isReadOnly()) {
+        if (Boolean.TRUE.equals(collectionGroup.getReadOnly())) {
             getAddLineGroup().setReadOnly(true);
             actionFieldPrototype.setReadOnly(true);
         }
@@ -223,7 +223,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             totalColumns++;
         }
 
-        if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
+        if (collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly())) {
             totalColumns++;
         }
 
@@ -563,11 +563,11 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             this.firstRowFields = lineFields;
         }
 
-        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
         int extraColumns = 0;
         String rowCss = "";
         boolean addLineInTable =
-                collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() && !isSeparateAddLine();
+                collectionGroup.isRenderAddLine() && !Boolean.TRUE.equals(collectionGroup.getReadOnly()) && !isSeparateAddLine();
 
         if (collectionGroup.isHighlightNewItems() && ((UifFormBase) lineBuilderContext.getModel())
                 .isAddedCollectionItem(currentLine)) {
@@ -591,7 +591,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
         lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
-        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, Boolean.TRUE.equals(collectionGroup.getReadOnly()));
 
         // conditionalRowCssClass generation logic, if applicable
         if (conditionalRowCssClasses != null && !conditionalRowCssClasses.isEmpty()) {
@@ -901,7 +901,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         // action fields, since they should span all rows for the line
         int rowCount = calculateNumberOfRows(lineFields);
 
-        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
 
         String idSuffix = collectionGroup.getSubCollectionSuffix();
 
@@ -1027,7 +1027,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         headerLabel.setColSpan(field.getColSpan());
 
         if ((field.getRequired() != null) && field.getRequired().booleanValue()) {
-            headerLabel.setRenderRequiredIndicator(!field.isReadOnly());
+            headerLabel.setRenderRequiredIndicator(!Boolean.TRUE.equals(field.getReadOnly()));
         } else {
             headerLabel.setRenderRequiredIndicator(false);
         }
@@ -1632,7 +1632,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             this.getRowDetailsGroup().setRetrieveViaAjax(true);
         }
         
-        detailsFieldGroup.setReadOnly(collectionGroup.isReadOnly());
+        detailsFieldGroup.setReadOnly(collectionGroup.getReadOnly());
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

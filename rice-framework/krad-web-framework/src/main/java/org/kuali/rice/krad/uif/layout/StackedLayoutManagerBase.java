@@ -161,7 +161,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
         lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
         lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, lineBuilderContext.isAddLine());
-        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, collectionGroup.isReadOnly());
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, Boolean.TRUE.equals(collectionGroup.getReadOnly()));
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
@@ -257,7 +257,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
             LineBuilderContext lineBuilderContext, List<Component> groupFields) {
         List<? extends Component> actions = lineBuilderContext.getLineActions();
 
-        boolean showActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        boolean showActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
         if (!showActions)  {
             return;
         }

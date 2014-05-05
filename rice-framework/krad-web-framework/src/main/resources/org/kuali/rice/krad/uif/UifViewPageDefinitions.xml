@@ -229,7 +229,6 @@
     <property name="instructionalMessage">
       <bean parent="Uif-InstructionalMessage"/>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
     <property name="autoFocus" value="true"/>
     <property name="disclosure.render" value="false"/>
     <property name="help">

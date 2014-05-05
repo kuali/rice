@@ -33,7 +33,6 @@
         <value>uif-field</value>
       </list>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
   <bean id="Uif-FieldBase-withLabel" abstract="true" parent="Uif-FieldBase-withLabel-parentBean"/>
@@ -48,7 +47,6 @@
         parent="Uif-FieldBase-withLabel">
     <property name="template" value="/krad/WEB-INF/ftl/components/field/dataInputField.ftl"/>
     <property name="templateName" value="uif_dataInputField"/>
-    <property name="readOnly" value="true"/>
     <property name="bindingInfo">
       <ref bean="Uif-BindingInfo"/>
     </property>
@@ -84,7 +82,6 @@
         <value>input-group-addon</value>
       </list>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
     <property name="validationMessages">
       <bean parent="Uif-FieldValidationMessages"/>
     </property>

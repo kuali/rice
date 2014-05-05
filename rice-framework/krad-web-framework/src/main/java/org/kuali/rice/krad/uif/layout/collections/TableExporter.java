@@ -97,7 +97,7 @@ public class TableExporter {
 
         int actionColumnIndex = layoutManager.getActionColumnIndex();
         int numberOfColumns = layoutManager.getNumberOfColumns();
-        boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
         boolean renderSelectField = collectionGroup.isIncludeLineSelectionField();
         boolean renderSequenceField = layoutManager.isRenderSequenceField();
 

@@ -36,7 +36,6 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -111,6 +110,21 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     }
 
     /**
+     * Inherits readOnly from parent if not explicitly populated.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+        
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
+    }
+
+    /**
      * The following finalization is performed:
      *
      * <ul>
@@ -125,7 +139,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        if (parent instanceof Component && ((Component) parent).isReadOnly()) {
+        if (parent instanceof Component && Boolean.TRUE.equals(((Component) parent).getReadOnly())) {
             setRender(false);
         }
 

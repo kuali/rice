@@ -289,7 +289,7 @@ public class RichTable extends WidgetBase {
         if (!isDisableTableSort()) {
             // if rendering add line, skip that row from col sorting
             if (collectionGroup.isRenderAddLine()
-                    && !collectionGroup.isReadOnly()
+                    && !Boolean.TRUE.equals(collectionGroup.getReadOnly())
                     && !((layoutManager instanceof TableLayoutManager) && ((TableLayoutManager) layoutManager)
                             .isSeparateAddLine())) {
 
@@ -301,7 +301,7 @@ public class RichTable extends WidgetBase {
 
             int columnIndex = 0;
             int actionIndex = UifConstants.TableLayoutValues.ACTIONS_COLUMN_RIGHT_INDEX;
-            boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+            boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
 
             if (layoutManager instanceof TableLayoutManager) {
                 actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
@@ -542,7 +542,7 @@ public class RichTable extends WidgetBase {
                 List<String> firstRowPropertyNames = getFirstRowPropertyNames(tableLayoutManager.getFirstRowFields());
                 List<String> defaultSortAttributeNames = lookupView.getDefaultSortAttributeNames();
                 String sortDirection = lookupView.isDefaultSortAscending() ? "'asc'" : "'desc'";
-                boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+                boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
                 int actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
                 int columnIndexPrefix = 0;
 
@@ -605,7 +605,7 @@ public class RichTable extends WidgetBase {
     protected String getDataFieldColumnOptions(int target, CollectionGroup collectionGroup, DataField field) {
         String sortType = null;
 
-        if (!collectionGroup.isReadOnly()
+        if (!Boolean.TRUE.equals(collectionGroup.getReadOnly())
                 && (field instanceof InputField)
                 && ((InputField) field).getControl() != null) {
             Control control = ((InputField) field).getControl();

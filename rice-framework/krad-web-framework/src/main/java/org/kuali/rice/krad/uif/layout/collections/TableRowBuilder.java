@@ -327,7 +327,7 @@ public class TableRowBuilder implements Serializable {
          * @return boolean true if actions should be rendered, false if not
          */
         public boolean isRenderActions() {
-            return collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
+            return collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
         }
 
         /**

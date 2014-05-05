@@ -76,7 +76,7 @@ public class CollectionGroupBuilder implements Serializable {
      */
     public void build(View view, Object model, CollectionGroup collectionGroup) {
         // create add line
-        if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly() &&
+        if (collectionGroup.isRenderAddLine() && !Boolean.TRUE.equals(collectionGroup.getReadOnly()) &&
                 !collectionGroup.isRenderAddBlankLineButton()) {
             buildAddLine(view, model, collectionGroup);
         }

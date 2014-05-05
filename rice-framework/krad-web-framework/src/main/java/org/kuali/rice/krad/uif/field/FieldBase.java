@@ -101,6 +101,19 @@ public class FieldBase extends ComponentBase implements Field {
             }
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+     
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
+    }
 
     /**
      * The following finalization is performed:
@@ -124,9 +137,9 @@ public class FieldBase extends ComponentBase implements Field {
                 View view = ViewLifecycle.getView();
                 if (view.getViewTypeName() != null && view.getViewTypeName().equals(
                         UifConstants.ViewType.MAINTENANCE)) {
-                    fieldLabel.setRenderRequiredIndicator(!view.isReadOnly());
+                    fieldLabel.setRenderRequiredIndicator(!Boolean.TRUE.equals(view.getReadOnly()));
                 } else {
-                    fieldLabel.setRenderRequiredIndicator(!isReadOnly());
+                    fieldLabel.setRenderRequiredIndicator(!Boolean.TRUE.equals(getReadOnly()));
                 }
             } else {
                 setRequired(false);

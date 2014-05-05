@@ -309,6 +309,18 @@ public class View extends ContainerBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+        
+        if (getReadOnly() == null) {
+            setReadOnly(false);
+        }
+    }
+
+    /**
      * The following updates are done here:
      *
      * <ul>

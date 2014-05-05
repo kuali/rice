@@ -40,7 +40,6 @@
     <property name="disclosure">
       <bean parent="Uif-Disclosure" p:render="false"/>
     </property>
-    <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
   <!-- group with no layout manager -->

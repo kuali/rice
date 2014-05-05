@@ -138,10 +138,23 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    public void afterEvaluateExpression() {
+        // set to true before calling super.
+        if (getReadOnly() == null) {
+            setReadOnly(true);
+        }
+        
+        super.afterEvaluateExpression();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
-        if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly()) {
+        if (this.enableAutoInquiry && (this.inquiry == null) && Boolean.TRUE.equals(getReadOnly())) {
             buildAutomaticInquiry(model, false);
         }
 
@@ -182,7 +195,7 @@ public class DataFieldBase extends FieldBase implements DataField {
         String bindingPath = getBindingInfo().getBindingPath();
         Class<?> type = StringUtils.isNotEmpty(bindingPath) ? ObjectPropertyUtils.getPropertyType(model, bindingPath) :
                 null;
-        if (this.isReadOnly() && type != null && List.class.isAssignableFrom(type) && StringUtils.isBlank(
+        if (Boolean.TRUE.equals(this.getReadOnly()) && type != null && List.class.isAssignableFrom(type) && StringUtils.isBlank(
                 getReadOnlyDisplayReplacement()) && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())) {
             //get the list
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
@@ -354,7 +367,7 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
 
         // if not read only, return without trying to set alternate and additional values
-        if (!isReadOnly()) {
+        if (!Boolean.TRUE.equals(getReadOnly())) {
             return;
         }
 
@@ -1033,7 +1046,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      */
     @Override
     public boolean isRenderFieldset() {
-        return (!this.isReadOnly()
+        return (!Boolean.TRUE.equals(this.getReadOnly())
                 && inquiry != null
                 && inquiry.isRender()
                 && inquiry.getInquiryLink() != null

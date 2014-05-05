@@ -103,7 +103,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private String methodToCallOnRefresh;
 
     private boolean hidden;
-    private boolean readOnly;
+    private Boolean readOnly;
     private Boolean required;
 
     private String align;
@@ -386,6 +386,15 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
             this.setRender(progRenderEval);
         }
+    }
+
+    /**
+     * No-op impelemtnation.  Override for custom behavior in subclasses.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
     }
 
     /**
@@ -698,7 +707,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @BeanTagAttribute(name = "readOnly")
     @Override
-    public boolean isReadOnly() {
+    public Boolean getReadOnly() {
         return this.readOnly;
     }
 
@@ -706,7 +715,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * {@inheritDoc}
      */
     @Override
-    public void setReadOnly(boolean readOnly) {
+    public void setReadOnly(Boolean readOnly) {
         checkMutable(true);
         this.readOnly = readOnly;
     }

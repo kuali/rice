@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 
 /**
  * Base component class for content elements.
@@ -34,6 +36,21 @@ public abstract class ContentElementBase extends ComponentBase implements Conten
     @Override
     public String getComponentTypeName() {
         return "element";
+    }
+
+    /**
+     * Inherits read-only from the parent component if not explicitly populated.
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public void afterEvaluateExpression() {
+        super.afterEvaluateExpression();
+        
+        if (getReadOnly() == null) {
+            Component parent = ViewLifecycle.getPhase().getParent();
+            setReadOnly(parent == null ? null : parent.getReadOnly());
+        }
     }
 
 

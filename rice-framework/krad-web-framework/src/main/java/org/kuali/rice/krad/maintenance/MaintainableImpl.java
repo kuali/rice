@@ -711,7 +711,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
         if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
             // The field is restricted if it is hidden or read only
-            boolean isRestricted = field.isHidden() || field.isReadOnly() || field.isApplyMask();
+            boolean isRestricted = field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || field.isApplyMask();
 
             // If just the field (not its containing line) is restricted, clear it out and apply default values
             if (isRestricted && !isLineRestricted(field)) {

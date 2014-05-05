@@ -22,7 +22,7 @@
 
   <bean id="Uif-InquiryView" scope="prototype" parent="Uif-InquiryView-parentBean"/>
   <bean id="Uif-InquiryView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.InquiryView" parent="Uif-FormView">
+        class="org.kuali.rice.krad.uif.view.InquiryView" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-inquiryView</value>
@@ -72,7 +72,7 @@
   <bean id="Uif-InquiryFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="export" p:actionLabel="Export"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="export" p:actionLabel="Export"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"
               p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"

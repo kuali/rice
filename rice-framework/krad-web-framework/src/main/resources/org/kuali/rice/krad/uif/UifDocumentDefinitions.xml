@@ -22,7 +22,7 @@
 
   <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean"/>
   <bean id="Uif-DocumentView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView">
+        class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-documentView</value>
@@ -122,7 +122,7 @@
                   <bean parent="Uif-FileControl" p:size="15"/>
                 </property>
               </bean>
-              <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="cancelAttachment"
+              <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="cancelAttachment"
                     p:actionLabel="Cancel" p:title="Cancel Attachment"/>
             </list>
           </property>
@@ -132,7 +132,7 @@
                     p:condition="@{!#isAddLine and #line.attachment != null and #line.attachment.complete}">
                 <property name="replacement">
                   <list>
-                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadAttachment"
+                    <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="downloadAttachment"
                           p:ajaxSubmit="false"
                           p:actionLabel="Download Attachment" p:title="Download Attachment"
                           p:disableBlocking="true"
@@ -172,13 +172,13 @@
     <property name="validationMessages.additionalKeysToMatch" value="attachmentFile"/>
     <property name="addLineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="insertNote" p:actionLabel="Add" p:title="Add a Note"/>
+        <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="insertNote" p:actionLabel="Add" p:title="Add a Note"/>
       </list>
     </property>
     <property name="lineActions">
       <list>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="deleteNote" p:actionLabel="Delete" p:title="Delete a Note"/>
-        <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="Send"
+        <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteNote" p:actionLabel="Delete" p:title="Delete a Note"/>
+        <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="Send"
               p:title="Send FYI"
               p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
       </list>
@@ -286,31 +286,44 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="copy" p:actionLabel="Copy"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="Route Report"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="Route Report"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="Send Adhoc"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="Send Adhoc"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="fyi" p:actionLabel="FYI"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="fyi" p:actionLabel="FYI"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_FYI]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="acknowledge" p:actionLabel="Acknowledge"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="acknowledge" p:actionLabel="Acknowledge"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="Blanket Approve" p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="disapprove" p:actionLabel="Disapprove"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="blanketApprove" p:actionLabel="Blanket Approve"
+              p:performClientSideValidation="true"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}">
+          <property name="confirmationDialog">
+            <bean id="ConfirmBlanketApproveDialog" parent="Uif-DialogGroup-OkCancel"
+                  p:promptText="Are you sure you want to blanket approve this and make the document final?"/>
+          </property>
+        </bean>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="disapprove" p:actionLabel="Disapprove"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}">
           <property name="confirmationDialog">
             <bean id="DisapproveExplanationDialog" parent="Uif-DialogGroup-OkCancelExpl"
                   p:promptText="Please provide an explanation for this action:"/>
           </property>
         </bean>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="approve" p:actionLabel="Approve" p:performClientSideValidation="true"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="approve" p:actionLabel="Approve"
+              p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="Reload"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="reload" p:actionLabel="Reload"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
-        <bean parent="Uif-SaveAction"
+        <bean parent="Uif-SaveAction-Secondary"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="Submit" p:performClientSideValidation="true"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="Submit"
+              p:performClientSideValidation="true"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
+          <property name="confirmationDialog">
+            <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup-OkCancel"
+                  p:promptText="Are you sure you want to submit this document and send it into routing?"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

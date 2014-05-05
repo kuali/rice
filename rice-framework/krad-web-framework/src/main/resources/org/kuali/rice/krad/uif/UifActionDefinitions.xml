@@ -25,7 +25,11 @@
         p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
         p:loadingMessageText="Saving..." p:clearDirtyOnAction="true" p:id="usave"/>
 
-  <bean id="Uif-BackAction" parent="Uif-SecondaryActionButton" p:methodToCall="back"
+  <bean id="Uif-SaveAction-Secondary" parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"
+        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
+        p:loadingMessageText="Saving..." p:clearDirtyOnAction="true" p:id="usave"/>
+
+  <bean id="Uif-BackAction" parent="Uif-PrimaryActionButton" p:methodToCall="back"
         p:actionLabel="&lt; Back" p:performDirtyValidation="true"/>
 
   <bean id="Uif-CancelAction" parent="Uif-SecondaryActionButton" p:methodToCall="cancel"
@@ -34,7 +38,7 @@
   <bean id="Uif-CheckFormAction" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
         p:actionLabel="Check Form" p:loadingMessageText="Checking Form..." p:id="ucheck"/>
 
-  <bean id="Uif-AddLineAction-parentBean" abstract="true" parent="Uif-PrimaryActionButton-Small"
+  <bean id="Uif-AddLineAction-parentBean" abstract="true" parent="Uif-SecondaryActionButton-Mini"
         p:methodToCall="addLine" p:actionLabel="Add"
         p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:focusOnIdAfterSubmit="LINE_FIRST"
         p:performClientSideValidation="true" p:dirtyOnAction="true" p:id="@{#collectionGroup.id}_add"
@@ -51,7 +55,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine"
+  <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteLine"
         p:actionLabel="Delete"
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
         p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
@@ -60,7 +64,7 @@
 
   <bean id="Uif-DeleteLineAction-IconOnly" parent="Uif-DeleteLineAction" p:actionLabel="" p:iconClass="icon-close"/>
 
-  <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Small" p:methodToCall="saveLine" p:actionLabel="Save"
+  <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="saveLine" p:actionLabel="Save"
         p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
         p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save"
         p:onClickScript="writeCurrentPageToSession(this);">
@@ -73,12 +77,12 @@
 
   <bean id="Uif-SaveLineAction-IconOnly" parent="Uif-SaveLineAction" p:actionLabel="" p:iconClass="icon-disk"/>
 
-  <bean id="Uif-AddBlankLineAction" parent="Uif-PrimaryActionButton-Small" p:methodToCall="addBlankLine"
+  <bean id="Uif-AddBlankLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="addBlankLine"
         p:actionLabel="Add Line" p:actionEvent="addBlankLine" p:id="@{#collectionGroup.id}_add"/>
 
-  <bean id="Uif-AddWithDialogAction" parent="Uif-PrimaryActionButton-Small" p:actionLabel="Add Line"/>
+  <bean id="Uif-AddWithDialogAction" parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Add Line"/>
 
-  <bean id="Uif-ToggleRowDetailsAction" parent="Uif-SecondaryActionButton-Small" p:actionLabel="Open/Close Row Details"
+  <bean id="Uif-ToggleRowDetailsAction" parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Open/Close Row Details"
         p:actionScript="toggleRowDetails(this);"/>
 
   <bean id="Uif-ExpandDetailsAction" parent="Uif-ActionLink" p:actionLabel="Details">
@@ -134,13 +138,13 @@
     </property>
   </bean>
 
-  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
+  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Mini"
         p:actionScript="expandDisclosures();" p:actionLabel="Expand All"/>
 
-  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small"
+  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Mini"
         p:actionScript="collapseDisclosures();" p:actionLabel="Collapse All"/>
 
-  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Mini"
         p:methodToCall="refresh" p:actionLabel="show inactive" p:refreshId="@{#collectionGroup.id}"
         p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', true);return true;">
     <property name="cssClasses">
@@ -150,7 +154,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small"
+  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Mini"
         p:methodToCall="refresh" p:actionLabel="Hide Inactive" p:refreshId="@{#collectionGroup.id}"
         p:preSubmitCall="setComponentState('@{#collectionGroup.id}','inactive', false);return true;">
     <property name="cssClasses">

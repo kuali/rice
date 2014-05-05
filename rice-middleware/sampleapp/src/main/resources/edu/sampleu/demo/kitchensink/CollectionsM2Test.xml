@@ -57,7 +57,7 @@
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="layoutManager.separateAddLine" value="true"/>
-    <property name="addViaLightBox" value="true"/>
+    <property name="addWithDialog" value="true"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"
@@ -118,7 +118,7 @@
     <property name="renderSaveLineActions" value="true"/>
     <property name="layoutManager.summaryTitle" value="Line Summary"/>
     <property name="layoutManager.summaryFields" value="field1"/>
-    <property name="addViaLightBox" value="true"/>
+    <property name="addWithDialog" value="true"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"

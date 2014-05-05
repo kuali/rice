@@ -42,7 +42,7 @@
       <classicKnsTheme-bean/>
     </theme>
   </formView-bean>
-  <disclosure-tableCollectionSection-bean addViaLightBox="true"
+  <disclosure-tableCollectionSection-bean addWithDialog="true"
                                           collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
                                           headertext="Collection With Add Via Lightbox"
                                           id="CollectionsM2Test-collectionTest5"
@@ -72,7 +72,7 @@
   <collectionGroup-bean addLinePlacement="BOTTOM" headertext="Collection With Add Blank Line Button (BOTTOM)"
                         id="CollectionsM2Test-collectionTest3" parent="CollectionsM2Test-collectionTest"
                         propertyName="list2" renderSaveLineActions="true"/>
-  <disclosure-stackedCollectionSection-bean addViaLightBox="true"
+  <disclosure-stackedCollectionSection-bean addWithDialog="true"
                                             collectionObjectClass="edu.sampleu.demo.kitchensink.UITestObject"
                                             headertext="Collection With Add Via Lightbox"
                                             id="CollectionsM2Test-collectionTest2" layoutManager.summaryFields="field1"

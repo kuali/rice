@@ -22,7 +22,7 @@
 
   <bean id="Uif-LookupView" parent="Uif-LookupView-parentBean"/>
   <bean id="Uif-LookupView-parentBean" abstract="true"
-        class="org.kuali.rice.krad.lookup.LookupView" parent="Uif-FormView">
+        class="org.kuali.rice.krad.lookup.LookupView" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-lookupView</value>
@@ -83,7 +83,7 @@
               p:refreshId="uLookupCriteria" p:render="@{!displayResults}" p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
               p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"
-              p:render="@{!displayResults}"/>
+              p:render="@{!displayResults}" p:defaultEnterKeyAction="true"/>
       </list>
     </property>
   </bean>
@@ -232,10 +232,10 @@
               p:render="@{!#form.renderedInLightBox}"/>
         <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
-              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"/>
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}" p:defaultEnterKeyAction="true"/>
       </list>
     </property>
   </bean>

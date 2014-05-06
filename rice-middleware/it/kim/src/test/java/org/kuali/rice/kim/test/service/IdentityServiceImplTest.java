@@ -207,7 +207,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
     }
 
     @Test
-    public void testEntityUpdate() {
+    public void testUpdateEntity() {
         Principal principal = identityService.getPrincipal("p1");
         Entity entity = identityService.getEntity(principal.getEntityId());
         assertNotNull("Entity Must not be null", entity);

@@ -45,7 +45,7 @@ import java.util.Properties;
 @Table(name="KRNS_NTE_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_NTE_TC0",columnNames="OBJ_ID")
 })
-public class Note extends PersistableBusinessObjectBase {
+public class Note extends PersistableBusinessObjectBaseAdapter {
     private static final long serialVersionUID = -7647166354016356770L;
 
     @Id
@@ -387,6 +387,8 @@ public class Note extends PersistableBusinessObjectBase {
             return UrlFactory.parameterizeUrl(KRADConstants.INQUIRY_ACTION, params);
         }
     }
+    
+    public void refresh() {};
 }
 
 

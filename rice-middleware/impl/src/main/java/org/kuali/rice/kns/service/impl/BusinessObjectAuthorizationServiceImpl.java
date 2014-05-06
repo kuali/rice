@@ -352,7 +352,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 
 	protected void considerInquiryOrMaintenanceDocumentPresentationController(
 			InquiryOrMaintenanceDocumentPresentationController businessObjectPresentationController,
-			BusinessObject businessObject,
+			Object businessObject,
 			InquiryOrMaintenanceDocumentRestrictions inquiryOrMaintenanceDocumentRestrictions) {
 		for (String attributeName : businessObjectPresentationController
 				.getConditionallyHiddenPropertyNames(businessObject)) {
@@ -368,7 +368,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 
 	protected void considerInquiryOrMaintenanceDocumentAuthorizer(
 			InquiryOrMaintenanceDocumentAuthorizer authorizer,
-			BusinessObject businessObject, Person user,
+			Object businessObject, Person user,
 			InquiryOrMaintenanceDocumentRestrictions restrictions) {
 		for (String sectionId : authorizer
 				.getSecurePotentiallyHiddenSectionIds()) {

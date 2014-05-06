@@ -39,7 +39,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 @Table(name="KRNS_ATT_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_ATT_TC0",columnNames="OBJ_ID")
 })
-public class Attachment extends PersistableBusinessObjectBase {
+public class Attachment extends PersistableBusinessObjectBaseAdapter {
 	private static final long serialVersionUID = 402432724949441326L;
 
     @Id

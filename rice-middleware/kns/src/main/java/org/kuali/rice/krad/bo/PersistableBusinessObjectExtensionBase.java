@@ -15,14 +15,18 @@
  */
 package org.kuali.rice.krad.bo;
 
+import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
 /**
  * @deprecated use {@link org.kuali.rice.krad.data.provider.annotation.ExtensionFor annotation instead}
  */
 @Deprecated
+@MappedSuperclass
 public class PersistableBusinessObjectExtensionBase extends
 		PersistableBusinessObjectBase implements
 		PersistableBusinessObjectExtension {
 
+    @Embeddable
+    private static final class WeaveMe extends PersistableBusinessObjectExtensionBase {}
 }

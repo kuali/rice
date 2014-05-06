@@ -15,12 +15,7 @@
  */
 package org.kuali.rice.krad.document.authorization;
 
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +23,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Timestamp;
+
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * This is a business object used to lock a document pessimistically.
@@ -41,7 +42,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="KRNS_PESSIMISTIC_LOCK_T")
-public class PessimisticLock extends PersistableBusinessObjectBase {
+public class PessimisticLock extends DataObjectBase {
     
     private static final long serialVersionUID = -5210762282545093555L;
     

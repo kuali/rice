@@ -31,18 +31,18 @@
     <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
     <!-- @MappedSuperclass - use the "WeaveMe" @Embeddable class on each of those so that EclipseLink will weave them -->
     <class>org.kuali.rice.krad.bo.DataObjectBase$WeaveMe</class>
-    <class>org.kuali.rice.krad.bo.GlobalBusinessObjectDetailBase$WeaveMe</class>
-    <class>org.kuali.rice.krad.bo.InactivatableFromToImpl$WeaveMe</class>
-    <class>org.kuali.rice.krad.bo.KualiCodeBase$WeaveMe</class>
     <class>org.kuali.rice.krad.bo.PersistableAttachmentBase$WeaveMe</class>
-    <class>org.kuali.rice.krad.bo.PersistableBusinessObjectBase$WeaveMe</class>
     <!-- @Entity -->
     <class>org.kuali.rice.krad.bo.AdHocRoutePerson</class>
     <class>org.kuali.rice.krad.bo.AdHocRouteRecipient</class>
+    <class>org.kuali.rice.krad.bo.AdHocRouteWorkgroup</class>
     <class>org.kuali.rice.krad.bo.Attachment</class>
     <class>org.kuali.rice.krad.bo.DocumentHeader</class>
+    <class>org.kuali.rice.krad.bo.DocumentAttachment</class>
+    <class>org.kuali.rice.krad.bo.MultiDocumentAttachment</class>
     <class>org.kuali.rice.krad.bo.Note</class>
     <class>org.kuali.rice.krad.bo.NoteType</class>
+    <class>org.kuali.rice.krad.bo.SessionDocument</class>
     <class>org.kuali.rice.krad.document.authorization.PessimisticLock</class>
     <class>org.kuali.rice.krad.maintenance.MaintenanceLock</class>
   </persistence-unit>

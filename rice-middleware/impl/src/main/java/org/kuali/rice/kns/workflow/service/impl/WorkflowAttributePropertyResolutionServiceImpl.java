@@ -88,7 +88,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param group the DocumentValuePathGroup which tells us which values we want
      * @return a List of Map<String, String>s
      */
-    protected List<Map<String, String>> resolveDocumentValuePath(BusinessObject businessObject, DocumentValuePathGroup group, RoutingAttributeTracker routingAttributeTracker) {
+    protected List<Map<String, String>> resolveDocumentValuePath(Object businessObject, DocumentValuePathGroup group, RoutingAttributeTracker routingAttributeTracker) {
         List<Map<String, String>> qualifiers;
         Map<String, String> qualifier = new HashMap<String, String>();
         if (group.getDocumentValues() == null && group.getDocumentCollectionPath() == null) {
@@ -116,7 +116,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param collectionPath the information about what values to pull from each element of the collection
      * @return a List of Map<String, String>s
      */
-    protected List<Map<String, String>> resolveDocumentCollectionPath(BusinessObject businessObject, DocumentCollectionPath collectionPath, RoutingAttributeTracker routingAttributeTracker) {
+    protected List<Map<String, String>> resolveDocumentCollectionPath(Object businessObject, DocumentCollectionPath collectionPath, RoutingAttributeTracker routingAttributeTracker) {
         List<Map<String, String>> qualifiers = new ArrayList<Map<String, String>>();
         final Collection collectionByPath = getCollectionByPath(businessObject, collectionPath.getCollectionPath());
         if (!ObjectUtils.isNull(collectionByPath)) {
@@ -158,7 +158,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @param collectionPath the path to that collection
      * @return hopefully, a collection of objects
      */
-    protected Collection getCollectionByPath(BusinessObject businessObject, String collectionPath) {
+    protected Collection getCollectionByPath(Object businessObject, String collectionPath) {
         return (Collection)getPropertyByPath(businessObject, collectionPath.trim());
     }
     

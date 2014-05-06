@@ -35,7 +35,6 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
@@ -58,9 +57,9 @@ import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.MaintenanceDocumentView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.view.MaintenanceDocumentView;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
@@ -172,16 +171,16 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         return KRADServiceLocatorWeb.getLegacyDataAdapter().isLockable(getDataObject());
     }
 
-    /**
-     * Returns the data object if its persistable, null otherwise.
-     *
-     * @deprecated this method has been left for compatibility reasons, use getDataObject instead.
-     */
-    @Override
-    @Deprecated // Uses KNS Classes
-    public PersistableBusinessObject getPersistableBusinessObject() {
-        return KRADServiceLocatorWeb.getLegacyDataAdapter().toPersistableBusinessObject(getDataObject());
-    }
+//    /**
+//     * Returns the data object if its persistable, null otherwise.
+//     *
+//     * @deprecated this method has been left for compatibility reasons, use getDataObject instead.
+//     */
+//    @Override
+//    @Deprecated // Uses KNS Classes
+//    public PersistableBusinessObject getPersistableBusinessObject() {
+//        return KRADServiceLocatorWeb.getLegacyDataAdapter().toPersistableBusinessObject(getDataObject());
+//    }
 
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#getMaintenanceAction
@@ -838,5 +837,10 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     public void setKualiRuleService(KualiRuleService kualiRuleService) {
         this.kualiRuleService = kualiRuleService;
+    }
+
+    @Override
+    public Object getPersistableBusinessObject() {
+        return getDataObject();
     }
 }

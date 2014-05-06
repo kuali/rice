@@ -412,7 +412,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     protected List<DocumentAttribute> findAllDocumentAttributesForGlobalBusinessObject(GlobalBusinessObject globalBO) {
         List<DocumentAttribute> searchValues = new ArrayList<DocumentAttribute>();
 
-        for (PersistableBusinessObject bo : globalBO.generateGlobalChangesToPersist()) {
+        for (Object bo : globalBO.generateGlobalChangesToPersist()) {
             DocumentAttribute value = generateSearchableAttributeFromChange(bo);
             if (value != null) {
                 searchValues.add(value);
@@ -422,7 +422,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         return searchValues;
     }
 
-    protected DocumentAttribute generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
+    protected DocumentAttribute generateSearchableAttributeFromChange(Object changeToPersist) {
         List<String> primaryKeyNames = KRADServiceLocatorWeb.getLegacyDataAdapter().listPrimaryKeyFieldNames(changeToPersist.getClass());
 
         for (Object primaryKeyNameAsObject : primaryKeyNames) {
@@ -432,7 +432,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             if (value != null) {
                 final WorkflowAttributePropertyResolutionService propertyResolutionService = KNSServiceLocator
                         .getWorkflowAttributePropertyResolutionService();
-                DocumentAttribute saValue = propertyResolutionService.buildSearchableAttribute(changeToPersist.getClass(), primaryKeyName, value);
+                DocumentAttribute saValue = propertyResolutionService.buildSearchableAttribute((Class)changeToPersist.getClass(), primaryKeyName, value);
                 return saValue;
             }
         }

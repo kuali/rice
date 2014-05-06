@@ -26,6 +26,17 @@
   </parent>
   <artifactId>rice-kns</artifactId>
 
+  <build>
+  	<plugins>
+	  <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
+      <plugin>
+        <groupId>au.com.alderaan</groupId>
+        <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+      </plugin>
+  	
+  	</plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -122,6 +133,12 @@
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

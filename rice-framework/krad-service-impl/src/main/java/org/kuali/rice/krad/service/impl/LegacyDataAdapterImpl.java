@@ -21,11 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.LegacyUtils;
@@ -196,11 +194,6 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
-        return selectAdapter(object).toPersistableBusinessObject(object);
-    }
-
-    @Override
     public void materializeAllSubObjects(Object object) {
         selectAdapter(object).materializeAllSubObjects(object);
     }
@@ -211,13 +204,13 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public PersistableBusinessObjectExtension getExtension(
-            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public Object getExtension(
+            Class<?> businessObjectClass) throws InstantiationException, IllegalAccessException {
         return selectAdapter(businessObjectClass).getExtension(businessObjectClass);
     }
 
     @Override
-    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+    public void refreshReferenceObject(Object businessObject, String referenceObjectName) {
         selectAdapter(businessObject).refreshReferenceObject(businessObject, referenceObjectName);
     }
 

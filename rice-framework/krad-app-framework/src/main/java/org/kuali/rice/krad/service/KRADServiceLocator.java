@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.service;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 
 /**
  * Service locator for the KRAD App Module
@@ -45,8 +45,8 @@ public class KRADServiceLocator {
     public static final String DATA_OBJECT_SERVICE = "dataObjectService";
     public static final String METADATA_REPOSITORY = "metadataRepository";
     public static final String PROVIDER_REGISTRY = "providerRegistry";
-    public static final String LEGACY_DATA_ADAPTER_FRAMEWORK = "legacyAppFrameworkAdapter";
     public static final String KRAD_APPLICATION_DATA_SOURCE = "kradApplicationDataSource";
+    public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -55,7 +55,6 @@ public class KRADServiceLocator {
     public static AttachmentService getAttachmentService() {
         return getService(ATTACHMENT_SERVICE);
     }
-
 
     public static NoteService getNoteService() {
         return getService(NOTE_SERVICE);
@@ -97,11 +96,6 @@ public class KRADServiceLocator {
         return (InactivateableFromToService) getService(INACTIVATEABLE_FROM_TO_SERVICE);
     }
 
-    public static LegacyAppFrameworkAdapterService getLegacyAppFrameworkAdapterService(){
-        return (LegacyAppFrameworkAdapterService) getService(LEGACY_DATA_ADAPTER_FRAMEWORK);
-    }
-
-
     public static DataObjectService getDataObjectService() {
         return getService(DATA_OBJECT_SERVICE);
     }
@@ -116,6 +110,17 @@ public class KRADServiceLocator {
 
     public static DataSource getKradApplicationDataSource() {
         return getService(KRAD_APPLICATION_DATA_SOURCE);
+    }
+
+    /**
+     * Returns the legacy data adapter for handling legacy KNS and KRAD data and metadata.
+     *
+     * @return the legacy data adapter
+     * @deprecated application code should never use this! Always use KRAD code directly.
+     */
+    @Deprecated
+    public static LegacyDataAppAdapter getLegacyDataAdapter() {
+        return getService(LEGACY_DATA_ADAPTER);
     }
 
 }

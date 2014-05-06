@@ -21,6 +21,7 @@ import org.apache.ojb.broker.PersistenceBrokerAware;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
 import org.kuali.rice.krad.util.LegacyDataFramework;
@@ -37,6 +38,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -354,7 +356,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
      */
     @Deprecated
     protected static LegacyAppFrameworkAdapterService getLegacyDataAdapter() {
-        return KRADServiceLocator.getLegacyAppFrameworkAdapterService();
+        return KNSServiceLocator.getLegacyAppFrameworkAdapterService();
     }
 
 }

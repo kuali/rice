@@ -25,7 +25,10 @@ import javax.persistence.MappedSuperclass;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public class PersistableAttachmentBase extends PersistableBusinessObjectBase implements PersistableAttachment {
+public class PersistableAttachmentBase extends PersistableBusinessObjectBaseAdapter implements PersistableAttachment {
+
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * EclipseLink static weaving does not weave MappedSuperclass unless an Entity or Embedded is

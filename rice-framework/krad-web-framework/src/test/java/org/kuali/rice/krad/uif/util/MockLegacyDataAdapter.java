@@ -24,8 +24,6 @@ import java.util.Map;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder.Builder;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -300,13 +298,13 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
         return false;
     }
 
-    /**
-     * @see org.kuali.rice.krad.service.LegacyDataAdapter#toPersistableBusinessObject(java.lang.Object)
-     */
-    @Override
-    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
-        return null;
-    }
+//    /**
+//     * @see org.kuali.rice.krad.service.LegacyDataAdapter#toPersistableBusinessObject(java.lang.Object)
+//     */
+//    @Override
+//    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
+//        return null;
+//    }
 
     /**
      * @see org.kuali.rice.krad.service.LegacyDataAdapter#materializeAllSubObjects(java.lang.Object)
@@ -327,8 +325,8 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
      * @see org.kuali.rice.krad.service.LegacyDataAdapter#getExtension(java.lang.Class)
      */
     @Override
-    public PersistableBusinessObjectExtension getExtension(
-            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public Object getExtension(
+            Class<?> businessObjectClass) throws InstantiationException, IllegalAccessException {
         return null;
     }
 
@@ -337,7 +335,7 @@ public class MockLegacyDataAdapter implements LegacyDataAdapter {
      * java.lang.String)
      */
     @Override
-    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+    public void refreshReferenceObject(Object businessObject, String referenceObjectName) {
     }
 
     /**

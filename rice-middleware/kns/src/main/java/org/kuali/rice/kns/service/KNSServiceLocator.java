@@ -24,6 +24,7 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.DocumentHeaderService;
 import org.kuali.rice.krad.service.KeyValuesService;
+import org.kuali.rice.krad.service.LegacyAppFrameworkAdapterService;
 import org.kuali.rice.krad.service.PersistenceService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.service.SequenceAccessorService;
@@ -65,6 +66,7 @@ public class KNSServiceLocator {
     public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
     public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
     public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
+    public static final String LEGACY_DATA_ADAPTER_FRAMEWORK = "legacyAppFrameworkAdapter";
 
     @Deprecated
     public static <T extends Object> T getService(String serviceName) {
@@ -206,4 +208,7 @@ public class KNSServiceLocator {
         return getService(SEQUENCE_ACCESSOR_SERVICE);
     }
 
+	public static LegacyAppFrameworkAdapterService getLegacyAppFrameworkAdapterService() {
+		return (LegacyAppFrameworkAdapterService) getService(LEGACY_DATA_ADAPTER_FRAMEWORK);
+	}
 }

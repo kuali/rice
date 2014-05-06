@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -29,7 +41,6 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -67,18 +78,6 @@ import org.kuali.rice.krad.util.LegacyUtils;
 import org.springframework.beans.PropertyAccessorUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  *
@@ -513,10 +512,10 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         return dataObjectService.wrap(do1).equalsByPrimaryKey(do2);
     }
 
-    @Override
-    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
-        throw new UnsupportedOperationException("toPersistableBusinessObject not valid for KRAD data operation");
-    }
+//    @Override
+//    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
+//        throw new UnsupportedOperationException("toPersistableBusinessObject not valid for KRAD data operation");
+//    }
 
     @Override
     public void materializeAllSubObjects(Object object) {
@@ -537,8 +536,8 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public PersistableBusinessObjectExtension getExtension(
-            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public Object getExtension(
+            Class<?> businessObjectClass) throws InstantiationException, IllegalAccessException {
         DataObjectMetadata metadata = dataObjectService.getMetadataRepository().getMetadata(businessObjectClass);
         DataObjectRelationship extensionRelationship = metadata.getRelationship("extension");
         if (extensionRelationship != null) {
@@ -549,7 +548,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+    public void refreshReferenceObject(Object businessObject, String referenceObjectName) {
         dataObjectService.wrap(businessObject).fetchRelationship(referenceObjectName);
     }
 

@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.krad.maintenance;
 
-import org.eclipse.persistence.annotations.Index;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.eclipse.persistence.annotations.Index;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
@@ -34,7 +34,7 @@ import javax.persistence.UniqueConstraint;
 @Table(name="KRNS_MAINT_LOCK_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_MAINT_LOCK_TC0",columnNames="OBJ_ID")
 })
-public class MaintenanceLock extends PersistableBusinessObjectBase {
+public class MaintenanceLock extends DataObjectBase {
 
     private static final long serialVersionUID = 7766326835852387301L;
 

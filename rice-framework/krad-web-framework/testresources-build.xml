@@ -33,7 +33,11 @@
 
 	<!-- Define unfiltered test resources -->
 	<target name="krad-unpack-helper" if="krad.unpack.exists.${krad.unpack.artifact}">
-		<unzip src="${krad.unpack.path}" dest="${krad.unpack.out}" />
+		<unzip src="${krad.unpack.path}" dest="${krad.unpack.out}">
+			<patternset>
+				<exclude name="**/*.class"/>
+			</patternset>
+		</unzip>
 	</target>
 	<macrodef name="krad-unpack-rice-artifact">
 		<attribute name="artifact" />

@@ -31,7 +31,7 @@ import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 @Table(name="KRNS_NTE_TYP_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_NTE_TYP_TC0",columnNames="OBJ_ID")
 })
-public class NoteType extends PersistableBusinessObjectBase implements MutableInactivatable {
+public class NoteType extends PersistableBusinessObjectBaseAdapter implements MutableInactivatable {
 	private static final long serialVersionUID = 1L;
 
 	@Id

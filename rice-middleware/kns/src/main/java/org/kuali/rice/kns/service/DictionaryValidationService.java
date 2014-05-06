@@ -55,7 +55,7 @@ public interface DictionaryValidationService extends org.kuali.rice.krad.service
      * @deprecated since 1.1
      */
     @Deprecated
-    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth);
+    public void validateBusinessObjectsRecursively(Object businessObject, int depth);
 
     /**
      * Validates an attribute of a given class for proper min, max length, syntax, and required.

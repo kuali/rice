@@ -192,7 +192,7 @@ public interface BusinessObjectDao {
      * 
      * @param bo
      */
-    public void delete(PersistableBusinessObject bo);
+    public void delete(Object bo);
 
     /**
      * Deletes each business object in the given List from the database.

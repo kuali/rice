@@ -263,7 +263,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
      * @throws DataAccessException
      * @see org.kuali.rice.krad.dao.BusinessObjectDao#delete(org.kuali.rice.krad.bo.PersistableBusinessObject)
      */
-    public void delete(PersistableBusinessObject bo) {
+    public void delete(Object bo) {
         getPersistenceBrokerTemplate().delete(bo);
     }
 

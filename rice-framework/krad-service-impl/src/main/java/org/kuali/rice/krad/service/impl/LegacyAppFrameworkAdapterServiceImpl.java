@@ -59,7 +59,7 @@ public class LegacyAppFrameworkAdapterServiceImpl implements LegacyAppFrameworkA
     @Override
     public PersistableBusinessObjectExtension getExtension(
             Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
-        return getLegacyDataAdapter().getExtension(businessObjectClass);
+        return (PersistableBusinessObjectExtension) getLegacyDataAdapter().getExtension(businessObjectClass);
     }
 
     @Override

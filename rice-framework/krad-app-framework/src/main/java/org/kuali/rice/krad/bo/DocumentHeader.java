@@ -37,7 +37,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 @Table(name="KRNS_DOC_HDR_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_DOC_HDR_TC0",columnNames="OBJ_ID")
 })
-public class DocumentHeader extends PersistableBusinessObjectBase {
+public class DocumentHeader extends PersistableBusinessObjectBaseAdapter {
     private static final long serialVersionUID = 2302690966928882488L;
 
     @Id

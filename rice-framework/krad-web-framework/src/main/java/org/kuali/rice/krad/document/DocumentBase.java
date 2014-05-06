@@ -30,6 +30,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -43,8 +44,7 @@ import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.datadictionary.WorkflowProperties;
@@ -75,7 +75,7 @@ import org.springframework.util.CollectionUtils;
  * @see Document
  */
 @MappedSuperclass
-public abstract class DocumentBase extends PersistableBusinessObjectBase implements Document {
+public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter implements Document {
     private static final long serialVersionUID = 8530945307802647664L;
     private static final Logger LOG = Logger.getLogger(DocumentBase.class);
 
@@ -569,7 +569,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @return Returns the documentBusinessObject.
      */
     @Override
-    public PersistableBusinessObject getNoteTarget() {
+    public GloballyUnique getNoteTarget() {
         return getDocumentHeader();
     }
 
@@ -648,10 +648,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postLoad()
      */
-    @Override
     @PostLoad
     protected void postLoad() {
-        super.postLoad();
         documentHeader = KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderById(documentNumber);
         refreshPessimisticLocks();
     }
@@ -659,7 +657,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * Save the KRAD document header via the document header service.
      */
-    @Override
     @PrePersist
     protected void prePersist() {
         super.prePersist();
@@ -673,10 +670,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#postRemove()
      */
-    @Override
     @PostRemove
     protected void postRemove() {
-        super.postRemove();
         KRADServiceLocatorWeb.getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
     }
 
@@ -784,7 +779,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @deprecated This is a KNS/OJB-related method.  It should not be used on KRAD/JPA-based documents.
      * @see org.kuali.rice.krad.bo.PersistableBusinessObjectBase#refreshReferenceObject(java.lang.String)
      */
-    @Override
     @Deprecated
     public void refreshReferenceObject(String referenceObjectName) {
         if ( StringUtils.equals( referenceObjectName, "documentHeader" ) ) {

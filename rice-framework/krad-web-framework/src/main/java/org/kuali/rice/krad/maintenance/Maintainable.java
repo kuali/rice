@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import java.util.List;
+import java.util.Map;
+
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Provides contract for implementing a maintenance object within the maintenance framework
@@ -99,7 +98,7 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      *
      * @return persistable buisness object
      */
-    public PersistableBusinessObject getPersistableBusinessObject();
+    public Object getPersistableBusinessObject();
 
     /**
      * Returns the type of maintenance action this maintainable has been configured with

@@ -15,12 +15,9 @@
  */
 package org.kuali.rice.krad.bo;
 
-import org.junit.Test;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.krad.util.GlobalVariables;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,7 +26,12 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 
 /**
@@ -175,7 +177,7 @@ public class AttachmentTest extends KRADTestCase {
 			GlobalVariables.setUserSession(new UserSession("quickstart"));
 			
 	        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-			PersistableBusinessObject parentNote = KRADServiceLocator.getNoteService().createNote(dummyNote, dummyAttachment, kualiUser.getPrincipalId());
+			Note parentNote = KRADServiceLocator.getNoteService().createNote(dummyNote, dummyAttachment, kualiUser.getPrincipalId());
 			dummyAttachment = KRADServiceLocator.getAttachmentService().createAttachment( parentNote,
 																					   	 "dummy.txt", 
 																					     "MimeTypeCode",

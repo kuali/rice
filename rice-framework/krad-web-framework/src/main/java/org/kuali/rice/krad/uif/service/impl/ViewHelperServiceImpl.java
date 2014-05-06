@@ -37,7 +37,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -853,7 +853,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void refreshReference(Object parentObject, String referenceObjectName) {
-        if (!(parentObject instanceof PersistableBusinessObject)) {
+        if (!(parentObject instanceof PersistableBusinessObjectBaseAdapter)) {
             LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                     .getName() + ". Class not of type PersistableBusinessObject");
             return;
@@ -870,13 +870,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // refresh via data dictionary mapping
             Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(
                     referenceObjectName);
-            if (!(referenceObject instanceof PersistableBusinessObject)) {
+            if (!(referenceObject instanceof PersistableBusinessObjectBaseAdapter)) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ". Class not of type PersistableBusinessObject");
                 return;
             }
 
-            referenceObject = legacyDataAdapter.retrieve((PersistableBusinessObject) referenceObject);
+            referenceObject = legacyDataAdapter.retrieve(referenceObject);
             if (referenceObject == null) {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ".");

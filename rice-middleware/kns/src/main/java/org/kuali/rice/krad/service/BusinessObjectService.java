@@ -176,7 +176,7 @@ public interface BusinessObjectService {
      * 
      * @param bo
      */
-    public void delete(PersistableBusinessObject bo);
+    public void delete(Object bo);
 
     /**
      * Deletes each business object in the given List.
@@ -214,7 +214,7 @@ public interface BusinessObjectService {
      * @param bo The populated BO (or descendent) instance to be linked & updated
      * 
      */
-    public void linkUserFields(PersistableBusinessObject bo);
+    public void linkUserFields(Object bo);
 
     /**
      * 

@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,11 +33,10 @@ import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
@@ -52,11 +56,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 
 /**
  * Controller for <code>MaintenanceDocumentView</code> screens which operate on
@@ -126,7 +125,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
             Maintainable tmpMaintainable = form.getDocument().getNewMaintainableObject();
             if (tmpMaintainable.getDataObject() instanceof PersistableAttachment) {
                 PersistableAttachment bo = (PersistableAttachment) getLegacyDataAdapter()
-                        .retrieve((PersistableBusinessObject) tmpMaintainable.getDataObject());
+                        .retrieve( tmpMaintainable.getDataObject());
                 if (bo != null) {
                     request.setAttribute("fileName", bo.getFileName());
                 }
@@ -284,7 +283,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
         if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
             PersistableAttachment bo = (PersistableAttachment) getLegacyDataAdapter()
-                    .retrieve((PersistableBusinessObject) document.getNewMaintainableObject().getDataObject());
+                    .retrieve( document.getNewMaintainableObject().getDataObject());
             request.setAttribute("fileName", bo.getFileName());
         }
 

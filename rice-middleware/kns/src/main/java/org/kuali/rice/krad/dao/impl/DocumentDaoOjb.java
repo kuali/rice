@@ -21,6 +21,7 @@ import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.document.Document;
@@ -58,7 +59,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     		LOG.debug( "About to store document: " + document, new Throwable() );
     	}
         Document retrievedDocument = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
-        getOjbCollectionHelper().processCollections(this, document, retrievedDocument);
+        getOjbCollectionHelper().processCollections(this, (PersistableBusinessObject)document, (PersistableBusinessObject)retrievedDocument);
         this.getPersistenceBrokerTemplate().store(document);
         return document;
     }

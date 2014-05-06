@@ -25,7 +25,6 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.eclipse.persistence.annotations.Convert;
 import org.eclipse.persistence.annotations.Index;
 
 /*
@@ -36,7 +35,7 @@ import org.eclipse.persistence.annotations.Index;
 @Table(name="KRNS_SESN_DOC_T",uniqueConstraints= {
         @UniqueConstraint(name="KRNS_SESN_DOC_TC0",columnNames="OBJ_ID")
 })
-public class SessionDocument extends PersistableBusinessObjectBase{
+public class SessionDocument extends DataObjectBase {
 
 	private static final long serialVersionUID = 2866566562262830639L;
 

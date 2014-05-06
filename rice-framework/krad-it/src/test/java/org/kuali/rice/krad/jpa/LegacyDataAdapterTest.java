@@ -72,7 +72,7 @@ public class LegacyDataAdapterTest extends KRADTestCase {
     @Test
     public void testGetExtension() throws Exception {
         Account account = new Account();
-        PersistableBusinessObjectExtension extension = account.getExtension();
+        Object extension = account.getExtension();
         assertNotNull(extension);
         assertTrue(extension instanceof AccountExtension);
 

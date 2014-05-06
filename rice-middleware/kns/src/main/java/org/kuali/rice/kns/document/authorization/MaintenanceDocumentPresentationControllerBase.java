@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Base class for all MaintenanceDocumentPresentationControllers.
@@ -30,21 +29,26 @@ import java.util.Set;
 @Deprecated
 public class MaintenanceDocumentPresentationControllerBase extends DocumentPresentationControllerBase
        implements MaintenanceDocumentPresentationController {
+	private static final long serialVersionUID = 1L;
 
+	@Override
     public boolean canCreate(Class boClass) {
         return KRADServiceLocatorWeb.getDocumentDictionaryService().getAllowsNewOrCopy(
                 KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
     }
 
+    @Override
     public boolean canMaintain(Object dataObject) {
         return true;
     }
 
-    public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
+    @Override
+    public Set<String> getConditionallyHiddenPropertyNames(Object businessObject) {
         return new HashSet<String>();
     }
 
-    public Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject) {
+    @Override
+    public Set<String> getConditionallyHiddenSectionIds(Object businessObject) {
         return new HashSet<String>();
     }
 

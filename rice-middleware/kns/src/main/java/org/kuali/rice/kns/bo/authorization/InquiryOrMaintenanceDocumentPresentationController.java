@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo.authorization;
 
-import org.kuali.rice.krad.bo.BusinessObject;
-
 import java.util.Set;
 
 /**
@@ -24,7 +22,7 @@ import java.util.Set;
  */
 @Deprecated
 public interface InquiryOrMaintenanceDocumentPresentationController {
-	public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject);
+	public Set<String> getConditionallyHiddenPropertyNames(Object businessObject);
 
-	public Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject);
+	public Set<String> getConditionallyHiddenSectionIds(Object businessObject);
 }

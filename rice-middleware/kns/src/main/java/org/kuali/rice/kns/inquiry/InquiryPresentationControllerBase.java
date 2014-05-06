@@ -18,9 +18,6 @@ package org.kuali.rice.kns.inquiry;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.kns.inquiry.InquiryPresentationController;
-import org.kuali.rice.krad.bo.BusinessObject;
-
 /**
  * @deprecated Use {@link org.kuali.rice.krad.inquiry.InquiryViewPresentationControllerBase}.
  */
@@ -31,7 +28,7 @@ public class InquiryPresentationControllerBase implements InquiryPresentationCon
 	 * 
 	 * @return Set of property names that should be hidden
 	 */
-	public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
+	public Set<String> getConditionallyHiddenPropertyNames(Object businessObject) {
 		return new HashSet<String>();
 	}
 
@@ -40,7 +37,7 @@ public class InquiryPresentationControllerBase implements InquiryPresentationCon
 	 * 
 	 * @return Set of section ids that should be hidden
 	 */
-	public Set<String> getConditionallyHiddenSectionIds(BusinessObject businessObject) {
+	public Set<String> getConditionallyHiddenSectionIds(Object businessObject) {
 		return new HashSet<String>();
 	}
 }

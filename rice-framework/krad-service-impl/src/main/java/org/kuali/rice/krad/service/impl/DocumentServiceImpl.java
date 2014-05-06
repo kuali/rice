@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -42,7 +43,6 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
@@ -947,7 +947,7 @@ public class DocumentServiceImpl implements DocumentService {
         note.setNoteText(text);
         note.setNoteTypeCode(document.getNoteType().getCode());
 
-        PersistableBusinessObject bo = document.getNoteTarget();
+        GloballyUnique bo = document.getNoteTarget();
         // TODO gah! this is awful
         Person kualiUser = GlobalVariables.getUserSession().getPerson();
         if (kualiUser == null) {
@@ -1021,14 +1021,14 @@ public class DocumentServiceImpl implements DocumentService {
         if (document.getDocumentHeader().getWorkflowDocument().isDisapproved()) {
             return true;
         }
-        PersistableBusinessObject noteTarget = document.getNoteTarget();
+        GloballyUnique noteTarget = document.getNoteTarget();
         if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
             return false;
         }
         return true;
     }
 
-    private void linkNoteRemoteObjectId(Note note, PersistableBusinessObject noteTarget) {
+    private void linkNoteRemoteObjectId(Note note, GloballyUnique noteTarget) {
         String objectId = noteTarget.getObjectId();
         if (StringUtils.isBlank(objectId)) {
             throw new IllegalStateException(

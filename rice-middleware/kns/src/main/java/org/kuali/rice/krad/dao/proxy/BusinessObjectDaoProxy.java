@@ -90,7 +90,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.krad.dao.BusinessObjectDao#delete(org.kuali.rice.krad.bo.PersistableBusinessObject)
 	 */
-	public void delete(PersistableBusinessObject bo) {
+	public void delete(Object bo) {
 		if (bo != null) {
 			getDao(bo.getClass()).delete(bo);
 		}

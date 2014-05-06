@@ -108,8 +108,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *
      * @return a new Set
      */
-    protected final Set<BusinessObject> newIdentitySet() {
-        return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
+    protected final Set<Object> newIdentitySet() {
+        return java.util.Collections.newSetFromMap(new IdentityHashMap<Object, Boolean>());
     }
 
     /**
@@ -245,8 +245,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
     }
 
-    protected void validateUpdatabableReferencesRecursively(BusinessObject businessObject, int maxDepth,
-            boolean validateRequired, boolean chompLastLetterSFromCollectionName, Set<BusinessObject> processedBOs) {
+    protected void validateUpdatabableReferencesRecursively(Object businessObject, int maxDepth,
+            boolean validateRequired, boolean chompLastLetterSFromCollectionName, Set<Object> processedBOs) {
         // if null or already processed, return
         if (KRADUtils.isNull(businessObject) || processedBOs.contains(businessObject)) {
             return;
@@ -328,7 +328,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.krad.bo.BusinessObject)
      */
     @Override
-    public boolean isBusinessObjectValid(BusinessObject businessObject) {
+    public boolean isBusinessObjectValid(Object businessObject) {
         return isBusinessObjectValid(businessObject, null);
     }
 
@@ -337,7 +337,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * String)
      */
     @Override
-    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
+    public boolean isBusinessObjectValid(Object businessObject, String prefix) {
         final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
@@ -351,7 +351,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @param businessObject - business object to validate
      */
-    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth) {
+    public void validateBusinessObjectsRecursively(Object businessObject, int depth) {
         if (KRADUtils.isNull(businessObject)) {
             return;
         }
@@ -368,7 +368,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.krad.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
      */
     @Override
-    public void validateBusinessObject(BusinessObject businessObject) {
+    public void validateBusinessObject(Object businessObject) {
         validateBusinessObject(businessObject, true);
     }
 
@@ -377,7 +377,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * boolean)
      */
     @Override
-    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
+    public void validateBusinessObject(Object businessObject, boolean validateRequired) {
         if (KRADUtils.isNull(businessObject)) {
             return;
         }
@@ -750,7 +750,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      */
     @Override
     public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
-            BusinessObject newCollectionItem, String collectionName) {
+            Object newCollectionItem, String collectionName) {
         boolean success = true;
         if (StringUtils.isNotBlank(collectionName)) {
             // get a collection of all the referenceDefinitions setup for this object

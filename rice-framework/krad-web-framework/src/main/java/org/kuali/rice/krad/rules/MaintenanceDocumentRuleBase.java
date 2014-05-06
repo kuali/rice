@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.rules;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -28,7 +37,7 @@ import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
@@ -53,20 +62,10 @@ import org.kuali.rice.krad.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.RouteToCompletionUtil;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.util.AutoPopulatingList;
-
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * Contains all of the business rules that are common to all maintenance documents.
@@ -761,7 +760,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         else if (document.isNew()) {
 
             // TODO: when/if we have standard support for DO retrieval, do this check for DO's
-            if (newDataObject instanceof PersistableBusinessObject) {
+            if (newDataObject instanceof PersistableBusinessObjectBaseAdapter) {
 
                 // get a map of the pk field names and values
                 Map<String, ?> newPkFields = getLegacyDataAdapter().getPrimaryKeyFieldValuesDOMDS(newDataObject);
@@ -1178,14 +1177,14 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     public void setupBaseConvenienceObjects(MaintenanceDocument document) {
         // setup oldAccount convenience objects, make sure all possible sub-objects are populated
         oldDataObject = document.getOldMaintainableObject().getDataObject();
-        if (oldDataObject != null && oldDataObject instanceof PersistableBusinessObject) {
-            ((PersistableBusinessObject) oldDataObject).refreshNonUpdateableReferences();
+        if (oldDataObject != null && oldDataObject instanceof PersistableBusinessObjectBaseAdapter) {
+            ((PersistableBusinessObjectBaseAdapter) oldDataObject).refreshNonUpdateableReferences();
         }
 
         // setup newAccount convenience objects, make sure all possible sub-objects are populated
         newDataObject = document.getNewMaintainableObject().getDataObject();
-        if (newDataObject instanceof PersistableBusinessObject) {
-            ((PersistableBusinessObject) newDataObject).refreshNonUpdateableReferences();
+        if (newDataObject instanceof PersistableBusinessObjectBaseAdapter) {
+            ((PersistableBusinessObjectBaseAdapter) newDataObject).refreshNonUpdateableReferences();
         }
 
         dataObjectClass = document.getNewMaintainableObject().getDataObjectClass();

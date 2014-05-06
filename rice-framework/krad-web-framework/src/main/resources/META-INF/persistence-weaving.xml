@@ -30,11 +30,21 @@
     <!-- @MappedSuperclass - use the "WeaveMe" @Embeddable class on each of those so that EclipseLink will weave them -->
     <class>org.kuali.rice.krad.document.TransactionalDocumentBase$WeaveMe</class>
     <!-- @Entity -->
+    <class>org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</class>
+    <class>org.kuali.rice.krad.bo.AdHocRoutePerson</class>
+    <class>org.kuali.rice.krad.bo.AdHocRouteRecipient</class>
     <class>org.kuali.rice.krad.bo.AdHocRouteWorkgroup</class>
+    <class>org.kuali.rice.krad.bo.Attachment</class>
+    <class>org.kuali.rice.krad.bo.DocumentHeader</class>
     <class>org.kuali.rice.krad.bo.DocumentAttachment</class>
     <class>org.kuali.rice.krad.bo.MultiDocumentAttachment</class>
+    <class>org.kuali.rice.krad.bo.Note</class>
+    <class>org.kuali.rice.krad.bo.NoteType</class>
     <class>org.kuali.rice.krad.bo.SessionDocument</class>
-    <class>org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</class>
+    <class>org.kuali.rice.krad.document.authorization.PessimisticLock</class>
+    <class>org.kuali.rice.krad.maintenance.MaintenanceLock</class>
     <class>org.kuali.rice.krad.messages.Message</class>
+    <!-- @Converter references -->
+    <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
   </persistence-unit>
 </persistence>

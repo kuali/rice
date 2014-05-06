@@ -52,7 +52,7 @@ public interface GlobalBusinessObject {
      * @return Returns a List of BusinessObjects that are ready for persisting, with any relevant values changed
      * 
      */
-    public List<PersistableBusinessObject> generateGlobalChangesToPersist();
+    public List generateGlobalChangesToPersist();
 
     /**
      * 
@@ -62,7 +62,7 @@ public interface GlobalBusinessObject {
      * @return A List of BusinessObjects that should be deleted as part of this global maint doc's final processing.
      * 
      */
-    public List<PersistableBusinessObject> generateDeactivationsToPersist();
+    public List generateDeactivationsToPersist();
 
     /**
      * 

@@ -491,14 +491,6 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public PersistableBusinessObject toPersistableBusinessObject(Object object) {
-        if (object instanceof PersistableBusinessObject && isPersistable(object.getClass())) {
-            return (PersistableBusinessObject) object;
-        }
-        throw new IllegalArgumentException("Given object was not a PersistableBusinessObject");
-    }
-
-    @Override
     public void materializeAllSubObjects(Object object) {
         ObjectUtils.materializeAllSubObjects((PersistableBusinessObject) object);
     }
@@ -509,10 +501,10 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public PersistableBusinessObjectExtension getExtension(
-            Class<? extends PersistableBusinessObject> businessObjectClass) throws InstantiationException, IllegalAccessException {
+    public Object getExtension(
+            Class<?> businessObjectClass) throws InstantiationException, IllegalAccessException {
         Class<? extends PersistableBusinessObjectExtension> extensionClass =
-                persistenceStructureService.getBusinessObjectAttributeClass(businessObjectClass, "extension");
+                persistenceStructureService.getBusinessObjectAttributeClass((Class<? extends PersistableBusinessObject>) businessObjectClass, "extension");
         if (extensionClass != null) {
             return extensionClass.newInstance();
         }
@@ -520,7 +512,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
     }
 
     @Override
-    public void refreshReferenceObject(PersistableBusinessObject businessObject, String referenceObjectName) {
+    public void refreshReferenceObject(Object businessObject, String referenceObjectName) {
         if (StringUtils.isNotBlank(referenceObjectName) && !StringUtils.equals(referenceObjectName, "extension")) {
             if (persistenceStructureService.hasReference(businessObject.getClass(), referenceObjectName)
                     || persistenceStructureService.hasCollection(businessObject.getClass(), referenceObjectName)) {

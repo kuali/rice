@@ -21,7 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 
 /**
  * Holds the text and metadata for a message that will be given by the system, including validation
@@ -34,8 +34,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 @Table(name="KRAD_MSG_T",uniqueConstraints= {
         @UniqueConstraint(name="KRAD_MSG_TC0",columnNames="OBJ_ID")
 })
-public class Message extends PersistableBusinessObjectBase {
-
+public class Message extends PersistableBusinessObjectBaseAdapter {
+    private static final long serialVersionUID = -4827946497103099661L;
+    
     @Id
     @Column(name="NMSPC_CD",length=20)
     private String namespaceCode;

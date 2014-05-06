@@ -15,10 +15,33 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.DocumentType;
@@ -31,7 +54,6 @@ import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.datadictionary.WorkflowProperties;
@@ -57,27 +79,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Document class for all maintenance documents which wraps the maintenance object in
@@ -912,13 +913,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void postProcessSave(KualiDocumentEvent event) {
-        if (getNewMaintainableObject().getDataObject() instanceof PersistableBusinessObject) {
-            PersistableBusinessObject bo = (PersistableBusinessObject) getNewMaintainableObject().getDataObject();
-            if (bo instanceof GlobalBusinessObject) {
-                bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
-                // KRAD/JPA - have to change the handle to object to that just saved
-                getNewMaintainableObject().setDataObject(bo);
-            }
+        Object bo = getNewMaintainableObject().getDataObject();
+        if (bo instanceof GlobalBusinessObject) {
+            bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
+            // KRAD/JPA - have to change the handle to object to that just saved
+            getNewMaintainableObject().setDataObject(bo);
         }
 
         //currently only global documents could change the list of what they're affecting during routing,
@@ -950,13 +949,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.krad.document.Document#getNoteTarget()
      */
     @Override
-    public PersistableBusinessObject getNoteTarget() {
+    public GloballyUnique getNoteTarget() {
         if (getNewMaintainableObject() == null) {
             throw new IllegalStateException(
                     "Failed to acquire the note target.  The new maintainable object on this document is null.");
         }
-        if (getNewMaintainableObject().isNotesEnabled()) {
-            return (PersistableBusinessObject) getDocumentDataObject();
+        if (getNewMaintainableObject().isNotesEnabled() && getDocumentDataObject() instanceof GloballyUnique ) {
+            return (GloballyUnique) getDocumentDataObject();
         }
         return super.getNoteTarget();
     }

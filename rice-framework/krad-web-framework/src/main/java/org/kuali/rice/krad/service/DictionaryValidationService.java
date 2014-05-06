@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.bo.BusinessObject;
+import java.beans.PropertyDescriptor;
+
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
@@ -23,8 +24,6 @@ import org.kuali.rice.krad.datadictionary.validation.AttributeValueReader;
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.TransactionalDocument;
-
-import java.beans.PropertyDescriptor;
 
 /**
  * Defines the API for the validating against the data dictionary.
@@ -158,7 +157,7 @@ public interface DictionaryValidationService {
      * @param businessObject - business object to validate
      * @return boolean validOrNot
      */
-    public boolean isBusinessObjectValid(BusinessObject businessObject);
+    public boolean isBusinessObjectValid(Object businessObject);
 
     /**
      * Encapsulates {@link #validateBusinessObject(BusinessObject)} and returns boolean so one
@@ -171,7 +170,7 @@ public interface DictionaryValidationService {
      * @param prefix - error prefix
      * @return boolean valid or not
      */
-    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix);
+    public boolean isBusinessObjectValid(Object businessObject, String prefix);
 
     /**
      * Validates the business object primitive attributes against the data dictionary. Adds errors to the map as they
@@ -182,7 +181,7 @@ public interface DictionaryValidationService {
      * @deprecated since 1.1 - use validate(Object.class) instead
      */
     @Deprecated
-    public void validateBusinessObject(BusinessObject businessObject);
+    public void validateBusinessObject(Object businessObject);
 
     /**
      * Validates the business object primitive attributes against the data dictionary. Adds errors to the map as they
@@ -194,7 +193,7 @@ public interface DictionaryValidationService {
      * @deprecated since 1.1 - use validate(Object.class) instead
      */
     @Deprecated
-    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired);
+    public void validateBusinessObject(Object businessObject, boolean validateRequired);
 
     /**
      * This method examines the populated BusinessObject bo instance passed in for a member named by the referenceName.
@@ -411,7 +410,7 @@ public interface DictionaryValidationService {
      * @return true if all passed existence tests, false if any failed
      */
     public boolean validateDefaultExistenceChecksForNewCollectionItem(TransactionalDocument document,
-            BusinessObject accountingLine, String collectionName);
+            Object newCollectionItem, String collectionName);
 
     /**
      * @deprecated since 1.1

@@ -144,12 +144,12 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 	 * @param shouldSucceed Indicates whether the construction task should succeed or fail.
 	 * @throws Exception
 	 */
-	private void assertExpectedOutcomeOfBOEntryConstruction(Class<? extends BusinessObject> boClass,
-			Class<? extends BusinessObject> boBaseClass, boolean shouldSucceed) throws Exception {
+	private void assertExpectedOutcomeOfBOEntryConstruction(Class<?> boClass,
+			Class<?> boBaseClass, boolean shouldSucceed) throws Exception {
 		// Construct the entry and set the necessary properties.
 		BusinessObjectEntry boEntry = new BusinessObjectEntry();
-		boEntry.setBusinessObjectClass(boClass);
-		boEntry.setBaseBusinessObjectClass(boBaseClass);
+		boEntry.setDataObjectClass(boClass);
+		boEntry.setBaseBusinessObjectClass((Class<? extends BusinessObject>) boBaseClass);
 		boEntry.setObjectLabel(boClass.getSimpleName());
 		// Now attempt to validate these properties.
 		try {

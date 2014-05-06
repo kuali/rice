@@ -584,22 +584,22 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(kradLegacyDataAdapter);
     }
 
-    @Test
-    public void testToPersistableBusinessObject() throws Exception {
-        Object object = newNonLegacyObject();
-        lda.toPersistableBusinessObject(object);
-        verify(kradLegacyDataAdapter).toPersistableBusinessObject(eq(object));
-        verifyZeroInteractions(knsLegacyDataAdapter);
-    }
-
-    @Test
-    public void testToPersistableBusinessObject_Legacy() throws Exception {
-        enableLegacy();
-        Object object = newLegacyObject();
-        lda.toPersistableBusinessObject(object);
-        verify(knsLegacyDataAdapter).toPersistableBusinessObject(eq(object));
-        verifyZeroInteractions(kradLegacyDataAdapter);
-    }
+//    @Test
+//    public void testToPersistableBusinessObject() throws Exception {
+//        Object object = newNonLegacyObject();
+//        lda.toPersistableBusinessObject(object);
+//        verify(kradLegacyDataAdapter).toPersistableBusinessObject(eq(object));
+//        verifyZeroInteractions(knsLegacyDataAdapter);
+//    }
+//
+//    @Test
+//    public void testToPersistableBusinessObject_Legacy() throws Exception {
+//        enableLegacy();
+//        Object object = newLegacyObject();
+//        lda.toPersistableBusinessObject(object);
+//        verify(knsLegacyDataAdapter).toPersistableBusinessObject(eq(object));
+//        verifyZeroInteractions(kradLegacyDataAdapter);
+//    }
 
     @Test
     public void testMaterializeAllSubObjects() throws Exception {

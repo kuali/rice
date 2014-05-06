@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -35,12 +41,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -101,13 +101,13 @@ public class DictionaryValidationServiceImpl extends org.kuali.rice.krad.service
 
     @Override
     @Deprecated
-    public void validateBusinessObject(BusinessObject businessObject) {
+    public void validateBusinessObject(Object businessObject) {
         validateBusinessObject(businessObject, true);
     }
 
     @Override
     @Deprecated
-    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
+    public void validateBusinessObject(Object businessObject, boolean validateRequired) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }

@@ -40,7 +40,7 @@ import org.kuali.rice.kew.api.util.CodeTranslator;
  */
 @SuppressWarnings("deprecation")
 @MappedSuperclass
-public class AdHocRouteRecipient implements Serializable, BusinessObject {
+public class AdHocRouteRecipient implements Serializable {
     private static final long serialVersionUID = -6499610180752232494L;
 
     private static Map<String, String> actionRequestCds = null;
@@ -135,7 +135,6 @@ public class AdHocRouteRecipient implements Serializable, BusinessObject {
         objectId = UUID.randomUUID().toString();
     }
 
-    @Override
     @Deprecated
     public void refresh() {
         // Do nothing - just here since we needed to implement BusinessObject

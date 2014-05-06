@@ -17,6 +17,7 @@ package org.kuali.rice.krad.document;
 
 import java.util.List;
 
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -26,7 +27,6 @@ import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.util.NoteType;
@@ -40,7 +40,7 @@ import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvalua
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface Document extends PersistableBusinessObject {
+public interface Document extends GloballyUnique {
 
     /**
      * This retrieves the standard {@code DocumentHeader} object, which contains standard meta-data about a document.
@@ -256,7 +256,7 @@ public interface Document extends PersistableBusinessObject {
      *
      * @return the PersistableBusinessObject with which notes on this document should be associated
      */
-    PersistableBusinessObject getNoteTarget();
+    GloballyUnique getNoteTarget();
 
     /**
      * Adds the given Note to the document's list of Notes.

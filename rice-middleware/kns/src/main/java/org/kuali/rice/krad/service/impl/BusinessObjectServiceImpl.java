@@ -25,6 +25,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.krad.exception.ReferenceAttributeDoesntExistException;
@@ -192,7 +193,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     }
     @Override
     @Transactional
-    public void delete(PersistableBusinessObject bo) {
+    public void delete(Object bo) {
         businessObjectDao.delete(bo);
     }
 
@@ -324,12 +325,16 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         return referenceBo;
     }
     @Override
-    public void linkUserFields(PersistableBusinessObject bo) {
+    public void linkUserFields(Object bo) {
         if (bo == null) {
             throw new IllegalArgumentException("bo passed in was null");
         }
 
-        bo.linkEditableUserFields();
+        if ( bo instanceof PersistableBusinessObject ) {
+        	((PersistableBusinessObject) bo).linkEditableUserFields();
+        } else if ( bo instanceof PersistableBusinessObjectBaseAdapter ) {
+        	((PersistableBusinessObjectBaseAdapter) bo).linkEditableUserFields();
+        }
 
         linkUserFields( Collections.singletonList( bo ) );
     }

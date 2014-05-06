@@ -46,7 +46,7 @@
         <value>classpath:org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/AdHocRouteWorkgroup.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/Attachment.xml</value>
-        <!-- <value>classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml</value> -->
+        <value>classpath:org/kuali/rice/krad/datadictionary/AttributeReference.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/DataDictionaryBaseTypes.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/DocumentHeader.xml</value>
         <value>classpath:org/kuali/rice/krad/datadictionary/Note.xml</value>

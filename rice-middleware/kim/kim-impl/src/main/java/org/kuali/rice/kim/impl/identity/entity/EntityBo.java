@@ -32,6 +32,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
@@ -59,9 +61,12 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
 @javax.persistence.Entity
 @Cacheable(false)
@@ -153,6 +158,8 @@ public class EntityBo extends DataObjectBase implements EntityContract {
      * @return a EntityBo
      */
     public static EntityBo fromAndUpdate(Entity immutable, EntityBo toUpdate) {
+        String entityId;
+
         if (immutable == null) {
             return null;
         }
@@ -162,74 +169,154 @@ public class EntityBo extends DataObjectBase implements EntityContract {
         }
         bo.active = immutable.isActive();
         bo.id = immutable.getId();
+        if (StringUtils.isBlank(bo.id)) {
+            DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(
+                    KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ENTITY_ID_S);
+            entityId = incrementer.nextStringValue();
+            bo.id = entityId;
+        } else {
+            entityId = bo.id;
+        }
+
         bo.names = new ArrayList<EntityNameBo>();
         if (CollectionUtils.isNotEmpty(immutable.getNames())) {
             for (EntityName name : immutable.getNames()) {
                 bo.names.add(EntityNameBo.from(name));
             }
+
+            for (EntityNameBo nameBo : bo.getNames()) {
+                if (StringUtils.isBlank(nameBo.getEntityId())) {
+                    nameBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.principals = new ArrayList<PrincipalBo>();
         if (CollectionUtils.isNotEmpty(immutable.getPrincipals())) {
             for (Principal principal : immutable.getPrincipals()) {
                 bo.principals.add(PrincipalBo.from(principal));
             }
+
+            for (PrincipalBo principalBo : bo.getPrincipals()) {
+                if (StringUtils.isBlank(principalBo.getEntityId())) {
+                    principalBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
         if (CollectionUtils.isNotEmpty(immutable.getExternalIdentifiers())) {
             for (EntityExternalIdentifier externalId : immutable.getExternalIdentifiers()) {
                 bo.externalIdentifiers.add(EntityExternalIdentifierBo.from(externalId));
             }
+
+            for (EntityExternalIdentifierBo EntityExternalIdentifierBo : bo.getExternalIdentifiers()) {
+                if (StringUtils.isBlank(EntityExternalIdentifierBo.getEntityId())) {
+                    EntityExternalIdentifierBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.affiliations = new ArrayList<EntityAffiliationBo>();
         if (CollectionUtils.isNotEmpty(immutable.getAffiliations())) {
             for (EntityAffiliation affiliation : immutable.getAffiliations()) {
                 bo.affiliations.add(EntityAffiliationBo.from(affiliation));
             }
+
+            for (EntityAffiliationBo entityAffiliationBo : bo.getAffiliations()) {
+                if (StringUtils.isBlank(entityAffiliationBo.getEntityId())) {
+                    entityAffiliationBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.employmentInformation = new ArrayList<EntityEmploymentBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEmploymentInformation())) {
             for (EntityEmployment employment : immutable.getEmploymentInformation()) {
                 bo.employmentInformation.add(EntityEmploymentBo.from(employment));
             }
+            for (EntityEmploymentBo employmentBo : bo.getEmploymentInformation()) {
+                if (StringUtils.isBlank(employmentBo.getEntityId())) {
+                    employmentBo.setEntityId(entityId);
+                }
+
+                EntityAffiliationBo entityAffiliationBo = employmentBo.getEntityAffiliation();
+                if (entityAffiliationBo != null && StringUtils.isBlank(employmentBo.getEntityAffiliationId())) {
+                    DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(
+                            KimImplServiceLocator.getDataSource(), "KRIM_ENTITY_AFLTN_ID_S");
+                    String affiliationId = incrementer.nextStringValue();
+                    employmentBo.setEntityAffiliationId(affiliationId);
+                    entityAffiliationBo.setId(affiliationId);
+                    if (StringUtils.isBlank(entityAffiliationBo.getEntityId())) {
+                        entityAffiliationBo.setEntityId(entityId);
+                    }
+                }
+            }
         }
+
         bo.entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEntityTypeContactInfos())) {
             for (EntityTypeContactInfo entityType : immutable.getEntityTypeContactInfos()) {
                 bo.entityTypeContactInfos.add(EntityTypeContactInfoBo.from(entityType));
             }
         }
+
         if (immutable.getPrivacyPreferences() != null) {
             bo.privacyPreferences = EntityPrivacyPreferencesBo.from(immutable.getPrivacyPreferences());
         }
+
         if (immutable.getBioDemographics() != null) {
             bo.bioDemographics = EntityBioDemographicsBo.from(immutable.getBioDemographics());
         }
+
         bo.citizenships = new ArrayList<EntityCitizenshipBo>();
         if (CollectionUtils.isNotEmpty(immutable.getCitizenships())) {
             for (EntityCitizenship citizenship : immutable.getCitizenships()) {
                 bo.citizenships.add(EntityCitizenshipBo.from(citizenship));
             }
+
+            for (EntityCitizenshipBo citizenshipBo : bo.getCitizenships()) {
+                if (StringUtils.isBlank(citizenshipBo.getEntityId())) {
+                    citizenshipBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.ethnicities = new ArrayList<EntityEthnicityBo>();
         if (CollectionUtils.isNotEmpty(immutable.getEthnicities())) {
             for (EntityEthnicity ethnicity : immutable.getEthnicities()) {
                 bo.ethnicities.add(EntityEthnicityBo.from(ethnicity));
             }
         }
+
         bo.residencies = new ArrayList<EntityResidencyBo>();
         if (CollectionUtils.isNotEmpty(immutable.getResidencies())) {
             for (EntityResidency residency : immutable.getResidencies()) {
                 bo.residencies.add(EntityResidencyBo.from(residency));
             }
+
+            for (EntityResidencyBo entityResidencyBo : bo.getResidencies()) {
+                if (StringUtils.isBlank(entityResidencyBo.getEntityId())) {
+                    entityResidencyBo.setEntityId(entityId);
+                }
+            }
         }
+
         bo.visas = new ArrayList<EntityVisaBo>();
         if (CollectionUtils.isNotEmpty(immutable.getVisas())) {
             for (EntityVisa visa : immutable.getVisas()) {
                 bo.visas.add(EntityVisaBo.from(visa));
             }
+
+            for (EntityVisaBo entityVisaBo : bo.getVisas()) {
+                if (StringUtils.isBlank(entityVisaBo.getEntityId())) {
+                    entityVisaBo.setEntityId(entityId);
+                }
+            }
         }
         bo.setVersionNumber(immutable.getVersionNumber());
         bo.setObjectId(immutable.getObjectId());
+
         return bo;
     }
 

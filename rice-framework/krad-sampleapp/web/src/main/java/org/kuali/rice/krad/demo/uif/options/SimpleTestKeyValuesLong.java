@@ -42,30 +42,25 @@ public class SimpleTestKeyValuesLong extends KeyValuesBase {
     @Override
     public List<KeyValue> getKeyValues() {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        String groupName;
+        String optionName;
+        Integer randomOption;
+        Integer minimum=2;
+        Integer maximum=25;
 
         if (blankOption) {
-            keyValues.add(new ConcreteKeyValue("", ""));
+            keyValues.add(new UifKeyValue("", ""));
         }
-
-        int x = 1;
-        int y =1;
         HashMap<String, Vector<String>> data = new HashMap();
-            while(x<5){
-                data.put((String) "group" + x, new Vector());
-                while(y<5){
-                    data.get((String) "group" + x).add((String) "sub" + y);
-                    y++;
-                }
-                y=1;
-                x++;
+        for(int x = 1; x <= 20; x++) {
+            randomOption = minimum + (int)(Math.random()*maximum);
+            groupName = (String) "group " + x;
+            keyValues.add(new UifOptionGroupLabel(groupName));
+            for(int y = 1; y <= randomOption; y++) {
+                optionName = (String) "sub" + x + "_" + y;
+                keyValues.add(new UifKeyValue(optionName, optionName));
             }
-            for (String key : data.keySet()) {
-                keyValues.add(new UifOptionGroupLabel(key));
-                for (String subs : data.get(key)) {
-                    keyValues.add(new UifKeyValue(subs, subs));
-                }
-            }
-
+        }
         return keyValues;
     }
 

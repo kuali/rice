@@ -127,17 +127,11 @@
                        <div class="input-group inlineBlock">
                    </#if>
 
-                   <#if field.postInputAddons?? >
+                    <#if field.postInputAddons?? >
                         <#list field.postInputAddons as postAddon>
-                            <#if postAddon.wrapperCssClassesAsString?has_content>
-                                <#local postAddonStyleClass="class=\"${postAddon.wrapperCssClassesAsString}\""/>
-                            <#else>
-                                <#local postAddonStyleClass=""/>
-                            </#if>
-
                             <@krad.template component=postAddon/>
                         </#list>
-                   </#if>
+                    </#if>
 
                    <#if field.postInputAddons?? || field.renderInputAddonGroup>
                        </div>
@@ -159,9 +153,9 @@
                     </#if>
 
                     <#if field.postInputAddons??>
-                         <#list field.postInputAddons as postAddon>
-                             <@krad.template component=postAddon/>
-                         </#list>
+                        <#list field.postInputAddons as postAddon>
+                            <@krad.template component=postAddon/>
+                        </#list>
                     </#if>
 
                     <#-- render field help -->

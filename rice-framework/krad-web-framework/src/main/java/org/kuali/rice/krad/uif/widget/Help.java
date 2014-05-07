@@ -24,8 +24,10 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -99,6 +101,13 @@ public class Help extends WidgetBase {
         // if help is not configured don't render the component
         if (StringUtils.isBlank(this.externalHelpUrl) && StringUtils.isBlank(this.tooltipHelpContent)) {
             setRender(false);
+        }
+
+        // Change to icon only look and feel if not associated with an input
+        if (parent != null && !(parent instanceof InputField) && helpAction != null) {
+            helpAction.getLibraryCssClasses().remove(CssConstants.Classes.BTN);
+            helpAction.getLibraryCssClasses().remove(CssConstants.Classes.BTN_DEFAULT);
+            helpAction.getLibraryCssClasses().add(CssConstants.Classes.ICON_ONLY_BUTTON);
         }
     }
 

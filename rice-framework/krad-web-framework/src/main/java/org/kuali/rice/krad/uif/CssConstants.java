@@ -94,6 +94,9 @@ public class CssConstants {
         public static final String IGNORE_VALID = "ignoreValid";
         public static final String NEW_COLLECTION_ITEM = "uif-newCollectionItem";
         public static final String TOOLTIP = "uif-tooltip";
+        public static final String BTN = "btn";
+        public static final String BTN_DEFAULT = "btn-default";
+        public static final String ICON_ONLY_BUTTON = "uif-iconOnly";
     }
 
     public static class ProgressBar {

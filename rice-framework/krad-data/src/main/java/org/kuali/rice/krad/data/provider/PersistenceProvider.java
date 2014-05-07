@@ -105,6 +105,16 @@ public interface PersistenceProvider extends Provider {
     void delete(Object dataObject);
 
     /**
+     * Deletes data objects based on the given criteria
+     *
+     * @param type the type of data object
+     * @param queryByCriteria criteria to filter by
+     *
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
      * Returns a copy of the given data object instance.
      *
      * <p>

@@ -48,6 +48,11 @@ public class TestPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
+    public <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria) {
+
+    }
+
+    @Override
     public <T> T copyInstance(T dataObject) {
         return null;
     }

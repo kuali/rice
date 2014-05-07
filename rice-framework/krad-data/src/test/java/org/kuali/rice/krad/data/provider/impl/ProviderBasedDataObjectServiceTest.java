@@ -188,6 +188,14 @@ public class ProviderBasedDataObjectServiceTest {
     }
 
     @Test
+    public void testDeleteMatching() {
+        QueryByCriteria query = QueryByCriteria.Builder.create().build();
+        service.deleteMatching(Object.class, query);
+
+        verify(mockProvider).deleteMatching(any(Class.class), eq(query));
+    }
+
+    @Test
     public void testSave() {
         Serializable dataObject = new Serializable() {};
         service.save(dataObject);

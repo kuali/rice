@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +68,31 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
      * @return a list of results from the given query.
      */
     protected abstract <T> List<T> getResults(Q query);
+
+    /**
+     * {@inheritDoc}
+     */
+    protected abstract int executeUpdate(Query query);
+
+    /**
+     * {@inheritDoc}
+     */
+    public <T> void deleteMatching(Class<T> type, QueryByCriteria criteria) {
+
+        if (type == null) {
+            throw new IllegalArgumentException("class type is null");
+        }
+
+        // do not allow delete * on an entire table, by default
+        if (criteria == null || criteria.getPredicate() == null) {
+            throw new IllegalArgumentException("criteria is null");
+        }
+
+        final C parent = getQueryTranslator().translateCriteria(type, criteria.getPredicate());
+        final Query query = getQueryTranslator().createDeletionQuery(type, parent);
+        executeUpdate(query);
+    }
+
 
     /**
      * {@inheritDoc}

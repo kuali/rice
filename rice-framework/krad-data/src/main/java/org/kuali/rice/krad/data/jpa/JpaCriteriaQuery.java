@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.data.jpa;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -55,6 +56,11 @@ class JpaCriteriaQuery extends DataObjectCriteriaQueryBase<NativeJpaQueryTransla
     @SuppressWarnings("unchecked")
     public <T> List<T> getResults(TypedQuery query) {
         return query.getResultList();
+    }
+
+    @Override
+    public int executeUpdate(Query query) {
+        return query.executeUpdate();
     }
 
     /**

@@ -20,8 +20,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -204,6 +206,19 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         if (!criteria.predicates.isEmpty()) {
             jpaQuery = jpaQuery.where(criteria.getCriteriaPredicate());
         }
+        return entityManager.createQuery(jpaQuery);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Query createDeletionQuery(Class queryClazz, TranslationContext criteria) {
+        CriteriaDelete jpaQuery = entityManager.getCriteriaBuilder().createCriteriaDelete(queryClazz);
+
+        if (!criteria.predicates.isEmpty()) {
+            jpaQuery = jpaQuery.where(criteria.getCriteriaPredicate());
+        }
+
         return entityManager.createQuery(jpaQuery);
     }
 

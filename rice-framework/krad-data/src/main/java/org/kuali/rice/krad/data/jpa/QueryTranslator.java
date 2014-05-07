@@ -18,6 +18,8 @@ package org.kuali.rice.krad.data.jpa;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
+import javax.persistence.Query;
+
 /**
  * Translates queries from generic API classes to platform-specific concrete classes.
  *
@@ -42,6 +44,14 @@ interface QueryTranslator<C, Q> {
      * @return a query from the given criteria.
      */
     Q createQuery(Class queryClazz, C criteria);
+
+    /**
+     * Createa a query to delete records from the given criteria
+     * @param queryClass the type of the query
+     * @param criteria the criteria to translate
+     * @return a query from the given criteria
+     */
+    Query createDeletionQuery(Class queryClass, C criteria);
 
     /**
      * Translates the {@link QueryByCriteria} flags to the query.

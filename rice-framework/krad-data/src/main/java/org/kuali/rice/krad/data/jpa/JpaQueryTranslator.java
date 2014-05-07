@@ -54,6 +54,13 @@ class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
     /**
      * {@inheritDoc}
      */
+    public Query createDeletionQuery(Class queryClazz, Criteria criteria) {
+        throw new UnsupportedOperationException("Unsupported operation");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Criteria createCriteria(Class entityClass) {
         return new Criteria(entityClass.getName());

@@ -247,6 +247,20 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    public <T> void deleteMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
+        doWithExceptionTranslation(new Callable<Object>() {
+            @Override
+            public Object call() {
+                new JpaCriteriaQuery(getSharedEntityManager()).deleteMatching(type, queryByCriteria);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T copyInstance(final T dataObject) {
         return doWithExceptionTranslation(new Callable<T>() {
             @Override

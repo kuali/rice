@@ -119,10 +119,7 @@ public class ProviderBasedDataObjectService implements DataObjectService {
      */
     @Override
     public <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria) {
-        QueryResults<T> results = findMatching(type, queryByCriteria);
-        for (T result: results.getResults()) {
-            delete(result);
-        }
+        persistenceProviderForType(type).deleteMatching(type, queryByCriteria);
     }
 
     /**

@@ -20,6 +20,7 @@ import org.kuali.rice.krad.test.document.bo.SimpleAccount;
 import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.transaction.UnexpectedRollbackException;
 
 import javax.sql.DataSource;
@@ -249,6 +250,104 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         provider.delete(a);
 
         assertNull(provider.find((Class<Object>)a.getClass(), id));
+    }
+
+    /**
+     * Test delete matching with null criteria, should throw an exception
+     */
+    @Test(expected=InvalidDataAccessApiUsageException.class)
+    public void testDeleteMatchingNullCriteria() {
+        provider.deleteMatching(SimpleAccount.class, null);
+    }
+
+    /**
+     * Test delete matching with empty criteria, should throw an exception
+     */
+    @Test(expected=InvalidDataAccessApiUsageException.class)
+    public void testDeleteMatchingEmptyCriteria() {
+        provider.deleteMatching(SimpleAccount.class, QueryByCriteria.Builder.create().build());
+    }
+
+    /**
+     * Tests the deletion of non-existent detached objects.
+     */
+    @Test
+    public void testDeleteMatchingNonExistentEntity() {
+        List<String> nameList = new ArrayList<String>();
+
+        // build three objects to test with
+        Object a = createTopLevelObject();
+        assignPK(a);
+        nameList.add(((SimpleAccount)a).getName());
+        Object b = createTopLevelObject();
+        assignPK(b);
+        nameList.add(((SimpleAccount) b).getName());
+        Object c = createTopLevelObject();
+        assignPK(c);
+        nameList.add(((SimpleAccount)c).getName());
+
+        // build the criteria for these three objects
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(PredicateFactory.in("name", nameList));
+
+        QueryResults<Object> found = provider.findMatching((Class<Object>)a.getClass(), builder.build());
+        assertEquals(0, found.getResults().size());
+
+        provider.deleteMatching(a.getClass(), builder.build());
+
+        found = (provider.findMatching((Class<Object>)a.getClass(), builder.build()));
+        assertEquals(0, found.getResults().size());
+    }
+
+    /**
+     * Tests the deletion of saved objects.
+     */
+    @Test
+    public void testDeleteMatchingAllSavedEntities() {
+        List<String> nameList = new ArrayList<String>();
+
+        // build and save three objects to test with
+        Object a = createTopLevelObject();
+        assignPK(a);
+        Object savedA = provider.save(a);
+        nameList.add(((SimpleAccount)savedA).getName());
+
+        Object b = createTopLevelObject();
+        assignPK(b);
+        Object savedB = provider.save(b);
+        nameList.add(((SimpleAccount) savedB).getName());
+
+        Object c = createTopLevelObject();
+        assignPK(c);
+        Object savedC = provider.save(c);
+
+        // did all three objects get saved?
+        QueryResults<Object> found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        assertEquals(3, found.getResults().size());
+
+        // now delete part of the saved objects
+        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(PredicateFactory.in("name", nameList));
+        provider.deleteMatching(a.getClass(), builder.build());
+
+        // were the two objects deleted
+        found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        assertEquals(1, found.getResults().size());
+        Object lastObject = found.getResults().get(0);
+        assertEquals(((SimpleAccount) lastObject).getName(), ((SimpleAccount)savedC).getName());
+
+        // clear the list and add the last object
+        nameList.clear();
+        nameList.add(((SimpleAccount)savedC).getName());
+
+        // now delete the last object.
+        builder = QueryByCriteria.Builder.create();
+        builder.setPredicates(PredicateFactory.in("name", nameList));
+        provider.deleteMatching(a.getClass(), builder.build());
+
+        // were all objects deleted?
+        found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        assertEquals(0, found.getResults().size());
     }
 
     @Test

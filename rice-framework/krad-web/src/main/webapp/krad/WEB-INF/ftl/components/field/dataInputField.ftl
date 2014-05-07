@@ -135,9 +135,7 @@
                                 <#local postAddonStyleClass=""/>
                             </#if>
 
-                            <span ${postAddonStyleClass!}>
-                                <@krad.template component=postAddon/>
-                            </span>
+                            <@krad.template component=postAddon/>
                         </#list>
                    </#if>
 
@@ -162,9 +160,7 @@
 
                     <#if field.postInputAddons??>
                          <#list field.postInputAddons as postAddon>
-
                              <@krad.template component=postAddon/>
-
                          </#list>
                     </#if>
 

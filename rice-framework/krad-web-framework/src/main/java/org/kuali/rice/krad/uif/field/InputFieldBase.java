@@ -47,7 +47,9 @@ import org.kuali.rice.krad.uif.control.MultiValueControlBase;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Label;
+import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -422,7 +424,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.INPUT_FIELD_IS_UPPERCASE,
                 isUppercaseValue());
 
-        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !Boolean.TRUE.equals(getReadOnly())) {
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !Boolean.TRUE.equals(
+                getReadOnly())) {
             viewPostMetadata.addAccessibleBindingPath(getBindingInfo().getBindingPath());
         }
     }

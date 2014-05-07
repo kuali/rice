@@ -79,7 +79,7 @@
     </property>
     <property name="postInputCssClasses">
       <list>
-        <value>input-group-addon</value>
+        <value>input-group-btn</value>
       </list>
     </property>
     <property name="validationMessages">

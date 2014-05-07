@@ -7434,13 +7434,13 @@ $.extend(Datepicker.prototype, {
 			var buttonText = this._get(inst, 'buttonText');
 			var buttonImage = this._get(inst, 'buttonImage');
 			inst.trigger = $(this._get(inst, 'buttonImageOnly') ?
-				$('<a/>').addClass("icon-calendar").addClass(this._triggerClass).
+				$('<a/>').addClass("btn btn-default icon-calendar").addClass(this._triggerClass).
 					attr({alt: buttonText, title: buttonText }) :
-				$('<button type="button"></button>').addClass(this._triggerClass).
+				$('<button type="button"></button>').addClass("btn btn-default").addClass(this._triggerClass).
 					html(buttonImage == '' ? buttonText : $('<img/>').attr(
 					{ src:buttonImage, alt:buttonText, title:buttonText })));
 			/*input[isRTL ? 'before' : 'after'](inst.trigger);*/
-            input.siblings(".input-group-addon").append(inst.trigger);
+            input.siblings(".input-group-btn").append(inst.trigger);
 			inst.trigger.click(function() {
 				if ($.datepicker._datepickerShowing && $.datepicker._lastInput == input[0])
 					$.datepicker._hideDatepicker();

@@ -152,8 +152,8 @@
       <bean parent="Uif-LightBox"/>
     </property>
     <property name="quickfinderAction">
-      <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:methodToCall="performLookup"
-            p:focusOnIdAfterSubmit="NEXT_INPUT" p:wrapperCssClasses="input-group-btn"/>
+      <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search" p:methodToCall="performLookup"
+            p:focusOnIdAfterSubmit="NEXT_INPUT" />
     </property>
   </bean>
 
@@ -188,9 +188,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-DirectInquiryAction" parent="Uif-ActionLink"
-        p:iconClass="icon-book" p:title="Direct Inquiry"
-        p:wrapperCssClasses="input-group-btn"/>
+  <bean id="Uif-DirectInquiryAction" parent="Uif-SecondaryActionButton"
+        p:iconClass="icon-book" p:title="Direct Inquiry"/>
 
   <bean id="Uif-Disclosure" parent="Uif-Disclosure-parentBean"/>
   <bean id="Uif-Disclosure-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Disclosure"
@@ -335,7 +334,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-HelpAction" parent="Uif-ActionLink">
+  <bean id="Uif-HelpAction" parent="Uif-SecondaryActionButton">
     <property name="cssClasses">
       <list>
         <value>uif-helpAction</value>

@@ -106,7 +106,7 @@
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:inputField7">
               <property name="quickfinderAction">
-                <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
+                <bean parent="Uif-SecondaryActionButton" p:methodToCall="performLookup" p:focusOnIdAfterSubmit="NEXT_INPUT">
                   <property name="actionImage">
                     <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}custom_searchicon.png"/>
                   </property>
@@ -217,25 +217,26 @@
       <list>
         <!-- ex:Demo-InputField-Example14 start-->
         <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField14">
+          <property name="postInputCssClasses" value="input-group-addon"/>
           <property name="postInputAddons">
             <list>
-                 <bean parent="Uif-Message" p:messageText=".00" p:wrapperCssClasses="input-group-msg"/>
+                 <bean parent="Uif-Message" p:messageText=".00"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField15">
           <property name="postInputAddons">
             <list>
-                 <bean parent="Uif-ActionLink" p:iconClass="icon-search" p:wrapperCssClasses="input-group-btn"/>
+                 <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search"/>
             </list>
           </property>
         </bean>
         <bean parent="Uif-InputField" p:label="Multiple Addons" p:propertyName="inputField16">
           <property name="postInputAddons">
             <list>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-facebook3" p:wrapperCssClasses="input-group-btn"/>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-twitter3" p:wrapperCssClasses="input-group-btn"/>
-              <bean parent="Uif-ActionLink" p:iconClass="icon-youtube" p:wrapperCssClasses="input-group-btn"/>
+              <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-facebook3"/>
+              <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-twitter3"/>
+              <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-youtube"/>
             </list>
           </property>
         </bean>

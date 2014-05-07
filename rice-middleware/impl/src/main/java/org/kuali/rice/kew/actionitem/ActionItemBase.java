@@ -21,11 +21,14 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItemContract;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.api.util.CodeTranslator;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.group.Group;
@@ -33,6 +36,7 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.exception.ValidationException;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -607,5 +611,20 @@ public class ActionItemBase implements ActionItemContract, Serializable {
         return copy;
     }
 
+    /**
+     * Called from ActionList.jsp to help determine the 'target' value when building the URL.
+     *
+     * @return the value from the DOC_SEARCH_TARGET policy if it exists for this document type
+     */
+    public String getTarget() {
+        org.kuali.rice.kew.api.doctype.DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(this.docName);
+        Map<DocumentTypePolicy, String> policies = documentType.getPolicies();
+        for (DocumentTypePolicy policy : policies.keySet()) {
+            if (policy.getCode().equals(DocumentTypePolicy.DOC_SEARCH_TARGET.getCode())) {
+                return policies.get(DocumentTypePolicy.DOC_SEARCH_TARGET);
+            }
+        }
+        return null;
+    }
 
 }

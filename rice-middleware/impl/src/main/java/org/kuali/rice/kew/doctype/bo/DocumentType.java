@@ -395,6 +395,15 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
+     * Returns the DOC_SEARCH_TARGET policy on the document if defined
+     * @return the DOC_SEARCH_TARGET document type policy
+     * @since 2.5.0
+     */
+    public DocumentTypePolicy getDocSearchTarget() {
+        return getPolicyByName(DOC_SEARCH_TARGET.getCode(), (String) null);
+    }
+
+    /**
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
      * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.
      *
@@ -639,7 +648,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
         if (this.documentTypePolicies != null) {
             for (DocumentTypePolicy policy : this.documentTypePolicies) {
-                policies.put(fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
+                if (policy.getPolicyStringValue() != null && policy.getPolicyStringValue().length() > 0) {
+                    policies.put(fromCode(policy.getPolicyName()), policy.getPolicyStringValue());
+                } else {
+                    policies.put(fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());
+                }
             }
         }
         return policies;

@@ -31,8 +31,7 @@
 	<bean-el:message key="actionList.ActionList.results.label.routeStatus" />
 </bean:define>
 <bean:define id="actionRequestedLabel">
-	<bean-el:message
-		key="actionList.ActionList.results.label.actionRequested" />
+	<bean-el:message key="actionList.ActionList.results.label.actionRequested" />
 </bean:define>
 <bean:define id="initiatorLabel">
 	<bean-el:message key="actionList.ActionList.results.label.initiator" />
@@ -47,12 +46,10 @@
 	<bean-el:message key="actionList.ActionList.results.label.dateApproved" />
 </bean:define>
 <bean:define id="currentRouteNodesLabel">
-	<bean-el:message
-		key="actionList.ActionList.results.label.currentRouteNodes" />
+	<bean-el:message key="actionList.ActionList.results.label.currentRouteNodes" />
 </bean:define>
 <bean:define id="workgroupRequestLabel">
-	<bean-el:message
-		key="actionList.ActionList.results.label.workgroupRequest" />
+	<bean-el:message key="actionList.ActionList.results.label.workgroupRequest" />
 </bean:define>
 <bean:define id="actionsLabel">
 	<bean-el:message key="actionList.ActionList.results.label.actions" />
@@ -62,14 +59,15 @@
 </bean:define>
 <bean:define id="outboxActionItemDelete">
     Delete Item
-  </bean:define>
+</bean:define>
 <bean:define id="emptyActionListMessage">
 	<bean-el:message key="actionList.ActionList.emptyList" />
 </bean:define>
 <bean:define id="emptyOutboxMessage">
 	<bean-el:message key="actionList.Outbox.emptyList" />
-</bean:define>  
-    <c:url var="actionListURI" value="ActionList.do">
+</bean:define>
+
+  <c:url var="actionListURI" value="ActionList.do">
     <c:param name="methodToCall" value="start"/>
     <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
     <c:param name="currentSort" value="${ActionListForm.currentSort}"/>
@@ -190,15 +188,14 @@
 				height="20"></td>
 			<td>
 			<table align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
-					<tr>
+				<tr>
 				<td></td>
 				<td>
-                  <kul:errors errorTitle="Error loading action list : "/> <br/>
+				  <kul:errors errorTitle="Error loading action list : "/> <br/>
 				  <kul:messages/>
-                </td>
-                <td></td>
+				</td>
+				<td></td>
 			</tr>
-
 			<tr><td></td><td>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
@@ -264,18 +261,18 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:choose>
+					<c:choose>
                         <c:when test="${ActionListForm.viewOutbox}">
                             <display:setProperty name="basic.msg.empty_list" value="${emptyOutboxMessage}" />
                         </c:when>
                         <c:otherwise>
                             <display:setProperty name="basic.msg.empty_list" value="${emptyActionListMessage}" />
                         </c:otherwise>
-                    </c:choose>
-          <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
-          <display:column title="&nbsp;">
+					</c:choose>
+					<c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasDisplayParameters}">
+					  <display:column title="&nbsp;">
 						<c:choose>
-						   <c:when test="${result.displayParameters != null}">
+					    <c:when test="${result.displayParameters != null}">
                              <br>
                              <a id='A<c:out value="${result.actionListIndex}"/>'
                               href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
@@ -287,21 +284,28 @@
                              src="images/tinybutton-show.gif" alt="show" width="45" height="15"
                              border="0" id='F<c:out value="${result.actionListIndex}"/>'></a>
                              <br>
-                           </c:when>
-                           <c:otherwise>&nbsp;</c:otherwise>
+					    </c:when>
+					    <c:otherwise>&nbsp;</c:otherwise>
 						</c:choose>
-                      </display:column>
-                    </c:if>
+					  </display:column>
+					</c:if>
 					<display:column sortable="true" title="${documentIdLabel}"
 						sortProperty="documentId">
 						<c:choose>
 							<c:when test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null}">
-                                <a
+								<a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                                      <c:param name="${Constants.DOCUMENT_ID_PARAMETER}" value="${result.documentId}"/>
                                          <c:param name="${Constants.COMMAND_PARAMETER}" value="${Constants.ACTIONLIST_COMMAND}" />
                                              </c:url>"
-									<c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
+                        <c:choose>
+                          <c:when test="${result.target != null}">
+                            target="<c:out value="${result.target}" />"
+                          </c:when>
+                          <c:otherwise>
+                            <c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
+                          </c:otherwise>
+                        </c:choose>
 									class="showvisit"> <c:out value="${result.documentId}" />
 								</a>
 							</c:when>
@@ -310,32 +314,22 @@
 							</c:otherwise>
 						</c:choose>
 					</display:column>
-
-
-
-
 					<c:if test="${preferences.showDocType == Constants.PREFERENCES_YES_VAL}">
-
-						<display:column property="docLabel" sortable="true"
-							title="${typeLabel}" />
+						<display:column property="docLabel" sortable="true" title="${typeLabel}" />
 					</c:if>
 					<c:if test="${preferences.showDocTitle == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortProperty="docTitle" sortable="true"
-							title="${titleLabel}" class="infocell">
+						<display:column sortProperty="docTitle" sortable="true" title="${titleLabel}" class="infocell">
 							<c:out value="${result.docTitle}" />&nbsp;
-                        </display:column>
+						</display:column>
 					</c:if>
 					<c:if test="${preferences.showDocumentStatus == Constants.PREFERENCES_YES_VAL}">
-						<display:column property="routeHeaderCombinedStatus"
-							sortable="true" title="${routeStatusLabel}" class="infocell" />
+						<display:column property="routeHeaderCombinedStatus" sortable="true" title="${routeStatusLabel}" class="infocell" />
 					</c:if>
 					<c:if test="${preferences.showActionRequested == Constants.PREFERENCES_YES_VAL}">
-						<display:column property="actionRequestLabel" sortable="true"
-							title="${actionRequestedLabel}" class="infocell" />
+						<display:column property="actionRequestLabel" sortable="true" title="${actionRequestedLabel}" class="infocell" />
 					</c:if>
 					<c:if test="${preferences.showInitiator == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true" title="${initiatorLabel}"
-							sortProperty="routeHeaderInitiatorName" class="infocell">
+						<display:column sortable="true" title="${initiatorLabel}" sortProperty="routeHeaderInitiatorName" class="infocell">
                             <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
                                 keyValues="principalId=${result.routeHeaderInitiatorWorkflowId}"
                                 render="true">
@@ -343,10 +337,8 @@
                             </kul:inquiry>
 						</display:column>
 					</c:if>
-
 					<c:if test="${preferences.showDelegator == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true" title="${delegatorLabel}"
-							sortProperty="delegatorName" class="infocell">
+						<display:column sortable="true" title="${delegatorLabel}" sortProperty="delegatorName" class="infocell">
 							<c:choose>
 								<c:when test="${result.delegatorPrincipalId != null}">
                                     <kul:inquiry boClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
@@ -366,28 +358,20 @@
 							</c:choose>
 						</display:column>
 					</c:if>
-					<c:if
-						test="${preferences.showDateCreated == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true" title="${dateCreatedLabel}"
-							sortProperty="routeHeaderCreateDate" class="infocell">
+					<c:if test="${preferences.showDateCreated == Constants.PREFERENCES_YES_VAL}">
+						<display:column sortable="true" title="${dateCreatedLabel}" sortProperty="routeHeaderCreateDate" class="infocell">
 							<fmt:formatDate value="${result.routeHeaderCreateDate}"
 								pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
-                         </display:column>
+						</display:column>
 					</c:if>
-					<c:if
-						test="${preferences.showDateApproved == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true" title="${dateApprovedLabel}"
-							sortProperty="lastApprovedDate" class="infocell">
+					<c:if test="${preferences.showDateApproved == Constants.PREFERENCES_YES_VAL}">
+						<display:column sortable="true" title="${dateApprovedLabel}" sortProperty="lastApprovedDate" class="infocell">
 							<fmt:formatDate value="${result.lastApprovedDate}"
 								pattern="${Constants.DEFAULT_DATE_FORMAT_PATTERN}" />&nbsp;
-                           </display:column>
+						</display:column>
 					</c:if>
-
-					<c:if
-						test="${preferences.showWorkgroupRequest == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true"
-							title="${workgroupRequestLabel}" sortProperty="groupName"
-							class="infocell">
+					<c:if test="${preferences.showWorkgroupRequest == Constants.PREFERENCES_YES_VAL}">
+						<display:column sortable="true" title="${workgroupRequestLabel}" sortProperty="groupName" class="infocell">
 							<c:choose>
 								<c:when test="${!empty result.groupId}">
                                     <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${result.groupId}" render="true">
@@ -400,16 +384,12 @@
 							</c:choose>
 						</display:column>
 					</c:if>
-
-					<c:if
-						test="${preferences.showCurrentNode == Constants.PREFERENCES_YES_VAL}">
-						<display:column sortable="true"
-							title="${currentRouteNodesLabel}"
+					<c:if test="${preferences.showCurrentNode == Constants.PREFERENCES_YES_VAL}">
+						<display:column sortable="true" title="${currentRouteNodesLabel}"
 							sortProperty="routeHeaderCurrentRouteLevelName" class="infocell">
 							<c:out value="${result.routeHeaderCurrentRouteLevelName}" />&nbsp;
-                        </display:column>
+						</display:column>
 					</c:if>
-
 					<c:if
 						test="${! ActionListForm.viewOutbox && UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
 						<display:column title="${actionsLabel}" class="infocell">
@@ -426,17 +406,13 @@
 								</html-el:select>
 								<c:set var="customActionsPresent" value="true" />
 							</c:if>&nbsp;
-                        </display:column>
-					</c:if>
-
-					<c:if test="${ActionListForm.viewOutbox }">
-						<display:column title="${outboxActionItemDelete}"
-							class="infocell">
-							<html-el:checkbox property="outboxItems"
-								value="${result.id}" />
 						</display:column>
 					</c:if>
-
+					<c:if test="${ActionListForm.viewOutbox }">
+						<display:column title="${outboxActionItemDelete}" class="infocell">
+							<html-el:checkbox property="outboxItems" value="${result.id}" />
+						</display:column>
+					</c:if>
 					<display:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"

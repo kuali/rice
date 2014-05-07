@@ -119,7 +119,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public void setPolicyName(String policyName) {
         /* Cleanse the input.
          * This is surely not the best way to validate the policy name;
-         * it would probably be better to use typesafe enums accross the board
+         * it would probably be better to use typesafe enums across the board
          * but that would probably entail refactoring large swaths of code, not
          * to mention reconfiguring OJB (can typesafe enums be used?) and dealing
          * with serialization compatibility issues (if any).

@@ -20,7 +20,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -48,9 +47,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.search.StandardResultField;
-import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo;
-import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslator;
-import org.kuali.rice.kew.impl.document.search.FormFields;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
@@ -65,7 +61,6 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -150,7 +145,6 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         applyCriteriaChangesToFields(criteria);
 
         return populateSearchResults(individualSearchResults);
-
     }
 
     /**
@@ -476,7 +470,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     isSuperUserSearch());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
             return generateRouteLogUrl(criteriaBo.getDocumentId());
-        } else if(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
+        } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
             return generateInitiatorUrl(criteriaBo.getInitiatorPerson());
         }
         return super.getInquiryUrl(bo, propertyName);
@@ -489,10 +483,20 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected HtmlData.AnchorHtmlData generateDocumentHandlerUrl(String documentId, DocumentType documentType, boolean superUserSearch) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         link.setDisplayText(documentId);
+
         if (isDocumentHandlerPopup()) {
             link.setTarget("_blank");
-        }else{
-            link.setTarget("_self");
+        } else {
+            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
+            if (policy.getPolicyStringValue() != null) {
+                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
+                    //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
+                //}
+                link.setTarget(policy.getPolicyStringValue());
+            }
+            else {
+                link.setTarget("_self");
+            }
         }
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/";
         if (superUserSearch) {

@@ -154,7 +154,13 @@ public enum DocumentTypePolicy implements Coded {
      * @since 2.1.3
      * @see https://jira.kuali.org/browse/KULRICE-8289
      */
-    @XmlEnumValue(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION) SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION);
+    @XmlEnumValue(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION) SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION(Codes.SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION),
+    /**
+     * Specifies target for document search URL building
+     * @since 2.5.0
+     * @see https://jira.kuali.org/browse/KULRICE-12542
+     */
+    @XmlEnumValue(Codes.DOC_SEARCH_TARGET) DOC_SEARCH_TARGET(Codes.DOC_SEARCH_TARGET);
 
     private final String code;
 
@@ -205,6 +211,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
         private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
         private static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION = "SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION";
+        private static final String DOC_SEARCH_TARGET = "DOC_SEARCH_TARGET";
     }
     
 }

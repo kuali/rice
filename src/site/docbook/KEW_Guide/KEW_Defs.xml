@@ -2440,7 +2440,10 @@
                     <listitem>
                       <para>SEND_NOTIFICATION_ON_SU_DISAPPROVE</para>
                     </listitem>
-                </itemizedlist></para>
+                <listitem>
+                    <para>DOC_SEARCH_TARGET</para>
+                </listitem>
+            </itemizedlist></para>
             <para>Document Type Policies defined in the Document Type XML have this
                 structure:</para>
             <programlisting>&lt;documentType>
@@ -2693,6 +2696,20 @@
           </section>
 
 
+            <section>
+                <title>DOC_SEARCH_TARGET</title>
+                <para>This policy can be used to set the target that will be used when building the URLs for the document search and action list results. This should be a temporary need while
+                the Rice screens are still written in KNS and the documents being displayed are using KRAD.</para>
+                <programlisting>&lt;policies>
+              &lt;policy>
+              &lt;name>DOC_SEARCH_TARGET&lt;/name>
+              &lt;value>_top&lt;/value>
+              &lt;/policy>
+              &lt;/policies>
+            </programlisting>
+            </section>
+            
+            
         </section>
         <section>
             <title>Inheritance</title>

@@ -648,7 +648,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         Map<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> policies = new HashMap<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String>();
         if (this.documentTypePolicies != null) {
             for (DocumentTypePolicy policy : this.documentTypePolicies) {
-                if (policy.getPolicyStringValue() != null && policy.getPolicyStringValue().length() > 0) {
+                if (policy.getPolicyName().equals(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.DOC_SEARCH_TARGET.getCode()) && policy.getPolicyStringValue() != null && policy.getPolicyStringValue().length() > 0) {
                     policies.put(fromCode(policy.getPolicyName()), policy.getPolicyStringValue());
                 } else {
                     policies.put(fromCode(policy.getPolicyName()), policy.getPolicyValue().toString());

@@ -34,36 +34,35 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * Configures the KEW Rice module.  KEW module initiation proceeds as follows:
  *
  * <ol>
- *   <li>Parse and load configuration for:</li>
- *     <ul>
- *       <li>Client Protocol</li>
- *       <li>Database</li>
- *	   </ul>
- *   </li>
- *   <li>Configure and startup KEW for "Thin Client" mode OR</li>
- *   <li>Configure and startup KEW for "Embedded Mode"</li>
+ * <li>Parse and load configuration for:</li>
+ * <ul>
+ * <li>Client Protocol</li>
+ * <li>Database</li>
+ * </ul>
+ * </li>
+ * <li>Configure and startup KEW for "Thin Client" mode OR</li>
+ * <li>Configure and startup KEW for "Embedded Mode"</li>
  * </ol>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KEWConfigurer extends ModuleConfigurer {
 
-	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
+    public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
 
-	private DataSource dataSource;
+    private DataSource dataSource;
 
     public KEWConfigurer() {
         super(KewApiConstants.Namespaces.MODULE_NAME);
         setValidRunModes(Arrays.asList(RunMode.THIN, RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
     }
 
-	@Override
-	public List<String> getPrimarySpringFiles() {
+    @Override
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.THIN == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewThinSpringBeans.xml");
@@ -74,60 +73,61 @@ public class KEWConfigurer extends ModuleConfigurer {
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewLocalSpringBeans.xml");
         }
-		return springFileLocations;
-	}
-	
-	@Override
-	public List<Lifecycle> loadLifecycles() throws Exception {
-		
-		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-        if ( getRunMode().equals( RunMode.LOCAL ) ) { // local or embedded
-			lifecycles.add(createStandaloneLifeCycle());
-		}
-		return lifecycles;
-	}
+        return springFileLocations;
+    }
 
-	/**
-	 * TODO Because a lot of our lifecycles live behind the embedded plugin and the KEWConfigurer does not, this is a simple
-	 * measure to load these without having to deal with the removal of the embedded plugin right away.
+    @Override
+    public List<Lifecycle> loadLifecycles() throws Exception {
+        List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        if (getRunMode().equals(RunMode.LOCAL)) { // local or embedded
+            lifecycles.add(createStandaloneLifeCycle());
+        }
+        return lifecycles;
+    }
+
+    /**
+     * TODO Because a lot of our lifecycles live behind the embedded plugin and the KEWConfigurer does not, this is a
+     * simple
+     * measure to load these without having to deal with the removal of the embedded plugin right away.
+     *
      * @return Life Cycle
      * @throws Exception if life cycle not created
      */
-	private Lifecycle createStandaloneLifeCycle() throws Exception {
-		return new StandaloneLifeCycle();
-	}
+    private Lifecycle createStandaloneLifeCycle() throws Exception {
+        return new StandaloneLifeCycle();
+    }
 
-	@Override
-	public void addAdditonalToConfig() {
-		configureDataSource();
-	}
+    @Override
+    public void addAdditonalToConfig() {
+        configureDataSource();
+    }
 
-	private void configureDataSource() {
-		if (getDataSource() != null) {
-			ConfigContext.getCurrentContextConfig().putObject(KEW_DATASOURCE_OBJ, getDataSource());
-		}
-	}
+    private void configureDataSource() {
+        if (getDataSource() != null) {
+            ConfigContext.getCurrentContextConfig().putObject(KEW_DATASOURCE_OBJ, getDataSource());
+        }
+    }
 
-	@Override
-	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
+    @Override
+    public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
         List<ResourceLoader> resourceLoaders = new ArrayList<ResourceLoader>();
-		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
-		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled).booleanValue()) {
-    		// create the plugin registry
-			PluginRegistry registry = new PluginRegistryFactory().createPluginRegistry();
+        String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
+        if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled).booleanValue()) {
+            // create the plugin registry
+            PluginRegistry registry = new PluginRegistryFactory().createPluginRegistry();
             registry.start();
             resourceLoaders.add(registry);
-		}
+        }
         return resourceLoaders;
-	}
+    }
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public boolean hasWebInterface() {

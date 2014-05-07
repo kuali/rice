@@ -27,14 +27,14 @@ import java.util.List;
  * Allows for configuring a client to the "location" module in Kuali Rice.
  *
  * <p>The LocationConfigurer supports two run modes:
- *   <ol>
- *       <li>REMOTE - loads the client which interacts remotely with the location services</li>
- *       <li>LOCAL - loads the location service implementations and web components locally</li>
- *   </ol>
+ * <ol>
+ * <li>REMOTE - loads the client which interacts remotely with the location services</li>
+ * <li>LOCAL - loads the location service implementations and web components locally</li>
+ * </ol>
  * </p>
  *
  * <p>Client applications should generally only use "remote" run mode (which is the default).</p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationConfigurer extends ModuleConfigurer {
@@ -45,15 +45,14 @@ public class LocationConfigurer extends ModuleConfigurer {
     }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "LocationRemoteSpringBeans.xml");
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "LocationLocalSpringBeans.xml");
         }
-		return springFileLocations;
-	}
-
+        return springFileLocations;
+    }
 
 }

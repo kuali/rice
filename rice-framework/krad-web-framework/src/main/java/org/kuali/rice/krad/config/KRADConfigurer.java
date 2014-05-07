@@ -112,8 +112,8 @@ public class KRADConfigurer extends ModuleConfigurer implements SmartApplication
             LOG.info("KRAD Configurer - Loading DD");
             DataDictionaryService dds = KRADServiceLocatorWeb.getDataDictionaryService();
             if (dds == null) {
-                dds = (DataDictionaryService) GlobalResourceLoader
-                        .getService(KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE);
+                dds = (DataDictionaryService) GlobalResourceLoader.getService(
+                        KRADServiceLocatorWeb.DATA_DICTIONARY_SERVICE);
             }
             dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
 
@@ -170,8 +170,6 @@ public class KRADConfigurer extends ModuleConfigurer implements SmartApplication
         return true;
     }
 
-
-
     public boolean isLoadDataDictionary() {
         return ConfigContext.getCurrentContextConfig().getBooleanProperty("load.data.dictionary", true);
     }
@@ -202,8 +200,8 @@ public class KRADConfigurer extends ModuleConfigurer implements SmartApplication
      */
     protected void configureDataSource() {
         if (getApplicationDataSource() != null) {
-            ConfigContext.getCurrentContextConfig()
-                    .putObject(KRADConstants.KRAD_APPLICATION_DATASOURCE, getApplicationDataSource());
+            ConfigContext.getCurrentContextConfig().putObject(KRADConstants.KRAD_APPLICATION_DATASOURCE,
+                    getApplicationDataSource());
         }
     }
 

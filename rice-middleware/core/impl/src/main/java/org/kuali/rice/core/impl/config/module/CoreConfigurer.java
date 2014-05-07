@@ -39,35 +39,34 @@ import java.util.List;
  */
 public class CoreConfigurer extends ModuleConfigurer {
 
-	private DataSource dataSource;
-	private DataSource nonTransactionalDataSource;
-	private DataSource serverDataSource;
-	private String platform;
-	private UserTransaction userTransaction;
-	private TransactionManager transactionManager;
-	private CredentialsSourceFactory credentialsSourceFactory;
+    private DataSource dataSource;
+    private DataSource nonTransactionalDataSource;
+    private DataSource serverDataSource;
+    private String platform;
+    private UserTransaction userTransaction;
+    private TransactionManager transactionManager;
+    private CredentialsSourceFactory credentialsSourceFactory;
 
     public CoreConfigurer() {
-		super(CoreConstants.Namespaces.MODULE_NAME);
-		setValidRunModes(Arrays.asList(RunMode.LOCAL));
-	}
+        super(CoreConstants.Namespaces.MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.LOCAL));
+    }
 
-	@Override
-	public List<Lifecycle> loadLifecycles() throws Exception {
-		final List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if (isConfigureLogging()) {
-			lifecycles.add(new Log4jLifeCycle());
-		}
-		 
-		return lifecycles;
-	}
-	
-	@Override
-	public void addAdditonalToConfig() {
-		configureJta();
-		configureDataSource();
-		configureCredentialsSourceFactory();
-	}
+    @Override
+    public List<Lifecycle> loadLifecycles() throws Exception {
+        final List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+        if (isConfigureLogging()) {
+            lifecycles.add(new Log4jLifeCycle());
+        }
+        return lifecycles;
+    }
+
+    @Override
+    public void addAdditonalToConfig() {
+        configureJta();
+        configureDataSource();
+        configureCredentialsSourceFactory();
+    }
 
     @Override
     public boolean hasWebInterface() {
@@ -76,65 +75,65 @@ public class CoreConfigurer extends ModuleConfigurer {
     }
 
     protected boolean isConfigureLogging() {
-		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
-	}
-	
-	protected void configureCredentialsSourceFactory() {
-		if (credentialsSourceFactory != null) {
-			ConfigContext.getCurrentContextConfig().putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
-		}
-	}
- 
-	protected void configureDataSource() {
-		if (this.dataSource != null) {
-			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
-		}
-		
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
+    }
+
+    protected void configureCredentialsSourceFactory() {
+        if (credentialsSourceFactory != null) {
+            ConfigContext.getCurrentContextConfig().putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
+        }
+    }
+
+    protected void configureDataSource() {
+        if (this.dataSource != null) {
+            ConfigContext.getCurrentContextConfig().putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
+        }
+
         if (this.nonTransactionalDataSource != null) {
-        	ConfigContext.getCurrentContextConfig().putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
+            ConfigContext.getCurrentContextConfig().putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
         }
-        
+
         if (this.serverDataSource != null) {
-        	ConfigContext.getCurrentContextConfig().putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
+            ConfigContext.getCurrentContextConfig().putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
         }
-	}
+    }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations = new ArrayList<String>();
-		springFileLocations.add( "classpath:org/kuali/rice/core/config/CORESpringBeans.xml" );
-		return springFileLocations;
-	}
-	
-	/**
-	 * If the user injected JTA classes into this configurer, verify that both the
-	 * UserTransaction and TransactionManager are set and then attach them to
-	 * the configuration.
-	 */
-	protected void configureJta() {
-		if (this.userTransaction != null) {
-			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
-		}
-		if (this.transactionManager != null) {
-			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
-		}
-		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.USER_TRANSACTION_JNDI));
-		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
-		if (userTransactionConfigured && !transactionManagerConfigured) {
-			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the UserTransaction was configured.");
-		}
-		if (transactionManagerConfigured && !userTransactionConfigured) {
-			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the TransactionManager was configured.");
-		}
-	}
+    public List<String> getPrimarySpringFiles() {
+        final List<String> springFileLocations = new ArrayList<String>();
+        springFileLocations.add("classpath:org/kuali/rice/core/config/CORESpringBeans.xml");
+        return springFileLocations;
+    }
 
-	public DataSource getDataSource() {
-		return this.dataSource;
-	}
+    /**
+     * If the user injected JTA classes into this configurer, verify that both the
+     * UserTransaction and TransactionManager are set and then attach them to
+     * the configuration.
+     */
+    protected void configureJta() {
+        if (this.userTransaction != null) {
+            ConfigContext.getCurrentContextConfig().putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
+        }
+        if (this.transactionManager != null) {
+            ConfigContext.getCurrentContextConfig().putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
+        }
+        boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.USER_TRANSACTION_JNDI));
+        boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
+        if (userTransactionConfigured && !transactionManagerConfigured) {
+            throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the UserTransaction was configured.");
+        }
+        if (transactionManagerConfigured && !userTransactionConfigured) {
+            throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the TransactionManager was configured.");
+        }
+    }
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public DataSource getDataSource() {
+        return this.dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public DataSource getNonTransactionalDataSource() {
         return this.nonTransactionalDataSource;
@@ -145,43 +144,42 @@ public class CoreConfigurer extends ModuleConfigurer {
     }
 
     public DataSource getServerDataSource() {
-		return this.serverDataSource;
-	}
+        return this.serverDataSource;
+    }
 
-	public void setServerDataSource(DataSource serverDataSource) {
-		this.serverDataSource = serverDataSource;
-	}
+    public void setServerDataSource(DataSource serverDataSource) {
+        this.serverDataSource = serverDataSource;
+    }
 
-	public String getPlatform() {
-		return this.platform;
-	}
+    public String getPlatform() {
+        return this.platform;
+    }
 
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
 
-	public TransactionManager getTransactionManager() {
-		return this.transactionManager;
-	}
+    public TransactionManager getTransactionManager() {
+        return this.transactionManager;
+    }
 
-	public void setTransactionManager(TransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
+    public void setTransactionManager(TransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
 
-	public UserTransaction getUserTransaction() {
-		return this.userTransaction;
-	}
+    public UserTransaction getUserTransaction() {
+        return this.userTransaction;
+    }
 
-	public void setUserTransaction(UserTransaction userTransaction) {
-		this.userTransaction = userTransaction;
-	}
+    public void setUserTransaction(UserTransaction userTransaction) {
+        this.userTransaction = userTransaction;
+    }
 
-	public CredentialsSourceFactory getCredentialsSourceFactory() {
-		return credentialsSourceFactory;
-	}
+    public CredentialsSourceFactory getCredentialsSourceFactory() {
+        return credentialsSourceFactory;
+    }
 
-	public void setCredentialsSourceFactory(
-			final CredentialsSourceFactory credentialsSourceFactory) {
-		this.credentialsSourceFactory = credentialsSourceFactory;
-	}
+    public void setCredentialsSourceFactory(final CredentialsSourceFactory credentialsSourceFactory) {
+        this.credentialsSourceFactory = credentialsSourceFactory;
+    }
 }

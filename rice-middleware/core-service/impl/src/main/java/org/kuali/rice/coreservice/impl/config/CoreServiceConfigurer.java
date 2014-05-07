@@ -26,10 +26,10 @@ import java.util.List;
  * Allows for configuring a client to integrate with the "core services" module in Kuali Rice.
  *
  * <p>The CoreServiceConfigurer supports two run modes:
- *   <ol>
- *       <li>REMOTE - loads the client which interacts remotely with the services</li>
- *       <li>LOCAL - loads the service implementations and web components locally</li>
- *   </ol>
+ * <ol>
+ * <li>REMOTE - loads the client which interacts remotely with the services</li>
+ * <li>LOCAL - loads the service implementations and web components locally</li>
+ * </ol>
  * </p>
  *
  * <p>Client applications should generally only use "remote" run mode (which is the default).</p>
@@ -46,14 +46,14 @@ public class CoreServiceConfigurer extends ModuleConfigurer {
     }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "CoreServiceRemoteSpringBeans.xml");
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "CoreServiceLocalSpringBeans.xml");
         }
-		return springFileLocations;
-	}
+        return springFileLocations;
+    }
 
 }

@@ -27,14 +27,14 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
- * exist in all Rice based systems and clients. 
- * 
+ * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must
+ * exist in all Rice based systems and clients.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KIMConfigurer extends ModuleConfigurer {
     public static final String KIM_DATASOURCE_OBJ = "kim.datasource";
-	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml";
+    private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml";
     private DataSource dataSource;
 
     public KIMConfigurer() {
@@ -48,7 +48,7 @@ public class KIMConfigurer extends ModuleConfigurer {
     }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.THIN == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KimThinSpringBeans.xml");
@@ -59,8 +59,8 @@ public class KIMConfigurer extends ModuleConfigurer {
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KimLocalSpringBeans.xml");
         }
-		return springFileLocations;
-	}
+        return springFileLocations;
+    }
 
     @Override
     public void addAdditonalToConfig() {
@@ -80,6 +80,7 @@ public class KIMConfigurer extends ModuleConfigurer {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     @Override
     public boolean hasWebInterface() {
         return true;

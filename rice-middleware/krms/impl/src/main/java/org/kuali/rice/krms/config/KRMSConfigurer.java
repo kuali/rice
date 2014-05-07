@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class handles the Spring based KRMS configuration that is part of the Rice Configurer that must 
- * exist in all Rice based systems and clients. 
- * 
+ * This class handles the Spring based KRMS configuration that is part of the Rice Configurer that must
+ * exist in all Rice based systems and clients.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRMSConfigurer extends ModuleConfigurer {
@@ -37,7 +37,7 @@ public class KRMSConfigurer extends ModuleConfigurer {
     private static final String KRMS_SPRING_REMOTE_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSRemoteSpringBeans.xml";
     private DataSource dataSource;
 
-	public KRMSConfigurer() {
+    public KRMSConfigurer() {
         super(KrmsConstants.Namespaces.MODULE_NAME);
         setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
     }
@@ -62,13 +62,13 @@ public class KRMSConfigurer extends ModuleConfigurer {
     }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(KRMS_SPRING_REMOTE_BEANS_PATH);
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(KRMS_SPRING_LOCAL_BEANS_PATH);
         }
-		return springFileLocations;
-	}
+        return springFileLocations;
+    }
 }

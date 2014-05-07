@@ -35,15 +35,15 @@ public class KENConfigurer extends ModuleConfigurer {
     }
 
     @Override
-	public List<String> getPrimarySpringFiles() {
+    public List<String> getPrimarySpringFiles() {
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KENRemoteSpringBeans.xml");
         } else if (RunMode.LOCAL == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KENLocalSpringBeans.xml");
         }
-		return springFileLocations;
-	}
+        return springFileLocations;
+    }
 
     @Override
     public void addAdditonalToConfig() {

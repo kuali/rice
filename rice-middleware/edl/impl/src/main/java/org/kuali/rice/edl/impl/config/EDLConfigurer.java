@@ -23,33 +23,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
- * Configures the EDocLite module. 
+ * Configures the EDocLite module.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class EDLConfigurer extends ModuleConfigurer {
 
-	//public static final String EDL_DATASOURCE_OBJ = "edl.datasource";
-    public static final String EDL_LOCAL_SPRING_FILE = "classpath:org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml";
-	private DataSource dataSource;
+    //public static final String EDL_DATASOURCE_OBJ = "edl.datasource";
+    public static final String EDL_LOCAL_SPRING_FILE =
+            "classpath:org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml";
+    //private DataSource dataSource;
 
     public EDLConfigurer() {
         super("edl");
         setValidRunModes(Arrays.asList(RunMode.LOCAL));
     }
 
-	@Override
-	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations = new ArrayList<String>();
-		if (RunMode.LOCAL.equals(getRunMode())) {
-			springFileLocations.add(EDL_LOCAL_SPRING_FILE);
-		}
+    @Override
+    public List<String> getPrimarySpringFiles() {
+        final List<String> springFileLocations = new ArrayList<String>();
+        if (RunMode.LOCAL.equals(getRunMode())) {
+            springFileLocations.add(EDL_LOCAL_SPRING_FILE);
+        }
+        return springFileLocations;
+    }
 
-		return springFileLocations;
-	}
-	
     /*private List<String> getEmbeddedSpringFileLocation(){
     	final List<String> springFileLocations = new ArrayList<String>();
     	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLSpringBeans.xml");

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krms.test;
 
-import java.util.Collections;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -36,77 +34,125 @@ import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
+import java.util.Collections;
+
+import static org.junit.Assert.assertFalse;
+
 @BaselineMode(Mode.CLEAR_DB)
 public class TermRelatedBoTest extends AbstractBoTest {
-	
-	private TermBoService termBoService;
-	private ContextBoService contextRepository;
-	private KrmsTypeBoService krmsTypeBoService;
-	
-	@Before
-	public void setup() {
 
-		// wire up BO services
+    private TermBoService termBoService;
+    private ContextBoService contextRepository;
+    private KrmsTypeBoService krmsTypeBoService;
 
-		termBoService = new TermBoServiceImpl();
+    @Before
+    public void setup() {
+
+        // wire up BO services
+
+        termBoService = new TermBoServiceImpl();
 
         // TODO: fix
-		((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService(
+        ((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService(
                 "dataObjectService"));
 
-		contextRepository = new ContextBoServiceImpl();
-		((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
-		
-		krmsTypeBoService = new KrmsTypeBoServiceImpl();
-		((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(getDataObjectService());
-	}
-	
-	@Test
-	public void creationTest() {
+        contextRepository = new ContextBoServiceImpl();
+        ((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
 
-		// KrmsType for context
-		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestContextType", "KRMS").build();
-		krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
+        krmsTypeBoService = new KrmsTypeBoServiceImpl();
+        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(getDataObjectService());
+    }
 
-		// Context
-		ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create("KRMS", "testContext");
-		contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
-		ContextDefinition contextDefinition = contextBuilder.build();
-		contextDefinition = contextRepository.createContext(contextDefinition);
-		
-		// output TermSpec
-		TermSpecificationDefinition outputTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
-                    "java.lang.String").build();
-		outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
+    @Test
+    public void creationTest() {
 
-		// prereq TermSpec
-		TermSpecificationDefinition prereqTermSpec = 
-			TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
-                    "java.lang.String").build();
-		prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
+        // create prerequisite objects
+        ContextDefinition contextDefinition = createContext();
+        KrmsTypeDefinition krmsTermResolverTypeDefinition = createTermResolverType();
 
-		// KrmsType for TermResolver
-		KrmsTypeDefinition krmsTermResolverTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", "KRMS").build();
-		krmsTermResolverTypeDefinition = krmsTypeBoService.createKrmsType(krmsTermResolverTypeDefinition);
+        // output TermSpec
+        TermSpecificationDefinition outputTermSpec =
+                TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
+                        "java.lang.String").build();
+        outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
 
-		// TermResolver
-		TermResolverDefinition termResolverDef = 
-			TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(),
-					TermSpecificationDefinition.Builder.create(outputTermSpec), 
-					Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)), 
-					null, 
-					Collections.singleton("testParamName")).build();
-		termResolverDef = termBoService.createTermResolver(termResolverDef);
+        // prereq TermSpec
+        TermSpecificationDefinition prereqTermSpec =
+                TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
+                        "java.lang.String").build();
+        prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
 
-		// Term Param
-		TermParameterDefinition.Builder termParamBuilder = 
-			TermParameterDefinition.Builder.create(null, null, "testParamName", "testParamValue");
-		
-		// Term
-		TermDefinition termDefinition = 
-			TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder)).build();
-		termBoService.createTerm(termDefinition);
-	}
-	
+        // TermResolver
+        TermResolverDefinition termResolverDef =
+                TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(),
+                        TermSpecificationDefinition.Builder.create(outputTermSpec),
+                        Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)),
+                        null,
+                        Collections.singleton("testParamName")).build();
+        termResolverDef = termBoService.createTermResolver(termResolverDef);
+
+        // Term Param
+        TermParameterDefinition.Builder termParamBuilder =
+                TermParameterDefinition.Builder.create(null, null, "testParamName", "testParamValue");
+
+        // Term
+        TermDefinition termDefinition =
+                TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder)).build();
+        termBoService.createTerm(termDefinition);
+    }
+
+    /**
+     * Verify that Terms can be updated by the TermBoServiceImpl
+     */
+    @Test
+    public void updateTermTest() {
+
+        ContextDefinition contextDefinition = createContext();
+
+        // TermSpec -- we need one to create a term
+        TermSpecificationDefinition termSpec =
+                TermSpecificationDefinition.Builder.create(null, "TermUpdateTestTermSpec", contextDefinition.getId(),
+                        "java.lang.String").build();
+        termSpec = termBoService.createTermSpecification(termSpec);
+
+        // Term -- create the term that we'll update
+        TermDefinition termDefinition =
+                TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), null).build();
+        termDefinition = termBoService.createTerm(termDefinition);
+
+        // Change a field so that we can verify the update occurred
+        TermDefinition.Builder updateTermBuilder = TermDefinition.Builder.create(termDefinition);
+        updateTermBuilder.setDescription("updated description");
+
+        termBoService.updateTerm(updateTermBuilder.build());
+
+        // check that the update stuck
+        TermDefinition updatedTerm = termBoService.getTerm(termDefinition.getId());
+
+        assertFalse("descriptions should not be equal after update",
+                updatedTerm.getDescription().equals(termDefinition.getDescription()));
+    }
+
+    private ContextDefinition createContext() {
+
+        // KrmsType for context
+        KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestContextType", "KRMS").build();
+        krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
+
+        // Context
+        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create("KRMS", "testContext");
+        contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
+        ContextDefinition contextDefinition = contextBuilder.build();
+        contextDefinition = contextRepository.createContext(contextDefinition);
+
+        return contextDefinition;
+    }
+
+    private KrmsTypeDefinition createTermResolverType() {
+        // KrmsType for TermResolver
+        KrmsTypeDefinition krmsTermResolverTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", "KRMS").build();
+        krmsTermResolverTypeDefinition = krmsTypeBoService.createKrmsType(krmsTermResolverTypeDefinition);
+
+        return krmsTermResolverTypeDefinition;
+    }
 }

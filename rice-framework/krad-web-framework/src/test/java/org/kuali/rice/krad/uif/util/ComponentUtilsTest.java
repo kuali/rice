@@ -15,23 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
@@ -47,10 +35,24 @@ import org.kuali.rice.krad.uif.field.FieldBase;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.InputFieldBase;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * ComponentUtilsTest tests various ComponentUtils methods
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComponentUtilsTest {
@@ -236,6 +238,11 @@ public class ComponentUtilsTest {
      * test {@link ComponentUtils#copyUsingCloning} using a FieldBase object
      */
     public void testCopyUsingCloningWithFieldBaseSucceeds() {
+        Config config = ConfigContext.getCurrentContextConfig();
+        if (config != null) {
+            config.putObject(KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
+        }
+
         FieldBase fieldBaseOriginal = initializeFieldBase();
         FieldBase fieldBaseCopy = CopyUtils.copy(fieldBaseOriginal);
 

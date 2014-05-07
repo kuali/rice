@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util
 
+import org.junit.After
 import org.junit.Test
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint
 
@@ -52,6 +53,11 @@ class ClientValidationUtilsTest {
     @Before
     void init() {
         mockTheResourceLoader()
+    }
+
+    @After
+    void destroy() {
+        GlobalResourceLoader.stop();
     }
 
     @Test

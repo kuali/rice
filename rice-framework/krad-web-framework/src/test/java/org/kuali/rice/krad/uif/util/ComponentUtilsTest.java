@@ -238,11 +238,6 @@ public class ComponentUtilsTest {
      * test {@link ComponentUtils#copyUsingCloning} using a FieldBase object
      */
     public void testCopyUsingCloningWithFieldBaseSucceeds() {
-        Config config = ConfigContext.getCurrentContextConfig();
-        if (config != null) {
-            config.putObject(KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TRACE, false);
-        }
-
         FieldBase fieldBaseOriginal = initializeFieldBase();
         FieldBase fieldBaseCopy = CopyUtils.copy(fieldBaseOriginal);
 

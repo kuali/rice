@@ -16,11 +16,14 @@
 package org.kuali.rice.krad.uif.widget;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -44,6 +47,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.InquiryForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Widget for rendering an Inquiry link or DirectInquiry action field
@@ -345,10 +349,19 @@ public class Inquiry extends WidgetBase {
                     inquiryParameterFrom = fieldBindingInfo.getPropertyAdjustedBindingPath(inquiryParameterFrom);
                 }
 
+                ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+
+                // Make sure our inquiry parameters are included as a rendered property path
+                if(!viewLifecycle.getViewPostMetadata().getAllRenderedPropertyPaths().contains(inquiryParameterFrom.toString())){
+                    setRender(false);
+                    return;
+                }
+
                 paramMapStringBuilder.append(inquiryParameterFrom);
                 paramMapStringBuilder.append(":");
                 paramMapStringBuilder.append(inquiryParameter.getValue());
                 paramMapStringBuilder.append(",");
+
             }
             String paramMapString = StringUtils.removeEnd(paramMapStringBuilder.toString(), ",");
 

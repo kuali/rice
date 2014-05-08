@@ -42,7 +42,7 @@
 
   <!-- ex:Demo-DropdownMenu-Example1 start-->
   <bean id="Demo-MenuAction" parent="Uif-MenuAction"
-        p:actionUrl.viewId="Demo-DropdownMenuView"
+        p:actionUrl.viewId="Demo-DropdownMenu-View"
         p:actionUrl.controllerMapping="/kradsampleapp"/>
   <!-- ex:Demo-DropdownMenu-Example1 end-->
 

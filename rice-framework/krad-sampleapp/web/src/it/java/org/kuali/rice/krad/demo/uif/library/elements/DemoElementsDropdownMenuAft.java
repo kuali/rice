@@ -25,9 +25,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-DropdownMenuView
+     * /kr-krad/kradsampleapp?viewId=Demo-DropdownMenu-View
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DropdownMenuView";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-DropdownMenu-View";
  
     @Override
     protected String getBookmarkUrl() {

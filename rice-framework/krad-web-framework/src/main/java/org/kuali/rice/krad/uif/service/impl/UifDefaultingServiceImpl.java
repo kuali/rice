@@ -69,6 +69,11 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
     @Override
     public String deriveHumanFriendlyNameFromPropertyName(String camelCasedName) {
+        // quick check to make sure there is a property name to modify
+        if(StringUtils.isBlank(camelCasedName)) {
+            return camelCasedName;
+        }
+
         // We only want to include the component after the last property separator
         if (camelCasedName.contains(".")) {
             camelCasedName = StringUtils.substringAfterLast(camelCasedName, ".");

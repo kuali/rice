@@ -398,8 +398,8 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
                 baseURI = baseURI.substring(0, baseURI.indexOf("?"));
             }
 
-            var lookupUrl = baseURI.replace("kradsampleapp", "lookup?");
-            lookupUrl += "returnLocation=" + encodeURIComponent(baseURI);
+            var lookupUrl = data['actionParameters[baseLookupUrl]'];
+            lookupUrl += "?returnLocation=" + encodeURIComponent(baseURI);
             lookupUrl += "&renderedInLightBox=true";
             lookupUrl += "&returnByScript=" + lookupReturnByScript;
             lookupUrl += "&dataObjectClassName=" + data['actionParameters[dataObjectClassName]'];

@@ -168,6 +168,37 @@
     </property>
   </bean>
 
+  <bean id="LookupSampleViewStackedResults" parent="LookupSampleView">
+    <property name="viewName" value="LookupSampleViewStackedResults"/>
+    <property name="headerText" value="Lookup Sample with StackedResults"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+      </list>
+    </property>
+    <property name="resultsGroup">
+      <bean parent="LookupSampleView-StackedLookupResultsCollectionSection"/>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate"/>
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LookupSampleView-StackedLookupResultsCollectionSection" parent="Uif-StackedCollectionSection"
+        p:id="uLookupSampleViewStackedLookupResults">
+    <property name="renderAddLine" value="false"/>
+    <property name="propertyName" value="lookupResults"/>
+    <property name="headerText" value="Lookup Results"/>
+    <property name="header.cssClasses" value="uif-hideHeaderText"/>
+  </bean>
+
+
   <bean id="LookupSampleViewConditionalResults" parent="Uif-LookupView">
     <property name="viewName" value="LookupSampleViewConditionalResults"/>
     <property name="headerText" value="Lookup Sample with Conditional Results"/>

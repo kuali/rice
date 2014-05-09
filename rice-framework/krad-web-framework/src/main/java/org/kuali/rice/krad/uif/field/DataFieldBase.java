@@ -191,25 +191,21 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
         this.propertyNamesForAdditionalDisplay = informationalPropertyPaths;
 
-        // special processing for List<?> readOnly
+        // process read-only lists and additional and alternate display values
+        boolean hasPropertyEditor = getPropertyEditor() != null;
+        boolean hasReadOnlyDisplayReplacement = StringUtils.isNotBlank(getReadOnlyDisplayReplacement());
+        boolean hasReadOnlyDisplayReplacementPropertyName = StringUtils.isNotBlank(
+                getReadOnlyDisplayReplacementPropertyName());
         String bindingPath = getBindingInfo().getBindingPath();
-        Class<?> type = StringUtils.isNotEmpty(bindingPath) ? ObjectPropertyUtils.getPropertyType(model, bindingPath) :
-                null;
-        if (Boolean.TRUE.equals(this.getReadOnly()) && type != null && List.class.isAssignableFrom(type) && StringUtils.isBlank(
-                getReadOnlyDisplayReplacement()) && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())) {
-            //get the list
-            Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
+        Class<?> type = StringUtils.isNotEmpty(bindingPath) ? ObjectPropertyUtils.getPropertyType(model, bindingPath) : null;
+        boolean isReadOnlyList = Boolean.TRUE.equals(getReadOnly()) && type != null && List.class.isAssignableFrom(type);
 
-            //check for null, empty or non-simple type content (not supported by DataField)
-            if (fieldValue != null && fieldValue instanceof List<?> && !((List) fieldValue).isEmpty()) {
-                List<?> list = (List<?>) fieldValue;
-                processReadOnlyListDisplay(model, list);
-            } else {
-                this.setReadOnlyDisplayReplacement("&nbsp;");
-            }
+        if (!hasPropertyEditor && !hasReadOnlyDisplayReplacement && !hasReadOnlyDisplayReplacementPropertyName && isReadOnlyList) {
+            Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+            List<?> list = fieldValue != null ? (List<?>) fieldValue : Collections.emptyList();
 
+            processReadOnlyListDisplay(model, list);
         } else {
-            // Additional and Alternate display value
             setAlternateAndAdditionalDisplayValue(ViewLifecycle.getView(), model);
         }
 
@@ -268,22 +264,24 @@ public class DataFieldBase extends FieldBase implements DataField {
      * @param list the list to be converted to readOnly html
      */
     protected String generateReadOnlyListDisplayReplacement(List<?> list) {
-        String generatedHtml = "";
-
         //Default to delimited if nothing is set
         if (getReadOnlyListDisplayType() == null) {
             this.setReadOnlyListDisplayType(UifConstants.ReadOnlyListTypes.DELIMITED.name());
         }
 
+        String generatedHtml = "";
+
         //begin generation setup
-        if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
-            generatedHtml = "<ul class='uif-readOnlyStringList'>";
-        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
-            generatedHtml = "<ol class='uif-readOnlyStringList'>";
-        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.BREAK.name())) {
-            setReadOnlyListDelimiter("<br/>");
-        } else if (this.getReadOnlyListDelimiter() == null) {
-            setReadOnlyListDelimiter(", ");
+        if (!list.isEmpty()) {
+            if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
+                generatedHtml = "<ul class='uif-readOnlyStringList'>";
+            } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
+                generatedHtml = "<ol class='uif-readOnlyStringList'>";
+            } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.BREAK.name())) {
+                setReadOnlyListDelimiter("<br/>");
+            } else if (this.getReadOnlyListDelimiter() == null) {
+                setReadOnlyListDelimiter(", ");
+            }
         }
 
         //iterate through each value
@@ -311,20 +309,21 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
 
         //end the generation
-        if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
-            generatedHtml = generatedHtml + "</ul>";
-        } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
-            generatedHtml = generatedHtml + "</ol>";
-        } else {
-            generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
+        if (!list.isEmpty()) {
+            if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.UL.name())) {
+                generatedHtml = generatedHtml + "</ul>";
+            } else if (getReadOnlyListDisplayType().equalsIgnoreCase(UifConstants.ReadOnlyListTypes.OL.name())) {
+                generatedHtml = generatedHtml + "</ol>";
+            } else {
+                generatedHtml = StringUtils.removeEnd(generatedHtml, this.getReadOnlyListDelimiter());
+            }
         }
 
-        if (StringUtils.isNotBlank(generatedHtml)) {
-            return generatedHtml;
-        } else {
-            //this must be done or the ftl will skip and throw error
-            return "&nbsp;";
+        if (StringUtils.isBlank(generatedHtml)) {
+            generatedHtml = "&nbsp;";
         }
+
+        return generatedHtml;
     }
 
     /**

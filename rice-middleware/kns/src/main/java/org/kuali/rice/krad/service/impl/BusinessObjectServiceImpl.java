@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -39,15 +48,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.LegacyDataFramework;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.beans.PropertyDescriptor;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This class is the service implementation for the BusinessObjectService structure. This is the default implementation, that is
@@ -329,30 +329,33 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         if (bo == null) {
             throw new IllegalArgumentException("bo passed in was null");
         }
-
-        if ( bo instanceof PersistableBusinessObject ) {
-        	((PersistableBusinessObject) bo).linkEditableUserFields();
-        } else if ( bo instanceof PersistableBusinessObjectBaseAdapter ) {
-        	((PersistableBusinessObjectBaseAdapter) bo).linkEditableUserFields();
+        if ( bo instanceof List ) {
+        	linkUserFieldsInBoList( (List<PersistableBusinessObject>) bo );
+        } else {
+	
+	        if ( bo instanceof PersistableBusinessObject ) {
+	        	((PersistableBusinessObject) bo).linkEditableUserFields();
+	        } else if ( bo instanceof PersistableBusinessObjectBaseAdapter ) {
+	        	((PersistableBusinessObjectBaseAdapter) bo).linkEditableUserFields();
+	        }
+	
+	        linkUserFieldsInBoList( Collections.<PersistableBusinessObject>singletonList( (PersistableBusinessObject)bo ) );
         }
-
-        linkUserFields( Collections.singletonList( bo ) );
     }
 
-    @Override
-    public void linkUserFields(List<PersistableBusinessObject> bos) {
+    public void linkUserFieldsInBoList(List<PersistableBusinessObject> list) {
 
         // do nothing if there's nothing to process
-        if (bos == null) {
+        if (list == null) {
             throw new IllegalArgumentException("List of bos passed in was null");
         }
-        else if (bos.isEmpty()) {
+        else if (list.isEmpty()) {
             return;
         }
 
 
         Person person;
-        for (PersistableBusinessObject bo : bos) {
+        for (PersistableBusinessObject bo : list) {
             // get a list of the reference objects on the BO
             List<DataObjectRelationship> relationships = dataObjectMetaDataService.getDataObjectRelationships(
                     bo.getClass());

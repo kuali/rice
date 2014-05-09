@@ -217,17 +217,6 @@ public interface BusinessObjectService {
     public void linkUserFields(Object bo);
 
     /**
-     * 
-     * Updates all KualiUser or Person objects contained within this BO, based on the UserID as the authoritative key. The
-     * appropriate foreign-key field in the BO itself is also updated.
-     * 
-     * This allows UserIDs to be entered on forms, and the back-end will link up correctly based on this non-key field.
-     * 
-     * @param bos A List of populated BusinessObject (or descendent) instances to be linked & updated.
-     */
-    public void linkUserFields(List<PersistableBusinessObject> bos);
-    
-    /**
      * Merges the given business object, but tells the ORM that the object is to be treated as Read Only,
      * and even if it has changes, it will not be persisted to the database 
      * 

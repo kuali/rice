@@ -95,7 +95,40 @@ public class IdentityServiceTest extends KIMTestCase {
         Principal principal = identityService.getPrincipalByPrincipalName("DoesNotExist");
         assertNull("principal should not be found", principal);
     }
-	
+
+    @Test
+    public void testUpdatePrincipal() {
+        String principalName = "kuluser";
+        String principalId = "KULUSER";
+        String newPrincipalName = "kuluserUpdatedName";
+
+        Principal principal = identityService.getPrincipalByPrincipalName(principalName);
+        assertNotNull("principal must not be null", principal);
+        assertEquals("principal id should be " + principalId, principalId, principal.getPrincipalId());
+        assertEquals("principal name should be " + principalName, principalName, principal.getPrincipalName());
+
+        Principal.Builder builder = Principal.Builder.create(principal);
+        builder.setPrincipalName(newPrincipalName);
+        Principal updatedPrincipal = identityService.updatePrincipal(builder.build());
+        assertNotNull("principal must not be null", updatedPrincipal);
+        assertEquals("principal id should be " + principalId, principalId, updatedPrincipal.getPrincipalId());
+        assertEquals("principal name should be " + newPrincipalName, newPrincipalName,
+                updatedPrincipal.getPrincipalName());
+
+        Principal principalById = identityService.getPrincipal(principalId);
+        assertNotNull("principal must not be null", principalById);
+        assertEquals("principal name should be " + newPrincipalName, newPrincipalName,
+                principalById.getPrincipalName());
+
+        // Set the princpalName back to kuluser to prevent issues with other tests
+        Principal.Builder builder2 = Principal.Builder.create(principalById);
+        builder2.setPrincipalName(principalName);
+        Principal revertedPrincipal = identityService.updatePrincipal(builder2.build());
+        assertNotNull("principal must not be null", revertedPrincipal);
+        assertEquals("principal id should be " + principalId, principalId, revertedPrincipal.getPrincipalId());
+        assertEquals("principal name should be " + principalName, principalName, revertedPrincipal.getPrincipalName());
+    }
+
 	@Test
 	public void testGetDefaultEntityByPrincipalId() {
 		String principalId = "KULUSER";

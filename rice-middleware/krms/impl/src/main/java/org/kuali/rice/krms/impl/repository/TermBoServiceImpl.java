@@ -242,7 +242,7 @@ public class TermBoServiceImpl implements TermBoService {
         // delete any old, existing parameters
 
         QueryByCriteria crit =
-                QueryByCriteria.Builder.forAttribute(KrmsImplConstants.PropertyNames.Term.TERM_ID, toUpdate.getId()).build();
+                QueryByCriteria.Builder.forAttribute("term.id", toUpdate.getId()).build();
         dataObjectService.deleteMatching(TermParameterBo.class, crit);
 
         // update the rule and create new attributes

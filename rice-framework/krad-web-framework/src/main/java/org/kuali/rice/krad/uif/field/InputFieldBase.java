@@ -61,7 +61,9 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -478,7 +480,15 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             if ((this.quickfinder != null) && StringUtils.isNotBlank(this.quickfinder.getDataObjectClassName())) {
                 setWidgetInputOnly(true);
             } else {
-                setReadOnly(true);
+                String maintenanceAction = null;
+                if (view.getViewTypeName().equals(UifConstants.ViewType.MAINTENANCE)) {
+                    maintenanceAction =((MaintenanceDocumentForm) model).getMaintenanceAction();
+                }
+
+                if ((!view.getViewTypeName().equals(UifConstants.ViewType.LOOKUP)) &&
+                    (!KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction))) {
+                        setReadOnly(true);
+                }
             }
         }
 

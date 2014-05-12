@@ -36,6 +36,7 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.WeakHashMap;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.Copyable;
@@ -1241,18 +1242,7 @@ public final class CopyUtils {
          * @param targetClass The class to inspect for meta-data.
          */
         private ClassMetadata(Class<?> targetClass) {
-
-            Method targetCloneMethod = null;
-            if (Cloneable.class.isAssignableFrom(targetClass) && !targetClass.isArray()) {
-                try {
-                    targetCloneMethod = targetClass.getMethod("clone");
-                } catch (NoSuchMethodException e) {
-                    LOG.warn("Target " + targetClass + " is cloneable, but does not define a public clone() method", e);
-                } catch (SecurityException e) {
-                    LOG.warn("Target " + targetClass + " is cloneable, but the public clone() method is restricted", e);
-                }
-            }
-            cloneMethod = targetCloneMethod;
+            cloneMethod = MethodUtils.getAccessibleMethod(targetClass, "clone", new Class[0]);
 
             // Create mutable collections for building meta-data indexes.
             List<Field> cloneList = new ArrayList<Field>();

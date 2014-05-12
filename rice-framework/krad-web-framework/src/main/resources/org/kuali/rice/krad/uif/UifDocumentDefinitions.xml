@@ -281,8 +281,7 @@
   <bean id="Uif-DocumentPageFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-CancelAction" p:actionLabel="Cancel" p:methodToCall="refresh"
-              p:confirmationPromptText="Are you sure you want to cancel?"
+        <bean parent="Uif-CancelAction" p:confirmationPromptText="Are you sure you want to cancel?"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="copy" p:actionLabel="Copy"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>

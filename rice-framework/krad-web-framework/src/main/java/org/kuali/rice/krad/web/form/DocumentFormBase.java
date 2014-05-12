@@ -16,13 +16,26 @@
 package org.kuali.rice.krad.web.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.doctype.DocumentType;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base form for all <code>DocumentView</code> screens
@@ -47,7 +60,12 @@ public class DocumentFormBase extends UifFormBase {
 
 	protected Document document;
 
-	public DocumentFormBase() {
+    private List<ActionRequest> actionRequests;
+    private List<String> selectedActionRequests;
+    private String superUserAnnotation;
+
+
+    public DocumentFormBase() {
 	    super();
 
 	    instantiateDocument();
@@ -160,5 +178,170 @@ public class DocumentFormBase extends UifFormBase {
 	public WorkflowDocument getWorkflowDocument() {
 		return getDocument().getDocumentHeader().getWorkflowDocument();
 	}
+
+    public List<ActionRequest> getActionRequests() {
+        return actionRequests;
+    }
+
+
+    public List<ActionRequest> getActionRequestsRequiringApproval() {
+        List<ActionRequest> actionRequests = getActionRequests();
+        List<ActionRequest> actionRequestsApprove = new ArrayList<ActionRequest>();;
+
+        for (ActionRequest actionRequest: actionRequests) {
+            if  ((StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) ||
+                    (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()))) {
+                actionRequestsApprove.add(actionRequest);
+            }
+        }
+        return actionRequestsApprove;
+    }
+
+
+    public boolean isSuperUserActionAvaliable() {
+        List<ActionRequest> actionRequests = getActionRequestsRequiringApproval();
+        boolean hasSingleActionToTake = false;
+        boolean canSuperUserApprove = false;
+        boolean canSuperUserDisapprove = false;
+
+        hasSingleActionToTake =  ( isSuperUserApproveSingleActionRequestAuthorized() &&
+                isStateAllowsApproveSingleActionRequest() &&
+                !actionRequests.isEmpty());
+
+        if (!hasSingleActionToTake) {
+            canSuperUserApprove = (isSuperUserApproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+
+        if (!canSuperUserApprove) {
+            canSuperUserDisapprove = (isSuperUserDisapproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
+        }
+
+
+        return (hasSingleActionToTake || canSuperUserApprove || canSuperUserDisapprove) ;
+    }
+
+    public boolean isSuperUserApproveSingleActionRequestAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                principalId, getDocTypeName(), routeNodeInstances, documentStatus);
+    }
+
+    public boolean isSuperUserApproveDocumentAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
+    }
+
+    public boolean isSuperUserDisapproveDocumentAuthorized() {
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        String docId = this.getDocId();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
+                principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
+    }
+
+    public boolean isSuperUserAuthorized() {
+        String docId = this.getDocId();
+        if (StringUtils.isBlank(docId) || docTypeName == null) {
+            return false;
+        }
+
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
+        String docTypeId = null;
+        if (documentType != null) {
+            docTypeId = documentType.getId();
+        }
+        String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+        if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
+            return true;
+        }
+        List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(
+                docId);
+        String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+        return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                        principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
+                (KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument (
+                        principalId, this.getDocTypeName(), routeNodeInstances, documentStatus))) ;
+    }
+
+    public boolean isStateAllowsApproveOrDisapprove() {
+        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(
+                    GlobalVariables.getUserSession().getPrincipalId(),
+                    this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (document != null) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
+            return !(isStateProcessedOrDisapproved(status) ||
+                    isStateInitiatedFinalCancelled(status) ||
+                    StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isStateAllowsApproveSingleActionRequest() {
+        if(this.getDocument().getDocumentHeader().hasWorkflowDocument()) {
+            DocumentStatus status = null;
+            WorkflowDocument document = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(),
+                    this.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentId());
+            if (document != null) {
+                status = document.getStatus();
+            } else {
+                status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
+            }
+            return !(isStateInitiatedFinalCancelled(status));
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isStateProcessedOrDisapproved(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()));
+    }
+
+    public boolean isStateInitiatedFinalCancelled(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode()));
+    }
+
 
 }

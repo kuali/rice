@@ -58,6 +58,9 @@ class JpaCriteriaQuery extends DataObjectCriteriaQueryBase<NativeJpaQueryTransla
         return query.getResultList();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int executeUpdate(Query query) {
         return query.executeUpdate();

@@ -107,9 +107,13 @@ public interface PersistenceProvider extends Provider {
     /**
      * Deletes data objects based on the given criteria
      *
+     * <p>If the given criteria is empty or null than an {@link java.lang.IllegalArgumentException} will be thrown.
+     *   If the given type is null then an {@link java.lang.IllegalArgumentException} will be thrown.</p>
+     *
      * @param type the type of data object
      * @param queryByCriteria criteria to filter by
      *
+     * @throws IllegalArgumentException if the criteria or criteria predicate is null.
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);

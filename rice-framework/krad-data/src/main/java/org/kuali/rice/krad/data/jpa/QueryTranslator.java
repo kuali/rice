@@ -46,7 +46,7 @@ interface QueryTranslator<C, Q> {
     Q createQuery(Class queryClazz, C criteria);
 
     /**
-     * Createa a query to delete records from the given criteria
+     * Creates a query to delete records from the given criteria
      * @param queryClass the type of the query
      * @param criteria the criteria to translate
      * @return a query from the given criteria

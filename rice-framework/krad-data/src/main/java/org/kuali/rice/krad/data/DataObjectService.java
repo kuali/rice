@@ -106,10 +106,14 @@ public interface DataObjectService {
     void delete(Object dataObject);
 
     /**
-     * Deletes data objects
+     * Deletes records for the given type and matching the given criteria.  If the given type is null then an
+     *  IllegalArgumentException will be thrown.  If the given criteria is null or empty an IllegalArgumentException
+     *  is also thrown to help prevent table truncations.
      *
-     * @param type the type of the data objects to query
+     * @param type the type of data objects to delete
      * @param queryByCriteria query object
+     *
+     * @throws IllegalArgumentException if {@code type} is null or if the {@code QueryByCriteria} is null or empty
      * @throws DataAccessException if data access fails
      */
     <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);

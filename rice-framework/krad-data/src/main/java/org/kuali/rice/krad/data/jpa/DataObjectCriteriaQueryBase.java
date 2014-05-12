@@ -70,7 +70,9 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
     protected abstract <T> List<T> getResults(Q query);
 
     /**
-     * {@inheritDoc}
+     * Executes the given query.
+     * @param query the query to execute.
+     * @return the number of records successfully committed.
      */
     protected abstract int executeUpdate(Query query);
 

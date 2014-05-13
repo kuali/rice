@@ -194,6 +194,7 @@ public class DocumentFormBase extends UifFormBase {
                 actionRequestsApprove.add(actionRequest);
             }
         }
+
         return actionRequestsApprove;
     }
 
@@ -216,7 +217,6 @@ public class DocumentFormBase extends UifFormBase {
             canSuperUserDisapprove = (isSuperUserDisapproveDocumentAuthorized() && isStateAllowsApproveOrDisapprove());
         }
 
-
         return (hasSingleActionToTake || canSuperUserApprove || canSuperUserDisapprove) ;
     }
 
@@ -225,14 +225,17 @@ public class DocumentFormBase extends UifFormBase {
         String docId = this.getDocId();
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
         String docTypeId = null;
+
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+
         if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
             return true;
         }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+
         return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
                 principalId, getDocTypeName(), routeNodeInstances, documentStatus);
     }
@@ -242,14 +245,17 @@ public class DocumentFormBase extends UifFormBase {
         String docId = this.getDocId();
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
         String docTypeId = null;
+
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+
         if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
             return true;
         }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+
         return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
                 principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
     }
@@ -259,36 +265,43 @@ public class DocumentFormBase extends UifFormBase {
         String docId = this.getDocId();
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
         String docTypeId = null;
+
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
+
         if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
             return true;
         }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+
         return KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
                 principalId, this.getDocTypeName(), routeNodeInstances, documentStatus);
     }
 
     public boolean isSuperUserAuthorized() {
         String docId = this.getDocId();
+
         if (StringUtils.isBlank(docId) || docTypeName == null) {
             return false;
         }
 
         DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(docTypeName);
         String docTypeId = null;
+
         if (documentType != null) {
             docTypeId = documentType.getId();
         }
         String principalId =  GlobalVariables.getUserSession().getPrincipalId();
+
         if ( KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, docTypeId) ) {
             return true;
         }
         List<RouteNodeInstance> routeNodeInstances= KewApiServiceLocator.getWorkflowDocumentService().getRouteNodeInstances(
                 docId);
         String documentStatus =  KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(docId).getCode();
+
         return ((KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
                 principalId, this.getDocTypeName(), routeNodeInstances, documentStatus)) ||
                 (KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
@@ -308,6 +321,7 @@ public class DocumentFormBase extends UifFormBase {
             } else {
                 status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
             }
+
             return !(isStateProcessedOrDisapproved(status) ||
                     isStateInitiatedFinalCancelled(status) ||
                     StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
@@ -326,6 +340,7 @@ public class DocumentFormBase extends UifFormBase {
             } else {
                 status = this.getDocument().getDocumentHeader().getWorkflowDocument().getStatus();
             }
+
             return !(isStateInitiatedFinalCancelled(status));
         } else {
             return false;

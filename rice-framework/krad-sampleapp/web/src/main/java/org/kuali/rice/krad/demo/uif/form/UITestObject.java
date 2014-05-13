@@ -18,8 +18,11 @@ package org.kuali.rice.krad.demo.uif.form;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +46,15 @@ public class UITestObject implements Serializable {
     private boolean bfield;
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
+    private Date date1;
+    private String date1Str;
+
+    static int count2 = 0;
+    private Date date2;
+
     private MultipartFile fileUpload;
 
-   // private String fileUploadName;
+    // private String fileUploadName;
 
     private UITestObject innerObject;
 
@@ -59,6 +68,37 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField2", "Banana");
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
+
+        // populate date1 and date1Str
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.set(2010, 1, 1);
+            long offset = cal.getTime().getTime();
+            cal.set(2014, 1, 1);
+            long end = cal.getTime().getTime();
+            long diff = end - offset + 1;
+            date1 = new Date(offset + (long) (Math.random() * diff));
+            date1Str = new SimpleDateFormat("MM/dd/yyyy").format(date1);
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        // populate date2
+        count2++;
+        // every fifth date leave blank
+        //        if (count2 % 5 != 0 && date2 == null) {
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.set(2010, 1, 1);
+            long offset = cal.getTime().getTime();
+            cal.set(2014, 1, 1);
+            long end = cal.getTime().getTime();
+            long diff = end - offset + 1;
+            date2 = new Date(offset + (long) (Math.random() * diff));
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        //        }
     }
 
     public UITestObject(String field1, String field2, String field3, String field4) {
@@ -187,16 +227,16 @@ public class UITestObject implements Serializable {
 
     public void setFileUpload(MultipartFile fileUpload) {
         this.fileUpload = fileUpload;
-      // this.fileUploadName = fileUpload.getOriginalFilename();
+        // this.fileUploadName = fileUpload.getOriginalFilename();
     }
 
-//    public String getFileUploadName() {
-//        return fileUploadName;
-//    }
-//
-//    public void setFileUploadName(String fileUploadName) {
-//        this.fileUploadName = fileUploadName;
-//    }
+    //    public String getFileUploadName() {
+    //        return fileUploadName;
+    //    }
+    //
+    //    public void setFileUploadName(String fileUploadName) {
+    //        this.fileUploadName = fileUploadName;
+    //    }
 
     /**
      * @param subList the subList to set
@@ -238,7 +278,6 @@ public class UITestObject implements Serializable {
 
     @Override
     public String toString() {
-
         return "" + field1 + field2 + field3 + field4;
     }
 
@@ -273,6 +312,7 @@ public class UITestObject implements Serializable {
     public String getInputField2() {
         return field2;
     }
+
     public void setInputField3(String field) {
         field3 = field;
     }
@@ -280,6 +320,7 @@ public class UITestObject implements Serializable {
     public String getInputField3() {
         return field3;
     }
+
     public void setInputField4(String field) {
         field4 = field;
     }
@@ -288,5 +329,28 @@ public class UITestObject implements Serializable {
         return field4;
     }
 
+    public Date getDate1() {
+        return date1;
+    }
+
+    public void setDate1(Date date1) {
+        this.date1 = date1;
+    }
+
+    public String getDate1Str() {
+        return date1Str;
+    }
+
+    public void setDate1Str(String date1Str) {
+        this.date1Str = date1Str;
+    }
+
+    public Date getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
+    }
 }
 

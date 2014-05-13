@@ -583,6 +583,21 @@ public interface DataField extends DataBinding, Helpable, Field {
     boolean isRenderFieldset();
 
     /**
+     * Sets the sort type if this field is used within a collection
+     *
+     * <p>
+     * The default sort type is the Java class of the
+     * property being referenced. Since a String property may actually contain numeric or date values only this property
+     * can be used to better set the sort type.
+     * </p>
+     *
+     * @return string representation of the sort type
+     */
+    public String getSortAs();
+
+    public void setSortAs(String sortAs);
+
+    /**
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     void completeValidation(ValidationTrace tracer);

@@ -29,6 +29,8 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionGroup-Example1"/>
+        <ref bean="Demo-CollectionGroup-SortTypes"/>
+        <ref bean="Demo-CollectionGroup-Readonly"/>
         <ref bean="Demo-CollectionGroup-Example2"/>
       </list>
     </property>
@@ -55,6 +57,72 @@
         </bean>
 
         <!-- ex:Demo-CollectionGroup-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionGroup-SortTypes"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionGroup-SortTypes start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="10">
+          <property name="headerText" value="Table Layout" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.sequencePropertyName" value="date1" />
+          <property name="layoutManager.generateAutoSequence" value ="false"/>
+          <property name="layoutManager.sequenceFieldPrototype">
+            <bean parent="Uif-DataField" p:propertyName="date1" p:readOnly="true"/>
+          </property>
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-LinkField" p:href="http://msn.com/" p:linkText="@{#lp.field1}" p:sortAs="numeric"/>
+              <bean parent="Uif-DataField" p:propertyName="date1Str"/>
+              <bean parent="Uif-DataField" p:propertyName="date1Str" p:sortAs="kuali_date"/>
+              <bean parent="Uif-InputField" p:label="Field 1 Not Sorted" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2 Numeric Sort" p:propertyName="field2" p:sortAs="numeric"/>
+              <bean parent="Uif-InputField" p:label="Date 1" p:propertyName="date1"/>
+              <bean parent="Uif-InputField" p:label="Date 1 String Not Sorted" p:propertyName="date1Str"/>
+              <bean parent="Uif-InputField" p:label="Date 1 String Date Sorted" p:propertyName="date1Str" p:sortAs="kuali_date"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionGroup-SortTypes end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionGroup-Readonly"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionGroup-Readonly start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="8">
+          <property name="headerText" value="Table Layout" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.renderSequenceField" value="false" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="renderAddLine" value="false" />
+          <property name="renderLineActions" value="false" />
+          <property name="readOnly" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-LinkField" p:href="http://msn.com/" p:linkText="@{#lp.field1}" p:sortAs="numeric"/>
+              <bean parent="Uif-DataField" p:propertyName="date1Str"/>
+              <bean parent="Uif-DataField" p:propertyName="date1Str" p:sortAs="kuali_date"/>
+              <bean parent="Uif-DataField" p:label="Field 1 Not Sorted" p:propertyName="field1"/>
+              <bean parent="Uif-DataField" p:label="Field 2 Numeric Sort" p:propertyName="field2" p:sortAs="numeric"/>
+              <bean parent="Uif-DataField" p:label="Date 1" p:propertyName="date1"/>
+              <bean parent="Uif-DataField" p:label="Date 2" p:propertyName="date2"/>
+              <bean parent="Uif-DataField" p:label="Date 1 String Not Sorted" p:propertyName="date1Str"/>
+              <bean parent="Uif-DataField" p:label="Date 1 String Date Sorted" p:propertyName="date1Str" p:sortAs="kuali_date"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionGroup-Readonly end-->
       </list>
     </property>
   </bean>

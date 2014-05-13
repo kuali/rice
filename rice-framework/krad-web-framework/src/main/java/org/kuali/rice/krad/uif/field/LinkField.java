@@ -20,7 +20,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -35,6 +35,8 @@ public class LinkField extends FieldBase {
     private static final long serialVersionUID = -1908504471910271148L;
 
     private Link link;
+
+    private String sortAs;
 
     public LinkField() {
         super();
@@ -81,7 +83,7 @@ public class LinkField extends FieldBase {
      *
      * @return The Link field
      */
-    @BeanTagAttribute(name="link",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "link", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public Link getLink() {
         return link;
     }
@@ -100,7 +102,7 @@ public class LinkField extends FieldBase {
      *
      * @return The link label
      */
-    @BeanTagAttribute(name="linkText")
+    @BeanTagAttribute(name = "linkText")
     public String getLinkText() {
         return link.getLinkText();
     }
@@ -119,7 +121,7 @@ public class LinkField extends FieldBase {
      *
      * @return The target
      */
-    @BeanTagAttribute(name="target")
+    @BeanTagAttribute(name = "target")
     public String getTarget() {
         return link.getTarget();
     }
@@ -138,7 +140,7 @@ public class LinkField extends FieldBase {
      *
      * @return The href text
      */
-    @BeanTagAttribute(name="href")
+    @BeanTagAttribute(name = "href")
     public String getHref() {
         return link.getHref();
     }
@@ -168,7 +170,7 @@ public class LinkField extends FieldBase {
      *
      * @return The <code>LightBox</code>
      */
-    @BeanTagAttribute(name="lightBox",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "lightBox", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public LightBox getLightBox() {
         if (link != null) {
             return link.getLightBox();
@@ -177,26 +179,38 @@ public class LinkField extends FieldBase {
         return null;
     }
 
+    @BeanTagAttribute(name = "sortAs")
+    public String getSortAs() {
+        return sortAs;
+    }
+
+    public void setSortAs(String sortAs) {
+        if (!(sortAs.equals(UifConstants.TableToolsValues.DATE) || sortAs.equals(UifConstants.TableToolsValues.NUMERIC) || sortAs.equals(UifConstants.TableToolsValues.STRING))) {
+            throw new IllegalArgumentException("invalid sortAs value of " + sortAs + ", allowed: " + UifConstants.TableToolsValues.DATE + "|" + UifConstants.TableToolsValues.NUMERIC + "|" + UifConstants.TableToolsValues.STRING);
+        }
+        this.sortAs = sortAs;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void completeValidation(ValidationTrace tracer){
+    public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
         // Checks that the link is set
-        if(getLink()==null){
-            if(Validator.checkExpressions(this, "link")){
-                String currentValues [] = {"link = "+getLink()};
-                tracer.createError("Link should be set",currentValues);
+        if (getLink() == null) {
+            if (Validator.checkExpressions(this, "link")) {
+                String currentValues[] = {"link = " + getLink()};
+                tracer.createError("Link should be set", currentValues);
             }
         }
 
         // Checks that the label is set
-        if(getLabel()==null){
-            if(Validator.checkExpressions(this, "label")){
-                String currentValues [] = {"label ="+getLabel(),"link ="+getLink()};
-                tracer.createWarning("Label is null, link should be used instead",currentValues);
+        if (getLabel() == null) {
+            if (Validator.checkExpressions(this, "label")) {
+                String currentValues[] = {"label =" + getLabel(), "link =" + getLink()};
+                tracer.createWarning("Label is null, link should be used instead", currentValues);
             }
         }
 

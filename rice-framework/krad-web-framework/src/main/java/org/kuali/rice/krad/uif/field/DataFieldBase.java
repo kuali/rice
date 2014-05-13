@@ -112,6 +112,8 @@ public class DataFieldBase extends FieldBase implements DataField {
     private boolean renderInfoMessageSpan;
     private boolean renderMarkerIconSpan;
 
+    private String sortAs;
+
     public DataFieldBase() {
         super();
 
@@ -1053,6 +1055,26 @@ public class DataFieldBase extends FieldBase implements DataField {
                 && help.isRender()
                 && help.getHelpAction() != null
                 && help.getHelpAction().isRender());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(name = "sortAs")
+    public String getSortAs() {
+        return sortAs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSortAs(String sortAs) {
+        if (!(sortAs.equals(UifConstants.TableToolsValues.DATE) || sortAs.equals(UifConstants.TableToolsValues.NUMERIC) || sortAs.equals(UifConstants.TableToolsValues.STRING))) {
+            throw new IllegalArgumentException("invalid sortAs value of " + sortAs + ", allowed: " + UifConstants.TableToolsValues.DATE + "|" + UifConstants.TableToolsValues.NUMERIC + "|" + UifConstants.TableToolsValues.STRING);
+        }
+        this.sortAs = sortAs;
     }
 
     /**

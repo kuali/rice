@@ -728,7 +728,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void agendaLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Rules");
-        waitAndClick(By.xpath(CANCEL2_XPATH));
+        waitAndClickButtonByText("Cancel");
     }
 
     /**
@@ -1254,7 +1254,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void contextLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Notes and Attachments");
-        waitAndClick(By.xpath(CANCEL2_XPATH));
+        jGrowl("Click Cancel");
+        waitAndClickByXpath("//button[@data-performDirtyValidation=\"true\"]"); // first cancel button is for attachment cancel and is hidden
     }
 
     //    protected void deleteSubCollectionLine() throws Exception {
@@ -2019,7 +2020,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickButtonByText("submit");
+        waitAndClickButtonByText("Submit");
+        jGrowl("Click OK");
+        waitAndClickByXpath("//button[@data-dismissdialogoption=\"PRESUBMIT\"]");
         assertTextPresent(new String[] {"Document was successfully submitted.", "ENROUTE"});
         passed();
     }
@@ -2594,7 +2597,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testTermSpecificationLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Context");
-        waitAndClick(By.xpath(CANCEL2_XPATH));
+        waitAndClickButtonByText("Cancel");
         passed();
     }
 

@@ -116,7 +116,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
 
         //confirm that another line has been added (by checking the number of delete buttons)
         WebElement table = findElement(By.id("ConfigurationTestView-ProgressiveRender-TimeInfoSection_disclosureContent"));
-        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'delete')]"), table);
+        List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'Delete')]"), table);
         assertEquals("line was not added", 3, columns.size());
 
     }

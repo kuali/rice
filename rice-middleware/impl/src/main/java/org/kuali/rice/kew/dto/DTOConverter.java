@@ -124,15 +124,13 @@ public class DTOConverter {
             throw new InvalidDocumentContentException("Failed to parse XML.", e);
         } catch (IOException e) {
             throw new InvalidDocumentContentException("Failed to parse XML.", e);
-        } catch (TransformerException e) {
-            throw new InvalidDocumentContentException("Failed to parse XML.", e);
         }
         return documentContent;
     }
 
     private static Element createDocumentContentSection(Document document, Element existingAttributeElement,
             List<WorkflowAttributeDefinition> definitions, String content, String elementName,
-            String documentTypeName) throws TransformerException, SAXException, IOException, ParserConfigurationException {
+            String documentTypeName) throws SAXException, IOException, ParserConfigurationException {
         Element contentSectionElement = existingAttributeElement;
         // if they've updated the content, we're going to re-build the content section element from scratch
         if (content != null) {

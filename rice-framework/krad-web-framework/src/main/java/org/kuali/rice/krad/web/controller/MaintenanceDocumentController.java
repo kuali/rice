@@ -283,8 +283,12 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         MaintenanceDocument document = (MaintenanceDocument) form.getDocument();
         if (document.getNewMaintainableObject().getDataObject() instanceof PersistableAttachment) {
             PersistableAttachment bo = (PersistableAttachment) getLegacyDataAdapter()
-                    .retrieve( document.getNewMaintainableObject().getDataObject());
-            request.setAttribute("fileName", bo.getFileName());
+                    .retrieve( document.getNewMaintainableObject().getDataObject() );
+            if ( bo != null ) {
+                request.setAttribute("fileName", bo.getFileName());
+            } else {
+                request.setAttribute("fileName", ((PersistableAttachment) document.getNewMaintainableObject().getDataObject()).getFileName());
+            }
         }
 
         modelAndView = getUIFModelAndView(form);

@@ -257,7 +257,7 @@ public class UifFormBase implements ViewModel {
                 try {
                     clientStateForSyncing = mapper.readValue(clientStateJSON, Map.class);
                 } catch (IOException e) {
-                    throw new RuntimeException("Unable to decode client side state JSON", e);
+                    throw new RuntimeException("Unable to decode client side state JSON: " + clientStateJSON, e);
                 }
             }
         }

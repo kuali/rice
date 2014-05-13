@@ -323,6 +323,13 @@
                   p:promptText="Are you sure you want to submit this document and send it into routing?"/>
           </property>
         </bean>
+        <bean parent="Uif-RecallAction"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RECALL]}" >
+          <property name="confirmationDialog">
+            <bean id="ConfirmRecallDialog" parent="Uif-DialogGroup-OkCancelExpl"
+                  p:promptText="Reason for recall?"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

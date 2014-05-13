@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,6 +94,19 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
         executeUpdate(query);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public <T> void deleteAll(Class<T> type) {
+        if (type == null) {
+            throw new IllegalArgumentException("class type is null");
+        }
+
+        final C parent = getQueryTranslator().translateCriteria(type,
+                QueryByCriteria.Builder.create().build().getPredicate());
+        final Query query = getQueryTranslator().createDeletionQuery(type, parent);
+        executeUpdate(query);
+    }
 
     /**
      * {@inheritDoc}

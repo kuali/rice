@@ -89,10 +89,20 @@ public interface PersistenceProvider extends Provider {
      *
      * @return the results of the query, will never return null but may return empty results
      *
-     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type or if {@code queryByCriteria}
+     *  is null or empty
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Retrieves all data objects for the given type.
+     * @param type the type of data objects to find
+     * @param <T> the data object class type
+     * @return the results of the query, will never return null but may return empty results
+     * @throws java.lang.IllegalArgumentException if type is null.
+     */
+    <T> QueryResults<T> findAll(Class<T> type);
 
     /**
      * Deletes a given data object.
@@ -117,6 +127,13 @@ public interface PersistenceProvider extends Provider {
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Deletes all data objects based on the given type.
+     * @param type the type of data objects to delete
+     * @param <T> the data object class type
+     */
+    <T> void deleteAll(Class<T> type);
 
     /**
      * Returns a copy of the given data object instance.

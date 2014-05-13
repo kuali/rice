@@ -94,6 +94,14 @@ public class ProviderBasedDataObjectService implements DataObjectService {
      * {@inheritDoc}
      */
     @Override
+    public <T> QueryResults<T> findAll(Class<T> type) {
+        return persistenceProviderForType(type).findAll(type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> T findUnique(Class<T> type, QueryByCriteria queryByCriteria) {
         QueryResults<T> results = findMatching(type, queryByCriteria);
         if (results.getResults().isEmpty()) {
@@ -120,6 +128,11 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     @Override
     public <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria) {
         persistenceProviderForType(type).deleteMatching(type, queryByCriteria);
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
+        persistenceProviderForType(type).deleteAll(type);
     }
 
     /**

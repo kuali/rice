@@ -36,12 +36,22 @@ public class TestPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
+    public <T> QueryResults<T> findAll(Class<T> type) {
+        return null;
+    }
+
+    @Override
     public void delete(Object dataObject) {
 
     }
 
     @Override
     public <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria) {
+
+    }
+
+    @Override
+    public <T> void deleteAll(Class<T> type) {
 
     }
 

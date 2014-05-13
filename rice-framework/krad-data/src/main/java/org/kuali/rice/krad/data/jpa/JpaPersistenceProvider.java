@@ -232,6 +232,19 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    public <T> QueryResults<T> findAll(final Class<T> type) {
+        return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
+            @Override
+            public QueryResults<T> call() {
+                return new JpaCriteriaQuery(getSharedEntityManager()).lookup(type, QueryByCriteria.Builder.create().build());
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void delete(final Object dataObject) {
         doWithExceptionTranslation(new Callable<Object>() {
             @Override
@@ -252,6 +265,20 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
             public Object call() {
                 new JpaCriteriaQuery(getSharedEntityManager()).deleteMatching(type, queryByCriteria);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public <T> void deleteAll(final Class<T> type) {
+        doWithExceptionTranslation(new Callable<Object>() {
+            @Override
+            public Object call() {
+                new JpaCriteriaQuery(getSharedEntityManager()).deleteAll(type);
                 return null;
             }
         });

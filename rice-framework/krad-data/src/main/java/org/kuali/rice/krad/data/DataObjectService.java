@@ -73,10 +73,23 @@ public interface DataObjectService {
      *
      * @return the results of the query, will never return null but may return empty results
      *
-     * @throws IllegalArgumentException if {@code type} does not denote a data object type
+     * @throws IllegalArgumentException if {@code type} does not denote a data object type, also if the
+     *  {@code queryByCriteria} is null or empty.
      * @throws DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Executes a query for the given data object returning all data objects for the given type.
+     * @param type tye type of data objects to query
+     * @param <T> the data object class type
+     *
+     * @return the results of the query, will never return null but may return empty results.
+     *
+     * @throws IllegalArgumentException if {@code type} is null.
+     * @throws DataAccessException if data access fails.
+     */
+    <T> QueryResults<T> findAll(Class<T> type);
 
     /**
      * Executes a query for the data object matching the given queryByCriteria and expecting a single unique result to
@@ -117,6 +130,13 @@ public interface DataObjectService {
      * @throws DataAccessException if data access fails
      */
     <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);
+
+    /**
+     * Removes all records for the given data object type
+     * @param type the type of data objects
+     * @param <T> the data object class type.
+     */
+    <T> void deleteAll(Class<T> type);
 
     /**
      * Saves the given data object, determining whether or not this is a new data object which is being created, or an

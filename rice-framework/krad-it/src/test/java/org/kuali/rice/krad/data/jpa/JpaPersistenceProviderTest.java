@@ -7,11 +7,9 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.test.KRADTestCase;
@@ -176,6 +174,30 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         assertEquals(0, found.getResults().size());
     }
 
+    /**
+     * Ensures an IllegalArgumentException is thrown when a null value is passed in as the second parameter.
+     */
+    @Test(expected = InvalidDataAccessApiUsageException.class)
+    public void testFindMatchingNullCriteria() {
+        Map.Entry<Object, QueryByCriteria> pair = createForQuery();
+
+        Object a = pair.getKey();
+
+        provider.findMatching(a.getClass(), null);
+    }
+
+    /**
+     * Ensures no errors or exceptions occur when the second parameter's predicate value is null
+     */
+    @Test
+    public void testFindMatchingEmptyCriteria() {
+        Map.Entry<Object, QueryByCriteria> pair = createForQuery();
+
+        Object a = pair.getKey();
+
+        provider.findMatching(a.getClass(), QueryByCriteria.Builder.create().build());
+    }
+
     @Test
     public void testFindBySingleKey() {
         Object a = createLinkedTestObject();
@@ -233,6 +255,24 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         assertTestObjectIdentityEquals(objects.get(4), results.getResults().get(2));
         assertTestObjectIdentityEquals(objects.get(5), results.getResults().get(3));
         assertTestObjectIdentityEquals(objects.get(6), results.getResults().get(4));
+    }
+
+    /**
+     * Exercises the findAll method to ensure expected behavior
+     */
+    @Test
+    public void testFindAll() {
+        Object a = createTopLevelObject();
+        QueryResults<Object> results =  provider.findAll((Class<Object>)a.getClass());
+        assertEquals(0, results.getResults().size());
+
+        Object savedA = provider.save(a);
+        results = provider.findAll((Class<Object>)a.getClass());
+        assertEquals(1, results.getResults().size());
+
+        provider.delete(savedA);
+        results = provider.findAll((Class<Object>)a.getClass());
+        assertEquals(0, results.getResults().size());
     }
 
     /**
@@ -322,7 +362,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         Object savedC = provider.save(c);
 
         // did all three objects get saved?
-        QueryResults<Object> found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        QueryResults<Object> found = provider.findAll((Class<Object>) savedA.getClass());
         assertEquals(3, found.getResults().size());
 
         // now delete part of the saved objects
@@ -331,7 +371,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         provider.deleteMatching(a.getClass(), builder.build());
 
         // were the two objects deleted
-        found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        found = provider.findAll((Class<Object>) savedA.getClass());
         assertEquals(1, found.getResults().size());
         Object lastObject = found.getResults().get(0);
         assertEquals(((SimpleAccount) lastObject).getName(), ((SimpleAccount)savedC).getName());
@@ -346,8 +386,31 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         provider.deleteMatching(a.getClass(), builder.build());
 
         // were all objects deleted?
-        found = provider.findMatching((Class<Object>)savedA.getClass(), QueryByCriteria.Builder.create().build());
+        found = provider.findAll((Class<Object>) savedA.getClass());
         assertEquals(0, found.getResults().size());
+    }
+
+    /**
+     * Exercises the deleteAll method to ensure expected behavior
+     */
+    @Test
+    public void testDeleteAll() {
+        Object a = createTopLevelObject();
+        QueryResults<Object> results = provider.findAll((Class<Object>)a.getClass());
+        assertEquals(0, results.getResults().size());
+        provider.deleteAll(a.getClass());
+        results = provider.findAll((Class<Object>)a.getClass());
+        assertEquals(0, results.getResults().size());
+
+        Object savedA = provider.save(a);
+        Object b = createTopLevelObject();
+        provider.save(b);
+        results = provider.findAll((Class<Object>) a.getClass());
+        assertEquals(2, results.getResults().size());
+
+        provider.deleteAll(savedA.getClass());
+        results = provider.findAll((Class<Object>)a.getClass());
+        assertEquals(0, results.getResults().size());
     }
 
     @Test

@@ -180,6 +180,17 @@ public class ProviderBasedDataObjectServiceTest {
     }
 
     @Test
+    public void testFindAll() {
+        QueryResults allResults = mock(QueryResults.class);
+        QueryByCriteria query = QueryByCriteria.Builder.create().build();
+        when(mockProvider.findAll(any(Class.class))).thenReturn(allResults);
+
+        assertSame(allResults, service.findAll(Object.class));
+
+        verify(mockProvider).findAll(any(Class.class));
+    }
+
+    @Test
     public void testDelete() {
         Object dataObject = new Object();
         service.delete(dataObject);
@@ -193,6 +204,13 @@ public class ProviderBasedDataObjectServiceTest {
         service.deleteMatching(Object.class, query);
 
         verify(mockProvider).deleteMatching(any(Class.class), eq(query));
+    }
+
+    @Test
+    public void testDeleteAll() {
+        service.deleteAll(Object.class);
+
+        verify(mockProvider).deleteAll(any(Class.class));
     }
 
     @Test

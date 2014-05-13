@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
+import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -43,6 +44,7 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -59,6 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * View helper service that implements {@link Lookupable} and executes a search using the
@@ -279,7 +283,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         Set<String> unprocessedSearchCriteria = new HashSet<String>(searchCriteria.keySet());
-        for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
+        for (Map.Entry<String, Map<String, Object>> lookupCriteria :
+                form.getViewPostMetadata().getLookupCriteria().entrySet()) {
             String propertyName = lookupCriteria.getKey();
             Map<String, Object> lookupCriteriaAttributes = lookupCriteria.getValue();
 
@@ -287,16 +292,25 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             if (isCriteriaRequired(lookupCriteriaAttributes) && StringUtils.isBlank(searchCriteria.get(propertyName))) {
                 GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_REQUIRED,
-                        getCriteriaLabel(form, UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID));
+                        getCriteriaLabel(form, (String) lookupCriteriaAttributes.get(
+                                UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID)));
+            }
+
+            ValidCharactersConstraint constraint = getSearchCriteriaConstraint(lookupCriteriaAttributes);
+            if (constraint != null) {
+                validateSearchParameterConstraint(form, propertyName, lookupCriteriaAttributes, searchCriteria.get(
+                        propertyName), constraint);
             }
 
             if (searchCriteria.containsKey(propertyName)) {
-                validateSearchParameterWildcardAndOperators(form, propertyName, lookupCriteriaAttributes, searchCriteria.get(propertyName));
+                validateSearchParameterWildcardAndOperators(form, propertyName, lookupCriteriaAttributes,
+                        searchCriteria.get(propertyName));
             }
         }
 
         if (!unprocessedSearchCriteria.isEmpty()) {
-            throw new RuntimeException("Invalid search value sent for property name(s): " + unprocessedSearchCriteria.toString());
+            throw new RuntimeException(
+                    "Invalid search value sent for property name(s): " + unprocessedSearchCriteria.toString());
         }
 
         if (GlobalVariables.getMessageMap().hasErrors()) {
@@ -351,6 +365,34 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
+     * Validates that the searchPropertyValue is a valid value based on any constraint that may exist for the property
+     *
+     * @param form lookup form instance containing the lookup data
+     * @param propertyName property name of the search criteria field to be validated
+     * @param lookupCriteriaAttributes attributes for the lookup criteria
+     * @param searchPropertyValue value given for field to search for
+     * @param validCharactersConstraint constraint on the lookup criteria field
+     */
+    protected void validateSearchParameterConstraint(LookupForm form, String propertyName,
+            Map<String, Object> lookupCriteriaAttributes, String searchPropertyValue,
+            ValidCharactersConstraint validCharactersConstraint) {
+        if (StringUtils.isBlank(searchPropertyValue)) {
+            return;
+        }
+
+        Matcher matcher = Pattern.compile(validCharactersConstraint.getValue()).matcher(searchPropertyValue);
+        if (!matcher.find()) {
+            String[] prefixParams = {getCriteriaLabel(form, (String) lookupCriteriaAttributes.get(
+                    UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID))};
+            ErrorMessage errorMessage = new ErrorMessage(validCharactersConstraint.getMessageKey(),
+                    validCharactersConstraint.getValidationMessageParamsArray());
+            errorMessage.setMessagePrefixKey(UifConstants.Messages.PROPERTY_NAME_PREFIX);
+            errorMessage.setMessagePrefixParameters(prefixParams);
+            GlobalVariables.getMessageMap().putError(propertyName, errorMessage);
+        }
+    }
+
+    /**
      * Returns the label of the search criteria field.
      *
      * @param form lookup form instance containing the lookup data
@@ -389,6 +431,17 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected boolean isCriteriaSecure(Map lookupCriteria) {
         return BooleanUtils.isTrue((Boolean) lookupCriteria.get(UifConstants.LookupCriteriaPostMetadata.SECURE_VALUE));
+    }
+
+    /**
+     * Indicator if the search criteria has a valid Characters Constraint.
+     *
+     * @param lookupCriteria the viewPostMetadata with the attributes of the search criteria field
+     * @return the ValidCharactersConstraint if the search criteria has a valid characters constraint
+     */
+    protected ValidCharactersConstraint getSearchCriteriaConstraint(Map lookupCriteria) {
+        return (ValidCharactersConstraint) lookupCriteria.get(
+                UifConstants.LookupCriteriaPostMetadata.VALID_CHARACTERS_CONSTRAINT);
     }
 
     /**

@@ -282,6 +282,7 @@ public class UifConstants {
         public static final String HIDDEN = "hidden";
         public static final String REQUIRED = "required";
         public static final String SECURE_VALUE = "secureValue";
+        public static final String VALID_CHARACTERS_CONSTRAINT = "validCharactersConstraint";
     }
 
     public static class ContextVariableNames {
@@ -399,6 +400,7 @@ public class UifConstants {
     public static class Messages {
         public static final String VALIDATION_MSG_KEY_PREFIX = "validation.";
         public static final String STATE_PREFIX = "validation.statePrefix";
+        public static final String PROPERTY_NAME_PREFIX = "validation.propertyNamePrefix";
     }
 
     public static class MessageKeys {

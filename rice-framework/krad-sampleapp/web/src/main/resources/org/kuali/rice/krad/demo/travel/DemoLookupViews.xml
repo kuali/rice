@@ -173,8 +173,16 @@
     <property name="headerText" value="Lookup Sample with StackedResults"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" p:required="true"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate">
+          <property name="control">
+            <bean parent="Uif-DateControl"/>
+          </property>
+          <property name="validCharactersConstraint">
+             <bean parent="BasicDatePatternConstraint"/>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="resultsGroup">

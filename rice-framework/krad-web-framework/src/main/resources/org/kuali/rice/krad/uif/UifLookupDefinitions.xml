@@ -83,7 +83,7 @@
               p:refreshId="uLookupCriteria" p:render="@{!displayResults}" p:ajaxSubmit="false"/>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
               p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"
-              p:render="@{!displayResults}" p:defaultEnterKeyAction="true"/>
+              p:render="@{!displayResults}" p:defaultEnterKeyAction="true" p:performClientSideValidation="true"/>
       </list>
     </property>
   </bean>
@@ -234,7 +234,7 @@
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:ajaxSubmit="false"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search" p:performClientSideValidation="true"
               p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}" p:defaultEnterKeyAction="true"/>
       </list>
     </property>

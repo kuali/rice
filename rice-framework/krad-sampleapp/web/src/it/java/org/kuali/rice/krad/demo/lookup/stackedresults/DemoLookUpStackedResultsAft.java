@@ -35,6 +35,7 @@ public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
      *  lookupCriteria[number]
      */
     private static final String LOOKUP_CRITERIA_NUMBER_NAME="lookupCriteria[number]";
+    private static final String LOOKUP_CRITERIA_DATE="lookupCriteria[createDate]";
 
     /**
      *  Search
@@ -64,6 +65,12 @@ public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
+        assertTextPresent(new String[]{"Travel Account Number is a required field."});
+        waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName(LOOKUP_CRITERIA_DATE, "234");
+        waitAndClickButtonByText(SEARCH);
+        assertTextPresent(new String[]{
+            "Date Created: Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, yyyy-MM-dd"});
     }
 
     // No Nav test, there is no link to this page

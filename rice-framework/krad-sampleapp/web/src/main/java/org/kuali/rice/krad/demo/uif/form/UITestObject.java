@@ -80,25 +80,25 @@ public class UITestObject implements Serializable {
             date1 = new Date(offset + (long) (Math.random() * diff));
             date1Str = new SimpleDateFormat("MM/dd/yyyy").format(date1);
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         // populate date2
         count2++;
         // every fifth date leave blank
-        //        if (count2 % 5 != 0 && date2 == null) {
-        try {
-            Calendar cal = Calendar.getInstance();
-            cal.set(2010, 1, 1);
-            long offset = cal.getTime().getTime();
-            cal.set(2014, 1, 1);
-            long end = cal.getTime().getTime();
-            long diff = end - offset + 1;
-            date2 = new Date(offset + (long) (Math.random() * diff));
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        if (count2 % 5 != 0 && date2 == null) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                cal.set(2010, 1, 1);
+                long offset = cal.getTime().getTime();
+                cal.set(2014, 1, 1);
+                long end = cal.getTime().getTime();
+                long diff = end - offset + 1;
+                date2 = new Date(offset + (long) (Math.random() * diff));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        //        }
     }
 
     public UITestObject(String field1, String field2, String field3, String field4) {

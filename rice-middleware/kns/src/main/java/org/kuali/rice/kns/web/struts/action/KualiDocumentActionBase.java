@@ -41,6 +41,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -1618,7 +1619,7 @@ public class KualiDocumentActionBase extends KualiAction {
      */
     private final void logOjbOptimisticLockException(OptimisticLockException e) {
         if (LOG.isInfoEnabled()) {
-            StringBuffer message = new StringBuffer("caught OptimisticLockException, caused by ");
+            StringBuilder message = new StringBuilder("caught OptimisticLockException, caused by ");
             Object sourceObject = e.getSourceObject();
             String infix = null;
             try {
@@ -1630,8 +1631,8 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             message.append(infix);
 
-            if (sourceObject instanceof PersistableBusinessObject) {
-                PersistableBusinessObject persistableObject = (PersistableBusinessObject) sourceObject;
+            if (sourceObject instanceof Versioned) {
+            	Versioned persistableObject = (Versioned) sourceObject;
                 message.append(" [versionNumber = ").append(persistableObject.getVersionNumber()).append("]");
             }
 

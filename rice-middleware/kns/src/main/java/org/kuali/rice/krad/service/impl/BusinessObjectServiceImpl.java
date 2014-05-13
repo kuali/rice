@@ -194,7 +194,12 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     @Override
     @Transactional
     public void delete(Object bo) {
-        businessObjectDao.delete(bo);
+    	// just need to make sure erasure does not cause this method to attempt to process a list argument
+    	if ( bo instanceof List ) {
+    		delete( (List<PersistableBusinessObject>)bo );
+    	} else {
+    		businessObjectDao.delete(bo);
+    	}
     }
 
     @Override

@@ -849,17 +849,19 @@ public class SectionBridge {
      * Determines whether a business object is hidable on a maintenance document.  Hidable means that if the user chose to hide the inactive
      * elements in the collection in which the passed in BOs reside, then the BOs would be hidden
      * 
-     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
-     * @param oldLineBusinessObject the corresponding BO in the old maintainable, should be of type {@link PersistableBusinessObject} and 
+     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link BusinessObject} and {@link Inquirable}
+     * @param oldLineBusinessObject the corresponding BO in the old maintainable, should be of type {@link BusinessObject} and 
      * {@link Inquirable}
      * @return whether the BOs are eligible to be hidden if the user decides to hide them
      */
     protected static boolean isRowHideableForMaintenanceDocument(BusinessObject lineBusinessObject, BusinessObject oldLineBusinessObject) {
         if (oldLineBusinessObject != null) {
-            if (((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord()) {
-                // new records are never hidden, regardless of active status
-                return false;
-}
+        	if ( lineBusinessObject instanceof PersistableBusinessObject ) {
+	            if (((PersistableBusinessObject) lineBusinessObject).isNewCollectionRecord()) {
+	                // new records are never hidden, regardless of active status
+	                return false;
+	            }
+        	}
             if (!((Inactivatable) lineBusinessObject).isActive() && !((Inactivatable) oldLineBusinessObject).isActive()) {
                 // records with an old and new collection elements of NOT active are eligible to be hidden
                 return true;
@@ -870,7 +872,7 @@ public class SectionBridge {
     /**
      * Determines whether a business object is hidden on a maintenance document.
      * 
-     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link PersistableBusinessObject}
+     * @param lineBusinessObject the BO in the new maintainable, should be of type {@link BusinessObject}
      * @param oldLineBusinessObject the corresponding BO in the old maintainable
      * @param newMaintainable the new maintainable from the maintenace document
      * @param collectionName the name of the collection from which these BOs come
@@ -885,7 +887,7 @@ public class SectionBridge {
      * Determines whether a business object is hidable on an inquiry screen.  Hidable means that if the user chose to hide the inactive
      * elements in the collection in which the passed in BO resides, then the BO would be hidden
      * 
-     * @param lineBusinessObject the collection element BO, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
+     * @param lineBusinessObject the collection element BO, should be of type {@link BusinessObject} and {@link Inquirable}
      * @return whether the BO is eligible to be hidden if the user decides to hide them
      */
     protected static boolean isRowHideableForInquiry(BusinessObject lineBusinessObject) {
@@ -895,7 +897,7 @@ public class SectionBridge {
     /**
      * Determines whether a business object is hidden on an inquiry screen.
      * 
-     * @param lineBusinessObject the BO in the collection, should be of type {@link PersistableBusinessObject} and {@link Inquirable}
+     * @param lineBusinessObject the BO in the collection, should be of type {@link BusinessObject} and {@link Inquirable}
      * @param inquirable the inquirable
      * @param collectionName the name of the collection from which the BO comes
      * @return true if the business object is to be hidden; false otherwise

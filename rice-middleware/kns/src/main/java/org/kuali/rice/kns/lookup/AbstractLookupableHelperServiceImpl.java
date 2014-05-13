@@ -15,19 +15,32 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.security.GeneralSecurityException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.cache.CopiedObject;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
@@ -47,7 +60,6 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -61,18 +73,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-
-import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
@@ -805,7 +805,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
         if (((MultipleValueLookupForm) lookupForm).getCompositeObjectIdMap() == null ||
                 ((MultipleValueLookupForm) lookupForm).getCompositeObjectIdMap().get(
-                        ((PersistableBusinessObject) businessObject).getObjectId()) == null) {
+                        ((GloballyUnique) businessObject).getObjectId()) == null) {
             input.setChecked("");
         } else {
             input.setChecked(HtmlData.InputHtmlData.CHECKBOX_CHECKED_VALUE);

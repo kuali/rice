@@ -612,9 +612,6 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		if (boClass == null) {
 			throw new IllegalArgumentException("Class specified in the parameter was null.");
 		}
-		if (!PersistableBusinessObject.class.isAssignableFrom(boClass)) {
-			throw new IllegalArgumentException("Class specified [" + boClass.getName() + "] must be a class that " + "inherits from BusinessObject.");
-		}
 
 		Map<String, Class> references = new HashMap<String, Class>();
 		ClassDescriptor classDescriptor = getClassDescriptor(boClass);
@@ -678,9 +675,6 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 		// validate parameter
 		if (bo == null) {
 			throw new IllegalArgumentException("BO specified in the parameter was null.");
-		}
-		if (!(bo instanceof PersistableBusinessObject)) {
-			throw new IllegalArgumentException("BO specified [" + bo.getClass().getName() + "] must be a class that " + "inherits from BusinessObject.");
 		}
 
 		return listReferenceObjectFields(bo.getClass());

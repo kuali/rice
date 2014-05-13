@@ -1049,9 +1049,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             return success;
         }
 
-        PersistableBusinessObject bo = (PersistableBusinessObject) document.getNewMaintainableObject().getDataObject();
-        GlobalBusinessObject gbo = (GlobalBusinessObject) bo;
-        return gbo.isPersistable();
+    	return ((GlobalBusinessObject) document.getNewMaintainableObject().getDataObject()).isPersistable();
     }
 
     /**
@@ -1519,7 +1517,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     protected boolean validateDuplicateIdentifierInDataDictionary(MaintenanceDocument document, String collectionName,
             PersistableBusinessObject bo) {
         boolean valid = true;
-        PersistableBusinessObject maintBo = document.getNewMaintainableObject().getBusinessObject();
+        Object maintBo = document.getNewMaintainableObject().getDataObject();
         Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(maintBo, collectionName);
         List<String> duplicateIdentifier = document.getNewMaintainableObject()
                 .getDuplicateIdentifierFieldsFromDataDictionary(

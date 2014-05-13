@@ -109,8 +109,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         // KualiGlobalMaintainableImpl, this will simplify tremendously.
         Map pkMap = new HashMap();
         pkMap.put(KRADPropertyConstants.DOCUMENT_NUMBER, finDocNumber);
-        PersistableBusinessObject newBo = null;
-        newBo = (PersistableBusinessObject) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
+        Object newBo = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
         if (newBo == null) {
             throw new RuntimeException("The Global Business Object could not be retrieved from the DB.  " + "This should never happen under normal circumstances.  If this is a legitimate case " + "Then this exception should be removed.");
         }
@@ -125,7 +124,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         }
 
         // replace the GBO loaded from XML with the GBO loaded from the DB
-        setBusinessObject(newBo);
+        setDataObject(newBo);
     }
 
     /**
@@ -154,13 +153,14 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
     /**
      * @see org.kuali.rice.krad.maintenance.Maintainable#saveBusinessObject()
      */
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
     public void saveBusinessObject() {
         BusinessObjectService boService = KNSServiceLocator.getBusinessObjectService();
         GlobalBusinessObject gbo = (GlobalBusinessObject) businessObject;
 
         // delete any indicated BOs
-        List<PersistableBusinessObject> bosToDeactivate = gbo.generateDeactivationsToPersist();
+        List bosToDeactivate = gbo.generateDeactivationsToPersist();
         if (bosToDeactivate != null) {
             if (!bosToDeactivate.isEmpty()) {
                 boService.save(bosToDeactivate);
@@ -168,7 +168,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         }
 
         // persist any indicated BOs
-        List<PersistableBusinessObject> bosToPersist = gbo.generateGlobalChangesToPersist();
+        List bosToPersist = gbo.generateGlobalChangesToPersist();
         if (bosToPersist != null) {
             if (!bosToPersist.isEmpty()) {
                 boService.save(bosToPersist);

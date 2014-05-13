@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.document;
 
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 /**
  * Common interface for all maintenance documents.
@@ -39,7 +38,7 @@ public interface MaintenanceDocument extends org.kuali.rice.krad.maintenance.Mai
     /**
      * Returns a reference to the PersistableBusinessObject that this MaintenanceDocument is maintaining.
      */
-    public PersistableBusinessObject getDocumentBusinessObject();
+    public Object getDocumentBusinessObject();
     
     /**
      * @return boolean - indicates whether this is an edit or new maintenace document by the existence of an old maintainable

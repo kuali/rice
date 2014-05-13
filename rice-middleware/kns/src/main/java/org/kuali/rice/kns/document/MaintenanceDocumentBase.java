@@ -61,8 +61,8 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
     }
 
     @Override
-    public PersistableBusinessObject getDocumentBusinessObject() {
-        return (PersistableBusinessObject) super.getDocumentDataObject();
+    public Object getDocumentBusinessObject() {
+        return super.getDocumentDataObject();
     }
 
     /**

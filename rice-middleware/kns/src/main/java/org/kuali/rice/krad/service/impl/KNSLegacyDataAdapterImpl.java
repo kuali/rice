@@ -155,7 +155,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
                 delete(dobj);
             }
         } else {
-            businessObjectService.delete((PersistableBusinessObject) dataObject);
+            businessObjectService.delete(dataObject);
         }
     }
 

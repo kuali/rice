@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
@@ -33,24 +45,12 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableAttachment;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class is the base action form for all maintenance documents.
@@ -189,7 +189,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
     private void populateAttachmentFile(MaintenanceDocumentBase maintenanceDocument, String propertyName, FormFile propertyValue) {
          if(StringUtils.isNotEmpty(((FormFile)propertyValue).getFileName())) {
- 	 	 	 PersistableBusinessObject boClass;
+ 	 	 	 Object boClass;
              String boPropertyName;
 
              Matcher matcher = ELEMENT_IN_COLLECTION.matcher(propertyName);
@@ -212,7 +212,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
          }
     }
 
-    private void setAttachmentProperty(PersistableBusinessObject boClass, String propertyName, Object propertyValue) {
+    private void setAttachmentProperty(Object boClass, String propertyName, Object propertyValue) {
         try {
             PropertyUtils.setProperty(boClass, propertyName, propertyValue);
         } catch (InvocationTargetException e) {
@@ -555,7 +555,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				String collectionName = parseAddCollectionName(propertyName);
 				propertyName = propertyName.substring(collectionName.length()); // remove collectionName from pN
 				if (propertyName.startsWith(".")) { propertyName = propertyName.substring(1); } // strip beginning "."
-				PersistableBusinessObject newCollectionLine = 
+				Object newCollectionLine = 
 					maintDoc.getNewMaintainableObject().getNewCollectionLine(collectionName);
 				Object parameterValue = ObjectUtils.getPropertyValue(newCollectionLine, propertyName);
 				if (parameterValue == null) {

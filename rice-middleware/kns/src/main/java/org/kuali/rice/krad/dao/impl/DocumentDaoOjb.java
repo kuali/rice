@@ -15,30 +15,35 @@
  */
 package org.kuali.rice.krad.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentAdHocService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.util.OjbCollectionAware;
 import org.kuali.rice.krad.service.util.OjbCollectionHelper;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.springframework.dao.DataAccessException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * OJB implementation of the DocumentDao interface
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentDao, OjbCollectionAware {
     private static final Logger LOG = Logger.getLogger(DocumentDaoOjb.class);
 
@@ -59,7 +64,18 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     		LOG.debug( "About to store document: " + document, new Throwable() );
     	}
         Document retrievedDocument = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
-        getOjbCollectionHelper().processCollections(this, (PersistableBusinessObject)document, (PersistableBusinessObject)retrievedDocument);
+        if ( document instanceof PersistableBusinessObject ) {
+	        if ( retrievedDocument != null && retrievedDocument instanceof PersistableBusinessObject ) {
+	        	getOjbCollectionHelper().processCollections(this, (PersistableBusinessObject)document, (PersistableBusinessObject)retrievedDocument);
+	        }
+        }
+        if ( document instanceof DataObjectBase ) {
+	    	if (StringUtils.isEmpty(document.getObjectId())) {
+	    		((DataObjectBase)document).setObjectId(UUID.randomUUID().toString());
+	        }
+	        // KRAD/JPA - have to change the handle to object to that just saved
+	        document.setDocumentHeader( KRADServiceLocatorWeb.getDocumentHeaderService().saveDocumentHeader(document.getDocumentHeader()) );
+        }
         this.getPersistenceBrokerTemplate().store(document);
         return document;
     }

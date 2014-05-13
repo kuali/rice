@@ -771,7 +771,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		return collectionName;
 	}
 
-	Collection extractCollection(PersistableBusinessObject bo, String collectionName) {
+	Collection extractCollection(Object bo, String collectionName) {
 		// retrieve the collection from the business object
 		Collection maintCollection = (Collection) ObjectUtils.getPropertyValue(bo, collectionName);
 		return maintCollection;
@@ -801,7 +801,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			collectionName = StringUtils.substringBeforeLast(collectionName, "[");
 		}
 
-		PersistableBusinessObject bo = newMaintainable.getBusinessObject();
+		Object bo = newMaintainable.getBusinessObject();
 		Collection maintCollection = extractCollection(bo, collectionName);
 		Class collectionClass = extractCollectionClass(((MaintenanceDocument) maintenanceForm.getDocument()).getDocumentHeader().getWorkflowDocument().getDocumentTypeName(), collectionName);
 
@@ -837,7 +837,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 
 			if (isEdit || isCopy) {
-				PersistableBusinessObject oldBo = oldMaintainable.getBusinessObject();
+				Object oldBo = oldMaintainable.getBusinessObject();
 				Collection oldMaintCollection = (Collection) ObjectUtils.getPropertyValue(oldBo, collectionName);
 
 				if (oldMaintCollection == null) {
@@ -1085,14 +1085,8 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		// get a reference to the current user
 		Person user = GlobalVariables.getUserSession().getPerson();
 
-		// get the correct documentAuthorizer for this document
-		MaintenanceDocumentAuthorizer documentAuthorizer = (MaintenanceDocumentAuthorizer) getDocumentHelperService().getDocumentAuthorizer(document);
-
 		// get a new instance of MaintenanceDocumentAuthorizations for this context
 		MaintenanceDocumentRestrictions maintenanceDocumentRestrictions = getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, user);
-
-		// get a reference to the newBo
-		PersistableBusinessObject newBo = document.getNewMaintainableObject().getBusinessObject();
 
 		document.getNewMaintainableObject().clearBusinessObjectOfRestrictedValues(maintenanceDocumentRestrictions);
 	}
@@ -1106,7 +1100,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
 		MaintenanceDocument document = (MaintenanceDocument) ((KualiMaintenanceForm)form).getDocument();
 		Maintainable maintainable = document.getNewMaintainableObject();
-		PersistableBusinessObject bo = maintainable.getBusinessObject();
+		Object bo = maintainable.getBusinessObject();
 
 		getBusinessObjectService().linkUserFields(bo);
 
@@ -1116,7 +1110,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	protected void doProcessingAfterPost( KualiForm form, Map<String,String[]> parameters ) {
 		MaintenanceDocument document = (MaintenanceDocument) ((KualiMaintenanceForm)form).getDocument();
 		Maintainable maintainable = document.getNewMaintainableObject();
-		PersistableBusinessObject bo = maintainable.getBusinessObject();
+		Object bo = maintainable.getBusinessObject();
 
 		getBusinessObjectService().linkUserFields(bo);
 

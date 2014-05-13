@@ -405,6 +405,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
      */
     @Override
     public DocumentHeader getDocumentHeader() {
+        // during the transition time between OJB and JPA - the OJB hooks are not firing
+        // so, we lazy load the document header.
+        if ( documentHeader == null || documentHeader.getDocumentNumber() == null ) {
+            documentHeader = KRADServiceLocatorWeb.getDocumentHeaderService().getDocumentHeaderById(documentNumber);
+        }
         return this.documentHeader;
     }
 

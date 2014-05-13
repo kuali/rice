@@ -112,7 +112,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['list1'].field2", "asdf2");
         waitAndTypeByName("newCollectionLines['list1'].field3", "asdf3");
         waitAndTypeByName("newCollectionLines['list1'].field4", "asdf4");
-        waitAndClickByXpath("//button[contains(.,'add')]"); // the first button is the one we want
+        clickAdd();
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
@@ -261,7 +261,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");
         waitAndTypeByName("newCollectionLines['list1'].field4", "1");
-        waitAndClickByXpath("//button[contains(.,'add')]");
+        clickAdd();
         Thread.sleep(3000);
 
         //Check if row has been added really or not
@@ -270,6 +270,11 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         //Check for the added if delete is present or not
         assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
         //        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
+    }
+
+    private void clickAdd() throws InterruptedException {
+        jGrowl("Click Add");
+        waitAndClickByXpath("//button[contains(.,'Add')]");
     }
 
     protected void testIfRowHasBeenAdded() throws Exception {

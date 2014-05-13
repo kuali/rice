@@ -72,9 +72,26 @@
   <bean id="Uif-InquiryFooter" parent="Uif-FooterBase">
     <property name="items">
       <list>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="export" p:actionLabel="Export"
+        <!--<bean parent="Uif-SecondaryActionButton" p:methodToCall="export" p:actionLabel="Export"-->
+        <!--p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"-->
+        <!--p:ajaxSubmit="false"/>-->
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Export"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_EXPORT]}" p:disableBlocking="true"
-              p:ajaxSubmit="false"/>
+              p:ajaxSubmit="false">
+          <property name="actionUrl">
+            <bean parent="Uif-Url">
+              <property name="baseUrl" value="@{#ConfigProperties['krad.url']}"/>
+              <property name="methodToCall" value="inquiryXmlRetrieval"/>
+              <property name="controllerMapping" value="/export"/>
+              <property name="formKey" value="@{#form.formKey}"/>
+              <property name="requestParameters">
+                <map>
+                  <entry key="dataObjectClassName" value="@{#form.dataObjectClassName}"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         <bean parent="Uif-BackAction" p:render="@{!#form.renderedInLightBox}"/>

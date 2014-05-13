@@ -29,15 +29,19 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -118,6 +122,24 @@ public class UifExportController extends UifControllerBase {
     }
 
     /**
+     * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
+     */
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=inquiryXmlRetrieval",
+            produces = {"application/xml"})
+    @ResponseBody
+    public ModelAndView inquiryXmlRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InquiryForm inquiryForm = (InquiryForm) form;
+        Object dataObject = inquiryForm.getDataObject();
+        applyCustomExport(Collections.singletonList(dataObject), inquiryForm.getDataObjectClassName(),
+                KRADConstants.XML_FORMAT, response);
+
+        return null;
+    }
+
+
+    /**
      * Generates exportable table data based on the rich table selected.
      *
      * <p>First the lifecycle process is run to rebuild the collection group, then
@@ -128,49 +150,83 @@ public class UifExportController extends UifControllerBase {
             HttpServletResponse response) {
         LOG.debug("processing table data request");
 
-        String formatType = getValidatedFormatType(request.getParameter(UifParameters.FORMAT_TYPE));
-        String contentType = getContentType(formatType);
-
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.performComponentLifecycle(form.getView(),
                 form, request, form.getViewPostMetadata(), form.getUpdateComponentId());
+
+        List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(form,
+                collectionGroup.getBindingInfo().getBindingPath());
+
+
+        Class<?> dataObjectClass = collectionGroup.getCollectionObjectClass();
+        String formatType = getValidatedFormatType(request.getParameter(UifParameters.FORMAT_TYPE));
 
         // set update none to prevent the lifecycle from being run after the controller finishes
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
 
-        setAttachmentResponseHeader(response, "export." + formatType, contentType);
-
-        // check for custom exporter class defined for the data object class
-        DataDictionaryService dictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        DataDictionary dictionary = dictionaryService.getDataDictionary();
-
-        Class<?> dataObjectClass = collectionGroup.getCollectionObjectClass();
-        DataObjectEntry dataObjectEntry = dictionary.getDataObjectEntry(dataObjectClass.getName());
-
-        Class<? extends Exporter> exporterClass = null;
-        if (dataObjectEntry != null) {
-            exporterClass = dataObjectEntry.getExporterClass();
-        }
-
-        if (exporterClass != null) {
-            try {
-                List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(form,
-                        collectionGroup.getBindingInfo().getBindingPath());
-
-                Exporter exporter = exporterClass.newInstance();
-
-                if (exporter.getSupportedFormats(dataObjectClass).contains(formatType)) {
-                    exporter.export(dataObjectEntry.getDataObjectClass(), modelCollection, formatType,
-                            response.getOutputStream());
-
-                    return null;
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("Cannot invoked custom exporter class", e);
-            }
+        if( applyCustomExport(modelCollection, dataObjectClass.getName(), formatType, response) ) {
+            return null;
         }
 
         // generic export
         return TableExporter.buildExportTableData(collectionGroup, form, formatType);
+    }
+
+    /**
+     * Checks if a custom exporter can be applied
+     *
+     * @param dataObjectEntry
+     * @return
+     */
+    protected boolean canApplyCustomExport(DataObjectEntry dataObjectEntry) {
+        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
+        return (exporterClass != null);
+    }
+
+    /**
+     * Applies custom export if an exporter class is defined. Will return false if no exporter class defined
+     * or if the dataObject collection is empty.
+     *
+     *
+     * @param dataObjectCollection
+     * @param dataObjectClassName
+     * @param formatType
+     *
+     * @param response  true if custom exporter applied else return false.
+     *
+     */
+    protected boolean applyCustomExport(List<Object> dataObjectCollection, String dataObjectClassName,
+            String formatType, HttpServletResponse response) {
+
+        String contentType = getContentType(formatType);
+        setAttachmentResponseHeader(response, "export." + formatType, contentType);
+
+
+        // check for custom exporter class defined for the data object class
+        DataObjectEntry dataObjectEntry =
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                        dataObjectClassName);
+
+        // Return if no dataobject present to export
+        if(dataObjectCollection == null || dataObjectCollection.size() == 0) {
+            return false;
+        }
+
+        // No custom exporter present
+        if(!canApplyCustomExport(dataObjectEntry)) {
+            return false;
+        }
+
+        try {
+            Exporter exporter = dataObjectEntry.getExporterClass().newInstance();
+
+            if (exporter.getSupportedFormats(dataObjectEntry.getDataObjectClass()).contains(formatType)) {
+                exporter.export(dataObjectEntry.getDataObjectClass(), dataObjectCollection, formatType, response.getOutputStream());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot invoked custom exporter class", e);
+        }
+
+        return false;
     }
 
     /**

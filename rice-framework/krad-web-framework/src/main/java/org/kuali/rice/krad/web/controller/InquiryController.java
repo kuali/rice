@@ -119,31 +119,4 @@ public class InquiryController extends UifControllerBase {
         return super.start(form, request, response);
     }
 
-    /**
-     * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
-     */
-    @RequestMapping(params = "methodToCall=export")
-    public ModelAndView export(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        InquiryForm inquiryForm = (InquiryForm) form;
-
-        Object dataObject = inquiryForm.getDataObject();
-        if (dataObject != null) {
-            DataObjectEntry dataObjectEntry =
-                    KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
-                            inquiryForm.getDataObjectClassName());
-
-            Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
-            if (exporterClass != null) {
-                Exporter exporter = exporterClass.newInstance();
-
-                response.setContentType(KRADConstants.XML_MIME_TYPE);
-                response.setHeader("Content-disposition", "attachment; filename=export.xml");
-                exporter.export(dataObjectEntry.getDataObjectClass(), Collections.singletonList(dataObject),
-                        KRADConstants.XML_FORMAT, response.getOutputStream());
-            }
-        }
-
-        return null;
-    }
 }

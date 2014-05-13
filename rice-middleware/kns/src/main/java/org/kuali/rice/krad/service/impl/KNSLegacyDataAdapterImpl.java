@@ -40,6 +40,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -166,7 +167,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public <T> T retrieve(T dataObject) {
-        return (T) businessObjectService.retrieve((PersistableBusinessObject) dataObject);
+        return (T) businessObjectService.retrieve(dataObject);
     }
 
     @Override
@@ -529,14 +530,16 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public void verifyVersionNumber(Object dataObject) {
         if (isPersistable(dataObject.getClass())) {
-            PersistableBusinessObject pbObject = businessObjectService.retrieve((PersistableBusinessObject) dataObject);
-            Long pbObjectVerNbr = KRADUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
-            Long newObjectVerNbr = ((PersistableBusinessObject) dataObject).getVersionNumber();
-            if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
-                GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
-                        RiceKeyConstants.ERROR_VERSION_MISMATCH);
-                throw new ValidationException(
-                        "Version mismatch between the local business object and the database business object");
+            Object pbObject = businessObjectService.retrieve(dataObject);
+            if ( dataObject instanceof Versioned ) {
+	            Long pbObjectVerNbr = KRADUtils.isNull(pbObject) ? null : ((Versioned) pbObject).getVersionNumber();
+	            Long newObjectVerNbr = ((Versioned) dataObject).getVersionNumber();
+	            if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
+	                GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
+	                        RiceKeyConstants.ERROR_VERSION_MISMATCH);
+	                throw new ValidationException(
+	                        "Version mismatch between the local business object and the database business object");
+	            }
             }
         }
     }

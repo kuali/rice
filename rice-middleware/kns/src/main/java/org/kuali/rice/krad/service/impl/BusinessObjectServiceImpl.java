@@ -159,7 +159,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     }
 
     @Override
-    public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
+    public Object retrieve(Object object) {
         return businessObjectDao.retrieve(object);
     }
 

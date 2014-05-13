@@ -100,7 +100,7 @@ public interface BusinessObjectService {
      * @param object
      * @return
      */
-    public PersistableBusinessObject retrieve(PersistableBusinessObject object);
+    public Object retrieve(Object object);
 
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object

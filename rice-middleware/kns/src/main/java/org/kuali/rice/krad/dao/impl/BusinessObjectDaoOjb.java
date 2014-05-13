@@ -293,8 +293,8 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     /**
      * @see org.kuali.rice.krad.dao.BusinessObjectDao#retrieve(org.kuali.rice.krad.bo.PersistableBusinessObject)
      */
-    public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
-        return (PersistableBusinessObject) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQueryByIdentity(object));
+    public Object retrieve(Object object) {
+        return getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQueryByIdentity(object));
     }
 
     /**

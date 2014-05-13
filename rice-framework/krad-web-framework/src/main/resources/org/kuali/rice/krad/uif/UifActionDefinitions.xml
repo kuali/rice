@@ -35,6 +35,9 @@
   <bean id="Uif-CancelAction" parent="Uif-SecondaryActionButton" p:methodToCall="cancel"
         p:actionLabel="Cancel" p:performDirtyValidation="true" p:id="ucancel"/>
 
+  <bean id="Uif-RecallAction" parent="Uif-SecondaryActionButton" p:methodToCall="recall"
+        p:actionLabel="Recall" p:performDirtyValidation="true" p:id="urecall"/>
+
   <bean id="Uif-CheckFormAction" parent="Uif-SecondaryActionButton" p:methodToCall="checkForm"
         p:actionLabel="Check Form" p:loadingMessageText="Checking Form..." p:id="ucheck"/>
 

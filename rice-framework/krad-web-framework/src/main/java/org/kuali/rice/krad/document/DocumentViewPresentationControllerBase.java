@@ -127,6 +127,10 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
             documentActions.add(KRADConstants.KUALI_ACTION_CAN_COMPLETE);
         }
 
+        if (canRecall(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_RECALL);
+        }
+
         return documentActions;
     }
 

@@ -246,6 +246,21 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * Prompts user to confirm the recall action and provide and explanation.
+     *
+     * @param form document form base containing the document instance that will be cancelled
+     * @return ModelAndView
+     */
+    @RequestMapping(params = "methodToCall=recall")
+    public ModelAndView recall(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        DocumentFormBase documentForm = (DocumentFormBase) form;
+        performWorkflowAction(documentForm, WorkflowAction.RECALL);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
      * Saves the document instance contained on the form.
      *
      * @param form document form base containing the document instance that will be saved
@@ -462,6 +477,14 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     getDocumentService().sendAdHocRequests(document, form.getAnnotation(), combineAdHocRecipients(
                             form));
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL;
+                    break;
+                case RECALL:
+                    if (getDocumentService().documentExists(document.getDocumentNumber())) {
+                        String recallExplanation =
+                                form.getDialogExplanations().get(KRADConstants.QUESTION_ACTION_RECALL_REASON);
+                        document = getDocumentService().recallDocument(document, recallExplanation, true);
+                        successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_RECALLED;
+                    }
                     break;
             }
             // push potentially updated document back into the form

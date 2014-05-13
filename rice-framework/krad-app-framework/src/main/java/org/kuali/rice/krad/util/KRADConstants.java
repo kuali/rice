@@ -444,6 +444,7 @@ public final class KRADConstants {
     public static final String QUESTION_TEXT_ATTRIBUTE_NAME = "questionText";
     public static final String QUESTION_REASON_ATTRIBUTE_NAME = "reason";
     public static final String QUESTION_SHOW_REASON_FIELD = "showReasonField";
+    public static final String QUESTION_ACTION_RECALL_REASON = "ConfirmRecallDialog";
 
     public static final String REFRESH_CALLER = "refreshCaller";
     public static final String REFRESH_CALLER_TYPE = "refreshCallerType";

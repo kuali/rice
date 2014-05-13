@@ -15,8 +15,16 @@
  */
 package org.kuali.rice.krad.test.document;
 
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.rules.rule.event.RuleEvent;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 public class AccountRules extends MaintenanceDocumentRuleBase {
 
+    public boolean processEvent( RuleEvent event ) {
+        GlobalVariables.getMessageMap().putInfo( event.getName(), event.getRuleMethodName() );
+        return true;
+    }
 }

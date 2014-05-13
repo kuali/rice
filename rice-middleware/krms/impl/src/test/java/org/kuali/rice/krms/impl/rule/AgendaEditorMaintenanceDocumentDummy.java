@@ -29,7 +29,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.maintenance.Maintainable;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
@@ -184,15 +184,15 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void validateBusinessRules(KualiDocumentEvent event) {
+    public void validateBusinessRules(DocumentEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void prepareForSave(KualiDocumentEvent event) {
+    public void prepareForSave(DocumentEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void postProcessSave(KualiDocumentEvent event) {
+    public void postProcessSave(DocumentEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -204,7 +204,7 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List<KualiDocumentEvent> generateSaveEvents() {
+    public List<DocumentEvent> generateSaveEvents() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

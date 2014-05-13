@@ -20,19 +20,19 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
  * @deprecated Use {@link org.kuali.rice.krad.rules.rule.event.AddCollectionLineEvent}.
  */
 @Deprecated
-public class KualiAddLineEvent extends KualiDocumentEventBase {
+public class KualiAddLineEvent extends DocumentEventBase {
 
     private PersistableBusinessObject bo;
     private String collectionName;
 
     public KualiAddLineEvent( Document document, String collectionName, PersistableBusinessObject addLine ) {
-        super("adding bo to document collection " + KualiDocumentEventBase.getDocumentId(document), "", document);
+        super("adding bo to document collection " + DocumentEventBase.getDocumentId(document), "", document);
         
         this.bo = addLine;//(BusinessObject)ObjectUtils.deepCopy( addLine );
         this.collectionName = collectionName;

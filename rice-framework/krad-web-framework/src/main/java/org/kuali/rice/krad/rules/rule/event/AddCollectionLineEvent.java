@@ -24,7 +24,7 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddCollectionLineEvent extends KualiDocumentEventBase {
+public class AddCollectionLineEvent extends DocumentEventBase {
 
     private String collectionName;
     private Object addLine;
@@ -64,7 +64,7 @@ public class AddCollectionLineEvent extends KualiDocumentEventBase {
      * @param addLine the object being added to the collection
      */
     protected AddCollectionLineEvent(String eventType, String errorPathPrefix, Document document, String collectionName, Object addLine) {
-        super("creating " + eventType + " event for document " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("creating " + eventType + " event for document " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
 
         this.collectionName = collectionName;
         this.addLine = addLine;

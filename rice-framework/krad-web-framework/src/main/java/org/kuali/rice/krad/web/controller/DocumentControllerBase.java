@@ -39,6 +39,7 @@ import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
@@ -280,6 +281,57 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             return sensitiveDataDialogModelAndView;
         }
         performWorkflowAction(form, WorkflowAction.SAVE);
+
+        return getUIFModelAndView(form);
+    }
+
+    /**
+     * Saves the document instance contained on the form.
+     *
+     * @param form document form base containing the document instance that will be saved
+     * @return ModelAndView
+     */
+    //@RequestMapping(params = "methodToCall=save")
+    public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response, SaveDocumentEvent saveEvent ) throws Exception {
+        Document document = form.getDocument();
+
+        // get the explanation from the document and check it for sensitive data
+        String explanation = document.getDocumentHeader().getExplanation();
+        ModelAndView sensitiveDataDialogModelAndView = checkSensitiveDataAndWarningDialog(explanation, form);
+
+        // if a sensitive data warning dialog is returned then display it
+        if(sensitiveDataDialogModelAndView != null){
+            return sensitiveDataDialogModelAndView;
+        }
+
+        try {
+            document = getDocumentService().saveDocument( document, saveEvent );
+            String successMessageKey = RiceKeyConstants.MESSAGE_SAVED;
+            // push potentially updated document back into the form
+            form.setDocument(document);
+
+            if (successMessageKey != null) {
+                GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey);
+            }
+        } catch (ValidationException e) {
+            // log the error and swallow exception so screen will draw with errors.
+            // we don't want the exception to bubble up and the user to see an incident page, but instead just return to
+            // the page and display the actual errors. This would need a fix to the API at some point.
+            KRADUtils.logErrors();
+            LOG.error("Validation Etion occured for document :" + document.getDocumentNumber(), e);
+
+            // if no errors in map then throw runtime because something bad happened
+            if (GlobalVariables.getMessageMap().hasNoErrors()) {
+                throw new RiceRuntimeException("Validation Exception with no error message.", e);
+            }
+        } catch (Exception e) {
+            throw new RiceRuntimeException(
+                    "Exception trying to invoke action " + WorkflowAction.SAVE.name() + " for document: " + document
+                            .getDocumentNumber(), e);
+        }
+
+        form.setAnnotation("");
 
         return getUIFModelAndView(form);
     }

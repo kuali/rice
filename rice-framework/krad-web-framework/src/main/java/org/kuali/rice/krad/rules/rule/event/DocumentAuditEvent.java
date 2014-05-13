@@ -25,7 +25,7 @@ import org.kuali.rice.krad.rules.rule.DocumentAuditRule;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentAuditEvent extends KualiDocumentEventBase {
+public class DocumentAuditEvent extends DocumentEventBase {
 
     /**
      * Constructs a RunAuditEvent with the given errorPathPrefix and document.
@@ -34,7 +34,7 @@ public class DocumentAuditEvent extends KualiDocumentEventBase {
      * @param document
      */
     public DocumentAuditEvent(String errorPathPrefix, Document document) {
-        super("Running audit on " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("Running audit on " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
     }
 
     /**
@@ -47,14 +47,14 @@ public class DocumentAuditEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return DocumentAuditRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((DocumentAuditRule) rule).processRunAuditBusinessRules(getDocument());

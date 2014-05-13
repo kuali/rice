@@ -26,7 +26,7 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
  *
  *
  */
-public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
+public final class AddAdHocRoutePersonEvent extends DocumentEventBase {
     private AdHocRoutePerson adHocRoutePerson;
 
     /**
@@ -37,7 +37,7 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      */
     public AddAdHocRoutePersonEvent(String errorPathPrefix, Document document, AdHocRoutePerson adHocRoutePerson) {
-        super("creating add ad hoc route person event for document " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("creating add ad hoc route person event for document " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
         this.adHocRoutePerson = adHocRoutePerson;
     }
 
@@ -61,7 +61,7 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#validate()
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEvent#validate()
      */
     @Override
     public void validate() {
@@ -72,14 +72,14 @@ public final class AddAdHocRoutePersonEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddAdHocRoutePersonRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((AddAdHocRoutePersonRule) rule).processAddAdHocRoutePerson(getDocument(), this.adHocRoutePerson);

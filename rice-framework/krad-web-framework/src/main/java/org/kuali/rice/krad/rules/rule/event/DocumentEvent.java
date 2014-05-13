@@ -25,56 +25,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface KualiDocumentEvent {
+public interface DocumentEvent extends RuleEvent {
 
     /**
      * @return Document The document associated with this event
      */
     Document getDocument();
-
-    /**
-     * The name of the event.
-     *
-     * @return String
-     */
-    String getName();
-
-    /**
-     * A description of the event.
-     *
-     * @return String
-     */
-    String getDescription();
-
-    /**
-     * @return errorPathPrefix for this event
-     */
-    String getErrorPathPrefix();
-
-    /**
-     * Returns the interface that classes must implement to receive this event.
-     *
-     * @return rule interface
-     */
-    Class<? extends BusinessRule> getRuleInterfaceClass();
-
-    /**
-     * Validates the event has all the necessary properties.
-     */
-    void validate();
-
-    /**
-     * Invokes the event handling method on the rule object.
-     *
-     * @param rule business rule
-     * @return true if the rule matches
-     */
-    boolean invokeRuleMethod(BusinessRule rule);
-
-    /**
-     * This will return a list of events that are spawned from this event.
-     *
-     * @return list of events
-     */
-    List<KualiDocumentEvent> generateEvents();
 }

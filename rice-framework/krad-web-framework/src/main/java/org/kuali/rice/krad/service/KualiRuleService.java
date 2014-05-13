@@ -19,7 +19,7 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 
 import java.util.List;
 
@@ -35,13 +35,13 @@ public interface KualiRuleService {
      * Retrieves and instantiates the businessRulesClass associated with the event's document type (if any), and calls
      * the appropriate process* method of that businessRule for handling the given event type.
      *
-     * <p>This is a helper method that takes in the generic KualiDocumentEvent class and determines which event call to
+     * <p>This is a helper method that takes in the generic DocumentEvent class and determines which event call to
      * make.</p>
      *
      * @param event
      * @return true if no rule is applied, or all rules are applied successfully, false otherwise
      */
-    boolean applyRules(KualiDocumentEvent event);
+    boolean applyRules(DocumentEvent event);
 
     /**
      * Builds a list containing ad hoc route person events appropriate for the context.

@@ -51,7 +51,7 @@ import org.kuali.rice.krad.datadictionary.WorkflowProperties;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -470,7 +470,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
     }
 
     @Override
-    public void postProcessSave(KualiDocumentEvent event) {
+    public void postProcessSave(DocumentEvent event) {
         // TODO Auto-generated method stub
 
     }
@@ -478,15 +478,15 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
     /**
      * Override this method with implementation specific prepareForSave logic
      *
-     * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
      */
     @Override
-    public void prepareForSave(KualiDocumentEvent event) {
+    public void prepareForSave(DocumentEvent event) {
         // do nothing by default
     }
 
     @Override
-    public void validateBusinessRules(KualiDocumentEvent event) {
+    public void validateBusinessRules(DocumentEvent event) {
         if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
@@ -551,8 +551,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
      * @see org.kuali.rice.krad.document.Document#generateSaveEvents()
      */
     @Override
-    public List<KualiDocumentEvent> generateSaveEvents() {
-        return new ArrayList<KualiDocumentEvent>();
+    public List<DocumentEvent> generateSaveEvents() {
+        return new ArrayList<DocumentEvent>();
     }
 
     /**

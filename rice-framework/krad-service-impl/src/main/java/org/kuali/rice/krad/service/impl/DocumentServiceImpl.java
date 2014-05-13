@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -55,7 +49,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.CompleteDocumentEvent;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
@@ -75,6 +69,12 @@ import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service implementation for the Document structure. It contains all of the document level type of
@@ -107,8 +107,30 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public Document saveDocument( Document document, DocumentEvent event ) throws WorkflowException {
+        checkForNulls(document);
+        if( event == null ) {
+            throw new IllegalArgumentException( "invalid (null) DocumentEvent instance" );
+        }
+        // if event is not an instance of a SaveDocumentEvent or a SaveOnlyDocumentEvent
+        if ( !SaveEvent.class.isAssignableFrom( event.getClass() ) ) {
+            throw new ConfigurationException( "The KualiDocumentEvent class '" + event.getClass().getName() +
+                    "' does not implement the class '" + SaveEvent.class.getName() + "'");
+        }
+        document.prepareForSave();
+        Document savedDocument = validateAndPersistDocumentAndSaveAdHocRoutingRecipients( document, event );
+        prepareWorkflowDocument( savedDocument );
+        getWorkflowDocumentService().save( savedDocument.getDocumentHeader().getWorkflowDocument(), null );
+
+        UserSessionUtils.addWorkflowDocument( GlobalVariables.getUserSession(),
+                savedDocument.getDocumentHeader().getWorkflowDocument() );
+
+        return savedDocument;
+    }
+
+    @Override
     public Document saveDocument(Document document,
-            Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException, ValidationException {
+            Class<? extends DocumentEvent> kualiDocumentEventClass) throws WorkflowException, ValidationException {
         checkForNulls(document);
         if (kualiDocumentEventClass == null) {
             throw new IllegalArgumentException("invalid (null) kualiDocumentEventClass");
@@ -133,8 +155,8 @@ public class DocumentServiceImpl implements DocumentService {
         return savedDocument;
     }
 
-    private KualiDocumentEvent generateKualiDocumentEvent(Document document,
-            Class<? extends KualiDocumentEvent> eventClass) throws ConfigurationException {
+    private DocumentEvent generateKualiDocumentEvent(Document document,
+            Class<? extends DocumentEvent> eventClass) throws ConfigurationException {
         String potentialErrorMessage =
                 "Found error trying to generate Kuali Document Event using event class '" + eventClass.getName() +
                         "' for document " + document.getDocumentNumber();
@@ -159,7 +181,7 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new RuntimeException("Cannot find a constructor for class '" + eventClass.getName() +
                         "' that takes in a document parameter");
             }
-            return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
+            return (DocumentEvent) usableConstructor.newInstance(paramList.toArray());
         } catch (SecurityException e) {
             throw new ConfigurationException(potentialErrorMessage, e);
         } catch (IllegalArgumentException e) {
@@ -458,7 +480,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     private Document validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document,
-            KualiDocumentEvent event) {
+            DocumentEvent event) {
         /*
          * Using this method to wrap validateAndPersistDocument to keep everything in one transaction. This avoids modifying the
          * signature on validateAndPersistDocument method
@@ -833,7 +855,7 @@ public class DocumentServiceImpl implements DocumentService {
      * Validates and persists a document.
      */
     @Override
-    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException {
+    public Document validateAndPersistDocument(Document document, DocumentEvent event) throws ValidationException {
         if (document == null) {
             LOG.error("document passed to validateAndPersist was null");
             throw new IllegalArgumentException("invalid (null) document");

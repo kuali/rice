@@ -20,7 +20,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.ui.AddPersonDocumentRoleQualifierRule;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -28,7 +28,7 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase {
+public class AddPersonDocumentRoleQualifierEvent extends DocumentEventBase {
 
 	private IdentityManagementPersonDocument document;
 	private KimDocumentRoleMember kimDocumentRoleMember;
@@ -47,7 +47,7 @@ public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+	 * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
 	 */
 	public Class<? extends BusinessRule> getRuleInterfaceClass() {
 		return AddPersonDocumentRoleQualifierRule.class;
@@ -56,7 +56,7 @@ public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase 
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+	 * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
 	 */
 	public boolean invokeRuleMethod(BusinessRule rule) {
 		return ((AddPersonDocumentRoleQualifierRule) rule).processAddPersonDocumentRoleQualifier(document, role, kimDocumentRoleMember, selectedRoleIdx);

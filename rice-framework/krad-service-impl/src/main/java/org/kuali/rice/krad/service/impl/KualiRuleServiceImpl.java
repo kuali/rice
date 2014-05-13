@@ -15,30 +15,32 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.TransactionalDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.RuleEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
+import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a rule evaluator for Kuali. This class is to be used for evaluating business rule checks. The class
@@ -54,9 +56,9 @@ public class KualiRuleServiceImpl implements KualiRuleService {
     private DataDictionaryService dataDictionaryService;
 
     /**
-     * @see org.kuali.rice.krad.service.KualiRuleService#applyRules(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     * @see org.kuali.rice.krad.service.KualiRuleService#applyRules(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
      */
-    public boolean applyRules(KualiDocumentEvent event) {
+    public boolean applyRules(DocumentEvent event) {
         if (event == null) {
             throw new IllegalArgumentException("invalid (null) event");
         }
@@ -76,13 +78,17 @@ public class KualiRuleServiceImpl implements KualiRuleService {
             increaseErrorPath(event.getErrorPathPrefix());
 
             // get any child events and apply rules
-            List<KualiDocumentEvent> events = event.generateEvents();
-            for (KualiDocumentEvent generatedEvent : events) {
-                success &= applyRules(generatedEvent);
+            List<RuleEvent> events = event.generateEvents();
+            for (RuleEvent generatedEvent : events) {
+                success &= applyRules((DocumentEvent)generatedEvent);
             }
 
             // now call the event rule method
-            success &= event.invokeRuleMethod(rule);
+            if( event.getRuleMethodName() == null ) {
+                success &= event.invokeRuleMethod(rule);
+            } else {
+                success &= invokeBusinessRuleMethod( rule, event );
+            }
 
             decreaseErrorPath(event.getErrorPathPrefix());
 
@@ -97,6 +103,45 @@ public class KualiRuleServiceImpl implements KualiRuleService {
                 }
             }
 
+        }
+        return success;
+    }
+
+    /**
+     * This class is a local helper class to invoke the business rule method.
+     *
+     * @param rule - the business rule class that the method to invoke belongs to
+     * @param event - the document event the rule applies to
+     * @return a boolean to indicate whether the method invocation was a succes or not
+     */
+    public boolean invokeBusinessRuleMethod( BusinessRule rule, DocumentEvent event ) {
+        boolean success = true;
+
+        String methodName = event.getRuleMethodName();
+        MethodInvokerConfig methodInvoker = new MethodInvokerConfig();
+        methodInvoker.setTargetClass( rule.getClass() );
+        methodInvoker.setTargetMethod( methodName );
+        Object[] arguments = new Object[1];
+        arguments[0] = event;
+        methodInvoker.setArguments( arguments );
+
+        // invoke rule method
+        try {
+            LOG.debug("Invoking rule method: "
+                    + methodInvoker.getTargetMethod()
+                    + " for class: "
+                    + rule.getClass().getName());
+            methodInvoker.prepare();
+
+            Class<?> methodReturnType = methodInvoker.getPreparedMethod().getReturnType();
+            if (StringUtils.equals("void", methodReturnType.getName())) {
+                methodInvoker.invoke();
+            } else {
+                success &= ( Boolean ) methodInvoker.invoke();
+            }
+        } catch (Exception e) {
+            LOG.error("Error invoking rule method for class: " + rule.getClass().getName(), e);
+            throw new RuntimeException("Error invoking rule method for class: " + rule.getClass().getName(), e);
         }
         return success;
     }

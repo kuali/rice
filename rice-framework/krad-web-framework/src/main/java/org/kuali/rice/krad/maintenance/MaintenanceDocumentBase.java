@@ -61,7 +61,7 @@ import org.kuali.rice.krad.document.DocumentBase;
 import org.kuali.rice.krad.document.SessionDocument;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.BusinessObjectSerializerService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
@@ -735,10 +735,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @see DocumentBase#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     * @see DocumentBase#prepareForSave(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
      */
     @Override
-    public void prepareForSave(KualiDocumentEvent event) {
+    public void prepareForSave(DocumentEvent event) {
         super.prepareForSave(event);
         if (newMaintainableObject.getDataObject() instanceof PersistableAttachment) {
             populateDocumentAttachment();
@@ -851,10 +851,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * Explicitly NOT calling super here.  This is a complete override of the validation rules behavior.
      *
-     * @see org.kuali.rice.krad.document.DocumentBase#validateBusinessRules(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     * @see org.kuali.rice.krad.document.DocumentBase#validateBusinessRules(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
      */
     @Override
-    public void validateBusinessRules(KualiDocumentEvent event) {
+    public void validateBusinessRules(DocumentEvent event) {
         if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
@@ -909,10 +909,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * this needs to happen after the document itself is saved, to preserve consistency of the ver_nbr and in the case
      * of initial save, because this can't be saved until the document is saved initially
      *
-     * @see org.kuali.rice.krad.document.DocumentBase#postProcessSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
+     * @see org.kuali.rice.krad.document.DocumentBase#postProcessSave(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
      */
     @Override
-    public void postProcessSave(KualiDocumentEvent event) {
+    public void postProcessSave(DocumentEvent event) {
         Object bo = getNewMaintainableObject().getDataObject();
         if (bo instanceof GlobalBusinessObject) {
             bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);

@@ -26,7 +26,7 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
  *
  *
  */
-public final class AddNoteEvent extends KualiDocumentEventBase {
+public final class AddNoteEvent extends DocumentEventBase {
     private Note note;
 
     /**
@@ -36,7 +36,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      */
     public AddNoteEvent(String errorPathPrefix, Document document, Note note) {
-        super("creating add note event for document " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("creating add note event for document " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
         this.note = note;
     }
 
@@ -67,14 +67,14 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddNoteRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((AddNoteRule) rule).processAddNote(getDocument(), getNote());

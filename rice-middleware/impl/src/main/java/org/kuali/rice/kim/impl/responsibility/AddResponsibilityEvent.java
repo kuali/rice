@@ -20,7 +20,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -28,7 +28,7 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AddResponsibilityEvent extends KualiDocumentEventBase {
+public class AddResponsibilityEvent extends DocumentEventBase {
 	private KimDocumentRoleResponsibility permission;
 
 	public AddResponsibilityEvent(String errorPathPrefix, IdentityManagementRoleDocument document) {

@@ -18,12 +18,20 @@ package org.kuali.rice.krad.service;
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
+import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
+import org.kuali.rice.krad.test.document.RuleEventImpl;
+import org.kuali.rice.krad.test.document.bo.Account;
+import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
-import org.kuali.rice.krad.test.KRADTestCase;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the DocumentService (currently only getNewDocument is tested).
@@ -59,7 +67,8 @@ public class DocumentServiceTest extends KRADTestCase {
         AccountRequestDocument travelDocument = (AccountRequestDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
         WorkflowDocument wd =  travelDocument.getDocumentHeader().getWorkflowDocument();
 
-        assertEquals("Initiator should be the current user", wd.getInitiatorPrincipalId(), GlobalVariables.getUserSession().getPerson().getPrincipalId());
+        assertEquals("Initiator should be the current user", wd.getInitiatorPrincipalId(),
+                GlobalVariables.getUserSession().getPerson().getPrincipalId());
     }
 
     /**
@@ -84,5 +93,55 @@ public class DocumentServiceTest extends KRADTestCase {
         WorkflowDocument wd =  travelDocument.getDocumentHeader().getWorkflowDocument();
 
         assertEquals("Initiator should be the current user", wd.getInitiatorPrincipalId(), GlobalVariables.getUserSession().getPerson().getPrincipalId());
+    }
+
+    /**
+     * This method tests saveDocument, in particular, the save document rule event and the custom rule method
+     * invocation of the business rule associated with the document.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveDocument_DocumentEvent() throws Exception {
+        MaintenanceDocument maintenanceDocument = ( MaintenanceDocument ) KRADServiceLocatorWeb
+                .getDocumentService().getNewDocument( "AccountMaintenanceDocument" );
+        Account account = ( Account ) maintenanceDocument.getNewMaintainableObject().getDataObject();
+        SaveDocumentEvent documentEvent = new SaveDocumentEvent( maintenanceDocument );
+        documentEvent.setName( "DocumentControllerBaseSaveDocumentRuleTest#testSave_SaveDocumentEvent()" );
+        documentEvent.setRuleMethodName( "processEvent" );
+        Document savedDocument = KRADServiceLocatorWeb.getDocumentService()
+                .saveDocument(maintenanceDocument, documentEvent);
+        assertNull( "New maintenance document should not have a version number yet.",
+                maintenanceDocument.getDocumentHeader().getVersionNumber() );
+        assertNotNull( "Saved maintenance document must have a version number.", savedDocument.getDocumentHeader().getVersionNumber() );
+        List<ErrorMessage> msgs = GlobalVariables.getMessageMap().getInfoMessagesForProperty( documentEvent.getName() );
+        assertEquals( "There must be one entry added by the business rule method.", 1, msgs.size() );
+        assertEquals( "The message set by the business rule must match the test message.",
+                documentEvent.getRuleMethodName() + "()", msgs.get(0).toString() );
+    }
+
+    /**
+     * This method tests saveDocument, in particular, the save document rule event and the default rule method
+     * invocation of the business rule associated with the document.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSaveDocument_Default() throws Exception {
+        MaintenanceDocument maintenanceDocument = ( MaintenanceDocument ) KRADServiceLocatorWeb
+                .getDocumentService().getNewDocument( "AccountMaintenanceDocument" );
+        Account account = ( Account ) maintenanceDocument.getNewMaintainableObject().getDataObject();
+        RuleEventImpl documentEvent = new RuleEventImpl( maintenanceDocument );
+        documentEvent.setName("DocumentControllerBaseSaveDocumentRuleTest#testSave_Default()");
+        Document savedDocument = KRADServiceLocatorWeb.getDocumentService()
+                .saveDocument(maintenanceDocument, documentEvent);
+        assertNull( "New maintenance document should not have a version number yet.",
+                maintenanceDocument.getDocumentHeader().getVersionNumber() );
+        assertNotNull( "Saved maintenance document must have a version number.", savedDocument.getDocumentHeader().getVersionNumber() );
+        List<ErrorMessage> msgs = GlobalVariables.getMessageMap()
+                .getInfoMessagesForProperty( documentEvent.getClass().getName() );
+        assertEquals( "There must be one entry added by the business rule method.", 1, msgs.size() );
+        assertEquals( "The message set by the business rule must match the test message.",
+                "org.kuali.rice.krad.test.document.AccountRules" + "()", msgs.get( 0 ).toString() );
     }
 }

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.document;
 
-import java.util.List;
-
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
@@ -28,9 +26,12 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
+
+import java.util.List;
+
 
 
 /**
@@ -194,21 +195,21 @@ public interface Document extends GloballyUnique {
      * @param event - indicates which document event was requested
      * @throws org.kuali.rice.krad.exception.ValidationException - containing the MessageMap from the validation session.
      */
-    void validateBusinessRules(KualiDocumentEvent event);
+    void validateBusinessRules(DocumentEvent event);
 
     /**
-     * Do any work on the document that requires the KualiDocumentEvent before the save.
+     * Do any work on the document that requires the DocumentEvent before the save.
      *
      * @param event - indicates which document event was requested
      */
-    void prepareForSave(KualiDocumentEvent event);
+    void prepareForSave(DocumentEvent event);
 
     /**
      * Do any work on the document after the save.
      *
      * @param event - indicates which document event was requested
      */
-    void postProcessSave(KualiDocumentEvent event);
+    void postProcessSave(DocumentEvent event);
 
     /**
      * This method provides a hook that will be called after a document is retrieved, but before it is returned from the
@@ -228,7 +229,7 @@ public interface Document extends GloballyUnique {
      *
      * @return a list of document events that were triggered by the save event
      */
-    List<KualiDocumentEvent> generateSaveEvents();
+    List<DocumentEvent> generateSaveEvents();
 
    /**
      * Handle the doRouteStatusChange event from the post processor

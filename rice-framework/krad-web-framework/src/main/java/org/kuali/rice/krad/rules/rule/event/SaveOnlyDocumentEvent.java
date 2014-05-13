@@ -48,7 +48,7 @@ public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String, java.lang.String, org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEventBase#DocumentEventBase(java.lang.String, java.lang.String, org.kuali.rice.krad.document.Document)
      */
     public SaveOnlyDocumentEvent(String description, String errorPathPrefix, Document document) {
 	super(description, errorPathPrefix, document);
@@ -60,8 +60,8 @@ public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
      * @see org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent#generateEvents()
      */
     @Override
-    public List<KualiDocumentEvent> generateEvents() {
-	return new ArrayList<KualiDocumentEvent>();
+    public List<RuleEvent> generateEvents() {
+	return new ArrayList<RuleEvent>();
     }
 
 

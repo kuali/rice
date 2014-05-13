@@ -26,7 +26,7 @@ import org.kuali.rice.krad.rules.rule.BusinessRule;
  *
  *
  */
-public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
+public final class AddAdHocRouteWorkgroupEvent extends DocumentEventBase {
     private AdHocRouteWorkgroup adHocRouteWorkgroup;
 
     /**
@@ -37,7 +37,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
      * @param errorPathPrefix
      */
     public AddAdHocRouteWorkgroupEvent(String errorPathPrefix, Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
-        super("creating add ad hoc route workgroup event for document " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("creating add ad hoc route workgroup event for document " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
         this.adHocRouteWorkgroup = adHocRouteWorkgroup;
     }
 
@@ -61,7 +61,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#validate()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#validate()
      */
     @Override
     public void validate() {
@@ -72,14 +72,14 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddAdHocRouteWorkgroupRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((AddAdHocRouteWorkgroupRule) rule).processAddAdHocRouteWorkgroup(getDocument(), this.adHocRouteWorkgroup);

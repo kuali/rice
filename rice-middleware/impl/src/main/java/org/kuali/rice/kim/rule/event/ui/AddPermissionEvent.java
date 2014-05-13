@@ -21,7 +21,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.ui.AddPermissionRule;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -29,7 +29,7 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AddPermissionEvent extends KualiDocumentEventBase {
+public class AddPermissionEvent extends DocumentEventBase {
 	private KimDocumentRolePermission permission;
 
 	public AddPermissionEvent(String errorPathPrefix, IdentityManagementRoleDocument document) {

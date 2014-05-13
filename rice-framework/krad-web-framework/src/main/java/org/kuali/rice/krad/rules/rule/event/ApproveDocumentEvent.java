@@ -29,7 +29,7 @@ import java.util.List;
  *
  *
  */
-public class ApproveDocumentEvent extends KualiDocumentEventBase {
+public class ApproveDocumentEvent extends DocumentEventBase {
     /**
      * Constructs an ApproveDocumentEvent with the specified errorPathPrefix and document
      *
@@ -58,30 +58,30 @@ public class ApproveDocumentEvent extends KualiDocumentEventBase {
      * @param document
      */
     protected ApproveDocumentEvent(String eventType, String errorPathPrefix, Document document) {
-        super("creating " + eventType + " event for document " + KualiDocumentEventBase.getDocumentId(document), errorPathPrefix, document);
+        super("creating " + eventType + " event for document " + DocumentEventBase.getDocumentId(document), errorPathPrefix, document);
     }
 
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return ApproveDocumentRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((ApproveDocumentRule) rule).processApproveDocument(this);
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#generateEvents()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#generateEvents()
      */
     @Override
-    public List<KualiDocumentEvent> generateEvents() {
-        List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
+    public List<RuleEvent> generateEvents() {
+        List<RuleEvent> events = new ArrayList<RuleEvent>();
         events.add(new RouteDocumentEvent(getDocument()));
         return events;
     }

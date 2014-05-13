@@ -21,7 +21,7 @@ import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 
 import java.util.List;
@@ -115,9 +115,17 @@ public interface DocumentService {
     Document saveDocument(Document document) throws WorkflowException;
 
     /**
+     * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The
+     * convenience of this method is that the event being passed is a DocumentEvent instance.
+     *
+     * @see org.kuali.rice.krad.service.DocumentService#saveDocument(Document, Class)
+     */
+    Document saveDocument( Document document, DocumentEvent docEvent ) throws WorkflowException;
+
+    /**
      * Saves the passed-in document. This will persist it both to the Kuali database, and also initiate it
      * (if necessary) within workflow, so its available in the initiator's action list.  This method uses the
-     * passed in KualiDocumentEvent class when saving the document.  The KualiDocumentEvent class must implement
+     * passed in DocumentEvent class when saving the document.  The DocumentEvent class must implement
      * the {@link SaveEvent} interface.
      *
      * Note that the system does not support passing in Workflow Annotations or AdHoc Route Recipients on a SaveDocument
@@ -135,7 +143,7 @@ public interface DocumentService {
      * @throws WorkflowException
      */
     Document saveDocument(Document document,
-            Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException;
+            Class<? extends DocumentEvent> kualiDocumentEventClass) throws WorkflowException;
 
     /**
      * Save and then route the document, optionally providing an annotation which will show up in the route log
@@ -362,5 +370,5 @@ public interface DocumentService {
      * @param event indicates which kualiDocumentEvent was requested
      * @return the saved document
      */
-    Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException;
+    Document validateAndPersistDocument(Document document, DocumentEvent event) throws ValidationException;
 }

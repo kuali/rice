@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEvent {
+public class SaveDocumentEvent extends DocumentEventBase implements SaveEvent {
 
     /**
      * Constructs a SaveDocumentEvent with the specified errorPathPrefix and document
@@ -54,7 +54,7 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#KualiDocumentEventBase(java.lang.String,
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEventBase#DocumentEventBase(java.lang.String,
      * java.lang.String, org.kuali.rice.krad.document.Document)
      */
     public SaveDocumentEvent(String description, String errorPathPrefix, Document document) {
@@ -62,27 +62,27 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return SaveDocumentRule.class;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((SaveDocumentRule) rule).processSaveDocument(document);
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#generateEvents()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#generateEvents()
      */
     @Override
-    public List<KualiDocumentEvent> generateEvents() {
+    public List<RuleEvent> generateEvents() {
         KualiRuleService ruleService = KRADServiceLocatorWeb.getKualiRuleService();
 
-        List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
+        List<RuleEvent> events = new ArrayList<RuleEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));
 

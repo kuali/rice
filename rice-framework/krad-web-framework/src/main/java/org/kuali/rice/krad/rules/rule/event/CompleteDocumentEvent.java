@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class CompleteDocumentEvent extends KualiDocumentEventBase {
+public class CompleteDocumentEvent extends DocumentEventBase {
 
     /**
      * Constructs a RouteDocumentEvent with the specified errorPathPrefix and document
@@ -50,23 +50,23 @@ public class CompleteDocumentEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see KualiDocumentEvent#getRuleInterfaceClass()
+     * @see RuleEvent#getRuleInterfaceClass()
      */
     public Class getRuleInterfaceClass() {
         return CompleteDocumentRule.class;
     }
 
     /**
-     * @see KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((CompleteDocumentRule) rule).processCompleteDocument(document);
     }
 
     /**
-     * @see KualiDocumentEvent#generateEvents()
+     * @see RuleEvent#generateEvents()
      */
-    public List generateEvents() {
+    public List<RuleEvent> generateEvents() {
         List events = new ArrayList();
         events.add(new RouteDocumentEvent(getDocument()));
         return events;

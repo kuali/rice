@@ -28,11 +28,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
-    private static final Logger LOG = Logger.getLogger(KualiDocumentEventBase.class);
+abstract public class DocumentEventBase extends RuleEventBase implements DocumentEvent {
+    private static final Logger LOG = Logger.getLogger(DocumentEventBase.class);
 
-    private final String description;
-    private final String errorPathPrefix;
     protected Document document;
 
     /**
@@ -42,9 +40,8 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
      * @param description
      * @param errorPathPrefix
      */
-    protected KualiDocumentEventBase(String description, String errorPathPrefix) {
-        this.description = description;
-        this.errorPathPrefix = errorPathPrefix;
+    protected DocumentEventBase(String description, String errorPathPrefix) {
+        super( description, errorPathPrefix );
     }
 
     /**
@@ -54,64 +51,28 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
      * @param document
      * @param description
      */
-    public KualiDocumentEventBase(String description, String errorPathPrefix, Document document) {
-        this.description = description;
-        this.errorPathPrefix = errorPathPrefix;
+    public DocumentEventBase(String description, String errorPathPrefix, Document document) {
+        super( description, errorPathPrefix );
         this.document = document;
 
         LOG.debug(description);
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getDocument()
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEvent#getDocument()
      */
     public final Document getDocument() {
         return document;
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getName()
-     */
-    public final String getName() {
-        return this.getClass().getName();
-    }
-
-    /**
-     * @return a description of this event
-     */
-    public final String getDescription() {
-        return description;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getErrorPathPrefix()
-     */
-    public String getErrorPathPrefix() {
-        return errorPathPrefix;
-    }
-
-    /**
-     * @see java.lang.Object#toString()
+     * @see org.kuali.rice.krad.rules.rule.event.DocumentEvent#validate()
      */
     @Override
-    public String toString() {
-        return getName();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#validate()
-     */
     public void validate() {
         if (getDocument() == null) {
             throw new IllegalArgumentException("invalid (null) event document");
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#generateEvents()
-     */
-    public List<KualiDocumentEvent> generateEvents() {
-        return new ArrayList<KualiDocumentEvent>();
     }
 
     /**

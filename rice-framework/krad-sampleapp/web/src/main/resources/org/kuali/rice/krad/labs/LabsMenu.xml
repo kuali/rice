@@ -110,6 +110,10 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
                           <bean parent="Uif-Link" p:linkText="QuickFinder Callback" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/quickfinder?viewId=Lab-QuickFinderCallback"/>
+                          <bean parent="Uif-Link" p:linkText="Default Rule Event and Business Rule" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/defaultRuleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                          <bean parent="Uif-Link" p:linkText="Custom Rule Event and Document Event Method Invocation" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                         </list>
                       </property>
                     </bean>

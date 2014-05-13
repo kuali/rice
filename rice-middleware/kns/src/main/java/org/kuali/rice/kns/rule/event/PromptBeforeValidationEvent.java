@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
-import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
  * Event for handling warnings/questions before rules are called.
@@ -27,7 +27,7 @@ import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
  * @deprecated Only used in KNS classes, use KRAD.
  */
 @Deprecated
-public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
+public class PromptBeforeValidationEvent extends DocumentEventBase {
     private static final Logger LOG = Logger.getLogger(PromptBeforeValidationEvent.class);
 
     boolean performQuestion;
@@ -154,7 +154,7 @@ public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return PromptBeforeValidation.class;
@@ -162,7 +162,7 @@ public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
 
 
     /**
-     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return true;

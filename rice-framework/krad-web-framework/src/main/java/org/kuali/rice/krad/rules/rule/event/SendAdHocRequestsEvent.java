@@ -30,7 +30,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
+public class SendAdHocRequestsEvent extends DocumentEventBase {
 
     public SendAdHocRequestsEvent(String errorPathPrefix, Document document) {
         this("creating send adhoc requests event for document " + getDocumentId(document), errorPathPrefix, document);
@@ -52,27 +52,27 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+	 * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#getRuleInterfaceClass()
 	 */
 	public Class<? extends BusinessRule> getRuleInterfaceClass() {
 		return SendAdHocRequestsRule.class;
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
+	 * @see org.kuali.rice.krad.rules.rule.event.RuleEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
 	 */
 	public boolean invokeRuleMethod(BusinessRule rule) {
 		return ((SendAdHocRequestsRule) rule).processSendAdHocRequests(document);
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase#generateEvents()
+	 * @see org.kuali.rice.krad.rules.rule.event.RuleEventBase#generateEvents()
 	 */
 	@Override
-	public List<KualiDocumentEvent> generateEvents() {
+	public List<RuleEvent> generateEvents() {
 		KualiRuleService ruleService = KRADServiceLocatorWeb.getKualiRuleService();
 
-		List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
+		List<RuleEvent> events = new ArrayList<RuleEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));
         return events;

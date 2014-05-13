@@ -97,6 +97,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         String docId = peopleFlowCreateNew();
 
         waitAndClickButtonByText("Submit");
+        clickOkConfirmation();
         Thread.sleep(3000);
         checkForDocError();
         checkForIncidentReport();
@@ -113,6 +114,12 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         jGrowl("Click search");
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         waitForTextPresent(DOC_STATUS_FINAL);
+    }
+
+    private void clickOkConfirmation() throws InterruptedException {
+        jGrowl("Click OK Button");
+        waitIsVisibleByXpath("//button[@data-dismissdialogoption=\"PRESUBMIT\"]");
+        waitAndClickByXpath("//button[@data-dismissdialogoption=\"PRESUBMIT\"]");
     }
 
     private String peopleFlowCreateNew() throws InterruptedException {
@@ -158,6 +165,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
         waitAndClickButtonByText("Submit");
+        clickOkConfirmation();
         waitForTextPresent("Document was successfully submitted.");
         selectTopFrame();
         waitAndClickByLinkText("Main Menu");
@@ -170,6 +178,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         clearTextByName("document.newMaintainableObject.dataObject.name");
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
         waitAndClickButtonByText("Submit");
+        clickOkConfirmation();
         waitForTextPresent("A PeopleFlow already exists with the name");
     }
 }

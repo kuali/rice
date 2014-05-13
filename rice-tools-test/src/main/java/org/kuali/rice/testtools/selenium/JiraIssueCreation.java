@@ -40,6 +40,8 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * -Dcas.username=casusername -Dcas.password=caspassword
+ * -Djira.input.dir=/Users/eghm/Desktop/JenkinsResults-2.5-IT-05-12/JiraGroups -Djira.summary.start=IT_Failure
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JiraIssueCreation {
@@ -54,10 +56,10 @@ public class JiraIssueCreation {
     @Before
     public void setUp() throws IOException, InterruptedException {
         jiraMap.put("project-field", System.getProperty("jira.project", "Kuali Rice Development"));
-        jiraMap.put("jira.versions", System.getProperty("jira.versions", "2.4.0-m4").replaceAll(",", " "));
-        jiraMap.put("jira.fixVersions", System.getProperty("jira.fixVersions", "2.4").replaceAll(",", " "));
+        jiraMap.put("jira.versions", System.getProperty("jira.versions", "2.5").replaceAll(",", " "));
+        jiraMap.put("jira.fixVersions", System.getProperty("jira.fixVersions", "").replaceAll(",", " "));
         jiraMap.put("issuetype-field", System.getProperty("jira.issuetype", "Bug Fix"));
-        jiraMap.put("jira.component", System.getProperty("jira.component", "Regression,Development,AFT Failure").replaceAll(",", " "));
+        jiraMap.put("jira.component", System.getProperty("jira.component", "Regression,Development").replaceAll(",", " "));
         jiraMap.put("jira.priority", System.getProperty("jira.priority", "Critical"));
 
         jiraBase = System.getProperty("jira.base.url", "https://jira.kuali.org");
@@ -162,7 +164,7 @@ public class JiraIssueCreation {
             }
 
             jiraMap.put("jira.description", description.toString());
-            jiraMaps.put(dir.getName(), jiraMap);
+            jiraMaps.put(dir.getName(), new HashMap<String, String>(jiraMap));
         }
     }
 

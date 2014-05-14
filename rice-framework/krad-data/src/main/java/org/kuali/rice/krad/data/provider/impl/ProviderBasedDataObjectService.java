@@ -69,6 +69,7 @@ public class ProviderBasedDataObjectService implements DataObjectService {
      * that single value and treat it as a single id.
      *
      * @param id the potentially CompoundKey to reduce
+     *
      * @return the single value from the CompoundKey map if the given id is a CompoundKey with a single entry, otherwise
      *         the original id that was passed in is returned
      */
@@ -130,6 +131,10 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         persistenceProviderForType(type).deleteMatching(type, queryByCriteria);
     }
 
+    /**
+     *
+     *{@inheritDoc}
+     */
     @Override
     public <T> void deleteAll(Class<T> type) {
         persistenceProviderForType(type).deleteAll(type);
@@ -196,7 +201,9 @@ public class ProviderBasedDataObjectService implements DataObjectService {
      * Gets the PersistenceProvider returned by the ProviderRegistry for the given type.
      *
      * @param type the type for which to get the provider.
+     *
      * @return the PersistenceProvider returned by the ProviderRegistry for the given type.
+     *
      * @throws RuntimeException if not PersistenceProvider handles given type.
      */
     protected PersistenceProvider persistenceProviderForType(Class<?> type) {
@@ -211,7 +218,9 @@ public class ProviderBasedDataObjectService implements DataObjectService {
 	 * Gets the PersistenceProvider returned by the ProviderRegistry for the given object.
      *
      * @param object the object for which to get the provider.
+     *
      * @return the PersistenceProvider returned by the ProviderRegistry for the given object.
+     *
 	 * @throws RuntimeException if not PersistenceProvider handles given type.
 	 * @throws IllegalArgumentException if null object passed in.
 	 */

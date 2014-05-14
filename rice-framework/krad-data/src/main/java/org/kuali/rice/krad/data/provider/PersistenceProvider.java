@@ -90,16 +90,19 @@ public interface PersistenceProvider extends Provider {
      * @return the results of the query, will never return null but may return empty results
      *
      * @throws IllegalArgumentException if {@code type} does not denote a data object type or if {@code queryByCriteria}
-     *  is null or empty
+     *  is null
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> QueryResults<T> findMatching(Class<T> type, QueryByCriteria queryByCriteria);
 
     /**
      * Retrieves all data objects for the given type.
+     *
      * @param type the type of data objects to find
      * @param <T> the data object class type
+     *
      * @return the results of the query, will never return null but may return empty results
+     *
      * @throws java.lang.IllegalArgumentException if type is null.
      */
     <T> QueryResults<T> findAll(Class<T> type);
@@ -123,15 +126,19 @@ public interface PersistenceProvider extends Provider {
      * @param type the type of data object
      * @param queryByCriteria criteria to filter by
      *
-     * @throws IllegalArgumentException if the criteria or criteria predicate is null.
+     * @throws IllegalArgumentException if the criteria or criteria predicate is null
      * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> void deleteMatching(Class<T> type, QueryByCriteria queryByCriteria);
 
     /**
      * Deletes all data objects based on the given type.
+     *
      * @param type the type of data objects to delete
      * @param <T> the data object class type
+     *
+     * @throws IllegalArgumentException if the class type is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
      */
     <T> void deleteAll(Class<T> type);
 
@@ -145,6 +152,7 @@ public interface PersistenceProvider extends Provider {
      *
      * @param dataObject the data object to copy
      * @param <T> the type of the data object
+     *
      * @return a copy of the given data object
      */
     <T> T copyInstance(T dataObject);

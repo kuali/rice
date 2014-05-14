@@ -144,6 +144,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * Gets any {@link PersistenceExceptionTranslator}s from the {@link BeanFactory}.
      *
      * @param beanFactory The {@link BeanFactory} to use.
+     *
      * @return A {@link PersistenceExceptionTranslator} from the {@link BeanFactory}.
      */
     protected PersistenceExceptionTranslator detectPersistenceExceptionTranslators(ListableBeanFactory beanFactory) {
@@ -355,6 +356,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      *
      * @param callable The data operation to invoke.
      * @param <T> The type of the data operation.
+     *
      * @return The result from the data operation, if successful.
      */
     protected <T> T doWithExceptionTranslation(Callable<T> callable) {

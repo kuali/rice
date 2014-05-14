@@ -81,6 +81,7 @@ public interface DataObjectService {
 
     /**
      * Executes a query for the given data object returning all data objects for the given type.
+     *
      * @param type tye type of data objects to query
      * @param <T> the data object class type
      *
@@ -133,8 +134,12 @@ public interface DataObjectService {
 
     /**
      * Removes all records for the given data object type
+     *
      * @param type the type of data objects
      * @param <T> the data object class type.
+     *
+     * @throws IllegalArgumentException if {@code type} is null
+     * @throws DataAccessException if data access fails
      */
     <T> void deleteAll(Class<T> type);
 
@@ -182,8 +187,10 @@ public interface DataObjectService {
      *
      * @param dataObject the data object to wrap, must be non-null
      * @param <T> the type of the data object
+     *
      * @return an accessor which wraps the given data object and it's associated metadata and provides utility and
      *         methods useful when accessing data and attributes on the data object
+     *
      * @throws IllegalArgumentException if the given data object is null or an invalid data object type
      */
     <T> DataObjectWrapper<T> wrap(T dataObject);
@@ -197,6 +204,7 @@ public interface DataObjectService {
      *
      * @param dataObject the data object to copy
      * @param <T> the type of the data object
+     *
      * @return a copy of the given data object
      */
     <T> T copyInstance(T dataObject);
@@ -206,6 +214,7 @@ public interface DataObjectService {
      * "supports" means that there is at least one PersistenceProvider that handles the given type.
      *
      * @param type the data object type
+     *
      * @return whether the DataObjectService supports the given type
      */
     <T> boolean supports(Class<T> type);

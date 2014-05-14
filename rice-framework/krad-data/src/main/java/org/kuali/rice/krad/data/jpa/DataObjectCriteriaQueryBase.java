@@ -70,13 +70,23 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
 
     /**
      * Executes the given query.
+     *
      * @param query the query to execute.
      * @return the number of records successfully committed.
      */
     protected abstract int executeUpdate(Query query);
 
     /**
-     * {@inheritDoc}
+     * Deletes data objects based on the given criteria
+     *
+     * <p>If the given criteria is empty or null than an {@link java.lang.IllegalArgumentException} will be thrown.
+     *   If the given type is null then an {@link java.lang.IllegalArgumentException} will be thrown.</p>
+     *
+     * @param type the type of data object
+     * @param criteria criteria to filter by
+     *
+     * @throws IllegalArgumentException if the criteria or criteria predicate is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
      */
     public <T> void deleteMatching(Class<T> type, QueryByCriteria criteria) {
 
@@ -95,7 +105,13 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
     }
 
     /**
-     * {@inheritDoc}
+     * Deletes all data objects based on the given type.
+     *
+     * @param type the type of data objects to delete
+     * @param <T> the data object class type
+     *
+     * @throws IllegalArgumentException if the class type is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
      */
     public <T> void deleteAll(Class<T> type) {
         if (type == null) {
@@ -141,6 +157,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
      * @param criteria the criteria to use to get the results.
      * @param ojbCriteria the implementation-specific criteria.
      * @param flag the indicator to whether the row count is requested in the results.
+     *
      * @return results where the actual rows are requested.
      */
     protected <T> GenericQueryResults<T> forRowResults(final Class<T> queryClass, final QueryByCriteria criteria, final C ojbCriteria, CountFlag flag) {
@@ -170,6 +187,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
      * @param queryClass the type of the results to return.
      * @param criteria the criteria to use to get the results.
      * @param platformCriteria the implementation-specific criteria.
+     *
      * @return results where only the count is requested.
      */
     protected <T> GenericQueryResults<T> forCountOnly(final Class<T> queryClass, final QueryByCriteria criteria, final C platformCriteria) {

@@ -110,13 +110,23 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
         waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
-        waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
+        waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
         waitAndClickButtonByText("Search");
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Add New Line')]"));
         waitAndClickLinkContainingText("return value");
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
-        waitAndClickButtonByText("submit");
+        waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
+        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
+        waitAndClickButtonByText("Submit");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForTextPresent("Document was successfully submitted.");
     }
 
@@ -148,17 +158,14 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
-    	waitAndClickButtonByText("submit");
+    	waitAndClickButtonByText("Submit");
     	String requiredMessage []={"Description: Required","Travel Account Number: Required","Travel Account Name: Required","Travel Account Type Code: Required"};
     	assertTextPresent(requiredMessage);
         assertTrue(findElement(By.xpath("//h3[@id='pageValidationHeader']")).getText().contains("This page has"));
     	waitAndClickButtonByText("Save");
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("blanket approve");
+    	waitAndClickButtonByText("Blanket Approve");
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("add");
-    	String addRequiredMessage [] ={"Travel Sub Account Number: Required","Sub Account Name: Required"};
-    	assertTextPresent(addRequiredMessage);
     }
 
     public boolean isAlertPresent() {

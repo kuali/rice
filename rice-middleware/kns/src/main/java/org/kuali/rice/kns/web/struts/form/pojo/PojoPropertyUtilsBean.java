@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PersistenceStructureService;
@@ -288,20 +289,27 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         }
     }
 
-    protected Object generateIndexedProperty(Object nestedBean, String property, int index, IndexOutOfBoundsException ioobe)  throws IllegalAccessException, InvocationTargetException,
-            NoSuchMethodException {
+    protected Object generateIndexedProperty(Object nestedBean, String property, int index,
+            IndexOutOfBoundsException ioobe) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-        if (!(nestedBean instanceof PersistableBusinessObject)) throw ioobe;
+        if (!(nestedBean instanceof PersistableBusinessObject)
+                && !(nestedBean instanceof PersistableBusinessObjectBaseAdapter)) {
+            throw ioobe;
+        }
 
         // we can only grow lists
-        if (!List.class.isAssignableFrom(getPropertyType(nestedBean, property))) throw ioobe;
+        if (!List.class.isAssignableFrom(getPropertyType(nestedBean, property))) {
+            throw ioobe;
+        }
 
-        List list= (List) getProperty(nestedBean, property);
+        List list = (List) getProperty(nestedBean, property);
 
         Class c = collectionItemClassProvider.getCollectionItemClass(nestedBean, property);
 
         if (c == null) {
-            throw new RuntimeException("Unable to determined item class for collection '" + property + "' on bean of type '" + nestedBean.getClass() + "'");
+            throw new RuntimeException(
+                    "Unable to determined item class for collection '" + property + "' on bean of type '" + nestedBean
+                            .getClass() + "'");
         }
 
         Object value;

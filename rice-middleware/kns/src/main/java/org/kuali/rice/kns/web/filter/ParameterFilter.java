@@ -27,7 +27,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Filters parameters coming in through Struts requests to exclude those that could be damaging to the class loader in
@@ -54,12 +57,12 @@ public class ParameterFilter implements Filter {
 
     private static class FilteredServletRequest extends HttpServletRequestWrapper {
 
-        private final String excludeParams;
+        private final Pattern excludeParams;
 
         private FilteredServletRequest(ServletRequest request, String excludeParams) {
             super((HttpServletRequest) request);
 
-            this.excludeParams = excludeParams;
+            this.excludeParams = Pattern.compile(excludeParams);
         }
 
         @Override
@@ -70,12 +73,50 @@ public class ParameterFilter implements Filter {
             ArrayList<String> requestParameterNames = Collections.list(super.getParameterNames());
 
             for (String parameterName : requestParameterNames) {
-                if (!parameterName.matches(excludeParams)) {
+                if (!excludeParams.matcher(parameterName).matches()) {
                     finalParameterNames.add(parameterName);
                 }
             }
 
             return Collections.enumeration(finalParameterNames);
+        }
+
+        @Override
+        @SuppressWarnings("rawtypes")
+        public Map getParameterMap() {
+            Map requestParameterMap = super.getParameterMap();
+
+            HashMap<String, Object> finalParameterMap = new HashMap<String, Object>();
+
+            for (Object key : requestParameterMap.keySet()) {
+                if (key instanceof String) {
+                    String stringKey = (String) key;
+
+                    if (!excludeParams.matcher(stringKey).matches()) {
+                        finalParameterMap.put(stringKey, requestParameterMap.get(key));
+                    }
+                }
+            }
+
+            return finalParameterMap;
+        }
+
+        @Override
+        public String[] getParameterValues(String name) {
+            if (!excludeParams.matcher(name).matches()) {
+                return super.getParameterValues(name);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public String getParameter(String name) {
+            if (!excludeParams.matcher(name).matches()) {
+                return super.getParameter(name);
+            } else {
+                return null;
+            }
         }
     }
 

@@ -87,16 +87,31 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         String subAccountDuplicate = "A";
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         String errorMessage []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
         assertTextPresent(errorMessage);
 
         // Verify that adding a duplicate Sub Account and Sub Account Name is not allowed.
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account A");
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         String errorMessage2 []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
         assertTextPresent(errorMessage2);
+        
+        //Check for LookUp search
+        waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
+        waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
+        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
 
         // Add a new sub account
         String subAccount = "Z1" + RandomStringUtils.randomAlphabetic(2);
@@ -105,15 +120,13 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']");
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
 
         waitAndClickButtonByText("Save");
         waitForTextPresent("Document was successfully saved.");
-        waitAndClickButtonByText("submit");
-        waitAndClickButtonByText("reload");
-        assertTextPresent("FINAL");
-
+        waitAndClickButtonByText("Submit");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
@@ -157,7 +170,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"));
         waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","A");
         waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account A");
-        waitAndClickButtonByExactText("add");
+        waitAndClickButtonByExactText("Add");
         waitForTextPresent("Duplicate Sub Accounts (Travel Sub Account Number) are not allowed.");
     }
 
@@ -165,8 +178,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer to " + newUser + " "  + RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
-        waitAndClickButtonByText("blanket approve");
-        navigate();
+        waitAndClickButtonByText("Blanket Approve");
+        waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
         }
@@ -181,16 +194,13 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
         jGrowl("Verify required messages are displayed");
-    	waitAndClickButtonByText("submit");
+    	waitAndClickButtonByText("Submit");
     	String requiredMessage []={"Description: Required"};
     	assertTextPresent(requiredMessage);
     	waitAndClickButtonByText("Save");
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("blanket approve");
+    	waitAndClickButtonByText("Blanket Approve");
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("add");
-    	String addRequiredMessage [] ={"Travel Sub Account Number: Required","Sub Account Name: Required"};
-    	assertTextPresent(addRequiredMessage);
     	waitForElementPresentByXpath("//div[@data-label='Date Created']");
     }
 
@@ -229,5 +239,4 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	testSubAccountOperations();
         passed();
     }
-
 }

@@ -349,7 +349,7 @@ public class RichTable extends WidgetBase {
                         + ","
                         + mData(useServerPaging, colIndex)
                         + targets(colIndex)
-                        + "}, ");
+                        + "},");
                 colIndex++;
 
                 if (actionIndex == 2 && actionFieldVisible) {
@@ -425,7 +425,7 @@ public class RichTable extends WidgetBase {
                                     + ","
                                     + mData(useServerPaging, colIndex)
                                     + targets(colIndex)
-                                    + "}, ");
+                                    + "},");
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
                             // if specified as a column as sortable then add it
                             if (getSortableColumns().contains(field.getPropertyName())) {
@@ -437,7 +437,7 @@ public class RichTable extends WidgetBase {
                                         + ","
                                         + mData(useServerPaging, colIndex)
                                         + targets(colIndex)
-                                        + "}, ");
+                                        + "},");
                             }
                         } else { // sortable columns not defined
                             String options = getDataFieldColumnOptions(colIndex, collectionGroup, field);
@@ -453,7 +453,7 @@ public class RichTable extends WidgetBase {
                                     + ","
                                     + mData(useServerPaging, colIndex)
                                     + targets(colIndex)
-                                    + "}, ");
+                                    + "},");
                         } else {
                             String options = constructTableColumnOptions(colIndex, true, useServerPaging, String.class,
                                     UifConstants.TableToolsValues.DOM_TEXT);

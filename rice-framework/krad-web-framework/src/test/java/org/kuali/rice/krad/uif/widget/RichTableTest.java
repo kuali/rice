@@ -15,19 +15,7 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,7 +41,15 @@ import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * test the RichTable widget
@@ -61,18 +57,15 @@ import com.google.common.collect.Lists;
 
 public class RichTableTest {
 
-    public static final String S_TYPE = "{\"bSortable\" : false, \"sType\" : \"numeric\", \"aTargets\": [0]}";
-    public static final String S_SORT_DATA_TARGETS_1 = "{\"sType\" : \"string\", \"sSortDataType\" : \"dom-text\", \"aTargets\": [1]}";
+    public static final String S_TYPE = "{\"bSortable\": false,\"sType\": \"numeric\",\"sSortDataType\": \"dom-text\",\"aTargets\": [0]}";
+    public static final String S_SORT_DATA_TARGETS_1 = "{\"sType\": \"string\",\"sSortDataType\": \"dom-text\",\"aTargets\": [1]}";
     public static final String S_SORT_DATA_TARGETS_2 = S_SORT_DATA_TARGETS_1.replace("1", "2");
     public static final String S_SORT_DATA_TARGETS_3 = S_SORT_DATA_TARGETS_1.replace("1", "3");
 
-    public static final String EXPECTED = S_TYPE + ", " +
-            S_SORT_DATA_TARGETS_1 + " , " +
-            S_SORT_DATA_TARGETS_2 + " , " +
-            S_SORT_DATA_TARGETS_3;
+    public static final String EXPECTED = S_TYPE + "," + S_SORT_DATA_TARGETS_1 + "," + S_SORT_DATA_TARGETS_2 + "," + S_SORT_DATA_TARGETS_3;
 
-    public static final String B_VISIBLE_FALSE_TARGETS_1 = "{bVisible: false, \"aTargets\": [1]}";
-    public static final String B_SORTABLE_FALSE_TARGETS_3 = "{'bSortable': false, \"aTargets\": [3]}";
+    public static final String B_VISIBLE_FALSE_TARGETS_1 = "{\"bVisible\": false,\"aTargets\": [1]}";
+    public static final String B_SORTABLE_FALSE_TARGETS_3 = "{\"bSortable\": false,\"aTargets\": [3]}";
 
     private RichTable richTable;
     private CollectionGroup group;
@@ -137,7 +130,7 @@ public class RichTableTest {
      * test that without aoColumns being set explicitly, the default behaviour continues
      */
     public void testComponentOptionsDefault() throws Exception {
-        assertRichTableComponentOptions(null, "[" + EXPECTED + " ]", UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
+        assertRichTableComponentOptions(null, "[" + EXPECTED + "]", UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
     @Test
@@ -146,7 +139,7 @@ public class RichTableTest {
      */
     public void testComponentOptionsAoColumnsJSOptions() throws Exception {
         String innerColValues = "{bVisible: false}, null, null";
-        assertRichTableComponentOptions("[" + innerColValues + "]", "[" + EXPECTED + " ," + innerColValues + "]",
+        assertRichTableComponentOptions("[" + innerColValues + "]", "[" + EXPECTED + "," + innerColValues + "]",
                 UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
 
@@ -161,9 +154,9 @@ public class RichTableTest {
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(hiddenColumns);
-        String expected = "[" + S_TYPE + ", " +
-                B_VISIBLE_FALSE_TARGETS_1 + ", " +
-                S_SORT_DATA_TARGETS_2 + ", " +
+        String expected = "[" + S_TYPE + "," +
+                B_VISIBLE_FALSE_TARGETS_1 + "," +
+                S_SORT_DATA_TARGETS_2 + "," +
                 B_SORTABLE_FALSE_TARGETS_3 + "]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
@@ -188,8 +181,7 @@ public class RichTableTest {
         ((TableLayoutManager) group.getLayoutManager()).setSortableColumns(lmSortableColumns);
         ((TableLayoutManager) group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
         // Watch out for spaces
-        String expected = "[" + EXPECTED.replace(S_SORT_DATA_TARGETS_1 + " ,", B_VISIBLE_FALSE_TARGETS_1 + ",") + "]";
-        expected = expected.replace(S_SORT_DATA_TARGETS_2 + " ,", S_SORT_DATA_TARGETS_2 + ",");
+        String expected = "[" + EXPECTED.replace(S_SORT_DATA_TARGETS_1 + ",", B_VISIBLE_FALSE_TARGETS_1 + ",") + "]";
         expected = expected.replace(S_SORT_DATA_TARGETS_3, B_SORTABLE_FALSE_TARGETS_3);
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
     }
@@ -202,7 +194,7 @@ public class RichTableTest {
         when(mockView.isDefaultSortAscending()).thenReturn(false);
         when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("employeeId", "contactEmail"));
 
-        String expected = "[[1, 'desc'], [3, 'desc']]";
+        String expected = "[[1,'desc'],[3,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -214,7 +206,7 @@ public class RichTableTest {
         when(mockView.isDefaultSortAscending()).thenReturn(false);
         when(mockView.getDefaultSortAttributeNames()).thenReturn(Lists.newArrayList("contactEmail", "employeeId"));
 
-        String expected = "[[3, 'desc'], [1, 'desc']]";
+        String expected = "[[3,'desc'],[1,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -229,7 +221,7 @@ public class RichTableTest {
 
         ((TableLayoutManager) group.getLayoutManager()).setRenderSequenceField(false);
 
-        String expected = "[[0, 'desc'], [2, 'desc']]";
+        String expected = "[[0,'desc'],[2,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -246,7 +238,7 @@ public class RichTableTest {
         rowDetailsGroup.setItems(Lists.newArrayList(new InputFieldBase()));
         ((TableLayoutManager) group.getLayoutManager()).setRowDetailsGroup(rowDetailsGroup);
 
-        String expected = "[[2, 'desc'], [4, 'desc']]";
+        String expected = "[[2,'desc'],[4,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -262,7 +254,7 @@ public class RichTableTest {
         group.setRenderLineActions(true);
         ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("LEFT");
 
-        String expected = "[[2, 'desc'], [4, 'desc']]";
+        String expected = "[[2,'desc'],[4,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -278,7 +270,7 @@ public class RichTableTest {
         group.setRenderLineActions(true);
         ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("RIGHT");
 
-        String expected = "[[1, 'desc'], [3, 'desc']]";
+        String expected = "[[1,'desc'],[3,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -298,7 +290,7 @@ public class RichTableTest {
         group.setRenderLineActions(true);
         ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("LEFT");
 
-        String expected = "[[3, 'desc'], [5, 'desc']]";
+        String expected = "[[3,'desc'],[5,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
@@ -314,18 +306,19 @@ public class RichTableTest {
         group.setRenderLineActions(true);
         ((TableLayoutManager) group.getLayoutManager()).setActionColumnPlacement("4");
 
-        String expected = "[[1, 'desc'], [4, 'desc']]";
+        String expected = "[[1,'desc'],[4,'desc']]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AASORTING);
     }
 
     /**
      * a common method to test rich table options
-     * 
+     *
      * @param optionsOnGroup - a string in JSON format of the options set on the collection group
      * @param optionsOnRichTable - a string in JSON format of the options set on the rich table
      * @param optionKey - a string with the rich table option key being tested
      */
-    private void assertRichTableComponentOptions(String optionsOnGroup, final String optionsOnRichTable, final String optionKey) {
+    private void assertRichTableComponentOptions(String optionsOnGroup, final String optionsOnRichTable,
+            final String optionKey) {
 
         Map<String, String> templateOptions = richTable.getTemplateOptions();
         if (templateOptions == null) {
@@ -336,13 +329,14 @@ public class RichTableTest {
 
         templateOptions.put(optionKey, optionsOnGroup);
         richTable.setTemplateOptions(templateOptions);
-        
-        ViewLifecycle.encapsulateLifecycle(mockView, null, null, new Runnable(){
+
+        ViewLifecycle.encapsulateLifecycle(mockView, null, null, new Runnable() {
             @Override
             public void run() {
-                RichTable mutableRichTable = richTable.<RichTable> copy();
+                RichTable mutableRichTable = richTable.<RichTable>copy();
                 mutableRichTable.performFinalize(new UifFormBase(), (Group) CopyUtils.copy(group));
                 assertEquals(optionsOnRichTable, mutableRichTable.getTemplateOptions().get(optionKey));
-            }});
+            }
+        });
     }
 }

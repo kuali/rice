@@ -75,15 +75,15 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(CLEAR_VALUES);
          
         //Search by Travel Account Type Code
-        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='CAT']");
+        testSearchAndSelect("CAT");
         waitAndClickButtonByText(SEARCH);
         waitForTextPresent("CAT - Clearing");
         waitAndClickButtonByText(CLEAR_VALUES);
-        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='EAT']");
+        testSearchAndSelect("EAT");
         waitAndClickButtonByText(SEARCH);
         waitForTextPresent("EAT - Expense");
         waitAndClickButtonByText(CLEAR_VALUES);
-        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='IAT']");
+        testSearchAndSelect("IAT");
         waitAndClickButtonByText(SEARCH);
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
@@ -192,6 +192,21 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
 //        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD); removed in 2.4
 //        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked), removed in 2.4
 //        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name, removed in 2.4
+    }
+    
+    private void testSearchAndSelect(String selectorText) throws Exception {
+    	waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
+    	gotoLightBox();
+    	waitAndClickButtonByText("Search");
+    	if(selectorText.equalsIgnoreCase("CAT")){
+    		waitAndClickByXpath("//table/tbody/tr[1]/td/div/fieldset/div/a");
+    	}
+    	if(selectorText.equalsIgnoreCase("EAT")){
+    		waitAndClickByXpath("//table/tbody/tr[2]/td/div/fieldset/div/a");
+    	}
+    	if(selectorText.equalsIgnoreCase("IAT")){
+    		waitAndClickByXpath("//table/tbody/tr[3]/td/div/fieldset/div/a");
+    	}
     }
 
     @Test

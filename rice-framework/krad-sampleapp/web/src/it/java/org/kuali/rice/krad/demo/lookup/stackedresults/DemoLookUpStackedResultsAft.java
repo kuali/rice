@@ -65,7 +65,7 @@ public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
-        assertTextPresent(new String[]{"Travel Account Number is a required field."});
+        assertTextPresent(new String[]{"Travel Account Number: Required"});
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndTypeByName(LOOKUP_CRITERIA_DATE, "234");
         waitAndClickButtonByText(SEARCH);

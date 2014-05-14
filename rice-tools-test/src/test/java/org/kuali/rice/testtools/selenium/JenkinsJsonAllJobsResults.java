@@ -25,6 +25,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
+ * Retrieve All available results for Jenkins Job(s) as JSON.
+ * @See JenkinsJsonJobResultsBase for required and optional JVM args.
+ *
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {

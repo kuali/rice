@@ -126,7 +126,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText("Save");
         waitForTextPresent("Document was successfully saved.");
         waitAndClickButtonByText("Submit");
-        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
+        waitAndClickConfirmationOk();
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

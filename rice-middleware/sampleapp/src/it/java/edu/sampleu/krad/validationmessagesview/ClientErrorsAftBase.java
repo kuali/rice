@@ -66,39 +66,13 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
 
         fireMouseOverEventByName("field1");
 
-        for (int second = 0;; second++) {
-            if (second >= 10) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
-            }
-
-            try {
-                if (isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
-                    break;
-                }
-            } catch (Exception e) {}
-
-            Thread.sleep(1000);
-        }
-
-        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitIsVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']");
 
         waitAndTypeByName("field1", "a");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
 
-        for (int second = 0;; second++) {
-            if (second >= 10) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
-            }
-
-            try {
-                if (!isVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
-                    break;
-                }
-            } catch (Exception e) {}
-
-            Thread.sleep(1000);
-        }
+        waitIsVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']");
 
         assertFalse(isVisibleByXpath(
                 "//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
@@ -107,7 +81,7 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         Thread.sleep(500);
         assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
         assertAttributeClassRegexMatches("field1", REGEX_VALID);
-        assertTrue(isTextPresent("Required"));
+        assertTrue("jquerybubblepopup Required not present", isTextPresent("Required"));
 
         fireEvent("field2", "focus");
         fireEvent("field2", "blur");

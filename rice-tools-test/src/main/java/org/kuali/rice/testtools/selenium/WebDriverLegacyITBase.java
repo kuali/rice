@@ -3321,7 +3321,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
         for (int second = 0;; second++) {
             if (second >= waitSeconds)
-                jiraAwareFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE + " for jquerybubblepopup");
             try {
                 if (isVisible(".jquerybubblepopup-innerHtml"))
                     break;
@@ -3858,6 +3858,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickByLinkText(String text, String message, JiraAwareFailable failable) throws InterruptedException {
         jGrowl("Click " + text + " link.");
         jiraAwareWaitAndClick(By.linkText(text), message, failable);
+    }
+
+    protected void waitAndClickConfirmationOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
     }
 
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {

@@ -26,9 +26,36 @@ import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * See constants for required and option JVM args.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobResultsBase {
+
+    /**
+     * REQUIRED -Dcas.password
+     */
+    public static final String CAS_PASSWORD = "cas.password";
+
+    /**
+     * REQUIRED -Dcas.username
+     */
+    public static final String CAS_USERNAME = "cas.username";
+
+    /**
+     * -Djenkins.base.url default value of http://ci.rice.kuali.org
+     */
+    public static final String JENKINS_BASE_URL = "jenkins.base.url";
+
+    /**
+     * REQUIRED -Djenkins.jobs common delimited list of jobs to retrieve json results for
+     */
+    public static final String JENKINS_JOBS = "jenkins.jobs";
+
+    /**
+     * REQUIRED -Djson.output.dir
+     */
+    public static final String JSON_OUTPUT_DIR = "json.output.dir";
 
     WebDriver driver;
     boolean passed = false;
@@ -37,9 +64,9 @@ public class JenkinsJsonJobResultsBase {
     String[] jobs;
 
     public void setUp() throws MalformedURLException, InterruptedException {
-        jenkinsBase = System.getProperty("jenkins.base.url", "http://ci.rice.kuali.org");
-        outputDirectory = System.getProperty("json.output.dir");
-        jobs = System.getProperty("jenkins.jobs", "rice-2.4-smoke-test").split("[,\\s]");
+        jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.rice.kuali.org");
+        outputDirectory = System.getProperty(JSON_OUTPUT_DIR);
+        jobs = System.getProperty(JENKINS_JOBS).split("[,\\s]");
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         FirefoxProfile profile = new FirefoxProfile();
@@ -53,12 +80,13 @@ public class JenkinsJsonJobResultsBase {
         // CAS
         WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("username"),
                 this.getClass().toString());
-        driver.findElement(By.id("username")).sendKeys(System.getProperty("cas.username"));
-        driver.findElement(By.id("password")).sendKeys(System.getProperty("cas.password"));
+        driver.findElement(By.id("username")).sendKeys(System.getProperty(CAS_USERNAME));
+        driver.findElement(By.id("password")).sendKeys(System.getProperty(CAS_PASSWORD));
         driver.findElement(By.name("submit")).click();
         Thread.sleep(1000);
         if (driver.getPageSource().contains("The credentials you provided cannot be determined to be authentic.")) {
-            System.out.println("CAS Login Error");
+            System.out.println("CAS Login Error check you have correctly set -D" + CAS_USERNAME +
+                    " and -D" + CAS_PASSWORD);
             System.exit(1);
         }
 

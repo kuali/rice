@@ -126,7 +126,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText("Search");
         waitAndClickLinkContainingText("return value");
         waitAndClickButtonByText("Submit");
-        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
+        waitAndClickConfirmationOk();
         waitForTextPresent("Document was successfully submitted.");
     }
 

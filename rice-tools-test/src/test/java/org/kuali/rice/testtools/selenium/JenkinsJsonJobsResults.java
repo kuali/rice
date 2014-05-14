@@ -31,6 +31,9 @@ import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Retrieve Last Completed Build Jenkins Job(s) Results as JSON.
+ * @See JenkinsJsonJobResultsBase for required and optional JVM args.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {

@@ -73,7 +73,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     protected void testPeopleFlowBlanketApprove() throws Exception {
         String docId = peopleFlowCreateNew();
 
-        waitAndClickButtonByText("blanket approve");
+        waitAndClickButtonByText("Blanket Approve");
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");

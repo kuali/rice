@@ -86,7 +86,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
 
         // validate rule exists
         waitForTextPresent(ruleName);
-        waitAndClickLinkContainingText("Cancel");
+        waitAndClickButtonByText("Cancel");
         passed();
     }
 

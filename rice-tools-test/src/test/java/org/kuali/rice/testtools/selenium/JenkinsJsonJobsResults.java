@@ -70,7 +70,8 @@ public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
                     outputFile = outputDirectory + File.separatorChar + outputFile;
                 }
 
-                json = json.replaceAll("}],", "}],\n");
+                json = json.replace("},{", "},\n{");
+                json = json.replaceAll("}],", "}],\n\n\n");
                 FileUtils.writeStringToFile(new File(outputFile), json);
 
             } catch (Exception e) {

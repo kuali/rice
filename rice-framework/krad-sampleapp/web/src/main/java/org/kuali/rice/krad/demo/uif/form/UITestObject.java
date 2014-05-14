@@ -43,13 +43,18 @@ public class UITestObject implements Serializable {
     private String field6;
     private String field7;
     private String field8;
+
+    private static int count = 0;
+    private Integer int1;
+
     private boolean bfield;
+
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
     private Date date1;
     private String date1Str;
 
-    static int count2 = 0;
+    static int skipCount2 = 0;
     private Date date2;
 
     private MultipartFile fileUpload;
@@ -69,6 +74,8 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
 
+        int1 = ++count;
+
         // populate date1 and date1Str
         try {
             Calendar cal = Calendar.getInstance();
@@ -84,9 +91,9 @@ public class UITestObject implements Serializable {
         }
 
         // populate date2
-        count2++;
+        skipCount2++;
         // every fifth date leave blank
-        if (count2 % 5 != 0 && date2 == null) {
+        if (skipCount2 % 5 != 0 && date2 == null) {
             try {
                 Calendar cal = Calendar.getInstance();
                 cal.set(2010, 1, 1);
@@ -327,6 +334,14 @@ public class UITestObject implements Serializable {
 
     public String getInputField4() {
         return field4;
+    }
+
+    public Integer getInt1() {
+        return int1;
+    }
+
+    public void setInt1(Integer int1) {
+        this.int1 = int1;
     }
 
     public Date getDate1() {

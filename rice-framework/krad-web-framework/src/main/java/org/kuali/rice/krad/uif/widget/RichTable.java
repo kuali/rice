@@ -43,7 +43,6 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.InputFieldBase;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -61,7 +60,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -280,7 +278,7 @@ public class RichTable extends WidgetBase {
         checkMutable(false);
 
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
-        final boolean isUseServerPaging = collectionGroup.isUseServerPaging();
+        final boolean useServerPaging = collectionGroup.isUseServerPaging();
 
         if (templateOptions.isEmpty()) {
             setTemplateOptions(new HashMap<String, String>());
@@ -302,66 +300,70 @@ public class RichTable extends WidgetBase {
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
 
-            StringBuilder tableToolsColumnOptions = new StringBuilder("[");
+            StringBuilder tableColumnOptions = new StringBuilder("[");
 
-            int columnIndex = 0;
+            int colIndex = 0;
             int actionIndex = UifConstants.TableLayoutValues.ACTIONS_COLUMN_RIGHT_INDEX;
-            boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
+            boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(
+                    collectionGroup.getReadOnly());
 
             if (layoutManager instanceof TableLayoutManager) {
                 actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
             }
 
             if (actionIndex == UifConstants.TableLayoutValues.ACTIONS_COLUMN_LEFT_INDEX && actionFieldVisible) {
-                String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                tableToolsColumnOptions.append(actionColOptions + " , ");
-                columnIndex++;
+                String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                tableColumnOptions.append(options + ",");
+                colIndex++;
             }
 
+            // handle sequence field
             if (layoutManager instanceof TableLayoutManager && ((TableLayoutManager) layoutManager)
                     .isRenderSequenceField()) {
+                Class<?> dataTypeClass = Number.class;
 
-                //add mData handling if using a json data source
-                String mDataOption = "";
-                if (collectionGroup.isUseServerPaging() || this.forceLocalJsonData) {
-                    mDataOption = "\""
-                            + UifConstants.TableToolsKeys.MDATA
-                            +
-                            "\" : function(row,type,newVal){ return _handleColData(row,type,'c"
-                            + columnIndex
-                            + "',newVal);}, ";
+                if (((TableLayoutManager) layoutManager).getSequenceFieldPrototype() instanceof DataField) {
+                    DataField dataField = (DataField) ((TableLayoutManager) layoutManager).getSequenceFieldPrototype();
+                    dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
+                            dataField.getPropertyName());
+                    // check to see if field has custom sort type
+                    if (dataField.getSortAs() != null && dataField.getSortAs().length() > 0) {
+                        if (dataField.getSortAs().equals(UifConstants.TableToolsValues.DATE)) {
+                            dataTypeClass = java.sql.Date.class;
+                        } else if (dataField.getSortAs().equals(UifConstants.TableToolsValues.NUMERIC)) {
+                            dataTypeClass = Number.class;
+                        } else if (dataField.getSortAs().equals(UifConstants.TableToolsValues.STRING)) {
+                            dataTypeClass = String.class;
+                        }
+                    }
                 }
 
-                tableToolsColumnOptions.append("{\""
-                        + UifConstants.TableToolsKeys.SORTABLE
-                        + "\" : "
-                        + false
-                        // auto sequence column is never sortable
-                        + ", \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + UifConstants.TableToolsValues.NUMERIC
-                        + "\", "
-                        + mDataOption
-                        + "\""
-                        + UifConstants.TableToolsKeys.TARGETS
-                        + "\": ["
-                        + columnIndex
-                        + "]}, ");
-                columnIndex++;
+                // don't allow sorting of sequence field - why?
+                // auto sequence column is never sortable
+                tableColumnOptions.append("{"
+                        + sortable(false)
+                        + ","
+                        + sortType(getSortType(dataTypeClass))
+                        + ","
+                        + sortDataType(UifConstants.TableToolsValues.DOM_TEXT)
+                        + ","
+                        + mData(useServerPaging, colIndex)
+                        + targets(colIndex)
+                        + "}, ");
+                colIndex++;
+
                 if (actionIndex == 2 && actionFieldVisible) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null,
-                            null);
-                    tableToolsColumnOptions.append(actionColOptions + " , ");
-                    columnIndex++;
+                    String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                    tableColumnOptions.append(options + ",");
+                    colIndex++;
                 }
             }
 
             // skip select field if enabled
             if (collectionGroup.isIncludeLineSelectionField()) {
-                String colOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                tableToolsColumnOptions.append(colOptions + " , ");
-                columnIndex++;
+                String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                tableColumnOptions.append(options + ",");
+                colIndex++;
             }
 
             // if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
@@ -370,53 +372,42 @@ public class RichTable extends WidgetBase {
                 String jsArray = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
-                tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
+                tableColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ",");
 
-                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                    tableToolsColumnOptions.append(actionColOptions);
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= colIndex)) {
+                    String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                    tableColumnOptions.append(options);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
+                    tableColumnOptions = new StringBuilder(StringUtils.removeEnd(tableColumnOptions.toString(), ","));
                 }
 
-                tableToolsColumnOptions.append("]");
-                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
+                tableColumnOptions.append("]");
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMNS, tableColumnOptions.toString());
             } else if (!StringUtils.isEmpty(templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS))
                     && forceAoColumnDefsOverride) {
                 String jsArray = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS);
                 int startBrace = StringUtils.indexOf(jsArray, "[");
                 int endBrace = StringUtils.lastIndexOf(jsArray, "]");
-                tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ", ");
+                tableColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + ",");
 
-                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                    tableToolsColumnOptions.append(actionColOptions);
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= colIndex)) {
+                    String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                    tableColumnOptions.append(options);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
+                    tableColumnOptions = new StringBuilder(StringUtils.removeEnd(tableColumnOptions.toString(), ","));
                 }
 
-                tableToolsColumnOptions.append("]");
-                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, tableToolsColumnOptions.toString());
+                tableColumnOptions.append("]");
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, tableColumnOptions.toString());
             } else if (layoutManager instanceof TableLayoutManager) {
                 List<Field> rowFields = ((TableLayoutManager) layoutManager).getFirstRowFields();
 
                 // build column defs from the the first row of the table
                 for (Component component : rowFields) {
-                    if (actionFieldVisible && columnIndex + 1 == actionIndex) {
-                        String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                        tableToolsColumnOptions.append(actionColOptions + " , ");
-                        columnIndex++;
-                    }
-
-                    //add mData handling if using a json data source
-                    String mDataOption = "";
-                    if (collectionGroup.isUseServerPaging() || this.forceLocalJsonData) {
-                        mDataOption = "\""
-                                + UifConstants.TableToolsKeys.MDATA
-                                +
-                                "\" : function(row,type,newVal){ return _handleColData(row,type,'c"
-                                + columnIndex
-                                + "',newVal);}, ";
+                    if (actionFieldVisible && colIndex + 1 == actionIndex) {
+                        String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                        tableColumnOptions.append(options + ",");
+                        colIndex++;
                     }
 
                     // for FieldGroup, get the first field from that group
@@ -429,95 +420,73 @@ public class RichTable extends WidgetBase {
 
                         // if a field is marked as invisible in hiddenColumns, append options and skip sorting
                         if (getHiddenColumns() != null && getHiddenColumns().contains(field.getPropertyName())) {
-                            tableToolsColumnOptions.append("{"
-                                    + UifConstants.TableToolsKeys.VISIBLE
-                                    + ": "
-                                    + UifConstants.TableToolsValues.FALSE
-                                    + ", "
-                                    + mDataOption
-                                    + "\""
-                                    + UifConstants.TableToolsKeys.TARGETS
-                                    + "\": ["
-                                    + columnIndex
-                                    + "]"
+                            tableColumnOptions.append("{"
+                                    + visible(false)
+                                    + ","
+                                    + mData(useServerPaging, colIndex)
+                                    + targets(colIndex)
                                     + "}, ");
-                            // if sortableColumns is present and a field is marked as sortable or unspecified             if (!isDisableTableSort()) {
                         } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
+                            // if specified as a column as sortable then add it
                             if (getSortableColumns().contains(field.getPropertyName())) {
-                                tableToolsColumnOptions.append(getDataFieldColumnOptions(columnIndex, collectionGroup,
-                                        field) + ", ");
-                            } else {
-                                tableToolsColumnOptions.append("{'"
-                                        + UifConstants.TableToolsKeys.SORTABLE
-                                        + "': "
-                                        + UifConstants.TableToolsValues.FALSE
-                                        + ", "
-                                        + mDataOption
-                                        + "\""
-                                        + UifConstants.TableToolsKeys.TARGETS
-                                        + "\": ["
-                                        + columnIndex
-                                        + "]"
+                                tableColumnOptions.append(getDataFieldColumnOptions(colIndex, collectionGroup, field)
+                                        + ",");
+                            } else { // else designate it as not sortable
+                                tableColumnOptions.append("{"
+                                        + sortable(false)
+                                        + ","
+                                        + mData(useServerPaging, colIndex)
+                                        + targets(colIndex)
                                         + "}, ");
                             }
-                        } else {// sortable columns not defined
-                            String colOptions = getDataFieldColumnOptions(columnIndex, collectionGroup, field);
-                            tableToolsColumnOptions.append(colOptions + " , ");
+                        } else { // sortable columns not defined
+                            String options = getDataFieldColumnOptions(colIndex, collectionGroup, field);
+                            tableColumnOptions.append(options + ",");
                         }
-                        columnIndex++;
+                        colIndex++;
                     } else if ((component instanceof MessageField)
                             && component.getDataAttributes() != null
-                            && UifConstants.RoleTypes.ROW_GROUPING.equals(component.getDataAttributes().get(UifConstants.DataAttributes.ROLE))) {
-                        //Grouping column is never shown, so skip
-                        tableToolsColumnOptions.append("{"
-                                + UifConstants.TableToolsKeys.VISIBLE
-                                + ": "
-                                + UifConstants.TableToolsValues.FALSE
-                                + ", "
-                                + mDataOption
-                                + "\""
-                                + UifConstants.TableToolsKeys.TARGETS
-                                + "\": ["
-                                + columnIndex
-                                + "]"
+                            && UifConstants.RoleTypes.ROW_GROUPING.equals(component.getDataAttributes().get(
+                            UifConstants.DataAttributes.ROLE))) {
+                        // Grouping column is never shown, so skip
+                        tableColumnOptions.append("{"
+                                + visible(false)
+                                + ","
+                                + mData(useServerPaging, colIndex)
+                                + targets(colIndex)
                                 + "}, ");
-                        columnIndex++;
+                        colIndex++;
                     } else if (component instanceof LinkField) {
+                        LinkField linkField = (LinkField) component;
+
+                        Class<?> dataTypeClass = String.class;
                         // check to see if field has custom sort type
-                        if (((LinkField) component).getSortAs() != null && ((LinkField) component).getSortAs().length() > 0) {
-                            if (((LinkField) component).getSortAs().equals(UifConstants.TableToolsValues.DATE)) {
-                                String colOptions = constructTableColumnOptions(columnIndex, true, isUseServerPaging,
-                                        java.sql.Date.class, UifConstants.TableToolsValues.DOM_TEXT);
-                                tableToolsColumnOptions.append(colOptions + " , ");
-                            } else if (((LinkField) component).getSortAs().equals(
-                                    UifConstants.TableToolsValues.NUMERIC)) {
-                                String colOptions = constructTableColumnOptions(columnIndex, true, isUseServerPaging,
-                                        Number.class, UifConstants.TableToolsValues.DOM_TEXT);
-                                tableToolsColumnOptions.append(colOptions + " , ");
-                            } else if (((LinkField) component).getSortAs().equals(
-                                    UifConstants.TableToolsValues.STRING)) {
-                                String colOptions = constructTableColumnOptions(columnIndex, true, isUseServerPaging,
-                                        String.class, UifConstants.TableToolsValues.DOM_TEXT);
-                                tableToolsColumnOptions.append(colOptions + " , ");
+                        if (linkField.getSortAs() != null && linkField.getSortAs().length() > 0) {
+                            if (linkField.getSortAs().equals(UifConstants.TableToolsValues.DATE)) {
+                                dataTypeClass = java.sql.Date.class;
+                            } else if (linkField.getSortAs().equals(UifConstants.TableToolsValues.NUMERIC)) {
+                                dataTypeClass = Number.class;
+                            } else if (linkField.getSortAs().equals(UifConstants.TableToolsValues.STRING)) {
+                                dataTypeClass = String.class;
                             }
-                        } else {
-                            String colOptions = constructTableColumnOptions(columnIndex, true, isUseServerPaging,
-                                    String.class, UifConstants.TableToolsValues.DOM_TEXT);
-                            tableToolsColumnOptions.append(colOptions + " , ");
                         }
-                        columnIndex++;
+
+                        String options = constructTableColumnOptions(colIndex, true, useServerPaging, dataTypeClass,
+                                UifConstants.TableToolsValues.DOM_TEXT);
+                        tableColumnOptions.append(options + ",");
+                        colIndex++;
                     } else {
-                        String colOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                        tableToolsColumnOptions.append(colOptions + " , ");
-                        columnIndex++;
+                        String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                        tableColumnOptions.append(options + ",");
+                        colIndex++;
                     }
                 }
 
-                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= columnIndex)) {
-                    String actionColOptions = constructTableColumnOptions(columnIndex, false, isUseServerPaging, null, null);
-                    tableToolsColumnOptions.append(actionColOptions);
+                if (actionFieldVisible && (actionIndex == -1 || actionIndex >= colIndex)) {
+                    String options = constructTableColumnOptions(colIndex, false, useServerPaging, null, null);
+                    tableColumnOptions.append(options);
                 } else {
-                    tableToolsColumnOptions = new StringBuilder(StringUtils.removeEnd(tableToolsColumnOptions.toString(), ", "));
+                    tableColumnOptions = new StringBuilder(StringUtils.removeEnd(tableColumnOptions.toString(), ","));
                 }
 
                 // merge the aoColumnDefs passed in
@@ -525,11 +494,11 @@ public class RichTable extends WidgetBase {
                     String origAoOptions = templateOptions.get(UifConstants.TableToolsKeys.AO_COLUMN_DEFS).trim();
                     origAoOptions = StringUtils.removeStart(origAoOptions, "[");
                     origAoOptions = StringUtils.removeEnd(origAoOptions, "]");
-                    tableToolsColumnOptions.append("," + origAoOptions);
+                    tableColumnOptions.append("," + origAoOptions);
                 }
 
-                tableToolsColumnOptions.append("]");
-                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, tableToolsColumnOptions.toString());
+                tableColumnOptions.append("]");
+                templateOptions.put(UifConstants.TableToolsKeys.AO_COLUMN_DEFS, tableColumnOptions.toString());
             }
         }
     }
@@ -550,7 +519,8 @@ public class RichTable extends WidgetBase {
                 List<String> firstRowPropertyNames = getFirstRowPropertyNames(tableLayoutManager.getFirstRowFields());
                 List<String> defaultSortAttributeNames = lookupView.getDefaultSortAttributeNames();
                 String sortDirection = lookupView.isDefaultSortAscending() ? "'asc'" : "'desc'";
-                boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
+                boolean actionFieldVisible = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(
+                        collectionGroup.getReadOnly());
                 int actionIndex = ((TableLayoutManager) layoutManager).getActionColumnIndex();
                 int columnIndexPrefix = 0;
 
@@ -569,13 +539,13 @@ public class RichTable extends WidgetBase {
                     int index = firstRowPropertyNames.indexOf(defaultSortAttributeName);
                     if (index >= 0) {
                         if (tableToolsSortOptions.length() > 1) {
-                            tableToolsSortOptions.append(", ");
+                            tableToolsSortOptions.append(",");
                         }
                         int columnIndex = columnIndexPrefix + index;
                         if (actionFieldVisible && actionIndex != -1 && actionIndex <= columnIndex + 1) {
                             columnIndex++;
                         }
-                        tableToolsSortOptions.append("[" + columnIndex + ", " + sortDirection + "]");
+                        tableToolsSortOptions.append("[" + columnIndex + "," + sortDirection + "]");
                     }
                 }
 
@@ -611,23 +581,23 @@ public class RichTable extends WidgetBase {
      * @return options as valid for datatable
      */
     protected String getDataFieldColumnOptions(int target, CollectionGroup collectionGroup, DataField field) {
-        String sortType = null;
+        String sortDataType = null;
 
         if (!Boolean.TRUE.equals(collectionGroup.getReadOnly())
                 && (field instanceof InputField)
                 && ((InputField) field).getControl() != null) {
             Control control = ((InputField) field).getControl();
             if (control instanceof SelectControl) {
-                sortType = UifConstants.TableToolsValues.DOM_SELECT;
+                sortDataType = UifConstants.TableToolsValues.DOM_SELECT;
             } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
-                sortType = UifConstants.TableToolsValues.DOM_CHECK;
+                sortDataType = UifConstants.TableToolsValues.DOM_CHECK;
             } else if (control instanceof RadioGroupControl) {
-                sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                sortDataType = UifConstants.TableToolsValues.DOM_RADIO;
             } else {
-                sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                sortDataType = UifConstants.TableToolsValues.DOM_TEXT;
             }
         } else {
-            sortType = UifConstants.TableToolsValues.DOM_TEXT;
+            sortDataType = UifConstants.TableToolsValues.DOM_TEXT;
         }
 
         Class<?> dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
@@ -649,7 +619,7 @@ public class RichTable extends WidgetBase {
         }
 
         return constructTableColumnOptions(target, isSortable, collectionGroup.isUseServerPaging(), dataTypeClass,
-                sortType);
+                sortDataType);
     }
 
     /**
@@ -667,56 +637,80 @@ public class RichTable extends WidgetBase {
      */
     public String constructTableColumnOptions(int target, boolean isSortable, boolean isUseServerPaging,
             Class<?> dataTypeClass, String sortDataType) {
-        String colOptions = "null";
+        String options = "null";
 
-        String sortType = "";
-        if (!isSortable || dataTypeClass == null || sortType == null) {
-            colOptions = "\"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false, \"sType\" : \"string\"";
+        if (!isSortable || dataTypeClass == null) {
+            options = sortable(false) + "," + sortType(UifConstants.TableToolsValues.STRING);
         } else {
-            if (ClassUtils.isAssignable(dataTypeClass, KualiPercent.class)) {
-                sortType = UifConstants.TableToolsValues.PERCENT;
-            } else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(
-                    dataTypeClass, KualiDecimal.class)) {
-                sortType = UifConstants.TableToolsValues.CURRENCY;
-            } else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
-                sortType = "date";
-            } else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(
-                    dataTypeClass, java.util.Date.class)) {
-                sortType = UifConstants.TableToolsValues.DATE;
-            } else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
-                sortType = UifConstants.TableToolsValues.NUMERIC;
-            } else {
-                sortType = UifConstants.TableToolsValues.STRING;
-            }
-
-            colOptions = "\"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
+            options = sortType(getSortType(dataTypeClass));
 
             if (!isUseServerPaging && !this.forceLocalJsonData) {
-                colOptions += ", \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortDataType + "\"";
+                options += "," + sortDataType(sortDataType);
             }
         }
 
         if (target < cellCssClasses.size() && target >= 0) {
-            colOptions += ", \""
-                    + UifConstants.TableToolsKeys.CELL_CLASS
-                    + "\" : \""
-                    + cellCssClasses.get(target)
-                    + "\"";
+            options += ", \"" + UifConstants.TableToolsKeys.CELL_CLASS + "\" : \"" + cellCssClasses.get(target) + "\"";
         }
 
         // only use the mDataProp when using json data (only relevant for this table type)
+        options += mData(isUseServerPaging, target);
+
+        if (!options.equals("null")) {
+            options = "{" + options + "," + targets(target) + "}";
+        } else {
+            options = "{" + options + "}";
+        }
+
+        return options;
+    }
+
+    private String sortable(boolean sortable) {
+        return "\"" + UifConstants.TableToolsKeys.SORTABLE + "\": " + (sortable ? UifConstants.TableToolsValues.TRUE :
+                UifConstants.TableToolsValues.FALSE);
+    }
+
+    private String sortDataType(String sortDataType) {
+        return "\"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\": \"" + sortDataType + "\"";
+    }
+
+    private String getSortType(Class<?> dataTypeClass) {
+        String sortType = UifConstants.TableToolsValues.STRING;
+        if (ClassUtils.isAssignable(dataTypeClass, KualiPercent.class)) {
+            sortType = UifConstants.TableToolsValues.PERCENT;
+        } else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(dataTypeClass,
+                KualiDecimal.class)) {
+            sortType = UifConstants.TableToolsValues.CURRENCY;
+        } else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
+            sortType = "date";
+        } else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(dataTypeClass,
+                java.util.Date.class)) {
+            sortType = UifConstants.TableToolsValues.DATE;
+        } else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
+            sortType = UifConstants.TableToolsValues.NUMERIC;
+        }
+        return sortType;
+    }
+
+    private String sortType(String sortType) {
+        return "\"" + UifConstants.TableToolsKeys.SORT_TYPE + "\": \"" + sortType + "\"";
+    }
+
+    private String targets(int target) {
+        return "\"" + UifConstants.TableToolsKeys.TARGETS + "\": [" + target + "]";
+    }
+
+    private String visible(boolean visible) {
+        return "\"" + UifConstants.TableToolsKeys.VISIBLE + "\": " + (visible ? UifConstants.TableToolsValues.TRUE :
+                UifConstants.TableToolsValues.FALSE);
+    }
+
+    private String mData(boolean isUseServerPaging, int target) {
         if (isUseServerPaging || this.forceLocalJsonData) {
-            colOptions += ", \"" + UifConstants.TableToolsKeys.MDATA +
+            return ", \"" + UifConstants.TableToolsKeys.MDATA +
                     "\" : function(row,type,newVal){ return _handleColData(row,type,'c" + target + "',newVal);}";
         }
-
-        if (!colOptions.equals("null")) {
-            colOptions = "{" + colOptions + ", \"" + UifConstants.TableToolsKeys.TARGETS + "\": [" + target + "]}";
-        } else {
-            colOptions = "{" + colOptions + "}";
-        }
-
-        return colOptions;
+        return "";
     }
 
     /**

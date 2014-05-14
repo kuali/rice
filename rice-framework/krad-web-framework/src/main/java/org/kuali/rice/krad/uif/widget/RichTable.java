@@ -444,17 +444,21 @@ public class RichTable extends WidgetBase {
                             tableColumnOptions.append(options + ",");
                         }
                         colIndex++;
-                    } else if ((component instanceof MessageField)
-                            && component.getDataAttributes() != null
-                            && UifConstants.RoleTypes.ROW_GROUPING.equals(component.getDataAttributes().get(
-                            UifConstants.DataAttributes.ROLE))) {
-                        // Grouping column is never shown, so skip
-                        tableColumnOptions.append("{"
-                                + visible(false)
-                                + ","
-                                + mData(useServerPaging, colIndex)
-                                + targets(colIndex)
-                                + "}, ");
+                    } else if (component instanceof MessageField) {
+                        if (component.getDataAttributes() != null && UifConstants.RoleTypes.ROW_GROUPING.equals(
+                                component.getDataAttributes().get(UifConstants.DataAttributes.ROLE))) {
+                            // Grouping column is never shown, so skip
+                            tableColumnOptions.append("{"
+                                    + visible(false)
+                                    + ","
+                                    + mData(useServerPaging, colIndex)
+                                    + targets(colIndex)
+                                    + "}, ");
+                        } else {
+                            String options = constructTableColumnOptions(colIndex, true, useServerPaging, String.class,
+                                    UifConstants.TableToolsValues.DOM_TEXT);
+                            tableColumnOptions.append(options + ",");
+                        }
                         colIndex++;
                     } else if (component instanceof LinkField) {
                         LinkField linkField = (LinkField) component;

@@ -180,7 +180,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-LinkField" p:href="http://msn.com/" p:linkText="@{#lp.field1}" p:sortAs="numeric"/>
-              <bean parent="Uif-DataField" p:propertyName="date1Str"/>
+              <bean parent="Uif-MessageField" p:messageText="@{#lp.date1Str} date1Str"/>
               <bean parent="Uif-DataField" p:propertyName="date1Str" p:sortAs="kuali_date"/>
               <bean parent="Uif-DataField" p:label="Field 1 Not Sorted" p:propertyName="field1"/>
               <bean parent="Uif-DataField" p:label="Field 2 Numeric Sort" p:propertyName="field2" p:sortAs="numeric"/>

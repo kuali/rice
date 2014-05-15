@@ -2021,8 +2021,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
         waitAndClickButtonByText("Submit");
-        jGrowl("Click OK");
-        waitAndClickByXpath("//button[@data-dismissdialogoption=\"PRESUBMIT\"]");
+        waitAndClickConfirmationOk();
         assertTextPresent(new String[] {"Document was successfully submitted.", "ENROUTE"});
         passed();
     }

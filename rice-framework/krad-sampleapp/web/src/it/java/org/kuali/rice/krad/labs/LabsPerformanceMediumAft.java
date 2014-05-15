@@ -75,8 +75,8 @@ public class LabsPerformanceMediumAft extends WebDriverLegacyITBase {
         selectByName("inputField6","Option 2");
         selectByName("inputField7","Option 2");
         assertElementPresentByXpath("//select[@name='inputField8' and @disabled]");
-        assertElementPresentByXpath("//button[contains(text(),'add')]");
-        assertElementPresentByXpath("//button[contains(text(),'delete')]");
+        assertElementPresentByXpath("//button[contains(text(),'Add')]");
+        assertElementPresentByXpath("//button[contains(text(),'Delete')]");
         assertTextPresent("null ( ab extra )");
         assertElementPresentByXpath("//input[@name='mediumCollection2[0].field1' and @value='ab extra']");
         assertTextPresent("SubCollection 1");

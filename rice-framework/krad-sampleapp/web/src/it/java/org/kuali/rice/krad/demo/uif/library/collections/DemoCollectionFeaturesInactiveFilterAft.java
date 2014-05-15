@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.collections;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,18 +43,12 @@ public class DemoCollectionFeaturesInactiveFilterAft extends WebDriverLegacyITBa
     }
 
     protected void testCollectionFeaturesInActiveFilter() throws Exception {
-      if(isElementPresentByXpath("//input[@name='inactivatableCollection[2].active']"))
-      {
-        fail("Inactive Element Present");
-      }
-      waitAndClickButtonByText("show inactive");
-      assertElementPresentByXpath("//input[@name='inactivatableCollection[2].active']");
-      waitAndClickButtonByText("hide inactive");
-      Thread.sleep(3000);
-      if(isElementPresentByXpath("//input[@name='inactivatableCollection[2].active']"))
-      {
-        fail("Inactive Element Present");
-      }
+        waitAndClickButtonByText("show inactive");
+        waitForElementPresent(By.name("inactivatableCollection[2].active"));
+        waitAndClickButtonByText("Hide Inactive");
+        waitForElementNotPresent(By.xpath("//input[@name='inactivatableCollection[2].active']"));
+        waitAndClickButtonByText("show inactive");
+        waitForElementPresent(By.name("inactivatableCollection[2].active"));
     }
     
     @Test

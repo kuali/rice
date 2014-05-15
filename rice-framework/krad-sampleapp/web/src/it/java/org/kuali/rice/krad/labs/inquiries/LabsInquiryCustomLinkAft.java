@@ -39,7 +39,7 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
 
     protected void testInquiryCustomLink() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a Custom Link");
-        assertElementPresentByXpath("//button[contains(text(), 'export')]");
+        assertElementPresentByXpath("//button[contains(text(), 'Export')]");
 
         // Lightbox
         waitAndClickLinkContainingText("IAT (Click for Example)");

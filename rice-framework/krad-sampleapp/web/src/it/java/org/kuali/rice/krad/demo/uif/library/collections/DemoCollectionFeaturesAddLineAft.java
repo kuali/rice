@@ -45,7 +45,7 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         selectByName("exampleShown","Collection Default Add Line");
         waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example1']/section/div/div/table/tbody/tr[1]/td[2]/div/input","12");
         waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example1']/section/div/div/table/tbody/tr[1]/td[3]/div/input","5");
-        waitAndClickButtonByText("add");
+        waitAndClickButtonByText("Add");
         assertElementPresentByXpath("//input[@name='collection1[0].field1' and @value='12']");
         assertElementPresentByXpath("//input[@name='collection1[0].field2' and @value='5']");
     }

@@ -574,9 +574,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 
         } catch (Throwable t) {
-            System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
-            t.printStackTrace();
-            System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
+            if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
+                System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
+                t.printStackTrace();
+                System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
+            } else { // saucelabs exception
+                jiraAwareFail("", "Saucelabs exception on setup", t);
+            }
         }
     }
 

@@ -23,7 +23,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 /**
- * Base class for QueryByCriteria lookups for both Jpa and Ojb PersistenceProvider implementations.
+ * Base class for QueryByCriteria lookups and deletes for JPA PersistenceProvider implementations.
  *
  * <p>
  * Implements the core api CriteriaLookupService, as that is the exact interface required, however this class is not
@@ -77,16 +77,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
     protected abstract int executeUpdate(Query query);
 
     /**
-     * Deletes data objects based on the given criteria
-     *
-     * <p>If the given criteria is empty or null than an {@link java.lang.IllegalArgumentException} will be thrown.
-     *   If the given type is null then an {@link java.lang.IllegalArgumentException} will be thrown.</p>
-     *
-     * @param type the type of data object
-     * @param criteria criteria to filter by
-     *
-     * @throws IllegalArgumentException if the criteria or criteria predicate is null
-     * @throws org.springframework.dao.DataAccessException if data access fails
+     * {@inheritDoc}
      */
     public <T> void deleteMatching(Class<T> type, QueryByCriteria criteria) {
 
@@ -105,13 +96,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
     }
 
     /**
-     * Deletes all data objects based on the given type.
-     *
-     * @param type the type of data objects to delete
-     * @param <T> the data object class type
-     *
-     * @throws IllegalArgumentException if the class type is null
-     * @throws org.springframework.dao.DataAccessException if data access fails
+     * {@inheritDoc}
      */
     public <T> void deleteAll(Class<T> type) {
         if (type == null) {

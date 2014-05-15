@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
- * Simple interface that abstracts ORM query by criteria logic.
+ * Simple interface that abstracts ORM query by criteria and delete logic.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -34,4 +34,31 @@ interface CriteriaQuery {
      * @throws IllegalArgumentException if the criteria is null
      */
     <T> GenericQueryResults<T> lookup(final Class<T> queryClass, final QueryByCriteria criteria);
+
+    /**
+     * Deletes all data objects based on the given type.
+     *
+     * @param type the type of data objects to delete
+     * @param <T> the data object class type
+     *
+     * @throws IllegalArgumentException if the class type is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    public <T> void deleteAll(Class<T> type);
+
+
+    /**
+     * Deletes data objects based on the given criteria
+     *
+     * <p>If the given criteria is empty or null than an {@link java.lang.IllegalArgumentException} will be thrown.
+     *   If the given type is null then an {@link java.lang.IllegalArgumentException} will be thrown.</p>
+     *
+     * @param type the type of data object
+     * @param criteria criteria to filter by
+     *
+     * @throws IllegalArgumentException if the criteria or criteria predicate is null
+     * @throws org.springframework.dao.DataAccessException if data access fails
+     */
+    public <T> void deleteMatching(Class<T> type, QueryByCriteria criteria);
+
 }

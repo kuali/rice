@@ -183,9 +183,8 @@ public class BAMServiceImpl implements BAMService {
     }
 
 	public void clearBAMTables() {
-        QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-        dataObjectService.deleteMatching(BAMTargetEntry.class, builder.build());
-        dataObjectService.deleteMatching(BAMParam.class, builder.build());
+        dataObjectService.deleteAll(BAMTargetEntry.class);
+        dataObjectService.deleteAll(BAMParam.class);
 	}
 
     public DataObjectService getDataObjectService() {

@@ -15,21 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -83,7 +69,20 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.PropertyAccessorUtils;
 
-import com.google.common.collect.Sets;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Default Implementation of {@code ViewHelperService}
@@ -300,10 +299,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         boolean isValidLine = performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
         if (isValidLine) {
             int addedIndex = addLine(collection, newLine, addLinePlacement.equals("TOP"));
+
             // now link the added line, this is important in situations where perhaps the collection element is
             // bi-directional and needs to point back to it's parent
             linkAddedLine(viewModel, collectionPath, addedIndex);
-            
+
+            KRADServiceLocatorWeb.getLegacyDataAdapter().refreshAllNonUpdatingReferences(newLine);
+
             if (viewModel instanceof UifFormBase) {
                 ((UifFormBase) viewModel).getAddedCollectionItems().add(newLine);
             }

@@ -114,6 +114,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/defaultRuleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                           <bean parent="Uif-Link" p:linkText="Custom Rule Event and Document Event Method Invocation" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Non-updateable Refreshes" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
                         </list>
                       </property>
                     </bean>

@@ -223,6 +223,11 @@
         <value>start</value>
       </list>
     </property>
+    <property name="cssClasses">
+      <list>
+        <value>btn btn-default btn-sm</value>
+      </list>
+    </property>
   </bean>
 
   <bean id="Uif-LookupCriteriaFooter" parent="Uif-FooterBase">

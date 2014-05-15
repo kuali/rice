@@ -120,6 +120,8 @@ public class KradLabsForm extends UifFormBase {
 
     private String fakeTotal = "123(server value)";
 
+    private List<Object> files = new ArrayList<Object>();
+
     public KradLabsForm() {
         super();
 
@@ -882,5 +884,13 @@ public class KradLabsForm extends UifFormBase {
 
     public void setMediumCollection2(List<UITestObject> mediumCollection2) {
         this.mediumCollection2 = mediumCollection2;
+    }
+
+    public List<Object> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<Object> files) {
+        this.files = files;
     }
 }

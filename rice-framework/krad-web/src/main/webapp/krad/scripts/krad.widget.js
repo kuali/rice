@@ -709,6 +709,37 @@ function collapseDisclosures() {
     });
 }
 
+function createMultiFileUpload(id, additionalOptions) {
+    var options = {
+        filesContainer: "#" + id  + "_files",
+        dropZone: "#" + id  + "_fileTable",
+        prependFiles: true
+    };
+    options = jQuery.extend(options, additionalOptions);
+
+    if (!options.url) {
+        options.url = "?" + getUrlQueryString("methodToCall", "fileUpload");
+    }
+
+    var $fileInput = jQuery("#" + id);
+    if ($fileInput.length) {
+        $fileInput.fileupload(options);
+    }
+
+    jQuery(document).bind('drop dragover', function (e) {
+        e.preventDefault();
+    });
+
+    // Load existing files:
+    jQuery.ajax({
+        url: options.url,
+        dataType: 'json',
+        context: $fileInput[0]
+    }).done(function (result) {
+        $fileInput.fileupload('option', 'done').call(this, jQuery.Event('done'), {result: result});
+    });
+}
+
 /**
  * Uses jQuery DataTable plug-in to decorate a table with functionality like
  * sorting and page. The second argument is a Map of options that are available

@@ -449,6 +449,27 @@
     </property>
   </bean>
 
+  <bean id="Uif-MultiFileUpload" parent="Uif-MultiFileUpload-parentBean"/>
+  <bean id="Uif-MultiFileUpload-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MultiFileUpload"
+        parent="Uif-ContentElementBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/multiFileUpload.ftl"/>
+    <property name="templateName" value="uif_multiFileUpload"/>
+    <property name="fileUploadRowTemplate" value="fileUploadRow.ftl"/>
+    <property name="fileDownloadRowTemplate" value="fileDownloadRow.ftl"/>
+    <property name="methodToCall" value="fileUpload"/>
+    <property name="addFilesButtonText" value="Add Files..."/>
+    <property name="uploadAllButtonText" value="Upload All"/>
+    <property name="cancelAllButtonText" value="Cancel All Uploads"/>
+    <property name="fileTableColumnNames">
+      <list>
+        <value>File</value>
+        <value>Size</value>
+        <value>Date Uploaded</value>
+        <value>Actions</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
   <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
     <property name="cssClasses">

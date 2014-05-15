@@ -16,9 +16,11 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
+import org.kuali.rice.krad.file.FileBase;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -30,6 +32,7 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRefreshBuild;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -48,15 +51,22 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -383,6 +393,80 @@ public abstract class UifControllerBase {
         });
 
         return getUIFModelAndView(uifForm);
+    }
+
+    /**
+     *
+     */
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=fileUpload")
+    public @ResponseBody Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response) {
+
+        List<FileBase> returnObjects = new ArrayList<FileBase>();
+
+        // TODO get the files from service/db here and iterate (unique key would id of top level object + property)
+        // fake data for testing
+        FileBase fakeFile = new FileBase();
+        fakeFile.setName("fakeName.png");
+        fakeFile.setSize(5000000L);
+        fakeFile.setDeleteUrl("?methodToCall=fileDelete");
+        fakeFile.setDateUploaded(new Date());
+
+        returnObjects.add(fakeFile);
+
+        Map<String, Object> files = new HashMap<String, Object>();
+
+        // TODO actual version would use a name passed to the request
+        files.put("files", returnObjects);
+        return files;
+    }
+
+    /**
+     *
+     */
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileUpload")
+    public @ResponseBody Map fileUploadPost(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            MultipartHttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> files = new HashMap<String, Object>();
+        Iterator<String> fileNamesItr = request.getFileNames();
+        List<FileBase> returnObjects = new ArrayList<FileBase>();
+
+        while (fileNamesItr.hasNext()){
+            String currentName = fileNamesItr.next();
+
+            MultipartFile uploadedFile = request.getFile(currentName);
+
+            FileBase fileObject = new FileBase(uploadedFile);
+            String id = UUID.randomUUID().toString() + "_" + uploadedFile.getName();
+            // TODO Saving to a db/file system would go here
+            // TODO Generation and setting of thumbnail url (when applicable) and file url would go here
+
+            fileObject.setId(id);
+
+            fileObject.setDateUploaded(new Date());
+
+            // TODO Form key, cache key, view id needs to be added here (probably)
+            fileObject.setDeleteUrl("?methodToCall=fileDelete");
+
+            returnObjects.add(fileObject);
+
+/*            ObjectPropertyUtils.setPropertyValue(uifForm, "files", returnObjects);*/
+
+            files.put(currentName, returnObjects);
+        }
+
+        return files;
+    }
+
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileDelete")
+    public @ResponseBody Map fileDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response) {
+        //TODO delete file requested
+        Map<String, Object> files = new HashMap<String, Object>();
+        return files;
     }
 
     /**

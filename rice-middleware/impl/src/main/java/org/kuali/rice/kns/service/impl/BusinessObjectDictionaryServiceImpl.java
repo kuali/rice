@@ -31,6 +31,7 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryPresentationControllerBase;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.IntrospectionException;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -791,10 +792,11 @@ public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictio
 			throw new IllegalArgumentException(
 					"invalid (null) dataObjectClass");
         }
-        if (!BusinessObject.class.isAssignableFrom(businessObjectClass)) {
+        if ((!BusinessObject.class.isAssignableFrom(businessObjectClass)) &&
+            (!DataObjectBase.class.isAssignableFrom(businessObjectClass))) {
 			throw new IllegalArgumentException("class '"
 					+ businessObjectClass.getName()
-					+ "' is not a descendent of BusinessObject");
+					+ "' is not a descendent of BusinessObject or DataObjectBase");
         }
     }
 

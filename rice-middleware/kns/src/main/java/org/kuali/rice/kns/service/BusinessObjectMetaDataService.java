@@ -38,11 +38,11 @@ import java.util.Map;
 public interface BusinessObjectMetaDataService extends DataObjectMetaDataService {
 
 	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
-			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly);
+            Object bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly);
 
 	public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName);
 
-	public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName);
+	public RelationshipDefinition getBusinessObjectRelationshipDefinition(Object bo, String attributeName);
 
 	/**
 	 * 
@@ -114,7 +114,7 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return
 	 */
-	public Collection<String> getCollectionNames(BusinessObject bo);
+	public Collection<String> getCollectionNames(Object bo);
 
 	/**
 	 * 
@@ -167,10 +167,10 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @return related class
 	 */
 	@Deprecated
-	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName);
+	public DataObjectRelationship getBusinessObjectRelationship(Object bo, String attributeName);
 
 	@Deprecated
-	public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
+	public DataObjectRelationship getBusinessObjectRelationship(Object bo, Class boClass,
 			String attributeName, String attributePrefix, boolean keysOnly);
 
 
@@ -181,7 +181,7 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * dictionary.
 	 */
 	@Deprecated
-	public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo);
+	public List<DataObjectRelationship> getBusinessObjectRelationships(Object bo);
 
 	/**
 	 * Get all the business object relationships for the given class. These
@@ -189,7 +189,7 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * dictionary.
 	 */
 	@Deprecated
-	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass);
+	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends Object> boClass);
 
 	/**
 	 * This method accepts a business object and one of its foreign key
@@ -197,14 +197,14 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * as a key and its respective related class as value. If the passed in
 	 * attributeName is not a foreign key, this method will return an empty map.
 	 * 
-	 * @param BusinessObject
+	 * @param Object
 	 *            businessObject
 	 * @param String
 	 *            attributeName
 	 * @return Map<String, Class>
 	 */
 	@Deprecated
-	public Map<String, Class> getReferencesForForeignKey(BusinessObject businessObject, String attributeName);
+	public Map<String, Class> getReferencesForForeignKey(Object businessObject, String attributeName);
 
 	/**
 	 * 

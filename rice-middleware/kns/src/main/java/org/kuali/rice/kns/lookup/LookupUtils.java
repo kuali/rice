@@ -227,7 +227,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    public static Field setFieldQuickfinder(BusinessObject businessObject,
+    public static Field setFieldQuickfinder(Object businessObject,
             String attributeName, Field field, List displayedFieldNames) {
         return setFieldQuickfinder( businessObject, (String)null, false, 0, attributeName, field, displayedFieldNames );
     }
@@ -265,7 +265,7 @@ public class LookupUtils {
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
     @Deprecated
-    public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
+    public static Field setFieldQuickfinder(Object businessObject, String collectionName, boolean addLine, int index,
                                             String attributeName, Field field, List displayedFieldNames) {
         boolean noLookup = false;
         if (businessObject == null) {
@@ -282,7 +282,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
+    public static Field setFieldQuickfinder(Object businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
     {
          if (businessObject == null) {
             return field;
@@ -578,7 +578,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    private static String generateFieldConversions(BusinessObject businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
+    private static String generateFieldConversions(Object businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
         String fieldConversions = "";
 
         if ( LOG.isDebugEnabled() ) {
@@ -614,7 +614,7 @@ public class LookupUtils {
     }
 
     @Deprecated
-    private static String generateLookupParameters(BusinessObject businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
+    private static String generateLookupParameters(Object businessObject, String collectionName, DataObjectRelationship relationship, String propertyPrefix, List displayedFieldNames, String nestedObjectPrefix) {
 
         String lookupParameters = "";
 

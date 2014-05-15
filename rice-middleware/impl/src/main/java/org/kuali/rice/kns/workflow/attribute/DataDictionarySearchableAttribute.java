@@ -281,10 +281,10 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             final String attributeName = attr.getAttributeName();
             final String businessObjectClassName = attr.getBusinessObjectClassName();
             Class boClass = null;
-            BusinessObject businessObject  = null;
+            Object businessObject  = null;
             try {
                 boClass = Class.forName(businessObjectClassName);
-                businessObject = (BusinessObject)boClass.newInstance();
+                businessObject = (Object)boClass.newInstance();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

@@ -66,7 +66,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	private BusinessObjectDictionaryService businessObjectDictionaryService;
 
 	@Override
-    public Collection<String> getCollectionNames(BusinessObject bo) {
+    public Collection<String> getCollectionNames(Object bo) {
 		return getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(bo.getClass().getName())
 				.getCollectionNames();
 	}
@@ -203,14 +203,14 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	}
 
 	@Override
-    public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, String attributeName) {
+    public DataObjectRelationship getBusinessObjectRelationship(Object bo, String attributeName) {
 		return getBusinessObjectRelationship(bo, bo.getClass(), attributeName, "", true);
 	}
 
 	// TODO: four different exit points?!
 	@Override
     public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
-			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly) {
+            Object bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly) {
 
 		DataObjectRelationship relationship = null;
 
@@ -331,12 +331,12 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	}
 
 	@Override
-    public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName) {
+    public RelationshipDefinition getBusinessObjectRelationshipDefinition(Object bo, String attributeName) {
 		return getBusinessObjectRelationshipDefinition(bo.getClass(), attributeName);
 	}
 
 	@Override
-    public DataObjectRelationship getBusinessObjectRelationship(BusinessObject bo, Class boClass,
+    public DataObjectRelationship getBusinessObjectRelationship(Object bo, Class boClass,
 			String attributeName, String attributePrefix, boolean keysOnly) {
 		RelationshipDefinition ddReference = getBusinessObjectRelationshipDefinition(boClass, attributeName);
 		return getBusinessObjectRelationship(ddReference, bo, boClass, attributeName, attributePrefix, keysOnly);
@@ -388,7 +388,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	}
 
 	@Override
-    public List<DataObjectRelationship> getBusinessObjectRelationships(BusinessObject bo) {
+    public List<DataObjectRelationship> getBusinessObjectRelationships(Object bo) {
 		if (bo == null) {
 			return null;
 		}
@@ -397,7 +397,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 
 	@Override
     @SuppressWarnings("unchecked")
-	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends BusinessObject> boClass) {
+	public List<DataObjectRelationship> getBusinessObjectRelationships(Class<? extends Object> boClass) {
 		if (boClass == null) {
 			return null;
 		}
@@ -448,7 +448,7 @@ public class BusinessObjectMetaDataServiceImpl extends DataObjectMetaDataService
 	 *      java.lang.String)
 	 */
 	@Override
-    public Map<String, Class> getReferencesForForeignKey(BusinessObject bo, String attributeName) {
+    public Map<String, Class> getReferencesForForeignKey(Object bo, String attributeName) {
 		List<DataObjectRelationship> dataObjectRelationships = getBusinessObjectRelationships(bo);
 		Map<String, Class> referencesForForeignKey = new HashMap<String, Class>();
 		for (DataObjectRelationship dataObjectRelationship : dataObjectRelationships) {

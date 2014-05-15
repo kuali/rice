@@ -732,7 +732,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void agendaLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Rules");
-        waitAndClickButtonByText("Cancel");
+        waitAndClickCancelByText();
     }
 
     /**
@@ -2024,7 +2024,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         assertTextPresent(new String[] {"Document was successfully submitted.", "ENROUTE"});
         passed();
@@ -2600,7 +2600,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testTermSpecificationLookupAssertions() throws Exception {
         testLookUp();
         assertTextPresent("Context");
-        waitAndClickButtonByText("Cancel");
+        waitAndClickCancelByText();
         passed();
     }
 
@@ -2930,7 +2930,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void testTermLookUp() throws Exception {
         testLookUp();
         assertTextPresent("Term Parameters");
-        waitAndClickButtonByText("Cancel");
+        waitAndClickCancelByText();
         passed();
     }
 
@@ -3838,6 +3838,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jiraAwareWaitAndClick(By.cssSelector(locator), message);
     }
 
+    protected void waitAndClickBlanketApprove() throws InterruptedException {
+        waitAndClickButtonByText("Blanket Approve");
+    }
+
     protected void waitAndClickById(String id) throws InterruptedException {
         jiraAwareWaitAndClick(By.id(id), this.getClass().toString());
     }
@@ -3945,6 +3949,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByName(CANCEL_NAME);
     }
 
+    protected void waitAndClickCancelByText() throws InterruptedException {
+        waitAndClickButtonByText("Cancel");
+    }
+
     /**
      * {@link #CLOSE_WINDOW_XPATH_TITLE}
      * @throws InterruptedException
@@ -4029,12 +4037,20 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath(SAVE_XPATH);
     }
 
+    protected void waitAndClickSaveByText() throws InterruptedException {
+        waitAndClickButtonByText("Save");
+    }
+
     /**
      * {@link #SUBMIT_XPATH}
      * @throws InterruptedException
      */
     protected void waitAndClickSubmit() throws InterruptedException {
         waitAndClickByXpath(SUBMIT_XPATH);
+    }
+
+    protected void waitAndClickSubmitByText() throws InterruptedException {
+        waitAndClickButtonByText("Submit");
     }
 
     /**
@@ -4145,6 +4161,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickSearchSecond() throws InterruptedException {
         jGrowl("Click Search");
         waitAndClickByXpath(SEARCH_SECOND);
+    }
+
+    protected void waitAndClickSearchByText() throws InterruptedException {
+        waitAndClickButtonByText("Search");
     }
 
     protected String waitForDocId() throws InterruptedException {

@@ -336,31 +336,32 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         }
         if ( bo instanceof List ) {
         	linkUserFieldsInBoList( (List<PersistableBusinessObject>) bo );
-        } else {
-	
+        } else {	
 	        if ( bo instanceof PersistableBusinessObject ) {
 	        	((PersistableBusinessObject) bo).linkEditableUserFields();
+		        linkUserFieldsInBoList( Collections.<PersistableBusinessObject>singletonList( (PersistableBusinessObject)bo ) );
 	        } else if ( bo instanceof PersistableBusinessObjectBaseAdapter ) {
 	        	((PersistableBusinessObjectBaseAdapter) bo).linkEditableUserFields();
-	        }
-	
-	        linkUserFieldsInBoList( Collections.<PersistableBusinessObject>singletonList( (PersistableBusinessObject)bo ) );
+	        }	
         }
     }
 
-    public void linkUserFieldsInBoList(List<PersistableBusinessObject> list) {
+    protected void linkUserFieldsInBoList(List<PersistableBusinessObject> list) {
 
         // do nothing if there's nothing to process
         if (list == null) {
             throw new IllegalArgumentException("List of bos passed in was null");
-        }
-        else if (list.isEmpty()) {
+        } else if (list.isEmpty()) {
             return;
         }
 
-
         Person person;
-        for (PersistableBusinessObject bo : list) {
+        for (Object obj : list) {
+        	// just need to protect in case non PBO passed in
+        	if ( !(obj instanceof PersistableBusinessObject) ) {
+        		continue;
+        	}
+        	PersistableBusinessObject bo = (PersistableBusinessObject) obj;
             // get a list of the reference objects on the BO
             List<DataObjectRelationship> relationships = dataObjectMetaDataService.getDataObjectRelationships(
                     bo.getClass());

@@ -46,22 +46,24 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example1']/section/div/div/table/tbody/tr[1]/td[2]/div/input","12");
         waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example1']/section/div/div/table/tbody/tr[1]/td[3]/div/input","5");
         waitAndClickButtonByText("Add");
-        assertElementPresentByXpath("//input[@name='collection1[0].field1' and @value='12']");
+        waitForElementPresentByXpath("//input[@name='collection1[0].field1' and @value='12']");
         assertElementPresentByXpath("//input[@name='collection1[0].field2' and @value='5']");
     }
     
     protected void testCollectionFeaturesDefaultAddViaLightbox() throws Exception {
-        selectByName("exampleShown","Collection Add Via Lightbox");
-        waitAndClickButtonByText("Add Line");
-        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input","");
-        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr[2]/td/div/input","");
-        fireMouseOverEventByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input");
+        selectByName("exampleShown","Collection Add with Dialog");
+        jGrowl("Click Add Line");
+        waitAndClickByXpath("//section[@data-parent=\"Demo-CollectionAddLine-Example2\"]/div/button");
+        waitAndTypeByName("newCollectionLines['collection1_2'].field1", "");
+        waitAndTypeByName("newCollectionLines['collection1_2'].field2", "");
+        fireMouseOverEventByName("newCollectionLines['collection1_2'].field1");
         waitForElementPresent("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs' and @style='margin: 0px 0px 0px 72.16666662693024px; opacity: 1; top: 61px; left: 834px; position: absolute; display: block;']");
-        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr/td/div/input","12");
-        waitAndTypeByXpath("//form[@id='kualiLightboxForm']/section/table/tbody/tr[2]/td/div/input","5");
-        waitAndClickByXpath("//form[@id='kualiLightboxForm']/section/div/button");
-        waitForElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='12']");
-        waitForElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='5']");
+        waitAndTypeByName("newCollectionLines['collection1_2'].field1", "42");
+        waitAndTypeByName("newCollectionLines['collection1_2'].field2", "55");
+        jGrowl("Click Add");
+        waitAndClickByXpath("//div[@class=\"modal-footer\"]/button[@data-loadingmessage=\"Adding Line...\"]");
+        waitForElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='42']");
+        waitForElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='55']");
     }
     
     protected void testCollectionFeaturesDefaultAddBlankLine() throws Exception {

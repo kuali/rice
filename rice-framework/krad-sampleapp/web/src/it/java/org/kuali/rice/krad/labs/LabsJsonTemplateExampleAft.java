@@ -39,8 +39,7 @@ public class LabsJsonTemplateExampleAft extends WebDriverLegacyITBase {
     }
 
     protected void testDemoJsonTemplateExample() throws InterruptedException {
-    	assertTextPresent("dataStoreConnUsageLimit");
-    	assertTextPresent("maxUrlLength");
+    	assertTextPresent(new String[] {"dataStoreConnUsageLimit", "maxUrlLength"});
     }
 
     @Test

@@ -89,7 +89,7 @@ public class LabsDirtyFieldsAft extends LabsKitchenSinkBase {
     }
 
     private void assertCancelConfirmation() throws InterruptedException {
-        waitAndClickByLinkText("Cancel");
+        waitAndClickCancelByText();
         alertDismiss();
     }
 

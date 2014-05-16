@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 import static org.junit.Assert.assertNotSame;
 
@@ -55,8 +56,10 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testCollections() throws InterruptedException 
-    {
+    protected void testCollections() throws InterruptedException {
+        // Wait for page to load
+        waitForTextPresent("Collection Group rendered as a List ", WebDriverUtils.configuredImplicityWait() * 10);
+
     	//Collection Group 1 - CollectionGroupTableLayout
     	waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']",
                 "https://jira.kuali.org/browse/RICEQA-274 AFT Failure update LabsCollectionsAft");

@@ -40,11 +40,11 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
 
     protected void testInquiryDocumentHeader() throws InterruptedException {
         String docId = waitForElementPresent(By.name("documentNumber")).getAttribute("value");
-    	waitAndClickByXpath("//input[@type='image' and @title='Direct Inquiry']");
+    	waitAndClickByXpath("//button[@title='Direct Inquiry']");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Document Number:", docId},
-//                                          {"Document Description:", "Test"}}; // is this data flapping
-        {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
+                                          {"Document Description:", "Test"}}; // is this data flapping
+//        {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

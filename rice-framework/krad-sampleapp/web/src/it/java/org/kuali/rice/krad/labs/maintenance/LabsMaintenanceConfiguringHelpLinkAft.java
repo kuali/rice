@@ -39,7 +39,9 @@ public class LabsMaintenanceConfiguringHelpLinkAft extends LabsMaintenanceBase {
 
     protected void testMaintenanceConfiguringHelpLink() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Configuring the help link using the externalHelpUrl property of Uif-Help");
-    	assertElementPresentByXpath("//input[@type='image' and @title='Help for Company Information']");
+    	waitAndClickByXpath("//button[@title='Help for Company Information']");
+        Thread.sleep(3000);
+        switchToWindow("Kuali Foundation");
     }
 
     @Test

@@ -4294,7 +4294,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitForTextPresent(String text, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         while (!isTextPresent(text) && secondsToWait > 0) {
-            secondsToWait -= 1000;
+            secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (!isTextPresent(text)) {

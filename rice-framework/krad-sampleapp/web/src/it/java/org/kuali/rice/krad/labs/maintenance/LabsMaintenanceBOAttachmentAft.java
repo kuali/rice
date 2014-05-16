@@ -71,7 +71,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelAttachmentGroupNumber","123");
     	fileUploadSetUp();
     	fileIngester();
-    	waitAndClickButtonByExactText("blanket approve");
+    	waitAndClickBlanketApprove();
     }
     
     protected void testMaintenanceBOAttachmentCollection() throws Exception {
@@ -81,9 +81,9 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     	waitAndTypeByXpath("//div[@data-label='ID']/input",random);
     	fileUploadSetUp();
     	fileIngesterCollection();
-    	waitAndClickButtonByExactText("add");
+    	waitAndClickButtonByExactText("Add");
     	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
-    	waitAndClickButtonByExactText("blanket approve");
+    	waitAndClickBlanketApprove();
     }
     
     private void fileUploadSetUp() throws Exception {
@@ -119,7 +119,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
             setUpFiles("src/test/resources/" + resourceDir);
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
-            System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-middleware/sampleapp attempt to load as resource.");
+            System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");
             try {
                 setUpResourceFiles(resourceDir);
             } catch (Exception e1) {

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,7 +48,7 @@ public class LabsEventExampleAft extends LabsKitchenSinkBase {
     }
     
     protected void testKitchenSinkEventExamples() throws InterruptedException {
-        waitForTextPresent("OnKeyPress, OnKeyUp, OnKeyDown"); // make sure page is loaded
+        waitForTextPresent("OnKeyPress, OnKeyUp, OnKeyDown", WebDriverUtils.configuredImplicityWait()* 2); // make sure page is loaded
     	//OnClick examples on various components
         waitAndClickByName("field100"); // Field Label
     	alertAccept();

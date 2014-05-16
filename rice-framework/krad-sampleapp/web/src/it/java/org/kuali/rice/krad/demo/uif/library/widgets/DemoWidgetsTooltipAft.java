@@ -39,13 +39,13 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsTooltipHover() throws Exception {
-        selectByName("exampleShown","Tooltip On Hover");
+        waitAndClickLinkContainingText("Tooltip On Hover");
         fireMouseOverEventByName("dataField1");
         assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This is a helpful tooltip about this field')]");
     }
 
     protected void testWidgetsTooltipFocus() throws Exception {
-        selectByName("exampleShown","Tooltip On Focus");
+        waitAndClickLinkContainingText("Tooltip On Focus");
         waitAndTypeByXpath("//section[@id='Demo-Tooltip-Example2']/div/input[@name='dataField1']",""); // XPATH as dataField1 is used as a name twice
         assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml' and contains(text(),'This tooltip appears when the field receives focus')]");
     }

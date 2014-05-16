@@ -41,10 +41,12 @@ public class LookupableTravelImpl extends LookupableImpl {
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = super.validateSearchParameters(form, searchCriteria);
 
-        for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
-            String propertyName = lookupCriteria.getKey();
+        if (form.getViewPostMetadata() != null && form.getViewPostMetadata().getLookupCriteria() != null) {
+            for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
+                String propertyName = lookupCriteria.getKey();
 
-            validateSearchParameterPositiveValues(form, propertyName, searchCriteria.get(propertyName));
+                validateSearchParameterPositiveValues(form, propertyName, searchCriteria.get(propertyName));
+            }
         }
 
         if (GlobalVariables.getMessageMap().hasErrors()) {

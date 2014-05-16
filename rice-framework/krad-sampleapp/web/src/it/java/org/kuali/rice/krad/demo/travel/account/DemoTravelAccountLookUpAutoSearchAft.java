@@ -57,6 +57,8 @@ public class DemoTravelAccountLookUpAutoSearchAft extends WebDriverLegacyITBase 
                 By.linkText("a11"), By.linkText("a12"), By.linkText("a13"), By.linkText("a14")};
 
         assertElementsPresentInResultPages(results);
+        waitAndClickByXpath("//div[@data-label='Travel Account Type Code']/div/div/button[@class='btn btn-default uif-action icon-search']");
+    	waitSearchAndReturnFromLightbox();
 
 // TODO should the foid work?
 //        waitAndTypeByName("lookupCriteria[foId]","1");
@@ -78,5 +80,11 @@ public class DemoTravelAccountLookUpAutoSearchAft extends WebDriverLegacyITBase 
     public void testDemoTravelAccountLookUpAutoSearchBookmark() throws Exception {
         testDemoTravelAccountLookUpAutoSearch();
         passed();
+    }
+    
+    private void waitSearchAndReturnFromLightbox() throws Exception {
+    	gotoLightBox();
+    	waitAndClickButtonByText("Search");
+    	waitAndClickByLinkText("return value");
     }
 }

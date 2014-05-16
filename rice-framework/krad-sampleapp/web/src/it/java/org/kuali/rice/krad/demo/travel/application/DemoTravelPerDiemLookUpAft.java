@@ -53,6 +53,10 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     	waitAndTypeByName("lookupCriteria[travelPerDiemExpenseId]","1");
     	waitAndTypeByName("lookupCriteria[travelAuthorizationDocumentId]","1");
     	selectByName("lookupCriteria[travelDestinationId]","Colorado");
+    	waitAndClickByXpath("//div[@data-label='Primary Destination']/div/div/button[@class='btn btn-default uif-action icon-search']");
+    	waitSearchAndReturnFromLightbox();
+    	waitAndClickByXpath("//div[@data-label='Mileage Rate']/div/div/button[@class='btn btn-default uif-action icon-search']");
+    	waitSearchAndReturnFromLightbox();
     	waitAndClickButtonByText(SEARCH);
     	waitForTextPresent("No values match this search.");
     	waitForTextPresent("You have entered the primary key for this table (Id) in the search criteria. Since these fields can be used to uniquely identify a row in this table, the other search criteria entered will be ignored.");
@@ -74,5 +78,11 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     public void testTravelPerDiemLookUpNav() throws Exception {
         testTravelPerDiemLookUp();
         passed();
+    }
+    
+    private void waitSearchAndReturnFromLightbox() throws Exception {
+    	gotoLightBox();
+    	waitAndClickButtonByText("Search");
+    	waitAndClickByLinkText("return value");
     }
 }

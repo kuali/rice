@@ -47,6 +47,8 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
 
     private void testSearchSelect() throws Exception {
         waitAndClickByValue("CAT");
+        waitAndClickByXpath("//div[@data-label='Travel Account Type Code']/div/div/button[@class='btn btn-default uif-action icon-search']");
+    	waitSearchAndReturnFromLightbox();
         waitAndClickButtonByText(WebDriverLegacyITBase.SEARCH);
 
         By[] bysPresent = new By[] {By.xpath("//a[contains(text(), 'a6')]"), By.xpath("//a[contains(text(), 'a9')]"), By.xpath("//a[contains(text(), 'a14')]")};
@@ -99,5 +101,11 @@ public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase 
     public void testTravelAccountMultivalueLookUpSelectAllPagesNav() throws Exception {
         testMultiValueSelectAllPages();
         passed();
+    }
+    
+    private void waitSearchAndReturnFromLightbox() throws Exception {
+    	gotoLightBox();
+    	waitAndClickButtonByText("Search");
+    	waitAndClickByLinkText("return value");
     }
 }

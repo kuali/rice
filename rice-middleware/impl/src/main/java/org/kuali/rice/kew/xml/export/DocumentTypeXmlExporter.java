@@ -140,6 +140,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getActualNotificationFromAddress());
         }
         renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActive(), true);
+        exportApplicationStatuses(docTypeElement, documentType.getValidApplicationStatuses());
         exportPolicies(docTypeElement, documentType.getDocumentTypePolicies());
         exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
         exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());
@@ -156,6 +157,16 @@ public class DocumentTypeXmlExporter implements XmlExporter {
       	} else {
       	    renderer.renderElement(docTypeElement, ROUTE_PATHS);
       	}
+    }
+
+    private void exportApplicationStatuses(Element parent, Collection validApplicationStatuses) {
+        if (!validApplicationStatuses.isEmpty()) {
+            Element validApplicationStatusesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
+            for (Iterator iterator = validApplicationStatuses.iterator(); iterator.hasNext();) {
+                ApplicationDocumentStatus status = (ApplicationDocumentStatus) iterator.next();
+                renderer.renderTextElement(validApplicationStatusesElement, STATUS, status.getStatusName());
+            }
+        }
     }
 
     private void exportPolicies(Element parent, Collection policies) {

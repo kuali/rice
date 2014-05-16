@@ -251,7 +251,10 @@ public class UifFormBase implements ViewModel {
             String clientStateJSON = request.getParameter(UifParameters.CLIENT_VIEW_STATE);
             if (StringUtils.isNotBlank(clientStateJSON)) {
                 // change single quotes to double quotes (necessary because the reverse was done for sending)
-                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
+                clientStateJSON = StringUtils.replace(clientStateJSON, "\\'", "\"");
+                clientStateJSON = StringUtils.replace(clientStateJSON, "\\[", "[");
+                clientStateJSON = StringUtils.replace(clientStateJSON, "\\]", "]");
+                clientStateJSON = StringUtils.replace(clientStateJSON, "'",  "\"");
 
                 ObjectMapper mapper = new ObjectMapper();
                 try {

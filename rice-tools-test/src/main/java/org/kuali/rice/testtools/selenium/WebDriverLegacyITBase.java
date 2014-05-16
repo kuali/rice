@@ -4167,6 +4167,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickButtonByText("Search");
     }
 
+    protected String waitForAgendaDocId() throws InterruptedException {
+        return waitForElementPresentByXpath("//div[@data-label=\"Document Number\"]").getText();
+    }
+
     protected String waitForDocId() throws InterruptedException {
         checkForDocError();
         waitForElementPresentByXpath(DOC_ID_XPATH);

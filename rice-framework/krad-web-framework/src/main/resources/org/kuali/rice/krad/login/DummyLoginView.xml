@@ -89,8 +89,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-SpaceField-parentBean"/>
-        <!-- set style width for older Safari browsers -->
-        <bean parent="Uif-VerticalBoxGroup" p:style="width: 100%;">
+        <bean parent="Uif-VerticalBoxGroup">
           <property name="items">
             <list>
               <bean parent="Uif-SpaceField-parentBean"/>

@@ -65,7 +65,6 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		// Setup the maintenance document and the maintenance form.
 		maintDoc.setOldMaintainableObject(oldMaint);
 		maintDoc.setNewMaintainableObject(newMaint);
-		maintDoc.getDocumentHeader().setDocumentDescription("This is a rule template test");
 		kmForm.setDocument(maintDoc);
 		KNSGlobalVariables.setKualiForm(kmForm);
 	}

@@ -41,6 +41,7 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -1126,4 +1127,20 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         throw new RuntimeException(message);
     }
 
+    /**
+     * recurses through component tree, setting all components to read only
+     * @param components
+     */
+    private void setComponentsReadOnly(List<? extends Component> components) {
+        for (Component component: components) {
+            component.setReadOnly(true);
+            if (component instanceof ContainerBase) {
+                setComponentsReadOnly(((ContainerBase) component).getItems());
+            }
+        }
+    }
+
+    public void setViewReadOnly(View view) {
+        setComponentsReadOnly(view.getItems());
+    }
 }

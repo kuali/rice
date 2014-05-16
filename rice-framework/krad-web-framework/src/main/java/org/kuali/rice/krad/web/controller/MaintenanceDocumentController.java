@@ -117,8 +117,11 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
                 KewApiConstants.DOCSEARCH_COMMAND.equals(form.getCommand()) ||
                 KewApiConstants.SUPERUSER_COMMAND.equals(form.getCommand()) ||
                 KewApiConstants.HELPDESK_ACTIONLIST_COMMAND.equals(form.getCommand()) && form.getDocId() != null) {
-            // TODO: set state in view
-            // form.setReadOnly(true);
+
+            if (KewApiConstants.SUPERUSER_COMMAND.equals(form.getCommand())) {
+                form.getView().getViewHelperService().setViewReadOnly(form.getView());
+                form.getView().setSuperUserView(true);
+            }
             form.setMaintenanceAction((form.getDocument()).getNewMaintainableObject().getMaintenanceAction());
 
             // Retrieving the FileName from BO table

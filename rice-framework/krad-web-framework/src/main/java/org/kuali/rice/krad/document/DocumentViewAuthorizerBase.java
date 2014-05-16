@@ -151,6 +151,20 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
             actions.remove(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);
         }
 
+        if (view.isSuperUserView()) {
+            //Not sure if this is correct
+            //TODO: What set of actions should be available to the super user?
+            // none? because the super user will have access to the actions defined by the
+            // super user form/ftl/whatever, and this is the actual document being viewed?
+
+//            actions.clean();
+//            actions.add(KRADConstants.KUALI_ACTION_CAN_CANCEL);
+//            actions.add(KRADConstants.KUALI_ACTION_CAN_CLOSE);
+//            actions.add(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE);
+//            actions.add(KRADConstants.KUALI_ACTION_CAN_RECALL);
+//            actions.add(KRADConstants.KUALI_ACTION_CAN_ROUTE);
+        }
+
         return actions;
     }
 

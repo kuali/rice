@@ -139,10 +139,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 
-        // TODO: authorization on document actions
-        // if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
-        // form.setSuppressAllButtons(true);
-        // }
+        if (KewApiConstants.SUPERUSER_COMMAND .equalsIgnoreCase(command)) {
+            form.getView().setSuperUserView(true);
+            form.getView().getViewHelperService().setViewReadOnly(form.getView());
+        }
 
         return getUIFModelAndView(form);
     }

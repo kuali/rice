@@ -54,7 +54,7 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		KradDataServiceLocator.getDataObjectService().deleteMatching(EntityDefaultInfoCacheBo.class, QueryByCriteria.Builder.create().build() );
+		KradDataServiceLocator.getDataObjectService().deleteAll(EntityDefaultInfoCacheBo.class);
 		if (null == identityArchiveService) {
 			identityArchiveService = getIdentityArchiveService();
 		}

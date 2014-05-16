@@ -42,7 +42,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
     }
 
     protected void testGeneralFeaturesUnifiedHeader() throws Exception {
-        waitAndClickByLinkText("Unified Header");
+        selectByName("exampleShown", "Unified Header");
         waitAndClickByLinkText("Unified example");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
@@ -52,7 +52,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
     }
     
     protected void testGeneralFeaturesNonUnifiedHeader() throws Exception {
-        waitAndClickByLinkText("Non-Unified Header");
+        selectByName("exampleShown", "Non-Unified Header");
         waitAndClickByLinkText("Non-Unified example");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
@@ -62,7 +62,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
     }
     
     protected void testGeneralFeaturesUnifiedHeaderOptions() throws Exception {
-        waitAndClickByLinkText("Options");
+        selectByName("exampleShown", "Options");
         waitAndClickByLinkText("Additional unified header options");
         switchToWindow("Kuali :: View Header");
         assertTextPresent(new String[]{"metadata information", "Custom Support/Page title"});

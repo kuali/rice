@@ -82,7 +82,7 @@ public class DemoLayoutManagersBoxLayoutAft extends WebDriverLegacyITBase {
     
     protected void testLayoutManagersBoxLayoutItemCSS() throws Exception {
         selectByName("exampleShown","Item CSS");
-        assertElementPresentByXpath("//div[@data-parent='Demo-BoxLayoutManager-Example6']/div/label[@class='uif-label uif-labelBlock']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-BoxLayoutManager-Example6']/div/label[@class='clearfix uif-label uif-labelBlock']");
         assertElementPresentByXpath("//div[@data-parent='Demo-BoxLayoutManager-Example6']/div/input[@name='inputField21']");
     }
     

@@ -43,12 +43,12 @@ public class LabsTravelCompanyLookUpDisableNewAndCopyAft extends WebDriverLegacy
     protected void testTravelCompanyLookUpDisableNewAndCopy() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Disable New and Copy");
     	waitAndTypeByName("lookupCriteria[travelCompanyId]","10000");
-    	waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     	waitForElementPresentByXpath("//a[contains(text(),'10000')]");
     	waitAndClickButtonByText("Clear Values");
     	waitAndTypeByName("lookupCriteria[travelCompanyName]","AAA Travel");
     	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-    	waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     	waitForElementPresentByXpath("//a[contains(text(),'10001')]");
     	waitForTextPresent("AAA Travel");
     	waitForElementNotPresent(By.xpath("//a[contains(text(),'copy')]"));

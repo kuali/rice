@@ -76,11 +76,11 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 
     	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     	waitAndClickReturnValue();
     	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
     	gotoIframeByXpath(IFRAME_XPATH);
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickReturnValue();
 
         waitAndTypeByName("field70", "a1");

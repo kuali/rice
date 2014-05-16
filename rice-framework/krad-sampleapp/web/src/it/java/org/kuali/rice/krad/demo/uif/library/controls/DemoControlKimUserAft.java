@@ -51,7 +51,7 @@ public class DemoControlKimUserAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Widget Input Only");
         waitAndClickByXpath("//section[@id='Demo-KIMUserControl-Example2']/div/div/span/a");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitForTextPresent("admin, admin");
     }

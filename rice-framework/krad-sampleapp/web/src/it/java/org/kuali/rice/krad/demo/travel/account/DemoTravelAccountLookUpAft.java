@@ -152,7 +152,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("return value");
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
-    	waitAndClickButtonByText("submit");
+        waitAndClickSubmitByText();
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
             waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
@@ -170,7 +170,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         	waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("return value");
         	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
-        	waitAndClickButtonByText("submit");
+            waitAndClickSubmitByText();
     		waitForTextPresent("This document cannot be Saved or Routed");
     	}
     	else{
@@ -197,7 +197,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     private void testSearchAndSelect(String selectorText) throws Exception {
     	waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
     	gotoLightBox();
-    	waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     	if(selectorText.equalsIgnoreCase("CAT")){
     		waitAndClickByXpath("//table/tbody/tr[1]/td/div/fieldset/div/a");
     	}

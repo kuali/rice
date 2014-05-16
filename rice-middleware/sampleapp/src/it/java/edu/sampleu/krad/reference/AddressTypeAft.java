@@ -39,7 +39,7 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
                     "org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo&renderReturnLink=true";
 
     protected void clickSearch() throws InterruptedException {
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     }
 
     @Override

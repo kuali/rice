@@ -52,13 +52,13 @@ public class EntityTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEntityType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"PERSON"}, {"SYSTEM"}});
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("PERSON");
         waitAndTypeByName("lookupCriteria[code]","PERSON");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("SYSTEM");
         waitForTextPresent("PERSON");
     }

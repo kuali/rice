@@ -45,7 +45,7 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
 
     protected void testAgendaEditRuleRefresh() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         //        waitAndClickByXpath("//div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[1]"); //  jiraAwareWaitAndClick("id=32");
         waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1000']",
                 "Does user have edit permissions?"); // jiraAwareWaitAndClick("id=194_line0");

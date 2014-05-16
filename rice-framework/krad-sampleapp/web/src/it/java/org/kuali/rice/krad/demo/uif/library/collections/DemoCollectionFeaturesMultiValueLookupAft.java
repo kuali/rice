@@ -46,7 +46,7 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
         lightBoxLookupAddMultipleLines();
 
         waitAndTypeByName("lookupCriteria[number]", "a1");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         acceptAlertIfPresent();
         assertButtonDisabledByText("return selected");
 

@@ -41,7 +41,7 @@ public class LabsMaintenanceSampleBasicAft extends LabsMaintenanceBase {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Basic New");
     	waitAndTypeByName("document.documentHeader.documentDescription","Test Maintenance Sample Basic Desc");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelCompanyName","Kuali");
-    	waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
     	assertTextPresent(" Document was successfully submitted.");
     }
     
@@ -49,7 +49,7 @@ public class LabsMaintenanceSampleBasicAft extends LabsMaintenanceBase {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Basic Edit");
     	waitAndTypeByName("document.documentHeader.documentDescription","Test Maintenance Sample Basic Edit");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelCompanyName","Kuali");
-    	waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
     	assertTextPresent(" Document was successfully submitted.");
     }
     

@@ -52,10 +52,10 @@ public class PhoneTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testPhoneType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"HM"}, {"MBL"}});
         waitAndTypeByName("lookupCriteria[code]","MBL");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("HM");
         assertTextPresent("MBL");
     }

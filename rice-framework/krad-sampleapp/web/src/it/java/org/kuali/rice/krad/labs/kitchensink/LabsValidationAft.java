@@ -68,7 +68,7 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	
     	//PreRequisite constraint
     	waitAndTypeByName("field6","a");
-    	waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
     	waitForElementPresentByXpath("//input[@name='field7' and @class='form-control input-sm uif-textControl dependsOn-field6 required error']");
     	waitForElementPresentByXpath("//input[@name='field8' and @class='form-control input-sm uif-textControl dependsOn-field6 prConstraint-field81 required error']");
     

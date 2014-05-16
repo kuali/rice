@@ -52,10 +52,10 @@ public class EmploymentStatusAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEmploymentStatus() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"On Non-Pay Leave"}, {"Active"}, {"Deceased"}});
         waitAndTypeByName("lookupCriteria[name]","Active");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("Deceased");
     }
 

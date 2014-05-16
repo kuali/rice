@@ -50,7 +50,7 @@ public class LabsLookupInquiryDisabledAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupInquiryDisabled()throws Exception {
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         Thread.sleep(2000);
         if(isElementPresentByXpath("//a[contains(text(), 'a1')]")) {
             jiraAwareFail("Inquiry has not been disabled. " + this.getClass().toString());

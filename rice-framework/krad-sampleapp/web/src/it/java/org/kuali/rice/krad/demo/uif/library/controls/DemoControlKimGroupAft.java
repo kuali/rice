@@ -49,7 +49,7 @@ public class DemoControlKimGroupAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Widget Input Only");
         waitAndClickByXpath("//div[@data-label='Name' and @data-parent='Demo-KIMGroupControl-Example2']/div/span/a");
         gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickByLinkText("return value");
     }
     

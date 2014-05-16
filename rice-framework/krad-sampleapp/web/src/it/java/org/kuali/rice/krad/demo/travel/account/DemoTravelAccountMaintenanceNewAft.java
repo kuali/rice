@@ -112,20 +112,20 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
         waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Add New Line')]"));
         waitAndClickLinkContainingText("return value");
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitForTextPresent("Document was successfully submitted.");
     }
@@ -143,7 +143,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
 //        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer input field
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
-        waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
         Thread.sleep(1000);
         if(isAlertPresent())    {
             fail("XSS vulnerability identified.");
@@ -158,13 +158,13 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Date Created:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
-    	waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
     	String requiredMessage []={"Description: Required","Travel Account Number: Required","Travel Account Name: Required","Travel Account Type Code: Required"};
     	assertTextPresent(requiredMessage);
         assertTrue(findElement(By.xpath("//h3[@id='pageValidationHeader']")).getText().contains("This page has"));
-    	waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
     	assertTextPresent(requiredMessage);
     }
 

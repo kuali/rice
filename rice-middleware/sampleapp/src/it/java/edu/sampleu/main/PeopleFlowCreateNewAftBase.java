@@ -73,7 +73,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     protected void testPeopleFlowBlanketApprove() throws Exception {
         String docId = peopleFlowCreateNew();
 
-        waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
         waitAndClickConfirmationOk();
         Thread.sleep(3000);
         checkForIncidentReport();
@@ -97,7 +97,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     protected void testPeopleFlowCreateNew() throws Exception {
         String docId = peopleFlowCreateNew();
 
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         Thread.sleep(3000);
         checkForDocError();
@@ -159,7 +159,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         clearTextByName("document.newMaintainableObject.dataObject.name");
         String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitForTextPresent("Document was successfully submitted.");
         selectTopFrame();
@@ -172,7 +172,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
         clearTextByName("document.newMaintainableObject.dataObject.name");
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitForTextPresent("A PeopleFlow already exists with the name");
     }

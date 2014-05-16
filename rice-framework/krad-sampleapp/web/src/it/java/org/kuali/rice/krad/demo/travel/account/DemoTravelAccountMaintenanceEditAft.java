@@ -101,16 +101,16 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         //Check for LookUp search
         waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
 
         // Add a new sub account
@@ -123,9 +123,9 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText("Add");
         waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
 
-        waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
         waitForTextPresent("Document was successfully saved.");
-        waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
     }
 
@@ -138,7 +138,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
 //        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer an input field
 //        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
-        waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
         Thread.sleep(1000);
         if(isAlertPresent())    {
             fail("XSS vulnerability identified.");
@@ -178,7 +178,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer to " + newUser + " "  + RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
-        waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
@@ -194,12 +194,12 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
         jGrowl("Verify required messages are displayed");
-    	waitAndClickButtonByText("Submit");
+        waitAndClickSubmitByText();
     	String requiredMessage []={"Description: Required"};
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
     	assertTextPresent(requiredMessage);
-    	waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
     	assertTextPresent(requiredMessage);
     	waitForElementPresentByXpath("//div[@data-label='Date Created']");
     }

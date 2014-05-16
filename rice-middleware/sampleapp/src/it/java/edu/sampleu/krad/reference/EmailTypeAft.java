@@ -52,17 +52,17 @@ public class EmailTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEmailType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         Thread.sleep(3000);
         String[][] data = {{"HM", "Home", "b"},
                            {"OTH", "Other", "c"},
                            {"WRK", "Work", "a"}};
         assertTextPresent(data);
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("HM");
         waitAndTypeByName("lookupCriteria[code]","OTH");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextPresent("Other");
     }
 

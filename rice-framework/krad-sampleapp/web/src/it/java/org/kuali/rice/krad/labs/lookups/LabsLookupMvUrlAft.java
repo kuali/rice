@@ -52,7 +52,7 @@ public class LabsLookupMvUrlAft extends LabsLookupBase {
     protected void testLabsLookupMVURL()throws Exception {
         waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","fra*");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertResultCount("4");
     }
 }

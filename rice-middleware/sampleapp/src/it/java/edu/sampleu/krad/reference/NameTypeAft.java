@@ -52,10 +52,10 @@ public class NameTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testNameType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"OTH"}, {"PRFR"}});
         waitAndTypeByName("lookupCriteria[code]","PRFR");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("OTH");
         assertTextPresent("PRFR");
     }

@@ -52,10 +52,10 @@ public class ExternalIdentifierTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testExternalIdentifierType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"HR"},{"LICENSE"}});
         waitAndTypeByName("lookupCriteria[code]","LICENSE");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("HR");
         assertTextPresent("LICENSE");
     }

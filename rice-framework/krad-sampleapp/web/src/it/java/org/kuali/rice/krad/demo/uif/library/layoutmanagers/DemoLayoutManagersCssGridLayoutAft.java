@@ -43,45 +43,45 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
 
     protected void testLayoutManagersCssGridLayoutDefault() throws Exception {
         selectByName("exampleShown", "Default");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div/div[@class='col-md-4']/div/p");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div/div[@class='col-md-4']/div/label");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div/div[@class='col-md-4']/div/input");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[2]/div[@class='col-md-6']/div/label");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[2]/div[@class='col-md-6']/div/input");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[@class='col-md-4']/div/p");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[@class='col-md-4']/div/label");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[@class='col-md-4']/div/input");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[@class='col-md-6']/div/label");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example1']/div[@class='col-md-6']/div/input");
     }
     
     protected void testLayoutManagersCssGridLayoutDefaultWidthBehaviour() throws Exception {
         selectByName("exampleShown", "Default width behavior");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div/div[@class='col-md-12']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div/div[@class='col-md-8']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div/div[@class='col-md-4']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div[@class='col-md-12']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div[@class='md-clear-left col-md-8']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example2']/div[@class='col-md-4']");
      }
     
     protected void testLayoutManagersCssGridLayoutFieldLabelColumns() throws Exception {
         selectByName("exampleShown", "Field Label Columns");
-        waitForElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-3 uif-cssGridLabelCol']");
-        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-2 uif-cssGridLabelCol']");
-        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div/div[@class='col-md-4']");
+        waitForElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div[@class='col-md-3 uif-cssGridLabelCol']");
+        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div[@class='col-md-2 uif-cssGridLabelCol']");
+        assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div[@class='col-md-4']");
      }
     
     protected void testLayoutManagersCssGridLayoutRowCss() throws Exception {
         selectByName("exampleShown", "Row Css");
-        waitForElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField17']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField18']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/div/input[@name='inputField19']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/div/input[@name='inputField20']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/div/input[@name='inputField21']");
+        waitForElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField17']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField18']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField19']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/input[@name='inputField20']");
+        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/input[@name='inputField21']");
      }
     
     protected void testLayoutManagersCssGridLayoutDefaultColspan() throws Exception {
         selectByName("exampleShown", "Default ColSpan");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example6']/div/div[@class='col-md-4']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example6']/div[@class='col-md-4']");
     }
     
     protected void testLayoutManagersCssGridLayoutGroupLayout() throws Exception {
         selectByName("exampleShown", "Group Layout");
-        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-4']/section[@class='uif-boxSection' and @style='background-color: #00CC66; height: 200px;']");
-        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div/div[@class='col-md-8']/section[@class='uif-boxSection' and @style='background-color: #00CCFF; height: 200px;']");
+        waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div[@class='col-md-4']/section[@class='uif-boxSection' and @style='background-color: #00CC66; height: 200px;']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example7']/div[@class='col-md-8']/section[@class='uif-boxSection' and @style='background-color: #00CCFF; height: 200px;']");
      }
     
     @Test
@@ -98,9 +98,9 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
     	testLayoutManagersCssGridLayoutDefault();
         testLayoutManagersCssGridLayoutDefaultWidthBehaviour();
         testLayoutManagersCssGridLayoutFieldLabelColumns();
-        testLayoutManagersCssGridLayoutRowCss();
         testLayoutManagersCssGridLayoutDefaultColspan();
         testLayoutManagersCssGridLayoutGroupLayout();
+        testLayoutManagersCssGridLayoutRowCss();
         passed();
     }
 }

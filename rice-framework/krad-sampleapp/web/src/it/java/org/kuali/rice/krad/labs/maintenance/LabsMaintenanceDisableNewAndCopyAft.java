@@ -40,7 +40,7 @@ public class LabsMaintenanceDisableNewAndCopyAft extends LabsMaintenanceBase {
     protected void testMaintenanceDisableNewAndCopy() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Disable New and Copy");
     	assertTextNotPresent("Create New");
-    	waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
     	assertTextNotPresent("copy");
     }
 

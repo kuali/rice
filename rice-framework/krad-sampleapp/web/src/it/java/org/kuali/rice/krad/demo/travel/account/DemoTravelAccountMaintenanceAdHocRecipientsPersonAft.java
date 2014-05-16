@@ -48,15 +48,16 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
         waitAndClickByLinkText("Ad Hoc Recipients");
 
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "kr");
-        waitAndClickById("Uif-AdHocPersonCollection_add");
         jGrowl("Click Add button");
-        waitAndClickButtonByText("Save");
+        waitAndClickById("Uif-AdHocPersonCollection_add");
+        waitForElementPresentByXpath("//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'KR']"); // kr added and now displayed on the page
+        waitAndClickSaveByText();
 
         waitForTextPresent("Document was successfully saved.");
 
         clearTextByName("document.adHocRoutePersons[0].id");
         waitAndTypeByName("document.adHocRoutePersons[0].id", "1");
-        waitAndClickButtonByText("Save");
+        waitAndClickSaveByText();
 
         waitForTextPresent("Invalid Ad Hoc Routing Person Network Id");
     }

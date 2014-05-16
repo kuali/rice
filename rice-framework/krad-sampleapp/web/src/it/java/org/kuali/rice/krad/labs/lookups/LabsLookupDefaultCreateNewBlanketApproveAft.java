@@ -92,7 +92,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
 
 // Blanket submit has been updated to go to the hub page so error messages and doc state are no longer testable
@@ -123,7 +123,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        waitAndClickButtonByText("Blanket Approve");
+        waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
 // Blanket approve now redirects to the hub so error messagea and doc status are no longer testable https://jira.kuali.org/browse/KULRICE-11463
 //        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {

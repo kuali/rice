@@ -39,7 +39,7 @@ public class LabsMaintenanceCopyLinkOnSearchResultAft extends LabsMaintenanceBas
 
     protected void testMaintenanceDefineControl() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Copy from Search Result");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitAndClickLinkContainingText("copy");
         waitForElementPresentByXpath("//div[@data-label='Company Name']");
         String companyNameValue=getTextByXpath("//div[@data-label='Company Name']");

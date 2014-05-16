@@ -53,14 +53,14 @@ public class RoleGroupPermissionResponsibilityTypeAft extends WebDriverLegacyITB
     protected void testRoleGroupPermissionResponsibilityType() throws Exception {
         selectFrameIframePortlet();
         selectByName("lookupCriteria[namespaceCode]","KR-BUS - Service Bus");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         Thread.sleep(3000);
         assertTextPresent("No values match this search.");
         waitAndClickButtonByText("Clear Values");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertDataTableContains(new String[][]{{"KUALI"}, {"KR-NS"}});
         waitAndTypeByName("lookupCriteria[name]","Permission");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("Namespace or Component");
         assertTextPresent("KR-IDM");
     }

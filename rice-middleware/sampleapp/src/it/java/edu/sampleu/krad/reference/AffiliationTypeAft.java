@@ -52,13 +52,13 @@ public class AffiliationTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testAffiliationType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertTextPresent(new String[][]{{"AFLT"}, {"FCLTY"}, {"STAFF"}});
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("AFLT");
         waitAndTypeByName("lookupCriteria[code]","AFLT");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         waitForTextNotPresent("FCLTY");
     }
 

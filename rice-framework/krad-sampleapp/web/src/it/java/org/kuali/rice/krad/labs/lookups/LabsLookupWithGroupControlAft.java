@@ -51,11 +51,11 @@ public class LabsLookupWithGroupControlAft extends LabsLookupBase {
     
     protected void testLabsLookupWithGroupControl()throws Exception {
         waitAndTypeByName("lookupCriteria[memberId]","testuser1");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         assertDataTableContains(new String[][]{{"2001"}, {"2003"}});
         waitAndClickButtonByText("Clear Values");
         Thread.sleep(1000);
-        waitAndClickButtonByText("Search");
+        waitAndClickSearchByText();
         Thread.sleep(3000);
         assertTextPresent("Showing 1 to 10 of", "div.dataTables_info", this.getClass().toString());
     }

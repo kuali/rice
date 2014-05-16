@@ -78,8 +78,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
+import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.test.BaselineTestCase;
 
 /**
@@ -109,7 +111,11 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         IdentityManagementPersonDocument personDoc = initPersonDoc();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
-        personDoc.getDocumentHeader().setWorkflowDocument(document);
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(document);
+        documentHeader.setDocumentNumber(document.getDocumentId());
+        personDoc.setDocumentHeader(documentHeader);
+
         // first - save them so we can inactivate them
         uiDocumentService.saveEntityPerson(personDoc);
         // verify that the record was saved
@@ -128,7 +134,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         IdentityManagementPersonDocument personDoc = initPersonDoc();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
-        personDoc.getDocumentHeader().setWorkflowDocument(document);
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(document);
+        documentHeader.setDocumentNumber(document.getDocumentId());
+        personDoc.setDocumentHeader(documentHeader);
 
         personDoc.setActive(false);
         uiDocumentService.saveEntityPerson(personDoc);
@@ -161,7 +170,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         IdentityManagementPersonDocument personDoc = initPersonDoc();
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
-        personDoc.getDocumentHeader().setWorkflowDocument(document);
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(document);
+        documentHeader.setDocumentNumber(document.getDocumentId());
+        personDoc.setDocumentHeader(documentHeader);
 
         personDoc.setActive(false);
         uiDocumentService.saveEntityPerson(personDoc);
@@ -176,13 +188,12 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	    Person adminPerson = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 
-		/*try {*/
-            //personDoc.getDocumentHeader().setWorkflowDocument(KRADServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
-            WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
-            personDoc.getDocumentHeader().setWorkflowDocument(document);
-        /*} catch (WorkflowException e) {
-            e.printStackTrace();
-        }*/
+		WorkflowDocument document = WorkflowDocumentFactory.createDocument(adminPerson.getPrincipalId(),"TestDocumentType");
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(document);
+        documentHeader.setDocumentNumber(document.getDocumentId());
+        personDoc.setDocumentHeader(documentHeader);
+
 		uiDocumentService.saveEntityPerson(personDoc);
 
 		Entity entity = KimApiServiceLocator.getIdentityService().getEntity(personDoc.getEntityId());

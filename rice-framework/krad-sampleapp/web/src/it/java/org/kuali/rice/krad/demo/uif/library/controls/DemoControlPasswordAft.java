@@ -113,7 +113,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Enable when changed");
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField3","a");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         assertElementPresentByXpath(ENABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER);
     }
     
@@ -121,7 +121,7 @@ public class DemoControlPasswordAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Disable when changed");
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_BEFORE);
         waitAndTypeByName("inputField5","a");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         assertElementPresentByXpath(DISABLE_WHEN_CHANGED_PWD_FIELD_XPATH_AFTER);
     }
     

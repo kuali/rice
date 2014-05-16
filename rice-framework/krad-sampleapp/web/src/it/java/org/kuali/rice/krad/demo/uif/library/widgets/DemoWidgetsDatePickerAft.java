@@ -42,17 +42,21 @@ public class DemoWidgetsDatePickerAft extends DemoLibraryBase {
     protected void testWidgetsDatePickerDefault() throws Exception {
         selectByName("exampleShown","Default");
 
-        //click on datepicker
-        waitAndClick(By.cssSelector("img.ui-datepicker-trigger"));
+        jGrowl("Click Datepicker");
+        waitAndClickByXpath("//div[@data-parent=\"Demo-DatePicker-Example1\"]/div/div/a[@title=\"...\"]");
 
-        //select today
+        jGrowl("Select Today");
         waitAndClick(By.cssSelector(".ui-datepicker-current"));
     }
 
     protected void testWidgetsDatePickerWidget() throws Exception {
         selectByName("exampleShown","Widget Input Only");
+
         assertElementPresentByXpath("//input[@name='inputField1' and @readonly]");
-        waitAndClickByXpath("//div[@data-parent='Demo-DatePicker-Example2']/img");
+
+        jGrowl("Click Datepicker");
+        waitAndClickByXpath("//div[@data-parent=\"Demo-DatePicker-Example2\"]/div/div/a[@title=\"...\"]");
+
         waitAndClickByXpath("//button[@class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all']");
     }
 

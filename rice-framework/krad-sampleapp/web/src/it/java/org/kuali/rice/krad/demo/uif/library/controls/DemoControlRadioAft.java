@@ -80,7 +80,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='1']");
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @disabled='disabled' and @value='2']");
         waitAndTypeByName("inputField3","a");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @value='1']");
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example6']/fieldset/span/input[@type='radio' and @name='inputField4' and @value='2']");
     }
@@ -90,7 +90,7 @@ public class DemoControlRadioAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@type='radio' and @name='inputField6' and @value='1']");
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@type='radio' and @name='inputField6' and @value='2']");
         waitAndTypeByName("inputField5","a");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         waitForElementPresentByXpath("//div[@data-parent='Demo-RadioControl-Example7']/fieldset/span/input[@disabled]");
     }
     

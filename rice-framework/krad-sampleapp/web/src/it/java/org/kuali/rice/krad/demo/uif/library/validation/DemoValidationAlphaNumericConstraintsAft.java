@@ -49,7 +49,7 @@ public class DemoValidationAlphaNumericConstraintsAft extends WebDriverLegacyITB
     protected void testValidationAlphaNumericConstraints() throws Exception {
          //Scenario-1
          waitAndTypeByName("inputField1","_as");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         fireMouseOverEventByName("inputField1");
          isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
@@ -70,7 +70,7 @@ public class DemoValidationAlphaNumericConstraintsAft extends WebDriverLegacyITB
         
         //Scenario-1
         waitAndTypeByName("inputField4","as#");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         fireMouseOverEventByName("inputField4");
         isVisible(By.xpath("//li[@class='uif-errorMessageItem-field']"));
      }

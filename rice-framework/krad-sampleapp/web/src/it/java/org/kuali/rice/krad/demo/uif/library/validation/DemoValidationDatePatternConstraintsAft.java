@@ -65,7 +65,7 @@ public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBa
        
         //Scenario-1
         waitAndTypeByName("inputField4","23/12/13");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         isVisible(By.xpath("//div[@class='uif-clientMessageItems uif-clientErrorDiv']"));
     }
     

@@ -44,7 +44,7 @@ public class DemoValidationAnyCharacterConstraintsAft extends WebDriverLegacyITB
     protected void testValidationAnyCharacterConstraintsBasic() throws Exception {
         //Scenario-1
         waitAndTypeByName("inputField1","a x u");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         fireMouseOverEventByName("inputField1");
         assertElementPresentByXpath("//input[@name='inputField1' and @class='form-control input-sm uif-textControl validChar-inputField10 dirty error']");
     }
@@ -52,7 +52,7 @@ public class DemoValidationAnyCharacterConstraintsAft extends WebDriverLegacyITB
     protected void testValidationAnyCharacterConstraintsAllowWhitespace() throws Exception {
         waitAndClickByLinkText("Allow Whitespace");
         waitAndTypeByName("inputField2","a x u");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         fireMouseOverEventByName("inputField2");
         if (isElementPresentByXpath("//input[@name='inputField2' and @class='uif-textControl validChar-inputField20 dirty error']")) {
             fail("Criteria not satisfied.");

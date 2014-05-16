@@ -66,7 +66,7 @@ public class DemoValidationNumericConstraintsAft extends WebDriverLegacyITBase {
         
         //Scenario-1
         waitAndTypeByName("inputField4","1@2");
-        waitAndClickLinkContainingText("Library Navigation");
+        typeTab();
         fireMouseOverEventByName("inputField4");
         assertTextPresent(ERROR_MSG);
      }

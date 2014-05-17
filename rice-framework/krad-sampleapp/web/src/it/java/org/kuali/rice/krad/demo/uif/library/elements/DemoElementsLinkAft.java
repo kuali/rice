@@ -63,7 +63,7 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
     
     protected void testLibraryElementsLinkUsingBootstrapIcon() throws Exception {
         waitAndClickByLinkText("Link with a bootstrap icon");
-        waitAndClickByXpath("//section[@id='Demo-Link-Example4']/a[@class='uif-link uif-boxLayoutVerticalItem clearfix icon-pencil']");
+        waitAndClickByXpath("//section[@id='Demo-Link-Example4']/a");
         switchToWindow("Kuali Foundation");
         switchToWindow("Kuali");
     }

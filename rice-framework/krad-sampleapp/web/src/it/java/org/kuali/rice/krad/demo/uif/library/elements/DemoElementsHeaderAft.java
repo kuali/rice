@@ -78,15 +78,15 @@ public class DemoElementsHeaderAft extends WebDriverLegacyITBase {
     
     protected void testLibraryElementsHeaderEditableHeader() throws Exception {
         waitAndClickByLinkText("EditablePage Header");
-        assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/header[2]/div/h2/span");
+        assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/header[2]/h2/span");
         assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/header[2]/div/div/button");
         assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/header[2]/div/div/button[2]");
-        assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/header[2]/div[2]/div[2]/p");
+        assertElementPresentByXpath("//section[@id='Demo-Header-Example12']/p");
     }
     
     protected void testLibraryElementsHeaderDisclosureHeader() throws Exception {
         waitAndClickByLinkText("Disclosure Header");
-        assertElementPresentByXpath("//section[@id='Demo-Header-Example13']/header[2]/div/h2/span");
+        assertElementPresentByXpath("//section[@id='Demo-Header-Example13']/header[2]/h2/span");
     }
 
     protected void testLibraryElementsHeaderImageCaptionHeader() throws Exception {

@@ -65,7 +65,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         waitAndClickLinkContainingText("Create New");
 
         // add agenda information
-        waitForPageToLoad();
+        String docId = waitForAgendaDocId();
         addNewAgendaInformation(agendaName, "Kuali Rules Test", "Context1");
         // dynamic agenda details
         Thread.sleep(500); // tab is happening to fast
@@ -86,7 +86,10 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
 
         // validate rule exists
         waitForTextPresent(ruleName);
-        waitAndClickCancelByText();
+        waitAndClickSubmitByText();
+        waitAndClickConfirmationOk();
+        waitForTextPresent("Document was successfully submitted", WebDriverUtils.configuredImplicityWait() * 2);
+        assertDocSearch(docId, "FINAL");
         passed();
     }
 
@@ -132,7 +135,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         if (StringUtils.isNoneBlank(propComparison)) {
             waitAndSelectByName(propositionPath + "parameters[2].value", propComparison);
             unfocusElement();
-            Thread.sleep(1500); // need time for next input to be reloaded
+            Thread.sleep(3000); // need time for next input to be reloaded
         }
 
         if (StringUtils.isNoneBlank(propositionValue)) {

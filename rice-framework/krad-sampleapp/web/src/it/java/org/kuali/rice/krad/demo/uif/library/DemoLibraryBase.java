@@ -53,7 +53,7 @@ public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
     public WebElement navigateToExample(String exampleId) throws Exception {
         waitForElementPresentByClassName("demo-contactInfo", WebDriverUtils.configuredImplicityWait() * 2000); // wait for page to load
         WebElement exampleTab;
-        String tabId = "#" + exampleId + UifConstants.IdSuffixes.TAB;
+        String tabId = "#" + exampleId + UifConstants.IdSuffixes.TAB + "Panel"; // Why hasn't TAB been updated?
 
         if(isElementPresentById("ComponentLibrary-TabGroup_tabList")
                 && isElementPresentByDataAttributeValue(UifConstants.DataAttributes.TAB_FOR, exampleId)){

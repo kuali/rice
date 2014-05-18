@@ -45,61 +45,61 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
 
     protected void testGeneralFeaturesRichMessagesHtml() throws Exception {
-        waitAndClickByLinkText("Html");
+        selectByName("exampleShown", "Html");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example1']/b");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example1']/br");
     }
     
     protected void testGeneralFeaturesRichMessagesCompByIndex() throws Exception {
-        waitAndClickByLinkText("Comp. by Index");
+        selectByName("exampleShown", "Comp. by Index");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example2']/div/input");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example2']/a[@class='uif-link inlineBlock']");
     }
     
     protected void testGeneralFeaturesRichMessagesCompById() throws Exception {
-        waitAndClickByLinkText("Comp by id");
+        selectByName("exampleShown", "Comp by id");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example3']/div/label");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example3']/div/input");
     }
     
     protected void testGeneralFeaturesRichMessagesColor() throws Exception {
-        waitAndClickByLinkText("Color");
+        selectByName("exampleShown", "Color");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example4']/span[@style='color: green;']");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example4']/span[@style='color: blue;']");
     }
     
     protected void testGeneralFeaturesRichMessagesCss() throws Exception {
-        waitAndClickByLinkText("CSS");
+        selectByName("exampleShown", "CSS");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example5']/span[@class='uif-text-underline uif-text-larger']");
     }
     
     protected void testGeneralFeaturesRichMessagesLink() throws Exception {
-        waitAndClickByLinkText("Link");
+        selectByName("exampleShown", "Link");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example13']/a");
     }
     
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
-        waitAndClickByLinkText("Action");
+        selectByName("exampleShown", "Action");
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][1]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][2]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][3]/a"));
         assertJgrowlText("Sample Message Text. Data passed: You passed data");
         waitAndClick(By.className("jGrowl-close"));
 
-        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][4]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
         WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2, this.getClass().toString());
         assertJgrowlText("Sample Message Text. Data passed: none");
@@ -107,40 +107,40 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
     
     protected void testGeneralFeaturesRichMessagesCombine() throws Exception {
-        waitAndClickByLinkText("Combine");
+        selectByName("exampleShown", "Combine");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example6']/button");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example6']/span/div/input");
     }
     
     protected void testGeneralFeaturesRichMessagesInLabels() throws Exception {
-        waitAndClickByLinkText("In Labels");
+        selectByName("exampleShown", "In Labels");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example7']/label/span[@style='color: green;']");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example7']/input");
     }
     
     protected void testGeneralFeaturesRichMessagesWInputField() throws Exception {
-        waitAndClickByLinkText("W/ InputField");
+        selectByName("exampleShown", "W/ InputField");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example8']/div/button");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example8']/input");
     }
     
     protected void testGeneralFeaturesRichMessagesWSpringEL() throws Exception {
-        waitAndClickByLinkText("W/ SpringEL");
+        selectByName("exampleShown", "W/ SpringEL");
         assertElementPresentByXpath("//p[@data-parent='Demo-RichMessages-Example9']/span[@style='color: green;']");
     }
     
     protected void testGeneralFeaturesRichMessagesImages() throws Exception {
-        waitAndClickByLinkText("Images");
+        selectByName("exampleShown", "Images");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example10']/ul/li/img");
     }
     
     protected void testGeneralFeaturesRichMessagesEscapeChar() throws Exception {
-        waitAndClickByLinkText("Escape char");
+        selectByName("exampleShown", "Escape char");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example11']/span[@style='color: green;']/b");
     }
     
     protected void testGeneralFeaturesRichMessagesEscapeCheckboxRadio() throws Exception {
-        waitAndClickByLinkText("Checkboxes/Radio");
+        selectByName("exampleShown", "Checkboxes/Radio");
         assertElementPresentByXpath("//div[@data-parent='Demo-RichMessages-Example12']/fieldset/span/label/span[@style='color: blue;']");
     }
     

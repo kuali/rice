@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
 import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplateContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -27,6 +28,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -77,8 +79,9 @@ public class NaturalLanguageTemplateBo implements NaturalLanguageTemplateContrac
     @Column(name = "NL_TMPL_ID")
     private String id;
 
-    @Transient
-    private boolean active;
+    @Column(name = "ACTV")
+    @Convert(converter = BooleanYNConverter.class)
+    private boolean active = true;
 
     @Column(name = "VER_NBR")
     @Version

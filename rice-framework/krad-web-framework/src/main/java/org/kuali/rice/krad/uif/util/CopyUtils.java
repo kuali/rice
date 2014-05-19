@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +32,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.WeakHashMap;
 
@@ -98,6 +100,14 @@ public final class CopyUtils {
             return null;
         }
 
+        if ((obj instanceof LifecycleAwareList) || (obj instanceof LifecycleAwareMap)) {
+            try {
+                return (T) obj.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new IllegalStateException("Unexpected error in clone()", e);
+            }
+        }
+
         String cid = null;
         if (ViewLifecycle.isTrace()) {
             StackTraceElement[] trace = Thread.currentThread().getStackTrace();
@@ -107,7 +117,7 @@ public final class CopyUtils {
             StackTraceElement caller = trace[i];
             cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
                     + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
-            ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000);
+            ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000L, 500L);
         }
 
         return (T) getDeepCopy(obj);
@@ -161,9 +171,9 @@ public final class CopyUtils {
         if (obj == null) {
             return null;
         }
-        
+
         if (ViewLifecycle.isTrace()) {
-            ProcessLogger.ntrace("clone:",":"+obj.getClass().getSimpleName(), 1000);
+            ProcessLogger.ntrace("clone:", ":" + obj.getClass().getSimpleName(), 10000L, 1000L);
         }
 
         synchronized (obj) {
@@ -255,16 +265,16 @@ public final class CopyUtils {
 
         FieldReference<?> fieldRef = (FieldReference<?>) ref;
         Field field = fieldRef.field;
-        
+
         if (field.isAnnotationPresent(ReferenceCopy.class)) {
             return false;
         }
- 
+
         if (!(source instanceof Copyable) &&
                 ((source instanceof Map) || (source instanceof List))) {
             Class<?> collectionType = getMetadata(fieldRef.source.getClass())
                     .collectionTypeByField.get(field);
-            
+
             if (!Object.class.equals(collectionType)
                     && !isDeepCopyAvailable(collectionType)) {
                 return false;
@@ -275,8 +285,8 @@ public final class CopyUtils {
     }
 
     /**
-     * Helper for {@link #getDeepCopy(Object)} to 
-     * detect whether or not to copy the current node or to keep the cloned reference.
+     * Helper for {@link #getDeepCopy(Object)} to detect whether or not to copy the current node or
+     * to keep the cloned reference.
      */
     private static boolean isCopy(CopyReference<?> ref) {
         if (!(ref instanceof FieldReference)) {
@@ -291,101 +301,20 @@ public final class CopyUtils {
     }
 
     /**
-     * Prepare a copyable object for caching by calling {@link Copyable#preventModification()} on
-     * all copyable instances located by a deep traversal of the object.
+     * Unwrap an object from any wrapper class or proxy it may be decorated with related to the copy
+     * process.
      * 
-     * @param obj The object to prepare for caching.
-     */
-    public static void preventModification(Copyable obj) {
-        CopyState copyState = RecycleUtils.getRecycledInstance(CopyState.class);
-        if (copyState == null) {
-            copyState = new CopyState();
-        }
-
-        SimpleReference<?> topReference = getSimpleReference(obj);
-        try {
-            copyState.queue.offer(topReference);
-
-            while (!copyState.queue.isEmpty()) {
-                CopyReference<?> toCache = copyState.queue.poll();
-                Object source = toCache.get();
-
-                if (!isShallowCopyAvailable(source)) {
-                    continue;
-                }
-
-                if (source instanceof Copyable) {
-                    ((Copyable) source).preventModification();
-                }
-
-                if (isDeep(toCache, source)) {
-                    copyState.queueDeepCopyReferences(source, null, toCache);
-                }
-
-                if (toCache != topReference) {
-                    recycle(toCache);
-                }
-            }
-
-        } finally {
-            recycle(topReference);
-            copyState.recycle();
-        }
-        
-    }
-
-    /**
-     * Prepare a copyable object for caching by calling {@link Copyable#preventModification()} on
-     * all copyable instances located by a deep traversal of the object.
+     * <p>
+     * This method is a public utility passthrough for
+     * {@link DelayedCopyableHandler#getDelayedCopy(Copyable)}.
+     * </p>
      * 
-     * @param <T> copyable type
-     * @param obj The object to prepare for caching.
-     * @return A deep copy of the object.
+     * @param obj an object.
+     * @return The non-proxied bean represented by source, copied if needed. When source is not
+     *         copyable, or not proxied, it is returned as-is.
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Copyable> T unwrapDeep(Copyable obj) {
-        CopyState copyState = RecycleUtils.getRecycledInstance(CopyState.class);
-        if (copyState == null) {
-            copyState = new CopyState();
-        }
-
-        Copyable unwrappedObj = obj.unwrap();
-        SimpleReference<?> topReference = getSimpleReference(unwrappedObj);
-        try {
-            copyState.queue.offer(topReference);
-
-            while (!copyState.queue.isEmpty()) {
-                CopyReference<?> toUnwrap = copyState.queue.poll();
-                Object source = toUnwrap.get();
-
-                if (!isShallowCopyAvailable(source)) {
-                    continue;
-                }
-
-                Object unwrapped = source;
-                if (source instanceof Copyable) {
-                    unwrapped = ((Copyable) source).unwrap();
-                    if (source != unwrapped) {
-                        toUnwrap.set(unwrapped);
-                    }
-                }
-
-                if (isDeep(toUnwrap, unwrapped)) {
-                    copyState.queueDeepCopyReferences(unwrapped, unwrapped, toUnwrap);
-                    copyState.cache.put(unwrapped, unwrapped);
-                }
-
-                if (toUnwrap != topReference) {
-                    recycle(toUnwrap);
-                }
-            }
-
-        } finally {
-            recycle(topReference);
-            copyState.recycle();
-        }
-        
-        return (T) unwrappedObj;
+    public static <T> T unwrap(T obj) {
+        return DelayedCopyableHandler.unwrap(obj);
     }
 
     /**
@@ -402,6 +331,8 @@ public final class CopyUtils {
             copyState = new CopyState();
         }
 
+        obj = unwrap(obj);
+        
         SimpleReference<?> topReference = getSimpleReference(obj);
         try {
             copyState.queue.offer(topReference);
@@ -413,11 +344,15 @@ public final class CopyUtils {
                 if (!isShallowCopyAvailable(source) || !isCopy(toCopy)) {
                     continue;
                 }
-                
+
                 if (source instanceof Copyable) {
-                    source = ((Copyable) source).unwrap();
+                    source = unwrap(source);
                 }
 
+                if (ViewLifecycle.isTrace()) {
+                    ProcessLogger.ntrace("deep-copy:", ":" + toCopy.getPath(), 10000, 1000);
+                }
+                
                 toCopy.set(copyState.getTarget(source, isDeep(toCopy, source), toCopy));
 
                 if (toCopy != topReference) {
@@ -431,6 +366,47 @@ public final class CopyUtils {
             recycle(topReference);
             copyState.recycle();
         }
+    }
+
+    /**
+     * Retrieves all field names for the given class that have the given annotation
+     * 
+     * @param clazz class to find field annotations for
+     * @param annotationClass class for annotation to find
+     * @return map containing the field name that has the annotation as a key and the annotation
+     *         instance as a value
+     */
+    public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
+            Class<? extends Annotation> annotationClass) {
+        Map<String, Annotation> rv = getMetadata(clazz).annotatedFieldsByAnnotationType.get(annotationClass);
+        return rv == null ? Collections.<String, Annotation> emptyMap() : rv;
+    }
+
+    /**
+     * Determines whether the field of the given class has the given annotation specified
+     * 
+     * @param clazz class containing the field to check
+     * @param fieldName name of the field to check
+     * @param annotationClass class for the annotation to look for
+     * @return true if the named field has the given annotation, false if not
+     */
+    public static boolean fieldHasAnnotation(Class<?> clazz, String fieldName,
+            Class<? extends Annotation> annotationClass) {
+        return getFieldAnnotation(clazz, fieldName, annotationClass) != null;
+    }
+
+    /**
+     * Returns annotation of the given type for the given field (if present)
+     * 
+     * @param clazz class containing the field to check
+     * @param propertyName name of the field to check
+     * @param annotationClass class for the annotation to look for
+     * @return annnotation on field, or null
+     */
+    public static Annotation getFieldAnnotation(Class<?> clazz, String fieldName,
+            Class<? extends Annotation> annotationClass) {
+        Map<String, Annotation> annotationsByField = getFieldsWithAnnotation(clazz, annotationClass);
+        return annotationsByField == null ? null : annotationsByField.get(fieldName);
     }
 
     /**
@@ -458,9 +434,9 @@ public final class CopyUtils {
                 if (Copyable.class.isAssignableFrom(targetClass) && targetClass.isInterface()
                         && ref.isDelayAvailable() && isDelay()) {
                     target = DelayedCopyableHandler.getDelayedCopy((Copyable) source);
-                    
+
                 } else {
-                    
+
                     try {
                         target = getShallowCopy(source);
                     } catch (CloneNotSupportedException e) {
@@ -471,7 +447,7 @@ public final class CopyUtils {
                         queueDeepCopyReferences(source, target, ref);
                     }
                 }
-                
+
                 if (useCache) {
                     cache.put(source, target);
                 }
@@ -514,14 +490,14 @@ public final class CopyUtils {
                 List<?> sourceList = (List<?>) source;
                 List<?> targetList = (List<?>) target;
                 Type componentType = ObjectPropertyUtils.getComponentType(ref.getType());
-                
+
                 if (componentType instanceof TypeVariable<?>) {
                     TypeVariable<?> tvar = (TypeVariable<?>) componentType;
                     if (ref.getTypeVariables().containsKey(tvar.getName())) {
                         componentType = ref.getTypeVariables().get(tvar.getName());
                     }
                 }
-                
+
                 Class<?> componentClass = ObjectPropertyUtils.getUpperBound(componentType);
 
                 for (int i = 0; i < sourceList.size(); i++) {
@@ -563,14 +539,21 @@ public final class CopyUtils {
      * Represents a abstract reference to a targeted value for use during deep copying.
      */
     private interface CopyReference<T> {
-        
+
         /**
          * Gets the type this reference refers to.
          * 
          * @return the class referred to
          */
         Class<T> getTargetClass();
-        
+
+        /**
+         * This method ...
+         * 
+         * @return
+         */
+        String getPath();
+
         /**
          * Determines whether or not a delayed copy proxy should be considered on this reference.
          * 
@@ -699,6 +682,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return null;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -743,6 +733,7 @@ public final class CopyUtils {
         private Field field;
         private boolean delayAvailable;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
+        private String path;
 
         /**
          * Gets the type of the field.
@@ -816,6 +807,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -824,6 +822,7 @@ public final class CopyUtils {
             target = null;
             field = null;
             delayAvailable = false;
+            path = null;
             typeVariables.clear();
         }
 
@@ -860,7 +859,7 @@ public final class CopyUtils {
                 (!delayedCopy.inherit() || pref.isDelayAvailable());
 
         Map<String, Type> pTypeVars = pref.getTypeVariables();
-        
+
         if (pTypeVars != null && source != null) {
             Class<?> sourceType = source.getClass();
             Class<?> targetClass = pref.getTargetClass();
@@ -884,7 +883,7 @@ public final class CopyUtils {
             TypeVariable<?>[] typeParams = rawType.getTypeParameters();
             Type[] params = parameterizedType.getActualTypeArguments();
             assert params.length == typeParams.length;
-            for (int i=0; i < params.length; i++) {
+            for (int i = 0; i < params.length; i++) {
                 Type paramType = params[i];
                 if (paramType instanceof TypeVariable<?>) {
                     Type fType = ref.typeVariables.get(((TypeVariable<?>) paramType).getName());
@@ -894,6 +893,12 @@ public final class CopyUtils {
                 }
                 ref.typeVariables.put(typeParams[i].getName(), paramType);
             }
+        }
+
+        if (pref == null || pref.getPath() == null) {
+            ref.path = field.getName();
+        } else {
+            ref.path = pref.getPath() + "." + field.getName();
         }
         
         return ref;
@@ -908,6 +913,7 @@ public final class CopyUtils {
         private Object target;
         private int index = -1;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -967,12 +973,20 @@ public final class CopyUtils {
             Array.set(target, index, value);
         }
 
+        /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
         @Override
         public void clean() {
             source = null;
             target = null;
             index = -1;
             delayAvailable = false;
+            path = null;
             typeVariables.clear();
         }
     }
@@ -1004,7 +1018,13 @@ public final class CopyUtils {
         ref.index = index;
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
-        
+
+        if (pref == null || pref.getPath() == null) {
+            ref.path = "[" + index + ']';
+        } else {
+            ref.path = pref.getPath() + '[' + index + ']';
+        }
+
         return ref;
     }
 
@@ -1019,6 +1039,7 @@ public final class CopyUtils {
         private List<T> target;
         private int index = -1;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -1037,7 +1058,6 @@ public final class CopyUtils {
         public boolean isDelayAvailable() {
             return this.delayAvailable;
         }
-
 
         /**
          * Gets the generic item type for the list.
@@ -1074,6 +1094,13 @@ public final class CopyUtils {
         @Override
         public void set(Object value) {
             target.set(index, targetClass.cast(value));
+        }
+
+        /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
         }
 
         /**
@@ -1121,6 +1148,12 @@ public final class CopyUtils {
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
 
+        if (pref == null || pref.getPath() == null) {
+            ref.path = "[" + index + ']';
+        } else {
+            ref.path = pref.getPath() + '[' + index + ']';
+        }
+
         return ref;
     }
 
@@ -1134,6 +1167,7 @@ public final class CopyUtils {
         private Map.Entry<Object, T> sourceEntry;
         private Map<Object, T> target;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -1191,6 +1225,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -1232,9 +1273,15 @@ public final class CopyUtils {
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
 
+        if (pref == null || pref.getPath() == null) {
+            ref.path = "[" + sourceEntry.getKey() + ']';
+        } else {
+            ref.path = pref.getPath() + '[' + sourceEntry.getKey() + ']';
+        }
+
         return ref;
     }
-    
+
     /**
      * Internal field cache meta-data node, for reducing field lookup overhead.
      * 
@@ -1260,6 +1307,11 @@ public final class CopyUtils {
         private final Map<Field, Class<?>> collectionTypeByField;
 
         /**
+         * Mapping from annotation type to field name to annotation mapping.
+         */
+        private final Map<Class<?>, Map<String, Annotation>> annotatedFieldsByAnnotationType;
+
+        /**
          * Create a new field reference for a target class.
          * 
          * @param targetClass The class to inspect for meta-data.
@@ -1281,6 +1333,7 @@ public final class CopyUtils {
             // Create mutable collections for building meta-data indexes.
             List<Field> cloneList = new ArrayList<Field>();
             Map<Field, Class<?>> collectionTypeMap = new HashMap<Field, Class<?>>();
+            Map<Class<?>, Map<String, Annotation>> annotationMap = new HashMap<Class<?>, Map<String, Annotation>>();
 
             Class<?> currentClass = targetClass;
             while (currentClass != Object.class && currentClass != null) {
@@ -1288,6 +1341,21 @@ public final class CopyUtils {
                 for (Field currentField : currentClass.getDeclaredFields()) {
                     if ((currentField.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
                         continue;
+                    }
+
+                    Annotation[] annotations = currentField.getAnnotations();
+                    if (annotations != null) {
+                        for (Annotation annotation : annotations) {
+                            Class<?> annotationType = annotation.annotationType();
+                            Map<String, Annotation> amap = annotationMap.get(annotationType);
+
+                            if (amap == null) {
+                                amap = new HashMap<String, Annotation>();
+                                annotationMap.put(annotationType, amap);
+                            }
+
+                            amap.put(currentField.getName(), annotation);
+                        }
                     }
 
                     Class<?> type = currentField.getType();
@@ -1304,7 +1372,7 @@ public final class CopyUtils {
                     if (!isList && !isMap) {
                         continue;
                     }
-                    
+
                     Class<?> collectionType = ObjectPropertyUtils
                             .getUpperBound(ObjectPropertyUtils
                                     .getComponentType(currentField.getGenericType()));
@@ -1320,6 +1388,11 @@ public final class CopyUtils {
             // Seal index collections to prevent external modification.
             cloneFields = Collections.unmodifiableList(cloneList);
             collectionTypeByField = Collections.unmodifiableMap(collectionTypeMap);
+
+            for (Entry<Class<?>, Map<String, Annotation>> aentry : annotationMap.entrySet()) {
+                aentry.setValue(Collections.unmodifiableMap(aentry.getValue()));
+            }
+            annotatedFieldsByAnnotationType = Collections.unmodifiableMap(annotationMap);
         }
     }
 

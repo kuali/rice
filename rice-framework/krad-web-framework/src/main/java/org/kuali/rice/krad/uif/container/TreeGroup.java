@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.container;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +33,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
@@ -334,11 +334,11 @@ public class TreeGroup extends GroupBase implements DataBinding {
         nodeCopy.setNodeType(node.getNodeType());
 
         if (node.getData() != null) {
-            nodeCopy.setData((Group) node.getData().copy());
+            nodeCopy.setData((Group) CopyUtils.copy(node.getData()));
         }
 
         if (node.getNodeLabel() != null) {
-            nodeCopy.setNodeLabel((Message) node.getNodeLabel().copy());
+            nodeCopy.setNodeLabel((Message) CopyUtils.copy(node.getNodeLabel()));
         }
 
         if (node.getChildren() != null) {

@@ -28,8 +28,8 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 
 /**
  * A placeholder in the configuration for a <code>Container</code> list of items that will be invoked to
@@ -154,7 +154,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
         bindingInfo.setBindToMap(true);
 
         for (InputField field : attributeFields) {
-            BindingInfo fieldBindingInfo = CloneUtils.deepClone(bindingInfo);
+            BindingInfo fieldBindingInfo = CopyUtils.copy(bindingInfo);
             fieldBindingInfo.setDefaults(ViewLifecycle.getView(), field.getPropertyName());
             field.setBindingInfo(fieldBindingInfo);
         }

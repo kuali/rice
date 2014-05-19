@@ -236,14 +236,10 @@ public class ComponentUtilsTest {
      */
     public void testCopyUsingCloningWithFieldBaseSucceeds() {
         FieldBase fieldBaseOriginal = initializeFieldBase();
-        FieldBase fieldBaseCopy = copy(fieldBaseOriginal);
+        FieldBase fieldBaseCopy = CopyUtils.copy(fieldBaseOriginal);
 
         assertTrue(ComponentCopyPropertiesMatch(fieldBaseOriginal, fieldBaseCopy));
         assertTrue(fieldBaseOriginal.getShortLabel().equals(fieldBaseCopy.getShortLabel()));
-    }
-
-    public static <T extends Component> T copy(T component) {
-        return component.copy();
     }
 
     @Test
@@ -253,7 +249,7 @@ public class ComponentUtilsTest {
     public void testCopyUsingCloningWithDataFieldSucceeds() {
         DataField dataFieldOriginal = initializeDataField();
 
-        DataField dataFieldCopy = copy(dataFieldOriginal);
+        DataField dataFieldCopy = CopyUtils.copy(dataFieldOriginal);
         assertTrue(ComponentCopyPropertiesMatch(dataFieldOriginal, dataFieldCopy));
     }
 
@@ -263,18 +259,20 @@ public class ComponentUtilsTest {
     @Test
     public void testCopyUsingCloningWithSimpleCollectionGroupSucceeds() {
         CollectionGroup collectionGroupOriginal = initializeCollectionGroup();
-        CollectionGroup collectionGroupCopy = copy(collectionGroupOriginal);
+        CollectionGroup collectionGroupCopy = CopyUtils.copy(collectionGroupOriginal);
 
         assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal, collectionGroupCopy));
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineItems().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch((ComponentBase) collectionGroupOriginal.getAddLineItems().get(i).unwrap(),
-                    (ComponentBase) collectionGroupCopy.getAddLineItems().get(i).unwrap()));
+            assertTrue(ComponentCopyPropertiesMatch(
+                    CopyUtils.unwrap((Component) collectionGroupOriginal.getAddLineItems().get(i)),
+                    CopyUtils.unwrap((Component) collectionGroupCopy.getAddLineItems().get(i))));
         }
 
         for (int i = 0; i < collectionGroupOriginal.getAddLineActions().size(); i++) {
-            assertTrue(ComponentCopyPropertiesMatch(collectionGroupOriginal.getAddLineActions().get(i),
-                    collectionGroupCopy.getAddLineActions().get(i)));
+            assertTrue(ComponentCopyPropertiesMatch(
+                    CopyUtils.unwrap((Component) collectionGroupOriginal.getAddLineActions().get(i)),
+                    CopyUtils.unwrap((Component) collectionGroupCopy.getAddLineActions().get(i))));
         }
     }
 
@@ -524,7 +522,7 @@ public class ComponentUtilsTest {
 
         initializeClass(dataTableOriginal);
 
-        CheckboxControl dataTableCopy = copy(dataTableOriginal);
+        CheckboxControl dataTableCopy = CopyUtils.copy(dataTableOriginal);
 
         assertTrue(propertiesMatch(dataTableOriginal, dataTableCopy));
     }

@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.mockito.Mockito;
 
@@ -44,7 +45,6 @@ public class FieldBaseTest {
         view = Mockito.mock(View.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(view.getViewHelperService()).thenReturn(mockViewHelperService);
-        when(view.copy()).thenReturn(view);
     }
 
     @Test
@@ -79,12 +79,12 @@ public class FieldBaseTest {
                 fieldBase.setRequired(true);
                 fieldBase.setReadOnly(false);
 
-                FieldBase fieldBaseCopy = fieldBase.<FieldBase>copy();
+                FieldBase fieldBaseCopy = CopyUtils.copy(fieldBase);
                 fieldBaseCopy.performFinalize(nullModel, mockComponent);
                 assertTrue(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());
 
                 // required and readonly -  do not render
-                fieldBaseCopy = fieldBase.<FieldBase>copy();
+                fieldBaseCopy = CopyUtils.copy(fieldBase);
                 fieldBaseCopy.setReadOnly(true);
                 fieldBaseCopy.performFinalize(nullModel, mockComponent);
                 assertFalse(fieldBaseCopy.getFieldLabel().isRenderRequiredIndicator());

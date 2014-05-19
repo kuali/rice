@@ -30,10 +30,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
@@ -154,7 +154,7 @@ public final class ViewLifecycleUtils {
             returnMap = RecycleUtils.getInstance(LinkedHashMap.class);
         }
 
-        returnMap.put(propertyName, (LifecycleElement) nestedElement.unwrap());
+        returnMap.put(propertyName, CopyUtils.unwrap((LifecycleElement) nestedElement));
         return returnMap;
     }
 

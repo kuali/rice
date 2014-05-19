@@ -50,7 +50,6 @@ public class InputFieldTest {
         view = Mockito.mock(View.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(view.getViewHelperService()).thenReturn(mockViewHelperService);
-        when(view.copy()).thenReturn(view);
 
         optionsFinder = Mockito.mock(KeyValuesFinder.class);
         bindingInfo = Mockito.mock(BindingInfo.class);
@@ -67,7 +66,6 @@ public class InputFieldTest {
         // setup preconditions (view status is final; bindinginfo return testInteger)
         when(view.getViewStatus()).thenReturn(UifConstants.ViewStatus.FINAL);
         when(bindingInfo.getBindingPath()).thenReturn("testInteger");
-        when(bindingInfo.copy()).thenReturn(bindingInfo);
         when(bindingInfo.clone()).thenReturn(bindingInfo);
 
         // setup input field with binding info and readonly

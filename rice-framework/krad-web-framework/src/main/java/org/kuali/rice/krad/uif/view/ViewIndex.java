@@ -236,46 +236,4 @@ public class ViewIndex implements Serializable {
         return collectionsIndex.get(collectionPath);
     }
 
-    /**
-     * Returns a clone of the view index.
-     *
-     * @return ViewIndex clone
-     */
-    public ViewIndex copy() {
-        ViewIndex viewIndexCopy = new ViewIndex();
-
-        if (this.index != null) {
-            Map<String, Component> indexCopy = new HashMap<String, Component>();
-            for (Map.Entry<String, Component> indexEntry : this.index.entrySet()) {
-                if (indexEntry.getValue() instanceof View) {
-                    LOG.warn("view reference at " + indexEntry);
-                } else {
-                    indexCopy.put(indexEntry.getKey(), (Component) indexEntry.getValue().copy());
-                }
-            }
-
-            viewIndexCopy.index = indexCopy;
-        }
-
-        if (this.dataFieldIndex != null) {
-            Map<String, DataField> dataFieldIndexCopy = new HashMap<String, DataField>();
-            for (Map.Entry<String, DataField> indexEntry : this.dataFieldIndex.entrySet()) {
-                dataFieldIndexCopy.put(indexEntry.getKey(), (DataField) indexEntry.getValue().copy());
-            }
-
-            viewIndexCopy.dataFieldIndex = dataFieldIndexCopy;
-        }
-
-        if (this.collectionsIndex != null) {
-            Map<String, CollectionGroup> collectionsIndexCopy = new HashMap<String, CollectionGroup>();
-            for (Map.Entry<String, CollectionGroup> indexEntry : this.collectionsIndex.entrySet()) {
-                collectionsIndexCopy.put(indexEntry.getKey(), (CollectionGroup) indexEntry.getValue().copy());
-            }
-
-            viewIndexCopy.collectionsIndex = collectionsIndexCopy;
-        }
-
-        return viewIndexCopy;
-    }
-
 }

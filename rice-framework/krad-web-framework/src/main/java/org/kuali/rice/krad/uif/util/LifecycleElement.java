@@ -24,7 +24,6 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
-import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * Interface to be implemented by objects that participates in the view lifecycle.
@@ -132,12 +131,13 @@ public interface LifecycleElement extends Serializable, Copyable {
     String getViewStatus();
 
     /**
-     * Set the view lifecycle processing status for this component.
+     * Sets the view status.
      * 
-     * @param phase The phase that has just finished processing the component.
+     * @param status view status
+     * @see #getViewStatus()
      */
-    void setViewStatus(ViewLifecyclePhase phase);
-    
+    void setViewStatus(String viewStatus);
+
     /**
      * Indicates whether the component should be rendered in the UI
      *

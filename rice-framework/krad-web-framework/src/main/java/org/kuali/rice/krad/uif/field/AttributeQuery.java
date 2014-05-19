@@ -24,7 +24,6 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

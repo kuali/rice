@@ -27,6 +27,7 @@ import org.kuali.rice.krad.uif.UifConstants.Position;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -57,6 +58,8 @@ public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
 
     private String shortLabel;
+    
+    @DelayedCopy
     private Label fieldLabel;
     
     private boolean labelRendered;

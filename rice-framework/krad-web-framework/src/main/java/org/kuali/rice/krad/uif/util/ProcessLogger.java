@@ -187,6 +187,15 @@ public class ProcessLogger {
         private Map<String, Long> ntraceCount = new java.util.TreeMap<String, Long>();
 
         /**
+         * Internal mapping of ntrace thresholds.
+         * 
+         * <p>
+         * Associated with ntraceCount, this map defines thresholds below which not to report counts.
+         * </p>
+         */
+        private Map<String, Long> ntraceThreshold = new java.util.HashMap<String, Long>();
+
+        /**
          * Verbose operation flag.
          * 
          * <p>
@@ -411,6 +420,12 @@ public class ProcessLogger {
             if (!ntraceCount.isEmpty()) {
                 traceBuffer.append("\nMonitors:");
                 for (Entry<String, Long> ce : ntraceCount.entrySet()) {
+                    
+                    Long threshold = ntraceThreshold.get(ce.getKey());
+                    if (threshold != null && threshold >= ce.getValue()) {
+                        continue;
+                    }
+                    
                     traceBuffer.append("\n  ");
                     StringBuilder sb = new StringBuilder(ce.getKey());
                     int iocc = sb.indexOf("::");
@@ -786,10 +801,29 @@ public class ProcessLogger {
      * @return The execution count of the operation on trace with the highest number of executions.
      */
     public static long ntrace(String prefix, String suffix, long interval) {
+        return ntrace(prefix, suffix, interval, 0L);
+    }
+    
+    /**
+     * Count instances of a typically fast operation that may become expensive given a high number
+     * of executions.
+     * 
+     * <p>
+     * When the specified number of instances of the same operation have been counted, then a
+     * message indicating the execution count will be added to the process trace.
+     * </p>
+     * 
+     * @param prefix The message to report before the count.
+     * @param suffix The message to report after the count.
+     * @param interval The number of instances to count between reports on the process trace.
+     * @param threshold The number of instances below which not to report monitored counts.
+     * @return The execution count of the operation on trace with the highest number of executions.
+     */
+    public static long ntrace(String prefix, String suffix, long interval, long threshold) {
         long rv = 0L;
         if (TL_STAT.get() != null) {
             for (String k : TL_STAT.get().keySet()) {
-                rv = Math.max(rv, ntrace(k, prefix, suffix, interval));
+                rv = Math.max(rv, ntrace(k, prefix, suffix, interval, threshold));
             }
         }
 
@@ -813,6 +847,27 @@ public class ProcessLogger {
      */
     public static long ntrace(String name, String prefix, String suffix,
             long interval) {
+        return ntrace(name, prefix, suffix, interval, 0L);
+    }
+
+    /**
+     * Count instances of a typically fast operation that may become expensive given a high number
+     * of executions.
+     * 
+     * <p>
+     * When the specified number of instances of the same operation have been counted, then a
+     * message indicating the execution count will be added to the process trace.
+     * </p>
+     * 
+     * @param name The name of the trace.
+     * @param prefix The message to report before the count.
+     * @param suffix The message to report after the count.
+     * @param interval The number of instances to count between reports on the process trace.
+     * @param threshold The number of instances below which not to report monitored counts.
+     * @return The execution count of the operation on the named trace.
+     */
+    public static long ntrace(String name, String prefix, String suffix,
+            long interval, long threshold) {
         ProcessStatus processStatus = TL_STAT.get() == null ? null : TL_STAT.get().get(
                 name);
         String nTraceCountKey = prefix + suffix;
@@ -824,8 +879,16 @@ public class ProcessLogger {
         
         processStatus.ntraceCount.put(nTraceCountKey, ++nTraceCount);
         
+        if (threshold > 0) {
+            processStatus.ntraceThreshold.put(nTraceCountKey, threshold);
+        }
+        
         if (nTraceCount % interval == 0) {
-            trace(prefix + nTraceCount + suffix);
+            String msg = prefix + nTraceCount + suffix;
+            trace(msg);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(msg, new Throwable());
+            }
         }
 
         return nTraceCount;

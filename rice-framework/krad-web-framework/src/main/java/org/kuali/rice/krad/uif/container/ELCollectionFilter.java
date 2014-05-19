@@ -25,7 +25,6 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -106,30 +105,6 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
     @Override
     public ELCollectionFilter clone() throws CloneNotSupportedException {
         return (ELCollectionFilter) super.clone();
-    }
-
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
-     * @see Copyable#copy()
-     * @see CopyUtils#copy(Copyable)
-     */
-    public final <T> T copy() {
-        return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
     }
 
 }

@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -45,6 +44,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.MetaTag;
@@ -58,7 +58,7 @@ import org.kuali.rice.krad.uif.util.BreadcrumbItem;
 import org.kuali.rice.krad.uif.util.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -182,6 +182,9 @@ public class View extends ContainerBase {
     private boolean singlePageView;
     private boolean mergeWithPageItems;
     private PageGroup page;
+    
+    @ReferenceCopy(referenceTransient=true)
+    private PageGroup currentPage;
 
     private List<Group> dialogs;
 
@@ -530,17 +533,21 @@ public class View extends ContainerBase {
      */
     @ViewLifecycleRestriction(exclude=UifConstants.ViewPhases.PRE_PROCESS)
     public PageGroup getCurrentPage() {
+        if (currentPage != null) {
+            return currentPage;
+        }
+        
         for (Component item : this.getItems()) {
             if (!(item instanceof PageGroup)) {
                 continue;
             }
 
             if (singlePageView || StringUtils.equals(item.getId(), getCurrentPageId())) {
-                return (PageGroup) item;
+                currentPage = (PageGroup) CopyUtils.unwrap(item);
             }
         }
 
-        return null;
+        return currentPage;
     }
 
     /**
@@ -948,6 +955,7 @@ public class View extends ContainerBase {
     public void setCurrentPageId(String currentPageId) {
         checkMutable(true);
         this.currentPageId = currentPageId;
+        this.currentPage = null;
     }
 
     /**
@@ -2233,18 +2241,14 @@ public class View extends ContainerBase {
     }
 
     /**
-     * This overridden method ...
+     * Clears the view index on the copy after cloning the view.
      * 
      * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
      */
     @Override
     public View clone() throws CloneNotSupportedException {
         View viewCopy = (View) super.clone();
-
-        if (this.viewIndex != null) {
-            viewCopy.viewIndex = this.viewIndex.copy();
-        }
-
+        viewCopy.viewIndex = new ViewIndex();
         return viewCopy;
     }
 

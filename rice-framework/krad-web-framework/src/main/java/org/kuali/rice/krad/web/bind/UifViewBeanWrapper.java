@@ -15,12 +15,22 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
-import org.kuali.rice.krad.uif.util.CloneUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
@@ -34,15 +44,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Class is a top level BeanWrapper for a UIF View Model.
@@ -409,14 +410,14 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
                 nestedPath = org.apache.commons.lang.StringUtils.substringBefore(nestedPath, "[");
             }
 
-            RequestProtected protectedAnnotation = (RequestProtected) CloneUtils.getFieldAnnotation(parentPropertyClass,
+            RequestProtected protectedAnnotation = (RequestProtected) CopyUtils.getFieldAnnotation(parentPropertyClass,
                     nestedPath, RequestProtected.class);
             if ((protectedAnnotation != null) && annotationMatchesRequestMethod(protectedAnnotation.method(),
                     request.getMethod())) {
                 return Boolean.FALSE;
             }
 
-            RequestAccessible accessibleAnnotation = (RequestAccessible) CloneUtils.getFieldAnnotation(
+            RequestAccessible accessibleAnnotation = (RequestAccessible) CopyUtils.getFieldAnnotation(
                     parentPropertyClass, nestedPath, RequestAccessible.class);
             if ((accessibleAnnotation != null) && annotationMatchesRequestMethod(accessibleAnnotation.method(),
                     request.getMethod())) {

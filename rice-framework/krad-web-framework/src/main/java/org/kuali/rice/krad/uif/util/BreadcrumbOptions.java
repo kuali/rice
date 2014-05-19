@@ -291,27 +291,4 @@ public class BreadcrumbOptions implements Serializable, Copyable {
         return (BreadcrumbOptions) super.clone();
     }
 
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
-     * @see Copyable#copy()
-     * @see CopyUtils#copy(Copyable)
-     */
-    public final <T> T copy() {
-        return CopyUtils.copy(this);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
-    }
 }

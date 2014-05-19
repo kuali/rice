@@ -35,6 +35,7 @@ import org.junit.Test;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -125,7 +126,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
         ViewLifecycle.encapsulateLifecycle(view, new Object(), request, response, new Runnable() {
             @Override
             public void run() {
-                Message msg = ComponentFactory.getMessage().copy();
+                Message msg = CopyUtils.copy(ComponentFactory.getMessage());
                 msg.setMessageText("foobar");
                 msg.setId("_naps");
                 msg.setWrapperTag("pans");

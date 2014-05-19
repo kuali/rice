@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @param <T> list item type
  */
-public class LifecycleAwareList<T> implements List<T>, Copyable, UifCloneable, Serializable {
+public class LifecycleAwareList<T> implements List<T>, Copyable, Serializable {
 
     private static final long serialVersionUID = -8971217230511446882L;
 
@@ -219,7 +219,7 @@ public class LifecycleAwareList<T> implements List<T>, Copyable, UifCloneable, S
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {
+    public <A> A[] toArray(A[] a) {
         return this.delegate.toArray(a);
     }
 
@@ -332,40 +332,11 @@ public class LifecycleAwareList<T> implements List<T>, Copyable, UifCloneable, S
     }
 
     /**
-     * @see org.kuali.rice.krad.datadictionary.Copyable#copy()
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T copy() {
-        try {
-            return (T) clone();
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalStateException("Unexpected error in clone()", e);
-        }
-    }
-
-    /**
-     * Modification is not controlled at this level.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {}
-
-    /**
      * @see java.lang.Object#clone()
      */
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Copyable unwrap() {
-        return this;
     }
 
 }

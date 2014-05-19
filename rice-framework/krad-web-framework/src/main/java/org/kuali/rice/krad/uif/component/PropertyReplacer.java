@@ -22,7 +22,6 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.util.CloneUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
@@ -41,7 +43,22 @@ public class PrepareForCacheTask extends ViewLifecycleTaskBase<LifecycleElement>
      */
     @Override
     protected void performLifecycleTask() {
-        getElementState().getElement().preventModification();
+        LifecycleElementState elementState = getElementState();
+        LifecycleElement element = elementState.getElement();
+        String viewStatus = element.getViewStatus();
+        
+        element.setViewStatus(UifConstants.ViewStatus.CACHED);
+        if (!UifConstants.ViewStatus.CREATED.equals(viewStatus) && !UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
+            ViewLifecycle.reportIllegalState("View status is "
+                    + viewStatus
+                    + " prior to caching "
+                    + getClass().getName()
+                    + " "
+                    + element.getId()
+                    + ", expected C or X");
+        }
+
+        viewStatus = UifConstants.ViewStatus.CACHED;
     }
 
 }

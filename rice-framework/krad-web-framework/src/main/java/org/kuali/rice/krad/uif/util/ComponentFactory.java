@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,11 +87,6 @@ import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.LightBox;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Factory class for creating new UIF components from their base definitions in the dictionary.
@@ -201,7 +201,8 @@ public class ComponentFactory {
             // populate property expressions from expression graph
             ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(component, true);
 
-            CopyUtils.preventModification(component);
+            // TODO: preprocess?
+            // CopyUtils.preventModification(component);
 
             synchronized (cache) {
                 cache.put(beanId, component);

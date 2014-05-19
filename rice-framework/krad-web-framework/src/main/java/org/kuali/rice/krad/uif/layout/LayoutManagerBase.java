@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -139,21 +138,11 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     }
 
     /**
-     * Setter for the view status, invoked upon completion of a lifecycle phase.
-     * 
-     * @param phase The lifecycle phase that has just been completed.
-     * @see ViewLifecyclePhase#getEndViewStatus()
+     * {@inheritDoc}
      */
     @Override
-    public void setViewStatus(ViewLifecyclePhase phase) {
-        if (!viewStatus.equals(phase.getStartViewStatus()) &&
-                !viewStatus.equals(phase.getEndViewStatus())) {
-            ViewLifecycle.reportIllegalState("Component " + getClass().getName() + " is not in expected status "
-                    + phase.getStartViewStatus() + " marking the completion of a lifecycle phase, found " + viewStatus
-                    + "\nPhase: " + phase);
-        }
-
-        this.viewStatus = phase.getEndViewStatus();
+    public void setViewStatus(String status) {
+        this.viewStatus = status;
     }
 
     /**
@@ -566,22 +555,6 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
         return copy;
     }
     
-    /**
-     * Set view status to {@link org.kuali.rice.krad.uif.UifConstants.ViewStatus#CACHED} to prevent modification.
-     * 
-     * @see Copyable#preventModification()
-     */
-    @Override
-    public void preventModification() {
-        if (!UifConstants.ViewStatus.CREATED.equals(viewStatus)
-                && !UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
-            ViewLifecycle.reportIllegalState("View status is " + viewStatus + " prior to caching "
-                    + getClass().getName() + " " + getId() + ", expected C or X");
-        }
-
-        viewStatus = UifConstants.ViewStatus.CACHED;
-    }
-
     /**
      * Indicates whether the component has been initialized.
      * 

@@ -185,7 +185,7 @@
     <sauce.java.common.version>1.0.19</sauce.java.common.version>
     <sauce.junit.version>1.0.19</sauce.junit.version>
     <sauce.rest.version>1.0.0</sauce.rest.version>
-    <saucelabs.connect.version>3.0.28</saucelabs.connect.version>
+    <saucelabs.connect.version>3.1.32</saucelabs.connect.version>
     <saucelabs.connect.excludes>NOT_NULL</saucelabs.connect.excludes>
     <saucelabs.connect.includes>**/*SeAFT.java</saucelabs.connect.includes>
     <saucelabs.connect.skip>true</saucelabs.connect.skip>

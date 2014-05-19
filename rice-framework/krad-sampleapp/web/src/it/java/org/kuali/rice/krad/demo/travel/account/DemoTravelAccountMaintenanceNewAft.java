@@ -121,13 +121,17 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         gotoLightBox();
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
+        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/fieldset/div/button");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted.");
+        if(!isTextPresent("Document was successfully submitted.")){
+        	jiraAwareFail("Document might be locked OR there might be other problem !");
+        }
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

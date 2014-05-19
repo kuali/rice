@@ -18,7 +18,6 @@ package org.kuali.rice.loadtest
 import java.util.UUID
 import groovy.util.ConfigSlurper
 import java.io.File
-import org.apache.commons.cli.ParseException
 
 
 /*

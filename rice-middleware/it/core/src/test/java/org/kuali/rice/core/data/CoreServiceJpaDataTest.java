@@ -48,7 +48,7 @@ import static org.junit.Assert.*;
 /**
  * Tests to confirm JPA mapping for the Core Service module data objects
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class CoreServiceJpaDataTest extends CORETestCase {
     public static final String DERIVED_COMPONENT_SET_ID = "DD:TSTKR";
 
@@ -106,7 +106,7 @@ public class CoreServiceJpaDataTest extends CORETestCase {
     @Test
     public void testParameterTypeBoDataObject() throws Exception{
         assertTrue("ParameterTypeBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(ParameterTypeBo.class));
-        setupParameterTypeBoDataObjectAndSave();
+//        setupParameterTypeBoDataObjectAndSave();
 
         ParameterTypeBo parameterTypeBoFetched = KRADServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
         assertTrue("ParameterTypeBo refetched after save", parameterTypeBoFetched != null &&
@@ -165,7 +165,7 @@ public class CoreServiceJpaDataTest extends CORETestCase {
         List<Namespace> namespaceList = CoreServiceApiServiceLocator.getNamespaceService().
                                             findAllNamespaces();
         assertTrue("findAllNamespaces retrieved after save",namespaceList != null &&
-                namespaceList.size() == 2);
+                namespaceList.size() > 0);
     }
 
     @Test
@@ -191,7 +191,6 @@ public class CoreServiceJpaDataTest extends CORETestCase {
 
     @Test
     public void testParameterServiceImpl() throws Exception{
-        setupParameterTypeBoDataObjectAndSave();
         setupParameterBoDataObjectAndSave();
         ParameterKey parameterKey = ParameterKey.create(APP_ID, "TST_NM_SPACE", "TST", "TST_PARAM");
 

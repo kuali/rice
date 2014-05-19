@@ -24,7 +24,8 @@ import org.kuali.rice.test.runners.BootstrapTest;
 import org.kuali.rice.test.runners.LoadTimeWeavableTestRunner;
 
 import javax.xml.namespace.QName;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default test base for a full KNS enabled unit test.
@@ -48,6 +49,18 @@ public abstract class CORETestCase extends BaselineTestCase {
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}
+
+    /**
+     * Returns the List of tables that should be cleared on every test run.
+     */
+    protected List<String> getPerTestTablesToClear() {
+        List<String> tablesToClear = new ArrayList<String>();
+        tablesToClear.add("KREW_.*");
+        tablesToClear.add("KRSB_.*");
+        tablesToClear.add("KREN_.*");
+        tablesToClear.add("KRMS_.*");
+        return tablesToClear;
+    }
 
     public static final class BootstrapTest extends CORETestCase  {
         @Test

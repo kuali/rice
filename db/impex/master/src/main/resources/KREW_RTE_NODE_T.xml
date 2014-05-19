@@ -185,4 +185,15 @@
     <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3019" FNL_APRVR_IND="0"
         MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2943"
         TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3020" FNL_APRVR_IND="0"
+        MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2945"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3021" FNL_APRVR_IND="0"
+        GRP_ID="1" MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2947"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3021" FNL_APRVR_IND="0"
+        GRP_ID="1" MNDTRY_RTE_IND="0" NM="TravelApproval"
+        RTE_MTHD_CD="RM"
+        RTE_MTHD_NM="org.kuali.rice.kew.role.RoleRouteModule"
+        RTE_NODE_ID="2948" TYP="org.kuali.rice.kew.engine.node.RoleNode" VER_NBR="1"/>
 </dataset>

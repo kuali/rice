@@ -154,12 +154,12 @@ public class KradLabsForm extends UifFormBase {
                         "ab extra", "ab extra", "ab extra"));
             }
 
-            UITestObject line = new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
-                                "ab extra", "ab extra", "ab extra");
+            UITestObject line = new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
+                    "ab extra", "ab extra");
             line.setSubList(mediumSubCollection1);
 
             UITestObject line2 = new UITestObject("ab extra", "ab extra", "ab extra", "ab extra", "ab extra",
-                                "ab extra", "ab extra", "ab extra");
+                    "ab extra", "ab extra", "ab extra");
             line2.setSubList(mediumSubCollection2);
 
             mediumCollection1.add(line);
@@ -897,14 +897,16 @@ public class KradLabsForm extends UifFormBase {
         FileBase fakeFile = new FileBase();
         fakeFile.setName(propertyPath + "_fakeName1.png");
         fakeFile.setSize(5000000L);
-        fakeFile.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
+        fakeFile.setDeleteUrl(
+                "?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 
         fakeFile = new FileBase();
         fakeFile.setName(propertyPath + "_fakeName2.png");
         fakeFile.setSize(5000000L);
-        fakeFile.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
+        fakeFile.setDeleteUrl(
+                "?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 
@@ -914,6 +916,11 @@ public class KradLabsForm extends UifFormBase {
     @Override
     public boolean saveFile(String propertyPath, FileBase fileBase) {
         System.out.println("KradLabsForm, saving file => " + propertyPath + ":" + fileBase);
+
+        if (fileBase.getName().startsWith("fail")) {
+            fileBase.setError("This file failed to upload because it starts with fail!");
+        }
+
         return true;
     }
 

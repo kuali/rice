@@ -507,11 +507,11 @@ function writeHiddenToForm(propertyName, propertyValue) {
     //removing because of performFinalize bug
     jQuery('input[name="' + escapeName(propertyName) + '"]').remove();
 
-    if (propertyValue && typeof propertyValue === 'string' &&  propertyValue.indexOf("'") !== -1) {
-        jQuery("<input type='hidden' name='" + escapeName(propertyName) + "'" + ' value="' + escapeName(propertyValue) + '"/>').appendTo(jQuery("#formComplete"));
-    } else {
-        jQuery("<input type='hidden' name='" + escapeName(propertyName) + "' value='" + escapeName(propertyValue) + "'/>").appendTo(jQuery("#formComplete"));
+    if (propertyValue && typeof propertyValue === 'string') {
+        propertyValue = propertyValue.replace(/"/g, "\\\"");
     }
+
+    jQuery("<input type='hidden' name='" + escapeName(propertyName) + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
 }
 
 /**
@@ -1994,6 +1994,60 @@ function invokeServerListener(methodToCall, params) {
     });
 
     return serverResponse;
+}
+
+/**
+ * Stores a key/value pair to local storage if available (if not an error is thrown).
+ *
+ * @param key key for the pair to store, which will be used for retrieving the value
+ * @param value value for the pair to store
+ */
+function storeToLocal(key, value) {
+    if (localStorage) {
+        localStorage[key] = value;
+    }
+    else {
+        throw Error("Local storage not supported");
+    }
+}
+
+/**
+ * Retrieves the value for a key from local storage.
+ *
+ * <p>If local storage is not enabled an error is thrown and if the key is not found a null value
+ * is returned</p>
+ *
+ * @param key key for the value to return
+ */
+function retrieveFromLocal(key) {
+    if (localStorage) {
+        if (localStorage[key]) {
+            return localStorage[key];
+        }
+
+        return null;
+    }
+    else {
+        throw Error("Local storage not supported");
+    }
+}
+
+/**
+ * Removes a key/value pair from local storage.
+ *
+ * <p>If session storage is not enabled an error is thrown</p>
+ *
+ * @param key key for the pair to remove
+ */
+function removeFromLocal(key) {
+    if (localStorage) {
+        if (localStorage[key]) {
+            delete localStorage[key];
+        }
+    }
+    else {
+        throw Error("Local storage not supported");
+    }
 }
 
 /**

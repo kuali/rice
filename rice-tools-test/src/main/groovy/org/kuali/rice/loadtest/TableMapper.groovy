@@ -28,13 +28,15 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package org.kuali.rice.testtools.loadtest
+package org.kuali.rice.loadtest
 
 import groovy.util.ConfigSlurper
 import groovy.sql.Sql
 
+/*
 @GrabConfig(systemClassLoader=true)
 @Grab(group='mysql', module='mysql-connector-java', version='5.1.24')
+*/
 
 def opt
 def config

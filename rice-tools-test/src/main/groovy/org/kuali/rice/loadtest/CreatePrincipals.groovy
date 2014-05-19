@@ -1,18 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package org.kuali.rice.loadtest
+
 /**
 * Copyright 2005-2014 The Kuali Foundation
 *
@@ -31,6 +18,8 @@
 import java.util.UUID
 import groovy.util.ConfigSlurper
 import java.io.File
+import org.apache.commons.cli.ParseException
+
 
 /*
 "INSERT INTO `ricedev24`.`krim_prncpl_id_s` SET id=10001"
@@ -59,7 +48,7 @@ def outfile
  * @param args
  */
 def parseCommandLine(args){
-    def cli = new CliBuilder(usage:'groovy CreatePrincipals.groovy -n <number of users>  [options]')
+    def cli = new CliBuilder(usage:'groovy org.kuali.rice.loadtest.CreatePrincipals.groovy -n <number of users>  [options]')
     cli.h( longOpt: 'help', required: false, 'show usage information' )
     cli.n( longOpt: 'numberOfUsers', required: false, 'number of users', args:1)
     cli.s( longOpt: 'startIndex', required: false, 'starting index number', args:1)
@@ -142,7 +131,7 @@ def createPrincipalAndEntity(int counter){
 }
 
 def runScript(args) {
-
+    println "RUNNING w/ args:"+args
     parseCommandLine(args)
 
     for (int i= 0; i< userCount; i++){

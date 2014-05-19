@@ -1,3 +1,5 @@
+package org.kuali.rice.loadtest
+
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -17,5 +19,6 @@
  * Done for saner error messages.
  */
 def shell = new GroovyShell(this.getClass().classLoader);
+println "HELLO WORLD"
 shell.run(new File("BinLogConverter.groovy",))
 

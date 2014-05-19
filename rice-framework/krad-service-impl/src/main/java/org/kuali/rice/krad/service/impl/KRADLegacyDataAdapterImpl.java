@@ -953,9 +953,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
                     return relationship;
                 }
             }
-            // recurse down to the next object to find the relationship
-            String localPrefix = StringUtils.substringBefore(attributeName, ".");
-            String localAttributeName = StringUtils.substringAfter(attributeName, ".");
+
             if (dataObject == null) {
                 try {
                     dataObject = KRADUtils.createNewObjectFromClass(dataObjectClass);
@@ -965,6 +963,13 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
                 }
             }
 
+            // recurse down to the next object to find the relationship
+            int nextObjectIndex = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(attributeName);
+            if (nextObjectIndex == StringUtils.INDEX_NOT_FOUND) {
+                nextObjectIndex = attributeName.length();
+            }
+            String localPrefix = StringUtils.substring(attributeName, 0, nextObjectIndex);
+            String localAttributeName = StringUtils.substring(attributeName, nextObjectIndex + 1);
             Object nestedObject = ObjectPropertyUtils.getPropertyValue(dataObject, localPrefix);
             Class<?> nestedClass = null;
             if (nestedObject == null) {

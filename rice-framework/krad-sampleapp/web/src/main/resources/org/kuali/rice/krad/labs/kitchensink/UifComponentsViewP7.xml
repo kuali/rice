@@ -331,7 +331,7 @@
      <property name="layoutManager.renderSequenceField" value="false" />
      <property name="layoutManager.generateAutoSequence" value="false" />
      <property name="layoutManager.separateAddLine" value="true" />
-     <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
+     <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="4" />
      <property name="layoutManager.richTable">
        <bean parent="Uif-ScrollableRichTable" />
      </property>

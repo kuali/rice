@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.docsearch.xml
 
+import org.xml.sax.SAXParseException
+
 import javax.xml.namespace.QName
 import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Before
@@ -31,7 +33,6 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.fail
-import javax.xml.transform.TransformerException
 import static org.junit.Assert.assertNotNull
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.extension.ExtensionDefinition
@@ -71,13 +72,13 @@ class XMLSearchableAttributeContentTest {
         fail("expected error")
     }
 
-    @Test(expected=TransformerException) // SAX parse: Premature end of file
+    @Test(expected=SAXParseException) // SAX parse: Premature end of file
     void testXmlConfigMustBeNotBeEmpty() {
         new XMLSearchableAttributeContent("")
         fail("expected error")
     }
 
-    @Test(expected=TransformerException) // SAX parse: Content not allowed in prologue
+    @Test(expected=SAXParseException) // SAX parse: Content not allowed in prologue
     void testXmlConfigMustBeWellFormedy() {
         new XMLSearchableAttributeContent("I'm not valid XML")
         fail("expected error")

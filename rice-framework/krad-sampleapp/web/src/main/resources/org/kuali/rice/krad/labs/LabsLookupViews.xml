@@ -56,7 +56,7 @@
 
   <bean id="LabsLookup-AlwaysMultipleValuesSelectView" parent="LabsLookup-DefaultView">
     <property name="viewName" value="LabsLookup-AlwaysMultipleValuesSelectView"/>
-    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return return 5 rows)"/>
+    <property name="headerText" value="Lookup Sample - Multiple Value Specified in View (will return 5 rows)"/>
     <property name="multipleValuesSelectResultSetLimit" value="5"/>
     <property name="multipleValuesSelect" value="true"/>
   </bean>
@@ -306,4 +306,64 @@
     </property>
   </bean>
 
+  <bean id="LabsLookup-MaskedFieldView" parent="LabsLookup-DefaultView">
+    <property name="viewName" value="LabsLookup-MaskedFieldView"/>
+    <property name="headerText" value="Lookup with masked field (Travel account name masked in results)"/>
+    <property name="renderMaintenanceLinks" value="false"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
+        <bean parent="Uif-LookupCriteriaInputField-name-masked"
+              p:instructionalText="Example name to search by: Travel Account 1"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" p:ranged="true"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="fiscalOfficer.principalName"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="number"/>
+        <bean parent="Uif-DataField-name-masked" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="createDate"/>
+        <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
+      </list>
+    </property>
+    <property name="page.instructionalText">
+      <value>
+        [b]Note:[/b] Typically when securing data the attribute definition itself is secured. In this particular case
+        only the criteria input field and the results data field are secure so if an inquiry is done on any of the
+        results below the name will no longer be masked.
+      </value>
+    </property>
+  </bean>
+
+  <!-- Even though name is masked, searching by name should still be allowed -->
+  <bean id="Uif-LookupCriteriaInputField-name-masked" parent="Uif-LookupCriteriaInputField" p:propertyName="name">
+    <property name="componentSecurity">
+      <bean parent="Uif-DataFieldSecurity">
+        <property name="attributeSecurity">
+          <bean parent="AttributeSecurity">
+            <property name="mask" value="true"/>
+            <property name="maskFormatter">
+              <bean parent="MaskFormatterLiteral" p:literal="*********"/>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Uif-DataField-name-masked" parent="Uif-DataField" p:propertyName="name">
+    <property name="componentSecurity">
+      <bean parent="Uif-DataFieldSecurity">
+        <property name="attributeSecurity">
+          <bean parent="AttributeSecurity">
+            <property name="mask" value="true"/>
+            <property name="maskFormatter">
+              <bean parent="MaskFormatterLiteral" p:literal="*********"/>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+  </bean>
 </beans>

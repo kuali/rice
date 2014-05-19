@@ -123,13 +123,10 @@ public final class XmlHelper {
         parentNode.appendChild(importedNode);
     }
 
-    public static org.w3c.dom.Document readXml(String xml) throws TransformerException {
-        Source source = new StreamSource(new BufferedReader(new StringReader(xml)));
-        DOMResult result = new DOMResult();
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        transformer.transform(source, result);
-        return (org.w3c.dom.Document) result.getNode();
+    public static org.w3c.dom.Document readXml(String xml) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        return factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
     }
 
     public static void propagateNamespace(Element element, Namespace namespace) {

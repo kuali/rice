@@ -105,15 +105,19 @@ public class LookupInputField extends InputFieldBase {
 
         Map<String, Object> criteriaAttributes = new HashMap<String, Object>();
         criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID, this.getId());
+
         if (this.isDisableWildcardsAndOperators()) {
             criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.DISABLE_WILDCARDS_AND_OPERATORS, true);
         }
+
         if (this.getRequired()) {
             criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.REQUIRED, true);
         }
+
         if (this.hasSecureValue()) {
             criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.SECURE_VALUE, true);
         }
+
         ValidCharactersConstraint validCharactersConstraint = this.getValidCharactersConstraint();
         if (validCharactersConstraint != null) {
             criteriaAttributes.put(UifConstants.LookupCriteriaPostMetadata.VALID_CHARACTERS_CONSTRAINT,

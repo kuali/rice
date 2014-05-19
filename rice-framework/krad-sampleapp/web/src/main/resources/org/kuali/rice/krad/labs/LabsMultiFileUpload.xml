@@ -21,16 +21,65 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <bean id="Lab-MultiFileUpload1" parent="Uif-FormView">
-    <property name="headerText" value="Upload"/>
+    <property name="headerText" value="Upload Test 1"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload test">
+            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test">
               <property name="items">
                 <list>
                   <bean parent="Uif-MultiFileUpload" p:propertyPath="files"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-MultiFileUpload2" parent="Uif-FormView">
+    <property name="headerText" value="Upload Test 2"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files1"/>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+  <bean id="Lab-MultiFileUpload3" parent="Uif-FormView">
+    <property name="headerText" value="Upload Test 3"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files1">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files1"/>
+                </list>
+              </property>
+            </bean>
+            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files2">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files2"/>
                 </list>
               </property>
             </bean>

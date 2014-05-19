@@ -20,9 +20,11 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.demo.uif.form.UIInactivatableTestObject;
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
+import org.kuali.rice.krad.file.FileBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -886,11 +888,38 @@ public class KradLabsForm extends UifFormBase {
         this.mediumCollection2 = mediumCollection2;
     }
 
-    public List<Object> getFiles() {
-        return files;
+    @Override
+    public List<FileBase> getFiles(String propertyPath) {
+        System.out.println("KradLabsForm, get files => " + propertyPath);
+        List<FileBase> returnObjects = new ArrayList<FileBase>();
+
+        // fake data for testing
+        FileBase fakeFile = new FileBase();
+        fakeFile.setName(propertyPath + "_fakeName1.png");
+        fakeFile.setSize(5000000L);
+        fakeFile.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
+        fakeFile.setDateUploaded(new Date());
+        returnObjects.add(fakeFile);
+
+        fakeFile = new FileBase();
+        fakeFile.setName(propertyPath + "_fakeName2.png");
+        fakeFile.setSize(5000000L);
+        fakeFile.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
+        fakeFile.setDateUploaded(new Date());
+        returnObjects.add(fakeFile);
+
+        return returnObjects;
     }
 
-    public void setFiles(List<Object> files) {
-        this.files = files;
+    @Override
+    public boolean saveFile(String propertyPath, FileBase fileBase) {
+        System.out.println("KradLabsForm, saving file => " + propertyPath + ":" + fileBase);
+        return true;
+    }
+
+    @Override
+    public boolean deleteFile(String propertyPath, String fileName) {
+        System.out.println("KradLabsForm, deleting file => " + propertyPath + ":" + fileName);
+        return true;
     }
 }

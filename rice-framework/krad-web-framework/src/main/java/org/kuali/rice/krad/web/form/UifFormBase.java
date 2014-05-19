@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.form;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,11 +25,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.kuali.rice.krad.file.FileBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -809,7 +812,7 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setgetViewsThatNeedDefaultValuesApplied(List<String>)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewsThatNeedDefaultValuesApplied(List<String>)
      */
     @Override
     public void setViewsThatNeedDefaultValuesApplied(List<String> viewsThatNeedDefaultValuesApplied) {
@@ -819,7 +822,7 @@ public class UifFormBase implements ViewModel {
     /**
      * Adds unique view id to list of views that need default values applied.
      *
-     * @param viewid
+     * @param viewId
      */
     public void addViewThatNeedsDefaultValuesApplied(String viewId) {
         if(!getViewsThatNeedDefaultValuesApplied().contains(viewId)) {
@@ -1353,6 +1356,30 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setExtensionData(Map<String, Object> extensionData) {
         this.extensionData = extensionData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<FileBase> getFiles(String propertyPath) {
+        return new Vector<FileBase>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean deleteFile(String propertyPath, String fileName) {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean saveFile(String propertyPath, FileBase fileBase) {
+        return true;
     }
 
     /**

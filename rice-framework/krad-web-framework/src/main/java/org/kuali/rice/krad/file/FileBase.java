@@ -18,13 +18,14 @@ package org.kuali.rice.krad.file;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  */
-public class FileBase implements Serializable{
+public class FileBase implements Serializable {
 
     private static final long serialVersionUID = 56328058337130228L;
 
@@ -36,6 +37,8 @@ public class FileBase implements Serializable{
     private String url;
     private String deleteUrl;
     private String error;
+
+    private InputStream inputStream;
 
     public FileBase() {
     }
@@ -89,8 +92,7 @@ public class FileBase implements Serializable{
     public String getDateUploadedFormatted() {
         if (dateUploaded != null) {
             return CoreApiServiceLocator.getDateTimeService().toDateTimeString(dateUploaded);
-        }
-        else{
+        } else {
             return "";
         }
     }
@@ -117,5 +119,27 @@ public class FileBase implements Serializable{
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
+
+    @Override
+    public String toString() {
+        return "FileBase{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", contentType='" + contentType + '\'' +
+                ", size=" + size +
+                ", dateUploaded=" + dateUploaded +
+                ", url='" + url + '\'' +
+                ", deleteUrl='" + deleteUrl + '\'' +
+                ", error='" + error + '\'' +
+                '}';
     }
 }

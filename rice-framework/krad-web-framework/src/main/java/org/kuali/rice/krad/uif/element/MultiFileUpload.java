@@ -53,8 +53,8 @@ public class MultiFileUpload extends ContentElementBase {
 
         // Set plugin convenience setters into templateOptions to be consumed by the plugin
         if (url == null && methodToCall != null) {
-            templateOptions.put("url", "?methodToCall=" + methodToCall + "&formKey=" + form.getFormKey()
-                    + "&viewId=" + form.getViewId());
+            templateOptions.put("url",
+                    "?methodToCall=" + methodToCall + "&formKey=" + form.getFormKey() + "&viewId=" + form.getViewId() + "&propertyPath=" + this.getPropertyPath());
         } else if (url != null) {
             templateOptions.put("url", url.getHref());
         }
@@ -77,8 +77,6 @@ public class MultiFileUpload extends ContentElementBase {
 
         templateOptions.put("uploadTemplateId", this.getId() + "_uploadTemplate");
         templateOptions.put("downloadTemplateId", this.getId() + "_downloadTemplate");
-
-
     }
 
     public String getMethodToCall() {

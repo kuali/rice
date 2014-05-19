@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.file.FileBase;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
@@ -561,4 +562,30 @@ public interface ViewModel extends Serializable {
      * @param extensionData
      */
     public void setExtensionData(Map<String, Object> extensionData);
+
+    /**
+     * Getter method for uploaded files
+     *
+     * @param propertyPath of particular set of files to get
+     * @return List<FileBase>
+     */
+    public List<FileBase> getFiles(String propertyPath);
+
+    /**
+     * Method called when an uploaded file should be deleted
+     *
+     * @param propertyPath of particular set of files this file is in
+     * @param fileName is name of file to delete
+     * @return
+     */
+    public boolean deleteFile(String propertyPath, String fileName);
+
+    /**
+     * Method called when a file is to be uploaded
+     *
+     * @param propertyPath of particular set of files this file is in
+     * @param fileBase is new file uploaded
+     * @return
+     */
+    public boolean saveFile(String propertyPath, FileBase fileBase);
 }

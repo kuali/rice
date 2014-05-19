@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
@@ -32,7 +31,6 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRefreshBuild;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -270,13 +268,13 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                 new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
-                        selectedCollectionPath);
-            }
-        });
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewLifecycle.getHelper().processCollectionAddLine(uifForm, selectedCollectionId,
+                                selectedCollectionPath);
+                    }
+                });
 
         return getUIFModelAndView(uifForm);
     }
@@ -304,13 +302,13 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                 new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
-                        selectedCollectionPath);
-            }
-        });
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewLifecycle.getHelper().processCollectionAddBlankLine(uifForm, selectedCollectionId,
+                                selectedCollectionPath);
+                    }
+                });
 
         return getUIFModelAndView(uifForm);
     }
@@ -343,13 +341,13 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                 new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
-                        selectedCollectionPath, selectedLineIndex);
-            }
-        });
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewLifecycle.getHelper().processCollectionSaveLine(uifForm, selectedCollectionId,
+                                selectedCollectionPath, selectedLineIndex);
+                    }
+                });
 
         return getUIFModelAndView(uifForm);
     }
@@ -384,87 +382,95 @@ public abstract class UifControllerBase {
         }
 
         ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                 new Runnable() {
-            @Override
-            public void run() {
-                ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
-                        selectedCollectionPath, selectedLineIndex);
-            }
-        });
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        ViewLifecycle.getHelper().processCollectionDeleteLine(uifForm, selectedCollectionId,
+                                selectedCollectionPath, selectedLineIndex);
+                    }
+                });
 
         return getUIFModelAndView(uifForm);
     }
 
     /**
-     *
+     * Called by the multiFile upload widget to get the set of files already loaded. Get set from model.
      */
     @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=fileUpload")
-    public @ResponseBody Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-                HttpServletRequest request, HttpServletResponse response) {
+    public
+    @ResponseBody
+    Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result, HttpServletRequest request,
+            HttpServletResponse response) {
 
-        List<FileBase> returnObjects = new ArrayList<FileBase>();
-
-        // TODO get the files from service/db here and iterate (unique key would id of top level object + property)
-        // fake data for testing
-        FileBase fakeFile = new FileBase();
-        fakeFile.setName("fakeName.png");
-        fakeFile.setSize(5000000L);
-        fakeFile.setDeleteUrl("?methodToCall=fileDelete");
-        fakeFile.setDateUploaded(new Date());
-
-        returnObjects.add(fakeFile);
+        //System.out.println("get files: propertyPath=>" + request.getParameter("propertyPath"));
+        List<FileBase> returnObjects = uifForm.getFiles(request.getParameter("propertyPath"));
 
         Map<String, Object> files = new HashMap<String, Object>();
-
-        // TODO actual version would use a name passed to the request
+        // this must remain 'files'!
         files.put("files", returnObjects);
         return files;
     }
 
     /**
-     *
+     * Called by the multiFile upload widget to post/save a new file. Inform the model of file uploaded.
      */
     @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileUpload")
-    public @ResponseBody Map fileUploadPost(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+    public
+    @ResponseBody
+    Map fileUploadPost(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
             MultipartHttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> files = new HashMap<String, Object>();
         Iterator<String> fileNamesItr = request.getFileNames();
         List<FileBase> returnObjects = new ArrayList<FileBase>();
 
-        while (fileNamesItr.hasNext()){
-            String currentName = fileNamesItr.next();
+        while (fileNamesItr.hasNext()) {
+            String propertyPath = fileNamesItr.next();
+            //System.out.println("post file: propertyPath=>" + propertyPath);
 
-            MultipartFile uploadedFile = request.getFile(currentName);
+            MultipartFile uploadedFile = request.getFile(propertyPath);
 
             FileBase fileObject = new FileBase(uploadedFile);
             String id = UUID.randomUUID().toString() + "_" + uploadedFile.getName();
-            // TODO Saving to a db/file system would go here
+
             // TODO Generation and setting of thumbnail url (when applicable) and file url would go here
+            // why the file URL to form?
 
             fileObject.setId(id);
 
             fileObject.setDateUploaded(new Date());
 
-            // TODO Form key, cache key, view id needs to be added here (probably)
-            fileObject.setDeleteUrl("?methodToCall=fileDelete");
+            fileObject.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fileObject.getName());
+
+            //System.out.println("post file: fileObject=>" + fileObject);
+
+            // notify form of file to save
+            uifForm.saveFile(propertyPath, fileObject);
 
             returnObjects.add(fileObject);
 
-/*            ObjectPropertyUtils.setPropertyValue(uifForm, "files", returnObjects);*/
-
-            files.put(currentName, returnObjects);
+            // this must remain 'files'!
+            files.put("files", returnObjects);
         }
 
         return files;
     }
 
+    /**
+     * Called by the multiFile upload widget to delete a file. Inform the model of file to delete.
+     */
     @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileDelete")
-    public @ResponseBody Map fileDelete(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-                HttpServletRequest request, HttpServletResponse response) {
-        //TODO delete file requested
+    public
+    @ResponseBody
+    Map fileDelete(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result, HttpServletRequest request,
+            HttpServletResponse response) {
+        //System.out.println("delete file: propertyPath=>" + request.getParameter("propertyPath") + ", fileName=>" + request.getParameter("fileName"));
+
+        // notify form of file to delete
+        uifForm.deleteFile(request.getParameter("propertyPath"), request.getParameter("fileName"));
+
         Map<String, Object> files = new HashMap<String, Object>();
         return files;
     }
@@ -702,17 +708,16 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException(
-                    "Unable to find id for field to perform query on under request parameter name: " +
-                            UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
+                    + UifParameters.QUERY_FIELD_ID);
         }
 
         // get the field term to match
         String queryTerm = request.getParameter(UifParameters.QUERY_TERM);
         if (StringUtils.isBlank(queryTerm)) {
             throw new RuntimeException(
-                    "Unable to find id for query term value for attribute query on under request parameter name: " +
-                            UifParameters.QUERY_TERM);
+                    "Unable to find id for query term value for attribute query on under request parameter name: "
+                            + UifParameters.QUERY_TERM);
         }
 
         // invoke attribute query service to perform the query
@@ -755,9 +760,8 @@ public abstract class UifControllerBase {
         // retrieve id for field to perform query for
         String queryFieldId = request.getParameter(UifParameters.QUERY_FIELD_ID);
         if (StringUtils.isBlank(queryFieldId)) {
-            throw new RuntimeException(
-                    "Unable to find id for field to perform query on under request parameter name: " +
-                            UifParameters.QUERY_FIELD_ID);
+            throw new RuntimeException("Unable to find id for field to perform query on under request parameter name: "
+                    + UifParameters.QUERY_FIELD_ID);
         }
 
         // invoke attribute query service to perform the query

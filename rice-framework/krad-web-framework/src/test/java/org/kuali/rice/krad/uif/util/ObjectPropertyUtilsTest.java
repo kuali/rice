@@ -15,6 +15,26 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.beans.PropertyDescriptor;
+import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -38,20 +58,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.beans.PropertyDescriptor;
-import java.io.Serializable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
@@ -534,7 +540,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         ViewLifecycle.encapsulateLifecycle(view, form, null, null, new Runnable() {
             @Override
             public void run() {
-                collectionGroupBuilder.build(view, form, collectionGroup.<CollectionGroup> copy());
+                collectionGroupBuilder.build(view, form, (CollectionGroup) CopyUtils.copy(collectionGroup));
             }});
     } finally {
         GlobalVariables.setUserSession(null);
@@ -616,6 +622,21 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         assertEquals("foo3['key.nest.nest']", splitPaths[3]);
         assertEquals("foo4", splitPaths[4]);
     }
+    
+    @Test
+    public void testCanonicalPath() {
+        String path = "foo.foo1.foo2";
+        assertEquals(path, ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo[1]";
+        assertEquals("foo", ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo.foo1['key.nested'].foo2";
+        assertEquals("foo.foo1.foo2", ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo.foo1['key.nested'].foo2.foo3['key.nest.nest'].foo4";
+        assertEquals("foo.foo1.foo2.foo3.foo4", ObjectPropertyUtils.getCanonicalPath(path));
+    }
 
     // Classes used by testGetterInInterfaceOrSuperHasWiderType to check covariant return types on JDK6
 
@@ -626,7 +647,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     // Holds an interface that is implemented by Integer
     public interface ComparableHolder {
-        Comparable getComparable();
+        Comparable<?> getComparable();
     }
 
     // Holds an abstract class that is extended by Integer

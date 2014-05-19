@@ -674,6 +674,54 @@ public final class ObjectPropertyUtils {
     }
     
     /**
+     * Removes any collection references from a property path, making it more useful for referring
+     * to metadata related to the property.
+     * @param path A property path expression.
+     * @return The path, with collection references removed.
+     */
+    public static String getCanonicalPath(String path) {
+        if (path == null || path.indexOf('[') == -1) {
+            return path;
+        }
+
+        // The path has at least one left bracket, so will need to be modified
+        // copy it to a mutable StringBuilder
+        StringBuilder pathBuilder = new StringBuilder(path);
+
+        int bracketCount = 0;
+        int leftBracketPos = -1;
+        for (int i = 0; i < pathBuilder.length(); i++) {
+            char c = pathBuilder.charAt(i);
+
+            if (c == '[') {
+                bracketCount++;
+                if (bracketCount == 1)
+                    leftBracketPos = i;
+            }
+
+            if (c == ']') {
+                bracketCount--;
+
+                if (bracketCount < 0) {
+                    throw new IllegalArgumentException("Unmatched ']' at " + i + " " + pathBuilder);
+                }
+
+                if (bracketCount == 0) {
+                    pathBuilder.delete(leftBracketPos, i + 1);
+                    i -= i + 1 - leftBracketPos;
+                    leftBracketPos = -1;
+                }
+            }
+        }
+
+        if (bracketCount > 0) {
+            throw new IllegalArgumentException("Unmatched '[' at " + leftBracketPos + " " + pathBuilder);
+        }
+
+        return pathBuilder.toString();
+    }
+    
+    /**
      * Private constructor - utility class only.
      */
     private ObjectPropertyUtils() {}

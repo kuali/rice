@@ -71,7 +71,9 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelAttachmentGroupNumber","123");
     	fileUploadSetUp();
     	fileIngester();
-    	waitAndClickBlanketApprove();
+    	waitAndClickSubmitByText();
+		waitAndClickConfirmationOk();
+    	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     }
     
     protected void testMaintenanceBOAttachmentCollection() throws Exception {
@@ -84,6 +86,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     	waitAndClickButtonByExactText("Add");
     	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     	waitAndClickBlanketApprove();
+    	waitForElementPresentByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']//button[contains(text(),'OK')]");
     }
     
     private void fileUploadSetUp() throws Exception {

@@ -225,7 +225,7 @@
     </property>
     <property name="cssClasses">
       <list>
-        <value>btn btn-default btn-sm</value>
+        <value>btn btn-default btn-xs</value>
       </list>
     </property>
   </bean>

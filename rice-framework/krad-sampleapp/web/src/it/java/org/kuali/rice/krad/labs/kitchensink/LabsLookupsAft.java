@@ -69,22 +69,24 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 
         String field79Value = waitAndGetAttributeByName("field79", "value");
         jGrowl("field79's value is: " + field79Value); // it appears sometimes the value is already a3?
+        clearTextByName("field79");
         waitAndTypeByName("field79", "a3");
         fireEvent("field79", "blur");
         waitAndClickByName("field60"); // force blur on field79
         waitForTextPresent("Travel Account 3");
 
-    	waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
+        waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickSearchByText();
     	waitAndClickReturnValue();
-    	waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/span/a");
+        waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/div/button[@class='btn btn-default uif-action icon-search']");
     	gotoIframeByXpath(IFRAME_XPATH);
         waitAndClickSearchByText();
         waitAndClickReturnValue();
 
+        clearTextByName("field70");
         waitAndTypeByName("field70", "a1");
-        waitAndClickByXpath("//input[@title='Direct Inquiry']");
+        waitAndClickByXpath("//button[@title='Direct Inquiry']");
         gotoLightBox();
         assertTextPresent(new String[] {"Travel Account Number:", "a1", "Travel Account Name:", "Travel Account 1", "Code And Description:", "IAT - Income"});
         waitAndClickButtonByText("Close");

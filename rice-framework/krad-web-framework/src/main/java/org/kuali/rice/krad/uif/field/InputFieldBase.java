@@ -549,6 +549,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      */
     protected void setupFieldQuery() {
         if (getAttributeQuery() != null) {
+            getAttributeQuery().defaultQueryTarget(ViewLifecycle.getHelper());
+
             // adjust paths on query mappings
             getAttributeQuery().updateQueryFieldMapping(getBindingInfo());
             getAttributeQuery().updateReturnFieldMapping(getBindingInfo());

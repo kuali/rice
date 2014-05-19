@@ -3107,6 +3107,7 @@
         <column name="TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="TMPL" required="true" size="4000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="Y" name="ACTV" required="true" size="1" type="VARCHAR"/>
         <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_TYP_T">
             <reference foreign="TYP_ID" local="TYP_ID"/>
         </foreign-key>

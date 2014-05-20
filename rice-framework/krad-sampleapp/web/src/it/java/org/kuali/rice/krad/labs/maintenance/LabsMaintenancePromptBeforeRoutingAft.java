@@ -45,7 +45,7 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     	waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","fred");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.createDate","04/09/2014");
-    	waitAndClickButtonByExactText("submit");
+    	waitAndClickSubmitByText();
     	//It is getting Incident Report at the moment, so cannot check the functionality now.
     }
 

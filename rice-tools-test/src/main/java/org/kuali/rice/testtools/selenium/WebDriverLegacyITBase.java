@@ -3838,6 +3838,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         jiraAwareWaitAndClick(By.cssSelector(locator), message);
     }
 
+    protected void waitAndClickAdHocPersonAdd() throws InterruptedException  {
+        jGrowl("Click AdHoc Person add");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button");
+    }
+
     protected void waitAndClickBlanketApprove() throws InterruptedException {
         waitAndClickButtonByText("Blanket Approve");
     }

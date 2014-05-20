@@ -42,7 +42,8 @@ public class LabsMaintenanceSampleBasicAft extends LabsMaintenanceBase {
     	waitAndTypeByName("document.documentHeader.documentDescription","Test Maintenance Sample Basic Desc");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelCompanyName","Kuali");
         waitAndClickSubmitByText();
-    	assertTextPresent(" Document was successfully submitted.");
+        waitAndClickConfirmationOk();
+        waitForTextPresent(" Document was successfully submitted.");
     }
     
     protected void testMaintenanceSampleBasicEdit() throws InterruptedException {
@@ -50,7 +51,8 @@ public class LabsMaintenanceSampleBasicAft extends LabsMaintenanceBase {
     	waitAndTypeByName("document.documentHeader.documentDescription","Test Maintenance Sample Basic Edit");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.travelCompanyName","Kuali");
         waitAndClickSubmitByText();
-    	assertTextPresent(" Document was successfully submitted.");
+        waitAndClickConfirmationOk();
+    	waitForTextPresent(" Document was successfully submitted.");
     }
     
     protected void testMaintenanceSampleBasicCopy() throws InterruptedException {

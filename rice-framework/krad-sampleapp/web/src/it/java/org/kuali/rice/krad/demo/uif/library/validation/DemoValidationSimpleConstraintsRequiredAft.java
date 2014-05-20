@@ -28,7 +28,7 @@ public class DemoValidationSimpleConstraintsRequiredAft extends DemoLibraryBase 
     /**
      * //div[@id='Demo-SimpleConstraint-Example1_tab']
      */
-    public static final String SIMPLE_CONSTRAINT_REQUIRED_TAB = "//div[@id='Demo-SimpleConstraint-Example1_tab']";
+    public static final String SIMPLE_CONSTRAINT_REQUIRED_TAB = "//div[@id='Demo-SimpleConstraint-Example1_tabPanel']";
 
     @Override
     protected String getBookmarkUrl() {

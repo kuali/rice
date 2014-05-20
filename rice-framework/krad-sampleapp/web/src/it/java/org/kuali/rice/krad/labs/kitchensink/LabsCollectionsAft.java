@@ -58,7 +58,7 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
     
     protected void testCollections() throws InterruptedException {
         // Wait for page to load
-        waitForTextPresent("Collection Group rendered as a List ", WebDriverUtils.configuredImplicityWait() * 10);
+        waitForTextPresent("Collection Group rendered as a List", WebDriverUtils.configuredImplicityWait() * 3);
 
     	//Collection Group 1 - CollectionGroupTableLayout
     	waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']",

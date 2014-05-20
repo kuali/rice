@@ -90,16 +90,6 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
                           <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables 2" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables2"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Stacked" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyStacked"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Separate" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableSepAddLine"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Lightbox" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
                           <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
                           <bean parent="Uif-Link" p:linkText="Stacked Collection Section w/ AddBlankLine and upload" p:target="_self"
@@ -116,6 +106,12 @@
                                 p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                           <bean parent="Uif-Link" p:linkText="Collection Add Line: Non-updateable Refreshes" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
+                          <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 1" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload1"/>
+                          <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 2" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
+                          <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload3"/>
                         </list>
                       </property>
                     </bean>
@@ -146,6 +142,32 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive6"/>
                           <bean parent="Uif-Link" p:linkText="Css Grid - With Nav present Test" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Responsive7"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="Uif-VerticalBoxSection" p:headerText="Enter Key Support"
+                    p:additionalCssClasses="panel,panel-default" p:style="width:50%">
+                <property name="header.additionalCssClasses" value="panel-heading"/>
+                <property name="header.headerTagCssClasses" value="panel-title"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-VerticalBoxGroup" p:additionalCssClasses="panel-body">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables 2" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables2"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Stacked" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyStacked"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Separate" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableSepAddLine"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Lightbox" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
                         </list>
                       </property>
                     </bean>

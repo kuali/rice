@@ -111,6 +111,11 @@ public class FileBase implements Serializable {
         return deleteUrl;
     }
 
+    /**
+     * Set the URL that will be used when rendering the delete button.
+     *
+     * @param deleteUrl string
+     */
     public void setDeleteUrl(String deleteUrl) {
         this.deleteUrl = deleteUrl;
     }
@@ -119,10 +124,20 @@ public class FileBase implements Serializable {
         return error;
     }
 
+    /**
+     * Method to call to set and error message to display to the user if an error persisting an uploaded file.
+     *
+     * @param error string to display
+     */
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * Get the MultipartFile that is populated by the controller during the upload process.
+     *
+     * @return the MultipartFile object
+     */
     public MultipartFile getMultipartFile() {
         return multipartFile;
     }

@@ -2605,8 +2605,11 @@ function handleStickyFooterContent() {
 function hideEmptyCells() {
     // get all the td elements
     jQuery('td.' + kradVariables.GRID_LAYOUT_CELL_CLASS).each(function () {
+        // check if this cell is part of a comparable action row
+        var isCompareFieldAction = jQuery(this).next("td." + kradVariables.COLLECTION_ACTION_CLASS).children().hasClass(kradVariables.ACTION_FIELD_CLASS);
+
         // check if the children is hidden (progressive) or if there is no content(render=false)
-        var cellEmpty = jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty");
+        var cellEmpty = (jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty")) && !isCompareFieldAction ;
 
         // hide the header only if the cell and the header is empty
         if (cellEmpty) {

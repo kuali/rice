@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Header;
+import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
@@ -91,11 +92,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * Generates the comparison fields
      *
      * <p>
-     * First the configured List of <code>ComparableInfo</code> instances are
+     * First the configured List of ComparableInfo instances are
      * sorted based on their order property. Then if generateCompareHeaders is
-     * set to true, a <code>HeaderField</code> is created for each comparable
+     * set to true, a HeaderField is created for each comparable
      * using the headerFieldPrototype and the headerText given by the
-     * comparable. Finally for each field configured on the <code>Group</code>,
+     * comparable. Finally for each field configured on the Group,
      * a corresponding comparison field is generated for each comparable and
      * adjusted to the binding object path given by the comparable in addition
      * to suffixing the id and setting the readOnly property
@@ -132,7 +133,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (viewContext != null) {
             context.putAll(view.getContext());
         }
-        
+
         context.put(UifConstants.ContextVariableNames.COMPONENT, component);
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
@@ -148,7 +149,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             comparisonItems.add(spaceField);
 
             for (ComparableInfo comparable : groupComparables) {
-                Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getIdSuffix());
+                Header compareHeaderField = ComponentUtils.copy(headerFieldPrototype, comparable.getComparableId());
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
                 comparisonItems.add(compareHeaderField);
             }
@@ -177,12 +178,15 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             boolean suppressLabel = false;
 
             for (ComparableInfo comparable : groupComparables) {
-                String idSuffix = comparable.getIdSuffix();
-                if (StringUtils.isBlank(idSuffix)) {
-                    idSuffix = UifConstants.IdSuffixes.COMPARE + defaultSuffix;
+                String comparableId = comparable.getComparableId();
+                if (StringUtils.isBlank(comparableId)) {
+                    comparableId = UifConstants.IdSuffixes.COMPARE + defaultSuffix;
                 }
 
-                Component compareItem = ComponentUtils.copy(item, idSuffix);
+                // create a context variable to use as a filter to determine if we show an action button in the right column
+                item.pushObjectToContext("renderCompareSaveButton", comparableId.equals(UifConstants.IdSuffixes.COMPARE + 1));
+
+                Component compareItem = ComponentUtils.copy(item, comparableId);
 
                 ComponentUtils.setComponentPropertyDeep(compareItem, UifPropertyPaths.BIND_OBJECT_PATH,
                         comparable.getBindingObjectPath());
@@ -227,6 +231,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 }
 
                 comparisonItems.add(compareItem);
+
                 defaultSuffix++;
 
                 suppressLabel = true;
@@ -283,10 +288,10 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     }
 
     /**
-     * Generates an id suffix for the comparable item
+     * Generates an comparableId suffix for the comparable item
      *
      * <p>
-     * If the idSuffix to use if configured on the <code>ComparableInfo</code>
+     * If the comparableId to use if configured on the ComparableInfo
      * it will be used, else the given integer index will be used with an
      * underscore
      * </p>
@@ -294,15 +299,15 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @param comparable comparable info to check for id suffix
      * @param index sequence integer
      * @return id suffix
-     * @see org.kuali.rice.krad.uif.modifier.ComparableInfo#getIdSuffix()
+     * @see org.kuali.rice.krad.uif.modifier.ComparableInfo#getComparableId()
      */
-    protected String getIdSuffix(ComparableInfo comparable, int index) {
-        String idSuffix = comparable.getIdSuffix();
-        if (StringUtils.isBlank(idSuffix)) {
-            idSuffix = "_" + index;
+    protected String getComparableId(ComparableInfo comparable, int index) {
+        String comparableId = comparable.getComparableId();
+        if (StringUtils.isBlank(comparableId)) {
+            comparableId = "_" + index;
         }
 
-        return idSuffix;
+        return comparableId;
     }
 
     /**

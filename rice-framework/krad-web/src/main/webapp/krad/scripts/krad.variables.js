@@ -22,6 +22,7 @@ function JavascriptKradVariables() {
 JavascriptKradVariables.prototype = {
     ACTION_DEFAULTS: "action_defaults",
     ACTION_ONCLICK_DATA: "onclick",
+    ACTION_FIELD_CLASS: "uif-actionField",
     ACTIVE_CLASS: "active",
     APPLICATION_HEADER_WRAPPER: "Uif-ApplicationHeader-Wrapper",
     APPLICATION_FOOTER_WRAPPER: "Uif-ApplicationFooter-Wrapper",
@@ -58,6 +59,7 @@ JavascriptKradVariables.prototype = {
     COLLAPSED_INFO_CLASS: "uif-collapsedInfo",
     COLLAPSED_WARNINGS_CLASS: "uif-collapsedWarnings",
     COLLECTION_ITEM_CLASS: "uif-collectionItem",
+    COLLECTION_ACTION_CLASS: "uif-collection-column-action",
     CONTROL_CLASS: "Uif-Application",
     COUNTDOWN_CLASS: "hasCountdown",
 
@@ -108,7 +110,8 @@ JavascriptKradVariables.prototype = {
     // constants for id suffixes
     ID_SUFFIX: {
         DISCLOSURE_CONTENT: "_disclosureContent",
-        DISCLOSURE_TOGGLE: "_toggle"
+        DISCLOSURE_TOGGLE: "_toggle",
+        ADD_LINE_INPUT_FIELD: "_add_control"
     },
     JUMP_TO_ID: "jumptoid",
     PAGE_ID: "pageId",

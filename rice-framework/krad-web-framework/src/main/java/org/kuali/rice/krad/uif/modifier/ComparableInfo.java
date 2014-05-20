@@ -48,7 +48,7 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     private boolean readOnly;
 
     private int order;
-    private String idSuffix;
+    private String comparableId;
 
     private boolean compareToForValueChange;
     private boolean highlightValueChange;
@@ -175,18 +175,18 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      *
      * @return id suffix for comparison group
      */
-    @BeanTagAttribute(name = "idSuffix")
-    public String getIdSuffix() {
-        return this.idSuffix;
+    @BeanTagAttribute(name = "comparableId")
+    public String getComparableId() {
+        return this.comparableId;
     }
 
     /**
      * Setter for the id prefix to use for the generated comparison components
      *
-     * @param idSuffix
+     * @param comparableId
      */
-    public void setIdSuffix(String idSuffix) {
-        this.idSuffix = idSuffix;
+    public void setComparableId(String comparableId) {
+        this.comparableId = comparableId;
     }
 
     /**

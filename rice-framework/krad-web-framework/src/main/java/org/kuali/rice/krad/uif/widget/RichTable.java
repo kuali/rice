@@ -346,8 +346,8 @@ public class RichTable extends WidgetBase {
                         + sortType(getSortType(dataTypeClass))
                         + ","
                         + sortDataType(UifConstants.TableToolsValues.DOM_TEXT)
-                        + ","
                         + mData(useServerPaging, colIndex)
+                        + ","
                         + targets(colIndex)
                         + "},");
                 colIndex++;

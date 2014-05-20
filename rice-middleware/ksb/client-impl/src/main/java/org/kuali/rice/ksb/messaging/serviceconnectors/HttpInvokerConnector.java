@@ -36,8 +36,6 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
 
     private static final String HTTP_CLIENT_CONFIG_BEAN = "rice.ksb.httpClientConfigurer";
 
-    private HttpClientConfigurer httpClientConfigurer = null;
-
     /**
      * Constructs an HttpInvokerConnector.
      *
@@ -85,27 +83,20 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
         return httpClientBuilder.build();
 	}
 
-    /**
-     * Gets the HttpClientConfigurer that will be used to customize http clients.
-     *
-     * <p>If none has been set, then the bean specified by {@link #HTTP_CLIENT_CONFIG_BEAN} will be used.</p>
-     *
-     * @return the HttpClientConfigurer
-     */
-    public HttpClientConfigurer getHttpClientConfigurer() {
-        if (httpClientConfigurer == null) {
-            httpClientConfigurer = GlobalResourceLoader.getService(HTTP_CLIENT_CONFIG_BEAN);
-        }
-
-        return httpClientConfigurer;
+    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    private static class HttpClientConfigurerHolder {
+        static final HttpClientConfigurer httpClientConfigurer =
+                GlobalResourceLoader.getService(HTTP_CLIENT_CONFIG_BEAN);
     }
 
     /**
-     * Sets the HttpClientConfigurer that will be used to customize http clients.
+     * Gets the HttpClientConfigurer that will be used to customize http clients.
      *
-     * @param httpClientConfigurer the HttpClientConfigurer to set
+     * <p>On first call, the bean specified by {@link #HTTP_CLIENT_CONFIG_BEAN} will be lazily assigned and returned.</p>
+     *
+     * @return the HttpClientConfigurer
      */
-    public void setHttpClientConfigurer(HttpClientConfigurer httpClientConfigurer) {
-        this.httpClientConfigurer = httpClientConfigurer;
+    private static HttpClientConfigurer getHttpClientConfigurer() {
+        return HttpClientConfigurerHolder.httpClientConfigurer;
     }
 }

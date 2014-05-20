@@ -15,22 +15,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.InterruptedIOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.net.ConnectException;
-import java.net.NoRouteToHostException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.http.NoHttpResponseException;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
 import org.kuali.rice.core.api.util.reflect.BaseTargetedInvocationHandler;
@@ -38,36 +24,25 @@ import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 
 public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object> {
 
 	private static final Logger LOG = Logger.getLogger(BusClientFailureProxy.class);
 
+    private static final String SERVICE_REMOVAL_EXCEPTIONS_BEAN = "rice.ksb.serviceRemovalExceptions";
+    private static final String SERVICE_REMOVAL_RESPONSE_CODES_BEAN = "rice.ksb.serviceRemovalResponseCodes";
+
 	private final Object failoverLock = new Object();
 	
 	private ServiceConfiguration serviceConfiguration;
 
-	// exceptions that will cause this Proxy to remove the service from the bus
-	private static List<Class<?>> serviceRemovalExceptions = new ArrayList<Class<?>>();
-	private static List<Integer> serviceRemovalResponseCodes = new ArrayList<Integer>();
-
-	static {
-		serviceRemovalExceptions.add(NoHttpResponseException.class);
-		serviceRemovalExceptions.add(InterruptedIOException.class);
-		serviceRemovalExceptions.add(UnknownHostException.class);
-		serviceRemovalExceptions.add(NoRouteToHostException.class);
-		serviceRemovalExceptions.add(ConnectTimeoutException.class);
-		serviceRemovalExceptions.add(ConnectionPoolTimeoutException.class);
-		serviceRemovalExceptions.add(ConnectException.class);
-        serviceRemovalExceptions.add(SocketTimeoutException.class);
-    }
-	
-	static {
-	    serviceRemovalResponseCodes.add(new Integer(404));
-        serviceRemovalResponseCodes.add(new Integer(503));
-	}
-	
 	private BusClientFailureProxy(Object target, ServiceConfiguration serviceConfiguration) {
 		super(target);
 		this.serviceConfiguration = serviceConfiguration;
@@ -121,18 +96,18 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
 
 	private static boolean isServiceRemovalException(Throwable throwable) {
 		LOG.info("Checking for Service Removal Exception: " + throwable.getClass().getName());
-		if (serviceRemovalExceptions.contains(throwable.getClass())) {
+		if (getServiceRemovalExceptions().contains(throwable.getClass())) {
 			LOG.info("Found a Service Removal Exception: " + throwable.getClass().getName());
 			return true;
 		} else if (throwable instanceof org.kuali.rice.ksb.messaging.HttpException) {
 			org.kuali.rice.ksb.messaging.HttpException httpException = (org.kuali.rice.ksb.messaging.HttpException)throwable;
-			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
+			if (getServiceRemovalResponseCodes().contains(httpException.getResponseCode())) {
 				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
 				return true;
 			}
 		} else if (throwable instanceof org.apache.cxf.transport.http.HTTPException) {
 			org.apache.cxf.transport.http.HTTPException httpException = (org.apache.cxf.transport.http.HTTPException)throwable;
-			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
+			if (getServiceRemovalResponseCodes().contains(httpException.getResponseCode())) {
 				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
 				return true;
 			}
@@ -144,28 +119,43 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
 		return false;
 	}
 
-    /**
-     * Add to the list of exception classes that are considered service removal exceptions.
-     *
-     * <p>These are the exceptions that, when thrown from a service proxy, indicate that we should fail over to the
-     * next available endpoint for that service.</p>
-     *
-     * @param exceptionClassesToAdd the List of exception classes to add to serviceRemovalExceptions
-     */
-    public static void addServiceRemovalExceptions(List<Class<?>> exceptionClassesToAdd) {
-        serviceRemovalExceptions.addAll(exceptionClassesToAdd);
+    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    private static class ServiceRemovalExceptionsHolder {
+        static final List<Class<?>> serviceRemovalExceptions =
+                GlobalResourceLoader.getService(SERVICE_REMOVAL_EXCEPTIONS_BEAN);
     }
 
     /**
-     * Add to the list of HTTP response codes that indicate the need to fail over..
+     * Get the list of exception classes that are considered service removal exceptions.
+     *
+     * <p>These are the exceptions that, when thrown from a service proxy, indicate that we should fail over to the
+     * next available endpoint for that service and remove the failing endpoint from the bus.</p>
+     *
+     * <p>On first call, the bean specified by {@link #SERVICE_REMOVAL_EXCEPTIONS_BEAN} will be lazily assigned and
+     * used.</p>
+     */
+    private static List<Class<?>> getServiceRemovalExceptions() {
+        return ServiceRemovalExceptionsHolder.serviceRemovalExceptions;
+    }
+
+    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    private static class ServiceRemovalResponseCodesHolder {
+        static final List<Integer> serviceRemovalResponseCodes =
+                GlobalResourceLoader.getService(SERVICE_REMOVAL_RESPONSE_CODES_BEAN);
+    }
+
+    /**
+     * Get the list of HTTP response codes that indicate the need to fail over.
      *
      * <p>These are the response codes that, when detected within an exception thrown by a service proxy, indicate
-     * that we should fail over to the next available endpoint for that service.</p>
+     * that we should fail over to the next available endpoint for that service and remove the failing endpoint from
+     * the bus.</p>
      *
-     * @param responseCodesToAdd the List of exception classes to add to serviceRemovalExceptions
+     * <p>On first call, the bean specified by {@link #SERVICE_REMOVAL_RESPONSE_CODES_BEAN} will be lazily assigned and
+     * used.</p>
      */
-    public static void addServiceRemovalResponseCodes(List<Integer> responseCodesToAdd) {
-        serviceRemovalResponseCodes.addAll(responseCodesToAdd);
+    private static List<Integer> getServiceRemovalResponseCodes() {
+        return ServiceRemovalResponseCodesHolder.serviceRemovalResponseCodes;
     }
 
 }

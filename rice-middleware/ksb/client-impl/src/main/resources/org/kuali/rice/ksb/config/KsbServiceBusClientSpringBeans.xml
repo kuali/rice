@@ -17,12 +17,15 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-       xmlns:p="http://www.springframework.org/schema/p" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:cxf="http://cxf.apache.org/core"
        xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-2.5.xsd
                            http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
                            http://cxf.apache.org/transports/http/configuration
                            http://cxf.apache.org/schemas/configuration/http-conf.xsd">
@@ -45,6 +48,22 @@
 		    p:properties="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
 
 	<bean id="rice.ksb.httpClientConfigurer" class="org.kuali.rice.ksb.messaging.serviceconnectors.DefaultHttpClientConfigurer" />
+
+  <util:list id="rice.ksb.serviceRemovalExceptions" value-type="java.lang.Class">
+    <value>org.apache.http.NoHttpResponseException</value>
+    <value>java.io.InterruptedIOException</value>
+    <value>java.net.UnknownHostException</value>
+    <value>java.net.NoRouteToHostException</value>
+    <value>org.apache.http.conn.ConnectTimeoutException</value>
+    <value>org.apache.http.conn.ConnectionPoolTimeoutException</value>
+    <value>java.net.ConnectException</value>
+    <value>java.net.SocketTimeoutException</value>
+  </util:list>
+
+  <util:list id="rice.ksb.serviceRemovalResponseCodes" value-type="java.lang.Integer">
+    <value>404</value>
+    <value>503</value>
+  </util:list>
 
 	<bean id="rice.ksb.threadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
 	

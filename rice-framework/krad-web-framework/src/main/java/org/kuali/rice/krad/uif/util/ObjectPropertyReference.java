@@ -45,6 +45,18 @@ import org.kuali.rice.krad.util.KRADUtils;
 public class ObjectPropertyReference {
 
     /**
+     * Primitive default values
+     */
+    private static final boolean DEFAULT_BOOLEAN = false;
+    private static final byte DEFAULT_BYTE = 0;
+    private static final short DEFAULT_SHORT = 0;
+    private static final int DEFAULT_INT = 0;
+    private static final long DEFAULT_LONG = 0L;
+    private static final float DEFAULT_FLOAT = 0.0f;
+    private static final double DEFAULT_DOUBLE = 0.0d;
+    private static final char DEFAULT_CHAR = '\u0000';
+
+    /**
      * Log4j logger.
      */
     private static final Logger LOG = Logger.getLogger(ObjectPropertyReference.class);
@@ -525,8 +537,12 @@ public class ObjectPropertyReference {
      */
     private Object convertToPropertyType(Object propertyValue) {
         Class<?> propertyType = getPropertyType();
-        
-        if (propertyValue == null || propertyType.isInstance(propertyValue)) {
+
+        if (propertyValue == null) {
+            return  primitiveDefault(propertyType);
+        }
+
+        if (propertyType.isInstance(propertyValue)) {
             return propertyValue;
         }
 
@@ -539,6 +555,36 @@ public class ObjectPropertyReference {
         }
 
         return propertyValue;
+    }
+
+    /**
+     * Get default values for primitives
+     *
+     * @param object The property value.
+     * @return The default value for the Object type passed
+     */
+    private Object primitiveDefault(Class<?> object) {
+        if (!object.isPrimitive()){
+            return null;
+        } else if (object.equals(boolean.class)) {
+            return DEFAULT_BOOLEAN;
+        } else if (object.equals(byte.class)) {
+            return DEFAULT_BYTE;
+        } else if (object.equals(char.class)) {
+            return DEFAULT_CHAR;
+        } else if (object.equals(short.class)) {
+            return DEFAULT_SHORT;
+        } else if (object.equals(int.class)) {
+            return DEFAULT_INT;
+        } else if (object.equals(long.class)) {
+            return DEFAULT_LONG;
+        } else if (object.equals(float.class)) {
+            return DEFAULT_FLOAT;
+        } else if (object.equals(double.class)) {
+            return DEFAULT_DOUBLE;
+        }
+
+        return null;
     }
 
     /**

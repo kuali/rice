@@ -1704,12 +1704,18 @@ function runValidationScript(scriptFunction) {
 }
 
 /**
- * Validate the a specific field's control defined by the selector/jQuery array passed in.  Also calls dependsOnCheck
+ * Validate that a specific field's control defined by the selector/jQuery array passed in.  Also calls dependsOnCheck
  * to validate any dependant fields.
  *
  * @param fieldControl selector/jQuery array that represents the control to validate
  */
 function validateFieldValue(fieldControl) {
+    // skip validation for add line fields unless there is a value. The add button will handle validation
+    if(jQuery(fieldControl).attr('id').match(new RegExp(kradVariables.ID_SUFFIX.ADD_LINE_INPUT_FIELD))
+            && !jQuery(fieldControl).val()) {
+        return true;
+    }
+
     //remove the ignore class if any due to a bug in the validate 
     //plugin for direct validation on certain types
     var hadIgnore = false;

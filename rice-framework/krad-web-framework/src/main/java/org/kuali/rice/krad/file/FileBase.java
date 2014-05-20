@@ -22,7 +22,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * Class used for interactions between the controller and form when using the multifile upload widget.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FileBase implements Serializable {
 

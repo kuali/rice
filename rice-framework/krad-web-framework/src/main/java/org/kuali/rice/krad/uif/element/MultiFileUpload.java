@@ -22,7 +22,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.util.List;
 
 /**
+ * Element which shows a multi file upload list of files and buttons.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MultiFileUpload extends ContentElementBase {
     private static final long serialVersionUID = -5701956559393771176L;

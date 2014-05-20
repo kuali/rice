@@ -1,5 +1,3 @@
-package org.kuali.rice.loadtest
-
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -15,10 +13,10 @@ package org.kuali.rice.loadtest
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+package org.kuali.rice.loadtest
 
 import groovy.util.ConfigSlurper
-
+import org.apache.commons.cli.ParseException
 import java.util.UUID
 import java.io.File
 
@@ -43,12 +41,12 @@ def doc_content_1
  * @param args
  */
 def parseCommandLine(args){
-    def cli = new CliBuilder(usage:'groovy org.kuali.rice.loadtest.CreatePrincipals.groovy -n <number of users>  [options]')
+    def cli = new CliBuilder(usage:'groovy org.kuali.rice.loadtest.CreatePendingAdhocRequestsComponent.groovy -n <number of users>  [options]')
     cli.h( longOpt: 'help', required: false, 'show usage information' )
     cli.n( longOpt: 'numberOfDocs', required: false, 'number of documents to be created', args:1)
     cli.s( longOpt: 'startIndex', required: false, 'starting index number', args:1)
-    cli.u( longOpt: 'user', required: false, 'ad hoc recipient principal id')
-    cli.a( longOpt: 'actionCode', required: false, 'requested action code')
+    cli.u( longOpt: 'user', required: false, 'ad hoc recipient principal id', args:1)
+    cli.a( longOpt: 'actionCode', required: false, 'requested action code', args:1)
     cli.p( longOpt: 'prefix', required: false, 'prefix', args:1)
     cli.o( longOpt: 'outputfile', required: false, argName:"output file", args:1, 'SQL script output filename' )
     cli.c( longOpt: 'config', required: false, argName:"config file", args:1, 'Location of groovy configuration file' )
@@ -185,7 +183,6 @@ def createSubmitComponentWithPendingApproval(int counter){
     sql = "INSERT INTO `ricedev24`.`krns_maint_lock_t` SET MAINT_LOCK_REP_TXT='org.kuali.rice.coreservice.impl.component.ComponentBo!!namespaceCode^^KR-SAP::code^^${ writer -> writer << CODE }', OBJ_ID='$OBJ_ID_4', VER_NBR=000000001, DOC_HDR_ID='$DOC_HDR_ID_1', MAINT_LOCK_ID='$MAINT_LOCK_1'"
     outfile << sql + newline + ";" + newline
 
-    // TODO: Encrypt
     clear_content = doc_content_1.toString()
     println "=========== CLEAR: "+ clear_content
     crypt_content = encryptService.encrypt(clear_content)

@@ -3843,6 +3843,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button");
     }
 
+    protected void waitAndClickAdHocGroupAdd() throws InterruptedException  {
+        jGrowl("Click AdHoc Group add");
+        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button");
+    }
+
     protected void waitAndClickBlanketApprove() throws InterruptedException {
         waitAndClickButtonByText("Blanket Approve");
     }

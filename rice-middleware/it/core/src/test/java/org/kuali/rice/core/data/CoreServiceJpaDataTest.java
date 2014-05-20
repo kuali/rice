@@ -48,7 +48,6 @@ import static org.junit.Assert.*;
 /**
  * Tests to confirm JPA mapping for the Core Service module data objects
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class CoreServiceJpaDataTest extends CORETestCase {
     public static final String DERIVED_COMPONENT_SET_ID = "DD:TSTKR";
 
@@ -106,11 +105,11 @@ public class CoreServiceJpaDataTest extends CORETestCase {
     @Test
     public void testParameterTypeBoDataObject() throws Exception{
         assertTrue("ParameterTypeBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(ParameterTypeBo.class));
-//        setupParameterTypeBoDataObjectAndSave();
+        setupParameterTypeBoDataObjectAndSave();
 
-        ParameterTypeBo parameterTypeBoFetched = KRADServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
+        ParameterTypeBo parameterTypeBoFetched = KRADServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"PTBO");
         assertTrue("ParameterTypeBo refetched after save", parameterTypeBoFetched != null &&
-                StringUtils.equals(parameterTypeBoFetched.getName(),"Help"));
+                StringUtils.equals(parameterTypeBoFetched.getName(),"Parameter Type"));
     }
 
     @Test
@@ -157,7 +156,7 @@ public class CoreServiceJpaDataTest extends CORETestCase {
 
     @Test
     public void testNamespaceServiceImpl() throws Exception{
-         setupNameSpaceBoDataObjectAndSave();
+        setupNameSpaceBoDataObjectAndSave();
 
         Namespace namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(NAMESPACE);
         assertTrue("getNamespace retrieved after save",namespace != null &&
@@ -216,7 +215,7 @@ public class CoreServiceJpaDataTest extends CORETestCase {
         KRADServiceLocator.getDataObjectService().save(namespaceBo, PersistenceOption.FLUSH);
 
         ParameterTypeBo parameterType = KradDataServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
-        assertTrue("Parameter type must be created first",parameterType != null);
+        assertTrue("Parameter type does not exist",parameterType != null);
         ParameterBo parameterBo = new ParameterBo();
         parameterBo.setApplicationId(APP_ID);
         parameterBo.setValue("blah");
@@ -246,8 +245,8 @@ public class CoreServiceJpaDataTest extends CORETestCase {
     private void setupParameterTypeBoDataObjectAndSave(){
         ParameterTypeBo parameterTypeBo = new ParameterTypeBo();
         parameterTypeBo.setActive(true);
-        parameterTypeBo.setCode("HELP");
-        parameterTypeBo.setName("Help");
+        parameterTypeBo.setCode("PTBO");
+        parameterTypeBo.setName("Parameter Type");
         parameterTypeBo.setVersionNumber(null);
 
         KRADServiceLocator.getDataObjectService().save(parameterTypeBo, PersistenceOption.FLUSH);

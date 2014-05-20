@@ -134,7 +134,9 @@ public class BeanPropertyComparator implements Comparator, Serializable {
                     }
                 }
                 catch (NullPointerException e) {
-                    throw new BeanComparisonException("unable to find property '" + o1.getClass().getName() + "." + currentProperty + "'", e);
+                    // throw new BeanComparisonException("unable to find property '" + o1.getClass().getName() + "." + currentProperty + "'", e);
+                    LOG.info("unable to find property '" + o1.getClass().getName() + "." + currentProperty + "'", e);
+                    compared = -999;
                 }
 
                 // compare the values

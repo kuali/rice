@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -122,10 +123,15 @@ public class UifExportController extends UifControllerBase {
     }
 
     /**
-     * Handles exporting the BusinessObject for this Inquiry to XML if it has a custom XML exporter available.
+     * Handles exporting the dataObject for this Inquiry to XML if it has a custom XML exporter available.
+     *
+     * @param form   KualiForm
+     * @param result  interface that represents binding results
+     * @param request the http request that was made
+     * @param response the http response object
      */
     @MethodAccessible
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=inquiryXmlRetrieval",
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.INQUIRY_XML,
             produces = {"application/xml"})
     @ResponseBody
     public ModelAndView inquiryXmlRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -163,7 +169,7 @@ public class UifExportController extends UifControllerBase {
         // set update none to prevent the lifecycle from being run after the controller finishes
         form.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATENONE.getKey());
 
-        if( applyCustomExport(modelCollection, dataObjectClass.getName(), formatType, response) ) {
+        if (applyCustomExport(modelCollection, dataObjectClass.getName(), formatType, response)) {
             return null;
         }
 
@@ -175,11 +181,11 @@ public class UifExportController extends UifControllerBase {
      * Checks if a custom exporter can be applied
      *
      * @param dataObjectEntry
-     * @return
+     * @return boolean value is true if a custom exporter is present
      */
     protected boolean canApplyCustomExport(DataObjectEntry dataObjectEntry) {
         Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
-        return (exporterClass != null);
+        return exporterClass != null;
     }
 
     /**
@@ -207,12 +213,12 @@ public class UifExportController extends UifControllerBase {
                         dataObjectClassName);
 
         // Return if no dataobject present to export
-        if(dataObjectCollection == null || dataObjectCollection.size() == 0) {
+        if (CollectionUtils.isEmpty(dataObjectCollection)) {
             return false;
         }
 
         // No custom exporter present
-        if(!canApplyCustomExport(dataObjectEntry)) {
+        if (!canApplyCustomExport(dataObjectEntry)) {
             return false;
         }
 

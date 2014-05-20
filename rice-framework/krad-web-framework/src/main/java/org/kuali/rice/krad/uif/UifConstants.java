@@ -178,6 +178,7 @@ public class UifConstants {
         public static final String TABLE_JSON = "tableJsonRetrieval";
         public static final String TABLE_DATA = "tableDataRetrieval";
         public static final String TABLE_XML = "tableXmlRetrieval";
+        public static final String INQUIRY_XML = "inquiryXmlRetrieval";
         public static final String TABLE_CSV = "tableCsvRetrieval";
         public static final String TABLE_XLS = "tableXlsRetrieval";
     }

@@ -32,7 +32,6 @@
         <ref bean="Demo-CssGridLayoutManager-Example1"/>
         <ref bean="Demo-CssGridLayoutManager-Example2"/>
         <ref bean="Demo-CssGridLayoutManager-Example3"/>
-        <ref bean="Demo-CssGridLayoutManager-Example5"/>
         <ref bean="Demo-CssGridLayoutManager-Example6"/>
         <ref bean="Demo-CssGridLayoutManager-Example7"/>
         <ref bean="Demo-CssGridLayoutManager-Example8"/>
@@ -113,27 +112,6 @@
           </property>
         </bean>
         <!-- ex:Demo-CssGridLayoutManager-Example3 end-->
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-CssGridLayoutManager-Example5" parent="Uif-VerticalBoxSection">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-CssGridLayoutManager-Example5 start-->
-        <!-- Grid group is backed by a CssGridLayoutManager -->
-        <bean parent="Uif-CssGridGroup">
-          <property name="items">
-            <list>
-              <bean parent="Uif-InputField" p:label="Field 1" p:colSpan="4" p:propertyName="inputField17"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:colSpan="4" p:propertyName="inputField18"/>
-              <bean parent="Uif-InputField" p:label="Field 3" p:colSpan="4" p:propertyName="inputField19"/>
-              <bean parent="Uif-InputField" p:label="Field 4" p:colSpan="6" p:propertyName="inputField20"/>
-              <bean parent="Uif-InputField" p:label="Field 5" p:colSpan="6" p:propertyName="inputField21"/>
-            </list>
-          </property>
-        </bean>
-        <!-- ex:Demo-CssGridLayoutManager-Example5 end-->
       </list>
     </property>
   </bean>

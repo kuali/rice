@@ -64,15 +64,6 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//section[@data-parent='Demo-CssGridLayoutManager-Example3']/div[@class='col-md-4']");
      }
     
-    protected void testLayoutManagersCssGridLayoutRowCss() throws Exception {
-        selectByName("exampleShown", "Row Css");
-        waitForElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField17']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField18']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-odd']/div/input[@name='inputField19']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/input[@name='inputField20']");
-        assertElementPresentByXpath("//div[@class='row demo-border demo-even']/div/input[@name='inputField21']");
-     }
-    
     protected void testLayoutManagersCssGridLayoutDefaultColspan() throws Exception {
         selectByName("exampleShown", "Default ColSpan");
         waitForElementPresentByXpath("//div[@data-parent='Demo-CssGridLayoutManager-Example6']/div[@class='col-md-4']");
@@ -100,7 +91,6 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
         testLayoutManagersCssGridLayoutFieldLabelColumns();
         testLayoutManagersCssGridLayoutDefaultColspan();
         testLayoutManagersCssGridLayoutGroupLayout();
-        testLayoutManagersCssGridLayoutRowCss();
         passed();
     }
 }

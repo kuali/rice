@@ -34,6 +34,7 @@ import java.util.List;
  * 
  */
 public class BeanPropertyComparator implements Comparator, Serializable {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BeanPropertyComparator.class);
     private static final long serialVersionUID = -2675700473766186018L;
     boolean ignoreCase;
     private List propertyNames;
@@ -157,7 +158,9 @@ public class BeanPropertyComparator implements Comparator, Serializable {
             throw new BeanComparisonException("unable to compare property values", e);
         }
         catch (InvocationTargetException e) {
-            throw new BeanComparisonException("unable to compare property values", e);
+            LOG.error("unable to compare property values", e.getCause());
+            // throw new BeanComparisonException("unable to compare property values", e);
+            compared = -999;
         }
 
         return compared;

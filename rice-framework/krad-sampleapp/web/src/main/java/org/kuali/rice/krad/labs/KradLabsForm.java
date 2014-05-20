@@ -899,16 +899,12 @@ public class KradLabsForm extends UifFormBase {
         FileBase fakeFile = new FileBase();
         fakeFile.setName(propertyPath + "_fakeName1.png");
         fakeFile.setSize(5000000L);
-        fakeFile.setDeleteUrl(
-                "?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 
         fakeFile = new FileBase();
         fakeFile.setName(propertyPath + "_fakeName2.png");
         fakeFile.setSize(5000000L);
-        fakeFile.setDeleteUrl(
-                "?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fakeFile.getName());
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 

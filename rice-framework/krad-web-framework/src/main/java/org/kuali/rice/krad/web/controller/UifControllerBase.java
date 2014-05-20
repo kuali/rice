@@ -400,11 +400,20 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=fileUpload")
     public
     @ResponseBody
-    Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result, HttpServletRequest request,
-            HttpServletResponse response) {
+    Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
 
         //System.out.println("get files: propertyPath=>" + request.getParameter("propertyPath"));
         List<FileBase> returnObjects = uifForm.getFiles(request.getParameter("propertyPath"));
+        // make sure the delete URL is set
+        for (FileBase file : returnObjects) {
+            if (file.getDeleteUrl() == null || file.getDeleteUrl().length() == 0) {
+                file.setDeleteUrl("?methodToCall=fileDelete&propertyPath="
+                        + request.getParameter("propertyPath")
+                        + "&fileName="
+                        + file.getName());
+            }
+        }
 
         Map<String, Object> files = new HashMap<String, Object>();
         // this must remain 'files'!

@@ -23,6 +23,8 @@ import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.file.FileBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -919,6 +921,13 @@ public class KradLabsForm extends UifFormBase {
 
         if (fileBase.getName().startsWith("fail")) {
             fileBase.setError("This file failed to upload because it starts with fail!");
+        } else {
+            // persist the file
+            try {
+                InputStream is = fileBase.getMultipartFile().getInputStream();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
 
         return true;

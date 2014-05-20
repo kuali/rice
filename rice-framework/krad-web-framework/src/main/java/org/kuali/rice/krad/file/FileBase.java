@@ -18,7 +18,6 @@ package org.kuali.rice.krad.file;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -38,15 +37,16 @@ public class FileBase implements Serializable {
     private String deleteUrl;
     private String error;
 
-    private InputStream inputStream;
+    private MultipartFile multipartFile;
 
     public FileBase() {
     }
 
-    public FileBase(MultipartFile file) {
-        this.name = file.getOriginalFilename();
-        this.contentType = file.getContentType();
-        this.size = file.getSize();
+    public FileBase(MultipartFile multipartFile) {
+        this.multipartFile = multipartFile;
+        this.name = multipartFile.getOriginalFilename();
+        this.contentType = multipartFile.getContentType();
+        this.size = multipartFile.getSize();
     }
 
     public String getId() {
@@ -121,12 +121,12 @@ public class FileBase implements Serializable {
         this.error = error;
     }
 
-    public InputStream getInputStream() {
-        return inputStream;
+    public MultipartFile getMultipartFile() {
+        return multipartFile;
     }
 
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public void setMultipartFile(MultipartFile multipartFile) {
+        this.multipartFile = multipartFile;
     }
 
     @Override

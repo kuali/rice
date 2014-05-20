@@ -65,8 +65,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         assertEquals("Unexpected language code found", "en", template.getLanguageCode());
         assertEquals("Unexpected template found", "Must not be inActive", template.getTemplate());
         assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t0.namespaceName, "reqActive").getId(), template.getTypeId());
-        // will always return false  KULRICE-10653 NaturalLanguageTemplate "active" attribute missing from Database
-        assertEquals("Unexpected Active value", false, template.isActive());
+        assertEquals("Unexpected Active value", true, template.isActive());
 
         // try to create a NaturalLanguageTemplate with null languageCode
         try {
@@ -198,8 +197,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         ruleManagementService.updateNaturalLanguageTemplate(naturalLanguageTemplateBuilder.build());
 
         assertEquals("Unexpected template value found", "Ten obiekt nie moze byc nieaktywne", ruleManagementService.getNaturalLanguageTemplate("pl-reqActive").getTemplate());
-        // will always return false  KULRICE-10653 NaturalLanguageTemplate "active" attribute missing from Database
-        assertEquals("Unexpected isActive value found", false, ruleManagementService.getNaturalLanguageTemplate("pl-reqActive").isActive());
+        assertEquals("Unexpected isActive value found", true, ruleManagementService.getNaturalLanguageTemplate("pl-reqActive").isActive());
     }
 
     /**
@@ -311,8 +309,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         assertEquals("Unexpected language code found", "sk", template.getLanguageCode());
         assertEquals("Unexpected template found", "Tento objekt nesmie byt neaktívne", template.getTemplate());
         assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t5.namespaceName, "reqActive").getId(), template.getTypeId());
-        // change test to true after isActive is functional KULRICE-10653
-        assertEquals("Unexpected Active value", false, template.isActive());
+        assertEquals("Unexpected Active value", true, template.isActive());
 
         // test find with null language code
         try {
@@ -368,8 +365,7 @@ public class RuleManagementNaturalLanguageTemplateTest extends RuleManagementBas
         assertEquals("Unexpected language code found", "sl", template.getLanguageCode());
         assertEquals("Unexpected template found", "Ta predmet ne sme biti neaktiven", template.getTemplate());
         assertEquals("Unexpected TypeId value",  krmsTypeRepository.getTypeByName(t6.namespaceName, "reqActive-SL").getId(), template.getTypeId());
-        // change test to true after isActive is functional KULRICE-10653
-        assertEquals("Unexpected Active value", false, template.isActive());
+        assertEquals("Unexpected Active value", true, template.isActive());
 
         // test find with null NaturalLanguageUsage
         try {

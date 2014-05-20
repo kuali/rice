@@ -60,28 +60,13 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         fireEvent("field1", "blur");
         Thread.sleep(3000);
         fireMouseOverEventByName("field1");
-        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field1", "aria-invalid"));
-        assertAttributeClassRegexMatches("field1", REGEX_ERROR);
-        assertTrue(isTextPresent("Required"));
-
-        fireMouseOverEventByName("field1");
-
-        waitIsVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']");
+        waitIsVisibleByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
 
         waitAndTypeByName("field1", "a");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-
-        waitIsVisibleByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']");
-
         assertFalse(isVisibleByXpath(
-                "//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']"));
-
-        fireEvent("field1", "blur");
-        Thread.sleep(500);
-        assertFalse(isElementPresentByXpath("//*[@name='field1' and @aria-invalid]"));
-        assertAttributeClassRegexMatches("field1", REGEX_VALID);
-        assertTrue("jquerybubblepopup Required not present", isTextPresent("Required"));
+                "//div[@class='popover top in uif-tooltip-error-cs']"));
 
         fireEvent("field2", "focus");
         fireEvent("field2", "blur");
@@ -89,32 +74,22 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         Thread.sleep(500);
         //        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-invalid"));
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field2", "aria-required"));
-        assertAttributeClassRegexMatches("field2", REGEX_ERROR);
-        assertTrue(isTextPresent("Required"));
 
         fireEvent("field2", "focus");
         waitAndTypeByName("field2", "a");
         fireEvent("field2", "blur");
         Thread.sleep(500);
         assertFalse(isElementPresentByXpath("//*[@name='field2' and @aria-invalid]"));
-        assertAttributeClassRegexMatches("field2", REGEX_VALID);
-        assertFalse(isElementPresentByXpath("//textarea[@name='field2']/../img[@alt='Error']"));
 
         fireEvent("field3", "focus");
         fireEvent("field3", "blur");
         fireMouseOverEventByName("field3");
-        Thread.sleep(500);
-        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field3", "aria-invalid"));
-        assertAttributeClassRegexMatches("field3", REGEX_ERROR);
-        assertTrue(isTextPresent("Required"));
 
         fireEvent("field3", "focus");
         selectByName("field3", "Option 1");
         fireEvent("field3", "blur");
         Thread.sleep(500);
         assertFalse(isElementPresentByXpath("//*[@name='field3' and @aria-invalid]"));
-        assertAttributeClassRegexMatches("field3", REGEX_VALID);
-        assertFalse(isElementPresentByXpath("//select[@name='field3']/../img[@alt='Error']"));
 
         fireEvent("field114", "focus");
         fireMouseOverEventByName("field114");
@@ -122,41 +97,12 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         fireEvent("field114", "blur");
         Thread.sleep(500);
         SeleneseTestBase.assertEquals("true", waitAndGetAttributeByName("field114", "aria-invalid"));
-        assertAttributeClassRegexMatches("field114", REGEX_ERROR);
-        assertTrue(isTextPresent("Required"));
 
         fireEvent("field114", "focus");
         selectByName("field114", "Option 1");
         fireEvent("field114", "blur");
         Thread.sleep(500);
         assertFalse(isElementPresentByXpath("//*[@name='field114' and @aria-invalid]"));
-        assertAttributeClassRegexMatches("field114", REGEX_VALID);
-        assertFalse(isElementPresentByXpath("//select[@name='field114']/../img[@alt='Error']"));
-
-        fireEvent("field117", "3", "focus");
-        uncheckByXpath("//*[@name='field117' and @value='3']");
-        fireEvent("field117", "blur");
-        fireMouseOverEventByName("field117");
-
-        for (int second = 0;; second++) {
-            if (second >= 10) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
-            }
-
-            try {
-                if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
-                    break;
-                }
-            } catch (Exception e) {}
-
-            Thread.sleep(1000);
-        }
-
-        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']",
-                "aria-invalid"));
-        assertTrue(waitAndGetAttributeByXpath("//*[@name='field117' and @value='1']", "class").matches(
-                REGEX_ERROR));
-        assertTrue(isTextPresent("Required"));
 
         fireEvent("field117", "3", "focus");
         checkByXpath("//*[@name='field117' and @value='3']");
@@ -202,25 +148,6 @@ public abstract class ClientErrorsAftBase extends WebDriverLegacyITBase {
         uncheckByXpath("//*[@name='field115' and @value='4']");
         fireEvent("field115", "blur");
         fireMouseOverEventByName("field115");
-
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds) {
-                SeleneseTestBase.fail(TIMEOUT_MESSAGE);
-            }
-
-            try {
-                if (isElementPresentByXpath("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs']")) {
-                    break;
-                }
-            } catch (Exception e) {}
-
-            Thread.sleep(1000);
-        }
-
-        SeleneseTestBase.assertEquals("true", waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']",
-                "aria-invalid"));
-        assertTrue(waitAndGetAttributeByXpath("//*[@name='field115' and @value='1']", "class").matches(REGEX_ERROR));
-        assertTrue(isTextPresent("Required"));
 
         fireEvent("field115", "3", "focus");
         checkByXpath("//*[@name='field115' and @value='3']");

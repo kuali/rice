@@ -232,8 +232,11 @@ KradRequest.prototype = {
             return true;
         }
 
-        var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
-        var inDialog = $dialogGroup.length;
+        var inDialog = false;
+        if(this.$action) {
+            var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
+            inDialog = $dialogGroup.length;
+        }
 
         var valid = true;
         if (!inDialog) {

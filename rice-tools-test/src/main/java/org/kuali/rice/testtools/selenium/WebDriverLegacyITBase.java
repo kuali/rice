@@ -3799,7 +3799,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//p[contains(., 'Testing methodToCall action')]/a");
         Thread.sleep(3000);
         assertTrue(isElementPresentByXpath(
-                "//div[@class='alert-danger']"));
+                "//div[@class='alert alert-danger']"));
 
         //Testing methodToCall action (no client validation check)
         waitAndClickByXpath("//p[contains(., 'Testing methodToCall action (no client validation check)')]/a");

@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-public class HttpException extends org.apache.commons.httpclient.HttpException {
+import java.io.IOException;
 
+public class HttpException extends IOException {
 
 	private static final long serialVersionUID = -2660638986164631692L;
 	

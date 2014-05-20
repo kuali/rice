@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.config;
 
-import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
@@ -38,7 +35,6 @@ import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
-import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
@@ -167,21 +163,16 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
     @Override
     public List<Lifecycle> loadLifecycles() throws Exception {
         List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+
         // this validation of our service list needs to happen after we've
         // loaded our configs so it's a lifecycle
         lifecycles.add(new BaseLifecycle() {
-
             @Override
             public void start() throws Exception {
-                // first check if we want to allow self-signed certificates for SSL communication
-                if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(
-                        KSBConstants.Config.KSB_ALLOW_SELF_SIGNED_SSL)).booleanValue()) {
-                    Protocol.registerProtocol("https", new Protocol("https",
-                            (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
-                }
                 super.start();
             }
         });
+
         return lifecycles;
     }
 
@@ -230,11 +221,6 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
     }
 
     protected void doAdditionalContextStoppedLogic() {
-        try {
-            HttpInvokerConnector.shutdownIdleConnectionTimeout();
-        } catch (Exception e) {
-            LOG.error("Failed to shutdown idle connection timeout evictor thread.", e);
-        }
         cleanUpConfiguration();
     }
 
@@ -338,11 +324,10 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 
     /**
      * Because our configuration is global, shutting down Rice does not get rid of objects stored there.  For that
-     * reason
-     * we need to manually clean these up.  This is most important in the case of the service bus because the
-     * configuration
-     * is used to store services to be exported.  If we don't clean this up then a shutdown/startup within the same
-     * class loading context causes the service list to be doubled and results in "multiple endpoint" error messages.
+     * reason we need to manually clean these up.  This is most important in the case of the service bus because the
+     * configuration is used to store services to be exported.  If we don't clean this up then a shutdown/startup
+     * within the same class loading context causes the service list to be doubled and results in "multiple endpoint"
+     * error messages.
      */
     protected void cleanUpConfiguration() {
         ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS);

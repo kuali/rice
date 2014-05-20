@@ -281,6 +281,19 @@
 					<property name="serviceNameSpaceURI" value="testAppsSharedTopic" />
 					<property name="queue" value="false" />
 				</bean>
+
+				<!-- Bean to support test of bus security and basic auth with HttpInvokerConnector -->
+				<bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
+					<property name="service" ref="echoService" />
+					<property name="serviceNameSpaceURI" value="urn:TestCl1" />
+					<property name="serviceInterface" value="org.kuali.rice.ksb.messaging.remotedservices.EchoService" />
+					<property name="localServiceName" value="httpInvoker-echoServiceSecure" />
+					<property name="busSecurity" value="true"/>
+
+					<!-- NOTE: a CredentialsSourceFactory needs to be registered in the ContextConfig to support this -->
+					<property name="credentialsType" value="USERNAME_PASSWORD" />
+				</bean>
+
 			</list>
 		</property>
 	</bean>

@@ -18,34 +18,34 @@ package org.kuali.rice.ksb.security;
 import java.security.Signature;
 import java.security.cert.Certificate;
 
-import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpRequest;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * A DigitalSigner implementation which places the alias and digital signature into the request
- * headers of the commons HttpClient's HttpMethod.
+ * headers of the commons HttpClient's HttpRequest.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class HttpClientHeaderDigitalSigner extends AbstractDigitalSigner {
 
-	private HttpMethod method;
+	private HttpRequest method;
 	private String alias;
 	private Certificate certificate;
 	
-    public HttpClientHeaderDigitalSigner(Signature signature, HttpMethod method, String alias) {
+    public HttpClientHeaderDigitalSigner(Signature signature, HttpRequest method, String alias) {
         super(signature);
         this.method = method;
         this.alias = alias;
     }
     
-    public HttpClientHeaderDigitalSigner(Signature signature, HttpMethod method, String alias, Certificate certificate) {
+    public HttpClientHeaderDigitalSigner(Signature signature, HttpRequest method, String alias, Certificate certificate) {
         this(signature, method, alias);
         this.certificate = certificate;
     }
     
-    public HttpClientHeaderDigitalSigner(Signature signature, HttpMethod method, Certificate certificate) {
+    public HttpClientHeaderDigitalSigner(Signature signature, HttpRequest method, Certificate certificate) {
         super(signature);
         this.method = method;
         this.certificate = certificate;
@@ -53,12 +53,12 @@ public class HttpClientHeaderDigitalSigner extends AbstractDigitalSigner {
     
 	public void sign() throws Exception {
         if (StringUtils.isNotBlank(this.alias) ) {
-            this.method.addRequestHeader(KSBConstants.KEYSTORE_ALIAS_HEADER, this.alias);
+            this.method.addHeader(KSBConstants.KEYSTORE_ALIAS_HEADER, this.alias);
         }
 	    if (this.certificate != null) {
-	        this.method.addRequestHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
+	        this.method.addHeader(KSBConstants.KEYSTORE_CERTIFICATE_HEADER, getEncodedCertificate(this.certificate));
 	    }
-	    this.method.addRequestHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
+	    this.method.addHeader(KSBConstants.DIGITAL_SIGNATURE_HEADER, getEncodedSignature());
 	}
 
 }

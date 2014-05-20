@@ -44,6 +44,8 @@
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
 		    p:properties="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
 
+	<bean id="rice.ksb.httpClientConfigurer" class="org.kuali.rice.ksb.messaging.serviceconnectors.DefaultHttpClientConfigurer" />
+
 	<bean id="rice.ksb.threadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
 	
 	<bean id="rice.ksb.scheduledThreadPool"

@@ -27,9 +27,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
-import org.apache.commons.httpclient.ConnectionPoolTimeoutException;
-import org.apache.commons.httpclient.NoHttpResponseException;
+import org.apache.http.NoHttpResponseException;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
@@ -143,5 +143,29 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
 		}
 		return false;
 	}
+
+    /**
+     * Add to the list of exception classes that are considered service removal exceptions.
+     *
+     * <p>These are the exceptions that, when thrown from a service proxy, indicate that we should fail over to the
+     * next available endpoint for that service.</p>
+     *
+     * @param exceptionClassesToAdd the List of exception classes to add to serviceRemovalExceptions
+     */
+    public static void addServiceRemovalExceptions(List<Class<?>> exceptionClassesToAdd) {
+        serviceRemovalExceptions.addAll(exceptionClassesToAdd);
+    }
+
+    /**
+     * Add to the list of HTTP response codes that indicate the need to fail over..
+     *
+     * <p>These are the response codes that, when detected within an exception thrown by a service proxy, indicate
+     * that we should fail over to the next available endpoint for that service.</p>
+     *
+     * @param responseCodesToAdd the List of exception classes to add to serviceRemovalExceptions
+     */
+    public static void addServiceRemovalResponseCodes(List<Integer> responseCodesToAdd) {
+        serviceRemovalResponseCodes.addAll(responseCodesToAdd);
+    }
 
 }

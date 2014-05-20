@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.ksb.security.httpinvoker;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.springframework.remoting.httpinvoker.HttpInvokerClientConfiguration;
 import org.springframework.util.Assert;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 /**
@@ -52,11 +52,12 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
 
     /**
      * Constructor that accepts the CredentialsSource and Service Info.
-     * 
+     *
+     * @param httpClient the http client
      * @param credentialsSource the source of credentials.
-     * @param serviceInfo information about the service.
+     * @param serviceConfiguration the service configuration.
      */
-    public AuthenticationCommonsHttpInvokerRequestExecutor(final HttpClient httpClient, 
+    public AuthenticationCommonsHttpInvokerRequestExecutor(final HttpClient httpClient,
         final CredentialsSource credentialsSource, final ServiceConfiguration serviceConfiguration) {
         super(httpClient);
         Assert.notNull(credentialsSource, "credentialsSource cannot be null.");
@@ -71,12 +72,12 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
      */
 
     protected void setRequestBody(final HttpInvokerClientConfiguration config,
-        final PostMethod postMethod, final ByteArrayOutputStream baos) throws IOException {
+        final HttpPost httpPost, final ByteArrayOutputStream baos) throws IOException {
     	final UsernamePasswordCredentials credentials = (UsernamePasswordCredentials) this.credentialsSource.getCredentials(this.serviceConfiguration.getEndpointUrl().toExternalForm());
 
         final String base64 = credentials.getUsername() + ":"
         + credentials.getPassword();
-        postMethod.addRequestHeader("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
+        httpPost.addHeader("Authorization", "Basic " + new String(Base64.encodeBase64(base64.getBytes())));
 
         if (logger.isDebugEnabled()) {
             logger
@@ -84,6 +85,6 @@ public final class AuthenticationCommonsHttpInvokerRequestExecutor extends
                     + credentials.getUsername());
         }
         
-        super.setRequestBody(config, postMethod, baos);
+        super.setRequestBody(config, httpPost, baos);
     }
 }

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.apache.commons.httpclient.URI;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.binding.soap.SoapFault;
 import org.apache.cxf.endpoint.Client;
@@ -33,6 +32,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 import javax.xml.namespace.QName;
+import java.net.URI;
 
 import static org.junit.Assert.*;
 
@@ -91,7 +91,7 @@ public class SOAPServiceTest extends KSBTestCase {
 		clientFactory.getServiceFactory().setDataBinding(new AegisDatabinding());	
 		clientFactory.setServiceClass(EchoService.class);
 		clientFactory.setServiceName(new QName("urn:TestCl1", "soap-echoServiceSecure"));
-		clientFactory.setAddress(new URI(getEndpointUrl(), false).toString());
+		clientFactory.setAddress(new URI(getEndpointUrl()).toString());
 		clientFactory.getInInterceptors().add(new LoggingInInterceptor());
 		clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
 		EchoService echoService = (EchoService)clientFactory.create();
@@ -125,7 +125,7 @@ public class SOAPServiceTest extends KSBTestCase {
 
         try {
             JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-            Client client = dcf.createClient(new URI(getWsdlUrl(), false).toString());
+            Client client = dcf.createClient(new URI(getWsdlUrl()).toString());
             client.getInInterceptors().add(new LoggingInInterceptor());
             client.getOutInterceptors().add(new LoggingOutInterceptor());
             Object[] results = client.invoke("echo", "testing");

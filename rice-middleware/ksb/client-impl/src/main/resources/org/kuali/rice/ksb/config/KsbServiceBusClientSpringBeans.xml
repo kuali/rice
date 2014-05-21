@@ -49,21 +49,21 @@
 
 	<bean id="rice.ksb.httpClientConfigurer" class="org.kuali.rice.ksb.messaging.serviceconnectors.DefaultHttpClientConfigurer" />
 
-  <util:list id="rice.ksb.serviceRemovalExceptions" value-type="java.lang.Class">
-    <value>org.apache.http.NoHttpResponseException</value>
-    <value>java.io.InterruptedIOException</value>
-    <value>java.net.UnknownHostException</value>
-    <value>java.net.NoRouteToHostException</value>
-    <value>org.apache.http.conn.ConnectTimeoutException</value>
-    <value>org.apache.http.conn.ConnectionPoolTimeoutException</value>
-    <value>java.net.ConnectException</value>
-    <value>java.net.SocketTimeoutException</value>
-  </util:list>
+	<util:list id="rice.ksb.serviceRemovalExceptions" value-type="java.lang.Class">
+		<value>org.apache.http.NoHttpResponseException</value>
+		<value>java.io.InterruptedIOException</value>
+		<value>java.net.UnknownHostException</value>
+		<value>java.net.NoRouteToHostException</value>
+		<value>org.apache.http.conn.ConnectTimeoutException</value>
+		<value>org.apache.http.conn.ConnectionPoolTimeoutException</value>
+		<value>java.net.ConnectException</value>
+		<value>java.net.SocketTimeoutException</value>
+	</util:list>
 
-  <util:list id="rice.ksb.serviceRemovalResponseCodes" value-type="java.lang.Integer">
-    <value>404</value>
-    <value>503</value>
-  </util:list>
+	<util:list id="rice.ksb.serviceRemovalResponseCodes" value-type="java.lang.Integer">
+		<value>404</value>
+		<value>503</value>
+	</util:list>
 
 	<bean id="rice.ksb.threadPool" class="org.kuali.rice.ksb.messaging.threadpool.KSBThreadPoolImpl" lazy-init="true" />
 	

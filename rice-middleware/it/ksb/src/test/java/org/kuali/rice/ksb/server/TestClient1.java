@@ -96,7 +96,16 @@ public class TestClient1 extends BaseTestServer {
 
         URL webRoot = getClass().getClassLoader().getResource(configConstants.WEB_ROOT);
         String location = webRoot.getPath();
+
+        LOG.debug("#####################################");
+		LOG.debug("#");
+		LOG.debug("#  Starting Client1 using following web root " + location);
+		LOG.debug("#");
+		LOG.debug("#####################################");
+
         WebAppContext context = new WebAppContext(location, configConstants.CONTEXT);
+        context.setThrowUnavailableOnStartupException(true);
+        context.setClassLoader(new KsbTestClientClassLoader());
         server.setHandler(context);
 
         return server;

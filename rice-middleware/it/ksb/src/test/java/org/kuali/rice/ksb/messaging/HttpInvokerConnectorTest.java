@@ -30,10 +30,14 @@ import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 import javax.xml.namespace.QName;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * simple test verifying if distributed topics are working.
+ * simple test verifying HttpInvoker based service clients are working.
+ *
+ * <p>HttpInvoker-based services (services defined by JavaServiceDefinitions) are tested via http and https, with
+ * bus security and auth enabled</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -46,13 +50,19 @@ public class HttpInvokerConnectorTest extends KSBTestCase {
 
     private static final QName serviceName = new QName("urn:TestCl1", "httpInvoker-echoServiceSecure");
 
+    /**
+     * Make sure our registry is up to date with the services from TestClient1
+     */
     @Before
     public void setup() {
         KsbApiServiceLocator.getServiceBus().synchronize();
     }
 
+    /**
+     * Tests a secured and auth-enabled HttpInvoker-based service with a simple call over http
+     */
     @Test
-    public void testHttpInvokerServiceCall() throws Exception {
+    public void testHttpInvokerServiceCall() {
         Endpoint endpoint = KsbApiServiceLocator.getServiceBus().getEndpoint(serviceName);
 
         Assert.assertTrue(KsbApiConstants.ServiceTypes.HTTP_INVOKER.equals(
@@ -63,8 +73,11 @@ public class HttpInvokerConnectorTest extends KSBTestCase {
         Assert.assertTrue("foo".equals(echoService.echo("foo")));
     }
 
+    /**
+     * Tests a secured and auth-enabled HttpInvoker-based service with an https call
+     */
     @Test
-    public void testSecureHttpInvokerServiceCall() throws Exception {
+    public void testSecureHttpInvokerServiceCall() throws MalformedURLException {
         Endpoint endpoint = KsbApiServiceLocator.getServiceBus().getEndpoint(serviceName);
 
         Assert.assertTrue(KsbApiConstants.ServiceTypes.HTTP_INVOKER.equals(endpoint.getServiceConfiguration().getType()));
@@ -74,6 +87,7 @@ public class HttpInvokerConnectorTest extends KSBTestCase {
         ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
         URL endpointUrl = serviceConfiguration.getEndpointUrl();
         TestClient1.ConfigConstants configConstants = new TestClient1.ConfigConstants();
+
         URL httpsUrl = new URL("https", endpointUrl.getHost(), configConstants.SERVER_HTTPS_PORT, endpointUrl.getFile());
 
         // manually build our service proxy using the HttpInvokerConnector

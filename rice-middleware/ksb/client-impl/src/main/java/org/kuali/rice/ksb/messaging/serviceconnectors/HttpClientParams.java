@@ -88,7 +88,7 @@ public enum HttpClientParams {
         return getValueOrDefault(null);
     }
 
-	public <T> T getValueOrDefault(T defaultValue) {
+    public <T> T getValueOrDefault(T defaultValue) {
         T value = null;
         String strValue = ConfigContext.getCurrentContextConfig().getProperty(getParamName());
 

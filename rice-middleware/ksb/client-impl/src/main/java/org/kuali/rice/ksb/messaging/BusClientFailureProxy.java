@@ -36,8 +36,8 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
 
 	private static final Logger LOG = Logger.getLogger(BusClientFailureProxy.class);
 
-    private static final String SERVICE_REMOVAL_EXCEPTIONS_BEAN = "rice.ksb.serviceRemovalExceptions";
-    private static final String SERVICE_REMOVAL_RESPONSE_CODES_BEAN = "rice.ksb.serviceRemovalResponseCodes";
+    static final String SERVICE_REMOVAL_EXCEPTIONS_BEAN = "rice.ksb.serviceRemovalExceptions";
+    static final String SERVICE_REMOVAL_RESPONSE_CODES_BEAN = "rice.ksb.serviceRemovalResponseCodes";
 
 	private final Object failoverLock = new Object();
 	

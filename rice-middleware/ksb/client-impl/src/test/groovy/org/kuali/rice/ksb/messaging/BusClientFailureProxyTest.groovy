@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.CoreConstants
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.core.api.resourceloader.ResourceLoader
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.kuali.rice.ksb.api.bus.Endpoint
 import org.kuali.rice.ksb.api.bus.ServiceBus
@@ -65,6 +66,19 @@ class BusClientFailureProxyTest {
                 getService: { [ getEndpoints: { a, b -> endpoints } ] as ServiceBus },
                 stop: {}
         ] as ResourceLoader)
+
+        GlobalResourceLoader.addResourceLoader([
+                        getName: { -> new QName("Foo", "Baz") },
+                        getService: { [ getEndpoints: { a, b -> endpoints } ] as ServiceBus },
+                        stop: {}
+                ] as ResourceLoader)
+
+        SpringResourceLoader springResourceLoader =
+                new SpringResourceLoader(new QName("Foo", "Baz"), "classpath:org/kuali/rice/ksb/messaging/BusClientFailureProxyTestBeans.xml", null);
+        springResourceLoader.start();
+
+        // add beans needed by BusClientFailureProxy
+        GlobalResourceLoader.addResourceLoaderFirst(springResourceLoader)
     }
 
     /**

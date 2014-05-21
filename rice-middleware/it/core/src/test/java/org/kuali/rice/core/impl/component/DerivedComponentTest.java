@@ -15,17 +15,12 @@
  */
 package org.kuali.rice.core.impl.component;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
-import org.kuali.rice.coreservice.impl.component.ComponentBo;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.ArrayList;
@@ -37,18 +32,15 @@ import static org.junit.Assert.*;
 /**
  * An integration test which tests the reference implementation of the ComponentService
  *
- * TODO - for now this test is part of KRAD even though it should be part of the core (pending
+ * TODO - For now this test is part of KRAD even though it should be part of the core (pending
  * further modularity work)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DerivedComponentTest extends CORETestCase {
 
     private ComponentService componentService;
-
-    private static boolean suiteLoaded;
 
     @Before
     public void establishComponentService() {

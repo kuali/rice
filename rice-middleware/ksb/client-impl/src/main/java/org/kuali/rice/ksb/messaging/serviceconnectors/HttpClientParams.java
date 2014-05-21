@@ -73,7 +73,6 @@ public enum HttpClientParams {
     // from org.apache.commons.httpclient.params.HttpConnectionManagerParams:
     //
 
-    MAX_HOST_CONNECTIONS("http.connection-manager.max-per-host", Integer.class),
     MAX_TOTAL_CONNECTIONS("http.connection-manager.max-total", Integer.class),
 
     //

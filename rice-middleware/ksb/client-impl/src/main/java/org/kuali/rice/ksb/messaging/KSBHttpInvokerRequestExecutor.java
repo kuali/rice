@@ -19,6 +19,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -137,7 +138,8 @@ public class KSBHttpInvokerRequestExecutor extends HttpComponentsHttpInvokerRequ
     protected void validateResponse(HttpInvokerClientConfiguration config, HttpResponse response) throws HttpException {
         int statusCode = response.getStatusLine().getStatusCode();
 
-        if (statusCode >= 300) {
+        // HTTP status codes in the 200-299 range indicate success
+        if (statusCode >= HttpStatus.SC_MULTIPLE_CHOICES /* 300 */) {
             throw new HttpException(statusCode, "Did not receive successful HTTP response: status code = " + statusCode +
                     ", status message = [" + response.getStatusLine().getReasonPhrase() + "]");
         }

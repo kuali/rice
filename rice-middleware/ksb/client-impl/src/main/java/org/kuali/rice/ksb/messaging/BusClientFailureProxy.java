@@ -119,7 +119,9 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
 		return false;
 	}
 
-    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    /**
+     * Lazy initialization holder class idiom for static fields, see Effective Java item 71
+     */
     private static class ServiceRemovalExceptionsHolder {
         static final List<Class<?>> serviceRemovalExceptions =
                 GlobalResourceLoader.getService(SERVICE_REMOVAL_EXCEPTIONS_BEAN);
@@ -138,7 +140,9 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler<Object>
         return ServiceRemovalExceptionsHolder.serviceRemovalExceptions;
     }
 
-    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    /**
+     * Lazy initialization holder class idiom for static fields, see Effective Java item 71
+     */
     private static class ServiceRemovalResponseCodesHolder {
         static final List<Integer> serviceRemovalResponseCodes =
                 GlobalResourceLoader.getService(SERVICE_REMOVAL_RESPONSE_CODES_BEAN);

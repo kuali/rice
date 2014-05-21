@@ -43,7 +43,10 @@ import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.kuali.rice.ksb.messaging.serviceconnectors.HttpClientParams.*;
 
@@ -51,8 +54,8 @@ import static org.kuali.rice.ksb.messaging.serviceconnectors.HttpClientParams.*;
  * Configures HttpClientBuilder instances for use by the HttpInvokerConnector.
  *
  * <p>This class adapts the configuration mechanism which was used with Commons HttpClient, which used a number of
- * specific Rice config params (see {@link HttpClientParams}) to work with  the
- * HttpComponents HttpClient.  The configuration doesn't all map across nicely, so coverage is not perfect.</p>
+ * specific Rice config params (see {@link HttpClientParams}) to work with  the HttpComponents HttpClient.  The
+ * configuration doesn't all map across nicely, so coverage is not perfect.</p>
  *
  * <p>If the configuration parameters here are not sufficient, this implementation is designed to be extended.</p>
  *
@@ -62,8 +65,17 @@ public class DefaultHttpClientConfigurer implements HttpClientConfigurer, Initia
 
     static final Logger LOG = LoggerFactory.getLogger(DefaultHttpClientConfigurer.class);
 
-    private static final String retrySocketExceptionProperty = "ksb.thinClient.retrySocketException";
-    private static final int defaultSocketTimeout = 2 * 60 * 1000; // two minutes in milliseconds
+    private static final String RETRY_SOCKET_EXCEPTION_PROPERTY = "ksb.thinClient.retrySocketException";
+    private static final int DEFAULT_SOCKET_TIMEOUT = 2 * 60 * 1000; // two minutes in milliseconds
+
+    /**
+     * Default maximum total connections per client
+     */
+    private static final int DEFAULT_MAX_TOTAL_CONNECTIONS = 20;
+
+    // list of config params starting with "http." to ignore when looking for unsupported params
+    private static final Set<String> unsupportedParamsWhitelist =
+            new HashSet<String>(Arrays.asList("http.port", "http.service.url"));
 
     /**
      * Customizes the configuration of the httpClientBuilder.
@@ -123,12 +135,14 @@ public class DefaultHttpClientConfigurer implements HttpClientConfigurer, Initia
         }
 
         // Configure the connection manager
-        poolingConnectionManager.setMaxTotal(MAX_TOTAL_CONNECTIONS.getValueOrDefault(20));
-        poolingConnectionManager.setDefaultMaxPerRoute(MAX_HOST_CONNECTIONS.getValueOrDefault(20));
+        poolingConnectionManager.setMaxTotal(MAX_TOTAL_CONNECTIONS.getValueOrDefault(DEFAULT_MAX_TOTAL_CONNECTIONS));
+
+        // By default we'll set the max connections per route (essentially that means per host for us) to the max total
+        poolingConnectionManager.setDefaultMaxPerRoute(MAX_TOTAL_CONNECTIONS.getValueOrDefault(DEFAULT_MAX_TOTAL_CONNECTIONS));
 
 
         SocketConfig.Builder socketConfigBuilder = SocketConfig.custom();
-        socketConfigBuilder.setSoTimeout(SO_TIMEOUT.getValueOrDefault(defaultSocketTimeout));
+        socketConfigBuilder.setSoTimeout(SO_TIMEOUT.getValueOrDefault(DEFAULT_SOCKET_TIMEOUT));
 
         Integer soLinger = SO_LINGER.getValue();
         if (soLinger != null) {
@@ -172,13 +186,13 @@ public class DefaultHttpClientConfigurer implements HttpClientConfigurer, Initia
     }
 
     /**
-     * Builds the retry handler if {@link #retrySocketExceptionProperty} is true in the project's configuration.
+     * Builds the retry handler if {@link #RETRY_SOCKET_EXCEPTION_PROPERTY} is true in the project's configuration.
      *
      * @return the HttpRequestRetryHandler or null depending on configuration
      */
     protected HttpRequestRetryHandler buildRetryHandler() {
         // If configured to do so, allow the client to retry once
-        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(retrySocketExceptionProperty, false)) {
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(RETRY_SOCKET_EXCEPTION_PROPERTY, false)) {
             return new DefaultHttpRequestRetryHandler(1, true);
         }
 
@@ -211,7 +225,7 @@ public class DefaultHttpClientConfigurer implements HttpClientConfigurer, Initia
             requestConfigBuilder.setStaleConnectionCheckEnabled(isStaleConnectionCheckEnabled);
         }
 
-        requestConfigBuilder.setSocketTimeout(SO_TIMEOUT.getValueOrDefault(defaultSocketTimeout));
+        requestConfigBuilder.setSocketTimeout(SO_TIMEOUT.getValueOrDefault(DEFAULT_SOCKET_TIMEOUT));
 
         Boolean isUseExpectContinue = USE_EXPECT_CONTINUE.getValue();
         if (isUseExpectContinue != null) {
@@ -291,7 +305,7 @@ public class DefaultHttpClientConfigurer implements HttpClientConfigurer, Initia
         Map<String, String> httpParams = ConfigContext.getCurrentContextConfig().getPropertiesWithPrefix("http.", false);
 
         for (Map.Entry<String, String> paramEntry : httpParams.entrySet()) {
-            if (!isParamNameSupported(paramEntry.getKey())) {
+            if (!isParamNameSupported(paramEntry.getKey()) && !unsupportedParamsWhitelist.contains(paramEntry)) {
                 LOG.warn("Ignoring unsupported config param \"" + paramEntry.getKey() + "\" with value \"" + paramEntry.getValue() + "\"");
             }
         }

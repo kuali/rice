@@ -83,7 +83,9 @@ public class HttpInvokerConnector extends AbstractServiceConnector {
         return httpClientBuilder.build();
 	}
 
-    // Lazy initialization holder class idiom for static fields, see Effective Java item 71
+    /**
+     * Lazy initialization holder class idiom for static fields, see Effective Java item 71
+     */
     private static class HttpClientConfigurerHolder {
         static final HttpClientConfigurer httpClientConfigurer =
                 GlobalResourceLoader.getService(HTTP_CLIENT_CONFIG_BEAN);

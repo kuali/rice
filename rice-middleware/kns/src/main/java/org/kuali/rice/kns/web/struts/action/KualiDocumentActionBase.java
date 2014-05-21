@@ -368,6 +368,9 @@ public class KualiDocumentActionBase extends KualiAction {
             createDocument(kualiDocumentFormBase);
         } else {
             LOG.error("docHandler called with invalid parameters");
+            LOG.error("mapping = " + mapping);
+            LOG.error("kualiDocumentFormBase.getDocId() = " + kualiDocumentFormBase.getDocId());
+            LOG.error("command = " + command);
             throw new IllegalArgumentException("docHandler called with invalid parameters");
         }
 

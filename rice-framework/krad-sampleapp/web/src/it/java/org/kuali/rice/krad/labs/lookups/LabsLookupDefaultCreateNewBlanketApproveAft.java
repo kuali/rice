@@ -90,7 +90,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
+        waitAndClickAdHocPersonAdd();
         waitForTextPresent("admin, admin");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
@@ -122,7 +122,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
+        waitAndClickAdHocPersonAdd();
         waitForTextPresent("admin, admin");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
@@ -133,16 +133,5 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
 //        }
 //
 //        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
-    }
-
-    private void failOnDocErrors() {
-        List<WebElement> errors = findElements(By.xpath("//li[@class='uif-errorMessageItem']"));
-        if (errors != null && errors.size() > 0) {
-            StringBuilder sb = new StringBuilder("");
-            for (WebElement error : errors) {
-                sb.append(error.getText()).append("\n");
-            }
-            jiraAwareFail(sb.toString());
-        }
     }
 }

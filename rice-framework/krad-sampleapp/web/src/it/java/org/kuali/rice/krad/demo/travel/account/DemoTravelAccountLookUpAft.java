@@ -142,17 +142,18 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     	waitAndClickByLinkText("edit");
     	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
     	waitAndClickByLinkText("Ad Hoc Recipients");
-    	waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span/a");
+        waitAndClickAdHocPersonAdd();
     	gotoLightBox();
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("return value");
     	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-    	waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/span/a");
+        waitAndClickAdHocGroupAdd();
     	gotoLightBox();
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("return value");
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
+        waitAndClickConfirmationOk();
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
             waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
@@ -160,12 +161,12 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         	waitAndClickByLinkText("edit");
         	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
         	waitAndClickByLinkText("Ad Hoc Recipients");
-        	waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span/a");
+            waitAndClickAdHocPersonAdd();
         	gotoLightBox();
         	waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("return value");
         	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        	waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/span/a");
+            waitAndClickAdHocGroupAdd();
         	gotoLightBox();
         	waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("return value");
@@ -213,6 +214,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
         testXss();
+        testTravelAccountLookUpDocumentLocking();
         passed();
     }
 }

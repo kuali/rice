@@ -347,8 +347,11 @@ public class KualiDocumentActionBase extends KualiAction {
      * @throws Exception
      */
     public ActionForward docHandler(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        LOG.debug("docHandler(ActionMapping " + mapping + ", ActionForm " + form
+            + ", HttpServletRequest request, HttpServletResponse response)");
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         String command = kualiDocumentFormBase.getCommand();
+        LOG.debug("kualiDocumentFormBase.getCommand()=" + command);
 
         if (kualiDocumentFormBase.getDocId()!= null && getDocumentService().getByDocumentHeaderId(kualiDocumentFormBase.getDocId()) == null) {
             ConfigurationService kualiConfigurationService = CoreApiServiceLocator.getKualiConfigurationService();

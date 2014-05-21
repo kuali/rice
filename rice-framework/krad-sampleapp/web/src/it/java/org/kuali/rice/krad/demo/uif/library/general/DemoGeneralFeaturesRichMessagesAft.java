@@ -84,22 +84,18 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][2]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][3]/a"));
         assertJgrowlText("Sample Message Text. Data passed: You passed data");
         waitAndClick(By.className("jGrowl-close"));
 
-        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][4]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
-        selectByName("exampleShown", "Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
         WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2, this.getClass().toString());
         assertJgrowlText("Sample Message Text. Data passed: none");

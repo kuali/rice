@@ -49,7 +49,7 @@ public class DemoControlKimUserAft extends WebDriverLegacyITBase {
     
     protected void testControlKimUserWidgetInputOnly() throws Exception {
         waitAndClickByLinkText("Widget Input Only");
-        waitAndClickByXpath("//section[@id='Demo-KIMUserControl-Example2']/div/div/span/a");
+        waitAndClickByXpath("//section[@id='Demo-KIMUserControl-Example2']/div/div/button");
         gotoLightBox();
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");

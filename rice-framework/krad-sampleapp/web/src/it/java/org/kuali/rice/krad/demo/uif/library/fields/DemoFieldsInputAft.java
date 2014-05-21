@@ -175,10 +175,10 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-        String quickfinderId = findElement(By.cssSelector(".uif-actionLink"), field).getAttribute("id");
+        String quickfinderId = findElement(By.xpath("//div[@data-label=\"Quickfinder Field\"]/div/div/button")).getAttribute("id");
 
         // validate that the quickfinder comes after the value
-        findElement(By.cssSelector("input[id='" + controlId + "'] + span>a[id='" + quickfinderId + "']"), exampleDiv);
+        findElement(By.cssSelector("input[id='" + controlId + "'] + div>button[id='" + quickfinderId + "']"), exampleDiv);
 
         assertIsVisible("#" + quickfinderId);
 

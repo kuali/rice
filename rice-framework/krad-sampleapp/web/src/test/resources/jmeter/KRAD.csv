@@ -13,8 +13,8 @@
 "Kitchen Sink Event Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,2000
 "Performance Medium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,2000
 "Performance Medium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,2000
-"KSA Transaction",/kr-krad/transaction,TransactionView,NOT_USED_DELETE,2000
-"Course Search Light Table",/kr-krad/kitchensinkperformance,Demo-Performance-LightTable,NOT_USED_DELETE,2000
-"Course Search Basic Table",/kr-krad/kitchensinkperformance,Demo-Performance-BasicTableCollection,NOT_USED_DELETE,2000
-"Course Search Rich Table Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-ServerSidePaging,NOT_USED_DELETE,2000
-"Course Search Rich Table Without Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-NoServerSidePaging,NOT_USED_DELETE,2000
+"KSA Transaction",/kr-krad/transaction,TransactionView,NOT_USED_DELETE,822
+"Course Search Light Table",/kr-krad/kitchensinkperformance,Demo-Performance-LightTable,NOT_USED_DELETE,182
+"Course Search Basic Table",/kr-krad/kitchensinkperformance,Demo-Performance-BasicTableCollection,NOT_USED_DELETE,1756
+"Course Search Rich Table Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-ServerSidePaging,NOT_USED_DELETE,464
+"Course Search Rich Table Without Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-NoServerSidePaging,NOT_USED_DELETE,1224

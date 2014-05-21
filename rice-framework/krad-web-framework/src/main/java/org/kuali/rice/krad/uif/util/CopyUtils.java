@@ -73,7 +73,7 @@ public final class CopyUtils {
      * This value is controlled by the parameter &quot;krad.uif.copyable.delay&quot;. By default,
      * full deep copy will be used.
      * </p>
-     * 
+     *
      * @return True if deep copy will be truncated with a delayed copy proxy, false for full deep
      *         copy.
      */
@@ -375,6 +375,9 @@ public final class CopyUtils {
      */
     public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
             Class<? extends Annotation> annotationClass) {
+        if (clazz == null) {
+            return Collections.<String, Annotation> emptyMap();
+        }
         Map<String, Annotation> rv = getMetadata(clazz).annotatedFieldsByAnnotationType.get(annotationClass);
         return rv == null ? Collections.<String, Annotation> emptyMap() : rv;
     }

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
@@ -127,10 +128,11 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/fieldset/div/button");
+        waitForTextPresent("Delete"); // wait for ajax to finish adding ad hoc group
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         checkErrorMessageItem(this.getClass().getName());
-        waitForTextPresent("Document was successfully submitted.");
+        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

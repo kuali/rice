@@ -41,6 +41,7 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
     public void testLabsLookupMaskedFieldBookmark() throws Exception {
         testLabsLookupMaskedFieldNoSearchCriteria();
         testLabsLookupMaskedField();
+        testLabsLookupMaskedFieldWildcard();
         passed();
     }
 
@@ -48,18 +49,25 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
     public void testLabsLookupMaskedFieldNav() throws Exception {
         testLabsLookupMaskedFieldNoSearchCriteria();
         testLabsLookupMaskedField();
+        testLabsLookupMaskedFieldWildcard();
         passed();
     }
 
     protected void testLabsLookupMaskedField()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1*");
-        waitAndTypeByName("lookupCriteria[name]","Travel *");
-        waitAndClickButtonByText("Search");
+        waitAndSelectByName("uLookupResults_layout_length", "25");
         assertTextPresent(new String[] {"*********", "a14"});
         waitAndClickButtonByText("Clear Values");
         waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
         waitAndClickButtonByText("Search");
         assertTextPresent(new String[] {"*********", "a1"});
+    }
+
+    protected void testLabsLookupMaskedFieldWildcard()throws Exception {
+        waitAndTypeByName("lookupCriteria[number]","a1*");
+        waitAndTypeByName("lookupCriteria[name]","Travel *");
+        waitAndClickButtonByText("Search");
+        waitForTextPresent("Travel Account Name is a secure field. Wildcards are not allowed on secure fields.");
     }
 
     protected void testLabsLookupMaskedFieldNoSearchCriteria()throws Exception {

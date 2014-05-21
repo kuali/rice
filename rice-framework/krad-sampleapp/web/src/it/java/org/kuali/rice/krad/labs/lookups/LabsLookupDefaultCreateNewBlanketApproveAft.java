@@ -91,6 +91,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
+        waitForTextPresent("admin, admin");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
@@ -122,6 +123,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
+        waitForTextPresent("admin, admin");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?

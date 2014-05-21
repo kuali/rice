@@ -212,18 +212,23 @@ public class CoreServiceJpaDataTest extends CORETestCase {
         namespaceBo.setApplicationId("RICE");
         namespaceBo.setCode("TST_NM_SPACE");
         namespaceBo.setName("Another Test Namespace");
-        KRADServiceLocator.getDataObjectService().save(namespaceBo, PersistenceOption.FLUSH);
+        namespaceBo = KRADServiceLocator.getDataObjectService().save(namespaceBo, PersistenceOption.FLUSH);
 
-        ParameterTypeBo parameterType = KradDataServiceLocator.getDataObjectService().find(ParameterTypeBo.class,"HELP");
-        assertTrue("Parameter type does not exist",parameterType != null);
+        ParameterTypeBo parameterTypeBo = new ParameterTypeBo();
+        parameterTypeBo.setActive(true);
+        parameterTypeBo.setCode("PT");
+        parameterTypeBo.setName("Another Test Parameter Type");
+        parameterTypeBo = KRADServiceLocator.getDataObjectService().save(parameterTypeBo, PersistenceOption.FLUSH);
+
         ParameterBo parameterBo = new ParameterBo();
         parameterBo.setApplicationId(APP_ID);
         parameterBo.setValue("blah");
         parameterBo.setDescription("descr");
-        parameterBo.setParameterTypeCode("HELP");
-        parameterBo.setParameterType(parameterType);
+        parameterBo.setParameterTypeCode("PT");
+        parameterBo.setParameterType(parameterTypeBo);
         parameterBo.setComponentCode("TST");
         parameterBo.setNamespaceCode("TST_NM_SPACE");
+        parameterBo.setNamespace(namespaceBo);
         parameterBo.setEvaluationOperatorCode("A");
         parameterBo.setName("TST_PARAM");
         CoreServiceApiServiceLocator.getParameterRepositoryService().

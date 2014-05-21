@@ -198,6 +198,7 @@
                               <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
                             </testFilesExcluded>
               -->
+              <ignoreResultFailures>true</ignoreResultFailures>
             </configuration>
           </plugin>
         </plugins>

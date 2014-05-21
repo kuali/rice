@@ -3321,107 +3321,42 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         assertTrue(isElementPresent(".uif-infoHighlight"));
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
-
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                jiraAwareFail(TIMEOUT_MESSAGE + " for jquerybubblepopup");
-            try {
-                if (isVisible(".jquerybubblepopup-innerHtml"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
+        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-info-ss']");
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
-
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                jiraAwareFail(TIMEOUT_MESSAGE);
-            try {
-                if (isVisible(".jquerybubblepopup-innerHtml"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                jiraAwareFail(TIMEOUT_MESSAGE);
-            try {
-                if (isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        assertTrue(isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-info-ss top in uif-tooltip-error-ss']");
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
-
-        for (int second = 0;; second++) {
-            if (second >= waitSeconds)
-                jiraAwareFail(TIMEOUT_MESSAGE);
-            try {
-                if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"))
-                    break;
-            } catch (Exception e) {}
-            Thread.sleep(1000);
-        }
-
-        fireEvent("field1", "blur");
-        Thread.sleep(3000);
-        assertTrue(!isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-infoMessageItem-field"));
-        assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-error-ss top in uif-tooltip-info-ss']");
         fireEvent("field1", "focus");
         clearTextByName("field1");
         fireEvent("field1", "blur");
-        assertTrue(isElementPresent("div.uif-hasError"));
-        assertTrue(isElementPresent("img[src*=\"error.png\"]"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-info-ss top in uif-tooltip-error-ss']");
     }
 
     protected void testServerWarningsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Warning Messages')]");
-        waitForPageToLoad();
-        Thread.sleep(3000);
         waitForElementPresentByXpath("//div[@id='Demo-ValidationLayout-SectionsPage_messages']");
         waitForElementPresentByXpath("//div[@id='Demo-ValidationLayout-Section1_messages']");
+        waitForElementPresentByXpath("//a[contains(.,'Field 1')]");
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutHorizontalItem uif-hasWarning uif-warningHighlight']");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
-        waitForElementVisible(".jquerybubblepopup-innerHtml", " after click on //a[contains(.,'Field 1')]");
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems not visible", isVisible(
-                ".jquerybubblepopup-innerHtml > .uif-serverMessageItems"));
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible",
-                isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-warning-ss top in uif-tooltip-error-ss']");
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        waitForElementVisible(".jquerybubblepopup-innerHtml",
-                " not visible after typing nothing in name=field1 then firing blur and focus events");
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
-                isVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-warningMessageItem-field"));
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field not visible after typing nothing in name=field1 then firing blur and focus events",
-                isVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-warning-ss top in uif-tooltip-error-ss']");
         waitAndTypeByName("field1", "b");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        waitForElementVisible(".jquerybubblepopup-innerHtml> .uif-serverMessageItems", "");
-        assertTrue(".jquerybubblepopup-innerHtml > .uif-clientMessageItems",
-                !isElementPresent(
-                        ".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-warning-ss top in uif-tooltip-error-ss']");
         clearTextByName("field1");
         fireEvent("field1", "blur");
         fireMouseOverEventByName("field1");
-        assertTrue(".uif-hasError is not present after typing nothing in name=field1 and then firing focus and blur events",
-                isElementPresent(".uif-hasError"));
-        assertTrue("img[src*=\"error.png\"] is not present after typing nothing in name=field1 and then firing focus and blur events",
-                isElementPresent("img[src*=\"error.png\"]"));
+        waitForElementPresentByXpath("//div[@class='popover uif-tooltip-warning-ss top in uif-tooltip-error-ss']");
         passed();
     }
 

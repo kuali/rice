@@ -183,6 +183,27 @@
       </properties>
     </profile>
 
+    <profile>
+      <id>jmeter</id>
+      <activation><activeByDefault>false</activeByDefault></activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.lazerycode.jmeter</groupId>
+            <artifactId>jmeter-maven-plugin</artifactId>
+            <configuration>
+              <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
+<!--
+              <testFilesExcluded>
+                <excludeJmeterTestFile>${jmeter.excludeJmeterTestFile}</excludeJmeterTestFile>
+              </testFilesExcluded>
+-->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 
   <dependencies>

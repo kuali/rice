@@ -90,7 +90,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
@@ -121,7 +121,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByXpath("//button[@title='Add a Note']");
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/span");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickBlanketApprove();
 //        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?

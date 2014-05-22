@@ -298,4 +298,69 @@
 
   </bean>
 
+  <bean id="LookupAdvancedFeaturesView" parent="Uif-LookupView">
+    <property name="parentLocation">
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
+    </property>
+    <property name="viewName" value="LookupAdvancedFeaturesSampleView"/>
+    <property name="headerText" value="Lookup Advanced Features Sample"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name="page.header.rightGroup">
+      <bean parent="Uif-HeaderRightGroup" p:layoutManager.orientation="VERTICAL">
+        <property name="items">
+          <list>
+            <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali" p:target="_blank"/>
+            <bean parent="Uif-Link" p:href="http://www.kuali.org/rice" p:linkText="Rice" p:target="_blank"/>
+            <bean parent="Uif-Link" p:href="http://www.kuali.org/download/rice" p:linkText="Download" p:target="_blank"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="criteriaGroup.footer">
+      <bean parent="Uif-LookupCriteriaFooter">
+        <property name="items">
+          <list merge="true">
+            <bean parent="Uif-PrimaryActionButton" p:actionScript="alert('You clicked an alert button')" p:actionLabel="Alert"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" p:progressiveRender="@{#dp.lookupCriteria[accountTypeCode] ne null}"/>
+      </list>
+    </property>
+    <!-- content of the details group, all propertyName paths are relative to the collection path -->
+    <property name="resultsGroup.layoutManager.rowDetailsGroup">
+      <bean parent="Uif-VerticalBoxGroup">
+        <property name="items">
+          <list>
+          <!-- ex:Demo-FieldGroup-Example2 start-->
+            <bean parent="Uif-HorizontalFieldGroup" p:label="Travel Account Details">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-DataField" p:propertyName="accountType.accountTypeName">
+                    <property name="fieldLabel.render"  value="false"/>
+                  </bean>
+                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent">
+                    <property name="fieldLabel.render"  value="false"/>
+                    <property name="propertyEditorClass" value="org.kuali.rice.krad.demo.uif.editor.CustomPercentageEditor"/>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+      </list>
+    </property>
+    <property name="resultsGroup.layoutManager.showToggleAllDetails" value="true"/>
+  </bean>
 </beans>

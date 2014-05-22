@@ -2788,6 +2788,10 @@ if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
+                <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
+                  <stringProp name="DurationAssertion.duration">${PAGEUNDERTESTTIMEOUTMS}</stringProp>
+                </DurationAssertion>
+                <hashTree/>
               </hashTree>
             </hashTree>
           </hashTree>

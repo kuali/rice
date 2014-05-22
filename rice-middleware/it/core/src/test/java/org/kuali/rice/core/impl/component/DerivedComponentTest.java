@@ -62,7 +62,6 @@ public class DerivedComponentTest extends CORETestCase {
         List<Component> testComponentSet = componentService.getDerivedComponentSet(testComponentSetId);
         assertTrue("Initial testComponentSet should be empty", testComponentSet.isEmpty());
         List<Component> workflowComponents = componentService.getAllComponentsByNamespaceCode(workflowNamespace);
-        assertFalse("There should be some components for the " + workflowNamespace + " namespace", workflowComponents.isEmpty());
 
         assertTrue(componentService.getAllComponentsByNamespaceCode(testNamespace1).isEmpty());
         assertTrue(componentService.getAllComponentsByNamespaceCode(testNamespace2).isEmpty());

@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -57,6 +49,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * Controller for <code>MaintenanceDocumentView</code> screens which operate on
  * <code>MaintenanceDocument</code> instances
@@ -80,7 +79,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * After the document is loaded calls method to setup the maintenance object
      */
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=docHandler")
     public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase formBase, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -149,7 +147,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * <code>MaintenanceDocumentView</code> with the default new action
      */
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW)
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -167,7 +164,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceDocumentView</code> with the edit maintenance
      * action
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_EDIT)
     public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -181,7 +177,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceDocumentView</code> with the copy maintenance
      * action
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
     public ModelAndView maintenanceCopy(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -195,7 +190,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceDocumentView</code> with the new with existing
      * maintenance action
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_NEW_WITH_EXISTING)
     public ModelAndView maintenanceNewWithExisting(@ModelAttribute("KualiForm") MaintenanceDocumentForm form,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -209,7 +203,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
      * Setups a new <code>MaintenanceDocumentView</code> with the delete maintenance
      * action
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_DELETE)
     public ModelAndView maintenanceDelete(@ModelAttribute("KualiForm") MaintenanceDocumentForm form,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {

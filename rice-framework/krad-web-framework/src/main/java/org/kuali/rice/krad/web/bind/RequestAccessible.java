@@ -41,4 +41,12 @@ public @interface RequestAccessible {
      * annotation is also present)</p>
      */
     RequestMethod[] method() default {};
+
+    /**
+     * list of methodToCall to allow binding.
+     *
+     * <p>For example you might want to restrict binding for only certain methodToCall(s). For other
+     * methodToCalls not in the list, no binding will occur.</p>
+     */
+    String[] methodToCalls() default {};
 }

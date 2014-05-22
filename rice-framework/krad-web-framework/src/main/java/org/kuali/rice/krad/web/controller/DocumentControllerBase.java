@@ -118,7 +118,6 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      * document id and then which action forward or redirect is pertinent for
      * the document type.
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=docHandler")
     public ModelAndView docHandler(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -570,7 +569,6 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      *
      * @return ModelAndView model and view configured for the redirect URL
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=supervisorFunctions")
     public ModelAndView supervisorFunctions(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {

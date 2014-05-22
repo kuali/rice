@@ -18,13 +18,13 @@ package org.kuali.rice.krad.web.bind;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.test.TestForm;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -38,13 +38,16 @@ public class UifViewBeanWrapperTest {
 
     @Before
     public void setUp() throws Exception {
-        ViewModel model = new TestForm();
+        TestForm model = new TestForm();
+        model.setMethodToCall("field7");
+
         UifBeanPropertyBindingResult bindingResult = new UifBeanPropertyBindingResult(model, "model", true, 100);
 
         beanWrapper = new UifViewBeanWrapper(model, bindingResult);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("POST");
+        request.addParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, "field7");
 
         RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
     }
@@ -85,6 +88,8 @@ public class UifViewBeanWrapperTest {
                 "dataObject.list2[3].field7", Boolean.TRUE);
 
         assertBindingAnnotationsInPath("Annotation picked up for wrong request method", "field4", null);
+
+        assertBindingAnnotationsInPath("Annotation picked up for wrong request method", "field7", Boolean.TRUE );
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("GET");

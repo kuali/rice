@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.apache.log4j.Logger;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.web.bind.UifEncryptionPropertyEditorWrapper;
+
 import java.beans.PropertyEditor;
 import java.io.Serializable;
 import java.util.Collections;
@@ -23,10 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.web.bind.UifEncryptionPropertyEditorWrapper;
 
 /**
  * Holds data about the rendered view that might be needed to handle a post request.
@@ -60,6 +60,7 @@ public class ViewPostMetadata implements Serializable {
 
     private Set<String> accessibleBindingPaths;
     private Set<String> accessibleMethodToCalls;
+    private Set<String> availableMethodToCalls;
 
     /**
      * Default constructor.
@@ -73,6 +74,7 @@ public class ViewPostMetadata implements Serializable {
         lookupCriteria = Collections.synchronizedMap(new HashMap<String, Map<String, Object>>());
         accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
         accessibleMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
+        availableMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
     }
 
     /**
@@ -446,6 +448,36 @@ public class ViewPostMetadata implements Serializable {
         }
 
         this.accessibleMethodToCalls.add(methodToCall);
+    }
+
+    /**
+     * Set of available methods to call
+     *
+     * @return Set of method names
+     */
+    public Set<String> getAvailableMethodToCalls() {
+        return availableMethodToCalls;
+    }
+
+    /**
+     * @see ViewPostMetadata#getAvailableMethodToCalls()
+     */
+    public void setAvailableMethodToCalls(Set<String> availableMethodToCalls) {
+        this.availableMethodToCalls = availableMethodToCalls;
+    }
+
+    /**
+     * Adds a method to the set of available controller methods.
+     *
+     * @param methodToCall method to add as accessible
+     * @see ViewPostMetadata#getAvailableMethodToCalls()
+     */
+    public void addAvailableMethodToCall(String methodToCall) {
+        if (this.availableMethodToCalls == null) {
+            this.availableMethodToCalls = Collections.synchronizedSet(new HashSet<String>());
+        }
+
+        this.availableMethodToCalls.add(methodToCall);
     }
     
     /**

@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -36,7 +31,6 @@ import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -45,6 +39,11 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Field that presents an action that can be taken on the UI such as submitting
@@ -310,6 +309,11 @@ public class Action extends ContentElementBase {
         if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
             setActionScript(actionScript);
+        }
+
+        // add the method to call as an available method
+        if (StringUtils.isNotBlank(methodToCall)) {
+            ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(methodToCall);
         }
 
         // add additional submit data as accessible binding paths, and method to call as accessible method

@@ -537,6 +537,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         cssClasses = finalCssClasses;
 
+        // add the method to call as an available method
+        if (StringUtils.isNotBlank(methodToCallOnRefresh)) {
+            ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(methodToCallOnRefresh);
+        }
+
         if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(
                 methodToCallOnRefresh)) {
             ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCallOnRefresh);

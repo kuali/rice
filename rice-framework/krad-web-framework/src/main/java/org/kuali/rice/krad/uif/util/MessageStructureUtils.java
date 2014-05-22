@@ -448,6 +448,7 @@ public class MessageStructureUtils {
             ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
             if (viewPostMetadata != null) {
                 viewPostMetadata.addAccessibleMethodToCall(methodToCall);
+                viewPostMetadata.addAvailableMethodToCall(methodToCall);
             }
         } else {
             messagePiece = "</a>";

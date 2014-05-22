@@ -16,12 +16,9 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,7 +48,6 @@ public class InitiatedDocumentInfoController extends UifControllerBase {
     }
 
     @Override
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm")UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {

@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -40,7 +28,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -50,6 +37,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Controller that handles requests for a {@link LookupView}.
@@ -78,7 +76,6 @@ public class LookupController extends UifControllerBase {
      * </p>
      */
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -128,7 +125,6 @@ public class LookupController extends UifControllerBase {
      * Performs the search action using the given lookup criteria and sets the results onto the lookup form, then
      * renders the same lookup view.
      */
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=search")
     public ModelAndView search(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm) {
         Lookupable lookupable = lookupForm.getLookupable();
@@ -201,7 +197,6 @@ public class LookupController extends UifControllerBase {
      * 
      * @return ModelAndView
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=selectAllPages")
     public ModelAndView selectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
             HttpServletRequest request, final RedirectAttributes redirectAttributes) {
@@ -232,7 +227,6 @@ public class LookupController extends UifControllerBase {
      * 
      * @return ModelAndView
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deselectAllPages")
     public ModelAndView deselectAllPages(@ModelAttribute(UifConstants.KUALI_FORM_ATTR) LookupForm lookupForm,
             HttpServletRequest request, final RedirectAttributes redirectAttributes) {
@@ -251,7 +245,6 @@ public class LookupController extends UifControllerBase {
      * {@inheritDoc}
      */
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=retrieveCollectionPage")
     public ModelAndView retrieveCollectionPage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -264,7 +257,6 @@ public class LookupController extends UifControllerBase {
      * {@inheritDoc}
      */
     @Override
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=tableJsonRetrieval")
     public ModelAndView tableJsonRetrieval(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MockController {
 
-    @MethodAccessible
     @RequestMapping()
     public ModelAndView method1(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -45,7 +44,6 @@ public class MockController {
         return null;
     }
 
-    @MethodAccessible
     @RequestMapping()
     public ModelAndView method3(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

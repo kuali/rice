@@ -15,15 +15,11 @@
  */
 package org.kuali.rice.krad.demo.uif.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -33,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -50,7 +48,6 @@ public class KradSampleAppController extends UifControllerBase {
     }
 
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -72,7 +69,6 @@ public class KradSampleAppController extends UifControllerBase {
         return getUIFModelAndView(uiTestForm);
     }
 
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addGrowl")
     public ModelAndView addGrowl(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

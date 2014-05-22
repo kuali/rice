@@ -15,9 +15,7 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -40,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 public class KradLabsController extends UifControllerBase {
 
     @Override
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,HttpServletResponse response) {
 
@@ -55,7 +52,6 @@ public class KradLabsController extends UifControllerBase {
         return new KradLabsForm();
     }
 
-    @MethodAccessible
     @RequestMapping(params = "methodToCall=jsonExample")
     public ModelAndView jsonExample(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {

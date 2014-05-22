@@ -73,6 +73,8 @@ public class UifControllerHandlerInterceptorTest {
         model.setViewPostMetadata(viewPostMetadata);
 
         assertMethodAccess("Accessible annotation not picked up", "method1", true);
+        assertMethodAccess("Custom method should be allowed due to not being in the available methods", "method2", true);
+        viewPostMetadata.addAvailableMethodToCall( "method2" );
         assertMethodAccess("Accessible annotation picked up where not present", "method2", false);
 
         viewPostMetadata.addAccessibleMethodToCall("method4");

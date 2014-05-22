@@ -46,7 +46,6 @@ public class ModuleLockedController extends UifControllerBase {
     /**
      * Retrieves the module locked message test from a system parameter and then returns the message view
      */
-    @MethodAccessible
     @RequestMapping(value = "/module-locked")
     public ModelAndView moduleLocked(@ModelAttribute("KualiForm") UifFormBase form,
             @RequestParam(value = MODULE_PARAMETER, required = true) String moduleNamespaceCode) {

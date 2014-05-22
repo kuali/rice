@@ -63,16 +63,16 @@ public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
     	
     	//Tooltip examples
     	fireEvent("field1","focus");
-    	waitForTextPresent("This tooltip is triggered by focus or and mouse over.");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByName("field2");
-    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByName("field119");
-    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByName("field120");
-    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     	
     	//Collection with tooltips
     	fireMouseOverEventByXpath("//div[@id='TableCollection1-Hover1_line1']");
-    	assertElementPresentByXpath("//td[@class='jquerybubblepopup-innerHtml']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     }
 }

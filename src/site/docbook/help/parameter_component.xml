@@ -36,11 +36,10 @@
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <para>The Parameter Component document includes the <emphasis role="bold">Edit Parameter
-                Detail Type </emphasis>tab.</para>
+        <para>The Parameter Component document includes the <emphasis role="bold">Edit Component</emphasis> tab.</para>
         <para>
             <table frame="none" tabstyle="striped">
-                <title>Edit Parameter Detail Type tab definition</title>
+                <title>Edit Component tab definition</title>
                 <tgroup cols="2">
                 <colspec colwidth="1.0*"/>
                 <colspec colwidth="1.0*"/>

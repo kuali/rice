@@ -27,34 +27,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
-import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.component.ComponentSecurity;
-import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
-import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
-import org.kuali.rice.krad.uif.field.InputField;
-import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
-import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.uif.view.ViewPresentationController;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -406,6 +392,10 @@ public class CollectionGroupBuilder implements Serializable {
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
             action.setRefreshId(collectionGroup.getId());
 
+            if (collectionGroup.isAddViaLightBox() && view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+                action.setPerformClientSideValidation(true);
+            }
+
             if (action.isPerformClientSideValidation()) {
                 String preSubmitScript = "var valid=";
                 if (collectionGroup.isAddViaLightBox()) {
@@ -427,6 +417,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                 action.setPreSubmitCall(preSubmitScript);
                 action.setPerformClientSideValidation(false);
+            } else if (collectionGroup.isAddViaLightBox()) {
+                action.setPreSubmitCall("closeLightbox(); return true;");
             }
         }
 

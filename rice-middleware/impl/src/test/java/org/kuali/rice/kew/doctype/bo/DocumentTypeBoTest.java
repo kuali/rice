@@ -87,7 +87,6 @@ public class DocumentTypeBoTest {
 
         policy = childdt.getPolicyByName(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.ENROUTE_ERROR_SUPPRESSION.getCode(), true);
         assertFalse(policy.getPolicyValue());
-        assertEquals("STRINGVALUE", policy.getPolicyStringValue());
         assertTrue(policy.getInheritedFlag());
 
         // test default
@@ -118,7 +117,6 @@ public class DocumentTypeBoTest {
 
         policy = childdt.getPolicyByName(org.kuali.rice.kew.api.doctype.DocumentTypePolicy.ENROUTE_ERROR_SUPPRESSION.getCode(), "ERROR_SUPPRESSION");
         assertFalse(policy.getPolicyValue());
-        assertEquals("STRINGVALUE", policy.getPolicyStringValue());
         assertTrue(policy.getInheritedFlag());
 
         // test default

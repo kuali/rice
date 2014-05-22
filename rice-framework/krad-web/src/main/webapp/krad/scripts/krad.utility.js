@@ -1136,7 +1136,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
-            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
+            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId));
 
             jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
 
@@ -1150,7 +1150,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
-            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId).detach());
+            jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId));
 
             jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
 

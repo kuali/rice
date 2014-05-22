@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2014 The Kuali Foundation
+  Copyright 2005-2014 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -70,7 +70,7 @@
     <jmeter.jMeterTestFile>**/*.jmx</jmeter.jMeterTestFile>
     <jmeter.excludeJmeterTestFile>NOT_NULL</jmeter.excludeJmeterTestFile>
     <!-- JMeter properties here will override JMeter User Defined Variable defaults. JMeter User Defined Variable defaults
-         for these properties are only defaulted to if run from the JMeter UI or command line script. -->
+      for these properties are only defaulted to if run from the JMeter UI or command line script. -->
     <jmeter.testResultsTimestamp>false</jmeter.testResultsTimestamp>
     <jmeter.server>localhost</jmeter.server>
     <jmeter.port>8080</jmeter.port>
@@ -391,6 +391,11 @@
               </execution>
             </executions>
             <dependencies>
+              <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-instrument-tomcat</artifactId>
+                <version>${spring.version}</version>
+              </dependency>
               <dependency>
                 <groupId>org.kuali.rice</groupId>
                 <artifactId>rice-sql</artifactId>
@@ -949,10 +954,10 @@
             <fork>true</fork>
             <meminitial>256</meminitial>
             <maxmem>1024</maxmem>
-<!-- 
-			  <source>1.7</source>
-			  <target>1.7</target>
- -->
+            <!--
+              <source>1.7</source>
+              <target>1.7</target>
+            -->
           </configuration>
         </plugin>
         <plugin>
@@ -1251,19 +1256,19 @@
                   </action>
                 </pluginExecution>
                 <pluginExecution>
-                	<pluginExecutionFilter>
-                		<groupId>au.com.alderaan</groupId>
-                		<artifactId>
-                			eclipselink-staticweave-maven-plugin
-                		</artifactId>
-                		<versionRange>[1.0.4,)</versionRange>
-                		<goals>
-                			<goal>weave</goal>
-                		</goals>
-                	</pluginExecutionFilter>
-                	<action>
-                		<ignore />
-                	</action>
+                  <pluginExecutionFilter>
+                    <groupId>au.com.alderaan</groupId>
+                    <artifactId>
+                      eclipselink-staticweave-maven-plugin
+                    </artifactId>
+                    <versionRange>[1.0.4,)</versionRange>
+                    <goals>
+                      <goal>weave</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>

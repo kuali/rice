@@ -36,6 +36,7 @@ public class KENConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KENConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KENRemoteSpringBeans.xml");

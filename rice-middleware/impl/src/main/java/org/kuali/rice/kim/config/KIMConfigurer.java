@@ -49,6 +49,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KIMConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.THIN == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KimThinSpringBeans.xml");

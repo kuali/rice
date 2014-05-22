@@ -106,6 +106,7 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KSBConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         final List<String> springFileLocations = new ArrayList<String>();
 
         springFileLocations.add(SERVICE_BUS_CLIENT_SPRING);

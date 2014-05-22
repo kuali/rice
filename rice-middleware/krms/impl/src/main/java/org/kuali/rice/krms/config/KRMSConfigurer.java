@@ -63,6 +63,7 @@ public class KRMSConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KRMSConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(KRMS_SPRING_REMOTE_BEANS_PATH);

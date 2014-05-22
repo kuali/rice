@@ -66,6 +66,7 @@ public class KRADConfigurer extends ModuleConfigurer implements SmartApplication
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KRADConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         final List<String> springFileLocations = new ArrayList<String>();
         springFileLocations.add(KRAD_SPRING_BEANS_PATH);
 

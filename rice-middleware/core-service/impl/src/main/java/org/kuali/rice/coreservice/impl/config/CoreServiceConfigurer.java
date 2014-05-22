@@ -47,6 +47,7 @@ public class CoreServiceConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("CoreServiceConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.REMOTE == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "CoreServiceRemoteSpringBeans.xml");

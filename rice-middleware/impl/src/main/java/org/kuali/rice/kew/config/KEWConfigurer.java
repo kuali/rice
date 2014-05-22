@@ -63,6 +63,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("KEWConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.THIN == getRunMode()) {
             springFileLocations.add(getDefaultConfigPackagePath() + "KewThinSpringBeans.xml");

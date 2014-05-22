@@ -42,6 +42,7 @@ public class EDLConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("EDLConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         final List<String> springFileLocations = new ArrayList<String>();
         if (RunMode.LOCAL.equals(getRunMode())) {
             springFileLocations.add(EDL_LOCAL_SPRING_FILE);

@@ -42,20 +42,13 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
 
     protected void testWidgetsTooltipHelp() throws Exception {
         fireMouseOverEvent(By.id("Demo-Help-Field1_label"));
-        WebElement helpExample1 = driver.findElement(By.xpath("//div[@data-parent=\"Demo-Help-Section1\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!helpExample1.isDisplayed()) {
-            fail("Example 1 help not displayed.");
-        }
-        if (!helpExample1.getText().equals("Sample text for field help - label left")) {
-            fail("Incorrect inner html text.");
-        }
+        waitForElementPresentByXpath("//div[@class='popover top in']");
     }
     
     protected void testMissingTooltipHelp() throws Exception {
        selectByName("exampleShown","Missing Tooltip Help");
        fireEvent("dataField1", "focus");
-       waitForElementNotPresent(By.xpath("//div[@class='jquerybubblepopup-innerHtml']"));
+       waitForElementPresentByXpath("//div[@class='popover top in']");
     }
     
     protected void testExternalHelp() throws Exception {

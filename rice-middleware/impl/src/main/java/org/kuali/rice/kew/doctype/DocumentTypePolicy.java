@@ -145,6 +145,21 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
         this.policyStringValue = policyStringValue;
     }
 
+    /**
+     * Return the actual value from the policy
+     *
+     * If there is a policy string value it will return it, else return the policy value (a boolean).
+     * This was needed for building the XML representation to return from the document type service.
+     *
+     * @return string of policy value
+     */
+    public String getActualPolicyValue() {
+        if (this.policyStringValue != null && this.policyStringValue.length() > 0) {
+            return this.policyStringValue;
+        }
+        return this.policyValue.toString();
+    }
+
     public Object copy(boolean preserveKeys) {
         DocumentTypePolicy clone = new DocumentTypePolicy();
         if (preserveKeys) {

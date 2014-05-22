@@ -38,7 +38,6 @@ public class DocumentTypeBoTest {
         DOCUMENT_TYPE_POLICIES.add(new DocumentTypePolicy(null, org.kuali.rice.kew.api.doctype.DocumentTypePolicy.INITIATOR_MUST_ROUTE.getCode(), true));
         DOCUMENT_TYPE_POLICIES.add(new DocumentTypePolicy(null, org.kuali.rice.kew.api.doctype.DocumentTypePolicy.INITIATOR_MUST_SAVE.getCode(), false));
         DOCUMENT_TYPE_POLICIES.add(new DocumentTypePolicy(null, org.kuali.rice.kew.api.doctype.DocumentTypePolicy.ENROUTE_ERROR_SUPPRESSION.getCode(), false));
-        DOCUMENT_TYPE_POLICIES.get(2).setPolicyStringValue("STRINGVALUE");
         DOCUMENT_TYPE_POLICIES.add(new DocumentTypePolicy(null, org.kuali.rice.kew.api.doctype.DocumentTypePolicy.DOC_SEARCH_TARGET.getCode(), false));
         DOCUMENT_TYPE_POLICIES.get(3).setPolicyStringValue("_top");
     };

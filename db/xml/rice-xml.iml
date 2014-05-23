@@ -163,6 +163,8 @@
     <orderEntry type="module" module-name="rice-core-service-web" scope="PROVIDED" />
     <orderEntry type="module" module-name="rice-core-web" scope="PROVIDED" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" scope="PROVIDED" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient:4.3.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore:4.3.2" level="project" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="PROVIDED" />
     <orderEntry type="module" module-name="rice-location-framework" scope="PROVIDED" />
     <orderEntry type="module" module-name="rice-location-impl" scope="PROVIDED" />

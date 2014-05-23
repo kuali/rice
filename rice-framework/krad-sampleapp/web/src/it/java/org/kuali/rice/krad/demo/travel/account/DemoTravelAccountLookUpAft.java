@@ -67,6 +67,15 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         
+        //Inquiry check on Travel Account Number
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a1");
+        waitAndClickByXpath("//button[@title='Direct Inquiry']");
+        gotoLightBox();
+        waitForElementPresentByXpath("//a[contains(text(),'a1')]");
+        waitForTextPresent("Travel Account 1");
+        waitAndClickButtonByText("Close");
+        selectTopFrame();
+        
         //Search by Travel Account Name
         waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
         waitAndClickButtonByText(SEARCH);
@@ -87,6 +96,14 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(SEARCH);
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
+        
+        //LookUp on Travel Account Type Code
+        waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='CAT']");
+        waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
+        gotoLightBox();
+        waitForElementPresentByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='CAT']");
+        waitAndClickButtonByText("Close");
+        selectTopFrame();
 
         //Search by Travel Account Date Created
         waitAndTypeByName("lookupCriteria[createDate]","04/01/2014");
@@ -133,8 +150,8 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
             return true;
         }  catch (Exception Ex) {
             return false;
-        }   // catch
-    }   // isAlertPresent()
+        } 
+    }
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");

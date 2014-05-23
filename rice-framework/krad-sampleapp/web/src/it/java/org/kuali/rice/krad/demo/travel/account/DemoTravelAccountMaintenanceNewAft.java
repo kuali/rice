@@ -30,7 +30,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
      * //div[@class='fancybox-item fancybox-close']
      */
     public static final String FANCY_BOX_CLOSE_XPATH = "//div[@class='fancybox-item fancybox-close']";
-    
+
     /**
      * //div[@class='fancybox-item fancybox-close']
      */
@@ -107,6 +107,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountMaintenanceNew() throws Exception {
+        waitForDocIdKrad();
         waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
         waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
@@ -131,11 +132,12 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitForTextPresent("Delete"); // wait for ajax to finish adding ad hoc group
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        checkErrorMessageItem(this.getClass().getName());
+        failOnErrorMessageItem();
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
+        waitForDocIdKrad();
     	checkForRequiredFields();
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");

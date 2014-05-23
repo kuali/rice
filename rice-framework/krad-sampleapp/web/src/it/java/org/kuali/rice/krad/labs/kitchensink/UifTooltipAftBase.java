@@ -50,7 +50,7 @@ public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
         fireEvent(nameField1, "focus");
         fireMouseOverEventByName(nameField1);
 
-        String tooltipContents = getText(By.cssSelector("[data-for='ucbjiy8_control']"));
+        String tooltipContents = getText(By.cssSelector("[class='popover top in']"));
         assertEquals("This tooltip is triggered by focus or and mouse over.", tooltipContents);
         fireEvent(nameField1, "blur");
 

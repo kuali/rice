@@ -181,6 +181,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     public static final String DOC_ID_XPATH = "//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]";
 
     /**
+     * //div[@id='headerarea']/div/table/tbody/tr[1]/td[1]
+     */
+    public static final String DOC_ID_KRAD_XPATH = "//div[@data-label=\"Document Number\"]";
+    /**
      * //table[@id='row']/tbody/tr[1]/td[1
      */
     public static final String DOC_ID_XPATH_2 = "//table[@id='row']/tbody/tr[1]/td[1]";
@@ -1117,19 +1121,26 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         check(By.xpath(locator));
     }
 
-    protected void checkErrorMessageItem(String message) {
+
+    protected void failOnErrorMessageItem() {
+        failOnErrorMessageItem(this.getClass().getName());
+    }
+
+    protected void failOnErrorMessageItem(String message) {
         final String error_locator = "//li[@class='uif-errorMessageItem']";
-        assertElementPresentByXpath(error_locator);
-        String errorText = null;
+        if (findElements(By.xpath(error_locator)).size() > 0) {
+            String errorText = null;
 
-        try {
-            errorText = getTextByXpath(error_locator);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                errorText = getTextByXpath(error_locator);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        if (errorText != null && errorText.contains("errors")) {
-            jiraAwareFail(errorText + message);
+            if (errorText != null && errorText.contains("errors")) {
+                jiraAwareFail((errorText + " " + message).trim());
+            }
+
         }
     }
 
@@ -3196,7 +3207,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void testExternalHelp2() throws Exception {
         // test external help of section
-        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for External Help\"]"), "HelpWindow", "http://www.kuali.org/?section");
+        assertPopUpWindowUrl(By.cssSelector("input[title=\"Help for External Help\"]"), "HelpWindow",
+                "http://www.kuali.org/?section");
 
         // test external help of field with label left
         assertPopUpWindowUrl(By.xpath("//div[@id='field-label-left-external-help']/fieldset/input[@title='Help for Field Label']"), "HelpWindow",
@@ -3314,7 +3326,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
         waitIsVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']");
         assertTrue(isVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']"));
-        assertTrue(isElementPresent("div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
+        assertTrue(isElementPresent(
+                "div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));
         assertTrue(isVisible("div[data-messages_for=\"Demo-ValidationLayout-Section1\"]"));
         assertTrue(isElementPresent("div[data-messages_for=\"Demo-ValidationLayout-Section1\"] .uif-infoMessageItem"));
         assertTrue(isElementPresentByXpath("//div[@data-role='InputField']//img[@alt='Information']"));
@@ -3342,7 +3355,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByXpath("//div[@id='Demo-ValidationLayout-Section1_messages']");
         waitForElementPresentByXpath("//a[contains(.,'Field 1')]");
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
-        waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutHorizontalItem uif-hasWarning uif-warningHighlight']");
+        waitForElementPresentByXpath(
+                "//div[@class='uif-inputField uif-boxLayoutHorizontalItem uif-hasWarning uif-warningHighlight']");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
         waitForElementPresentByXpath("//div[@class='popover uif-tooltip-warning-ss top in uif-tooltip-error-ss']");
         waitAndTypeByName("field1", "");
@@ -3397,7 +3411,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testVerifyAddDeleteNoteLegacy() throws Exception {
         selectFrameIframePortlet();
-        waitAndClick("div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
+        waitAndClick(
+                "div.tableborders.wrap.uif-boxLayoutVerticalItem.clearfix  span.uif-headerText-span > img.uif-disclosure-image");
         waitForElementPresent("button[title='Add a Note'].uif-action.uif-primaryActionButton.uif-smallActionButton");
         waitAndClickByName("newCollectionLines['document.notes'].noteText");
         waitAndTypeByName("newCollectionLines['document.notes'].noteText", "Test note");
@@ -3474,11 +3489,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertElementPresentByXpath("//span[contains(text(),'Notes and Attachments')]");
         assertElementPresentByXpath("//span[contains(text(),'Ad Hoc Recipients')]");
         assertElementPresentByXpath("//span[contains(text(),'Route Log')]");
-        colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img", "//label[contains(text(),'Organization Document Number')]");
-        colapseExpandByXpath("//span[contains(text(),'Account Information')]//img","//label[contains(text(),'Travel Account Type Code')]");
-        colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img","//a[contains(text(),'Lookup/Add Multiple Lines')]");
-        expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img","//label[contains(text(),'Note Text')]");
-        expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]","//span[contains(text(),'Ad Hoc Group Requests')]");
+        colapseExpandByXpath("//span[contains(text(),'Document Overview')]//img",
+                "//label[contains(text(),'Organization Document Number')]");
+        colapseExpandByXpath("//span[contains(text(),'Account Information')]//img",
+                "//label[contains(text(),'Travel Account Type Code')]");
+        colapseExpandByXpath("//span[contains(text(),'Fiscal Officer Accounts')]//img",
+                "//a[contains(text(),'Lookup/Add Multiple Lines')]");
+        expandColapseByXpath("//span[contains(text(),'Notes and Attachments')]//img",
+                "//label[contains(text(),'Note Text')]");
+        expandColapseByXpath("//span[contains(text(),'Ad Hoc Recipients')]",
+                "//span[contains(text(),'Ad Hoc Group Requests')]");
 
         // Handle frames
         waitAndClickByXpath("//span[contains(text(),'Route Log')]//img");
@@ -3574,7 +3594,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testVerifySave() throws Exception {
         selectFrameIframePortlet();
-        waitAndTypeByName("document.documentHeader.documentDescription", "Test Document " + AutomatedFunctionalTestUtils.DTS);
+        waitAndTypeByName("document.documentHeader.documentDescription",
+                "Test Document " + AutomatedFunctionalTestUtils.DTS);
         waitAndClickByName("document.newMaintainableObject.dataObject.number");
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", "1234567890");
         waitAndTypeByName("document.newMaintainableObject.dataObject.extension.accountTypeCode", "EAT");
@@ -3676,7 +3697,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         //For letters only Validation
         assertTrue(isElementPresentByXpath("//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']"));
         waitAndTypeByXpath(
-                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']","abc");
+                "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']", "abc");
         assertFalse(isElementPresentByXpath("//div[@class='uif-field uif-inputField uif-inputField-labelTop inlineBlock uif-hasError']"));
         clearTextByXpath(
                 "//div[@data-parent='Demo-AdvancedMessagesSection']/div/input[@type='text' and @name='field5']");
@@ -3711,7 +3732,8 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         //Checkbox Group
         assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='1']"));
-        assertTrue(isElementPresentByXpath("//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
+        assertTrue(isElementPresentByXpath(
+                "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='2']"));
         assertTrue(isElementPresentByXpath(
                 "//fieldset[@class='uif-verticalCheckboxesFieldset']/span/input[@type='checkbox' and @name='field115' and @value='3']"));
         assertTrue(isElementPresentByXpath(
@@ -4121,6 +4143,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitForElementPresentByXpath(DOC_ID_XPATH);
 
         return findElement(By.xpath(DOC_ID_XPATH)).getText();
+    }
+
+    protected String waitForDocIdKrad() throws InterruptedException {
+        failOnErrorMessageItem();
+        waitForElementPresentByXpath(DOC_ID_KRAD_XPATH);
+        String docId = findElement(By.xpath(DOC_ID_KRAD_XPATH)).getText();
+        jGrowl("Document Number is " + docId);
+
+        return docId;
     }
 
     protected String waitForDocInitiator() throws InterruptedException {

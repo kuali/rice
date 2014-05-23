@@ -892,6 +892,7 @@
       <list>
         <bean id="KradSampleAppMaintenanceDemo-Row1-Demo1" parent="KradSampleAppDemo-DemoGroup"/>
         <bean id="KradSampleAppMaintenanceDemo-Row1-Demo2" parent="KradSampleAppDemo-DemoGroup"/>
+        <bean id="KradSampleAppMaintenanceDemo-Row1-Demo3" parent="KradSampleAppDemo-DemoGroup"/>
       </list>
     </property>
   </bean>

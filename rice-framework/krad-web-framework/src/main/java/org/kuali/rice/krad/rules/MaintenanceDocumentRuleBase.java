@@ -46,6 +46,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.ConstraintValidation
 import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.maintenance.BulkUpdateMaintainable;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
@@ -960,7 +961,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         success &= super.isDocumentOverviewValid(maintenanceDocument);
         success &= validateDocumentStructure((Document) maintenanceDocument);
         success &= validateMaintenanceDocument(maintenanceDocument);
-        success &= validateGlobalBusinessObjectPersistable(maintenanceDocument);
+        success &= validateBulkUpdateMaintenanceDocument(maintenanceDocument);
         return success;
     }
 
@@ -988,8 +989,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     /**
      * This method checks to make sure the document is a valid maintenanceDocument, and has the necessary values
-     * populated such that
-     * it will not cause exceptions in later routing or business rules testing.
+     * populated such that it will not cause exceptions in later routing or business rules testing.
      *
      * This is not a business rules test.
      *
@@ -1017,34 +1017,22 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * This method checks whether this maint doc contains Global Business Objects, and if so, whether the GBOs are in a
-     * persistable
-     * state. This will return false if this method determines that the GBO will cause a SQL Exception when the
-     * document
-     * is
-     * persisted.
+     * This method checks whether this maintenance document represents a bulk update maintenance document, and if so,
+     * whether the data object is in a persistable state.
      *
-     * @param document
-     * @return False when the method determines that the contained Global Business Object will cause a SQL Exception,
-     *         and the
-     *         document should not be saved. It will return True otherwise.
+     * @param maintenanceDocument- document to be tested
+     * @return false for bulk update maintenance doc that are not persistable, true otherwise (incl. non-bulkupdate
+     *         maintenance documents)
      */
-    protected boolean validateGlobalBusinessObjectPersistable(MaintenanceDocument document) {
+    protected boolean validateBulkUpdateMaintenanceDocument(MaintenanceDocument maintenanceDocument) {
         boolean success = true;
+        Maintainable newMaintainable = maintenanceDocument.getNewMaintainableObject();
 
-        if (document.getNewMaintainableObject() == null) {
-            return success;
-        }
-        if (document.getNewMaintainableObject().getDataObject() == null) {
-            return success;
-        }
-        if (!(document.getNewMaintainableObject().getDataObject() instanceof GlobalBusinessObject)) {
-            return success;
+        if (newMaintainable instanceof BulkUpdateMaintainable) {
+            success = ((BulkUpdateMaintainable) newMaintainable).isPersistable();
         }
 
-        Object bo = document.getNewMaintainableObject().getDataObject();
-        GlobalBusinessObject gbo = (GlobalBusinessObject) bo;
-        return gbo.isPersistable();
+        return success;
     }
 
     /**

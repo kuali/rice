@@ -91,6 +91,12 @@
     <property name="businessRulesClass" value="org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase"/>
   </bean>
 
+  <bean id="uifBulkUpdateMaintenanceDocumentEntry" parent="uifMaintenanceDocumentEntry"
+        abstract="true">
+    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.BulkUpdateMaintainableImpl"/>
+    <property name="dataObjectClass" value="org.kuali.rice.krad.maintenance.BulkUpdateMaintenanceDataObjectBase"/>
+  </bean>
+
   <bean id="InactivationBlockingDefinition"
         class="org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition"
         abstract="true"/>

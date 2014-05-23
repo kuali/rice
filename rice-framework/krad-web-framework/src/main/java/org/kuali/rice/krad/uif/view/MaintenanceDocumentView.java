@@ -56,6 +56,8 @@ public class MaintenanceDocumentView extends DocumentView {
 
     private Class<?> dataObjectClassName;
 
+    private String docTypeName;
+
     private String oldObjectBindingPath;
 
     @RequestParameter
@@ -132,6 +134,32 @@ public class MaintenanceDocumentView extends DocumentView {
      */
     public void setDataObjectClassName(Class<?> dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
+    }
+
+    /**
+     * Name for the document type the maintenance document applies to
+     *
+     * <p>
+     * The document type name is used to pick up a dictionary entry which will
+     * feed the attribute field definitions and other configuration. In addition
+     * it is used to configure the <code>Maintainable</code> which will carry
+     * out the maintenance action
+     * </p>
+     *
+     * @return document type name
+     */
+    @BeanTagAttribute(name="docTypeName")
+    public String getDocTypeName() {
+        return this.docTypeName;
+    }
+
+    /**
+     * Setter for the document type name
+     *
+     * @param docTypeName
+     */
+    public void setDocTypeName(String docTypeName) {
+        this.docTypeName = docTypeName;
     }
 
     /**

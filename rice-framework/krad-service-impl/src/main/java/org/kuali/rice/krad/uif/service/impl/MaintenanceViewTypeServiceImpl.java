@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
@@ -62,9 +63,17 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
         String viewName = ViewModelUtils.getStringValFromPVs(propertyValues, UifParameters.VIEW_NAME);
         String dataObjectClassName = ViewModelUtils.getStringValFromPVs(propertyValues,
                 UifParameters.DATA_OBJECT_CLASS_NAME);
+        String docTypeName = ViewModelUtils.getStringValFromPVs(propertyValues, UifParameters.DOC_TYPE_NAME);
+
+        if (!StringUtils.isEmpty(docTypeName)) {
+            parameters.put(UifParameters.DOC_TYPE_NAME, docTypeName);
+        } else if (!StringUtils.isEmpty(dataObjectClassName)) {
+            parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
+        } else {
+            throw new IllegalArgumentException("Document type name or bo class not given!");
+        }
 
         parameters.put(UifParameters.VIEW_NAME, viewName);
-        parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
         return parameters;
     }
@@ -109,6 +118,8 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
                 throw new RuntimeException(
                         "Encountered workflow exception while retrieving document with id: " + documentNumber, e);
             }
+        } else if (requestParameters.containsKey(UifParameters.DOC_TYPE_NAME)) {
+            parameters.put(UifParameters.DOC_TYPE_NAME, requestParameters.get(UifParameters.DOC_TYPE_NAME));
         } else if (requestParameters.containsKey(UifParameters.DATA_OBJECT_CLASS_NAME)) {
             parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, requestParameters.get(
                     UifParameters.DATA_OBJECT_CLASS_NAME));

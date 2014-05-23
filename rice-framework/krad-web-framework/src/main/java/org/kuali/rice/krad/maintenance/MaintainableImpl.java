@@ -206,14 +206,17 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      */
     @Override
     public List<MaintenanceLock> generateMaintenanceLocks() {
+        return generateMaintenanceLocks(getDocumentNumber(), getDocumentTypeName(), getDataObjectClass(), getDataObject());
+    }
+
+    protected List<MaintenanceLock> generateMaintenanceLocks(String documentNumber, String documentTypeName, Class<?> dataObjectClass, Object dataObject) {
         List<MaintenanceLock> maintenanceLocks = new ArrayList<MaintenanceLock>();
         StringBuffer lockRepresentation = new StringBuffer(dataObjectClass.getName());
         lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_CLASS_DELIM);
 
-        Object bo = getDataObject();
-        DataObjectWrapper<Object> wrapper = getDataObjectService().wrap(bo);
+        DataObjectWrapper<Object> wrapper = getDataObjectService().wrap(dataObject);
 
-        List<String> keyFieldNames = getDocumentDictionaryService().getLockingKeys(getDocumentTypeName());
+        List<String> keyFieldNames = getDocumentDictionaryService().getLockingKeys(documentTypeName);
 
         for (Iterator<?> i = keyFieldNames.iterator(); i.hasNext(); ) {
             String fieldName = (String) i.next();

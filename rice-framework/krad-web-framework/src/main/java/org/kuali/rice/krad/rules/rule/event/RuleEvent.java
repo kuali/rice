@@ -18,9 +18,12 @@ package org.kuali.rice.krad.rules.rule.event;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by nigupta on 4/28/2014.
+ * class representing the rule event to process a business rule
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleEvent {
 
@@ -51,10 +54,21 @@ public interface RuleEvent {
     Class<? extends BusinessRule> getRuleInterfaceClass();
 
     /**
-     * the method of the rule class to invoke
-     * @return - the name of the method
+     * The method name of the rule class to invoke.
+     *
+     * <p>If the rule method name is specified, then that business rule method is invoked to apply custom
+     * rules, else the default method is invoked.</p>
+     *
+     * @return the name of the method
      */
     String getRuleMethodName();
+
+    /**
+     * The map that holds the data that to be validated.
+     *
+     * @return the map containing the data
+     */
+    Map<String, Object> getFacts();
 
     /**
      * Validates the event has all the necessary properties.

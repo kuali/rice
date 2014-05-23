@@ -39,6 +39,7 @@ import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -285,14 +286,14 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
-     * Saves the document instance contained on the form.
+     * Saves the document instance contained on the form using the save document event.
      *
      * @param form document form base containing the document instance that will be saved
+     * @param saveEvent save document event to use when saving the document
      * @return ModelAndView
      */
-    //@RequestMapping(params = "methodToCall=save")
-    public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response, SaveDocumentEvent saveEvent ) throws Exception {
+    protected ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response, SaveDocumentEvent saveEvent) throws Exception {
         Document document = form.getDocument();
 
         // get the explanation from the document and check it for sensitive data
@@ -304,33 +305,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             return sensitiveDataDialogModelAndView;
         }
 
-        try {
-            document = getDocumentService().saveDocument( document, saveEvent );
-            String successMessageKey = RiceKeyConstants.MESSAGE_SAVED;
-            // push potentially updated document back into the form
-            form.setDocument(document);
-
-            if (successMessageKey != null) {
-                GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey);
-            }
-        } catch (ValidationException e) {
-            // log the error and swallow exception so screen will draw with errors.
-            // we don't want the exception to bubble up and the user to see an incident page, but instead just return to
-            // the page and display the actual errors. This would need a fix to the API at some point.
-            KRADUtils.logErrors();
-            LOG.error("Validation Etion occured for document :" + document.getDocumentNumber(), e);
-
-            // if no errors in map then throw runtime because something bad happened
-            if (GlobalVariables.getMessageMap().hasNoErrors()) {
-                throw new RiceRuntimeException("Validation Exception with no error message.", e);
-            }
-        } catch (Exception e) {
-            throw new RiceRuntimeException(
-                    "Exception trying to invoke action " + WorkflowAction.SAVE.name() + " for document: " + document
-                            .getDocumentNumber(), e);
-        }
-
-        form.setAnnotation("");
+        performWorkflowAction(form, WorkflowAction.SAVE, saveEvent);
 
         return getUIFModelAndView(form);
     }
@@ -467,8 +442,9 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      *
      * @param form document form instance containing the document for which the action will be taken on
      * @param action {@link WorkflowAction} enum indicating what workflow action to take
+     * @param docEvent document event to use when performing action on the document
      */
-    protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action) {
+    protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action, DocumentEvent docEvent) {
         Document document = form.getDocument();
 
         if (LOG.isDebugEnabled()) {
@@ -479,7 +455,11 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             String successMessageKey = null;
             switch (action) {
                 case SAVE:
-                    document = getDocumentService().saveDocument(document);
+                    if(docEvent == null) {
+                        document = getDocumentService().saveDocument(document);
+                    } else {
+                        document = getDocumentService().saveDocument(document, docEvent);
+                    }
                     successMessageKey = RiceKeyConstants.MESSAGE_SAVED;
                     break;
                 case ROUTE:
@@ -562,6 +542,17 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         }
 
         form.setAnnotation("");
+    }
+
+    /**
+     * Invokes the {@link DocumentService} to carry out a request workflow action and adds a success message, if
+     * requested a check for sensitive data is also performed.
+     *
+     * @param form document form instance containing the document for which the action will be taken on
+     * @param action {@link WorkflowAction} enum indicating what workflow action to take
+     */
+    protected void performWorkflowAction(DocumentFormBase form, WorkflowAction action) {
+        performWorkflowAction(form, action, null);
     }
 
     /**

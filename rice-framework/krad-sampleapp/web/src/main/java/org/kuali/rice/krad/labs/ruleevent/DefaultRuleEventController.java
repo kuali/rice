@@ -30,7 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by nigupta on 5/9/2014.
+ * setup a custom save method for the document controller to test custom save document event rule processing
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
 @Controller
 @RequestMapping( value = "/defaultRuleEvent" )
@@ -40,12 +43,16 @@ public class DefaultRuleEventController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=save")
     public ModelAndView save(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         MaintenanceDocumentForm docForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = docForm.getDocument();
+
         RuleEventImpl event = new RuleEventImpl(document);
         event.setName("Lab-RuleEventController");
         event.addFact("RuleEventSave", (TravelAccount) document.getDocumentDataObject());
+
         save(docForm, result, request, response, event);
+
         return getUIFModelAndView(form);
     }
 }

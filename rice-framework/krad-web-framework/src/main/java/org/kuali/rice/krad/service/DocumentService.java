@@ -115,12 +115,11 @@ public interface DocumentService {
     Document saveDocument(Document document) throws WorkflowException;
 
     /**
-     * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The
-     * convenience of this method is that the event being passed is a DocumentEvent instance.
+     * This method saves the given document using the document event passed in.
      *
      * @see org.kuali.rice.krad.service.DocumentService#saveDocument(Document, Class)
      */
-    Document saveDocument( Document document, DocumentEvent docEvent ) throws WorkflowException;
+    Document saveDocument(Document document, DocumentEvent docEvent) throws WorkflowException;
 
     /**
      * Saves the passed-in document. This will persist it both to the Kuali database, and also initiate it

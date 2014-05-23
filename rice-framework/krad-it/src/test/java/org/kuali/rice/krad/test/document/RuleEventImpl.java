@@ -22,7 +22,10 @@ import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 /**
- * Created by nigupta on 5/7/2014.
+ * setup a custom save document event method to process the default business rule class's rule method
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
 public class RuleEventImpl extends SaveDocumentEvent {
 
@@ -34,6 +37,12 @@ public class RuleEventImpl extends SaveDocumentEvent {
     public void validate() {
     }
 
+    /**
+     * set a global variable to verify invocation of the default method's processing of the custom save document event
+     *
+     * @param rule - the custom business rule to process
+     * @return
+     */
     @Override
     public boolean invokeRuleMethod( BusinessRule rule ) {
         GlobalVariables.getMessageMap().putInfo( this.getClass().getName(), rule.getClass().getName() );

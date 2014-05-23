@@ -96,7 +96,7 @@ public class DocumentServiceTest extends KRADTestCase {
     }
 
     /**
-     * This method tests saveDocument, in particular, the save document rule event and the custom rule method
+     * tests saveDocument, in particular, the save document rule event and the custom rule method
      * invocation of the business rule associated with the document.
      *
      * @throws Exception
@@ -105,23 +105,29 @@ public class DocumentServiceTest extends KRADTestCase {
     public void testSaveDocument_DocumentEvent() throws Exception {
         MaintenanceDocument maintenanceDocument = ( MaintenanceDocument ) KRADServiceLocatorWeb
                 .getDocumentService().getNewDocument( "AccountMaintenanceDocument" );
+
         Account account = ( Account ) maintenanceDocument.getNewMaintainableObject().getDataObject();
+
         SaveDocumentEvent documentEvent = new SaveDocumentEvent( maintenanceDocument );
         documentEvent.setName( "DocumentControllerBaseSaveDocumentRuleTest#testSave_SaveDocumentEvent()" );
         documentEvent.setRuleMethodName( "processEvent" );
+
         Document savedDocument = KRADServiceLocatorWeb.getDocumentService()
                 .saveDocument(maintenanceDocument, documentEvent);
+
         assertNull( "New maintenance document should not have a version number yet.",
                 maintenanceDocument.getDocumentHeader().getVersionNumber() );
         assertNotNull( "Saved maintenance document must have a version number.", savedDocument.getDocumentHeader().getVersionNumber() );
+
         List<ErrorMessage> msgs = GlobalVariables.getMessageMap().getInfoMessagesForProperty( documentEvent.getName() );
+
         assertEquals( "There must be one entry added by the business rule method.", 1, msgs.size() );
         assertEquals( "The message set by the business rule must match the test message.",
                 documentEvent.getRuleMethodName() + "()", msgs.get(0).toString() );
     }
 
     /**
-     * This method tests saveDocument, in particular, the save document rule event and the default rule method
+     * tests saveDocument, in particular, the save document rule event and the default rule method
      * invocation of the business rule associated with the document.
      *
      * @throws Exception
@@ -130,16 +136,22 @@ public class DocumentServiceTest extends KRADTestCase {
     public void testSaveDocument_Default() throws Exception {
         MaintenanceDocument maintenanceDocument = ( MaintenanceDocument ) KRADServiceLocatorWeb
                 .getDocumentService().getNewDocument( "AccountMaintenanceDocument" );
+
         Account account = ( Account ) maintenanceDocument.getNewMaintainableObject().getDataObject();
+
         RuleEventImpl documentEvent = new RuleEventImpl( maintenanceDocument );
         documentEvent.setName("DocumentControllerBaseSaveDocumentRuleTest#testSave_Default()");
+
         Document savedDocument = KRADServiceLocatorWeb.getDocumentService()
                 .saveDocument(maintenanceDocument, documentEvent);
+
         assertNull( "New maintenance document should not have a version number yet.",
                 maintenanceDocument.getDocumentHeader().getVersionNumber() );
         assertNotNull( "Saved maintenance document must have a version number.", savedDocument.getDocumentHeader().getVersionNumber() );
+
         List<ErrorMessage> msgs = GlobalVariables.getMessageMap()
                 .getInfoMessagesForProperty( documentEvent.getClass().getName() );
+
         assertEquals( "There must be one entry added by the business rule method.", 1, msgs.size() );
         assertEquals( "The message set by the business rule must match the test message.",
                 "org.kuali.rice.krad.test.document.AccountRules" + "()", msgs.get( 0 ).toString() );

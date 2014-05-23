@@ -80,14 +80,14 @@ public class KualiRuleServiceImpl implements KualiRuleService {
             // get any child events and apply rules
             List<RuleEvent> events = event.generateEvents();
             for (RuleEvent generatedEvent : events) {
-                success &= applyRules((DocumentEvent)generatedEvent);
+                success &= applyRules((DocumentEvent) generatedEvent);
             }
 
             // now call the event rule method
-            if( event.getRuleMethodName() == null ) {
-                success &= event.invokeRuleMethod(rule);
+            if (StringUtils.isNotBlank(event.getRuleMethodName())) {
+                success &= invokeBusinessRuleMethod(rule, event);
             } else {
-                success &= invokeBusinessRuleMethod( rule, event );
+                success &= event.invokeRuleMethod(rule);
             }
 
             decreaseErrorPath(event.getErrorPathPrefix());
@@ -108,41 +108,41 @@ public class KualiRuleServiceImpl implements KualiRuleService {
     }
 
     /**
-     * This class is a local helper class to invoke the business rule method.
+     * local helper method to invoke the business rule method
      *
-     * @param rule - the business rule class that the method to invoke belongs to
-     * @param event - the document event the rule applies to
+     * @param rule the business rule class that the method to invoke belongs to
+     * @param event the document event the rule applies to
      * @return a boolean to indicate whether the method invocation was a succes or not
      */
-    public boolean invokeBusinessRuleMethod( BusinessRule rule, DocumentEvent event ) {
+    public boolean invokeBusinessRuleMethod(BusinessRule rule, DocumentEvent event) {
         boolean success = true;
 
         String methodName = event.getRuleMethodName();
         MethodInvokerConfig methodInvoker = new MethodInvokerConfig();
-        methodInvoker.setTargetClass( rule.getClass() );
-        methodInvoker.setTargetMethod( methodName );
+        methodInvoker.setTargetClass(rule.getClass());
+        methodInvoker.setTargetMethod(methodName);
+
         Object[] arguments = new Object[1];
         arguments[0] = event;
-        methodInvoker.setArguments( arguments );
+        methodInvoker.setArguments(arguments);
 
         // invoke rule method
         try {
-            LOG.debug("Invoking rule method: "
-                    + methodInvoker.getTargetMethod()
-                    + " for class: "
-                    + rule.getClass().getName());
+            LOG.debug("Invoking rule method: " + methodInvoker.getTargetMethod() + " for class: " + rule.getClass()
+                    .getName());
             methodInvoker.prepare();
 
             Class<?> methodReturnType = methodInvoker.getPreparedMethod().getReturnType();
             if (StringUtils.equals("void", methodReturnType.getName())) {
                 methodInvoker.invoke();
             } else {
-                success &= ( Boolean ) methodInvoker.invoke();
+                success &= (Boolean) methodInvoker.invoke();
             }
         } catch (Exception e) {
             LOG.error("Error invoking rule method for class: " + rule.getClass().getName(), e);
             throw new RuntimeException("Error invoking rule method for class: " + rule.getClass().getName(), e);
         }
+
         return success;
     }
 
@@ -190,7 +190,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * @param document
      * @param ruleInterface
      * @return instance of the businessRulesClass for the given document's type, if that businessRulesClass implements
-     *         the given ruleInterface
+     * the given ruleInterface
      */
     public BusinessRule getBusinessRulesInstance(Document document, Class<? extends BusinessRule> ruleInterface) {
         // get the businessRulesClass

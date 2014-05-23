@@ -21,7 +21,6 @@
 
 
   <bean id="TestDocumentEntry" parent="MaintenanceDocumentEntry">
-    <!--<property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" />-->
     <property name="dataObjectClass" value="org.kuali.rice.krad.test.document.bo.Account" />
     <property name="businessRulesClass" value="org.kuali.rice.krad.test.document.BusinessRuleImpl" />
   </bean>

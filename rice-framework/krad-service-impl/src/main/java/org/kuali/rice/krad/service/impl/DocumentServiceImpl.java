@@ -106,6 +106,11 @@ public class DocumentServiceImpl implements DocumentService {
         return saveDocument(document, SaveDocumentEvent.class);
     }
 
+    /**
+     * saves the document with the custom document event passed in
+     *
+     * {@inheritDoc}
+     */
     @Override
     public Document saveDocument( Document document, DocumentEvent event ) throws WorkflowException {
         checkForNulls(document);
@@ -117,8 +122,10 @@ public class DocumentServiceImpl implements DocumentService {
             throw new ConfigurationException( "The KualiDocumentEvent class '" + event.getClass().getName() +
                     "' does not implement the class '" + SaveEvent.class.getName() + "'");
         }
+
         document.prepareForSave();
         Document savedDocument = validateAndPersistDocumentAndSaveAdHocRoutingRecipients( document, event );
+
         prepareWorkflowDocument( savedDocument );
         getWorkflowDocumentService().save( savedDocument.getDocumentHeader().getWorkflowDocument(), null );
 

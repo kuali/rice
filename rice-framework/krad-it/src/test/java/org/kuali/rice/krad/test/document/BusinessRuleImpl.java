@@ -20,12 +20,21 @@ import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.rules.rule.event.RuleEvent;
 
 /**
- * Created by nigupta on 5/7/2014.
+ * setup a custom business rule method to process a custom rule event
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  */
 public class BusinessRuleImpl extends MaintenanceDocumentRuleBase {
 
+    /**
+     * set a global variable to verify invocation of the custom method's processing of the custom rule event
+     *
+     * @param event - the custom rule event to process
+     * @return
+     */
     public boolean processRule( RuleEvent event ) {
-        System.out.println("############################# BusinessRuleImpl Name = " + event.getName());
+        //System.out.println("############################# BusinessRuleImpl Name = " + event.getName());
         return true;
     }
 }

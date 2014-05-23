@@ -85,8 +85,7 @@ abstract public class RuleEventBase implements RuleEvent {
     }
 
     /**
-     * the data that should be validated
-     * @return - the map containing the data
+     * {@inheritDoc}
      */
     public Map<String, Object> getFacts() {
         return facts;
@@ -100,8 +99,7 @@ abstract public class RuleEventBase implements RuleEvent {
     }
 
     /**
-     * the method of the rule class to invoke
-     * @return - the name of the method
+     * {@inheritDoc}
      */
     public String getRuleMethodName() {
         return ruleMethodName;

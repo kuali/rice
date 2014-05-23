@@ -378,6 +378,10 @@ public final class CopyUtils {
      */
     public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
             Class<? extends Annotation> annotationClass) {
+        if (clazz == null) {
+            return Collections.<String, Annotation> emptyMap();
+        }
+
         Map<String, Annotation> rv = getMetadata(clazz).annotatedFieldsByAnnotationType.get(annotationClass);
         return rv == null ? Collections.<String, Annotation> emptyMap() : rv;
     }

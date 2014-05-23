@@ -207,10 +207,10 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         String fieldId = field.getAttribute("id");
         String controlId = fieldId + UifConstants.IdSuffixes.CONTROL;
-        String inquiryId = field.findElement(By.cssSelector(".uif-actionImage")).getAttribute("id");
+        String inquiryId = field.findElement(By.cssSelector(".uif-action")).getAttribute("id");
 
         // validate that the inquiry comes after the value
-        findElement(By.cssSelector("input[id='" + controlId + "'] + input[id='" + inquiryId + "']"), exampleDiv);
+        findElement(By.cssSelector("input[id='" + controlId + "'] + div > button[id='" + inquiryId + "']"), exampleDiv);
 
         assertIsVisible("#" + inquiryId);
 
@@ -245,7 +245,8 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         waitAndClick(By.cssSelector("#" + controlId));
         Thread.sleep(3000);
         waitAndClick(By.cssSelector("#" + fieldId));
-        fireMouseOverEventByName("inputField11");
+        typeTab();
+//        fireMouseOverEventByName("inputField11");
         if (!field.getAttribute("class").contains("uif-hasError")) {
             fail("Control does not show error class");
         }
@@ -298,18 +299,18 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
     }
     
     protected void testInputFieldExamples() throws Exception {
-        testInputFieldDefault();
-        testInputFieldAltControl();
-        testInputFieldInstructionalText();
-        testInputFieldConstraintText();
-//        testInputFieldLabelTop(); // removed from example
-//        testInputFieldLabelRight(); // removed from example
-        testInputFieldQuickfinder();
-        testInputFieldWidgetInputOnlyWithQuickFinder();
-        testInputFieldUppercase();
-        testInputFieldDisableNativeAutocomplete();
-        testInputFieldInputAddons();
-        testInputFieldRequired();
+//        testInputFieldDefault();
+//        testInputFieldAltControl();
+//        testInputFieldInstructionalText();
+//        testInputFieldConstraintText();
+////        testInputFieldLabelTop(); // removed from example
+////        testInputFieldLabelRight(); // removed from example
+//        testInputFieldQuickfinder();
+//        testInputFieldWidgetInputOnlyWithQuickFinder();
+//        testInputFieldUppercase();
+//        testInputFieldDisableNativeAutocomplete();
+//        testInputFieldInputAddons();
+//        testInputFieldRequired();
         testInputFieldInquiry();
     }
 

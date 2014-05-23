@@ -42,7 +42,7 @@ public final class Utilities {
      * Commons-Lang StrSubstitor which substitutes variables specified like ${name} in strings,
      * using a lookup implementation that pulls variables from the core config
      */
-    private static final StrSubstitutor SUBSTITUTOR = new StrSubstitutor(new ConfigStringLookup());
+    private static final StrSubstitutor SUBSTITUTOR = new StrSubstitutor(new ParameterStrLookup());
     
     private Utilities() {
     	throw new UnsupportedOperationException("do not call");
@@ -57,7 +57,7 @@ public final class Utilities {
      * @return a string with any variables substituted with configuration parameter values
      */
     public static String substituteConfigParameters(String applicationId, String string) {
-    	StrSubstitutor sub = new StrSubstitutor(new ConfigStringLookup(applicationId));
+    	StrSubstitutor sub = new StrSubstitutor(new ParameterStrLookup(applicationId));
         return sub.replace(string);
     }
         

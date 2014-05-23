@@ -136,11 +136,15 @@ public class Help extends WidgetBase {
                 helpDefinition.setParameterNamespace(ViewLifecycle.getView().getNamespaceCode());
             }
 
-            if (StringUtils.isNotBlank(helpDefinition.getParameterNamespace())
-                    && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())
-                    && StringUtils.isNotBlank(helpDefinition.getParameterName())) {
-                externalHelpUrl = getParameterService().getParameterValueAsString(helpDefinition.getParameterNamespace(),
-                        helpDefinition.getParameterDetailType(), helpDefinition.getParameterName());
+            String parameterNamespace = helpDefinition.getParameterNamespace();
+            String parameterDetailType = helpDefinition.getParameterDetailType();
+            String parameterName = helpDefinition.getParameterName();
+
+            if (StringUtils.isNotBlank(parameterNamespace)
+                    && StringUtils.isNotBlank(parameterDetailType)
+                    && StringUtils.isNotBlank(parameterName)) {
+                externalHelpUrl = getParameterService().getParameterValueAsFilteredString(
+                        parameterNamespace, parameterDetailType, parameterName);
             }
         }
 

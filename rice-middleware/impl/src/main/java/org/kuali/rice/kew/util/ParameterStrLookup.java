@@ -16,39 +16,51 @@
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrLookup;
+import org.kuali.rice.core.api.config.property.ConfigStrLookup;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.coreservice.api.parameter.ParameterKey;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
- * Looks up Strings from the Config and System Parameters.
+ * Uses the KEW runtime parameters to locate a string for replacement, falling back to the deploy time configuration
+ * variables if necessary.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigStringLookup extends StrLookup {
+public class ParameterStrLookup extends ConfigStrLookup {
 	
 	private final String applicationId;
-	
-	public ConfigStringLookup() {
+
+    /**
+     * Creates a string locator to search for KEW runtime parameters for any {@code applicationId}.
+     */
+	public ParameterStrLookup() {
         this(null);
 	}
-	
-	public ConfigStringLookup(String applicationId) {
+
+    /**
+     * Creates a string locator to search for KEW runtime parameters for a specific {@code applicationId}.
+     *
+     * @param applicationId the application to search for the KEW runtime parameter in.
+     */
+	public ParameterStrLookup(String applicationId) {
 		this.applicationId = applicationId;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String lookup(String propertyName) {
         if (StringUtils.isBlank(propertyName)) {
             return null;
         }
 
-        String paramValue = null;
-        // check system parameters first
+        String paramValue;
+
+        // check runtime parameters first
         if (StringUtils.isBlank(applicationId)) {
             paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                     KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
@@ -58,9 +70,11 @@ public class ConfigStringLookup extends StrLookup {
             paramValue = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameterValueAsString(parameterKey);
         }
 
+        // fall back to deploy time configurations if empty
         if (paramValue == null) {
-            paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+            paramValue = super.lookup(propertyName);
         }
+
         return paramValue;
     }
 

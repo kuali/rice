@@ -29,7 +29,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 public class MockParameterService implements ParameterService {
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#createParameter(org.kuali.rice.coreservice.api.parameter.Parameter)
+     * {@inheritDoc}
      */
     @Override
     public Parameter createParameter(Parameter parameter) {
@@ -37,7 +37,7 @@ public class MockParameterService implements ParameterService {
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#updateParameter(org.kuali.rice.coreservice.api.parameter.Parameter)
+     * {@inheritDoc}
      */
     @Override
     public Parameter updateParameter(Parameter parameter) {
@@ -45,99 +45,7 @@ public class MockParameterService implements ParameterService {
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#parameterExists(java.lang.Class, java.lang.String)
-     */
-    @Override
-    public Boolean parameterExists(Class<?> componentClass, String parameterName) {
-        return false;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#parameterExists(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public Boolean parameterExists(String namespaceCode, String componentCode, String parameterName) {
-        return false;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsString(java.lang.Class, java.lang.String)
-     */
-    @Override
-    public String getParameterValueAsString(Class<?> componentClass, String parameterName) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsString(java.lang.Class, java.lang.String, java.lang.String)
-     */
-    @Override
-    public String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsString(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsString(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName,
-            String defaultValue) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsBoolean(java.lang.Class, java.lang.String)
-     */
-    @Override
-    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName) {
-        return false;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsBoolean(java.lang.Class, java.lang.String, java.lang.Boolean)
-     */
-    @Override
-    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue) {
-        return false;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsBoolean(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName) {
-        return false;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValueAsBoolean(java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean)
-     */
-    @Override
-    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName,
-            Boolean defaultValue) {
-        return false;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameter(java.lang.Class, java.lang.String)
-     */
-    @Override
-    public Parameter getParameter(Class<?> componentClass, String parameterName) {
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameter(java.lang.String, java.lang.String, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
     public Parameter getParameter(String namespaceCode, String componentCode, String parameterName) {
@@ -145,7 +53,135 @@ public class MockParameterService implements ParameterService {
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValuesAsString(java.lang.Class, java.lang.String)
+     * {@inheritDoc}
+     */
+    @Override
+    public Parameter getParameter(Class<?> componentClass, String parameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean parameterExists(String namespaceCode, String componentCode, String parameterName) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean parameterExists(Class<?> componentClass, String parameterName) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getParameterValueAsBoolean(String namespaceCode, String componentCode, String parameterName, Boolean defaultValue) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getParameterValueAsBoolean(Class<?> componentClass, String parameterName, Boolean defaultValue) {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String defaultValue) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsString(Class<?> componentClass, String parameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsString(Class<?> componentClass, String parameterName, String defaultValue) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsFilteredString(String namespaceCode, String componentCode, String parameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsFilteredString(String namespaceCode, String componentCode, String parameterName, String defaultValue) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsFilteredString(Class<?> componentClass, String parameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParameterValueAsFilteredString(Class<?> componentClass, String parameterName, String defaultValue) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode, String parameterName) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Collection<String> getParameterValuesAsString(Class<?> componentClass, String parameterName) {
@@ -153,16 +189,31 @@ public class MockParameterService implements ParameterService {
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getParameterValuesAsString(java.lang.String, java.lang.String, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public Collection<String> getParameterValuesAsString(String namespaceCode, String componentCode,
-            String parameterName) {
+    public Collection<String> getParameterValuesAsFilteredString(String namespaceCode, String componentCode, String parameterName) {
         return Collections.emptyList();
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getSubParameterValueAsString(java.lang.Class, java.lang.String, java.lang.String)
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<String> getParameterValuesAsFilteredString(Class<?> componentClass, String parameterName) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String getSubParameterValueAsString(Class<?> componentClass, String parameterName, String subParameterName) {
@@ -170,29 +221,50 @@ public class MockParameterService implements ParameterService {
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getSubParameterValueAsString(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public String getSubParameterValueAsString(String namespaceCode, String componentCode, String parameterName,
-            String subParameterName) {
+    public String getSubParameterValueAsFilteredString(String namespaceCode, String componentCode, String parameterName, String subParameterName) {
         return null;
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getSubParameterValuesAsString(java.lang.Class, java.lang.String, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName,
-            String subParameterName) {
+    public String getSubParameterValueAsFilteredString(Class<?> componentClass, String parameterName, String subParameterName) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<String> getSubParameterValuesAsString(Class<?> componentClass, String parameterName, String subParameterName) {
         return Collections.emptyList();
     }
 
     /**
-     * @see org.kuali.rice.coreservice.framework.parameter.ParameterService#getSubParameterValuesAsString(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     * {@inheritDoc}
      */
     @Override
-    public Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode,
-            String parameterName, String subParameterName) {
+    public Collection<String> getSubParameterValuesAsString(String namespaceCode, String componentCode, String parameterName, String subParameterName) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<String> getSubParameterValuesAsFilteredString(String namespaceCode, String componentCode, String parameterName, String subParameterName) {
+        return Collections.emptyList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<String> getSubParameterValuesAsFilteredString(Class<?> componentClass, String parameterName, String subParameterName) {
         return Collections.emptyList();
     }
 

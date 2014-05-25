@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs.quickfinder;
 
+import org.kuali.rice.krad.labs.LabsRoleMember;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class QuickfinderForm extends UifFormBase {
     private String nameField;
     private String accountNumberField;
     private String accountNameField;
+    private LabsRoleMember labsRoleMember;
 
     public QuickfinderForm() {
         super();
@@ -71,4 +73,8 @@ public class QuickfinderForm extends UifFormBase {
     public void setPeopleAccounts(List<PersonAccount> peopleAccounts) {
         this.peopleAccounts = peopleAccounts;
     }
+
+    public LabsRoleMember getLabsRoleMember() { return labsRoleMember; }
+
+    public void setLabsRoleMember(LabsRoleMember labsRoleMember) { this.labsRoleMember = labsRoleMember; }
 }

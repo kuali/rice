@@ -49,11 +49,18 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
         waitAndTypeByXpath("//section[@id='Demo-Tooltip-Example2']/div/input[@name='dataField1']",""); // XPATH as dataField1 is used as a name twice
         waitForElementPresentByXpath("//div[@class='popover top in']");
     }
+    
+    protected void testWidgetsTooltipHtml() throws Exception {
+        waitAndClickLinkContainingText("Tooltip HTML");
+        fireMouseOverEventByXpath("//section[@id='Demo-Tooltip-Example3']/div/input[@name='dataField1']");
+        waitForElementPresentByXpath("//div[@class='popover top in']");
+    }
 
     @Test
     public void testWidgetsTooltipBookmark() throws Exception {
         testWidgetsTooltipHover();
         testWidgetsTooltipFocus();
+        testWidgetsTooltipHtml();
         passed();
     }
 
@@ -61,6 +68,7 @@ public class DemoWidgetsTooltipAft extends DemoLibraryBase {
     public void testWidgetsTooltipNav() throws Exception {
         testWidgetsTooltipHover();
         testWidgetsTooltipFocus();
+        testWidgetsTooltipHtml();
         passed();
     }
 }

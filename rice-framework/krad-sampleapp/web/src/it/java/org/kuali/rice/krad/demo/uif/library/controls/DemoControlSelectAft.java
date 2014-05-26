@@ -59,6 +59,16 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//select[@name='inputField1' and @disabled='disabled']");
     }
     
+    protected void testLibraryControlSelectGroupedOptions() throws Exception {
+        waitAndClickByXpath("//li[@data-tabfor='Demo-SelectControl-Example5']/a");
+        waitForElementPresentByXpath("//select/optgroup[@label='American']");
+        waitForElementPresentByXpath("//select/optgroup/option");
+        waitForElementPresentByXpath("//select/optgroup[@label='Japan']");
+        waitForElementPresentByXpath("//select[@multiple]/optgroup[@label='American']");
+        waitForElementPresentByXpath("//select[@multiple]/optgroup/option");
+        waitForElementPresentByXpath("//select[@multiple]/optgroup[@label='Japan']");
+    }
+    
     protected void testLibraryControlSelectNavigation() throws Exception {
         waitAndClickByXpath("//li[@data-tabfor='Demo-SelectControl-Example4']/a");
         assertElementPresentByXpath("//div[@data-parent='Demo-SelectControl-Example4']/select/option[@data-location='http://www.kuali.org']");
@@ -66,11 +76,13 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
         //After this step it might throw some Javascript error on console as browser may invoke popup with "Stay on page" or "Leave Page" option.
     }
     
+    
     @Test
     public void testControlSelectBookmark() throws Exception {
         testLibraryControlSelectDefault();
         testLibraryControlSelectMultiSelect();
         testLibraryControlSelectDisabled();
+        testLibraryControlSelectGroupedOptions();
         testLibraryControlSelectNavigation();
         passed();
     }
@@ -80,6 +92,7 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
         testLibraryControlSelectDefault();
         testLibraryControlSelectMultiSelect();
         testLibraryControlSelectDisabled();
+        testLibraryControlSelectGroupedOptions();
         testLibraryControlSelectNavigation();
         passed();
     }  

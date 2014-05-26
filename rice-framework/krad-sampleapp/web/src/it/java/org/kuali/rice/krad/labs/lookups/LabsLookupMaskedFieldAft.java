@@ -64,6 +64,7 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
     }
 
     protected void testLabsLookupMaskedFieldWildcard()throws Exception {
+        clearTextByName("lookupCriteria[name]");
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
         waitAndClickButtonByText("Search");

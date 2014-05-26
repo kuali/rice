@@ -328,7 +328,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @param propertyName property name of the search criteria field to be validated
      * @param searchPropertyValue value given for field to search for
      */
-    protected void validateSearchParameterWildcardAndOperators(LookupForm form, String propertyName, Map<String, Object> lookupCriteriaAttributes, String searchPropertyValue) {
+    protected void validateSearchParameterWildcardAndOperators(LookupForm form, String propertyName,
+            Map<String, Object> lookupCriteriaAttributes, String searchPropertyValue) {
         if (StringUtils.isBlank(searchPropertyValue)) {
             return;
         }
@@ -353,14 +354,19 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ||
                     TypeUtils.isTemporalClass(propertyType)) {
-                GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD,
-                        getCriteriaLabel(form, propertyName));
+                GlobalVariables.getMessageMap().putError(propertyName,
+                        RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, getCriteriaLabel(form,
+                        (String) lookupCriteriaAttributes.get(UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID)));
             } else if (TypeUtils.isStringClass(propertyType)) {
-                GlobalVariables.getMessageMap().putInfo(propertyName, RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY,
-                        getCriteriaLabel(form, propertyName));
+                GlobalVariables.getMessageMap().putInfo(propertyName,
+                        RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, getCriteriaLabel(form,
+                        (String) lookupCriteriaAttributes.get(UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID)));
             }
         } else if (isCriteriaSecure(lookupCriteriaAttributes)) {
-            GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_SECURE_FIELD, getCriteriaLabel(form, propertyName));
+            GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_SECURE_FIELD,
+                    getCriteriaLabel(form, (String) lookupCriteriaAttributes.get(
+                            UifConstants.LookupCriteriaPostMetadata.COMPONENT_ID))
+            );
         }
     }
 

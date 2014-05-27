@@ -18,6 +18,8 @@ package org.kuali.rice.krad.bo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.LegacyDataAppAdapter;
 
@@ -25,12 +27,16 @@ import org.kuali.rice.krad.service.LegacyDataAppAdapter;
 /**
  * Adapter class to provide some of the parent methods expected of persistable business objects
  * This is a temporary class to use in place of PBOB (moved to the KNS module) to facilitate
- * code-level compatibility with existing business objects and documents. 
- * 
+ * code-level compatibility with existing business objects and documents.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PersistableBusinessObjectBaseAdapter extends DataObjectBase {
     private static final long serialVersionUID = 1L;
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBaseAdapter.class);
+
+    @Transient protected boolean newCollectionRecord;
+    @Transient protected Object extension;
 
     /**
      * getService Refreshes the reference objects from the primitive values.
@@ -59,12 +65,36 @@ public class PersistableBusinessObjectBaseAdapter extends DataObjectBase {
     protected LegacyDataAppAdapter getLegacyDataAdapter() {
         return KRADServiceLocator.getLegacyDataAdapter();
     }
-    
+
     public List buildListOfDeletionAwareLists() {
         return new ArrayList();
     }
 
     public void linkEditableUserFields() {
         // do nothing
+    }
+
+    public Object getExtension() {
+        if ( extension == null
+                && getLegacyDataAdapter().isPersistable(this.getClass())) {
+            try {
+                extension = getLegacyDataAdapter().getExtension(this.getClass());
+            } catch ( Exception ex ) {
+                LOG.error( "unable to create extension object", ex );
+            }
+        }
+        return extension;
+    }
+
+    public void setExtension(Object extension) {
+        this.extension = extension;
+    }
+
+    public boolean isNewCollectionRecord() {
+        return newCollectionRecord;
+    }
+
+    public void setNewCollectionRecord(boolean isNewCollectionRecord) {
+        this.newCollectionRecord = isNewCollectionRecord;
     }
 }

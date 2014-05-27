@@ -40,7 +40,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -126,6 +125,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     private List<String> cssClasses;
     private List<String> additionalCssClasses;
 
+    @DelayedCopy
     private Tooltip toolTip;
 
     private int order;
@@ -180,9 +180,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     
     private String role;
     private Map<String, String> ariaAttributes;
-
-    @ReferenceCopy(referenceTransient = true)
-    private transient Map<String, Component> componentsForLifecycle;
 
     private String preRenderContent;
     private String postRenderContent;
@@ -305,9 +302,11 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
-        ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
-        if (viewIndex != null) {
-            viewIndex.indexComponent(this);
+        if (UifConstants.ViewPhases.APPLY_MODEL.equals(phase.getViewPhase())) {
+            ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
+            if (viewIndex != null) {
+                viewIndex.indexComponent(this);
+            }
         }
     }
 
@@ -994,7 +993,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public List<String> getLibraryCssClasses() {
         if (libraryCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
-            libraryCssClasses = new LifecycleAwareList<String>(this);
+            libraryCssClasses = new ArrayList<String>();
         }
 
         return libraryCssClasses;
@@ -1011,7 +1010,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (libraryCssClasses == null) {
             this.libraryCssClasses = Collections.emptyList();
         } else {
-            this.libraryCssClasses = new LifecycleAwareList<String>(this, libraryCssClasses);
+            this.libraryCssClasses = libraryCssClasses;
         }
     }
 
@@ -1022,7 +1021,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public List<String> getCssClasses() {
         if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
-            cssClasses = new LifecycleAwareList<String>(this);
+            cssClasses = new ArrayList<String>();
         }
 
         return cssClasses;
@@ -1037,7 +1036,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (cssClasses == null) {
             this.cssClasses = Collections.emptyList();
         } else {
-            this.cssClasses = new LifecycleAwareList<String>(this, cssClasses);
+            this.cssClasses = cssClasses;
         }
     }
 
@@ -1048,7 +1047,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public List<String> getAdditionalCssClasses() {
         if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
-            additionalCssClasses = new LifecycleAwareList<String>(this);
+            additionalCssClasses = new ArrayList<String>();
         }
 
         return additionalCssClasses;
@@ -1063,7 +1062,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (additionalCssClasses == null) {
             this.additionalCssClasses = Collections.emptyList();
         } else {
-            this.additionalCssClasses = new LifecycleAwareList<String>(this, additionalCssClasses);
+            this.additionalCssClasses = additionalCssClasses;
         }
     }
 
@@ -1334,7 +1333,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public Map<String, Object> getContext() {
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
-            context = new LifecycleAwareMap<String, Object>(this);
+            context = new HashMap<String, Object>();
         }
 
         return context;
@@ -1350,7 +1349,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (context == null) {
             this.context = Collections.emptyMap();
         } else {
-            this.context = new LifecycleAwareMap<String, Object>(this, context);
+            this.context = context;
         }
     }
 
@@ -1361,7 +1360,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void pushObjectToContext(String objectName, Object object) {
         checkMutable(true);
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
-            context = new LifecycleAwareMap<String, Object>(this);
+            context = new HashMap<String, Object>();
         }
 
         pushToPropertyReplacerContext(objectName, object);
@@ -1393,7 +1392,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
-            context = new LifecycleAwareMap<String, Object>(this);
+            context = new HashMap<String, Object>();
         }
 
         context.putAll(objects);
@@ -1809,7 +1808,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public Map<String, String> getTemplateOptions() {
         if (templateOptions == Collections.EMPTY_MAP && isMutable(true)) {
-            templateOptions = new LifecycleAwareMap<String, String>(this);
+            templateOptions = new HashMap<String, String>();
         }
 
         return templateOptions;
@@ -1824,7 +1823,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (templateOptions == null) {
             this.templateOptions = Collections.emptyMap();
         } else {
-            this.templateOptions = new LifecycleAwareMap<String, String>(this, templateOptions);
+            this.templateOptions = templateOptions;
         }
     }
 
@@ -2225,7 +2224,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getDataAttributes() {
         if (dataAttributes == Collections.EMPTY_MAP) {
-            dataAttributes = new LifecycleAwareMap<String, String>(this);
+            dataAttributes = new HashMap<String, String>();
         }
 
         return dataAttributes;
@@ -2240,7 +2239,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         if (dataAttributes == null) {
             this.dataAttributes = Collections.emptyMap();
         } else {
-            this.dataAttributes = new LifecycleAwareMap<String, String>(this, dataAttributes);
+            this.dataAttributes = dataAttributes;
         }
     }
 
@@ -2251,7 +2250,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @BeanTagAttribute(name = "scriptDataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, String> getScriptDataAttributes() {
         if (scriptDataAttributes == Collections.EMPTY_MAP) {
-            scriptDataAttributes = new LifecycleAwareMap<String, String>(this);
+            scriptDataAttributes = new HashMap<String, String>();
         }
 
         return scriptDataAttributes;
@@ -2273,7 +2272,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         checkMutable(true);
 
         if (dataAttributes == Collections.EMPTY_MAP) {
-            dataAttributes = new LifecycleAwareMap<String, String>(this);
+            dataAttributes = new HashMap<String, String>();
         }
 
         dataAttributes.put(key, value);
@@ -2287,7 +2286,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         checkMutable(true);
 
         if (scriptDataAttributes == Collections.EMPTY_MAP) {
-            scriptDataAttributes = new LifecycleAwareMap<String, String>(this);
+            scriptDataAttributes = new HashMap<String, String>();
         }
 
         scriptDataAttributes.put(key, value);

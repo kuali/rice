@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.element.Label;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -57,6 +58,8 @@ public class FieldBase extends ComponentBase implements Field {
     private static final Logger LOG = Logger.getLogger(FieldBase.class);
 
     private String shortLabel;
+    
+    @DelayedCopy
     private Label fieldLabel;
 
     private boolean labelRendered;

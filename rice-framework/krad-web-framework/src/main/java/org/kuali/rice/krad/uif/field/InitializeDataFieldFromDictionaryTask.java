@@ -20,16 +20,14 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
-import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser;
-import org.kuali.rice.krad.uif.util.ObjectPathExpressionParser.PathEntry;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -121,23 +119,27 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
     }
 
     /**
-     * Helper method for optimzing a call to
-     * {@link ViewModelUtils#getPropertyTypeByClassAndView(View, Object, String)} while parsing a path
-     * expression for an attribute definition.
-     *
-     * @param rootPath The root path of the parse.
-     * @param parentPath The parent path of the current parse entry.
-     * @return The name of the dictionary entry to check at the current parse node.
+     * Determines the name of a data dictionary entry based on the portion of the path leading up to
+     * the attribute name.
+     * 
+     * <p>
+     * The property path passed in is checked first against
+     * {@link View#getObjectPathToConcreteClassMapping()} for a full or partial match. If no match
+     * is found then property type relative to the model involved in the current view lifecycle is
+     * returned, where applicable.
+     * </p>
+     * 
+     * @param dictionaryEntryPrefix Portion of a property path referring to the entry that has the
+     *        attribute.
+     * @return The name of the dictionary entry indicated by the property path.
      */
-    private String getDictionaryEntryName(String rootPath, String parentPath) {
-        Map<String, Class<?>> modelClasses = ViewLifecycle.getView().getObjectPathToConcreteClassMapping();
-
-        String modelClassPath = getModelClassPath(rootPath, parentPath);
-        if (modelClassPath == null) {
-            return null;
+    private String getDictionaryEntryName(String dictionaryEntryPrefix) {
+        if (StringUtils.isEmpty(dictionaryEntryPrefix)) {
+            return dictionaryEntryPrefix;
         }
-
-        Class<?> dictionaryModelClass = modelClasses.get(modelClassPath);
+        
+        Map<String, Class<?>> modelClasses = ViewLifecycle.getView().getObjectPathToConcreteClassMapping();
+        Class<?> dictionaryModelClass = modelClasses.get(dictionaryEntryPrefix);
 
         // full match
         if (dictionaryModelClass != null) {
@@ -147,10 +149,10 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         // in case of partial match, holds the class that matched and the
         // property so we can get by reflection
         Class<?> modelClass = null;
-        String modelProperty = modelClassPath;
+        String modelProperty = dictionaryEntryPrefix;
 
         int bestMatchLength = 0;
-        int modelClassPathLength = modelClassPath.length();
+        int modelClassPathLength = dictionaryEntryPrefix.length();
 
         // check if property path matches one of the modelClass entries
         synchronized (modelClasses) {
@@ -160,11 +162,11 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
                 String path = modelClassEntry.getKey();
                 int pathlen = path.length();
 
-                if (modelClassPath.startsWith(path) && pathlen > bestMatchLength
-                        && modelClassPathLength > pathlen && modelClassPath.charAt(pathlen) == '.') {
+                if (dictionaryEntryPrefix.startsWith(path) && pathlen > bestMatchLength
+                        && modelClassPathLength > pathlen && dictionaryEntryPrefix.charAt(pathlen) == '.') {
                     bestMatchLength = pathlen;
                     modelClass = modelClassEntry.getValue();
-                    modelProperty = modelClassPath.substring(pathlen + 1);
+                    modelProperty = dictionaryEntryPrefix.substring(pathlen + 1);
                 }
             }
         }
@@ -176,66 +178,10 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
         if (dictionaryModelClass == null) {
             // If no full or partial match, look up based on the model directly
-            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(ViewLifecycle.getModel(), modelClassPath);
+            dictionaryModelClass = ObjectPropertyUtils.getPropertyType(ViewLifecycle.getModel(), dictionaryEntryPrefix);
         }
 
-        return dictionaryModelClass == null ? null : dictionaryModelClass.getName();
-    }
-
-    /**
-     * Helper method for forming the model class path while parsing a path expression.
-     *
-     * @param rootPath The root parse path.
-     * @param parentPath The parent path of the current parse node.
-     * @return A model class path formed by concatenating the root path and parent path with a dot
-     *         separator, then removing all collection index/key references.
-     */
-    private String getModelClassPath(String rootPath, String parentPath) {
-        if (rootPath == null && parentPath == null) {
-            return null;
-        }
-
-        StringBuilder modelClassPathBuilder = new StringBuilder();
-
-        if (rootPath != null) {
-            modelClassPathBuilder.append(rootPath);
-        }
-
-        if (parentPath != null) {
-            if (rootPath != null) modelClassPathBuilder.append('.');
-            modelClassPathBuilder.append(parentPath);
-        }
-
-        int bracketCount = 0;
-        int leftBracketPos = -1;
-        for (int i=0; i < modelClassPathBuilder.length(); i++) {
-            char c = modelClassPathBuilder.charAt(i);
-
-            if (c == '[') {
-                bracketCount++;
-                if (bracketCount == 1) leftBracketPos = i;
-            }
-
-           if (c == ']') {
-               bracketCount--;
-
-               if (bracketCount < 0) {
-                   throw new IllegalArgumentException("Unmatched ']' at " + i + " " + modelClassPathBuilder);
-               }
-
-               if (bracketCount == 0) {
-                   modelClassPathBuilder.delete(leftBracketPos, i + 1);
-                   i -= i + 1 - leftBracketPos;
-                   leftBracketPos = -1;
-               }
-           }
-        }
-
-        if (bracketCount > 0) {
-            throw new IllegalArgumentException("Unmatched '[' at " + leftBracketPos + " " + modelClassPathBuilder);
-        }
-
-        return modelClassPathBuilder.toString();
+        return dictionaryModelClass == null ? null : dictionaryModelClass.getSimpleName();
     }
 
     /**
@@ -285,58 +231,48 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         if (StringUtils.startsWith(dictionaryAttributePath, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
             dictionaryAttributePath = StringUtils.substringAfter(dictionaryAttributePath, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
         }
-
-        AttributePathEntry attributePathEntry = new AttributePathEntry(fieldBindingPrefix);
-        ObjectPathExpressionParser
-                .parsePathExpression(attributePathEntry, dictionaryAttributePath, attributePathEntry);
-
-        // if a definition was found, update the fields dictionary properties
-        if (attributePathEntry.attributeDefinition != null) {
-            field.setDictionaryObjectEntry(attributePathEntry.dictionaryObjectEntry);
-            field.setDictionaryAttributeName(attributePathEntry.dictionaryAttributeName);
-        }
-
-        return attributePathEntry.attributeDefinition;
-    }
-
-    protected class AttributePathEntry implements PathEntry {
-        AttributeDefinition attributeDefinition;
-
-        String dictionaryAttributeName;
-        String dictionaryObjectEntry;
-
-        String rootPath;
-
-        public AttributePathEntry(String rootPath) {
-             this.rootPath = rootPath;
-        }
-
-        @Override
-        public Object parse(String parentPath, Object node, String next) {
-            if (next == null) {
-                return node;
+        
+        DataDictionaryService ddService = KRADServiceLocatorWeb.getDataDictionaryService();
+        
+        String dictionaryAttributeName = ObjectPropertyUtils.getCanonicalPath(dictionaryAttributePath);
+        String dictionaryEntryPrefix = fieldBindingPrefix;
+        
+        AttributeDefinition attribute = null;
+        String dictionaryEntryName = null;
+        
+        int i = dictionaryAttributeName.indexOf('.');
+        while (attribute == null && i != -1) {
+            
+            if (dictionaryEntryPrefix != null) {
+                dictionaryEntryName = getDictionaryEntryName(dictionaryEntryPrefix);
+                dictionaryEntryPrefix += '.' + dictionaryAttributeName.substring(0, i);
+            } else {
+                dictionaryEntryName = null;
+                dictionaryEntryPrefix = dictionaryAttributeName.substring(0, i);
             }
-
-            if (attributeDefinition != null || node == null) {
-                return null;
-            }
-
-            String dictionaryEntryName = getDictionaryEntryName(rootPath, parentPath);
 
             if (dictionaryEntryName != null) {
-                attributeDefinition = KRADServiceLocatorWeb.getDataDictionaryService()
-                        .getAttributeDefinition(dictionaryEntryName, next);
-
-                if (attributeDefinition != null) {
-                    dictionaryObjectEntry = dictionaryEntryName;
-                    dictionaryAttributeName = next;
-
-                    return null;
-                }
+                attribute = ddService.getAttributeDefinition(dictionaryEntryName, dictionaryAttributeName);
             }
-
-            return node;
+            
+            if (attribute == null) {
+                dictionaryAttributeName = dictionaryAttributeName.substring(i+1);
+                i = dictionaryAttributeName.indexOf('.');
+            }
         }
+        
+        if (attribute == null && dictionaryEntryPrefix != null) {
+            dictionaryEntryName = getDictionaryEntryName(dictionaryEntryPrefix);
+            attribute = ddService.getAttributeDefinition(dictionaryEntryName, dictionaryAttributeName);
+        }
+        
+        // if a definition was found, update the fields dictionary properties
+        if (attribute != null) {
+            field.setDictionaryObjectEntry(dictionaryEntryName);
+            field.setDictionaryAttributeName(dictionaryAttributeName);
+        }
+
+        return attribute;
     }
 
 }

@@ -55,6 +55,7 @@ import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
+import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -360,7 +361,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
             //setup page total field and add it to footer's group for this column
             if (cInfo.isShowPageTotal()) {
-                Field pageTotalDataField = cInfo.getPageTotalField().copy();
+                Field pageTotalDataField = CopyUtils.copy(cInfo.getPageTotalField());
                 setupTotalField(pageTotalDataField, cInfo, this.isShowPageTotal(), getPageTotalLabel(),
                         UifConstants.RoleTypes.PAGE_TOTAL, leftLabelColumnIndex);
                 calculationFieldGroupItems.add(pageTotalDataField);
@@ -368,7 +369,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
             //setup total field and add it to footer's group for this column
             if (cInfo.isShowTotal()) {
-                Field totalDataField = cInfo.getTotalField().copy();
+                Field totalDataField = CopyUtils.copy(cInfo.getTotalField());
                 setupTotalField(totalDataField, cInfo, this.isShowTotal(), getTotalLabel(),
                         UifConstants.RoleTypes.TOTAL, leftLabelColumnIndex);
 
@@ -382,7 +383,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             //setup total field and add it to footer's group for this column
             //do not generate group total rows if group totals are not being shown
             if (cInfo.isShowGroupTotal()) {
-                Field groupTotalDataField = cInfo.getGroupTotalFieldPrototype().copy();
+                Field groupTotalDataField = CopyUtils.copy(cInfo.getGroupTotalFieldPrototype());
                 setupTotalField(groupTotalDataField, cInfo, this.isShowGroupTotal(), getGroupTotalLabelPrototype(),
                         UifConstants.RoleTypes.GROUP_TOTAL, leftLabelColumnIndex);
                 groupTotalDataField.setId(container.getId() + "_gTotal" + cInfo.getColumnNumber());
@@ -434,7 +435,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
             if (this.isShowGroupTotal()) {
                 //display none - this label is copied by the javascript
-                Label groupTotalLabel = groupTotalLabelPrototype.copy();
+                Label groupTotalLabel = CopyUtils.copy(groupTotalLabelPrototype);
                 groupTotalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
                 groupTotalLabel.setStyle("display: none;");
                 groupTotalLabel.addDataAttribute(UifConstants.DataAttributes.ROLE, "groupTotalLabel");
@@ -442,14 +443,14 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             }
 
             if (this.isShowPageTotal()) {
-                Label pageTotalLabel = this.pageTotalLabel.copy();
+                Label pageTotalLabel = CopyUtils.copy(this.pageTotalLabel);
                 pageTotalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
                 pageTotalLabel.addDataAttribute(UifConstants.DataAttributes.ROLE, "pageTotal");
                 groupItems.add(pageTotalLabel);
             }
 
             if (this.isShowTotal()) {
-                Label totalLabel = this.totalLabel.copy();
+                Label totalLabel = CopyUtils.copy(this.totalLabel);
                 totalLabel.setViewStatus(UifConstants.ViewStatus.CREATED);
                 groupItems.add(totalLabel);
             }
@@ -489,7 +490,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         } else if (cInfo.getColumnNumber() == leftLabelColumnIndex && this.isRenderOnlyLeftTotalLabels()) {
             //renderOnlyLeftTotalLabel is set to true, but the column has a total itself - set the layout
             //manager settings directly into the field
-            totalDataField.setFieldLabel(leftLabel.<Label> copy());
+            totalDataField.setFieldLabel((Label) CopyUtils.copy(leftLabel));
         }
 
         if (this.isRenderOnlyLeftTotalLabels()) {

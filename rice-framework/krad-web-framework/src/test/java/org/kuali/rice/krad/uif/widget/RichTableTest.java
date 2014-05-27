@@ -121,7 +121,6 @@ public class RichTableTest {
         mockView = mock(LookupView.class);
         ViewHelperService mockViewHelperService = mock(ViewHelperService.class);
         when(mockView.getViewHelperService()).thenReturn(mockViewHelperService);
-        when(mockView.copy()).thenReturn(mockView);
         when(mockView.clone()).thenReturn(mockView);
     }
 

@@ -40,6 +40,7 @@ import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -415,6 +416,10 @@ public class CollectionGroupBuilder implements Serializable {
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
             action.setRefreshId(collectionGroup.getId());
 
+            if (collectionGroup.isAddWithDialog() && view instanceof FormView && ((FormView) view).isValidateClientSide()) {
+                action.setPerformClientSideValidation(true);
+            }
+
             if (action.isPerformClientSideValidation()) {
                 String preSubmitScript = "var valid=" + UifConstants.JsFunctions.VALIDATE_ADD_LINE + "('" +
                         collectionGroup.getId() + "');";
@@ -429,6 +434,8 @@ public class CollectionGroupBuilder implements Serializable {
 
                 action.setPreSubmitCall(preSubmitScript);
                 action.setPerformClientSideValidation(false);
+            } else if (collectionGroup.isAddWithDialog()) {
+                action.setPreSubmitCall("closeLightbox(); return true;");
             }
         }
 

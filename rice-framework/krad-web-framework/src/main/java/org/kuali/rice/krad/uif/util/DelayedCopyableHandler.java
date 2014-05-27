@@ -92,7 +92,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
 
     /**
      * Copy a source object if needed, and unwrap from the proxy.
-     * 
+     *
      * @param source The object to unwrap.
      * @return The non-proxied bean represented by source, copied if needed. When source is not
      *         copyable, or not proxied, it is returned as-is.
@@ -116,7 +116,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
         if (sourceHandler.copy == null) {
             sourceHandler.copy = CopyUtils.copy(sourceHandler.original);
         }
-        
+
         @SuppressWarnings("unchecked")
         T rv = (T) sourceHandler.copy;
         return unwrap(rv);
@@ -124,7 +124,7 @@ public class DelayedCopyableHandler implements InvocationHandler {
 
     /**
      * Determins if a source object is a delayed copy proxy that hasn't been copied yet.
-     * 
+     *
      * @param source The object to check.
      * @return True if source is a delayed copy proxy instance, and hasn't been copied yet.
      */

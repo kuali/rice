@@ -706,6 +706,21 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         assertEquals("foo3['key.nest.nest']", splitPaths[3]);
         assertEquals("foo4", splitPaths[4]);
     }
+    
+    @Test
+    public void testCanonicalPath() {
+        String path = "foo.foo1.foo2";
+        assertEquals(path, ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo[1]";
+        assertEquals("foo", ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo.foo1['key.nested'].foo2";
+        assertEquals("foo.foo1.foo2", ObjectPropertyUtils.getCanonicalPath(path));
+
+        path = "foo.foo1['key.nested'].foo2.foo3['key.nest.nest'].foo4";
+        assertEquals("foo.foo1.foo2.foo3.foo4", ObjectPropertyUtils.getCanonicalPath(path));
+    }
 
     // Classes used by testGetterInInterfaceOrSuperHasWiderType to check covariant return types on JDK6
 

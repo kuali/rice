@@ -138,12 +138,4 @@ public interface ComponentModifier extends UifDictionaryBean, Serializable, Orde
      */
     public void setOrder(int order);
 
-    /**
-     * Copy the object
-     * @param <T> The type being copied
-     *
-     * @return the copied object
-     */
-    public <T> T copy();
-    
 }

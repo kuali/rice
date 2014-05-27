@@ -339,7 +339,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         }
 
         if (node.getNodeLabel() != null) {
-            nodeCopy.setNodeLabel((Message) node.getNodeLabel().copy());
+            nodeCopy.setNodeLabel((Message) CopyUtils.copy(node.getNodeLabel()));
         }
 
         if (node.getChildren() != null) {

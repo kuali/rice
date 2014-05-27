@@ -708,8 +708,10 @@ function hiddenInputValidationToggle(id) {
             jQuery(":input:hidden", element).each(function () {
                 storeOriginalDisabledProperty(jQuery(this));
                 jQuery(this).addClass("ignoreValid");
-                //disable hidden inputs to prevent from being submitted
-                jQuery(this).prop("disabled", true);
+                //disable hidden inputs to prevent from being submitted unless it is a hidden field
+                if (!jQuery(this).is( "input[type='hidden']")) {
+                    jQuery(this).prop("disabled", true);
+                }
             });
         }
         else {

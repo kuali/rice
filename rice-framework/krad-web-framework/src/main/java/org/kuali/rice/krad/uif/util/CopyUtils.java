@@ -118,7 +118,7 @@ public final class CopyUtils {
             StackTraceElement caller = trace[i];
             cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
                     + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
-            ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000);
+            ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000L, 500L);
         }
 
         return (T) getDeepCopy(obj);
@@ -350,6 +350,10 @@ public final class CopyUtils {
                     source = unwrap(source);
                 }
 
+                if (ViewLifecycle.isTrace()) {
+                    ProcessLogger.ntrace("deep-copy:", ":" + toCopy.getPath(), 10000, 1000);
+                }
+                
                 toCopy.set(copyState.getTarget(source, isDeep(toCopy, source), toCopy));
 
                 if (toCopy != topReference) {
@@ -367,7 +371,7 @@ public final class CopyUtils {
 
     /**
      * Retrieves all field names for the given class that have the given annotation
-     * 
+     *
      * @param clazz class to find field annotations for
      * @param annotationClass class for annotation to find
      * @return map containing the field name that has the annotation as a key and the annotation
@@ -384,7 +388,7 @@ public final class CopyUtils {
 
     /**
      * Determines whether the field of the given class has the given annotation specified
-     * 
+     *
      * @param clazz class containing the field to check
      * @param fieldName name of the field to check
      * @param annotationClass class for the annotation to look for
@@ -397,7 +401,7 @@ public final class CopyUtils {
 
     /**
      * Returns annotation of the given type for the given field (if present)
-     * 
+     *
      * @param clazz class containing the field to check
      * @param propertyName name of the field to check
      * @param annotationClass class for the annotation to look for
@@ -548,6 +552,13 @@ public final class CopyUtils {
         Class<T> getTargetClass();
 
         /**
+         * This method ...
+         * 
+         * @return
+         */
+        String getPath();
+
+        /**
          * Determines whether or not a delayed copy proxy should be considered on this reference.
          * 
          * @return True if a delayed copy proxy may be used with this reference, false to always
@@ -675,6 +686,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return null;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -719,6 +737,7 @@ public final class CopyUtils {
         private Field field;
         private boolean delayAvailable;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
+        private String path;
 
         /**
          * Gets the type of the field.
@@ -792,6 +811,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -800,6 +826,7 @@ public final class CopyUtils {
             target = null;
             field = null;
             delayAvailable = false;
+            path = null;
             typeVariables.clear();
         }
 
@@ -871,7 +898,6 @@ public final class CopyUtils {
                 ref.typeVariables.put(typeParams[i].getName(), paramType);
             }
         }
-
         return ref;
     }
 
@@ -884,6 +910,7 @@ public final class CopyUtils {
         private Object target;
         private int index = -1;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -943,12 +970,20 @@ public final class CopyUtils {
             Array.set(target, index, value);
         }
 
+        /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
         @Override
         public void clean() {
             source = null;
             target = null;
             index = -1;
             delayAvailable = false;
+            path = null;
             typeVariables.clear();
         }
     }
@@ -980,7 +1015,6 @@ public final class CopyUtils {
         ref.index = index;
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
-
         return ref;
     }
 
@@ -995,6 +1029,7 @@ public final class CopyUtils {
         private List<T> target;
         private int index = -1;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -1052,6 +1087,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -1096,6 +1138,12 @@ public final class CopyUtils {
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
 
+        if (pref == null || pref.getPath() == null) {
+            ref.path = "[" + index + ']';
+        } else {
+            ref.path = pref.getPath() + '[' + index + ']';
+        }
+
         return ref;
     }
 
@@ -1109,6 +1157,7 @@ public final class CopyUtils {
         private Map.Entry<Object, T> sourceEntry;
         private Map<Object, T> target;
         private boolean delayAvailable;
+        private String path;
         private Map<String, Type> typeVariables = new HashMap<String, Type>();
 
         /**
@@ -1166,6 +1215,13 @@ public final class CopyUtils {
         }
 
         /**
+         * @return the path
+         */
+        public String getPath() {
+            return this.path;
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -1206,6 +1262,12 @@ public final class CopyUtils {
         ref.type = type;
         ref.delayAvailable = pref.isDelayAvailable();
         ref.typeVariables.putAll(pref.getTypeVariables());
+
+        if (pref == null || pref.getPath() == null) {
+            ref.path = "[" + sourceEntry.getKey() + ']';
+        } else {
+            ref.path = pref.getPath() + '[' + sourceEntry.getKey() + ']';
+        }
 
         return ref;
     }

@@ -1817,7 +1817,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         for (WebElement option : options) {
             if (option.getText().equals(selectText)) {
                 option.click();
-//                break; // seems to be causing a hang?
+                Thread.sleep(500);
+                acceptAlertIfPresent();
+                break;
             }
         }
     }

@@ -143,7 +143,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible would be better
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
         Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible would be better
-        assertElementPresentByName("list1[0].field1");
+        waitForElementPresentByName("list1[0].field1");
         assertTableLayout();
         assertEquals("", waitAndGetAttributeByName("list1[0].field1", "value"));
         assertEquals("", waitAndGetAttributeByName("list1[0].field2", "value"));
@@ -223,10 +223,10 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndClickButtonByText("Add Line");
         Thread.sleep(3000);
-        waitAndTypeByXpath("//form/section/table/tbody/tr/td/div/input", "1");
-        waitAndTypeByXpath("//form/section/table/tbody/tr[2]/td/div/input", "1");
-        waitAndTypeByXpath("//form/section/table/tbody/tr[3]/td/div/input", "1");
-        waitAndTypeByXpath("//form/section/table/tbody/tr[4]/td/div/input", "1");
+        waitAndTypeByXpath("//div[@class='modal-body']/div[2]/div/input", "1");
+        waitAndTypeByXpath("//div[@class='modal-body']/div[4]/div/input", "1");
+        waitAndTypeByXpath("//div[@class='modal-body']/div[6]/div/input", "1");
+        waitAndTypeByXpath("//div[@class='modal-body']/div[8]/div/input", "1");
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
         Thread.sleep(3000);
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());

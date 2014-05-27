@@ -116,7 +116,7 @@
 
   <!-- Default Group Key -->
   <!-- ex:Demo-EnterKeySupport-Example3 start-->
-  <bean id="Demo-EnterKeySupport-Example3" p:headerText="Default Group Key" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 4.[br]Press the enter key to fire button 4.">
+  <bean id="Demo-EnterKeySupport-Example3" p:headerText="Default Group Key" parent="Uif-VerticalBoxSection" p:enterKeyAction="button1" p:instructionalText="enterKeyAction is set to button 1.[br]Press the enter key to fire button 1.">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="inputField1" p:label="Field 1" />

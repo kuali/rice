@@ -487,14 +487,14 @@
 
   <bean id="Lab-LayoutTest-Stacked-Upload-AddBlankLine" parent="Uif-FormView">
     <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+    <property name="headerText" value="Stack Layout Section w/ upload and Add Blank Line"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <bean parent="Uif-StackedCollectionSection">
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-                <property name="headerText" value="Stack Layout Section w/ upload and Add Blank Line"/>
                 <property name="propertyName" value="collection2"/>
                 <property name="layoutManager.summaryTitle" value="Line Summary"/>
                 <property name="layoutManager.summaryFields" value="field1"/>
@@ -612,14 +612,14 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTables" parent="Uif-FormView">
+    <property name="headerText" value="Enter Key Support - Table Layout"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4"
                     p:addLineEnterKeyAction="@DEFAULT" p:lineEnterKeyAction="@{#collectionGroup.id}_del@{#lineSuffix}">
-                <property name="headerText" value="Table Layout Enter Key Support"/>
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
                 <property name="propertyName" value="collection1"/>
                 <property name="layoutManager.generateAutoSequence" value="true"/>
@@ -639,14 +639,14 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTables2" parent="Uif-FormView">
+    <property name="headerText" value="Enter Key Support - Table Layout 2"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4"
                     p:addLineEnterKeyAction="ST-DemoButton01@{#lineSuffix}" p:lineEnterKeyAction="@DEFAULT">
-                <property name="headerText" value="Table Layout Enter Key Support 2"/>
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
                 <property name="propertyName" value="collection1"/>
                 <property name="layoutManager.generateAutoSequence" value="true"/>
@@ -681,14 +681,14 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyStacked" parent="Uif-FormView">
+    <property name="headerText" value="Enter Key Support - Stacked Layout"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <bean parent="Uif-StackedCollectionSection" p:addLineEnterKeyAction="@DEFAULT"
                     p:lineEnterKeyAction="ST-DemoButton21@{#lineSuffix}">
-                <property name="headerText" value="Stack Layout Enter Key Support"/>
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
                 <property name="propertyName" value="collection2"/>
                 <property name="layoutManager.summaryTitle" value="Line Summary"/>
@@ -716,9 +716,10 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTableSepAddLine" parent="Uif-FormView">
+    <property name="headerText" value="Enter Key Support - Tables Add Line Separate"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page" p:instructionalText="Enter values for Field1 and Field2. Press the enter key to submit the Add Line.">
           <property name="items">
             <list>
               <bean parent="Uif-TableCollectionGroup" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT">
@@ -750,9 +751,10 @@
   </bean>
 
   <bean id="Lab-LayoutTest-EnterKeyTableViaLightBox" parent="Uif-FormView">
+    <property name="headerText" value="Enter Key Support - Tables Add Line Via Lightbox"/>
     <property name="items">
       <list>
-        <bean p:headerText="Page Title" parent="Uif-Page">
+        <bean parent="Uif-Page">
           <property name="items">
             <list>
               <bean parent="Uif-TableCollectionGroup" p:layoutManager.numberOfColumns="4" p:addLineEnterKeyAction="@DEFAULT">

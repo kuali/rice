@@ -88,8 +88,6 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
                           <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
                           <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
                           <bean parent="Uif-Link" p:linkText="Stacked Collection Section w/ AddBlankLine and upload" p:target="_self"
@@ -158,6 +156,8 @@
                     <bean parent="Uif-VerticalBoxGroup" p:additionalCssClasses="panel-body">
                       <property name="items">
                         <list>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKey"/>
                           <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTables"/>
                           <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables 2" p:target="_self"

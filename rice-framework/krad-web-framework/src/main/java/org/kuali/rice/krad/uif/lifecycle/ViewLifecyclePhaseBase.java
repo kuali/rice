@@ -97,7 +97,7 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
     protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
             Component parent, ViewLifecyclePhaseBase nextPhase) {
         if (element.getViewStatus().equals(getEndViewStatus())) {
-            ViewLifecycle.reportIllegalState(
+            LOG.warn(
                     "Component is already in the expected end status " + getEndViewStatus() + " before this phase " +
                             element.getClass() + " " + element.getId());
         }

@@ -37,9 +37,11 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.control.Control;
@@ -238,12 +240,26 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             }
         }
 
-        if (this.enableAutoDirectInquiry && (getInquiry() == null) && !isReadOnly()) {
-            buildAutomaticInquiry(model, true);
-        }
+        BindingInfo bindingInfo = getBindingInfo();
+        String bindingPath = bindingInfo == null ? null : bindingInfo.getBindingPath();
+        if (bindingPath != null) {
+            if (this.enableAutoDirectInquiry && getInquiry() == null && isReadOnly()) {
+                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
 
-        if (this.enableAutoQuickfinder && (getQuickfinder() == null)) {
-            buildAutomaticQuickfinder(model);
+                if (propertyValue != null && !(propertyValue instanceof String) &&
+                        KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
+                    setInquiry(ComponentFactory.getInquiry());
+                }
+            }
+            
+            if (this.enableAutoQuickfinder && getQuickfinder() == null) {
+                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+
+                if (propertyValue != null && !(propertyValue instanceof String) &&
+                        KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
+                    setQuickfinder(ComponentFactory.getQuickFinder());
+                }
+            }
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
@@ -410,21 +426,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && !isHidden() && !isReadOnly()) {
             viewPostMetadata.addAccessibleBindingPath(getBindingInfo().getBindingPath());
-        }
-    }
-
-    /**
-     * Creates a new {@link org.kuali.rice.krad.uif.widget.QuickFinder} and then invokes the lifecycle process for
-     * the quickfinder to determine if a relationship was found, if so the quickfinder is assigned to the field
-     *
-     * @param model object containing the view data
-     */
-    protected void buildAutomaticQuickfinder(Object model) {
-        QuickFinder autoQuickfinder = ComponentFactory.getQuickFinder();
-
-        // if render flag is true, that means the quickfinder was able to find a relationship
-        if (autoQuickfinder.isRender()) {
-            this.quickfinder = autoQuickfinder;
         }
     }
 

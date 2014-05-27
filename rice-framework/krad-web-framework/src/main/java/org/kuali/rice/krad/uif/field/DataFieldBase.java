@@ -34,6 +34,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -43,7 +44,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
-import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -156,11 +156,22 @@ public class DataFieldBase extends FieldBase implements DataField {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
-        if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly()) {
-            buildAutomaticInquiry(model, false);
+        if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly() && bindingInfo != null) {
+            String bindingPath = bindingInfo.getBindingPath();
+            Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+
+            if (propertyValue != null && !(propertyValue instanceof String) &&
+                    KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
+                this.inquiry = ComponentFactory.getInquiry();
+            }
+        }
+        
+        if (help != null && StringUtils.isBlank(help.getExternalHelpUrl())
+                && (help.getHelpDefinition() == null || help.getHelpDefinition().getParameterName() == null)) {
+            help = null;
         }
 
-        if (isAddHiddenWhenReadOnly()) {
+       if (isAddHiddenWhenReadOnly()) {
             setReadOnly(true);
             getAdditionalHiddenPropertyNames().add(getPropertyName());
         }
@@ -253,22 +264,6 @@ public class DataFieldBase extends FieldBase implements DataField {
         }
         
         super.initializePendingTasks(phase, pendingTasks);
-    }
-
-    /**
-     * Creates a new {@link org.kuali.rice.krad.uif.widget.Inquiry} and then invokes the lifecycle process for
-     * the inquiry to determine if a relationship was found, if so the inquiry is assigned to the field
-     *
-     * @param model object containing the view data
-     * @param enableDirectInquiry whether direct inquiry should be enabled if an inquiry is found
-     */
-    protected void buildAutomaticInquiry(Object model, boolean enableDirectInquiry) {
-        Inquiry autoInquiry = ComponentFactory.getInquiry();
-
-        // if render flag is true, that means the inquiry was able to find a relationship
-        if (autoInquiry.isRender()) {
-            this.inquiry = autoInquiry;
-        }
     }
 
     /**

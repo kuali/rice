@@ -694,7 +694,7 @@ public class AccountExtension { ...}
         </para>
         </section>
         <section>
-            <title>JPA Metadata Provider</title>
+            <title>Metadata Provider</title>
             <para>
                 To assist with the processing and displaying of information, Kuali Rice comes with a JPA-based
                 metadata provider that extracts information from the JPA annotations and infers information about
@@ -717,6 +717,39 @@ public class AccountExtension { ...}
     p:entityManager-ref="sharedEntityManager" /></programlisting>
                 which uses the EclipseLink reference implementation classes to populate metadata objects.  Only applications
                 that wish to use a different JPA implementation would ever have to override this bean.
+            </para>
+        </section>
+        <section>
+            <title>Custom Providers</title>
+            <para>
+                Implementers can create their own providers for persistence and metadata by implementing certain
+                interfaces.  Any persistence provider should use the
+                <emphasis role="keyword">org.kuali.rice.krad.data.provider.PersistenceProvider</emphasis> interface
+                which requires implementing methods for finding, saving, and deleting data objects.  Singleton metadata
+                providers should use the
+                <emphasis role="keyword">org.kuali.rice.krad.data.provider.MetadataProvider</emphasis> interface which
+                requires implementing methods for retrieving metadata for a certain type.  In addition, the
+                <emphasis role="keyword">org.kuali.rice.krad.data.provider.CompositeMetadataProvider</emphasis>
+                interface defines a container of several singleton metadata providers.  This interface is mainly used in
+                situations where there is custom logic to merge the metadata from multiple providers.  For convenience
+                in creating any metadata provider, KRAD includes the base class
+                <emphasis role="keyword">org.kuali.rice.krad.data.provider.impl.MetadataProviderBase</emphasis>.
+            </para>
+            <para>
+                Providers can be included in the system by declaring them in Spring and then hooking them up via the
+                providers list in the module, in the same way as normally done with the default persistence or metadata
+                providers.
+                <programlisting>&lt;property name="providers">
+    &lt;list>
+        &lt;ref bean="jpaPersistenceProvider"/>
+        &lt;ref bean="customPersistenceProvider"/>
+        &lt;ref bean="metadataProvider"/>
+        &lt;ref bean="customMetadataProvider"/>
+    &lt;/list>
+&lt;/property></programlisting>
+              Each kind of provider defines methods to determine whether it can provide data for any given type, so the
+              registry will search each provider in the list in the module and return the first provider that handles
+              the given type.
             </para>
         </section>
         <section>

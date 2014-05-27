@@ -69,13 +69,10 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
     protected void testPageHelp() throws Exception {
         // test tooltip help
         fireMouseOverEventByXpath("//a/span[@class='uif-headerText-span']");
-        waitForTextPresent("Sample text for section help - tooltip help");
+        waitForElementPresent("//div[@class='popover top in']");
 
         // test external help
-        waitAndClickByXpath(HELP_FOR_CONFIGURATION_TEST_VIEW_XPATH);
-        Thread.sleep(5000);
-        switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);
+        switchToWindow("Kuali Portal Index");
         switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 
@@ -199,13 +196,10 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         // test tooltip help
         fireEvent("field102", "blur");
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
-        waitForTextPresent("Sample text for field help - label left");
+        waitForElementPresent("//div[@class='popover top in']");
 
         // test external help
-        waitAndClickByXpath(HELP_FOR_CONFIGURATION_TEST_VIEW_XPATH);
-        Thread.sleep(5000);
-        switchToWindow("Kuali Foundation");
-        Thread.sleep(5000);
+        switchToWindow("Kuali Portal Index");
         switchToWindow(CONFIGURATION_VIEW_WINDOW_TITLE);
     }
 }

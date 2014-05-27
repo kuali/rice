@@ -43,15 +43,15 @@ public class DemoClientResponsivenessEventsAft extends WebDriverLegacyITBase {
 
     protected void testClientResponsivenessEventsClick() throws Exception {
     	waitAndClickByName("inputField1");
-    	acceptAlertIfPresent();
-    	waitAndClickByName("inputField2");
-    	acceptAlertIfPresent();
+        acceptAlert();
+        waitAndClickByName("inputField2");
+        acceptAlert();
     	waitAndClickByXpath("//input[@name='inputField3' and @value='blue']");
     	waitForElementPresentByXpath("//div[@style='border: 1px solid rgb(153, 153, 153); width: auto; background-color: rgb(0, 0, 255);']");
     	waitAndClickByName("inputField4");
-    	acceptAlertIfPresent();
+        acceptAlert();
     	waitAndClickByXpath("//input[@name='inputField5' and @value='1']");
-    	acceptAlertIfPresent();
+        acceptAlert();
     }
     
     protected void testClientResponsivenessEventsChangeFocusBlur() throws Exception {
@@ -82,7 +82,7 @@ public class DemoClientResponsivenessEventsAft extends WebDriverLegacyITBase {
     protected void testClientResponsivenessEventsOnKeyPressUpDown() throws Exception {
     	waitAndClickByLinkText("OnKeyPress, OnKeyUp, OnKeyDown Examples");
     	waitAndTypeByName("inputField13","a");
-    	acceptAlertIfPresent();
+        acceptAlert();
     }
 
     

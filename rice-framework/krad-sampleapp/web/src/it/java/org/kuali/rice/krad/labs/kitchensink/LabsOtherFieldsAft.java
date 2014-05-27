@@ -78,7 +78,7 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter1_syntaxHighlightCopy']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter2']/div[@class='uif-syntaxHighlighter']");
     	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter2_syntaxHighlightCopy']");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter3']/div[@class='uif-syntaxHighlighter']");
     	if(isElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter3_syntaxHighlightCopy']")) {
     		fail("Copy is allowed.");
@@ -121,11 +121,11 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_self']");
     	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_blank']");
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField4']");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField5']");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField6']");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     	
     	//Miscellaneous Fields and Groups
     	waitForElementPresentByXpath("//ul[@id='UifCompView-Accordion1_accordList']/li/a");

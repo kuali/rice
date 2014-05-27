@@ -754,7 +754,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
-        acceptAlertIfPresent();
         WebElement tbody = waitAndGetElementByAttributeValue("role", "alert"); // results table body
         List<WebElement> checkboxes = findElements(By.className("uif-checkboxControl"),tbody);
         for (WebElement checkbox: checkboxes) {
@@ -3121,12 +3120,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void testMultiValueSelectAllPages() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
-        acceptAlertIfPresent();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all, all checkboxes should be checked and return button enabled
         waitAndClickDropDown("select all items");
-        acceptAlertIfPresent();
         if (!areAllMultiValueSelectsChecked()) {
             JiraAwareFailureUtils.fail("select all items failure", this);
         }
@@ -3163,13 +3160,19 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
     }
 
+    protected void acceptAlert() {
+        if (!WebDriverUtils.isAlertPresent(driver)) {
+            fail("Alert expected but not present for " + this.getClass().getName());
+        }
+        WebDriverUtils.alertAccept(driver);
+    }
+
     protected void acceptAlertIfPresent() {
         WebDriverUtils.acceptAlertIfPresent(driver);
     }
 
     protected void testMultiValueSelectAllThisPage() throws InterruptedException {
         waitAndClickButtonByText(SEARCH);
-        acceptAlertIfPresent();
         assertButtonDisabledByText(RETURN_SELECTED_BUTTON_TEXT);
 
         // select all on this page, all checkboxes should be checked and return button enabled

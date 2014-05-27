@@ -43,7 +43,7 @@ public class LabsEnterKeySupportTables2Aft extends WebDriverLegacyITBase {
     	waitAndTypeByXpath("//table/tbody/tr/td[3]/div/input","1");
     	pressEnterByXpath("//table/tbody/tr/td[3]/div/input");
     	pressEnterByXpath("//table/tbody/tr[2]/td[3]/div/input");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     }
 
     @Test

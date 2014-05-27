@@ -39,7 +39,7 @@ public class LabsMaintenanceAddingExternalJavaScriptFileAft extends LabsMaintena
 
     protected void testMaintenanceAddingExternalJavaScriptFile() throws InterruptedException {
     	waitAndClickByLinkText("Travel Account Maintenance Sample - Inclusion of external JavaScript");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     }
 
     @Test

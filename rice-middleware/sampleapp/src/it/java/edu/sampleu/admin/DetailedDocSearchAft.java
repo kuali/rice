@@ -81,7 +81,6 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
         waitAndTypeByName("documentTypeName","ParameterMaintenanceDocument");
         waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
         waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
-        acceptAlertIfPresent();
         waitForTextPresent("Parameter Maintenance Document");
         waitAndClickByName("methodToCall.clearValues");
     }

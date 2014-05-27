@@ -47,7 +47,6 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
 
         waitAndTypeByName("lookupCriteria[number]", "a1");
         waitAndClickSearchByText();
-        acceptAlertIfPresent();
         assertButtonDisabledByText("return selected");
 
         jGrowl("Check Travel Account 1 checkbox");

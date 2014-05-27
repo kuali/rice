@@ -237,7 +237,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testColumnSequence() throws Exception {
         waitAndClickByLinkText("Column Sequence");
-        acceptAlertIfPresent();
+        acceptAlert();
         Thread.sleep(3000);
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
@@ -255,7 +255,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testSequencerow() throws Exception {
         waitAndClickByLinkText("Save Row");
-        acceptAlertIfPresent();
+        acceptAlert();
         Thread.sleep(3000);
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");

@@ -41,19 +41,19 @@ public class LabsEnterKeySupportAft extends WebDriverLegacyITBase {
     protected void testDemoEnterKeySupport() throws InterruptedException {
     	waitAndTypeByName("inputField12","");
     	pressEnterByName("inputField12");
-    	acceptAlertIfPresent();
+    	acceptAlert();
     	waitAndTypeByName("inputField14","");
     	pressEnterByName("inputField14");
-    	acceptAlertIfPresent();
+        acceptAlert();
     	waitAndTypeByName("inputField16","");
     	pressEnterByName("inputField16");
-    	acceptAlertIfPresent();
+        acceptAlert();
     	waitAndTypeByName("inputField18","");
     	pressEnterByName("inputField18");
-    	acceptAlertIfPresent();
+        acceptAlert();
     	waitAndTypeByName("inputField20","");
     	pressEnterByName("inputField20");
-    	acceptAlertIfPresent();
+        acceptAlert();
     }
 
     @Test

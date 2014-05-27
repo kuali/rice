@@ -48,7 +48,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
                 "Action with action script"));
         assertElementPresentByLinkText("Action Link");
         waitAndClickByLinkText("Action Link");
-        acceptAlertIfPresent();
+        acceptAlert();
     }
 
     protected void testActionPresubmit() throws Exception {
@@ -105,9 +105,9 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         findElement(By.partialLinkText("Action Link with left image")).findElement(By.className("leftActionImage"));
         findElement(By.partialLinkText("Action Link with right image")).findElement(By.className("rightActionImage"));
         waitAndClickByLinkText("Action Link with left image");
-        acceptAlertIfPresent();
+        acceptAlert();
         waitAndClickByLinkText("Action Link with right image");
-        acceptAlertIfPresent();
+        acceptAlert();
     }
 
     protected void testActionButton() throws Exception {

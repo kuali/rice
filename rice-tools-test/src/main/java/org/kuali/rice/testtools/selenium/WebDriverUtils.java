@@ -379,6 +379,7 @@ public class WebDriverUtils {
      */
     public static void alertAccept(WebDriver driver) {
         Alert alert = driver.switchTo().alert();
+        jGrowl(driver, "AFT Step", false, "AFT Step: Accept Alert " + WebDriverUtils.alertText(driver));
         alert.accept();
     }
 
@@ -391,6 +392,7 @@ public class WebDriverUtils {
      */
     public static void alertDismiss(WebDriver driver) {
         Alert alert = driver.switchTo().alert();
+        jGrowl(driver, "AFT Step", false, "AFT Step: Dismiss Alert " + WebDriverUtils.alertText(driver));
         alert.dismiss();
     }
 

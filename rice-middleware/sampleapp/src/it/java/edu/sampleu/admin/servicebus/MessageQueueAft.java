@@ -48,7 +48,7 @@ public class MessageQueueAft extends WebDriverLegacyITBase {
         String [] assertText={"Message ID:","Service Name:","Application ID:","IP Number:","Queue Status:","App Specific Value 1:","App Specific Value 2:"};
         assertTextPresent(assertText);
         waitAndClickByXpath("//input[@value='Execute Message Fetcher']");
-        acceptAlertIfPresent();
+        acceptAlert();
         waitForTextPresent("Documents currently in route queue:");
     }
     

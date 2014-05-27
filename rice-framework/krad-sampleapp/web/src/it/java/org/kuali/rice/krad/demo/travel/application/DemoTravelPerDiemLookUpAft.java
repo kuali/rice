@@ -55,6 +55,7 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     	selectByName("lookupCriteria[travelDestinationId]","Colorado");
     	waitAndClickByXpath("//div[@data-label='Primary Destination']/div/div/button[@class='btn btn-default uif-action icon-search']");
     	waitSearchAndReturnFromLightbox();
+        assertEquals("lookupCriteria[travelAuthorizationDocumentId] value not 1 as set before Lightbox search", "1", waitAndGetAttributeByName("lookupCriteria[travelAuthorizationDocumentId]", "value"));
     	waitAndClickByXpath("//div[@data-label='Mileage Rate']/div/div/button[@class='btn btn-default uif-action icon-search']");
     	waitSearchAndReturnFromLightbox();
     	waitAndClickButtonByText(SEARCH);
@@ -63,8 +64,8 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     	waitAndClickButtonByText(CLEAR_VALUES);
     	waitAndTypeByName("lookupCriteria[travelPerDiemExpenseId]","10000");
     	waitAndClickButtonByText(SEARCH);
-    	String activeResults [] ={"10000","10000","10000","10","10","15","20","DO","30"};
-    	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
+        // Last data first so data is fully loaded
+    	String activeResults [] ={"30","10000","10000","10000","10","10","15","20","DO"};
     	assertTextPresent(activeResults);
     }
 
@@ -84,5 +85,6 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     	gotoLightBox();
     	waitAndClickButtonByText("Search");
     	waitAndClickByLinkText("return value");
+        acceptAlertIfPresent();
     }
 }

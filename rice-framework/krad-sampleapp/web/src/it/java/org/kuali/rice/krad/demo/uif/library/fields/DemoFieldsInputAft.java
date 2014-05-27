@@ -299,18 +299,18 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
     }
     
     protected void testInputFieldExamples() throws Exception {
-//        testInputFieldDefault();
-//        testInputFieldAltControl();
-//        testInputFieldInstructionalText();
-//        testInputFieldConstraintText();
-////        testInputFieldLabelTop(); // removed from example
-////        testInputFieldLabelRight(); // removed from example
-//        testInputFieldQuickfinder();
-//        testInputFieldWidgetInputOnlyWithQuickFinder();
-//        testInputFieldUppercase();
-//        testInputFieldDisableNativeAutocomplete();
-//        testInputFieldInputAddons();
-//        testInputFieldRequired();
+        testInputFieldDefault();
+        testInputFieldAltControl();
+        testInputFieldInstructionalText();
+        testInputFieldConstraintText();
+//        testInputFieldLabelTop(); // removed from example
+//        testInputFieldLabelRight(); // removed from example
+        testInputFieldQuickfinder();
+        testInputFieldWidgetInputOnlyWithQuickFinder();
+        testInputFieldUppercase();
+        testInputFieldDisableNativeAutocomplete();
+        testInputFieldInputAddons();
+        testInputFieldRequired();
         testInputFieldInquiry();
     }
 

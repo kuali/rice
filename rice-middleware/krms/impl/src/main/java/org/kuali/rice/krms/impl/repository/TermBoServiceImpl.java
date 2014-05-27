@@ -239,12 +239,6 @@ public class TermBoServiceImpl implements TermBoService {
         // copy all updateable fields to bo
         TermBo boToUpdate = TermBo.from(toUpdate);
 
-        // delete any old, existing parameters
-
-        QueryByCriteria crit =
-                QueryByCriteria.Builder.forAttribute("term.id", toUpdate.getId()).build();
-        dataObjectService.deleteMatching(TermParameterBo.class, crit);
-
         // update the rule and create new attributes
         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }

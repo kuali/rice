@@ -34,9 +34,12 @@ import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @BaselineMode(Mode.CLEAR_DB)
 public class TermRelatedBoTest extends AbstractBoTest {
@@ -102,27 +105,17 @@ public class TermRelatedBoTest extends AbstractBoTest {
     }
 
     /**
-     * Verify that Terms can be updated by the TermBoServiceImpl
+     * Verify that Terms can be updated (including modification of an existing TermParameter) by the TermBoServiceImpl
      */
     @Test
-    public void updateTermTest() {
+    public void updateTermChangeParameterTest() {
+        TermDefinition termDefinition = createTermForUpdate();
 
-        ContextDefinition contextDefinition = createContext();
-
-        // TermSpec -- we need one to create a term
-        TermSpecificationDefinition termSpec =
-                TermSpecificationDefinition.Builder.create(null, "TermUpdateTestTermSpec", contextDefinition.getId(),
-                        "java.lang.String").build();
-        termSpec = termBoService.createTermSpecification(termSpec);
-
-        // Term -- create the term that we'll update
-        TermDefinition termDefinition =
-                TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), null).build();
-        termDefinition = termBoService.createTerm(termDefinition);
-
-        // Change a field so that we can verify the update occurred
+        // Change some things so that we can verify the updates occurred
         TermDefinition.Builder updateTermBuilder = TermDefinition.Builder.create(termDefinition);
         updateTermBuilder.setDescription("updated description");
+        assertTrue(updateTermBuilder.getParameters().size() == 1);
+        updateTermBuilder.getParameters().get(0).setValue("updatedParamValue");
 
         termBoService.updateTerm(updateTermBuilder.build());
 
@@ -131,6 +124,39 @@ public class TermRelatedBoTest extends AbstractBoTest {
 
         assertFalse("descriptions should not be equal after update",
                 updatedTerm.getDescription().equals(termDefinition.getDescription()));
+
+        assertTrue(updatedTerm.getParameters().size() == 1);
+
+        TermParameterDefinition updatedParam = updatedTerm.getParameters().get(0);
+        assertTrue(updatedParam.getValue().equals("updatedParamValue"));
+    }
+
+    /**
+     * Verify that Terms can be updated (including replacement of a TermParameter) by the TermBoServiceImpl
+     */
+    @Test
+    public void updateTermReplaceParameterTest() {
+        TermDefinition termDefinition = createTermForUpdate();
+
+        // Change some things so that we can verify the updates occurred
+        TermDefinition.Builder updateTermBuilder = TermDefinition.Builder.create(termDefinition);
+        updateTermBuilder.setDescription("updated description");
+        assertTrue(updateTermBuilder.getParameters().size() == 1);
+        updateTermBuilder.getParameters().clear();
+        updateTermBuilder.getParameters().add(TermParameterDefinition.Builder.create(null, termDefinition.getId(), "secondParamName", "secondParamValue"));
+
+        termBoService.updateTerm(updateTermBuilder.build());
+
+        // check that the update stuck
+        TermDefinition updatedTerm = termBoService.getTerm(termDefinition.getId());
+
+        assertFalse("descriptions should not be equal after update",
+                updatedTerm.getDescription().equals(termDefinition.getDescription()));
+
+        assertTrue(updatedTerm.getParameters().size() == 1);
+
+        TermParameterDefinition secondParam = updatedTerm.getParameters().get(0);
+        assertTrue(secondParam.getValue().equals("secondParamValue"));
     }
 
     private ContextDefinition createContext() {
@@ -146,6 +172,24 @@ public class TermRelatedBoTest extends AbstractBoTest {
         contextDefinition = contextRepository.createContext(contextDefinition);
 
         return contextDefinition;
+    }
+
+    private TermDefinition createTermForUpdate() {
+        ContextDefinition contextDefinition = createContext();
+
+        // TermSpec -- we need one to create a term
+        TermSpecificationDefinition termSpec =
+                TermSpecificationDefinition.Builder.create(null, "TermUpdateTestTermSpec", contextDefinition.getId(),
+                        "java.lang.String").build();
+        termSpec = termBoService.createTermSpecification(termSpec);
+
+        // Term -- create the term that we'll update
+        List<TermParameterDefinition.Builder> paramBuilders =
+                Arrays.asList(TermParameterDefinition.Builder.create(null, null, "paramName", "paramValue"));
+        TermDefinition termDefinition =
+                TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(termSpec), paramBuilders).build();
+        termDefinition = termBoService.createTerm(termDefinition);
+        return termDefinition;
     }
 
     private KrmsTypeDefinition createTermResolverType() {

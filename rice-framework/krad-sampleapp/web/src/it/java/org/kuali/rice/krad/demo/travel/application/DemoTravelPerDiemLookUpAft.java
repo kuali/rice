@@ -85,6 +85,5 @@ public class DemoTravelPerDiemLookUpAft extends WebDriverLegacyITBase {
     	gotoLightBox();
     	waitAndClickButtonByText("Search");
     	waitAndClickByLinkText("return value");
-        acceptAlertIfPresent();
     }
 }

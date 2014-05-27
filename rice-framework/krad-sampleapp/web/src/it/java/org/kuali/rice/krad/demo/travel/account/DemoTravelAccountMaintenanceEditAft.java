@@ -103,7 +103,6 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         gotoLightBox();
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
-        acceptAlertIfPresent();
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();

@@ -149,7 +149,6 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     	gotoLightBox();
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText(RETURN_VALUE);
-        acceptAlertIfPresent();
     }
     
     @Test

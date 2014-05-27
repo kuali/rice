@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.Keys;
 
 /**
  * <p>
@@ -4303,6 +4302,16 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitForTitleToEqualKualiPortalIndex() throws InterruptedException {
         waitForTitleToEqualKualiPortalIndex(this.getClass().toString());
+    }
+
+    protected void waitForToolTipTextPresent(String tooltipText) throws InterruptedException {
+        assertEquals("ToolTip text not as expected", tooltipText, waitForToolTipPresent().getText());
+    }
+
+    protected WebElement waitForToolTipPresent() throws InterruptedException {
+        WebElement tooltip =  waitForElementPresent("[class='popover top in']");
+        jGrowl("ToolTip " + tooltip.getText());
+        return tooltip;
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {

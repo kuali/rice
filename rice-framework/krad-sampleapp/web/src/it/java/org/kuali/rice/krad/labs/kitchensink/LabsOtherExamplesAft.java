@@ -63,16 +63,16 @@ public class LabsOtherExamplesAft extends LabsKitchenSinkBase {
     	
     	//Tooltip examples
     	fireEvent("field1","focus");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     	fireMouseOverEventByName("field2");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     	fireMouseOverEventByName("field119");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     	fireMouseOverEventByName("field120");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     	
     	//Collection with tooltips
     	fireMouseOverEventByXpath("//div[@id='TableCollection1-Hover1_line1']");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     }
 }

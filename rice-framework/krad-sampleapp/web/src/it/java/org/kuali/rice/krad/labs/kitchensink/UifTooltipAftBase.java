@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
@@ -50,7 +49,7 @@ public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
         fireEvent(nameField1, "focus");
         fireMouseOverEventByName(nameField1);
 
-        String tooltipContents = getText(By.cssSelector("[class='popover top in']"));
+        String tooltipContents = waitForToolTipPresent().getText();
         assertEquals("This tooltip is triggered by focus or and mouse over.", tooltipContents);
         fireEvent(nameField1, "blur");
 

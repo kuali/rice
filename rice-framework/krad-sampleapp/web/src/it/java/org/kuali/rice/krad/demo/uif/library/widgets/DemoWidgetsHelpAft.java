@@ -18,7 +18,6 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,13 +41,13 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
 
     protected void testWidgetsTooltipHelp() throws Exception {
         fireMouseOverEvent(By.id("Demo-Help-Field1_label"));
-        waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     }
     
     protected void testMissingTooltipHelp() throws Exception {
        selectByName("exampleShown","Missing Tooltip Help");
        fireEvent("dataField1", "focus");
-       waitForElementPresentByXpath("//div[@class='popover top in']");
+        waitForToolTipPresent();
     }
     
     protected void testExternalHelp() throws Exception {

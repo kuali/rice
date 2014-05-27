@@ -271,7 +271,7 @@
     <property name="viewName" value="LabsLookup-PerDiemExpenseDisabledWildcardsView"/>
     <property name="headerText" value="Lookup Sample showing validation preventing Negative search terms and Wildcard usage"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
-    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.demo.uif.lookup.LookupableTravelImpl"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krad.demo.uif.lookup.TravelLookupableImpl"/>
     <property name="criteriaFields">
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="travelPerDiemExpenseId"  p:disableWildcardsAndOperators="true"

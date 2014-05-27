@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LookupableTravelImpl extends LookupableImpl {
+public class TravelLookupableImpl extends LookupableImpl {
 
     /**
      * Add additional validation to check that numeric values are positive

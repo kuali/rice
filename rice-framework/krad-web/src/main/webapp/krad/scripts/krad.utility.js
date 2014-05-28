@@ -642,14 +642,12 @@ function getAttributeId(elementId) {
  * of focus
  *
  * @param setFocus - boolean that indicates whether focus should be set, if false just the jump will be performed
- * @param autoFocus - boolean that indicates where focus to top should happen if focus to not set
  * @param autoJump - boolean that indicates where jump to top should happen if jump to not set
  * @param focusId - id of the dom element to focus on
  * @param jumpToId - id of the dom element to jump to
  * @param jumpToName - name of the dom element to jump to
  */
-function performFocusAndJumpTo(setFocus, autoFocus, autoJump, focusId, jumpToId, jumpToName) {
-    gAutoFocus = autoFocus && setFocus;
+function performFocusAndJumpTo(setFocus, autoJump, focusId, jumpToId, jumpToName) {
     if (setFocus) {
         performFocus(focusId);
     }
@@ -687,11 +685,20 @@ function performJumpTo(jumpToId, jumpToName) {
  * @param autoFocus - boolean that indicates where focus to top should happen if focus to not set
  */
 function performFocus(focusId) {
+
+    // Check to see if there are errors on the view. If error messages present use the first link of
+    // validation messages as the focusId
+    var errorMessageItem = jQuery(".uif-errorMessageItem").first().find("a");
+    if(errorMessageItem.length > 0) {
+        errorMessageItem.focus();
+        return;
+    }
+
     if (!focusId) {
         return;
     }
 
-    if (focusId == "FIRST" && gAutoFocus) {
+    if (focusId == "FIRST") {
         var id = jQuery("div[data-role='InputField']:first [data-role='Control']:input:first", "#kualiForm").attr("id");
         focus(id);
         return;

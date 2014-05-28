@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.element.PageBreadcrumbOptions;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * A PageGroup represents a page of a View.
@@ -96,6 +97,25 @@ public class PageGroupBase extends GroupBase implements PageGroup {
         }
 
         super.performFinalize(model, parent);
+
+        UifFormBase formBase = (UifFormBase) model;
+
+        // If AutoFocus then set the focus_id to FIRST field, unless focus_id is also specified
+        if (isAutoFocus() && formBase.getFocusId() != null) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.FOCUS_ID, formBase.getFocusId());
+        } else if(isAutoFocus () ) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.FOCUS_ID, UifConstants.Order.FIRST.name());
+        }
+
+        // Add jumpToId as a data attribute
+        if (formBase.getJumpToId() != null) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_ID,formBase.getJumpToId());
+        }
+
+        // Add jumpToName as a data attribute
+        if (formBase.getJumpToName() != null) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_NAME,formBase.getJumpToName());
+        }
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);
 

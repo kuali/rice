@@ -86,14 +86,6 @@
         </#if>
     </@krad.form>
 
-    <#-- set focus and perform jump to -->
-    <#if KualiForm.view.currentPage?has_content>
-        <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
-                    performFocusAndJumpTo(${KualiForm.view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
-                        '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
-                });" component=KualiForm.view.currentPage/>
-    </#if>
-
     <!-- APPLICATION FOOTER -->
     <#if view.applicationFooter?? && view.applicationFooter.render>
         <#assign stickyFooterDataAttribute=""/>

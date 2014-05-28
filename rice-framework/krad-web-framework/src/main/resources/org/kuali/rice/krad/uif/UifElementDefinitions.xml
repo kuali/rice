@@ -256,7 +256,7 @@
     <entry key="onClick" value="actionInvokeHandler(this);"/>
     <entry key="submit_data" value="{}"/>
     <entry key="focusId" value="SELF"/>
-    <entry key="jumpToId" value="SELF"/>
+    <!--<entry key="jumpToId" value="SELF"/>-->
   </util:map>
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>

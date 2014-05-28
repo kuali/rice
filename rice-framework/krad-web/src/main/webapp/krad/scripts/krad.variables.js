@@ -114,6 +114,7 @@ JavascriptKradVariables.prototype = {
         ADD_LINE_INPUT_FIELD: "_add_control"
     },
     JUMP_TO_ID: "jumptoid",
+    JUMP_TO_NAME: "jumptoname",
     PAGE_ID: "pageId",
     PORTAL_IFRAME_ID: "iframeportlet",
     INCIDENT_REPORT_VIEW_CLASS: "Uif-IncidentReportView",

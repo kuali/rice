@@ -16,8 +16,32 @@
 
 -->
 <html>
-    <#-- now render the updated component (or page) wrapped in an update div -->
-    <div id="page_update">
+    <#-- set the focusId data attribute if set on the form -->
+    <#if KualiForm.focusId?has_content>
+        <#assign focusIdDataAttribute="data-focusId='${KualiForm.focusId}'"/>
+    <#else>
+        <#if KualiForm.view.currentPage.autoFocus>
+            <#assign focusIdDataAttribute="data-focusId='FIRST'"/>
+        <#else>
+            <#assign focusIdDataAttribute=""/>
+        </#if>
+    </#if>
+
+    <#-- set the jumpToId data attribute if set on the form -->
+    <#if KualiForm.jumpToId?has_content>
+        <#assign jumpToIdDataAttribute="data-jumpToId='${KualiForm.jumpToId}'"/>
+    <#else>
+        <#assign jumpToIdDataAttribute=""/>
+    </#if>
+
+    <#-- set the jumpToName data attribute if set on the form -->
+    <#if KualiForm.jumpToName?has_content>
+        <#assign jumpToNameDataAttribute="data-jumpToName='${KualiForm.jumpToName}'"/>
+    <#else>
+        <#assign jumpToNameDataAttribute=""/>
+    </#if>
+    <#-- now render the updated component (or page) wrapped in an update div. Add the data attributes as part of the div -->
+    <div id="page_update" ${focusIdDataAttribute} ${jumpToIdDataAttribute} ${jumpToNameDataAttribute}>
         <#list view.viewTemplates as viewTemplate>
             <#include "${viewTemplate}" parse=true/>
         </#list>
@@ -29,12 +53,5 @@
 
         <#-- show added growls -->
         <@krad.script value="${KualiForm.growlScript!}" component=KualiForm.updateComponent/>
-
-        <#-- set focus and perform jump to -->
-        <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
-                performFocusAndJumpTo(${view.currentPage.autoFocus?string}, true, true, '${KualiForm.focusId!}',
-                    '${KualiForm.jumpToId!}', '${KualiForm.jumpToName!}');
-                dirtyFormState.setDirty(${KualiForm.dirtyForm?string});
-             });" component=KualiForm.updateComponent/>
     </div>
 </html>

@@ -164,10 +164,8 @@ jQuery(document).ready(function () {
 
     hideEmptyCells();
 
-    // focus on first field
     jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function () {
         initialViewLoad = false;
-        performFocus("FIRST");
     });
 
     time(false, "viewSetup-phase-2");
@@ -784,8 +782,10 @@ function setupPage(validate) {
     updateRequestUrl(pageId);
 
     prevPageMessageTotal = 0;
+
+    var page = jQuery("[data-role='Page']");
     // skip input field iteration and validation message writing, if no server messages
-    var hasServerMessagesData = jQuery("[data-role='Page']").data(kradVariables.SERVER_MESSAGES);
+    var hasServerMessagesData = page.data(kradVariables.SERVER_MESSAGES);
     if (hasServerMessagesData) {
         pageValidationPhase = true;
         // Handle messages at field, if any
@@ -799,7 +799,7 @@ function setupPage(validate) {
         messageSummariesShown = true;
         pageValidationPhase = false;
     }
-
+     //TODO: Looks like this class is not being used anywhere  - Remove?
     // focus on pageValidation header if there are messages on this page
     if (jQuery(".uif-pageValidationHeader").length) {
         jQuery(".uif-pageValidationHeader").focus();
@@ -818,6 +818,15 @@ function setupPage(validate) {
     jQuery(document).trigger(kradVariables.PAGE_LOAD_EVENT);
 
     jQuery.watermark.showAll();
+
+    // If no focusId is specified through data attribute, default to FIRST input on the page
+    var focusId = page.data(kradVariables.FOCUS_ID);
+    if(!focusId) {
+        focusId = "FIRST";
+    }
+
+    //Perform focus and jumpTo based on the data attributes
+    performFocusAndJumpTo(true, true, focusId , page.data(kradVariables.JUMP_TO_ID), page.data(kradVariables.JUMP_TO_NAME) );
 
     time(false, "page-setup");
 }

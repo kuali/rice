@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- Focus and JumpTo demo -->
+  <bean id="Demo-FocusNJumpToView" parent="ComponentLibraryView" p:componentName="Focus And JumpTo">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoFocusNJumpTo.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-FocusNJumpTo-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-FocusNJumpTo-Example1" parent="Uif-VerticalBoxSection" p:headerText="Focus and JumpTo">
+    <property name="items">
+      <!-- ex:Demo-FocusNJumpTo-Example1 start-->
+      <list>
+        <bean parent="Uif-Link" p:linkText="Focus Field 2"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FocusNJumpToView&amp;methodToCall=start&amp;focusId=input2_control"
+              p:target="_blank"/>
+
+        <bean id="input1" parent="Uif-InputField" p:label="Field 1"
+              p:propertyName="inputField1"/>
+        <bean id="input2" parent="Uif-InputField" p:label="Field 2"
+              p:propertyName="inputField2"/>
+        <bean id="input3" parent="Uif-InputField" p:label="Field 3"
+              p:propertyName="inputField3"/>
+        <bean id="input4" parent="Uif-InputField" p:label="Field 4"
+              p:propertyName="inputField4"/>
+        <bean id="input5" parent="Uif-InputField" p:label="Field 5"
+              p:propertyName="inputField5"/>
+        <bean id="input6" parent="Uif-InputField" p:label="Field 6"
+              p:propertyName="inputField6"/>
+
+        <bean id="fieldGroup7-8" parent="GenericHorizontalFieldGroup"
+              p:group.InstructionalText="Hover on the action button for tool tip">
+          <property name="items">
+            <list>
+              <bean id="input7" parent="Uif-InputField" p:label="Field 7"
+                    p:propertyName="inputField7"/>
+              <bean id="input8" parent="Uif-InputField" p:label="Field 8"
+                    p:propertyName="inputField8"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="GenericHorizontalFieldGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="refreshProgGroup" p:actionLabel="Refresh Group"
+                    p:refreshId="fieldGroup7-8" p:focusOnIdAfterSubmit="input7_control">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip"
+                        p:tooltipContent="Click to refresh the field group and set focus on Field 7"/>
+                </property>
+              </bean>
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
+                    p:focusOnIdAfterSubmit="input5_control">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip" p:tooltipContent="Click to submit the page and set focus on Field5"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="refreshWithServerMessages"
+                    p:actionLabel="Refresh Field but with Server Errors"
+                    p:refreshPropertyName="inputField4" p:focusOnIdAfterSubmit="input5_control">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip" p:tooltipContent="Click refresh the page with server errors.Focus is set on the first validation summary
+                  link even though the focusOnIdAfterSubmit property is specified"/>
+                </property>
+              </bean>
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="Refresh Page"
+                    p:focusOnIdAfterSubmit="input8_control">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip" p:tooltipContent="Click to refresh the page and set focus on Field8"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+      <!-- ex:Demo-FocusNJumpTo-Example1 end-->
+    </property>
+  </bean>
+
+</beans>

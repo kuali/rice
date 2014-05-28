@@ -664,6 +664,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeaderView"/>
         <bean parent="Uif-Link" p:linkText="Unified View Header"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeaderView"/>
+        <bean parent="Uif-Link" p:linkText="Focus And JumpTo"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FocusNJumpToView"/>
       </list>
     </property>
   </bean>

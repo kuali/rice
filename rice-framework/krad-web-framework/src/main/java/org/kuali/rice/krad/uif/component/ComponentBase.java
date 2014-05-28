@@ -285,7 +285,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
-        if (UifConstants.ViewPhases.APPLY_MODEL.equals(phase.getViewPhase())) {
+        if (!UifConstants.ViewPhases.PRE_PROCESS.equals(phase.getViewPhase())) {
             ViewIndex viewIndex = ViewLifecycle.getView().getViewIndex();
             if (viewIndex != null) {
                 viewIndex.indexComponent(this);

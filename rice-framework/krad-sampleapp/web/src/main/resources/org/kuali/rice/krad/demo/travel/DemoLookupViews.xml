@@ -305,6 +305,9 @@
     <property name="viewName" value="LookupAdvancedFeaturesSampleView"/>
     <property name="headerText" value="Lookup Advanced Features Sample"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+    <property name ="page.header">
+      <bean parent="Uif-PageHeader" p:style="position: relative; min-height: 55px;"/>
+    </property>
     <property name="page.header.rightGroup">
       <bean parent="Uif-HeaderRightGroup" p:layoutManager.orientation="VERTICAL">
         <property name="items">
@@ -329,16 +332,26 @@
       <list>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="Uif-LookupCriteriaInputField" p:propertyName="accountTypeCode"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" p:progressiveRender="@{#dp.lookupCriteria[accountTypeCode] ne null}"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" p:progressiveRender="@{#dp.lookupCriteria[accountTypeCode] eq 'EAT'}"/>
       </list>
     </property>
     <!-- content of the details group, all propertyName paths are relative to the collection path -->
+    <property name="resultsGroup.layoutManager.showToggleAllDetails" value="true"/>
+    <!--<property name="resultsGroup.layoutManager.toggleAllDetailsAction">-->
+      <!--<bean parent="Uif-ToggleRowDetailsAction">-->
+        <!--<property name="dataAttributes">-->
+          <!--<map>-->
+            <!--<entry key="tableid" value="uLookupResults_layout"/>-->
+          <!--</map>-->
+        <!--</property>-->
+      <!--</bean>-->
+    <!--</property>-->
     <property name="resultsGroup.layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">
           <list>
           <!-- ex:Demo-FieldGroup-Example2 start-->
-            <bean parent="Uif-HorizontalFieldGroup" p:label="Travel Account Details">
+            <bean id="accountId" parent="Uif-HorizontalFieldGroup" p:label="Travel Account Details">
               <property name="items">
                 <list>
                   <bean parent="Uif-DataField" p:propertyName="accountType.accountTypeName">
@@ -361,6 +374,5 @@
         <bean parent="Uif-DataField" p:propertyName="name"/>
       </list>
     </property>
-    <property name="resultsGroup.layoutManager.showToggleAllDetails" value="true"/>
   </bean>
 </beans>

@@ -53,6 +53,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     private static final long serialVersionUID = -2657663560459456814L;
 
     private String id;
+    private String containerIdSuffix;
     private String viewPath;
     private Map<String, String> phasePathMapping;
 
@@ -234,6 +235,22 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     public void setId(String id) {
         checkMutable(true);
         this.id = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getContainerIdSuffix() {
+        return containerIdSuffix;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setContainerIdSuffix(String containerIdSuffix) {
+        this.containerIdSuffix = containerIdSuffix;
     }
 
     /**

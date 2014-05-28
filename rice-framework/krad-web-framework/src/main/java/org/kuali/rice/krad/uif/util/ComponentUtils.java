@@ -677,10 +677,17 @@ public class ComponentUtils {
      * @param collectionGroup collection group the component is associated with
      * @param collectionLine an instance of the data object for the line
      * @param lineIndex the line index
-     * @param lineSuffix id suffix for components in the line to make them unique
+     * @param lineSuffix id suffix for components in the line, not if the collection group has a container id suffix
+     * it will be appended to the lineSuffix for the final exported context entry
      */
     public static void updateContextForLine(Component component, CollectionGroup collectionGroup, Object collectionLine,
             int lineIndex, String lineSuffix) {
+        // line id suffix that we export as expression variable will contain the container suffix as well
+        // so correct references to ids for line components can be configured in the XML
+        if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
+            lineSuffix = lineSuffix + collectionGroup.getContainerIdSuffix();
+        }
+
         Map<String, Object> toUpdate = new HashMap<String, Object>(5);
         toUpdate.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         toUpdate.put(UifConstants.ContextVariableNames.LINE, collectionLine);

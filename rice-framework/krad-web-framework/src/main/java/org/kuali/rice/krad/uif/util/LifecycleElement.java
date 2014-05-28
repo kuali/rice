@@ -50,7 +50,25 @@ public interface LifecycleElement extends Serializable, Copyable {
      * @param id - string to set as the component id
      */
     void setId(String id);
-    
+
+    /**
+     * A string suffix that should get applied to the id for all child components of the given element.
+     *
+     * <p>This is mainly used within the framework to keep ids unique. For instance, for components generated
+     * for collection lines, all the components within those should get a line suffix. The framework will set
+     * this property to be '_line0', '_line1', etc. Then when the apply model phase is run on the child components
+     * their ids will be updated with this suffix.</p>
+     *
+     * @return String id suffix for child components
+     * @see org.kuali.rice.krad.uif.lifecycle.model.SuffixIdFromContainerTask
+     */
+    String getContainerIdSuffix();
+
+    /**
+     * @see LifecycleElement#getContainerIdSuffix()
+     */
+    void setContainerIdSuffix(String containerIdSuffix);
+
     /**
      * Gets a property for referring to this component from the view, relative to the view, as
      * assigned by the current or most recent lifecycle.
@@ -133,7 +151,7 @@ public interface LifecycleElement extends Serializable, Copyable {
     /**
      * Sets the view status.
      * 
-     * @param status view status
+     * @param viewStatus view status
      * @see #getViewStatus()
      */
     void setViewStatus(String viewStatus);

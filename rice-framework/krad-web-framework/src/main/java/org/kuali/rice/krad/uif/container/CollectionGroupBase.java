@@ -144,7 +144,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
     @DelayedCopy
     private List<CollectionGroup> subCollections;
-    private String subCollectionSuffix;
 
     private CollectionGroupBuilder collectionGroupBuilder;
 
@@ -875,22 +874,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     public void setSubCollections(List<CollectionGroup> subCollections) {
         this.subCollections = subCollections;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getSubCollectionSuffix() {
-        return subCollectionSuffix;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setSubCollectionSuffix(String subCollectionSuffix) {
-        this.subCollectionSuffix = subCollectionSuffix;
     }
 
     /**

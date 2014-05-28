@@ -97,7 +97,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-Disclosure-TableCollectionSection">
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:readOnly="true">
           <property name="headerText" value="Collection Inactive Filter"/>
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UIInactivatableTestObject"/>
@@ -112,6 +112,8 @@
                   <bean parent="Uif-CheckboxControl"/>
                 </property>
               </bean>
+              <bean parent="Uif-MessageField" p:label="Message Field" p:messageText="Foo"
+                    p:render="@{#parent.readOnly}"/>
             </list>
           </property>
         </bean>

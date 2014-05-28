@@ -110,7 +110,6 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         adjustFieldBindingAndId(lineFields);
 
-        // update contexts before add line fields are added to the index below
         ComponentUtils.updateContextsForLine(lineFields, lineBuilderContext.getCollectionGroup(),
                 lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex(),
                 lineBuilderContext.getIdSuffix());
@@ -194,21 +193,17 @@ public class CollectionGroupLineBuilder implements Serializable {
     }
 
     /**
-     * Adjusts the binding path for the given fields to match the collections path, and updates the field ids to
-     * contain a suffix for the line.
+     * Adjusts the binding path for the given fields to match the collections path, and sets the container id
+     * suffix for the fields so all nested components will get their ids adjusted.
      *
      * @param lineFields list of fields to update
      */
     protected void adjustFieldBindingAndId(List<Field> lineFields) {
-        // adjust binding path and id to match collection line path
-        ComponentUtils.bindAndIdFieldList(lineFields, lineBuilderContext.getBindingPath(),
-                lineBuilderContext.getIdSuffix());
+        ComponentUtils.prefixBindingPath(lineFields, lineBuilderContext.getBindingPath());
 
         for (Field field : lineFields) {
-            List<CollectionGroup> components = ViewLifecycleUtils.getElementsOfTypeDeep(field, CollectionGroup.class);
-            for (CollectionGroup fieldCollectionGroup : components) {
-                fieldCollectionGroup.setSubCollectionSuffix(lineBuilderContext.getIdSuffix());
-            }
+            ComponentUtils.updateIdWithSuffix(field, lineBuilderContext.getIdSuffix());
+            field.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
         }
 
         if (lineBuilderContext.isBindToForm()) {
@@ -549,6 +544,7 @@ public class CollectionGroupLineBuilder implements Serializable {
      */
     protected void buildSubCollectionFieldGroups() {
         CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
+
         String idSuffix = lineBuilderContext.getIdSuffix();
 
         // sub collections are not created for the add line
@@ -559,7 +555,7 @@ public class CollectionGroupLineBuilder implements Serializable {
         List<FieldGroup> subCollectionFields = new ArrayList<FieldGroup>();
         for (int subLineIndex = 0; subLineIndex < collectionGroup.getSubCollections().size(); subLineIndex++) {
             CollectionGroup subCollectionPrototype = collectionGroup.getSubCollections().get(subLineIndex);
-            CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype, idSuffix);
+            CollectionGroup subCollectionGroup = ComponentUtils.copy(subCollectionPrototype);
 
             // verify the sub-collection should be rendered
             boolean renderSubCollection = checkSubCollectionRender(subCollectionGroup);
@@ -572,19 +568,14 @@ public class CollectionGroupLineBuilder implements Serializable {
                 subCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(lineBuilderContext.getBindingPath());
             }
 
-            // set sub-collection suffix on group so it can be used for generated groups
-            String subCollectionSuffix = idSuffix;
-            if (StringUtils.isNotBlank(subCollectionGroup.getSubCollectionSuffix())) {
-                subCollectionSuffix = subCollectionGroup.getSubCollectionSuffix() + idSuffix;
-            }
-            subCollectionGroup.setSubCollectionSuffix(subCollectionSuffix);
-
             FieldGroup fieldGroupPrototype =
                     lineBuilderContext.getLayoutManager().getSubCollectionFieldGroupPrototype();
 
             FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
                     idSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
             subCollectionFieldGroup.setGroup(subCollectionGroup);
+
+            subCollectionFieldGroup.setContainerIdSuffix(idSuffix);
 
             ComponentUtils.updateContextForLine(subCollectionFieldGroup, collectionGroup,
                     lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex(),

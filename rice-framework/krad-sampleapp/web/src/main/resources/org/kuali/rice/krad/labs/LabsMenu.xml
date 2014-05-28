@@ -86,6 +86,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
                           <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
+                          <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
                         </list>
                       </property>
                     </bean>

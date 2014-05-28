@@ -161,11 +161,17 @@ public class StackedLayoutManagerBase extends LayoutManagerBase implements Stack
             }
 
             if (collectionGroup.isAddViaLightBox()) {
-                String actionScript = "showLightboxComponent('" + lineGroup.getId() + "');";
+                String addLineGroupId = lineGroup.getId();
+                if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
+                    addLineGroupId = addLineGroupId + collectionGroup.getContainerIdSuffix();
+                }
+
+                String actionScript = "showLightboxComponent('" + addLineGroupId + "');";
                 if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
                     actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
                 }
                 collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
+
                 lineGroup.setStyle("display: none");
             }
         } else {

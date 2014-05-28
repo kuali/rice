@@ -192,13 +192,8 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
     }
 
     /**
-     * performApplyModel override. Takes expressions that may be set in the columnCalculation
+     * Takes expressions that may be set in the columnCalculation
      * objects and populates them correctly into those component's propertyExpressions.
-     *
-     * @param view view instance to which the layout manager belongs
-     * @param model Top level object containing the data (could be the form or a top level business
-     * object, dto)
-     * @param container
      *
      * {@inheritDoc}
      */
@@ -637,11 +632,17 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
             addLineGroup.getFooter().setItems(footerItems);
 
             if (collectionGroup.isAddViaLightBox()) {
-                String actionScript = "showLightboxComponent('" + addLineGroup.getId() + "');";
+                String addLineGroupId = addLineGroup.getId();
+                if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
+                    addLineGroupId = addLineGroupId + collectionGroup.getContainerIdSuffix();
+                }
+
+                String actionScript = "showLightboxComponent('" + addLineGroupId + "');";
                 if (StringUtils.isNotBlank(collectionGroup.getAddViaLightBoxAction().getActionScript())) {
                     actionScript = collectionGroup.getAddViaLightBoxAction().getActionScript() + actionScript;
                 }
                 collectionGroup.getAddViaLightBoxAction().setActionScript(actionScript);
+
                 addLineGroup.setStyle("display: none");
             }
 
@@ -892,23 +893,21 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
 
         boolean renderActions = collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly();
 
-        String idSuffix = collectionGroup.getSubCollectionSuffix();
-
         int extraColumns = 0;
 
         if (actionColumnIndex == 1 && renderActions) {
-            addActionHeader(rowCount, idSuffix, 1);
+            addActionHeader(rowCount, 1);
         }
 
         // first column is sequence label (if action column not 1)
         if (renderSequenceField) {
             getSequenceFieldPrototype().setLabelRendered(true);
             getSequenceFieldPrototype().setRowSpan(rowCount);
-            addHeaderField(getSequenceFieldPrototype(), idSuffix, 1);
+            addHeaderField(getSequenceFieldPrototype(), 1);
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
-                addActionHeader(rowCount, idSuffix, 2);
+                addActionHeader(rowCount, 2);
             }
         }
 
@@ -916,13 +915,13 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
         if (collectionGroup.isIncludeLineSelectionField()) {
             getSelectFieldPrototype().setLabelRendered(true);
             getSelectFieldPrototype().setRowSpan(rowCount);
-            addHeaderField(getSelectFieldPrototype(), idSuffix, 1);
+            addHeaderField(getSelectFieldPrototype(), 1);
             extraColumns++;
 
             if (actionColumnIndex == 3 && renderActions && renderSequenceField) {
-                addActionHeader(rowCount, idSuffix, 3);
+                addActionHeader(rowCount, 3);
             } else if (actionColumnIndex == 2 && renderActions) {
-                addActionHeader(rowCount, idSuffix, 2);
+                addActionHeader(rowCount, 2);
             }
         }
 
@@ -947,22 +946,22 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                     && ((cellPosition % numberOfDataColumns) == 0));
 
             if (insertActionHeader) {
-                addActionHeader(rowCount, idSuffix, cellPosition);
+                addActionHeader(rowCount, cellPosition);
             }
 
             cellPosition += field.getColSpan();
-            addHeaderField(field, idSuffix, cellPosition);
+            addHeaderField(field, cellPosition);
 
             // add action header
             if (renderActions && !renderActionsLast && cellPosition == actionColumnIndex - extraColumns - 1) {
                 cellPosition += 1;
-                addActionHeader(rowCount, idSuffix, cellPosition);
+                addActionHeader(rowCount, cellPosition);
             }
         }
 
         if (lineFields.size() == numberOfDataColumns && renderActions && renderActionsLast) {
             cellPosition += 1;
-            addActionHeader(rowCount, idSuffix, cellPosition);
+            addActionHeader(rowCount, cellPosition);
         }
     }
 
@@ -970,10 +969,9 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
      * Adds the action header
      *
      * @param rowCount
-     * @param idSuffix suffix for the header id, also column will be added
      * @param cellPosition
      */
-    protected void addActionHeader(int rowCount, String idSuffix, int cellPosition) {
+    protected void addActionHeader(int rowCount, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
         getActionFieldPrototype().setRowSpan(rowCount);
         if (getActionFieldPrototype().getWrapperCssClasses() != null && !getActionFieldPrototype()
@@ -984,23 +982,20 @@ public class TableLayoutManagerBase extends GridLayoutManagerBase implements Tab
                     CssConstants.Classes.ACTION_COLUMN_STYLE_CLASS));
         }
 
-        addHeaderField(getActionFieldPrototype(), idSuffix, cellPosition);
+        addHeaderField(getActionFieldPrototype(), cellPosition);
     }
 
     /**
      * Creates a new instance of the header field prototype and then sets the label to the short (if
-     * useShortLabels is set to true) or long label of the given component. After created the header
-     * field is added to the list making up the table header
+     * useShortLabels is set to true) or long label of the given component.
+     *
+     * <p>After created the header field is added to the list making up the table header</p>
      *
      * @param field field instance the header field is being created for
-     * @param idSuffix suffix for the header id, also column will be added
      * @param column column number for the header, used for setting the id
      */
-    protected void addHeaderField(Field field, String idSuffix, int column) {
+    protected void addHeaderField(Field field, int column) {
         String labelSuffix = UifConstants.IdSuffixes.COLUMN + column;
-        if (StringUtils.isNotBlank(idSuffix)) {
-            labelSuffix = idSuffix + labelSuffix;
-        }
 
         Label headerLabel = ComponentUtils.copy(getHeaderLabelPrototype(), labelSuffix);
 

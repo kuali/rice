@@ -33,6 +33,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
 import org.kuali.rice.krad.uif.lifecycle.model.HelperCustomApplyModelTask;
 import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
 import org.kuali.rice.krad.uif.lifecycle.model.RefreshStateModifyTask;
+import org.kuali.rice.krad.uif.lifecycle.model.SuffixIdFromContainerTask;
 import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
@@ -160,7 +161,7 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      * Gets global objects for the context map and pushes them to the context for the component
      *
      * @return The common context elements to use while applying model elements to the view.
-     * @see #prepare(LifecycleElement, Object, String, Component, ViewLifecyclePhaseBase, Set)
+     * @see #prepare
      */
     public Map<String, Object> getCommonContext() {
         return commonContext;
@@ -196,6 +197,10 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        if ((getParent() != null) && StringUtils.isNotBlank(getParent().getContainerIdSuffix())) {
+            tasks.add(LifecycleTaskFactory.getTask(SuffixIdFromContainerTask.class, this));
+        }
+
         tasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(SyncClientSideStateTask.class, this));

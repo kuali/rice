@@ -117,7 +117,6 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickSearchByText();
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Add New Line')]"));
         waitAndClickLinkContainingText("return value");
-        clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
@@ -144,11 +143,9 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"Xss");
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"Xss");
-        selectByName(TRAVEL_ACCOUNT_TYPE_CODE_FIELD,"Clearing Account Type");
+        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(SUBSIDIZED_PERCENT_FIELD,"\"/><script>alert('!')</script>");
-//        waitAndTypeByName(DATE_CREATED_FIELD,"\"/><script>alert('!')</script>"); // no longer input field
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickSaveByText();
         Thread.sleep(1000);
@@ -166,6 +163,12 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Sub Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Sub Account Name:')]/span[contains(text(),'*')]");
         waitAndClickSubmitByText();
+        waitForElementPresentByXpath("//h3[contains(text(),'This page has 4 errors')]");
+        waitForElementPresentByXpath("//ul[@id='pageValidationList']/li/a[contains(text(),'Document Overview: 1 error')]");
+        waitForElementPresentByXpath("//ul[@id='pageValidationList']/li/a[contains(text(),'Account Information: 3 errors')]");
+        waitForElementPresentByXpath("//div[@class='uif-messageCount' and contains(text(),'  1 error')]");
+        waitForElementPresentByXpath("//div[@class='uif-messageCount' and contains(text(),'  3 errors')]");
+        waitForElementPresentByXpath("//div[@class='uif-messageCount' and contains(text(),'  1 error')]");
     	String requiredMessage []={"Description: Required","Travel Account Number: Required","Travel Account Name: Required","Travel Account Type Code: Required"};
     	assertTextPresent(requiredMessage);
         assertTrue(findElement(By.xpath("//h3[@id='pageValidationHeader']")).getText().contains("This page has"));

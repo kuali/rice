@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.impl.peopleflow;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo;
@@ -40,6 +41,9 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
     @Column(name="PPL_FLW_ATTR_ID", nullable = false)
     private String id;
 
+    @Column(name = "PPL_FLW_ID", nullable = false)
+    private String peopleFlowId;
+
     @Column(name="ATTR_VAL")
     private String value;
 
@@ -48,7 +52,7 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name = "PPL_FLW_ID", nullable = false)
+    @JoinColumn(name = "PPL_FLW_ID", referencedColumnName = "PPL_FLW_ID", insertable = false, updatable = false)
     private PeopleFlowBo peopleFlow;
 
     @ManyToOne
@@ -64,6 +68,7 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
 
         PeopleFlowAttributeBo peopleFlowAttributeBo = new PeopleFlowAttributeBo();
         peopleFlowAttributeBo.setId(id);
+        peopleFlowAttributeBo.setPeopleFlowId(peopleFlow.getId());
         peopleFlowAttributeBo.setPeopleFlow(peopleFlow);
         peopleFlowAttributeBo.setValue(value);
         peopleFlowAttributeBo.setAttributeDefinition(KewAttributeDefinitionBo.from(attributeDefinition));
@@ -89,6 +94,18 @@ public class PeopleFlowAttributeBo implements Serializable, Versioned {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPeopleFlowId() {
+        if (StringUtils.isBlank(peopleFlowId)
+                && this.peopleFlow != null) {
+            return this.peopleFlow.getId();
+        }
+        return peopleFlowId;
+    }
+
+    public void setPeopleFlowId(String peopleFlowId) {
+        this.peopleFlowId = peopleFlowId;
     }
 
     public PeopleFlowBo getPeopleFlow() {

@@ -178,19 +178,21 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 		if ( peopleFlowBo == null ) {
 			return null;
 		}
-        assignResponsibilityIds(peopleFlowBo);
+        assignResponsibilityAndPeopleFlowIds(peopleFlowBo);
 
         return dataObjectService.save(peopleFlowBo, PersistenceOption.FLUSH);
     }
 
-    protected void assignResponsibilityIds(PeopleFlowBo peopleFlowBo) {
+    protected void assignResponsibilityAndPeopleFlowIds(PeopleFlowBo peopleFlowBo) {
         if (CollectionUtils.isNotEmpty(peopleFlowBo.getMembers())) {
             for (PeopleFlowMemberBo memberBo : peopleFlowBo.getMembers()) {
                 if (StringUtils.isBlank(memberBo.getResponsibilityId())) {
+                    memberBo.setPeopleFlowId(peopleFlowBo.getId());
                     memberBo.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
                 }
                 if (CollectionUtils.isNotEmpty(memberBo.getDelegates())) {
                     for (PeopleFlowDelegateBo delegateBo : memberBo.getDelegates()) {
+                        delegateBo.setPeopleFlowMemberId(memberBo.getId());
                         if (StringUtils.isBlank(delegateBo.getResponsibilityId())) {
                             delegateBo.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
                         }

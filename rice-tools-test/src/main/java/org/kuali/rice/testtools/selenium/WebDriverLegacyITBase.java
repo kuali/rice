@@ -3845,6 +3845,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
     }
 
+    protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+    }
+
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {
         waitAndClickLinkContainingText(linkText, this.getClass().toString());
     }

@@ -74,7 +74,9 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         String docId = peopleFlowCreateNew();
 
         waitAndClickBlanketApprove();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmBlanketApproveOk();
+        Thread.sleep(3000);
+        acceptAlert();
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");

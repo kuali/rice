@@ -72,8 +72,8 @@ def parseCommandLine(args){
     outfile << "-- DOCS CREATED: " + opt.n + newline
     outfile << "-- SUMMARY: creates " + opt.n + "Component Documents. Each with a pending action request for user " + user + newline
     outfile << "-----------------" + newline
-    outfile newline
-    outfile newline
+    outfile << newline
+    outfile << newline
 }
 
 def getUuid() {

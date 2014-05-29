@@ -22,6 +22,37 @@
 
   <!-- Attribute Definitions -->
 
+  <bean id="AttributeReference" parent="AttributeReference-parentBean"/>
+  <bean id="AttributeReference-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.krad.datadictionary.AttributeReference"/>
+    <property name="attributes">
+      <list>
+        <ref bean="AttributeReference-oneDigitTextCode"/>
+        <ref bean="AttributeReference-twoDigitTextCode"/>
+        <ref bean="AttributeReference-genericSystemId"/>
+        <ref bean="AttributeReference-genericDate"/>
+        <ref bean="AttributeReference-genericTimestamp"/>
+        <ref bean="AttributeReference-genericBoolean"/>
+        <ref bean="AttributeReference-activeIndicator"/>
+        <ref bean="AttributeReference-genericAmount"/>
+        <ref bean="AttributeReference-genericBigText"/>
+        <ref bean="AttributeReference-emailAddress"/>
+        <ref bean="AttributeReference-createDate"/>
+        <ref bean="AttributeReference-initiatorNetworkId"/>
+        <ref bean="AttributeReference-percent"/>
+        <ref bean="AttributeReference-newCollectionRecord"/>
+        <ref bean="AttributeReference-workflowDocumentStatus"/>
+        <ref bean="AttributeReference-activeFromDate"/>
+        <ref bean="AttributeReference-activeToDate"/>
+        <ref bean="AttributeReference-activeAsOfDate"/>
+        <ref bean="AttributeReference-current"/>
+        <ref bean="AttributeReference-infoTextArea"/>
+        <ref bean="AttributeReference-extendedTextArea"/>
+      </list>
+    </property>
+    <property name="objectLabel" value="Attribute Reference"/>
+  </bean>
+
   <bean id="AttributeReferenceDummy-oneDigitTextCode" parent="AttributeReference-oneDigitTextCode-parentBean"/>
   <bean id="AttributeReference-oneDigitTextCode" parent="AttributeReference-oneDigitTextCode-parentBean"/>
   <bean id="AttributeReference-oneDigitTextCode-parentBean" abstract="true" parent="AttributeDefinition">

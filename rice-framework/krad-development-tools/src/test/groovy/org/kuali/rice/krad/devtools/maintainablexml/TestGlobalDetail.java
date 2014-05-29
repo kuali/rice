@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.devtools.maintainablexml;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.krad.bo.GlobalBusinessObjectDetailBase;
+import org.kuali.rice.kns.bo.GlobalBusinessObjectDetailBase;
 
 /**
  * Business Object representing the account change details entity

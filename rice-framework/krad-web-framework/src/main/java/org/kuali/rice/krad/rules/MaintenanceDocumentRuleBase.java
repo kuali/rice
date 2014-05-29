@@ -36,7 +36,6 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -47,6 +46,7 @@ import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidation
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.BulkUpdateMaintainable;
+import org.kuali.rice.krad.maintenance.BulkUpdateMaintenanceDataObject;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
@@ -735,12 +735,12 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         Object oldBo = document.getOldMaintainableObject().getDataObject();
         Object newDataObject = document.getNewMaintainableObject().getDataObject();
 
-        // We dont do primaryKeyChecks on Global Business Object maintenance documents. This is
-        // because it doesnt really make any sense to do so, given the behavior of Globals. When a
-        // Global Document completes, it will update or create a new record for each BO in the list.
+        // We don't do primaryKeyChecks on Bulk Update Data Object maintenance documents. This is
+        // because it doesn't really make any sense to do so, given the behavior of Bulk Update. When a
+        // Bulk Update Document completes, it will update or create a new record for each BO in the list.
         // As a result, there's no problem with having existing BO records in the system, they will
         // simply get updated.
-        if (newDataObject instanceof GlobalBusinessObject) {
+        if (newDataObject instanceof BulkUpdateMaintenanceDataObject) {
             return success;
         }
 

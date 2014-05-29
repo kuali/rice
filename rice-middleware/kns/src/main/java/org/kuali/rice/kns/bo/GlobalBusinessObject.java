@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.bo;
+package org.kuali.rice.kns.bo;
 
 import java.util.List;
 
@@ -25,7 +25,10 @@ import java.util.List;
  * If implementations of this class implement {@link PersistableBusinessObject} as well, then it is strongly recommended that
  * classes override {@link PersistableBusinessObject#buildListOfDeletionAwareLists()} as well.  If this is not done correctly, then
  * deleted collection elements will not be persisted, and upon reload from the DB, the deleted items will appear in the collection.
+ *
+ * @deprecated use BulkUpdate instead
  */
+@Deprecated
 public interface GlobalBusinessObject {
 
     /**

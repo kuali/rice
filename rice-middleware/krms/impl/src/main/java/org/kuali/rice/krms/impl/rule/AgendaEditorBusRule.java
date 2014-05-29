@@ -19,8 +19,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.maintenance.BulkUpdateMaintenanceDataObject;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -69,7 +69,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         // Global Document completes, it will update or create a new record for each BO in the list.
         // As a result, there's no problem with having existing BO records in the system, they will
         // simply get updated.
-        if (newDataObject instanceof GlobalBusinessObject) {
+        if (newDataObject instanceof BulkUpdateMaintenanceDataObject) {
             return success;
         }
 

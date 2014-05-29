@@ -21,13 +21,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.bo.DocumentAttachment;
+import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentBase;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.BusinessObjectSerializerService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Transient;
@@ -362,5 +365,31 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
     protected BusinessObjectSerializerService getBusinessObjectSerializerService() {
         return KRADServiceLocator.getBusinessObjectSerializerService();
     }
+
+    /**
+     * this needs to happen after the document itself is saved, to preserve consistency of the ver_nbr and in the case
+     * of initial save, because this can't be saved until the document is saved initially
+     *
+     * @see org.kuali.rice.krad.document.DocumentBase#postProcessSave(org.kuali.rice.krad.rules.rule.event.DocumentEvent)
+     */
+    @Override
+    public void postProcessSave(DocumentEvent event) {
+        Object bo = getNewMaintainableObject().getDataObject();
+        if (bo instanceof GlobalBusinessObject) {
+            bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
+            // KRAD/JPA - have to change the handle to object to that just saved
+            getNewMaintainableObject().setDataObject(bo);
+        }
+
+        //currently only global documents could change the list of what they're affecting during routing,
+        //so could restrict this to only happening with them, but who knows if that will change, so safest
+        //to always do the delete and re-add...seems a bit inefficient though if nothing has changed, which is
+        //most of the time...could also try to only add/update/delete what's changed, but this is easier
+        if (!(event instanceof SaveDocumentEvent)) { //don't lock until they route
+            getMaintenanceDocumentService().deleteLocks(MaintenanceDocumentBase.this.getDocumentNumber());
+            getMaintenanceDocumentService().storeLocks(MaintenanceDocumentBase.this.getNewMaintainableObject().generateMaintenanceLocks());
+        }
+    }
+
 
 }

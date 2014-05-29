@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.bo;
+package org.kuali.rice.kns.bo;
 
 
 /**
  * Detail objects included as part of globals should implement this interface
  * to facilitate proper storage of data and record locking.
- * 
+ *
+ * @deprecated use BulkUpdate instead
  */
+@Deprecated
 public interface GlobalBusinessObjectDetail {
     
     /**

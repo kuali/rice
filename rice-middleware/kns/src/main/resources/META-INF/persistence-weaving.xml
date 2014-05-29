@@ -28,7 +28,8 @@
       this module). It is not used or loaded by the runtime at all.
     </description>
     <!-- @MappedSuperclass - use the "WeaveMe" @Embeddable class on each of those so that EclipseLink will weave them -->
-    <class>org.kuali.rice.krad.bo.GlobalBusinessObjectDetailBase$WeaveMe</class>
+    <class>org.kuali.rice.kns.bo.GlobalBusinessObjectDetailBase$WeaveMe</class>
+    <class>org.kuali.rice.krad.bo.Bu$WeaveMe</class>
     <class>org.kuali.rice.krad.bo.InactivatableFromToImpl$WeaveMe</class>
     <class>org.kuali.rice.krad.bo.KualiCodeBase$WeaveMe</class>
     <class>org.kuali.rice.krad.bo.PersistableBusinessObjectBase$WeaveMe</class>

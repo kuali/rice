@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.bo;
+package org.kuali.rice.kns.bo;
+
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
+/**
+ * @deprecated use BulkUpdate instead
+ */
+@Deprecated
 @MappedSuperclass
 public abstract class GlobalBusinessObjectDetailBase extends PersistableBusinessObjectBase implements GlobalBusinessObjectDetail {
 

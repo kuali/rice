@@ -49,7 +49,6 @@ import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
-import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
@@ -913,13 +912,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void postProcessSave(DocumentEvent event) {
-        Object bo = getNewMaintainableObject().getDataObject();
-        if (bo instanceof GlobalBusinessObject) {
-            bo = KRADServiceLocatorWeb.getLegacyDataAdapter().save(bo);
-            // KRAD/JPA - have to change the handle to object to that just saved
-            getNewMaintainableObject().setDataObject(bo);
-        }
-
         //currently only global documents could change the list of what they're affecting during routing,
         //so could restrict this to only happening with them, but who knows if that will change, so safest
         //to always do the delete and re-add...seems a bit inefficient though if nothing has changed, which is

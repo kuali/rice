@@ -39,7 +39,7 @@ public class UifViewBeanWrapperTest {
     @Before
     public void setUp() throws Exception {
         TestForm model = new TestForm();
-        model.setMethodToCall("field7");
+        model.setMethodToCall("field7TestMethodToCall");
 
         UifBeanPropertyBindingResult bindingResult = new UifBeanPropertyBindingResult(model, "model", true, 100);
 
@@ -47,7 +47,7 @@ public class UifViewBeanWrapperTest {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("POST");
-        request.addParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, "field7");
+        request.addParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME, "field7TestMethodToCall");
 
         RequestContextHolder.setRequestAttributes(new ServletWebRequest(request));
     }
@@ -89,7 +89,7 @@ public class UifViewBeanWrapperTest {
 
         assertBindingAnnotationsInPath("Annotation picked up for wrong request method", "field4", null);
 
-        assertBindingAnnotationsInPath("Annotation picked up for wrong request method", "field7", Boolean.TRUE );
+        assertBindingAnnotationsInPath("Annotation picked up for wrong request method", "field7", Boolean.TRUE);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setMethod("GET");

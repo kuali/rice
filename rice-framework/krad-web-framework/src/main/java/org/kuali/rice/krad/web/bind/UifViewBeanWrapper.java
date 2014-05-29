@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -34,7 +24,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -46,6 +35,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Class is a top level BeanWrapper for a UIF View Model.
@@ -395,12 +393,15 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
 
             RequestAccessible accessibleAnnotation = (RequestAccessible) CopyUtils.getFieldAnnotation(
                     parentPropertyClass, nestedPath, RequestAccessible.class);
-            if ((accessibleAnnotation != null) &&
-                    annotationMatchesRequestMethod(accessibleAnnotation.method(), request.getMethod()) &&
-                    annotationMatchesMethodToCalls(accessibleAnnotation.methodToCalls(),
-                            request.getParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME))) {
-                            //((UifFormBase) this.bindingResult.getTarget()).getMethodToCall())) {
-                return Boolean.TRUE;
+            if (accessibleAnnotation != null) {
+                boolean isAnnotationRequestMethod = annotationMatchesRequestMethod(accessibleAnnotation.method(),
+                        request.getMethod());
+                boolean isAnnotationMethodToCalls = annotationMatchesMethodToCalls(accessibleAnnotation.methodToCalls(),
+                        request.getParameter(UifConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME));
+                if (isAnnotationRequestMethod && isAnnotationMethodToCalls) {
+                    //((UifFormBase) this.bindingResult.getTarget()).getMethodToCall())) {
+                    return Boolean.TRUE;
+                }
             }
 
             propertyPath = parentPropertyPath;

@@ -43,7 +43,7 @@ public @interface RequestAccessible {
     RequestMethod[] method() default {};
 
     /**
-     * list of methodToCall to allow binding.
+     * List of method names on the controller class that the binding should occur for.
      *
      * <p>For example you might want to restrict binding for only certain methodToCall(s). For other
      * methodToCalls not in the list, no binding will occur.</p>

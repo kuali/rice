@@ -451,7 +451,11 @@ public class ViewPostMetadata implements Serializable {
     }
 
     /**
-     * Set of available methods to call
+     * Set of available methods to call.
+     *
+     * <p>If a methodToCall belongs to the set of available methods to call, then binding will be allowed only if the
+     * methodToCall, either, has the @MethodAccessible notation, or, is listed as one of the accessible methods to
+     * call on the view.</p>
      *
      * @return Set of method names
      */

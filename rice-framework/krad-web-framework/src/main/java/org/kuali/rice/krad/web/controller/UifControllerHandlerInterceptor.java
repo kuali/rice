@@ -92,70 +92,28 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         String requestMethod = request.getMethod();
 
         // if it is a GET request then we allow without any check
-        if( requestMethod.equalsIgnoreCase( RequestMethod.GET.name() ) ) {
+        if(requestMethod.equalsIgnoreCase(RequestMethod.GET.name())) {
             return;
         }
 
-        // if the method is not listed in the available methods to call list, then just return (allow)
-        // if the method is listed in the available methods to call list, then either, the method
-        // must be listed as an accessible method to call on the view, or the method must have
-        // the method accessible annotation on it (to be allowed)
-        if( !checkMethodAvailability( request ) ) {
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        MethodAccessible methodAccessible = handlerMethod.getMethodAnnotation(MethodAccessible.class);
+
+        // if accessible by annotation then return, otherwise go on to check view configuration
+        if (methodAccessible != null) {
             return;
-        } else {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            MethodAccessible methodAccessible = handlerMethod.getMethodAnnotation(MethodAccessible.class);
+        }
 
-            // if accessible by annotation then return, otherwise go on to check view configuration
-            if (methodAccessible != null) {
-                return;
-            }
+        boolean isMethodAccessible = checkForMethodAccess(request);
 
-            boolean isMethodAccessible = checkForViewMethodAccess(request);
-
-            if (!isMethodAccessible) {
-                throw new MethodAccessException(handlerMethod.getBeanType(), handlerMethod.getMethod().getName());
-            }
+        if (!isMethodAccessible) {
+            throw new MethodAccessException(handlerMethod.getBeanType(), handlerMethod.getMethod().getName());
         }
     }
 
     /**
-     * Checks whether access the method to call is listed as one of the available methods.
-     *
-     * <p>Since this method is invoked before the request form is setup, we need to retrieve the session form
-     * form the form manager.</p>
-     *
-     * @param request HTTP request to retrieve parameters from
-     * @return boolean true if method is listed as an available method, false if not
-     */
-    protected boolean checkMethodAvailability(HttpServletRequest request) {
-        String methodToCall = request.getParameter(UifParameters.METHOD_TO_CALL);
-
-        // if method to call is blank, we will assume they are using other strategies to map controller
-        // methods, and therefore using custom access management
-        if (StringUtils.isBlank(methodToCall)) {
-            return true;
-        }
-
-        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
-        UifFormBase form = null;
-
-        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
-        if (StringUtils.isNotBlank(formKeyParam) && (uifFormManager != null)) {
-            form = uifFormManager.getSessionForm(formKeyParam);
-        }
-
-        // if we don't have the view post data, access cannot be granted based on the view
-        if ((form == null) || (form.getViewPostMetadata() == null) || (form.getViewPostMetadata()
-                .getAvailableMethodToCalls() == null)) {
-            return false;
-        }
-
-        return form.getViewPostMetadata().getAvailableMethodToCalls().contains(methodToCall);
-    }
-
-    /**
-     * Checks whether access to the handler method is allowed based on view configuration.
+     * Checks whether access to the handler method is allowed based available methods or accessible methods
+     * on view configuration.
      *
      * <p>Since this method is invoked before the request form is setup, we need to retrieve the session form
      * form the form manager. In the case of missing post data (GET requests), view method access is not
@@ -164,7 +122,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
      * @param request HTTP request to retrieve parameters from
      * @return boolean true if method access is allowed based on the view, false if not
      */
-    protected boolean checkForViewMethodAccess(HttpServletRequest request) {
+    protected boolean checkForMethodAccess(HttpServletRequest request) {
         String methodToCall = request.getParameter(UifParameters.METHOD_TO_CALL);
 
         // if method to call is blank, we will assume they are using other strategies to map controller
@@ -187,7 +145,10 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        return form.getViewPostMetadata().getAccessibleMethodToCalls().contains(methodToCall);
+        // if the method to call is listed as a method in either the available methods to call or the
+        // view's accessible methods to call, then return true
+        return !form.getViewPostMetadata().getAvailableMethodToCalls().contains(methodToCall) ||
+                form.getViewPostMetadata().getAccessibleMethodToCalls().contains(methodToCall);
     }
 
     /**

@@ -42,7 +42,7 @@ public class TestForm extends UifFormBase {
 
     private String field6;
 
-    @RequestAccessible(methodToCalls = { "field7" })
+    @RequestAccessible(methodToCalls = { "field7TestMethodToCall" })
     private String field7;
 
     private TestDataObject dataObject;

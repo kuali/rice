@@ -337,15 +337,7 @@
     </property>
     <!-- content of the details group, all propertyName paths are relative to the collection path -->
     <property name="resultsGroup.layoutManager.showToggleAllDetails" value="true"/>
-    <!--<property name="resultsGroup.layoutManager.toggleAllDetailsAction">-->
-      <!--<bean parent="Uif-ToggleRowDetailsAction">-->
-        <!--<property name="dataAttributes">-->
-          <!--<map>-->
-            <!--<entry key="tableid" value="uLookupResults_layout"/>-->
-          <!--</map>-->
-        <!--</property>-->
-      <!--</bean>-->
-    <!--</property>-->
+    <property name="resultsGroup.layoutManager.id" value="uLookupResults_layout"/>
     <property name="resultsGroup.layoutManager.rowDetailsGroup">
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">

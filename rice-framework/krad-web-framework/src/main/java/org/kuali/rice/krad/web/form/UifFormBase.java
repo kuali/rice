@@ -115,7 +115,6 @@ public class UifFormBase implements ViewModel {
     private Map<String, String[]> initialRequestParameters;
 
     protected String state;
-    protected List<String> viewsThatNeedDefaultValuesApplied;
 
     @RequestAccessible
     protected boolean renderedInLightBox;
@@ -197,6 +196,7 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Object> extensionData;
 
     protected Map<String, String> queryParameters;
+    protected boolean applyDefaultValues;
 
     public UifFormBase() {
         renderedInLightBox = false;
@@ -214,6 +214,7 @@ public class UifFormBase implements ViewModel {
         dialogManager = new DialogManager();
         extensionData = new HashMap<String, Object>();
         queryParameters = new HashMap<String, String>();
+        applyDefaultValues = true;
     }
 
     /**
@@ -754,37 +755,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewsThatNeedDefaultValuesApplied()
-     */
-    @Override
-    public List<String> getViewsThatNeedDefaultValuesApplied() {
-        if(viewsThatNeedDefaultValuesApplied == null) {
-            viewsThatNeedDefaultValuesApplied = new ArrayList<String>();
-        }
-
-        return viewsThatNeedDefaultValuesApplied;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.view.ViewModel#setgetViewsThatNeedDefaultValuesApplied(List<String>)
-     */
-    @Override
-    public void setViewsThatNeedDefaultValuesApplied(List<String> viewsThatNeedDefaultValuesApplied) {
-        this.viewsThatNeedDefaultValuesApplied = viewsThatNeedDefaultValuesApplied;
-    }
-
-    /**
-     * Adds unique view id to list of views that need default values applied.
-     *
-     * @param viewid
-     */
-    public void addViewThatNeedsDefaultValuesApplied(String viewId) {
-        if(!getViewsThatNeedDefaultValuesApplied().contains(viewId)) {
-            viewsThatNeedDefaultValuesApplied.add(viewId);
-        }
-    }
-
-    /**
      * Indicates whether a redirect has been requested for the view
      *
      * @return boolean true if redirect was requested, false if not
@@ -801,7 +771,6 @@ public class UifFormBase implements ViewModel {
     public void setRequestRedirected(boolean requestRedirected) {
         this.requestRedirected = requestRedirected;
     }
-
     /**
      * Holder for files that are attached through the view
      *
@@ -1068,6 +1037,22 @@ public class UifFormBase implements ViewModel {
      */
     public void setRenderedInIframe(boolean renderedInIframe) {
         this.renderedInIframe = renderedInIframe;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isApplyDefaultValues()
+     */
+    @Override
+    public boolean isApplyDefaultValues() {
+        return applyDefaultValues;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setApplyDefaultValues(boolean)
+     */
+    @Override
+    public void setApplyDefaultValues(boolean applyDefaultValues) {
+        this.applyDefaultValues = applyDefaultValues;
     }
 
     /**

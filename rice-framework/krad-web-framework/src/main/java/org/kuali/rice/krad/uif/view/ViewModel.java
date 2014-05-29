@@ -44,7 +44,7 @@ public interface ViewModel extends Serializable {
      * @param request - request object containing the query parameters
      */
     public void preBind(HttpServletRequest request);
-    
+
     /**
      * Called after Spring binds the request to the form and before the controller method is invoked
      *
@@ -287,18 +287,23 @@ public interface ViewModel extends Serializable {
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines);
 
     /**
-     * Unique list of view ids that need default values applied.
+     * Indicates whether default values should be applied.
      *
-     * @return List<String> view ids
+     * <p>
+     * Default field values of a view need to be applied after the view life cycle completes.  Otherwise,
+     * they risk getting over written.
+     * </p>
+     *
+     * @return boolean true if the request was an ajax call, false if not
      */
-    public List<String> getViewsThatNeedDefaultValuesApplied();
+    boolean isApplyDefaultValues();
 
     /**
-     * Setter for the list of view ids that need default values applied.
+     * Set whether default values should be applied to the view
      *
-     * @param viewsThatNeedDefaultValuesApplied
+     * @param applyDefaultValues
      */
-    public void setViewsThatNeedDefaultValuesApplied(List<String> viewsThatNeedDefaultValuesApplied);
+    void setApplyDefaultValues(boolean applyDefaultValues);
 
     /**
      * Script that will run on render (view or component) for generating growl messages

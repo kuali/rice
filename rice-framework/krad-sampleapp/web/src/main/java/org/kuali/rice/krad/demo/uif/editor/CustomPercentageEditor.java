@@ -60,8 +60,10 @@ public class CustomPercentageEditor  extends PropertyEditorSupport implements Se
             return "";
 
         String stringValue = "";
+
         try {
             if (value instanceof KualiDecimal) {
+
                 value = ((KualiDecimal) this.getValue()).bigDecimalValue();
             }
             BigDecimal bigDecValue = (BigDecimal) value;

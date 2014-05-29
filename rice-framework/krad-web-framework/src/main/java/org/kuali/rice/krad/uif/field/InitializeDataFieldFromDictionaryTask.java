@@ -263,7 +263,10 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         
         if (attribute == null && dictionaryEntryPrefix != null) {
             dictionaryEntryName = getDictionaryEntryName(dictionaryEntryPrefix);
-            attribute = ddService.getAttributeDefinition(dictionaryEntryName, dictionaryAttributeName);
+            
+            if (dictionaryEntryName != null) {
+                attribute = ddService.getAttributeDefinition(dictionaryEntryName, dictionaryAttributeName);
+            }
         }
         
         // if a definition was found, update the fields dictionary properties

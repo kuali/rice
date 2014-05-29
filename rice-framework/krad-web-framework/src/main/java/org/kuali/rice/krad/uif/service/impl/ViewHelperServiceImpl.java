@@ -285,7 +285,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param collectionId the id of the collection being added to
      * @param collectionPath the path to the collection being modified
      */
-    protected void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
+    public void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
             String collectionPath) {
         String addLinePlacement = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
                 UifConstants.PostMetadata.ADD_LINE_PLACEMENT);
@@ -321,7 +321,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void processCollectionDeleteLine(ViewModel model, String collectionId, String collectionPath,
             int lineIndex) {
-        // get the collection instance for adding the new line
+        // get the collection instance for deleting the line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
             logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);

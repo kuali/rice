@@ -20,11 +20,11 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.demo.uif.form.UIInactivatableTestObject;
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
-import org.kuali.rice.krad.file.FileBase;
+import org.kuali.rice.krad.file.FileMetaBlob;
+import org.kuali.rice.krad.file.FileMeta;
+import org.kuali.rice.krad.labs.fileUploads.FileWithDetails;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +124,8 @@ public class KradLabsForm extends UifFormBase {
 
     private String fakeTotal = "123(server value)";
 
-    private List<Object> files = new ArrayList<Object>();
+    private List<FileMeta> files = new ArrayList<FileMeta>();
+    private List<FileWithDetails> files2 = new ArrayList<FileWithDetails>();
 
     public KradLabsForm() {
         super();
@@ -890,48 +891,41 @@ public class KradLabsForm extends UifFormBase {
         this.mediumCollection2 = mediumCollection2;
     }
 
+    public List<FileMeta> getFiles() {
+        return files;
+    }
+
+
+    public void setFiles(List<FileMeta> files) {
+        this.files = files;
+    }
+
+    public List<FileWithDetails> getFiles2() {
+        return files2;
+    }
+
+    public void setFiles2(List<FileWithDetails> files2) {
+        this.files2 = files2;
+    }
+
     @Override
-    public List<FileBase> getFiles(String propertyPath) {
+    public List<FileMetaBlob> getFiles(String propertyPath) {
         System.out.println("KradLabsForm, get files => " + propertyPath);
-        List<FileBase> returnObjects = new ArrayList<FileBase>();
+        List<FileMetaBlob> returnObjects = new ArrayList<FileMetaBlob>();
 
         // fake data for testing
-        FileBase fakeFile = new FileBase();
+        FileMetaBlob fakeFile = new FileMetaBlob();
         fakeFile.setName(propertyPath + "_fakeName1.png");
         fakeFile.setSize(5000000L);
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 
-        fakeFile = new FileBase();
+        fakeFile = new FileMetaBlob();
         fakeFile.setName(propertyPath + "_fakeName2.png");
         fakeFile.setSize(5000000L);
         fakeFile.setDateUploaded(new Date());
         returnObjects.add(fakeFile);
 
         return returnObjects;
-    }
-
-    @Override
-    public boolean saveFile(String propertyPath, FileBase fileBase) {
-        System.out.println("KradLabsForm, saving file => " + propertyPath + ":" + fileBase);
-
-        if (fileBase.getName().startsWith("fail")) {
-            fileBase.setError("This file failed to upload because it starts with fail!");
-        } else {
-            // persist the file
-            try {
-                InputStream is = fileBase.getMultipartFile().getInputStream();
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean deleteFile(String propertyPath, String fileName) {
-        System.out.println("KradLabsForm, deleting file => " + propertyPath + ":" + fileName);
-        return true;
     }
 }

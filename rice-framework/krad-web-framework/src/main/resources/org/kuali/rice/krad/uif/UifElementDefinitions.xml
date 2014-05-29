@@ -449,24 +449,38 @@
     </property>
   </bean>
 
-  <bean id="Uif-MultiFileUpload" parent="Uif-MultiFileUpload-parentBean"/>
-  <bean id="Uif-MultiFileUpload-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MultiFileUpload"
+  <bean id="Uif-MultiFileUploadCollection" parent="Uif-MultiFileUploadCollection-parentBean"/>
+  <bean id="Uif-MultiFileUploadCollection-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MultiFileUploadCollection"
         parent="Uif-ContentElementBase" scope="prototype">
-    <property name="template" value="/krad/WEB-INF/ftl/components/element/multiFileUpload.ftl"/>
-    <property name="templateName" value="uif_multiFileUpload"/>
-    <property name="fileUploadRowTemplate" value="fileUploadRow.ftl"/>
-    <property name="fileDownloadRowTemplate" value="fileDownloadRow.ftl"/>
-    <property name="methodToCall" value="fileUpload"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/multiFileUploadCollection.ftl"/>
+    <property name="templateName" value="uif_multiFileUploadCollection"/>
+    <property name="methodToCall" value="addFileUploadLine"/>
     <property name="addFilesButtonText" value="Add Files..."/>
-    <property name="uploadAllButtonText" value="Upload All"/>
-    <property name="cancelAllButtonText" value="Cancel All Uploads"/>
-    <property name="fileTableColumnNames">
-      <list>
-        <value>File</value>
-        <value>Size</value>
-        <value>Date Uploaded</value>
-        <value>Actions</value>
-      </list>
+    <property name="collection">
+      <bean parent="Uif-TableCollectionGroup">
+        <property name="renderAddLine" value="false"/>
+        <property name="layoutManager.renderSequenceField" value="false"/>
+        <property name="collectionObjectClass"
+                  value="org.kuali.rice.krad.file.FileMeta"/>
+        <property name="items">
+          <list>
+            <bean parent="Uif-LinkField" p:readOnly="true" p:label="File" p:link.linkText="@{#line.name}"
+                  p:link.href="@{#line.url}&amp;selectedLineIndex=@{#index}"/>
+            <bean parent="Uif-InputField" p:readOnly="true" p:label="Size" p:propertyName="sizeFormatted"/>
+            <bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded" p:propertyName="dateUploadedFormatted"/>
+          </list>
+        </property>
+        <property name="lineActions">
+          <list>
+            <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteFileUploadLine"
+                  p:actionLabel="Delete"
+                  p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
+                  p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
+                  p:onClickScript="writeCurrentPageToSession(this);" p:dirtyOnAction="true"
+                  p:loadingMessageText="Deleting File..."/>
+          </list>
+        </property>
+      </bean>
     </property>
   </bean>
 

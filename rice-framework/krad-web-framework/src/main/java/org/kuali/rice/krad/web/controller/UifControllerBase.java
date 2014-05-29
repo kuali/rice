@@ -19,7 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.AuthorizationException;
-import org.kuali.rice.krad.file.FileBase;
+import org.kuali.rice.krad.file.FileMeta;
+import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.lookup.LookupUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRefreshBuild;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
@@ -44,27 +46,24 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.InputStream;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -391,74 +390,56 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Called by the multiFile upload widget to get the set of files already loaded. Get set from model.
+     * Called by the multiFile upload widget to delete a file; Inform the model of file to delete.
      */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=fileUpload")
-    public
-    @ResponseBody
-    Map fileUploadGet(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        //System.out.println("get files: propertyPath=>" + request.getParameter("propertyPath"));
-        List<FileBase> returnObjects = uifForm.getFiles(request.getParameter("propertyPath"));
-        // make sure the delete URL is set
-        for (FileBase file : returnObjects) {
-            if (file.getDeleteUrl() == null || file.getDeleteUrl().length() == 0) {
-                file.setDeleteUrl("?methodToCall=fileDelete&propertyPath="
-                        + request.getParameter("propertyPath")
-                        + "&fileName="
-                        + file.getName());
-            }
-        }
-
-        Map<String, Object> files = new HashMap<String, Object>();
-        // this must remain 'files'!
-        files.put("files", returnObjects);
-        return files;
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteFileUploadLine")
+    public ModelAndView deleteFileUploadLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
+            BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // Empty hook method for deleting a line in a collection representing a set of files
+        return deleteLine(uifForm, result, request, response);
     }
 
     /**
-     * Called by the multiFile upload widget to post/save a new file. Inform the model of file uploaded.
+     * Called by the multiFile upload widget to get the file contents for a file upload line.
      */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileUpload")
-    public
-    @ResponseBody
-    Map fileUploadPost(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            MultipartHttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> files = new HashMap<String, Object>();
-        Iterator<String> fileNamesItr = request.getFileNames();
-        List<FileBase> returnObjects = new ArrayList<FileBase>();
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=getFileFromLine")
+    public void getFileFromLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        final String selectedCollectionPath = request.getParameter("propertyPath");
 
-        while (fileNamesItr.hasNext()) {
-            String propertyPath = fileNamesItr.next();
-            //System.out.println("post file: propertyPath=>" + propertyPath);
-
-            MultipartFile uploadedFile = request.getFile(propertyPath);
-
-            FileBase fileObject = new FileBase(uploadedFile);
-            String id = UUID.randomUUID().toString() + "_" + uploadedFile.getName();
-
-            // TODO Generation and setting of thumbnail url (when applicable) and file url would go here
-            // why the file URL to form?
-
-            fileObject.setId(id);
-
-            fileObject.setDateUploaded(new Date());
-
-            fileObject.setDeleteUrl("?methodToCall=fileDelete&propertyPath=" + propertyPath + "&fileName=" + fileObject.getName());
-
-            //System.out.println("post file: fileObject=>" + fileObject);
-
-            // notify form of file to save
-            uifForm.saveFile(propertyPath, fileObject);
-
-            returnObjects.add(fileObject);
-
-            // this must remain 'files'!
-            files.put("files", returnObjects);
+        if (StringUtils.isBlank(selectedCollectionPath)) {
+            throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
         }
 
-        return files;
+        String selectedLine = request.getParameter(UifParameters.SELECTED_LINE_INDEX);
+        final int selectedLineIndex;
+        if (StringUtils.isNotBlank(selectedLine)) {
+            selectedLineIndex = Integer.parseInt(selectedLine);
+        } else {
+            selectedLineIndex = -1;
+        }
+
+        if (selectedLineIndex == -1) {
+            throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
+        }
+
+        Collection<FileMeta> collection = ObjectPropertyUtils.getPropertyValue(uifForm, selectedCollectionPath);
+
+        if (collection instanceof List) {
+            FileMeta fileLine = ((List<FileMeta>) collection).get(selectedLineIndex);
+            if (fileLine instanceof FileMetaBlob) {
+                InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
+                response.setContentType("application/force-download");
+                response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
+
+                // copy it to response's OutputStream
+                FileCopyUtils.copy(is, response.getOutputStream());
+
+                response.flushBuffer();
+            }
+        }
     }
 
     /**
@@ -470,9 +451,6 @@ public abstract class UifControllerBase {
     Map fileDelete(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result, HttpServletRequest request,
             HttpServletResponse response) {
         //System.out.println("delete file: propertyPath=>" + request.getParameter("propertyPath") + ", fileName=>" + request.getParameter("fileName"));
-
-        // notify form of file to delete
-        uifForm.deleteFile(request.getParameter("propertyPath"), request.getParameter("fileName"));
 
         Map<String, Object> files = new HashMap<String, Object>();
         return files;

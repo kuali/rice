@@ -18,7 +18,10 @@ package org.kuali.rice.krad.file;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Date;
 
 /**
@@ -26,7 +29,7 @@ import java.util.Date;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FileBase implements Serializable {
+public class FileMetaBlob implements Serializable, FileMeta {
 
     private static final long serialVersionUID = 56328058337130228L;
 
@@ -36,61 +39,113 @@ public class FileBase implements Serializable {
     private Long size;
     private Date dateUploaded;
     private String url;
-    private String deleteUrl;
-    private String error;
 
     private MultipartFile multipartFile;
+    private Blob blob;
 
-    public FileBase() {
+    public FileMetaBlob() {
     }
 
-    public FileBase(MultipartFile multipartFile) {
-        this.multipartFile = multipartFile;
+    public void init(MultipartFile multipartFile) throws Exception {
         this.name = multipartFile.getOriginalFilename();
         this.contentType = multipartFile.getContentType();
         this.size = multipartFile.getSize();
+        this.multipartFile = multipartFile;
+        blob = new SerialBlob(multipartFile.getBytes());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getId() {
         return id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getContentType() {
         return contentType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Long getSize() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setSize(Long size) {
         this.size = size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSizeFormatted() {
+        return "1kb";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Date getDateUploaded() {
         return dateUploaded;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setDateUploaded(Date dateUploaded) {
         this.dateUploaded = dateUploaded;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDateUploadedFormatted() {
         if (dateUploaded != null) {
             return CoreApiServiceLocator.getDateTimeService().toDateTimeString(dateUploaded);
@@ -99,38 +154,20 @@ public class FileBase implements Serializable {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getUrl() {
         return url;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getDeleteUrl() {
-        return deleteUrl;
-    }
-
-    /**
-     * Set the URL that will be used when rendering the delete button.
-     *
-     * @param deleteUrl string
-     */
-    public void setDeleteUrl(String deleteUrl) {
-        this.deleteUrl = deleteUrl;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    /**
-     * Method to call to set and error message to display to the user if an error persisting an uploaded file.
-     *
-     * @param error string to display
-     */
-    public void setError(String error) {
-        this.error = error;
     }
 
     /**
@@ -142,10 +179,32 @@ public class FileBase implements Serializable {
         return multipartFile;
     }
 
+    /**
+     * @see #getMultipartFile()
+     */
     public void setMultipartFile(MultipartFile multipartFile) {
         this.multipartFile = multipartFile;
     }
 
+    /**
+     * Get the serialized blob data representing the file
+     *
+     * @return the blob data
+     */
+    public Blob getBlob() {
+        return blob;
+    }
+
+    /**
+     * @see #getBlob()
+     */
+    public void setBlob(Blob blob) {
+        this.blob = blob;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return "FileBase{" +
@@ -155,8 +214,6 @@ public class FileBase implements Serializable {
                 ", size=" + size +
                 ", dateUploaded=" + dateUploaded +
                 ", url='" + url + '\'' +
-                ", deleteUrl='" + deleteUrl + '\'' +
-                ", error='" + error + '\'' +
                 '}';
     }
 }

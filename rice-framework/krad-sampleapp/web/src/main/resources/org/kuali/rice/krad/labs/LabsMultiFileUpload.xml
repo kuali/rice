@@ -20,19 +20,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <bean id="Lab-MultiFileUpload1" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 1"/>
+
+  <bean id="Lab-MultiFileUpload5" parent="Uif-FormView">
+    <property name="headerText" value="Upload Test 5"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test">
-              <property name="items">
-                <list>
-                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files"/>
-                </list>
-              </property>
+            <bean parent="Uif-MultiFileUploadCollection">
+              <property name="collection.propertyName" value="files"/>
+              <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
             </bean>
           </list>
         </property>
@@ -41,77 +39,28 @@
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
-  <bean id="Lab-MultiFileUpload2" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 2"/>
+  <bean id="Lab-MultiFileUpload6" parent="Uif-FormView">
+    <property name="headerText" value="Upload Test 5"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test">
-              <property name="items">
+            <bean parent="Uif-MultiFileUploadCollection">
+              <property name="collection.propertyName" value="files2"/>
+              <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.labs.fileUploads.FileWithDetails"/>
+              <property name="collection.items">
                 <list>
-                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files1"/>
-                </list>
-              </property>
-            </bean>
-          </list>
-        </property>
-      </bean>
-    </property>
-    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
-  </bean>
-
-  <bean id="Lab-MultiFileUpload3" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 3"/>
-    <property name="singlePageView" value="true"/>
-    <property name="page">
-      <bean parent="Uif-Page">
-        <property name="items">
-          <list>
-            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files1">
-              <property name="items">
-                <list>
-                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files1"/>
-                </list>
-              </property>
-            </bean>
-            <bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files2">
-              <property name="items">
-                <list>
-                  <bean parent="Uif-MultiFileUpload" p:propertyPath="files2"/>
-                </list>
-              </property>
-            </bean>
-          </list>
-        </property>
-      </bean>
-    </property>
-    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
-  </bean>
-
-  <bean id="Lab-MultiFileUpload4" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 4"/>
-    <property name="singlePageView" value="true"/>
-    <property name="page">
-      <bean parent="Uif-Page">
-        <property name="items">
-          <list>
-            <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="4">
-              <property name="headerText" value="File Information" />
-              <property name="collectionObjectClass"
-                        value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-              <property name="propertyName" value="collection1" />
-              <property name="addWithDialog" value="true" />
-              <property name="layoutManager.generateAutoSequence" value="false" />
-              <property name="layoutManager.richTable.render" value="true" />
-              <property name="items">
-                <list>
-                  <bean parent="Uif-DataField" p:label="File" p:propertyName="field1"/>
-                  <bean parent="Uif-DataField" p:label="Size" p:propertyName="field1"/>
-                  <bean parent="Uif-DataField" p:label="Date Uploaded" p:propertyName="date1"/>
-                  <bean parent="Uif-DataField" p:label="Detail 1" p:propertyName="field1"/>
-                  <bean parent="Uif-DataField" p:label="Detail 2" p:propertyName="field2"/>
+                  <bean parent="Uif-LinkField" p:readOnly="true" p:label="File" p:link.linkText="@{#line.name}"
+                        p:link.href="@{#line.url}&amp;selectedLineIndex=@{#index}"/>
+                  <bean parent="Uif-InputField" p:readOnly="true" p:label="Size" p:propertyName="sizeFormatted"/>
+                  <bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded" p:propertyName="dateUploadedFormatted"/>
+                  <bean parent="Uif-InputField" p:label="Detail 1" p:propertyName="detail1"/>
+                  <bean parent="Uif-InputField" p:label="Detail 2" p:propertyName="detail2">
+                    <property name="control">
+                      <bean parent="Uif-TextAreaControl" p:rows="4" p:cols="50"/>
+                    </property>
+                  </bean>
                 </list>
               </property>
             </bean>

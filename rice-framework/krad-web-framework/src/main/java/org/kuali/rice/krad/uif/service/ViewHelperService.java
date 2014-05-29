@@ -190,6 +190,9 @@ public interface ViewHelperService {
      */
     void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath);
 
+    void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
+                String collectionPath);
+
     /**
      * Adds a blank line to the collection
      *

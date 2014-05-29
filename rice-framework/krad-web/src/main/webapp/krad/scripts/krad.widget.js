@@ -698,13 +698,35 @@ function collapseDisclosures() {
     });
 }
 
-function createMultiFileUpload(id, additionalOptions) {
+/**
+ * Create a multi file upload collection element by invoking the fileUpload plugin
+ *
+ * @param id the id of the element
+ * @param collectionId the id of the contained collection
+ * @param additionalOptions options to pass to the plugin
+ */
+function createMultiFileUploadForCollection(id, collectionId, additionalOptions) {
     var options = {
-        filesContainer: "#" + id  + "_files",
-        dropZone: "#" + id  + "_fileTable",
-        prependFiles: true
+        dropZone: "#" + collectionId,
+        add: function (e, data) {
+            //data.context = jQuery('<p/>').text('Uploading...').appendTo(".fileupload-buttonbar");
+            data.collectionId = collectionId;
+            data.submit();
+        },
+        done: function (e, data) {
+            var responseContents = document.createElement('div');
+            responseContents.innerHTML = data.result;
+
+            // create a response object to process the response contents
+            var kradResponse = new KradResponse(responseContents);
+            kradResponse.processResponse();
+        }
     };
     options = jQuery.extend(options, additionalOptions);
+
+    /*    jQuery(document).bind('drop dragover', function (e) {
+            e.preventDefault();
+        });*/
 
     if (!options.url) {
         options.url = "?" + getUrlQueryString("methodToCall", "fileUpload");
@@ -714,19 +736,6 @@ function createMultiFileUpload(id, additionalOptions) {
     if ($fileInput.length) {
         $fileInput.fileupload(options);
     }
-
-    jQuery(document).bind('drop dragover', function (e) {
-        e.preventDefault();
-    });
-
-    // Load existing files:
-    jQuery.ajax({
-        url: options.url,
-        dataType: 'json',
-        context: $fileInput[0]
-    }).done(function (result) {
-        $fileInput.fileupload('option', 'done').call(this, jQuery.Event('done'), {result: result});
-    });
 }
 
 /**

@@ -3645,10 +3645,12 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void typeEnter() {
+        jGrowl("Press Enter");
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);
     }
 
     protected void typeTab() {
+        jGrowl("Press Tab");
         driver.switchTo().activeElement().sendKeys(Keys.TAB);
     }
 

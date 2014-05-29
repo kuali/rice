@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
 
-  <bean id="TestDocumentEntry" parent="MaintenanceDocumentEntry">
+  <bean id="TestDocumentEntry" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" />
     <property name="businessRulesClass" value="org.kuali.rice.krad.labs.ruleevent.BusinessRuleImpl" />
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />

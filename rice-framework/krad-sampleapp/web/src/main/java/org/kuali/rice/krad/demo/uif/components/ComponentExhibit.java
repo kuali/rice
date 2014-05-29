@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.TabGroup;
@@ -58,19 +59,30 @@ public class ComponentExhibit extends ContentElementBase {
         tabItems.addAll(demoGroups);
         tabGroup.setItems(tabItems);
 
+        //populate the currently selected example
+        int currentIndice = 0;
+        if (model instanceof KradSampleAppForm) {
+            KradSampleAppForm kradSampleAppForm = (KradSampleAppForm) model;
+            if (kradSampleAppForm.getCurrentExampleIndex()!=null) {
+                currentIndice = Integer.parseInt(kradSampleAppForm.getCurrentExampleIndex());
+            }
+            String id =  demoGroups.get(currentIndice).getId();
+            tabGroup.getTabsWidget().setDefaultActiveTabId(id);
+        }
+
         //source code viewer setup
         if(demoSourceCode != null && !demoSourceCode.isEmpty()){
-            sourceCodeViewer.setSourceCode(demoSourceCode.get(0));
+            sourceCodeViewer.setSourceCode(demoSourceCode.get(currentIndice));
         }
 
         if(additionalDemoSourceCode1 != null && !additionalDemoSourceCode1.isEmpty()
-                && additionalDemoSourceCode1.get(0) != null){
-            additionalSourceCodeViewer1.setSourceCode(additionalDemoSourceCode1.get(0));
+                && additionalDemoSourceCode1.get(currentIndice) != null){
+            additionalSourceCodeViewer1.setSourceCode(additionalDemoSourceCode1.get(currentIndice));
         }
 
         if(additionalDemoSourceCode2 != null && !additionalDemoSourceCode2.isEmpty()
-                        && additionalDemoSourceCode2.get(0) != null){
-            additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(0));
+                        && additionalDemoSourceCode2.get(currentIndice) != null){
+            additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(currentIndice));
         }
     }
 

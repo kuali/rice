@@ -22,6 +22,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -123,7 +124,14 @@ public class FileMetaBlob implements Serializable, FileMeta {
      */
     @Override
     public String getSizeFormatted() {
-        return "1kb";
+        DecimalFormat format = new DecimalFormat("#.###");
+        if (size >= 1000000000) {
+            return format.format((size / 1000000000)) + " GB";
+        }
+        if (size >= 1000000) {
+            return format.format((size / 1000000)) + " MB";
+        }
+        return format.format((size / 1000)) + " KB";
     }
 
     /**

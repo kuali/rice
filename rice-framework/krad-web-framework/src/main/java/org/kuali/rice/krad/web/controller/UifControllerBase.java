@@ -52,18 +52,23 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -390,6 +395,49 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * Called by the multiFile upload element to add a file object to the collection it controls.
+     */
+    @MethodAccessible
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addFileUploadLine")
+    public ModelAndView addFileUploadLine(@ModelAttribute("KualiForm")final  UifFormBase uifForm, BindingResult result,
+            MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+        uifForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey());
+        uifForm.setAjaxRequest(true);
+
+        final String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
+        final String bindingPath = request.getParameter(UifConstants.PostMetadata.BINDING_PATH);
+
+        Class<?> collectionObjectClass = (Class<?>) uifForm.getViewPostMetadata().getComponentPostData(collectionId,
+                        UifConstants.PostMetadata.COLL_OBJECT_CLASS);
+
+        Iterator<String> fileNamesItr = request.getFileNames();
+
+        while (fileNamesItr.hasNext()) {
+            String propertyPath = fileNamesItr.next();
+            MultipartFile uploadedFile = request.getFile(propertyPath);
+            final FileMeta fileObject = (FileMeta)KRADUtils.createNewObjectFromClass(collectionObjectClass);
+            fileObject.init(uploadedFile);
+
+            String id = UUID.randomUUID().toString() + "_" + uploadedFile.getName();
+
+            fileObject.setId(id);
+            fileObject.setDateUploaded(new Date());
+            fileObject.setUrl("?methodToCall=getFileFromLine&formKey=" + uifForm.getFormKey() + "&fileName=" + fileObject.getName()+ "&propertyPath=" + propertyPath);
+
+            ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewLifecycle.getHelper().processAndAddLineObject(uifForm, fileObject, collectionId,
+                                    bindingPath);
+                        }
+                    });
+        }
+
+        return refresh(uifForm, result, request, response);
+    }
+
+    /**
      * Called by the multiFile upload widget to delete a file; Inform the model of file to delete.
      */
     @MethodAccessible
@@ -440,20 +488,6 @@ public abstract class UifControllerBase {
                 response.flushBuffer();
             }
         }
-    }
-
-    /**
-     * Called by the multiFile upload widget to delete a file. Inform the model of file to delete.
-     */
-    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=fileDelete")
-    public
-    @ResponseBody
-    Map fileDelete(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result, HttpServletRequest request,
-            HttpServletResponse response) {
-        //System.out.println("delete file: propertyPath=>" + request.getParameter("propertyPath") + ", fileName=>" + request.getParameter("fileName"));
-
-        Map<String, Object> files = new HashMap<String, Object>();
-        return files;
     }
 
     /**

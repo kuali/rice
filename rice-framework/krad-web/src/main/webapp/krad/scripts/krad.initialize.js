@@ -126,6 +126,11 @@ jQuery(document).ready(function () {
         hideLoading();
     });
 
+    // Prevent drag and drop events on the document to support file drags into upload widget
+    jQuery(document).bind('drop dragover', function (e) {
+        e.preventDefault();
+    });
+
     time(false, "viewSetup-phase-1");
 
     // show the page

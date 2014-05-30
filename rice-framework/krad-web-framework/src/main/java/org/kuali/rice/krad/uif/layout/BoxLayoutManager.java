@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.Message;
+import org.kuali.rice.krad.uif.element.MultiFileUploadCollection;
 import org.kuali.rice.krad.uif.element.ProgressBar;
 import org.kuali.rice.krad.uif.field.ProgressBarField;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -112,7 +113,8 @@ public class BoxLayoutManager extends LayoutManagerBase {
                             || c instanceof Container
                             || c instanceof Message
                             || c instanceof ProgressBar
-                            || c instanceof ProgressBarField)) {
+                            || c instanceof ProgressBarField
+                            || c instanceof MultiFileUploadCollection)) {
                         c.addStyleClass("pull-left");
                     }
 

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.demo.uif.controller;
 
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
+import org.kuali.rice.krad.file.FileMeta;
+import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
@@ -23,6 +25,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -168,5 +173,20 @@ public class KradSampleAppController extends UifControllerBase {
         GlobalVariables.getMessageMap().addGrowlMessage("Test", "serverTestInfo");
 
         return getUIFModelAndView(form);
+    }
+
+    @Override
+    public void sendFileFromLineResponse(UifFormBase uifForm, HttpServletRequest request, HttpServletResponse response,
+            List<FileMeta> collection, FileMeta fileLine) throws Exception{
+        if (fileLine instanceof FileMetaBlob) {
+            InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
+            response.setContentType(fileLine.getContentType());
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
+
+            // copy it to response's OutputStream
+            FileCopyUtils.copy(is, response.getOutputStream());
+
+            response.flushBuffer();
+        }
     }
 }

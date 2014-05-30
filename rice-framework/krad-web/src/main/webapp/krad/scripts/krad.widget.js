@@ -724,10 +724,6 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
     };
     options = jQuery.extend(options, additionalOptions);
 
-    /*    jQuery(document).bind('drop dragover', function (e) {
-            e.preventDefault();
-        });*/
-
     if (!options.url) {
         options.url = "?" + getUrlQueryString("methodToCall", "fileUpload");
     }

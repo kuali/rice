@@ -454,34 +454,49 @@
   </bean>
 
   <bean id="Uif-MultiFileUploadCollection" parent="Uif-MultiFileUploadCollection-parentBean"/>
-  <bean id="Uif-MultiFileUploadCollection-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.MultiFileUploadCollection"
+  <bean id="Uif-MultiFileUploadCollection-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.MultiFileUploadCollection"
         parent="Uif-ContentElementBase" scope="prototype">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/multiFileUploadCollection.ftl"/>
     <property name="templateName" value="uif_multiFileUploadCollection"/>
     <property name="methodToCall" value="addFileUploadLine"/>
     <property name="addFilesButtonText" value="Add Files..."/>
     <property name="collection">
-      <bean parent="Uif-TableCollectionGroup">
+      <bean parent="Uif-TableCollectionSubSection">
+        <property name="additionalCssClasses" value="uif-fileUploadCollection"/>
+        <property name="layoutManager.richTable.templateOptions">
+          <map>
+            <entry key="bAutoWidth" value="false"/>
+            <entry key="sDom" value="t"/>
+            <entry key="bRetrieve" value="true"/>
+            <entry key="bPaginate" value="false"/>
+          </map>
+        </property>
         <property name="renderAddLine" value="false"/>
         <property name="layoutManager.renderSequenceField" value="false"/>
-        <property name="collectionObjectClass"
-                  value="org.kuali.rice.krad.file.FileMeta"/>
         <property name="items">
           <list>
             <bean parent="Uif-LinkField" p:readOnly="true" p:label="File" p:link.linkText="@{#line.name}"
-                  p:link.href="@{#line.url}&amp;selectedLineIndex=@{#index}"/>
+                  p:link.href="@{#line.url}&amp;selectedLineIndex=@{#index}" p:link.target="_blank"/>
             <bean parent="Uif-InputField" p:readOnly="true" p:label="Size" p:propertyName="sizeFormatted"/>
-            <bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded" p:propertyName="dateUploadedFormatted"/>
+            <bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded"
+                  p:propertyName="dateUploadedFormatted"/>
           </list>
         </property>
         <property name="lineActions">
           <list>
-            <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteFileUploadLine"
-                  p:actionLabel="Delete"
+            <bean parent="Uif-SecondaryActionButton" p:methodToCall="deleteFileUploadLine"
+                  p:title="Delete"
                   p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"
                   p:onMouseOutScript="deleteLineMouseOut(this, 'uif-collectionDeleteHighlight');"
                   p:onClickScript="writeCurrentPageToSession(this);" p:dirtyOnAction="true"
-                  p:loadingMessageText="Deleting File..."/>
+                  p:loadingMessageText="Deleting File...">
+              <property name="cssClasses">
+                <list merge="true">
+                  <value>icon-trash</value>
+                </list>
+              </property>
+            </bean>
           </list>
         </property>
       </bean>

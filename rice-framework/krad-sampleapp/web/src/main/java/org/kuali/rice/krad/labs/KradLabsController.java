@@ -71,7 +71,7 @@ public class KradLabsController extends UifControllerBase {
             List<FileMeta> collection, FileMeta fileLine) throws Exception{
         if (fileLine instanceof FileMetaBlob) {
             InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
-            response.setContentType("application/force-download");
+            response.setContentType(fileLine.getContentType());
             response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
 
             // copy it to response's OutputStream

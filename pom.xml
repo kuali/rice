@@ -960,9 +960,10 @@
             <!-- impl module is huge and requires at least 768m to compile -->
             <fork>true</fork>
             <meminitial>256</meminitial>
-            <maxmem>1024</maxmem>
+            <maxmem>2048m</maxmem>
               <source>1.7</source>
               <target>1.7</target>
+            <permgensize>256m</permgensize>
           </configuration>
         </plugin>
         <plugin>

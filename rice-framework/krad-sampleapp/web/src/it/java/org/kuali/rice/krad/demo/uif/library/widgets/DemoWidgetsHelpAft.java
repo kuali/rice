@@ -42,7 +42,7 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
 
     protected void testWidgetsTooltipHelp() throws Exception {
         fireMouseOverEvent(By.id("Demo-Help-Field1_label"));
-        WebElement helpExample1 = driver.findElement(By.xpath("//div[@data-for=\"Demo-Help-Field1_label\"]"))
+        WebElement helpExample1 = driver.findElement(By.id("Demo-Help-Field1_label"))
                 .findElement(By.className("jquerybubblepopup-innerHtml"));
         if (!helpExample1.isDisplayed()) {
             fail("Example 1 help not displayed.");

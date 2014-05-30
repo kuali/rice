@@ -66,7 +66,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
 
         Thread.sleep(2000);
 
-        assertTextPresent("Attachment_Note");
+        waitForTextPresent("Attachment_Note");
         assertTextPresent("attachment.txt");
         assertTextNotPresent("Note Text is a required field.");
     }

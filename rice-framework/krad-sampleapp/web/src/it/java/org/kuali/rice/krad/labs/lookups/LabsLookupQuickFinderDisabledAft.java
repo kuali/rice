@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -51,7 +52,6 @@ public class LabsLookupQuickFinderDisabledAft extends LabsLookupBase {
     
     protected void testLabsLookupQuickFinderDisabled()throws Exception {
         waitForElementPresentByXpath("//input[@name='lookupCriteria[number]' and @value='a2']");
-        assertTextNotPresent("Fiscal Officer");
-//        assertTextNotPresent("Principal Name");
+        waitForElementNotPresent(By.xpath("//a[@class='icon-search']"));
     }
 }

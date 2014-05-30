@@ -56,6 +56,11 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
   <context:annotation-config/>
+  
+  <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" />
+
+  <import resource="_SampleAppJpaSpringBeans.xml"/>
 
   <bean id="sampleAppModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-SAP"/>
@@ -141,6 +146,11 @@
 
         <!-- DummyLogin -->
         <value>classpath:org/kuali/rice/krad/login/DummyLoginView.xml</value>
+
+        <!-- Legacy -->
+        <value>classpath:org/kuali/rice/legacy/LegacyTravelCompanyKns.xml</value>
+        <value>classpath:org/kuali/rice/legacy/LegacyTravelCompanyKrad.xml</value>
+        <value>classpath:org/kuali/rice/legacy/LegacyTravelAuthorizationKns.xml</value>
       </list>
     </property>
     <property name="databaseRepositoryFilePaths">
@@ -154,6 +164,7 @@
         <value>edu.sampleu.bookstore</value>
         <value>edu.sampleu.demo</value>
         <value>edu.sampleu.kew.krad</value>
+        <value>org.kuali.rice.legacy</value>
       </list>
     </property>
     <property name="resourceBundleNames">
@@ -161,6 +172,12 @@
         <value>edu.sampleu.demo.course.UifStudentDefinitionsResources</value>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewP3Resources</value>
         <value>edu.sampleu.demo.kitchensink.UifComponentsViewP4Resources</value>
+      </list>
+    </property>
+    <property name="providers">
+      <list>
+        <ref bean="jpaPersistenceProvider"/>
+        <ref bean="metadataProvider"/>
       </list>
     </property>
   </bean>

@@ -25,3 +25,6 @@
 <%--<td class="content" valign="top">--%>
   <%--<kradChannel:knsConvert/>--%>
 <%--</td>--%>
+<td class="content" valign="top">
+  <kradChannel:legacy/>
+</td>

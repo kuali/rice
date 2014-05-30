@@ -248,4 +248,28 @@
     </reference-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.legacy.LegacyTravelCompanyOjb" table="TRVL_CO_T">
+    <field-descriptor name="travelCompanyId" column="CO_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true"/>
+    <field-descriptor name="travelCompanyName" column="CO_NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.legacy.LegacyTravelAuthorization" table="TRVL_AUTH_DOC_T">
+    <field-descriptor name="documentNumber" column="TRVL_AUTH_DOC_ID" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="tripBegin" column="TRVL_BGN_DT" jdbc-type="TIMESTAMP"/>
+    <field-descriptor name="tripEnd" column="TRVL_END_DT" jdbc-type="TIMESTAMP"/>
+    <field-descriptor name="tripDescription" column="TRVL_DESC" jdbc-type="VARCHAR"/>
+    <field-descriptor name="tripDestinationId" column="TRVL_DEST_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="travelerDetailId" column="TRAVELER_DTL_ID" jdbc-type="VARCHAR"/>
+    <field-descriptor name="travelTypeCode" column="TRVL_TYP_CD" jdbc-type="VARCHAR"/>
+    <field-descriptor name="expenseLimit" column="EXP_LMT" jdbc-type="DECIMAL"
+                      conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion"/>
+    <field-descriptor name="cellPhoneNumber" column="CELL_PH_NUM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"/>
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
+  </class-descriptor>
+
 </descriptor-repository>

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.maintenance;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,9 +40,10 @@ public class LabsMaintenanceCopyWithRestrictedFieldAft extends LabsMaintenanceBa
 
     protected void testMaintenanceCopyWithRestrictedField() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Copy with restricted field");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/th/label[contains(text(),'Principal Name:')]");
+    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/th/label[contains(text(),'Fiscal Officer:')]");
     	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/td/div[contains(text(),'fran')]");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr[5]/td[2]/div[contains(text(),'')]");
+        String newFiscalOfficerText = findElement(By.xpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr[5]/td[2]/div")).getText();
+        assertFalse("Maintenance Copy Restricted Field not restricted", newFiscalOfficerText.contains("fran"));
     }
 
     @Test

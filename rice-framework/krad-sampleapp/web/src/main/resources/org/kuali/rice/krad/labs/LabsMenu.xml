@@ -110,6 +110,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
                           <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload3"/>
+                          <bean parent="Uif-Link" p:linkText="Schema" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
                         </list>
                       </property>
                     </bean>
@@ -219,9 +221,11 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-LightTable"/>
                           <bean parent="Uif-Link" p:linkText="Course Search Basic Table" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-BasicTableCollection"/>
-                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Server Side Paging" p:target="_self"
+                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Server Side Paging"
+                                p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-ServerSidePaging"/>
-                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Without Server Side Paging" p:target="_self"
+                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Without Server Side Paging"
+                                p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-NoServerSidePaging"/>
                         </list>
                       </property>

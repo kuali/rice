@@ -31,7 +31,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  * information relating to the display, validation, and general maintenance of a
  * specific attribute of an entry.
  */
-@BeanTag(name = "externalizableAttributeDefinitionProxy-bean")
+@BeanTag(name = "externalizableAttributeDefinitionProxy")
 public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition {
     private static final long serialVersionUID = -3204870440281417429L;
 

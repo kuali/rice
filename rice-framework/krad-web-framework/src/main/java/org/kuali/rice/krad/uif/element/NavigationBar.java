@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 
@@ -25,6 +27,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "navbar", parent = "Uif-NavigationBar")
 public class NavigationBar extends ContentElementBase {
     private static final long serialVersionUID = -2061519100931559642L;
 
@@ -45,6 +48,7 @@ public class NavigationBar extends ContentElementBase {
      *
      * @return String text to use for branding
      */
+    @BeanTagAttribute
     public String getBrandText() {
         return brandText;
     }
@@ -64,6 +68,7 @@ public class NavigationBar extends ContentElementBase {
      *
      * @return Image component to use for branding
      */
+    @BeanTagAttribute
     public Image getBrandImage() {
         return brandImage;
     }
@@ -80,6 +85,7 @@ public class NavigationBar extends ContentElementBase {
      *
      * @return Group instance for navigation
      */
+    @BeanTagAttribute
     public Group getNavigationBarGroup() {
         return navigationBarGroup;
     }
@@ -89,6 +95,20 @@ public class NavigationBar extends ContentElementBase {
      */
     public void setNavigationBarGroup(Group navigationBarGroup) {
         this.navigationBarGroup = navigationBarGroup;
+    }
+
+    /**
+     * Convenience getter for the navigation group items.
+     *
+     * @return list of components for the navigation bar group
+     */
+    @BeanTagAttribute
+    public List<? extends Component> getItems() {
+        if (this.navigationBarGroup != null) {
+            return this.navigationBarGroup.getItems();
+        }
+
+        return null;
     }
 
     /**

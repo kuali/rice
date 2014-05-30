@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
  */
 public class BeanTagAttributeInfo {
     private String name;
+    private String propertyName;
     private BeanTagAttribute.AttributeType type;
     private Class<?> valueType;
     private Type genericType;
@@ -37,31 +38,35 @@ public class BeanTagAttributeInfo {
     }
 
     /**
-     * Sets the name of the property being defined by the attribute or tag.
+     * Retrieves the name of the property in the schema (tag or attribute).
      *
-     * @param name - The name of the property.
+     * @return name of property in schema
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @see BeanTagAttributeInfo#getName()
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Sets the type of information being stored by the property.
+     * Name of the property in the component class.
      *
-     * @param type - The type of information being stored by the property.
+     * @return property name
      */
-    public void setType(BeanTagAttribute.AttributeType type) {
-        this.type = type;
+    public String getPropertyName() {
+        return propertyName;
     }
 
     /**
-     * Retrieves the name of the stored property.
-     * This is the name of the property being defined by the tag property.
-     *
-     * @return The name of the property.
+     * @see BeanTagAttributeInfo#getPropertyName()
      */
-    public String getName() {
-        return name;
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
     }
 
     /**
@@ -72,6 +77,15 @@ public class BeanTagAttributeInfo {
      */
     public BeanTagAttribute.AttributeType getType() {
         return type;
+    }
+
+    /**
+     * Sets the type of information being stored by the property.
+     *
+     * @param type - The type of information being stored by the property.
+     */
+    public void setType(BeanTagAttribute.AttributeType type) {
+        this.type = type;
     }
 
     /**
@@ -118,11 +132,10 @@ public class BeanTagAttributeInfo {
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof BeanTagAttributeInfo){
-            return valueType.equals(((BeanTagAttributeInfo)obj).getValueType()) && type.equals(((BeanTagAttributeInfo)obj).getType())
-             && name.equals(((BeanTagAttributeInfo)obj).getName());
-        }
-        else{
+        if (obj instanceof BeanTagAttributeInfo) {
+            return valueType.equals(((BeanTagAttributeInfo) obj).getValueType()) && type.equals(
+                    ((BeanTagAttributeInfo) obj).getType()) && name.equals(((BeanTagAttributeInfo) obj).getName());
+        } else {
             return false;
         }
     }

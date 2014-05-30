@@ -74,7 +74,6 @@
   <param name="load.dictionary.external.messages" override="false">true</param>
 
   <param name="maxNumberOfSessionForms" override="false">10</param>
-  <param name="krad.schema.classes">META-INF/krad_schemaclasses.xml</param>
 
   <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
    of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
@@ -101,5 +100,8 @@
   <param name="validationPatternRegex.year" override="false">(16|17|18|19|20|21)[0-9]{2}</param>
   <param name="validationPatternRegex.zipcode" override="false">[0-9]{5}(\-[0-9]{4})?</param>
   <param name="validationPatternRegex.phoneNumber" override="false">[0-9]{3}\-[0-9]{3}\-[0-9]{4}</param>
+
+  <!-- packages to scan for finding component classes that support the custom schema -->
+  <param name="rice.krad.schema.packages" override="false">org.kuali.rice.krad.uif,org.kuali.rice.krad.datadictionary,org.kuali.rice.krad.lookup</param>
 
 </config>

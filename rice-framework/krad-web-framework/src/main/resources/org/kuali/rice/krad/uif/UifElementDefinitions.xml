@@ -32,6 +32,10 @@
     <property name="templateName" value="uif_div"/>
   </bean>
 
+  <bean id="Uif-Content" parent="Uif-Content-parentBean"/>
+  <bean id="Uif-Content-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.element.Content" scope="prototype"/>
+
   <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
   <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ValidationMessages"

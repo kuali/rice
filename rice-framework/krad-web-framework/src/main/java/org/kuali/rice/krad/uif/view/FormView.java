@@ -31,11 +31,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "formView-bean", parent = "Uif-FormView"),
-        @BeanTag(name = "formView-knsTheme-bean", parent = "Uif-FormView-KnsTheme"),
-        @BeanTag(name = "incidentReportView-bean", parent = "Uif-IncidentReportView"),
-        @BeanTag(name = "initiatedDocumentView-bean", parent = "InitiatedDocumentView"),
-        @BeanTag(name = "initiatedDocumentView-KNS-bean", parent = "InitiatedDocumentView-KNS")})
+@BeanTag(name = "view", parent = "Uif-FormView")
 public class FormView extends View {
     private static final long serialVersionUID = -3291164284675273147L;
 
@@ -54,42 +50,6 @@ public class FormView extends View {
         applyDirtyCheck = true;
 
         additionalHiddenValues = new HashMap<String, String>();
-    }
-
-    /**
-     * Indicates whether a Form element should be rendered for the View. This is
-     * necessary for pages that need to submit data back to the server. Note
-     * that even if a page is read-only, a form element is generally needed for
-     * the navigation. Defaults to true
-     *
-     * @return true if the form element should be rendered, false if it should
-     *         not be
-     */
-    @BeanTagAttribute(name = "renderForm")
-    public boolean isRenderForm() {
-        return this.renderForm;
-    }
-
-    /**
-     * Setter for the render form indicator
-     *
-     * @param renderForm
-     */
-    public void setRenderForm(boolean renderForm) {
-        this.renderForm = renderForm;
-    }
-
-    /**
-     * Indicates whether to perform the validate model phase of the view
-     * lifecycle. This phase will validate the model against configured
-     * dictionary validations and report errors. Defaults to true
-     *
-     * @return boolean true if model data should be validated, false if it
-     *         should not be
-     */
-    @BeanTagAttribute(name = "validateServerSide")
-    public boolean isValidateServerSide() {
-        return this.validateServerSide;
     }
 
     /**
@@ -119,6 +79,42 @@ public class FormView extends View {
     }
 
     /**
+     * Indicates whether a Form element should be rendered for the View. This is
+     * necessary for pages that need to submit data back to the server. Note
+     * that even if a page is read-only, a form element is generally needed for
+     * the navigation. Defaults to true
+     *
+     * @return true if the form element should be rendered, false if it should
+     *         not be
+     */
+    @BeanTagAttribute
+    public boolean isRenderForm() {
+        return this.renderForm;
+    }
+
+    /**
+     * Setter for the render form indicator
+     *
+     * @param renderForm
+     */
+    public void setRenderForm(boolean renderForm) {
+        this.renderForm = renderForm;
+    }
+
+    /**
+     * Indicates whether to perform the validate model phase of the view
+     * lifecycle. This phase will validate the model against configured
+     * dictionary validations and report errors. Defaults to true
+     *
+     * @return boolean true if model data should be validated, false if it
+     *         should not be
+     */
+    @BeanTagAttribute
+    public boolean isValidateServerSide() {
+        return this.validateServerSide;
+    }
+
+    /**
      * Setter for the validate server side indicator
      *
      * @param validateServerSide
@@ -133,7 +129,7 @@ public class FormView extends View {
      *
      * @return the validateClientSide
      */
-    @BeanTagAttribute(name = "validateClientSide")
+    @BeanTagAttribute
     public boolean isValidateClientSide() {
         return validateClientSide;
     }
@@ -158,7 +154,7 @@ public class FormView extends View {
      *
      * @return post URL
      */
-    @BeanTagAttribute(name = "formPostUrl")
+    @BeanTagAttribute
     public String getFormPostUrl() {
         return this.formPostUrl;
     }
@@ -178,6 +174,7 @@ public class FormView extends View {
      * @return map for additional hiddens, key will be used as the name of the elememt, the map value will
      * be the value of the element
      */
+    @BeanTagAttribute
     public Map<String, String> getAdditionalHiddenValues() {
         return additionalHiddenValues;
     }

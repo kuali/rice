@@ -191,7 +191,8 @@ public class DialogGroup extends GroupBase {
      *
      * @return String containing the prompt text
      */
-    @BeanTagAttribute(name = "promptText")
+
+    @BeanTagAttribute
     public String getPromptText() {
         if (prompt != null) {
             return prompt.getMessage().getMessageText();
@@ -217,7 +218,7 @@ public class DialogGroup extends GroupBase {
      * @return Message component for prompt
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "prompt", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public MessageField getPrompt() {
         return prompt;
     }
@@ -238,7 +239,7 @@ public class DialogGroup extends GroupBase {
      * @return InputField component
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "explanation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public InputField getExplanation() {
         return explanation;
     }
@@ -260,7 +261,7 @@ public class DialogGroup extends GroupBase {
      *
      * @return the List of response actions to provide the user
      */
-    @BeanTagAttribute(name = "availableResponses", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<KeyValue> getAvailableResponses() {
         return availableResponses;
     }
@@ -301,7 +302,7 @@ public class DialogGroup extends GroupBase {
      *
      * @return js that will execute for the response event
      */
-    @BeanTagAttribute(name = "onDialogResponseScript")
+    @BeanTagAttribute
     public String getOnDialogResponseScript() {
         return onDialogResponseScript;
     }
@@ -322,7 +323,7 @@ public class DialogGroup extends GroupBase {
      *
      * @return js code to execute when the dialog is shown
      */
-    @BeanTagAttribute(name = "onShowDialogScript")
+    @BeanTagAttribute
     public String getOnShowDialogScript() {
         return onShowDialogScript;
     }

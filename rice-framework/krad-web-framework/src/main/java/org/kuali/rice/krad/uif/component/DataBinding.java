@@ -16,17 +16,14 @@
 package org.kuali.rice.krad.uif.component;
 
 /**
- * Components that bind to a model (hold model data) should implement this
- * interface
+ * Components that bind to a model (hold model data) should implement this interface.
  *
- * <p>
- * Provides access to the <code>BindingInfo</code> object for the component that
- * contains binding configuration
- * </p>
+ * <p>Provides access to the {@link org.kuali.rice.krad.uif.component.BindingInfo} object for the component that
+ * contains binding configuration</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DataBinding {
+public interface DataBinding extends Component {
 
 	/**
 	 * Returns the <code>BindingInfo</code> instance that is configured for the
@@ -35,14 +32,14 @@ public interface DataBinding {
 	 * @return BindingInfo
 	 * @see org.kuali.rice.krad.uif.component.BindingInfo
 	 */
-	public BindingInfo getBindingInfo();
+	BindingInfo getBindingInfo();
 
     /**
      * Setter for the binding info instance
      *
      * @param bindingInfo
      */
-    public void setBindingInfo(BindingInfo bindingInfo);
+    void setBindingInfo(BindingInfo bindingInfo);
 
 	/**
 	 * Name of the property (relative to the parent object) the component binds
@@ -50,5 +47,5 @@ public interface DataBinding {
 	 *
 	 * @return String property name
 	 */
-	public String getPropertyName();
+	String getPropertyName();
 }

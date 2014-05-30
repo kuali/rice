@@ -33,7 +33,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "collectionDefinition-bean")
+@BeanTag(name = "collectionDefinition")
 public class CollectionDefinition extends DataDictionaryDefinitionBase implements CollectionSizeConstrainable {
     private static final long serialVersionUID = -2644072136271281041L;
 

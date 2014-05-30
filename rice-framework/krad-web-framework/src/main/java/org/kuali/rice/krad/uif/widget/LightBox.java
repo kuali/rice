@@ -28,8 +28,8 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "lightBox-bean", parent = "Uif-LightBox"),
-        @BeanTag(name = "lightBoxPost-bean", parent = "Uif-LightBoxPost")})
+@BeanTags({@BeanTag(name = "lightBox", parent = "Uif-LightBox"),
+        @BeanTag(name = "lightBoxPost", parent = "Uif-LightBoxPost")})
 public class LightBox extends WidgetBase {
     private static final long serialVersionUID = -4004284762546700975L;
 
@@ -69,7 +69,7 @@ public class LightBox extends WidgetBase {
     /**
      * @return height of light box
      */
-    @BeanTagAttribute(name = "height")
+    @BeanTagAttribute
     public String getHeight() {
         return height;
     }
@@ -87,7 +87,7 @@ public class LightBox extends WidgetBase {
     /**
      * @return width of light box
      */
-    @BeanTagAttribute(name = "width")
+    @BeanTagAttribute
     public String getWidth() {
         return width;
     }
@@ -107,7 +107,7 @@ public class LightBox extends WidgetBase {
      *
      * @return true if the link should have application parameters added, false otherwise
      */
-    @BeanTagAttribute(name = "addAppParms")
+    @BeanTagAttribute
     public boolean isAddAppParms() {
         return addAppParms;
     }

@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "activeCollectionFilter-bean")
+@BeanTag(name = "activeCollectionFilter")
 public class ActiveCollectionFilter implements CollectionFilter {
     private static final long serialVersionUID = 3273495753269940272L;
 

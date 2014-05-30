@@ -43,15 +43,7 @@ import java.util.regex.Pattern;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "message-bean", parent = "Uif-Message"),
-        @BeanTag(name = "instructionalMessage-bean", parent = "Uif-InstructionalMessage"),
-        @BeanTag(name = "constraintMessage-bean", parent = "Uif-ConstraintMessage"),
-        @BeanTag(name = "requiredMessage-bean", parent = "Uif-RequiredMessage"),
-        @BeanTag(name = "requiredInstructionsMessage-bean", parent = "Uif-RequiredInstructionsMessage"),
-        @BeanTag(name = "stateBased-requiredInstructionsMessage-bean",
-                parent = "Uif-StateBased-RequiredInstructionsMessage"),
-        @BeanTag(name = "dialogPrompt-bean", parent = "Uif-DialogPrompt"),
-        @BeanTag(name = "imageCutineMessage-bean", parent = "Uif-ImageCutineMessage")})
+@BeanTag(name = "message", parent = "Uif-Message")
 public class Message extends ContentElementBase {
     private static final long serialVersionUID = 4090058533452450395L;
 
@@ -193,7 +185,7 @@ public class Message extends ContentElementBase {
      *
      * @return message text
      */
-    @BeanTagAttribute(name = "messageText")
+    @BeanTagAttribute
     public String getMessageText() {
         return this.messageText;
     }
@@ -208,12 +200,12 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * Defines the html tag that will wrap this group, if left blank, this will automatically be set by the framework
+     * Defines the html tag that will wrap this message, if left blank, this will automatically be set by the framework
      * to the appropriate tag (in most cases p or div)
      *
-     * @return the html tag used to wrap this group
+     * @return the html tag used to wrap this message
      */
-    @BeanTagAttribute(name = "wrapperTag")
+    @BeanTagAttribute
     public String getWrapperTag() {
         return wrapperTag;
     }
@@ -235,7 +227,7 @@ public class Message extends ContentElementBase {
      *
      * @return true if generating a wrapping span, false otherwise
      */
-    @BeanTagAttribute(name = "renderWrapperTag")
+    @BeanTagAttribute
     public boolean isRenderWrapperTag() {
         return renderWrapperTag && wrapperTag != null;
     }
@@ -282,7 +274,7 @@ public class Message extends ContentElementBase {
      *
      * @return the inlineComponents to be filled in at indexes referenced by [n] in the message
      */
-    @BeanTagAttribute(name = "inlineComponents", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }
@@ -301,7 +293,7 @@ public class Message extends ContentElementBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "parseComponents")
+    @BeanTagAttribute
     public boolean isParseComponents() {
         return parseComponents;
     }

@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * Renders a meta tag in the head of the html document.
@@ -27,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "view-MetaTag", parent = "Uif-MetaTag")
+@BeanTag(name = "metaTag", parent = "Uif-MetaTag")
 public class MetaTag extends ContentElementBase {
     private static final long serialVersionUID = -3479173950568700937L;
 
@@ -46,7 +45,7 @@ public class MetaTag extends ContentElementBase {
      *
      * @return  name attribute of meta tag
      */
-    @BeanTagAttribute(name = "name")
+    @BeanTagAttribute
     public String getName() {
         return name;
     }
@@ -65,7 +64,7 @@ public class MetaTag extends ContentElementBase {
      *
      * @return  content attribute of meta tag
      */
-    @BeanTagAttribute(name = "content")
+    @BeanTagAttribute
     public String getContent() {
         return content;
     }
@@ -84,7 +83,7 @@ public class MetaTag extends ContentElementBase {
      *
      * @return  http_equiv attribute of meta tag
      */
-    @BeanTagAttribute(name = "http_equiv")
+    @BeanTagAttribute
     public String getHttp_equiv() {
         return http_equiv;
     }
@@ -95,7 +94,4 @@ public class MetaTag extends ContentElementBase {
     public void setHttp_equiv(String http_equiv) {
         this.http_equiv = http_equiv;
     }
-
-
-
 }

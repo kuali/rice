@@ -35,7 +35,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  * The value corresponding to the targetName key is the attribute name for
  * the object being referenced by objectAttributeName.
  */
-@BeanTag(name = "primitiveAttributeDefinition-bean")
+@BeanTag(name = "primitiveAttributeDefinition")
 public class PrimitiveAttributeDefinition extends DataDictionaryDefinitionBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PrimitiveAttributeDefinition.class);
     private static final long serialVersionUID = -715128943756700821L;

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.view;
 
 import java.util.List;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Iframe;
@@ -33,7 +34,10 @@ import org.kuali.rice.krad.uif.util.UrlInfo;
  * itself, the default bean for this class will attempt to pass a url parameter notifying the View that it is being
  * shown in an iframe; this can be used in SpringEL to invoke special logic (such as not rendering some components,
  * like the app header)</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "iframeView", parent = "Uif-IframeView")
 public class IframeView extends FormView {
     private UrlInfo location;
     private Iframe iframe;
@@ -76,7 +80,7 @@ public class IframeView extends FormView {
      *
      * @return the url location object
      */
-    @BeanTagAttribute(name = "location", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public UrlInfo getLocation() {
         return location;
     }
@@ -89,9 +93,19 @@ public class IframeView extends FormView {
     }
 
     /**
-     * Convenience setter for setting the href (full URL) of the location object
-     *
-     * @param href URL for location option
+     * @see org.kuali.rice.krad.uif.util.UrlInfo#getHref()
+     */
+    @BeanTagAttribute
+    public String getHref() {
+        if (this.location != null) {
+            return this.location.getHref();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see IframeView#getHref()
      */
     public void setHref(String href) {
         if (this.location == null) {
@@ -107,6 +121,7 @@ public class IframeView extends FormView {
      *
      * @return the iframe component
      */
+    @BeanTagAttribute
     public Iframe getIframe() {
         return iframe;
     }

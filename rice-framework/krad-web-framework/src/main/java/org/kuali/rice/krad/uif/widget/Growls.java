@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "growls-bean", parent = "Uif-Growls")
+@BeanTag(name = "growls", parent = "Uif-Growls")
 public class Growls extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
 
@@ -76,7 +76,7 @@ public class Growls extends WidgetBase {
      *
      * @return the sticky
      */
-    @BeanTagAttribute(name="sticky")
+    @BeanTagAttribute
     public boolean isSticky() {
         return this.sticky;
     }
@@ -93,7 +93,7 @@ public class Growls extends WidgetBase {
      *
      * @return the timeShown
      */
-    @BeanTagAttribute(name="timeShown")
+    @BeanTagAttribute
     public int getTimeShown() {
         return this.timeShown;
     }
@@ -111,7 +111,7 @@ public class Growls extends WidgetBase {
      *
      * @return the position
      */
-    @BeanTagAttribute(name="position")
+    @BeanTagAttribute
     public String getPosition() {
         return this.position;
     }

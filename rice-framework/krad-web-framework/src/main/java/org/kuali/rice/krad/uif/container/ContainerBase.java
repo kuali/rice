@@ -192,14 +192,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.Container#getValidationMessages()
+     * {@inheritDoc}
      */
     @Override
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public ValidationMessages getValidationMessages() {
-        return this.validationMessages;
-    }
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+	public ValidationMessages getValidationMessages() {
+		return this.validationMessages;
+	}
 
     /**
      * {@inheritDoc}
@@ -209,17 +209,17 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         this.validationMessages = validationMessages;
     }
 
-    /**
-     * @see org.kuali.rice.krad.uif.widget.Helpable#getHelp()
-     */
-    @Override
-    @BeanTagAttribute(name = "help", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Help getHelp() {
-        return this.help;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+	public Help getHelp() {
+		return this.help;
+	}
 
     /**
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setHelp(org.kuali.rice.krad.uif.widget.Help)
+     * {@inheritDoc}
      */
     @Override
     public void setHelp(Help help) {
@@ -227,9 +227,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-     * For containers the help tooltip is placed on the header.
-     *
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     * {@inheritDoc}
      */
     @Override
     public void setTooltipOfComponent(Tooltip tooltip) {
@@ -237,10 +235,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-     * Return the container header text for the help title
-     *
-     * @return container title
-     * @see org.kuali.rice.krad.uif.widget.Helpable#setTooltipOfComponent(org.kuali.rice.krad.uif.widget.Tooltip)
+     * {@inheritDoc}
      */
     @Override
     public String getHelpTitle() {
@@ -248,11 +243,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public abstract List<? extends Component> getItems();
+	 * {@inheritDoc}
+	 */
+	@Override
+    @BeanTagAttribute
+	public abstract List<? extends Component> getItems();
 
     /**
      * Setter for the containers list of components
@@ -261,19 +256,19 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      */
     public abstract void setItems(List<? extends Component> items);
 
-    /**
-     * For <code>Component</code> instances in the container's items list that
-     * do not have an order set, a default order number will be assigned using
-     * this property. The first component found in the list without an order
-     * will be assigned the configured initial value, and incremented by one for
-     * each component (without an order) found afterwards
-     *
-     * @return int order sequence
-     */
-    @BeanTagAttribute(name = "defaultItemPosition")
-    public int getDefaultItemPosition() {
-        return this.defaultItemPosition;
-    }
+	/**
+	 * For <code>Component</code> instances in the container's items list that
+	 * do not have an order set, a default order number will be assigned using
+	 * this property. The first component found in the list without an order
+	 * will be assigned the configured initial value, and incremented by one for
+	 * each component (without an order) found afterwards
+	 *
+	 * @return int order sequence
+	 */
+    @BeanTagAttribute
+	public int getDefaultItemPosition() {
+		return this.defaultItemPosition;
+	}
 
     /**
      * Setter for the container's item ordering sequence number (initial value)
@@ -284,14 +279,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         this.defaultItemPosition = defaultItemPosition;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "layoutManager", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public LayoutManager getLayoutManager() {
-        return this.layoutManager;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.BYTYPE)
+	public LayoutManager getLayoutManager() {
+		return this.layoutManager;
+	}
 
     /**
      * {@inheritDoc}
@@ -301,14 +296,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         this.layoutManager = layoutManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "header", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Header getHeader() {
-        return this.header;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+	public Header getHeader() {
+		return this.header;
+	}
 
     /**
      * {@inheritDoc}
@@ -318,14 +313,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
         this.header = header;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "footer", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Group getFooter() {
-        return this.footer;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECT)
+	public Group getFooter() {
+		return this.footer;
+	}
 
     /**
      * {@inheritDoc}
@@ -358,8 +353,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return The text that should be displayed on the header
      */
-    @BeanTagAttribute(name = "headertext")
-    public String getHeaderText() {
+    @BeanTagAttribute
+    public String getHeaderText () {
         if (header != null && header.getHeaderText() != null) {
             return header.getHeaderText();
         } else {
@@ -402,10 +397,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return instructional message
      */
-    @BeanTagAttribute(name = "instructionalText")
-    public String getInstructionalText() {
-        return this.instructionalText;
-    }
+    @BeanTagAttribute
+	public String getInstructionalText() {
+		return this.instructionalText;
+	}
 
     /**
      * Setter for the instructional message
@@ -426,10 +421,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      *
      * @return instructional message field
      */
-    @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Message getInstructionalMessage() {
-        return this.instructionalMessage;
-    }
+    @BeanTagAttribute
+	public Message getInstructionalMessage() {
+		return this.instructionalMessage;
+	}
 
     /**
      * Setter for the instructional text message field
@@ -443,6 +438,22 @@ public abstract class ContainerBase extends ComponentBase implements Container {
      */
     public void setInstructionalMessage(Message instructionalMessage) {
         this.instructionalMessage = instructionalMessage;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public String getEnterKeyAction() {
+        return this.enterKeyAction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setEnterKeyAction(String enterKeyAction) {
+        this.enterKeyAction = enterKeyAction;
     }
 
     /**
@@ -461,21 +472,4 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
         super.completeValidation(tracer.getCopy());
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "enterKeyAction")
-    public String getEnterKeyAction() {
-        return this.enterKeyAction;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setEnterKeyAction(String enterKeyAction) {
-        this.enterKeyAction = enterKeyAction;
-    }
-
 }

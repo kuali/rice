@@ -68,9 +68,8 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "propertyReplacer-bean", parent = "Uif-ConditionalBeanPropertyReplacer"),
-        @BeanTag(name = "conditionalBeanPropertyReplacer-bean", parent = "Uif-ConditionalBeanPropertyReplacer")})
-public class PropertyReplacer extends UifDictionaryBeanBase implements Serializable {
+@BeanTag(name = "propertyReplacer", parent = "Uif-ConditionalBeanPropertyReplacer")
+public class PropertyReplacer extends UifDictionaryBeanBase {
     private static final long serialVersionUID = -8405429643299461398L;
 
     private String propertyName;
@@ -127,7 +126,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      *
      * @return property name to set
      */
-    @BeanTagAttribute(name = "propertyName")
+    @BeanTagAttribute
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -161,7 +160,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      * @see org.kuali.rice.krad.uif.view.ExpressionEvaluator
      * @see org.kuali.rice.krad.uif.UifConstants.ContextVariableNames
      */
-    @BeanTagAttribute(name = "condition")
+    @BeanTagAttribute
     public String getCondition() {
         return this.condition;
     }
@@ -186,7 +185,7 @@ public class PropertyReplacer extends UifDictionaryBeanBase implements Serializa
      *
      * @return instance to set
      */
-    @BeanTagAttribute(name = "replacement", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Object getReplacement() {
         return this.replacement;
     }

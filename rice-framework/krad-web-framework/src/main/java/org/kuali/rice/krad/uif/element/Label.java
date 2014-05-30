@@ -39,7 +39,7 @@ import org.kuali.rice.krad.util.KRADConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "label-bean", parent = "Uif-Label")
+@BeanTag(name = "label", parent = "Uif-Label")
 public class Label extends ContentElementBase {
     private static final long serialVersionUID = -6491546893195180114L;
 
@@ -130,7 +130,7 @@ public class Label extends ContentElementBase {
      *
      * @return component id
      */
-    @BeanTagAttribute(name="labelForComponentId")
+    @BeanTagAttribute
     public String getLabelForComponentId() {
         return this.labelForComponentId;
     }
@@ -149,7 +149,7 @@ public class Label extends ContentElementBase {
      *
      * @return label text
      */
-    @BeanTagAttribute(name="labelText")
+    @BeanTagAttribute
     public String getLabelText() {
         return this.labelText;
     }
@@ -170,7 +170,7 @@ public class Label extends ContentElementBase {
      *
      * @return true if a colon should be rendered, false if it should not be
      */
-    @BeanTagAttribute(name="renderColon")
+    @BeanTagAttribute
     public boolean isRenderColon() {
         return this.renderColon;
     }
@@ -216,7 +216,7 @@ public class Label extends ContentElementBase {
      *
      * @return the required indicator String to display
      */
-    @BeanTagAttribute(name="requiredIndicator")
+    @BeanTagAttribute
     public String getRequiredIndicator() {
         return requiredIndicator;
     }
@@ -237,7 +237,7 @@ public class Label extends ContentElementBase {
      *
      * @return rich message structure, null if no rich message structure
      */
-    @BeanTagAttribute(name="richLabelMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getRichLabelMessage() {
         return richLabelMessage;
     }
@@ -259,7 +259,7 @@ public class Label extends ContentElementBase {
      * @return the Label's inlineComponents
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

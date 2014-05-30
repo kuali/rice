@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "breadcrumbItem-bean", parent = "Uif-BreadcrumbItem")
+@BeanTag(name = "breadcrumbItem", parent = "Uif-BreadcrumbItem")
 public class BreadcrumbItem extends ContentElementBase {
     private static final long serialVersionUID = 6694853722827812544L;
 

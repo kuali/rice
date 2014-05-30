@@ -41,7 +41,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-QuickFinder-Example1 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField12">
+        <bean parent="Uif-InputField" p:propertyName="inputField12">
           <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
@@ -57,7 +57,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-QuickFinder-Example2 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField13">
+        <bean parent="Uif-InputField" p:propertyName="inputField13">
           <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
           <property name="quickfinder">
             <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
@@ -73,7 +73,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-QuickFinder-Example3 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField14">
+        <bean parent="Uif-InputField" p:propertyName="inputField14">
           <property name="instructionalText" value="Overriden link to display different text - Search Now"/>
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
@@ -95,7 +95,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-QuickFinder-Example4 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField15">
+        <bean parent="Uif-InputField" p:propertyName="inputField15">
           <property name="instructionalText" value="Search with additional parameter of minSubsidized:50"/>
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"

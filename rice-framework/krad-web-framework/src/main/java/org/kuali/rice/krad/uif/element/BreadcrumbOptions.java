@@ -45,7 +45,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * override this inheritance.
  * </p>
  */
-@BeanTag(name = "breadcrumbOptions-bean", parent = "Uif-BreadcrumbOptions")
+@BeanTag(name = "breadcrumbOptions", parent = "Uif-BreadcrumbOptions")
 public class BreadcrumbOptions implements Serializable, Copyable {
     private static final long serialVersionUID = -6705552809624394000L;
 

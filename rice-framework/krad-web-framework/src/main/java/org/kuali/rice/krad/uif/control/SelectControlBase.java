@@ -25,8 +25,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dropdownControl-bean", parent = "Uif-DropdownControl"),
-        @BeanTag(name = "multiSelectControl-bean", parent = "Uif-MultiSelectControl")})
+@BeanTags({@BeanTag(name = "dropdownControl", parent = "Uif-DropdownControl"),
+        @BeanTag(name = "multiSelectControl", parent = "Uif-MultiSelectControl")})
 public class SelectControlBase extends MultiValueControlBase implements SelectControl {
     private static final long serialVersionUID = 6443247954759096815L;
 
@@ -44,7 +44,7 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
      * @see org.kuali.rice.krad.uif.control.SelectControl#getSize()
      */
     @Override
-    @BeanTagAttribute(name="size")
+    @BeanTagAttribute
     public int getSize() {
         return this.size;
     }
@@ -69,7 +69,7 @@ public class SelectControlBase extends MultiValueControlBase implements SelectCo
      *         one value can be selected
      */
     @Override
-    @BeanTagAttribute(name="multiple")
+    @BeanTagAttribute
     public boolean isMultiple() {
         return this.multiple;
     }

@@ -32,7 +32,7 @@ import org.springframework.util.ReflectionUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "methodInvokerConfig-bean", parent = "Uif-MethodInvokerConfig")
+@BeanTag(name = "methodConfig", parent = "Uif-MethodInvokerConfig")
 public class MethodInvokerConfig extends MethodInvoker implements Serializable, Copyable {
     private static final long serialVersionUID = 6626790175367500081L;
 
@@ -62,7 +62,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
      *
      * @return static method to invoke
      */
-    @BeanTagAttribute(name="staticMethod")
+    @BeanTagAttribute
     public String getStaticMethod() {
         return staticMethod;
     }
@@ -85,7 +85,7 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
      *
      * @return method argument types
      */
-    @BeanTagAttribute(name="argumentTypes",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.LISTVALUE)
     public Class[] getArgumentTypes() {
         if (argumentTypes == null) {
             return getMethodArgumentTypes();
@@ -101,6 +101,42 @@ public class MethodInvokerConfig extends MethodInvoker implements Serializable, 
      */
     public void setArgumentTypes(Class[] argumentTypes) {
         this.argumentTypes = argumentTypes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
+    @Override
+    public Class getTargetClass() {
+        return super.getTargetClass();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
+    @Override
+    public Object getTargetObject() {
+        return super.getTargetObject();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
+    @Override
+    public String getTargetMethod() {
+        return super.getTargetMethod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
+    @Override
+    public Object[] getArguments() {
+        return super.getArguments();
     }
 
     /**

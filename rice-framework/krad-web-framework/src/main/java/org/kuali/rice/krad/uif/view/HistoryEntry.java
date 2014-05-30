@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "historyEntry-bean", parent = "Uif-HistoryEntry")
+@BeanTag(name = "historyEntry", parent = "Uif-HistoryEntry")
 public class HistoryEntry extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
 
@@ -59,7 +59,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
      *
      * @return the viewId
      */
-    @BeanTagAttribute(name="viewId")
+    @BeanTagAttribute
     public String getViewId() {
         return this.viewId;
     }
@@ -76,7 +76,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
      *
      * @return the pageId
      */
-    @BeanTagAttribute(name="pageId")
+    @BeanTagAttribute
     public String getPageId() {
         return this.pageId;
     }
@@ -93,7 +93,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
      *
      * @return the title
      */
-    @BeanTagAttribute(name="title")
+    @BeanTagAttribute
     public String getTitle() {
         return this.title;
     }
@@ -110,7 +110,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
      *
      * @return the url
      */
-    @BeanTagAttribute(name="url")
+    @BeanTagAttribute
     public String getUrl() {
         return this.url;
     }
@@ -125,7 +125,7 @@ public class HistoryEntry extends UifDictionaryBeanBase implements Serializable 
     /**
      * @return the formKey
      */
-    @BeanTagAttribute(name="formKey")
+    @BeanTagAttribute
     public String getFormKey() {
         return this.formKey;
     }

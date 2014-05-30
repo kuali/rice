@@ -39,7 +39,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "suggest-bean", parent = "Uif-Suggest")
+@BeanTag(name = "suggest", parent = "Uif-Suggest")
 public class Suggest extends WidgetBase {
     private static final long serialVersionUID = 7373706855319347225L;
 
@@ -194,7 +194,7 @@ public class Suggest extends WidgetBase {
      *
      * @return AttributeQuery
      */
-    @BeanTagAttribute(name = "suggestQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public AttributeQuery getSuggestQuery() {
         return suggestQuery;
     }
@@ -221,7 +221,7 @@ public class Suggest extends WidgetBase {
      *
      * @return source property name
      */
-    @BeanTagAttribute(name = "valuePropertyName")
+    @BeanTagAttribute
     public String getValuePropertyName() {
         return valuePropertyName;
     }
@@ -246,7 +246,7 @@ public class Suggest extends WidgetBase {
      *
      * @return labelPropertyName representing the property to use for the suggestion label of the item
      */
-    @BeanTagAttribute(name = "labelPropertyName")
+    @BeanTagAttribute
     public String getLabelPropertyName() {
         return labelPropertyName;
     }
@@ -270,7 +270,7 @@ public class Suggest extends WidgetBase {
      *
      * @return the list of additional properties to send back
      */
-    @BeanTagAttribute(name = "additionalPropertiesToReturn", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getAdditionalPropertiesToReturn() {
         return additionalPropertiesToReturn;
     }
@@ -301,7 +301,7 @@ public class Suggest extends WidgetBase {
      * @return true if the query method results should be used as the suggestions, false to assume
      * objects are returned and suggestions are formed using the source property name
      */
-    @BeanTagAttribute(name = "returnFullQueryObject")
+    @BeanTagAttribute
     public boolean isReturnFullQueryObject() {
         return returnFullQueryObject;
     }
@@ -334,7 +334,7 @@ public class Suggest extends WidgetBase {
      * @return true to provide the suggest options initially, false to use ajax retrieval based on the
      * user's input
      */
-    @BeanTagAttribute(name = "retrieveAllSuggestions")
+    @BeanTagAttribute
     public boolean isRetrieveAllSuggestions() {
         return retrieveAllSuggestions;
     }
@@ -364,7 +364,7 @@ public class Suggest extends WidgetBase {
      *
      * @return list of suggest options
      */
-    @BeanTagAttribute(name = "suggestOptions", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Object> getSuggestOptions() {
         return suggestOptions;
     }

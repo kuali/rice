@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  * @see org.kuali.rice.krad.uif.element.Image
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "imageField-bean", parent = "Uif-ImageField")
+@BeanTag(name = "imageField", parent = "Uif-ImageField")
 public class ImageField extends FieldBase {
     private static final long serialVersionUID = -7994212503770623408L;
 
@@ -66,7 +66,7 @@ public class ImageField extends FieldBase {
      *
      * @return the Image element representing the HTML IMG element
      */
-    @BeanTagAttribute(name="image",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Image getImage() {
         return image;
     }
@@ -86,7 +86,7 @@ public class ImageField extends FieldBase {
      * @see org.kuali.rice.krad.uif.element.Image#getSource()
      * @return the URL for the image
      */
-    @BeanTagAttribute(name="source")
+    @BeanTagAttribute
     public String getSource() {
         return image.getSource();
     }
@@ -111,7 +111,7 @@ public class ImageField extends FieldBase {
      * @see org.kuali.rice.krad.uif.element.Image#getAltText()
      * @return alternative information about this image
      */
-    @BeanTagAttribute(name="altText")
+    @BeanTagAttribute
     public String getAltText() {
         return image.getAltText();
     }
@@ -130,7 +130,7 @@ public class ImageField extends FieldBase {
      *
      * @return height
      */
-    @BeanTagAttribute(name="height")
+    @BeanTagAttribute
     public String getHeight() {
         return image.getHeight();
     }
@@ -145,6 +145,16 @@ public class ImageField extends FieldBase {
     }
 
     /**
+     * Gets the width of the image
+     *
+     * @return width
+     */
+    @BeanTagAttribute
+    public String getWidth() {
+        return image.getWidth();
+    }
+
+    /**
      * Sets the width of the image
      *
      * @param width
@@ -156,21 +166,11 @@ public class ImageField extends FieldBase {
     }
 
     /**
-     * Gets the width of the image
-     *
-     * @return width
-     */
-    @BeanTagAttribute(name="width")
-    public String getWidth() {
-        return image.getWidth();
-    }
-
-    /**
      * Gets the caption header text
      *
      * @return captionHeaderText
      */
-    @BeanTagAttribute(name="captionHeaderText")
+    @BeanTagAttribute
     public String getCaptionHeaderText() {
         return image.getCaptionHeaderText();
     }
@@ -189,7 +189,7 @@ public class ImageField extends FieldBase {
      *
      * @return captionHeader
      */
-    @BeanTagAttribute(name="captionHeader",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Header getCaptionHeader() {
         return image.getCaptionHeader();
     }
@@ -208,7 +208,7 @@ public class ImageField extends FieldBase {
      *
      * @return cutlineText
      */
-    @BeanTagAttribute(name="cutlineText")
+    @BeanTagAttribute
     public String getCutlineText() {
         return image.getCutlineText();
     }
@@ -227,7 +227,7 @@ public class ImageField extends FieldBase {
      *
      * @return cutline
      */
-    @BeanTagAttribute(name="cutline",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getCutline() {
         return image.getCutlineMessage();
     }
@@ -246,7 +246,7 @@ public class ImageField extends FieldBase {
      *
      * @return captionHeaderAboveImage
      */
-    @BeanTagAttribute(name="captionHeaderAboveImage")
+    @BeanTagAttribute
     public boolean isCaptionHeaderAboveImage() {
         return image.isCaptionHeaderPlacementAboveImage();
     }

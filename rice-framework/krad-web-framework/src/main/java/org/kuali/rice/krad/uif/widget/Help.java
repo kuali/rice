@@ -41,7 +41,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "help-bean", parent = "Uif-Help")
+@BeanTag(name = "help", parent = "Uif-Help")
 public class Help extends WidgetBase {
 	private static final long serialVersionUID = -1514436681476297241L;
 
@@ -195,7 +195,7 @@ public class Help extends WidgetBase {
      *
      * @return Action for external help
      */
-    @BeanTagAttribute(name="helpAction",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Action getHelpAction() {
         return helpAction;
     }
@@ -215,7 +215,7 @@ public class Help extends WidgetBase {
      *
      * @return HelpDefinition
      */
-    @BeanTagAttribute(name="helpDefinition",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
     }
@@ -239,7 +239,7 @@ public class Help extends WidgetBase {
      *
      * @return Url of the external help
      */
-    @BeanTagAttribute(name="externalHelpUrl")
+    @BeanTagAttribute
     public String getExternalHelpUrl() {
         return this.externalHelpUrl;
     }
@@ -258,7 +258,7 @@ public class Help extends WidgetBase {
      *
      * @return TooltipHelpContent
      */
-    @BeanTagAttribute(name="tooltipHelpContent")
+    @BeanTagAttribute
     public String getTooltipHelpContent() {
         return this.tooltipHelpContent;
     }

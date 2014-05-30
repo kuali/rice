@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "cssGridLayoutBase-bean", parent = "Uif-CssGridLayoutBase")
+@BeanTag(name = "cssGridLayoutBase", parent = "Uif-CssGridLayoutBase")
 public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 

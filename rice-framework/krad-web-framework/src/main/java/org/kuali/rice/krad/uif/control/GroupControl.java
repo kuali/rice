@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "kimGroupControl-bean", parent = "Uif-KimGroupControl")
+@BeanTag(name = "kimGroupControl", parent = "Uif-KimGroupControl")
 public class GroupControl extends TextControlBase implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 5598459655735440981L;
 
@@ -105,7 +105,7 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
      *
      * @return namespaceCodePropertyName
      */
-    @BeanTagAttribute(name="namespaceCodePropertyName")
+    @BeanTagAttribute
     public String getNamespaceCodePropertyName() {
         return namespaceCodePropertyName;
     }
@@ -124,7 +124,7 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
      *
      * @return groupIdPropertyName
      */
-    @BeanTagAttribute(name="groupIdPropertyName")
+    @BeanTagAttribute
     public String getGroupIdPropertyName() {
         return groupIdPropertyName;
     }

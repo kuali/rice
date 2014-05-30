@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "iFrame-bean", parent = "Uif-Iframe")
+@BeanTag(name = "iFrame", parent = "Uif-Iframe")
 public class Iframe extends ContentElementBase {
     private static final long serialVersionUID = 5797473302619055088L;
 
@@ -45,7 +45,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return source
      */
-    @BeanTagAttribute(name = "source")
+    @BeanTagAttribute
     public String getSource() {
         return this.source;
     }
@@ -64,7 +64,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return height
      */
-    @BeanTagAttribute(name = "height")
+    @BeanTagAttribute
     public String getHeight() {
         return this.height;
     }
@@ -83,7 +83,7 @@ public class Iframe extends ContentElementBase {
      *
      * @return frameborder
      */
-    @BeanTagAttribute(name = "frameborder")
+    @BeanTagAttribute
     public String getFrameborder() {
         return this.frameborder;
     }

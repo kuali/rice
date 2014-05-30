@@ -36,7 +36,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  * parameterName: name of the parameter that has the path to the help page
  * parameterDetailType: detail type of the parameter that has the path to the help page
  */
-@BeanTag(name = "helpDefinition-bean")
+@BeanTag(name = "helpDefinition")
 public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
 

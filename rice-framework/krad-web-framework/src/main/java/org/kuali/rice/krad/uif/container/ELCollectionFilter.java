@@ -34,7 +34,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "conditionalCollectionFilter-bean", parent = "Uif-ConditionalCollectionFilter")
+@BeanTag(name = "conditionalFilter", parent = "Uif-ConditionalCollectionFilter")
 public class ELCollectionFilter implements CollectionFilter, Copyable {
     private static final long serialVersionUID = 3273495753269940272L;
 
@@ -85,7 +85,7 @@ public class ELCollectionFilter implements CollectionFilter, Copyable {
      *
      * @return valid el expression that evaluates to a boolean
      */
-    @BeanTagAttribute(name="expression")
+    @BeanTagAttribute
     public String getExpression() {
         return expression;
     }

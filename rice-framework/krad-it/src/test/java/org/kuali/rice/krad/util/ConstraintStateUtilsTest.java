@@ -23,6 +23,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.Constraint;
 import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint;
 import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -194,7 +195,7 @@ public class ConstraintStateUtilsTest {
      */
     @Test
     public void testCustomClientsideUtilMethod() {
-        View view = new View();
+        View view = new FormView();
         StateMapping genericStateMapping = new StateMappingBase();
         List<String> states = new ArrayList<String>();
         states.add("state1");

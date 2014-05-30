@@ -18,11 +18,9 @@ package org.kuali.rice.krad.uif.widget;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.view.View;
 
 /**
- * Widget that renders a Tooltip on a component
+ * Widget that renders a Tooltip on a component.
  *
  * <p>
  * Tooltips can display extra information about an element. The content can be plain text or rich HTML. Tooltips
@@ -31,9 +29,9 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags(
-        {@BeanTag(name = "tooltip-bean", parent = "Uif-Tooltip"), @BeanTag(name = "tooltipHelp-bean", parent = "Uif-TooltipHelp"),
-                @BeanTag(name = "tooltipFocus-bean", parent = "Uif-TooltipFocus")})
+@BeanTags({@BeanTag(name = "tooltip", parent = "Uif-Tooltip"),
+        @BeanTag(name = "tooltipHelp", parent = "Uif-TooltipHelp"),
+        @BeanTag(name = "tooltipFocus", parent = "Uif-TooltipFocus")})
 public class Tooltip extends WidgetBase {
     private static final long serialVersionUID = -7641043761619191329L;
 
@@ -51,7 +49,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return String
      */
-    @BeanTagAttribute(name = "tooltipContent")
+    @BeanTagAttribute
     public String getTooltipContent() {
         return tooltipContent;
     }
@@ -74,7 +72,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "onFocus")
+    @BeanTagAttribute
     public boolean isOnFocus() {
         return onFocus;
     }
@@ -93,7 +91,7 @@ public class Tooltip extends WidgetBase {
      *
      * @return boolean
      */
-    @BeanTagAttribute(name = "onMouseHover")
+    @BeanTagAttribute
     public boolean isOnMouseHover() {
         return onMouseHover;
     }

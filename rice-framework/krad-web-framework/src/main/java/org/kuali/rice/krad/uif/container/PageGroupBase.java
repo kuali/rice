@@ -45,12 +45,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "page-bean", parent = "Uif-Page"),
-        @BeanTag(name = "disclosure-page-bean", parent = "Uif-Disclosure-Page"),
-        @BeanTag(name = "documentPage-bean", parent = "Uif-DocumentPage"),
-        @BeanTag(name = "inquiryPage-bean", parent = "Uif-InquiryPage"),
-        @BeanTag(name = "lookupPage-bean", parent = "Uif-LookupPage"),
-        @BeanTag(name = "maintenancePage-bean", parent = "Uif-MaintenancePage")})
+@BeanTags({@BeanTag(name = "page", parent = "Uif-Page"),
+        @BeanTag(name = "documentPage", parent = "Uif-DocumentPage"),
+        @BeanTag(name = "inquiryPage", parent = "Uif-InquiryPage"),
+        @BeanTag(name = "maintenancePage", parent = "Uif-MaintenancePage")})
 public class PageGroupBase extends GroupBase implements PageGroup {
     private static final long serialVersionUID = 7571981300587270274L;
 
@@ -156,6 +154,40 @@ public class PageGroupBase extends GroupBase implements PageGroup {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute(name = "autoFocus")
+    public boolean isAutoFocus() {
+        return this.autoFocus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAutoFocus(boolean autoFocus) {
+        this.autoFocus = autoFocus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public PageBreadcrumbOptions getBreadcrumbOptions() {
+        return breadcrumbOptions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setBreadcrumbOptions(PageBreadcrumbOptions breadcrumbOptions) {
+        this.breadcrumbOptions = breadcrumbOptions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<BreadcrumbItem> getHomewardPathBreadcrumbs() {
         return breadcrumbOptions == null ? null : breadcrumbOptions.getHomewardPathBreadcrumbs();
     }
@@ -183,46 +215,12 @@ public class PageGroupBase extends GroupBase implements PageGroup {
     public List<BreadcrumbItem> getBreadcrumbOverrides() {
         return breadcrumbOptions == null ? null : breadcrumbOptions.getBreadcrumbOverrides();
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "autoFocus")
-    public boolean isAutoFocus() {
-        return this.autoFocus;
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setAutoFocus(boolean autoFocus) {
-        this.autoFocus = autoFocus;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "breadcrumbOptions", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public PageBreadcrumbOptions getBreadcrumbOptions() {
-        return breadcrumbOptions;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setBreadcrumbOptions(PageBreadcrumbOptions breadcrumbOptions) {
-        this.breadcrumbOptions = breadcrumbOptions;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "breadcrumbItem", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public BreadcrumbItem getBreadcrumbItem() {
         return breadcrumbItem;
     }
@@ -239,7 +237,7 @@ public class PageGroupBase extends GroupBase implements PageGroup {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "stickyFooter")
+    @BeanTagAttribute
     public boolean isStickyFooter() {
         return stickyFooter;
     }
@@ -261,6 +259,23 @@ public class PageGroupBase extends GroupBase implements PageGroup {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
+    public String getFormPostUrl() {
+        return formPostUrl;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setFormPostUrl(String formPostUrl) {
+        this.formPostUrl = formPostUrl;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void completeValidation(ValidationTrace tracer) {
         tracer.addBean(this);
 
@@ -274,23 +289,6 @@ public class PageGroupBase extends GroupBase implements PageGroup {
         }
 
         super.completeValidation(tracer.getCopy());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "formPostUrl")
-    public String getFormPostUrl() {
-        return formPostUrl;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFormPostUrl(String formPostUrl) {
-        this.formPostUrl = formPostUrl;
     }
 
 }

@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.widget.Spinner;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "spinnerControl-bean", parent = "Uif-SpinnerControl")
+@BeanTag(name = "spinnerControl", parent = "Uif-SpinnerControl")
 public class SpinnerControl extends TextControlBase {
     private static final long serialVersionUID = -8267606288443759880L;
 
@@ -40,7 +40,7 @@ public class SpinnerControl extends TextControlBase {
      *
      * @return Spinner
      */
-    @BeanTagAttribute(name="spinner",type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Spinner getSpinner() {
         return spinner;
     }

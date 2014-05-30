@@ -29,10 +29,10 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "textAreaControl-bean", parent = "Uif-TextAreaControl"),
-        @BeanTag(name = "smallTextAreaControl-bean", parent = "Uif-SmallTextAreaControl"),
-        @BeanTag(name = "mediumTextAreaControl-bean", parent = "Uif-MediumTextAreaControl"),
-        @BeanTag(name = "largeTextAreaControl-bean", parent = "Uif-LargeTextAreaControl")})
+@BeanTags({@BeanTag(name = "textAreaControl", parent = "Uif-TextAreaControl"),
+        @BeanTag(name = "smallTextAreaControl", parent = "Uif-SmallTextAreaControl"),
+        @BeanTag(name = "mediumTextAreaControl", parent = "Uif-MediumTextAreaControl"),
+        @BeanTag(name = "largeTextAreaControl", parent = "Uif-LargeTextAreaControl")})
 public class TextAreaControl extends ControlBase {
     private static final long serialVersionUID = -4664558047325456844L;
 
@@ -82,7 +82,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return number of rows
      */
-    @BeanTagAttribute(name = "rows")
+    @BeanTagAttribute
     public int getRows() {
         return this.rows;
     }
@@ -101,7 +101,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return number of columns
      */
-    @BeanTagAttribute(name = "cols")
+    @BeanTagAttribute
     public int getCols() {
         return this.cols;
     }
@@ -122,7 +122,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return max number of characters
      */
-    @BeanTagAttribute(name = "maxLength")
+    @BeanTagAttribute
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -143,7 +143,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return max number of characters
      */
-    @BeanTagAttribute(name = "minLength")
+    @BeanTagAttribute
     public Integer getMinLength() {
         return minLength;
     }
@@ -160,7 +160,7 @@ public class TextAreaControl extends ControlBase {
     /**
      * @return the watermarkText
      */
-    @BeanTagAttribute(name = "watermarkText")
+    @BeanTagAttribute
     public String getWatermarkText() {
         return this.watermarkText;
     }
@@ -183,7 +183,7 @@ public class TextAreaControl extends ControlBase {
      *
      * @return the textExpand
      */
-    @BeanTagAttribute(name = "textExpand")
+    @BeanTagAttribute
     public boolean isTextExpand() {
         return this.textExpand;
     }

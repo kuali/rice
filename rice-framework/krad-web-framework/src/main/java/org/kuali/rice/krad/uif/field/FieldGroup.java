@@ -35,9 +35,9 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "fieldGroup-bean", parent = "Uif-FieldGroupBase"),
-        @BeanTag(name = "verticalFieldGroup-bean", parent = "Uif-VerticalFieldGroup"),
-        @BeanTag(name = "horizontalFieldGroup-bean", parent = "Uif-HorizontalFieldGroup")})
+@BeanTags({@BeanTag(name = "fieldGroup", parent = "Uif-FieldGroupBase"),
+        @BeanTag(name = "verticalFieldGroup", parent = "Uif-VerticalFieldGroup"),
+        @BeanTag(name = "horizontalFieldGroup", parent = "Uif-HorizontalFieldGroup")})
 public class FieldGroup extends FieldBase {
     private static final long serialVersionUID = -505654043702442196L;
 
@@ -98,7 +98,7 @@ public class FieldGroup extends FieldBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name = "group", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Group getGroup() {
         return this.group;
     }
@@ -123,7 +123,7 @@ public class FieldGroup extends FieldBase {
      * @return List<? extends Component> items
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<? extends Component> getItems() {
         if (group != null) {
             return group.getItems();

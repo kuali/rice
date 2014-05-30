@@ -40,7 +40,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AjaxFieldQuery-Example1 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField3" p:defaultValue="a1">
+        <bean parent="Uif-InputField" p:propertyName="inputField3" p:defaultValue="a1">
           <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out)" />
           <property name="propertyNamesForAdditionalDisplay" value="inputField4,inputField5" />
           <property name="attributeQuery">
@@ -57,7 +57,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AjaxFieldQuery-Example2 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField6" p:defaultValue="a2">
+        <bean parent="Uif-InputField" p:propertyName="inputField6" p:defaultValue="a2">
           <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out) " />
           <property name="propertyNamesForAdditionalDisplay" value="inputField7,inputField8" />
           <property name="attributeQuery">
@@ -76,7 +76,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-AjaxFieldQuery-Example3 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField9" p:defaultValue="a3">
+        <bean parent="Uif-InputField" p:propertyName="inputField9" p:defaultValue="a3">
           <property name="instructionalText" value="Displays additional information retrieved from an ajax data retrieval (just tab out) " />
           <property name="propertyNamesForAdditionalDisplay" value="inputField10,inputField11"/>
           <property name="attributeQuery">

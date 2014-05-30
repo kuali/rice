@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.kuali.rice.krad.datadictionary.DictionaryBeanBase;
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 
 import java.io.Serializable;
 
@@ -41,6 +43,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "sessionPolicy", parent = "Uif-ViewSessionPolicy")
 public class ViewSessionPolicy extends DictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -5187545712142535662L;
 
@@ -62,6 +65,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      *
      * @return true if the user should be redirected to the home URL
      */
+    @BeanTagAttribute
     public boolean isRedirectToHome() {
         return redirectToHome;
     }
@@ -80,6 +84,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      *
      * @return url to redirect user to
      */
+    @BeanTagAttribute
     public String getRedirectUrl() {
         return redirectUrl;
     }
@@ -98,6 +103,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      *
      * @return true if the timeout view should be shown on session timeout
      */
+    @BeanTagAttribute
     public boolean isRenderTimeoutView() {
         return renderTimeoutView;
     }
@@ -128,6 +134,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      *
      * @return true if the timeout warning dialog should be enabled
      */
+    @BeanTagAttribute
     public boolean isEnableTimeoutWarning() {
         return enableTimeoutWarning;
     }
@@ -147,6 +154,7 @@ public class ViewSessionPolicy extends DictionaryBeanBase implements Serializabl
      *
      * @return number of seconds before timeout to give warning dialog
      */
+    @BeanTagAttribute
     public int getTimeoutWarningSeconds() {
         return timeoutWarningSeconds;
     }

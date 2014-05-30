@@ -87,7 +87,6 @@
         <ref bean="metadataProvider"/>
       </list>
     </property>
-
   </bean>
 
   <bean class="org.kuali.rice.core.framework.util.spring.NamedOrderedListBean">

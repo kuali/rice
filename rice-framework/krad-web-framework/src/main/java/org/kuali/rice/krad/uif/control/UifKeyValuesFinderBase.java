@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "keyValuesFinder-bean")
+@BeanTag(name = "keyValuesFinder")
 public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements UifKeyValuesFinder {
 
     private boolean addBlankOption;
@@ -62,7 +62,7 @@ public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements Ui
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name="addBlankOption")
+    @BeanTagAttribute
     @Override
     public boolean isAddBlankOption() {
         return addBlankOption;

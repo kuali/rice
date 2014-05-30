@@ -17,14 +17,13 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 
 /**
  * Renders a link tag in the head of the html document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "view-headLink", parent = "Uif-HeadLink")
+@BeanTag(name = "headLink", parent = "Uif-HeadLink")
 public class HeadLink extends ContentElementBase  {
     private static final long serialVersionUID = -2295905449114970348L;
 
@@ -45,7 +44,7 @@ public class HeadLink extends ContentElementBase  {
      *
      * @return  media attribute of link tag
      */
-    @BeanTagAttribute(name = "media")
+    @BeanTagAttribute
     public String getMedia() {
         return media;
     }
@@ -64,7 +63,7 @@ public class HeadLink extends ContentElementBase  {
      *
      * @return  href attribute of link tag
      */
-    @BeanTagAttribute(name = "href")
+    @BeanTagAttribute
     public String getHref() {
         return href;
     }
@@ -83,7 +82,7 @@ public class HeadLink extends ContentElementBase  {
      *
      * @return  rel attribute of link tag
      */
-    @BeanTagAttribute(name = "relation")
+    @BeanTagAttribute
     public String getRelation() {
         return relation;
     }
@@ -103,7 +102,7 @@ public class HeadLink extends ContentElementBase  {
      *
      * @return  type attribute of link tag
      */
-    @BeanTagAttribute(name = "type")
+    @BeanTagAttribute
     public String getType() {
         return type;
     }
@@ -133,7 +132,7 @@ public class HeadLink extends ContentElementBase  {
      *
      * @return  includeCondition
      */
-    @BeanTagAttribute(name = "includeCondition")
+    @BeanTagAttribute
     public String getIncludeCondition() {
         return includeCondition;
     }

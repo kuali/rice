@@ -26,12 +26,12 @@ import java.util.List;
 /**
  * Represents a group of HTML checkbox controls. Provides preset options for the
  * user to choose by a series of checkbox controls. Only or more options can be
- * select
+ * select.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "verticalCheckboxesControl-bean", parent = "Uif-VerticalCheckboxesControl"),
-        @BeanTag(name = "horizontalCheckboxesControl-bean", parent = "Uif-HorizontalCheckboxesControl")})
+@BeanTags({@BeanTag(name = "verticalCheckboxesControl", parent = "Uif-VerticalCheckboxesControl"),
+        @BeanTag(name = "horizontalCheckboxesControl", parent = "Uif-HorizontalCheckboxesControl")})
 public class CheckboxGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
 
@@ -41,6 +41,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
 
     public CheckboxGroupControl() {
         super();
+
         fieldsetClasses = new ArrayList<String>();
     }
 
@@ -53,7 +54,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      *
      * @return delimiter string
      */
-    @BeanTagAttribute(name = "delimiter")
+    @BeanTagAttribute
     public String getDelimiter() {
         return this.delimiter;
     }
@@ -72,7 +73,7 @@ public class CheckboxGroupControl extends MultiValueControlBase {
      *
      * @return fieldset css classes
      */
-    @BeanTagAttribute(name = "fieldsetClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }

@@ -31,7 +31,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "fieldValidationMessages-bean", parent = "Uif-FieldValidationMessages")
+@BeanTag(name = "fieldValidationMessages", parent = "Uif-FieldValidationMessages")
 public class FieldValidationMessages extends ValidationMessages {
 
     private boolean useTooltip;
@@ -94,7 +94,7 @@ public class FieldValidationMessages extends ValidationMessages {
      *
      * @return true if using tooltips for messages, false to display below control
      */
-    @BeanTagAttribute(name = "useTooltip")
+    @BeanTagAttribute
     public boolean isUseTooltip() {
         return useTooltip;
     }
@@ -113,7 +113,7 @@ public class FieldValidationMessages extends ValidationMessages {
      *
      * @return true if icons will be displayed, false otherwise
      */
-    @BeanTagAttribute(name = "showIcons")
+    @BeanTagAttribute
     public boolean isShowIcons() {
         return showIcons;
     }

@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "fileControl-bean", parent = "Uif-FileControl")
+@BeanTag(name = "fileControl", parent = "Uif-FileControl")
 public class FileControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -5919326390841646189L;
 
@@ -37,7 +37,7 @@ public class FileControl extends ControlBase implements SizedControl {
     /**
      * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
      */
-    @BeanTagAttribute(name = "size")
+    @BeanTagAttribute
     public int getSize() {
         return this.size;
     }

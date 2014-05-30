@@ -28,14 +28,15 @@ import org.kuali.rice.krad.uif.widget.Accordion;
 
 /**
  * Accordion group class used to stack groups by there header titles in an accordion layout.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "accordionGroup-bean", parent = "Uif-AccordionGroup"),
-        @BeanTag(name = "accordionSection-bean", parent = "Uif-AccordionSection"),
-        @BeanTag(name = "accordionSubSection-bean", parent = "Uif-AccordionSubSection"),
-        @BeanTag(name = "disclosure-accordionSection-bean", parent = "Uif-Disclosure-AccordionSection"),
-        @BeanTag(name = "disclosure-accordionSubSection-bean", parent = "Uif-Disclosure-AccordionSubSection")})
+@BeanTags({@BeanTag(name = "accordionGroup", parent = "Uif-AccordionGroup"),
+        @BeanTag(name = "accordionSection", parent = "Uif-AccordionSection"),
+        @BeanTag(name = "accordionSubSection", parent = "Uif-AccordionSubSection"),
+        @BeanTag(name = "disclosureAccordionSection", parent = "Uif-Disclosure-AccordionSection"),
+        @BeanTag(name = "disclosureAccordionSubSection", parent = "Uif-Disclosure-AccordionSubSection")})
 public class AccordionGroup extends GroupBase {
-
     private static final long serialVersionUID = 7230145606607506418L;
 
     private Accordion accordionWidget;
@@ -68,15 +69,13 @@ public class AccordionGroup extends GroupBase {
      *
      * @return the accordionWidget
      */
-    @BeanTagAttribute(name = "accordionWidget", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Accordion getAccordionWidget() {
         return this.accordionWidget;
     }
 
     /**
-     * Set the accordionWidget.
-     *
-     * @param accordionWidget the accordionWidget to set
+     * @see AccordionGroup#getAccordionWidget()
      */
     public void setAccordionWidget(Accordion accordionWidget) {
         this.accordionWidget = accordionWidget;

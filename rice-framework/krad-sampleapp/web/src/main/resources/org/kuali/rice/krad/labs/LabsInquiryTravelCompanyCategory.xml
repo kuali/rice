@@ -69,6 +69,8 @@
 
   </bean>
 
+
+
   <bean id="TravelCompanyCategory-DataObjectEntry" parent="TravelCompanyCategory-parentBean"/>
   <bean id="TravelCompanyCategory-parentBean" abstract="true" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.labs.inquiry.TravelCompanyCategory" />

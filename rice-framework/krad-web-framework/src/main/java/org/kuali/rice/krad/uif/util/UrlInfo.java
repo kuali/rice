@@ -42,7 +42,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "url-bean", parent = "Uif-Url")
+@BeanTag(name = "url", parent = "Uif-Url")
 public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = 3195177614468120958L;
@@ -165,7 +165,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return THE href represented by this url object, or blank if not valid
      */
-    @BeanTagAttribute(name = "href")
+    @BeanTagAttribute
     public String getHref() {
         if (StringUtils.isBlank(this.href)) {
             this.href = generateUrl();
@@ -191,7 +191,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the baseUrl
      */
-    @BeanTagAttribute(name = "baseUrl")
+    @BeanTagAttribute
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -210,7 +210,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the controllerMapping string
      */
-    @BeanTagAttribute(name = "controllerMapping")
+    @BeanTagAttribute
     public String getControllerMapping() {
         return controllerMapping;
     }
@@ -229,7 +229,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the viewType
      */
-    @BeanTagAttribute(name = "viewType")
+    @BeanTagAttribute
     public String getViewType() {
         return viewType;
     }
@@ -248,7 +248,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the viewId
      */
-    @BeanTagAttribute(name = "viewId")
+    @BeanTagAttribute
     public String getViewId() {
         return viewId;
     }
@@ -267,7 +267,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the pageId
      */
-    @BeanTagAttribute(name = "pageId")
+    @BeanTagAttribute
     public String getPageId() {
         return pageId;
     }
@@ -286,7 +286,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the formKey
      */
-    @BeanTagAttribute(name = "formKey")
+    @BeanTagAttribute
     public String getFormKey() {
         return formKey;
     }
@@ -305,7 +305,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return methodToCall on controller
      */
-    @BeanTagAttribute(name = "methodToCall")
+    @BeanTagAttribute
     public String getMethodToCall() {
         return methodToCall;
     }
@@ -324,7 +324,7 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
      *
      * @return the requestParameters map
      */
-    @BeanTagAttribute(name = "requestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getRequestParameters() {
         return requestParameters;
     }
@@ -349,6 +349,15 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     }
 
     /**
+     * toString returns the original href value of url
+     *
+     * @param originalHref original href value
+     */
+    protected void setOriginalHref(String originalHref) {
+        this.originalHref = originalHref;
+    }
+
+    /**
      * toString override returns the href value of url
      *
      * @return href value
@@ -356,15 +365,6 @@ public class UrlInfo extends UifDictionaryBeanBase implements Serializable {
     @Override
     public String toString() {
         return this.getHref();
-    }
-
-    /**
-     * toString returns the original href value of url
-     *
-     * @param originalHref original href value
-     */
-    protected void setOriginalHref(String originalHref) {
-        this.originalHref = originalHref;
     }
 
 }

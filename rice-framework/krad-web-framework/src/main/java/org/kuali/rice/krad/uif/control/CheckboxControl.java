@@ -32,7 +32,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "checkboxControl-bean", parent = "Uif-CheckboxControl")
+@BeanTag(name = "checkboxControl", parent = "Uif-CheckboxControl")
 public class CheckboxControl extends ControlBase implements ValueConfiguredControl {
     private static final long serialVersionUID = -1397028958569144230L;
 
@@ -76,7 +76,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return value for checkbox
      */
-    @BeanTagAttribute(name="value")
+    @BeanTagAttribute
     public String getValue() {
         return value;
     }
@@ -95,7 +95,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return the checkbox label text
      */
-    @BeanTagAttribute(name="checkboxLabel")
+    @BeanTagAttribute
     public String getCheckboxLabel() {
         return checkboxLabel;
     }
@@ -133,7 +133,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return Message with rich message structure, null if no rich message structure
      */
-    @BeanTagAttribute(name="richLabelMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getRichLabelMessage() {
         return richLabelMessage;
     }
@@ -154,7 +154,7 @@ public class CheckboxControl extends ControlBase implements ValueConfiguredContr
      *
      * @return the Label's inlineComponents
      */
-    @BeanTagAttribute(name="inlineComponents",type= BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

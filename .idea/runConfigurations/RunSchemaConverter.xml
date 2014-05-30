@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="RunSchemaConverter" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+    <module name="rice-krad-development-tools" />
+    <setting name="path" value="file://$PROJECT_DIR$/rice-framework/krad-development-tools/src/main/groovy/org/kuali/rice/krad/schema/RunSchemaConverter.groovy" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="-f C:\java\projects\ricewizard\rice-framework\krad-development-tools\src\main\resources\org\kuali\rice\krad\devtools\conversion -p org.kuali.rice.krad.uif,org.kuali.rice.krad.datadictionary,org.kuali.rice.krad.lookup -d C:\java\projects\ricewizard\rice-framework\krad-development-tools\src\main\resources\dictionaryFiles.txt" />
+    <setting name="workDir" value="file://$PROJECT_DIR$/rice-framework/krad-development-tools/src/main/groovy/org/kuali/rice/krad/schema" />
+    <setting name="debug" value="false" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>

@@ -26,7 +26,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 
 /**
- * The ViewHeader component represents the header for the view
+ * The ViewHeader component represents the header for the view.
  *
  * <p>This header has support for a "Unified" header in
  * which both the page title and view title appear in its content.  An "area title" and "metadata" can also be set
@@ -34,8 +34,9 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "viewHeader-bean", parent = "Uif-ViewHeader")
+@BeanTag(name = "viewHeader", parent = "Uif-ViewHeader")
 public class ViewHeader extends Header {
+    private static final long serialVersionUID = -974112303431464467L;
 
     private Message areaTitleMessage;
     private Message supportTitleMessage;
@@ -90,7 +91,7 @@ public class ViewHeader extends Header {
      *
      * @return the areaTitle text
      */
-    @BeanTagAttribute(name = "areaTitleText")
+    @BeanTagAttribute
     public String getAreaTitleText() {
         return areaTitleMessage.getMessageText();
     }
@@ -109,7 +110,7 @@ public class ViewHeader extends Header {
      *
      * @return the areaTitle Message object
      */
-    @BeanTagAttribute(name = "areaTitleMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getAreaTitleMessage() {
         return areaTitleMessage;
     }
@@ -131,7 +132,7 @@ public class ViewHeader extends Header {
      *
      * @return the supportTitle text
      */
-    @BeanTagAttribute(name = "supportTitleText")
+    @BeanTagAttribute
     public String getSupportTitleText() {
         return supportTitleMessage.getMessageText();
     }
@@ -154,7 +155,7 @@ public class ViewHeader extends Header {
      *
      * @return the supportTitle Message object
      */
-    @BeanTagAttribute(name = "supportTitleMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getSupportTitleMessage() {
         return supportTitleMessage;
     }
@@ -174,7 +175,7 @@ public class ViewHeader extends Header {
      *
      * @return the metadataText string
      */
-    @BeanTagAttribute(name = "metadataText")
+    @BeanTagAttribute
     public String getMetadataText() {
         return metadataMessage.getMessageText();
     }
@@ -194,7 +195,7 @@ public class ViewHeader extends Header {
      *
      * @return the metadataMessage object
      */
-    @BeanTagAttribute(name = "metadataMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getMetadataMessage() {
         return metadataMessage;
     }
@@ -213,7 +214,7 @@ public class ViewHeader extends Header {
      *
      * @return true if sticky, false otherwise
      */
-    @BeanTagAttribute(name = "sticky")
+    @BeanTagAttribute
     public boolean isSticky() {
         return sticky;
     }

@@ -29,8 +29,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "listLayout-bean", parent = "Uif-ListLayout"),
-        @BeanTag(name = "orderedListLayout-bean", parent = "Uif-OrderedListLayout")})
+@BeanTags({@BeanTag(name = "listLayout", parent = "Uif-ListLayout"),
+        @BeanTag(name = "orderedListLayout", parent = "Uif-OrderedListLayout")})
 public class ListLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = -8611267646944565117L;
 
@@ -63,7 +63,7 @@ public class ListLayoutManager extends LayoutManagerBase {
      *
      * @return true if orderedList, false if unordered
      */
-    @BeanTagAttribute(name = "orderedList")
+    @BeanTagAttribute
     public boolean isOrderedList() {
         return orderedList;
     }

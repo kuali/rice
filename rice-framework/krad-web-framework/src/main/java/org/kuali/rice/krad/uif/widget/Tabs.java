@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "tabs-bean", parent = "Uif-Tabs")
+@BeanTag(name = "tabs", parent = "Uif-Tabs")
 public class Tabs extends WidgetBase {
     private static final long serialVersionUID = 2L;
 
@@ -92,7 +92,7 @@ public class Tabs extends WidgetBase {
      *
      * @return id for the group within the tab group that should be initially active
      */
-    @BeanTagAttribute(name = "defaultActiveTabId")
+    @BeanTagAttribute
     public String getDefaultActiveTabId() {
         return defaultActiveTabId;
     }
@@ -111,7 +111,7 @@ public class Tabs extends WidgetBase {
      *
      * @return position for tabs
      */
-    @BeanTagAttribute(name = "position")
+    @BeanTagAttribute
     public UifConstants.Position getPosition() {
         return position;
     }

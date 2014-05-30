@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.view.View;
 /**
  * BreadcrumbOptions specific to page.  Render options are only available at the page level.
  */
-@BeanTag(name = "pageBreadcrumbOptions-bean", parent = "Uif-PageBreadcrumbOptions")
+@BeanTag(name = "pageBreadcrumbOptions", parent = "Uif-PageBreadcrumbOptions")
 public class PageBreadcrumbOptions extends BreadcrumbOptions {
     private static final long serialVersionUID = -5666730356781875858L;
 

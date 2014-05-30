@@ -32,7 +32,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "maintenaceActiveCollectionFilter-bean")
+@BeanTag(name = "maintenaceActiveFilter")
 public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copyable {
     private static final long serialVersionUID = -6045332235106531456L;
 
@@ -95,7 +95,7 @@ public class MaintenanceActiveCollectionFilter implements CollectionFilter, Copy
      *
      * @return binding path
      */
-    @BeanTagAttribute(name="oldBindingObjectPath")
+    @BeanTagAttribute
     public String getOldBindingObjectPath() {
         return oldBindingObjectPath;
     }

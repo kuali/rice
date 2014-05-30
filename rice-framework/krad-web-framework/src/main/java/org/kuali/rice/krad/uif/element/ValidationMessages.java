@@ -56,7 +56,7 @@ import org.kuali.rice.krad.util.MessageMap;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "validationMessages-bean", parent = "Uif-ValidationMessagesBase")
+@BeanTag(name = "validationMessages", parent = "Uif-ValidationMessagesBase")
 public class ValidationMessages extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 780940788435330077L;
 
@@ -231,7 +231,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      *
      * @return the additionalKeysToMatch
      */
-    @BeanTagAttribute(name = "additionalKeysToMatch", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getAdditionalKeysToMatch() {
         return this.additionalKeysToMatch;
     }
@@ -268,7 +268,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      *
      * @return the displayMessages
      */
-    @BeanTagAttribute(name = "displayMessages")
+    @BeanTagAttribute
     public boolean isDisplayMessages() {
         return this.displayMessages;
     }
@@ -286,9 +286,16 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      *
      * @return the errors
      */
-    @BeanTagAttribute(name = "errors", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getErrors() {
         return this.errors;
+    }
+
+    /**
+     * @see ValidationMessages#getErrors()
+     */
+    protected void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
     /**
@@ -297,9 +304,16 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      *
      * @return the warnings
      */
-    @BeanTagAttribute(name = "warnings", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getWarnings() {
         return this.warnings;
+    }
+
+    /**
+     * @see ValidationMessages#getWarnings()
+     */
+    protected void setWarnings(List<String> warnings) {
+        this.warnings = warnings;
     }
 
     /**
@@ -308,9 +322,16 @@ public class ValidationMessages extends UifDictionaryBeanBase {
      *
      * @return the infos
      */
-    @BeanTagAttribute(name = "infos", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getInfos() {
         return this.infos;
+    }
+
+    /**
+     * @see ValidationMessages#getInfos()
+     */
+    protected void setInfos(List<String> infos) {
+        this.infos = infos;
     }
 
     /**
@@ -330,33 +351,6 @@ public class ValidationMessages extends UifDictionaryBeanBase {
                 .equals("[]") && value instanceof List && !((List) value).isEmpty()) || defaultValue == null) {
             valueMap.put(key, value);
         }
-    }
-
-    /**
-     * Sets errors
-     *
-     * @param errors
-     */
-    protected void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
-
-    /**
-     * Sets warnings
-     *
-     * @param warnings
-     */
-    protected void setWarnings(List<String> warnings) {
-        this.warnings = warnings;
-    }
-
-    /**
-     * Sets infos
-     *
-     * @param infos
-     */
-    protected void setInfos(List<String> infos) {
-        this.infos = infos;
     }
 
 }

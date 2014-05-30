@@ -37,11 +37,11 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
 /**
- * Represents a user control, which is a special control to handle the input of a Person
+ * Represents a user control, which is a special control to handle the input of a Person.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "kimPersonControl-bean", parent = "Uif-KimPersonControl")
+@BeanTag(name = "kimPersonControl", parent = "Uif-KimPersonControl")
 public class UserControl extends TextControlBase implements FilterableLookupCriteriaControl {
     private static final long serialVersionUID = 7468340793076585869L;
 
@@ -197,7 +197,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      *
      * @return principalIdPropertyName
      */
-    @BeanTagAttribute(name = "principalIdPropertyName")
+    @BeanTagAttribute
     public String getPrincipalIdPropertyName() {
         return principalIdPropertyName;
     }
@@ -216,7 +216,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      *
      * @return personNamePropertyName
      */
-    @BeanTagAttribute(name = "personNamePropertyName")
+    @BeanTagAttribute
     public String getPersonNamePropertyName() {
         return personNamePropertyName;
     }
@@ -235,7 +235,7 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      *
      * @return personObjectPropertyName
      */
-    @BeanTagAttribute(name = "personObjectPropertyName")
+    @BeanTagAttribute
     public String getPersonObjectPropertyName() {
         return personObjectPropertyName;
     }

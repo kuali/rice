@@ -20,16 +20,14 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
- * Decorates a group with scroll functionality
+ * Decorates a group with scroll functionality.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "scrollpane-bean", parent = "Uif-Scrollpane")
+@BeanTag(name = "scrollpane", parent = "Uif-Scrollpane")
 public class Scrollpane  extends WidgetBase {
     private static final long serialVersionUID = 3853028195825084261L;
 
@@ -68,7 +66,7 @@ public class Scrollpane  extends WidgetBase {
      *
      * @return Content height of the group
      */
-    @BeanTagAttribute(name="height")
+    @BeanTagAttribute
     public String getHeight() {
         return height;
     }

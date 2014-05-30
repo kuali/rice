@@ -76,7 +76,7 @@ import org.kuali.rice.krad.uif.util.CopyUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "remotableFieldsPlaceholderConfig-bean", parent = "Uif-RemotableFieldsPlaceholderConfig")
+@BeanTag(name = "remotableFieldsPlaceholder", parent = "Uif-RemotableFieldsPlaceholderConfig")
 public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     private static final long serialVersionUID = -8493923312021633727L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RemoteFieldsHolder.class);
@@ -177,7 +177,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return path to property on model
      */
-    @BeanTagAttribute(name = "propertyName")
+    @BeanTagAttribute
     public String getPropertyName() {
         return propertyName;
     }
@@ -201,7 +201,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return BindingInfo instance containing binding information for the Map property
      */
-    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -230,7 +230,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return name of method to invoke for fetching remote fields
      */
-    @BeanTagAttribute(name = "fetchingMethodToCall")
+    @BeanTagAttribute
     public String getFetchingMethodToCall() {
         return fetchingMethodToCall;
     }
@@ -261,7 +261,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      *
      * @return MethodInvokerConfig instance containing method configuration
      */
-    @BeanTagAttribute(name = "fetchingMethodInvoker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public MethodInvokerConfig getFetchingMethodInvoker() {
         return fetchingMethodInvoker;
     }

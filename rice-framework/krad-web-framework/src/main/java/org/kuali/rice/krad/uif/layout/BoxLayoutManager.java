@@ -48,9 +48,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "boxLayout-bean", parent = "Uif-BoxLayoutBase"),
-        @BeanTag(name = "horizontalBoxLayout-bean", parent = "Uif-HorizontalBoxLayout"),
-        @BeanTag(name = "verticalBoxLayout-bean", parent = "Uif-VerticalBoxLayout")})
+@BeanTags({@BeanTag(name = "boxLayout", parent = "Uif-BoxLayoutBase"),
+        @BeanTag(name = "horizontalBoxLayout", parent = "Uif-HorizontalBoxLayout"),
+        @BeanTag(name = "verticalBoxLayout", parent = "Uif-VerticalBoxLayout")})
 public class BoxLayoutManager extends LayoutManagerBase {
     private static final long serialVersionUID = 4467342272983290044L;
 
@@ -138,7 +138,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *
      * @return orientation configured for layout
      */
-    @BeanTagAttribute(name = "orientation", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Orientation getOrientation() {
         return this.orientation;
     }
@@ -163,7 +163,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *
      * @return String
      */
-    @BeanTagAttribute(name = "padding")
+    @BeanTagAttribute
     public String getPadding() {
         return this.padding;
     }
@@ -184,7 +184,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *
      * @return css style string
      */
-    @BeanTagAttribute(name = "itemStyle")
+    @BeanTagAttribute
     public String getItemStyle() {
         return this.itemStyle;
     }
@@ -203,7 +203,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
      *
      * @return List<String>
      */
-    @BeanTagAttribute(name = "itemStyleClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getItemStyleClasses() {
         return itemStyleClasses;
     }

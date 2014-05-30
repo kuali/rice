@@ -26,23 +26,37 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BeanTagAttribute {
+
     /*
-     * The different types the property could be.
-     * SingleValue - Property is a single standard value (attribute). (DEFAULT)
-     * SingleBean - Property is a single bean object.
-     * ListBean - Property is a list consisting of beans.
-     * ListValue - Property is a list consisting of standard values (string, int, char, etc).
-     * MapValue - The property is a map that consists of String keys and String values.
-     * MapBean - The property is a map that consists of either String or bean keys and bean values.
-     * SetValue - The property is a set consisting of standard values.
-     * SetBean - The property is a set consisting of beans.
+     * Represents the type of an attribute within the schema (determines how it will be parsed).
+     *
+     * <ul>
+     *     <li>Any - Property holds HTML content (any tags can be nested and populated as a string)</li>
+     *     <li>ByType - The property tag itself can be missing, and any beans that match the type of the property
+     *     will be used to populate its value. Note, only one attribute per class (and its supers) can have
+     *     this setting</li>
+     *     <li>Direct - The bean can be populated directly on the property tag. This means there is a bean
+     *     with the same tag name as the property (prevent nested tags with the same name).</li>
+     *     <li>DirectOrByType - Property can be configured by type or direct</li>
+     *     <li>SingleValue - Property is a single standard value (attribute). (DEFAULT)</li>
+     *     <li>SingleBean - Property is a single bean object</li>
+     *     <li>ListBean - Property is a list consisting of beans</li>
+     *     <li>ListValue - Property is a list consisting of standard values (string, int, char, etc)</li>
+     *     <li>MapValue - The property is a map that consists of String keys and String values</li>
+     *     <li>MapBean - The property is a map that consists of either String or bean keys and bean values</li>
+     *     <li>SetValue - The property is a set consisting of standard values</li>
+     *     <li>SetBean - The property is a set consisting of beans</li>
+     * </ul>
      */
     public enum AttributeType {
-        SINGLEVALUE, SINGLEBEAN, LISTBEAN, LISTVALUE, MAPVALUE, MAPBEAN, MAP2BEAN, SETVALUE, SETBEAN
+        ANY, BYTYPE, DIRECT, DIRECTORBYTYPE, SINGLEVALUE, SINGLEBEAN, LISTBEAN, LISTVALUE, MAPVALUE, MAPBEAN,
+        SETVALUE, SETBEAN, NOTSET
     }
 
-    String name();
+    // name to use for the attribute in the custom schema, this will default to the name of the property if not set
+    String name() default "";
 
-    // The type of the property defining how it should be parsed
-    AttributeType type() default AttributeType.SINGLEVALUE;
+    // the type of the property defining how it should be parsed, generally this can be derived from the type
+    // and does not need to be set. Only in cases where the attribute needs to be set by type, direct, or any
+    AttributeType type() default AttributeType.NOTSET;
 }

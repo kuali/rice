@@ -35,7 +35,7 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "controlBase-bean", parent = "Uif-ControlBase")
+@BeanTag(name = "controlBase", parent = "Uif-ControlBase")
 public abstract class ControlBase extends ContentElementBase implements Control {
     private static final long serialVersionUID = -7898244978136312663L;
 
@@ -128,9 +128,9 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.control.Control#getTabIndex()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "tabIndex")
+    @BeanTagAttribute
     public int getTabIndex() {
         return this.tabIndex;
     }
@@ -145,7 +145,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * @see org.kuali.rice.krad.uif.control.Control#isDisabled()
      */
-    @BeanTagAttribute(name = "disabled")
+    @BeanTagAttribute
     public boolean isDisabled() {
         return disabled;
     }
@@ -160,7 +160,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
     /**
      * @see org.kuali.rice.krad.uif.control.Control#getDisabledReason()
      */
-    @BeanTagAttribute(name = "disabledReason")
+    @BeanTagAttribute
     public String getDisabledReason() {
         return disabledReason;
     }
@@ -177,7 +177,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return true if evaluate on key up, false otherwise
      */
-    @BeanTagAttribute(name = "evaluateDisabledOnKeyUp")
+    @BeanTagAttribute
     public boolean isEvaluateDisabledOnKeyUp() {
         return evaluateDisabledOnKeyUp;
     }
@@ -214,7 +214,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return the property names to monitor for change to disable this component
      */
-    @BeanTagAttribute(name = "disabledWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getDisabledWhenChangedPropertyNames() {
         return disabledWhenChangedPropertyNames;
     }
@@ -233,7 +233,7 @@ public abstract class ControlBase extends ContentElementBase implements Control 
      *
      * @return the property names to monitor for change to enable this component
      */
-    @BeanTagAttribute(name = "ensabledConditionControlNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getEnabledWhenChangedPropertyNames() {
         return enabledWhenChangedPropertyNames;
     }

@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "blockUI-bean", parent = "Uif-BlockUI")
+@BeanTag(name = "blockUI", parent = "Uif-BlockUI")
 public class BlockUI extends WidgetBase {
 
     private String blockingImageSource;
@@ -71,7 +71,7 @@ public class BlockUI extends WidgetBase {
      *
      * @return url to the blocking image
      */
-    @BeanTagAttribute(name="blockingImageSource")
+    @BeanTagAttribute
     public String getBlockingImageSource() {
         return blockingImageSource;
     }

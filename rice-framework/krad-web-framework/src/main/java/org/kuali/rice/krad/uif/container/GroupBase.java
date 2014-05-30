@@ -66,74 +66,53 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "group-bean", parent = "Uif-GroupBase"),
-        @BeanTag(name = "boxGroupBase-bean", parent = "Uif-BoxGroupBase"),
-        @BeanTag(name = "verticalBoxGroup-bean", parent = "Uif-VerticalBoxGroup"),
-        @BeanTag(name = "verticalBoxSection-bean", parent = "Uif-VerticalBoxSection"),
-        @BeanTag(name = "verticalBoxSubSection-bean", parent = "Uif-VerticalBoxSubSection"),
-        @BeanTag(name = "disclosure-verticalBoxSection-bean", parent = "Uif-Disclosure-VerticalBoxSection"),
-        @BeanTag(name = "disclosure-verticalBoxSubSection-bean", parent = "Uif-Disclosure-VerticalBoxSubSection"),
-        @BeanTag(name = "horizontalBoxGroup-bean", parent = "Uif-HorizontalBoxGroup"),
-        @BeanTag(name = "horizontalBoxSection-bean", parent = "Uif-HorizontalBoxSection"),
-        @BeanTag(name = "horizontalBoxSubSection-bean", parent = "Uif-HorizontalBoxSubSection"),
-        @BeanTag(name = "disclosure-horizontalBoxSection-bean", parent = "Uif-Disclosure-HorizontalBoxSection"),
-        @BeanTag(name = "disclosure-horizontalBoxSubSection-bean", parent = "Uif-Disclosure-HorizontalBoxSubSection"),
-        @BeanTag(name = "gridGroup-bean", parent = "Uif-GridGroup"),
-        @BeanTag(name = "gridSection-bean", parent = "Uif-GridSection"),
-        @BeanTag(name = "gridSubSection-bean", parent = "Uif-GridSubSection"),
-        @BeanTag(name = "disclosure-gridSection-bean", parent = "Uif-Disclosure-GridSection"),
-        @BeanTag(name = "cssGridGroup-bean", parent = "Uif-CssGridGroup"),
-        @BeanTag(name = "cssGridSection-bean", parent = "Uif-CssGridSection"),
-        @BeanTag(name = "cssGridSubSection-bean", parent = "Uif-CssGridSubSection"),
-        @BeanTag(name = "cssGridGroup-FieldLabelColumns", parent = "Uif-CssGridGroup-FieldLabelColumns"),
-        @BeanTag(name = "cssGridSection-FieldLabelColumns", parent = "Uif-CssGridSection-FieldLabelColumns"),
-        @BeanTag(name = "cssGridSubSection-FieldLabelColumns", parent = "Uif-CssGridSubSection-FieldLabelColumns"),
-        @BeanTag(name = "cssGridSection-1FieldLabelColumn-bean", parent = "Uif-CssGridSection-1FieldLabelColumn"),
-        @BeanTag(name = "cssGridSection-2FieldLabelColumn-bean", parent = "Uif-CssGridSection-2FieldLabelColumn"),
-        @BeanTag(name = "cssGridSection-3FieldLabelColumn-bean", parent = "Uif-CssGridSection-3FieldLabelColumn"),
-        @BeanTag(name = "cssGridSubSection-1FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-1FieldLabelColumn"),
-        @BeanTag(name = "cssGridSubSection-2FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-2FieldLabelColumn"),
-        @BeanTag(name = "cssGridSubSection-3FieldLabelColumn-bean", parent = "Uif-CssGridSubSection-3FieldLabelColumn"),
-        @BeanTag(name = "listGroup-bean", parent = "Uif-ListGroup"),
-        @BeanTag(name = "listSection-bean", parent = "Uif-ListSection"),
-        @BeanTag(name = "listSubSection-bean", parent = "Uif-ListSubSection"),
-        @BeanTag(name = "disclosure-listSection-bean", parent = "Uif-Disclosure-ListSection"),
-        @BeanTag(name = "disclosure-listSubSection-bean", parent = "Uif-Disclosure-ListSubSection"),
-        @BeanTag(name = "collectionGridItem-bean", parent = "Uif-CollectionGridItem"),
-        @BeanTag(name = "collectionVerticalBoxItem-bean", parent = "Uif-CollectionVerticalBoxItem"),
-        @BeanTag(name = "collectionHorizontalBoxItem-bean", parent = "Uif-CollectionHorizontalBoxItem"),
-        @BeanTag(name = "headerUpperGroup-bean", parent = "Uif-HeaderUpperGroup"),
-        @BeanTag(name = "headerRightGroup-bean", parent = "Uif-HeaderRightGroup"),
-        @BeanTag(name = "headerLowerGroup-bean", parent = "Uif-HeaderLowerGroup"),
-        @BeanTag(name = "footer-bean", parent = "Uif-FooterBase"),
-        @BeanTag(name = "formFooter-bean", parent = "Uif-FormFooter"),
-        @BeanTag(name = "actionsGroup-bean", parent = "Uif-ActionsGroup"),
-        @BeanTag(name = "disclosureActionsGroup-bean", parent = "Uif-DisclosureActionsGroup"),
-        @BeanTag(name = "disclosureActions-reqMessageGroup-bean", parent = "Uif-DisclosureActions-ReqMessageGroup"),
-        @BeanTag(name = "inactiveItemsActionsGroup-bean", parent = "Uif-InactiveItemsActionsGroup"),
-        @BeanTag(name = "documentInfoGroup-bean", parent = "Uif-DocumentInfoGroup"),
-        @BeanTag(name = "documentOverviewSection-bean", parent = "Uif-DocumentOverviewSection"),
-        @BeanTag(name = "documentAdHocRecipientsSection-bean", parent = "Uif-DocumentAdHocRecipientsSection"),
-        @BeanTag(name = "documentRouteLogSection-bean", parent = "Uif-DocumentRouteLogSection"),
-        @BeanTag(name = "documentPageFooter-bean", parent = "Uif-DocumentPageFooter"),
-        @BeanTag(name = "incidentDetailGroup-bean", parent = "Uif-IncidentDetailGroup"),
-        @BeanTag(name = "incidentStackTraceGroup-bean", parent = "Uif-IncidentStackTraceGroup"),
-        @BeanTag(name = "incidentReportFooter-bean", parent = "Uif-IncidentReportFooter"),
-        @BeanTag(name = "initiatedDocumentFooter-bean", parent = "InitiatedDocumentFooter"),
-        @BeanTag(name = "inquiryFooter-bean", parent = "Uif-InquiryFooter"),
-        @BeanTag(name = "lookupCriteriaGroup-bean", parent = "Uif-LookupCriteriaGroup"),
-        @BeanTag(name = "lookupPageHeaderGroup-bean", parent = "Uif-LookupPageHeaderGroup"),
-        @BeanTag(name = "lookupCriteriaFooter-bean", parent = "Uif-LookupCriteriaFooter"),
-        @BeanTag(name = "lookupResultsFooter-bean", parent = "Uif-LookupResultsFooter"),
-        @BeanTag(name = "maintenanceGridGroup-bean", parent = "Uif-MaintenanceGridGroup"),
-        @BeanTag(name = "maintenanceHorizontalBoxGroup-bean", parent = "Uif-MaintenanceHorizontalBoxGroup"),
-        @BeanTag(name = "maintenanceVerticalBoxGroup-bean", parent = "Uif-MaintenanceVerticalBoxGroup"),
-        @BeanTag(name = "maintenanceGridSection-bean", parent = "Uif-MaintenanceGridSection"),
-        @BeanTag(name = "maintenanceGridSubSection-bean", parent = "Uif-MaintenanceGridSubSection"),
-        @BeanTag(name = "maintenanceHorizontalBoxSection-bean", parent = "Uif-MaintenanceHorizontalBoxSection"),
-        @BeanTag(name = "maintenanceVerticalBoxSection-bean", parent = "Uif-MaintenanceVerticalBoxSection"),
-        @BeanTag(name = "maintenanceHorizontalBoxSubSection-bean", parent = "Uif-MaintenanceHorizontalBoxSubSection"),
-        @BeanTag(name = "maintenanceVerticalBoxSubSection-bean", parent = "Uif-MaintenanceVerticalBoxSubSection")})
+@BeanTags({@BeanTag(name = "group", parent = "Uif-GroupBase"),
+        @BeanTag(name = "boxGroup", parent = "Uif-BoxGroupBase"),
+        @BeanTag(name = "verticalGroup", parent = "Uif-VerticalBoxGroup"),
+        @BeanTag(name = "verticalSection", parent = "Uif-VerticalBoxSection"),
+        @BeanTag(name = "verticalSubSection", parent = "Uif-VerticalBoxSubSection"),
+        @BeanTag(name = "disclosureVerticalSection", parent = "Uif-Disclosure-VerticalBoxSection"),
+        @BeanTag(name = "disclosureVerticalSubSection", parent = "Uif-Disclosure-VerticalBoxSubSection"),
+        @BeanTag(name = "horizontalGroup", parent = "Uif-HorizontalBoxGroup"),
+        @BeanTag(name = "horizontalSection", parent = "Uif-HorizontalBoxSection"),
+        @BeanTag(name = "horizontalSubSection", parent = "Uif-HorizontalBoxSubSection"),
+        @BeanTag(name = "disclosureHorizontalSection", parent = "Uif-Disclosure-HorizontalBoxSection"),
+        @BeanTag(name = "disclosureHorizontalSubSection", parent = "Uif-Disclosure-HorizontalBoxSubSection"),
+        @BeanTag(name = "grid", parent = "Uif-GridGroup"),
+        @BeanTag(name = "gridSection", parent = "Uif-GridSection"),
+        @BeanTag(name = "gridSubSection", parent = "Uif-GridSubSection"),
+        @BeanTag(name = "disclosureGridSection", parent = "Uif-Disclosure-GridSection"),
+        @BeanTag(name = "cssGrid", parent = "Uif-CssGridGroup"),
+        @BeanTag(name = "section", parent = "Uif-CssGridSection"),
+        @BeanTag(name = "subSection", parent = "Uif-CssGridSubSection"),
+        @BeanTag(name = "section1Col", parent = "Uif-CssGridSection-1FieldLabelColumn"),
+        @BeanTag(name = "section2Col", parent = "Uif-CssGridSection-2FieldLabelColumn"),
+        @BeanTag(name = "section3Col", parent = "Uif-CssGridSection-3FieldLabelColumn"),
+        @BeanTag(name = "subSection1Col", parent = "Uif-CssGridSubSection-1FieldLabelColumn"),
+        @BeanTag(name = "subSection2Col", parent = "Uif-CssGridSubSection-2FieldLabelColumn"),
+        @BeanTag(name = "subSection3Col", parent = "Uif-CssGridSubSection-3FieldLabelColumn"),
+        @BeanTag(name = "list", parent = "Uif-ListGroup"),
+        @BeanTag(name = "listSection", parent = "Uif-ListSection"),
+        @BeanTag(name = "listSubSection", parent = "Uif-ListSubSection"),
+        @BeanTag(name = "disclosureListSection", parent = "Uif-Disclosure-ListSection"),
+        @BeanTag(name = "disclosureListSubSection", parent = "Uif-Disclosure-ListSubSection"),
+        @BeanTag(name = "collectionGridItem", parent = "Uif-CollectionGridItem"),
+        @BeanTag(name = "collectionVerticalBoxItem", parent = "Uif-CollectionVerticalBoxItem"),
+        @BeanTag(name = "collectionHorizontalBoxItem", parent = "Uif-CollectionHorizontalBoxItem"),
+        @BeanTag(name = "headerUpperGroup", parent = "Uif-HeaderUpperGroup"),
+        @BeanTag(name = "headerRightGroup", parent = "Uif-HeaderRightGroup"),
+        @BeanTag(name = "headerLowerGroup", parent = "Uif-HeaderLowerGroup"),
+        @BeanTag(name = "footer", parent = "Uif-FooterBase"),
+        @BeanTag(name = "formFooter", parent = "Uif-FormFooter"),
+        @BeanTag(name = "maintenanceGrid", parent = "Uif-MaintenanceGridGroup"),
+        @BeanTag(name = "maintenanceHorizontalGroup", parent = "Uif-MaintenanceHorizontalBoxGroup"),
+        @BeanTag(name = "maintenanceVerticalGroup", parent = "Uif-MaintenanceVerticalBoxGroup"),
+        @BeanTag(name = "maintenanceGridSection", parent = "Uif-MaintenanceGridSection"),
+        @BeanTag(name = "maintenanceGridSubSection", parent = "Uif-MaintenanceGridSubSection"),
+        @BeanTag(name = "maintenanceHorizontalSection", parent = "Uif-MaintenanceHorizontalBoxSection"),
+        @BeanTag(name = "maintenanceVerticalSection", parent = "Uif-MaintenanceVerticalBoxSection"),
+        @BeanTag(name = "maintenanceHorizontalSubSection", parent = "Uif-MaintenanceHorizontalBoxSubSection"),
+        @BeanTag(name = "maintenanceVerticalSubSection", parent = "Uif-MaintenanceVerticalBoxSubSection")})
 public class GroupBase extends ContainerBase implements Group {
     private static final long serialVersionUID = 7953641325356535509L;
 
@@ -274,7 +253,7 @@ public class GroupBase extends ContainerBase implements Group {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "fieldBindByNamePrefix")
+    @BeanTagAttribute
     public String getFieldBindByNamePrefix() {
         return this.fieldBindByNamePrefix;
     }
@@ -290,8 +269,7 @@ public class GroupBase extends ContainerBase implements Group {
     /**
      * {@inheritDoc}
      */
-    @Override
-    @BeanTagAttribute(name = "fieldBindingObjectPath")
+    @BeanTagAttribute
     public String getFieldBindingObjectPath() {
         return this.fieldBindingObjectPath;
     }
@@ -307,8 +285,7 @@ public class GroupBase extends ContainerBase implements Group {
     /**
      * {@inheritDoc}
      */
-    @Override
-    @BeanTagAttribute(name = "Disclosure", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Disclosure getDisclosure() {
         return this.disclosure;
     }
@@ -324,8 +301,7 @@ public class GroupBase extends ContainerBase implements Group {
     /**
      * {@inheritDoc}
      */
-    @Override
-    @BeanTagAttribute(name = "scrollpane", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Scrollpane getScrollpane() {
         return this.scrollpane;
     }
@@ -341,7 +317,8 @@ public class GroupBase extends ContainerBase implements Group {
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @Override
+    @BeanTagAttribute
     public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
             items = new LifecycleAwareList<Component>(this);
@@ -371,7 +348,7 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @return the html tag used to wrap this group
      */
-    @BeanTagAttribute(name = "wrapperTag")
+    @BeanTagAttribute
     public String getWrapperTag() {
         return wrapperTag;
     }

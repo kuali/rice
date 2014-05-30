@@ -81,9 +81,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "lightTableGroup-bean", parent = "Uif-LightTableGroup"),
-        @BeanTag(name = "lightTableSection-bean", parent = "Uif-LightTableSection"),
-        @BeanTag(name = "lightTableSubSection-bean", parent = "Uif-LightTableSubSection")})
+@BeanTags({@BeanTag(name = "lightTable", parent = "Uif-LightTableGroup"),
+        @BeanTag(name = "lightTableSection", parent = "Uif-LightTableSection"),
+        @BeanTag(name = "lightTableSubSection", parent = "Uif-LightTableSubSection")})
 public class LightTable extends GroupBase implements DataBinding {
     private static final long serialVersionUID = -8930885219866835711L;
 
@@ -618,7 +618,7 @@ public class LightTable extends GroupBase implements DataBinding {
      *
      * @return the propertyName of this collection
      */
-    @BeanTagAttribute(name = "propertyName")
+    @BeanTagAttribute
     public String getPropertyName() {
         return propertyName;
     }
@@ -637,7 +637,7 @@ public class LightTable extends GroupBase implements DataBinding {
      *
      * @return the bindingInfo
      */
-    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -665,7 +665,7 @@ public class LightTable extends GroupBase implements DataBinding {
      *
      * @return the RichTable widget
      */
-    @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public RichTable getRichTable() {
         return richTable;
     }
@@ -690,7 +690,7 @@ public class LightTable extends GroupBase implements DataBinding {
      *
      * @return a map which represents the css classes of the rows of this layout
      */
-    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getConditionalRowCssClasses() {
         return conditionalRowCssClasses;
     }

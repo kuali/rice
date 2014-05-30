@@ -48,21 +48,17 @@ import org.kuali.rice.krad.util.KRADConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "header-bean", parent = "Uif-HeaderBase"), @BeanTag(name = "headerOne-bean", parent = "Uif-HeaderOne"),
-        @BeanTag(name = "headerTwo-bean", parent = "Uif-HeaderTwo"),
-        @BeanTag(name = "headerThree-bean", parent = "Uif-HeaderThree"),
-        @BeanTag(name = "headerFour-bean", parent = "Uif-HeaderFour"),
-        @BeanTag(name = "headerFive-bean", parent = "Uif-HeaderFive"),
-        @BeanTag(name = "headerSix-bean", parent = "Uif-HeaderSix"),
-        @BeanTag(name = "pageHeader-bean", parent = "Uif-PageHeader"),
-        @BeanTag(name = "sectionHeader-bean", parent = "Uif-SectionHeader"),
-        @BeanTag(name = "subSectionHeader-bean", parent = "Uif-SubSectionHeader"),
-        @BeanTag(name = "subCollectionHeader-bean", parent = "Uif-SubCollectionHeader"),
-        @BeanTag(name = "editablePageHeader-bean", parent = "Uif-EditablePageHeader"),
-        @BeanTag(name = "readOnlyPageHeader-bean", parent = "Uif-ReadOnlyPageHeader"),
-        @BeanTag(name = "imageCaptionHeader-bean", parent = "Uif-ImageCaptionHeader"),
-        @BeanTag(name = "documentViewHeader-bean", parent = "Uif-DocumentViewHeader"),
-        @BeanTag(name = "lookupPageHeader-bean", parent = "Uif-LookupPageHeader")})
+@BeanTags({@BeanTag(name = "header", parent = "Uif-HeaderBase"),
+        @BeanTag(name = "headerOne", parent = "Uif-HeaderOne"),
+        @BeanTag(name = "headerTwo", parent = "Uif-HeaderTwo"),
+        @BeanTag(name = "headerThree", parent = "Uif-HeaderThree"),
+        @BeanTag(name = "headerFour", parent = "Uif-HeaderFour"),
+        @BeanTag(name = "headerFive", parent = "Uif-HeaderFive"),
+        @BeanTag(name = "headerSix", parent = "Uif-HeaderSix"),
+        @BeanTag(name = "pageHeader", parent = "Uif-PageHeader"),
+        @BeanTag(name = "sectionHeader", parent = "Uif-SectionHeader"),
+        @BeanTag(name = "subSectionHeader", parent = "Uif-SubSectionHeader"),
+        @BeanTag(name = "subCollectionHeader", parent = "Uif-SubCollectionHeader")})
 public class Header extends ContentElementBase {
     private static final long serialVersionUID = -6950408292923393244L;
 
@@ -182,7 +178,7 @@ public class Header extends ContentElementBase {
      *
      * @return header text
      */
-    @BeanTagAttribute(name = "headerText")
+    @BeanTagAttribute
     public String getHeaderText() {
         return this.headerText;
     }
@@ -201,7 +197,7 @@ public class Header extends ContentElementBase {
      *
      * @return header level
      */
-    @BeanTagAttribute(name = "headerLevel")
+    @BeanTagAttribute
     public String getHeaderLevel() {
         return this.headerLevel;
     }
@@ -228,7 +224,7 @@ public class Header extends ContentElementBase {
      * @return list of style classes
      * @see org.kuali.rice.krad.uif.component.Component#getCssClasses()
      */
-    @BeanTagAttribute(name = "headerTagCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getHeaderTagCssClasses() {
         return this.headerTagCssClasses;
     }
@@ -269,7 +265,7 @@ public class Header extends ContentElementBase {
      * @return header style
      * @see org.kuali.rice.krad.uif.component.Component#getStyle()
      */
-    @BeanTagAttribute(name = "headerTagStyle")
+    @BeanTagAttribute
     public String getHeaderTagStyle() {
         return this.headerTagStyle;
     }
@@ -283,6 +279,7 @@ public class Header extends ContentElementBase {
         this.headerTagStyle = headerTagStyle;
     }
 
+    @BeanTagAttribute
     public boolean isHeaderTagOnly() {
         return headerTagOnly;
     }
@@ -300,7 +297,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name = "upperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getUpperGroup() {
         return upperGroup;
     }
@@ -323,7 +320,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name = "rightGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getRightGroup() {
         return rightGroup;
     }
@@ -346,7 +343,7 @@ public class Header extends ContentElementBase {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name = "lowerGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getLowerGroup() {
         return lowerGroup;
     }
@@ -371,7 +368,7 @@ public class Header extends ContentElementBase {
      * @return List<? extends Component> items
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<? extends Component> getItems() {
         if (lowerGroup != null) {
             return lowerGroup.getItems();
@@ -404,7 +401,7 @@ public class Header extends ContentElementBase {
      *
      * @return rich message structure, null if no rich message structure
      */
-    @BeanTagAttribute(name = "richHeaderMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getRichHeaderMessage() {
         return richHeaderMessage;
     }
@@ -427,7 +424,7 @@ public class Header extends ContentElementBase {
      *
      * @return the Label's inlineComponents
      */
-    @BeanTagAttribute(name = "inlineComponents", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

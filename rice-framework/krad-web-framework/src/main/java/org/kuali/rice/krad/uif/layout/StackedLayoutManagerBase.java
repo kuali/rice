@@ -362,7 +362,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "summaryTitle")
+    @BeanTagAttribute
     public String getSummaryTitle() {
         return this.summaryTitle;
     }
@@ -379,7 +379,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "summaryFields", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getSummaryFields() {
         return this.summaryFields;
     }
@@ -397,7 +397,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "lineGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getLineGroupPrototype() {
         return this.lineGroupPrototype;
     }
@@ -414,7 +414,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "wrapperGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getWrapperGroup() {
         return wrapperGroup;
     }
@@ -432,7 +432,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      */
     @Override
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "stackedGroups", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Group> getStackedGroups() {
         return this.stackedGroups;
     }
@@ -457,6 +457,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isRenderLineActionsInLineGroup() {
         return renderLineActionsInLineGroup;
     }
@@ -472,6 +473,8 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
     /**
      * {@inheritDoc}
      */
+    @Override
+    @BeanTagAttribute
     public boolean isRenderLineActionsInHeader() {
         return renderLineActionsInHeader;
     }
@@ -479,6 +482,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setRenderLineActionsInHeader(boolean renderLineActionsInHeader) {
         this.renderLineActionsInHeader = renderLineActionsInHeader;
     }

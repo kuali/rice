@@ -67,8 +67,8 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "viewTheme-bean", parent = "Uif-ViewTheme"),
-        @BeanTag(name = "kbootTheme-bean", parent = "Uif-KbootTheme")})
+@BeanTags({@BeanTag(name = "theme", parent = "Uif-ViewTheme"),
+        @BeanTag(name = "kbootTheme", parent = "Uif-KbootTheme")})
 public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 7063256242857896580L;
     private static final Logger LOG = Logger.getLogger(ViewTheme.class);
@@ -346,7 +346,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return name for the theme
      */
-    @BeanTagAttribute(name = "name")
+    @BeanTagAttribute
     public String getName() {
         return name;
     }
@@ -369,7 +369,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return path to theme directory
      */
-    @BeanTagAttribute(name = "directory")
+    @BeanTagAttribute
     public String getDirectory() {
         return directory;
     }
@@ -398,7 +398,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return theme image directory
      */
-    @BeanTagAttribute(name = "imageDirectory")
+    @BeanTagAttribute
     public String getImageDirectory() {
         if (StringUtils.isBlank(this.imageDirectory)) {
             String appUrl = getConfigurationService().getPropertyValueAsString(
@@ -430,7 +430,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return version string for the min file name
      */
-    @BeanTagAttribute(name = "minVersionSuffix")
+    @BeanTagAttribute
     public String getMinVersionSuffix() {
         return minVersionSuffix;
     }
@@ -454,6 +454,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return true if min files should be sourced in, false if not
      */
+    @BeanTagAttribute
     public boolean isIncludeMinFiles() {
         return includeMinFiles;
     }
@@ -480,7 +481,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return path of min css file
      */
-    @BeanTagAttribute(name = "minCssFile")
+    @BeanTagAttribute
     public String getMinCssFile() {
         return minCssFile;
     }
@@ -507,7 +508,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return path of min css file
      */
-    @BeanTagAttribute(name = "minScriptFile")
+    @BeanTagAttribute
     public String getMinScriptFile() {
         return minScriptFile;
     }
@@ -532,7 +533,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return list of min CSS file paths or URLs
      */
-    @BeanTagAttribute(name = "minCssSourceFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getMinCssSourceFiles() {
         return minCssSourceFiles;
     }
@@ -557,7 +558,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return list of min JS file paths or URLs
      */
-    @BeanTagAttribute(name = "minScriptSourceFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getMinScriptSourceFiles() {
         return minScriptSourceFiles;
     }
@@ -587,7 +588,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return list of file paths or URLs for CSS
      */
-    @BeanTagAttribute(name = "cssFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getCssFiles() {
         return cssFiles;
     }
@@ -617,7 +618,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return list of file paths or URLs for JS
      */
-    @BeanTagAttribute(name = "scriptFiles", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getScriptFiles() {
         return scriptFiles;
     }
@@ -643,7 +644,7 @@ public class ViewTheme extends UifDictionaryBeanBase implements Serializable {
      *
      * @return true if the theme uses the theme builder, false if not
      */
-    @BeanTagAttribute(name = "usesThemeBuilder")
+    @BeanTagAttribute
     public boolean isUsesThemeBuilder() {
         return usesThemeBuilder;
     }

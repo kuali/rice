@@ -45,7 +45,7 @@ import org.kuali.rice.krad.uif.service.ViewHelperService;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "attributeQueryConfig-bean", parent = "Uif-AttributeQueryConfig")
+@BeanTag(name = "attributeQuery", parent = "Uif-AttributeQueryConfig")
 public class AttributeQuery extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = -4569905665441735255L;
 
@@ -234,7 +234,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return data object class name
      */
-    @BeanTagAttribute(name = "dataObjectClassName")
+    @BeanTagAttribute
     public String getDataObjectClassName() {
         return dataObjectClassName;
     }
@@ -261,7 +261,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return mapping of query parameters
      */
-    @BeanTagAttribute(name = "queryFieldMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getQueryFieldMapping() {
         return queryFieldMapping;
     }
@@ -288,7 +288,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return return field mapping
      */
-    @BeanTagAttribute(name = "returnFieldMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getReturnFieldMapping() {
         return returnFieldMapping;
     }
@@ -310,7 +310,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return field name/value pairs for query criteria
      */
-    @BeanTagAttribute(name = "additionalCriteria", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getAdditionalCriteria() {
         return additionalCriteria;
     }
@@ -332,7 +332,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return property names
      */
-    @BeanTagAttribute(name = "sortPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getSortPropertyNames() {
         return sortPropertyNames;
     }
@@ -352,7 +352,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return true if not found message should be added, false otherwise
      */
-    @BeanTagAttribute(name = "renderNotFoundMessage")
+    @BeanTagAttribute
     public boolean isRenderNotFoundMessage() {
         return renderNotFoundMessage;
     }
@@ -371,7 +371,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return literal message text
      */
-    @BeanTagAttribute(name = "returnMessageText")
+    @BeanTagAttribute
     public String getReturnMessageText() {
         return returnMessageText;
     }
@@ -391,7 +391,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return style classes
      */
-    @BeanTagAttribute(name = "returnMessageStyleClasses")
+    @BeanTagAttribute
     public String getReturnMessageStyleClasses() {
         return returnMessageStyleClasses;
     }
@@ -417,7 +417,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method name
      */
-    @BeanTagAttribute(name = "queryMethodToCall")
+    @BeanTagAttribute
     public String getQueryMethodToCall() {
         return queryMethodToCall;
     }
@@ -442,7 +442,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method argument list
      */
-    @BeanTagAttribute(name = "queryMethodArgumentFieldList", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getQueryMethodArgumentFieldList() {
         return queryMethodArgumentFieldList;
     }
@@ -469,7 +469,7 @@ public class AttributeQuery extends UifDictionaryBeanBase implements Serializabl
      *
      * @return query method config
      */
-    @BeanTagAttribute(name = "queryMethodInvokerConfig", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public MethodInvokerConfig getQueryMethodInvokerConfig() {
         return queryMethodInvokerConfig;
     }

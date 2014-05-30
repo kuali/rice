@@ -50,7 +50,7 @@
             <!-- VIEW NAVIGATION -->
             <#if view.navigation?? && view.navigation.items?? && view.navigation.items?has_content>
                 <nav id="Uif-Navigation" role="navigation">
-                     <@krad.template component=view.navigation currentPageId="${view.currentPageId}"/>
+                     <@krad.template component=view.navigation currentPageId="${view.currentPageId!}"/>
                 </nav>
             </#if>
 

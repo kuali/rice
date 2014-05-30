@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "cssGridLayout-bean", parent = "Uif-CssGridLayout")
+@BeanTag(name = "cssGridLayout", parent = "Uif-CssGridLayout")
 public class CssGridLayoutManager extends CssGridLayoutManagerBase {
     private static final long serialVersionUID = 1830635073147703757L;
 
@@ -115,7 +115,7 @@ public class CssGridLayoutManager extends CssGridLayoutManagerBase {
      *
      * @return int representing the default colSpan for cells in this layout
      */
-    @BeanTagAttribute(name = "defaultItemSize")
+    @BeanTagAttribute
     public int getDefaultItemSize() {
         return defaultItemSize;
     }

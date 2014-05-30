@@ -35,7 +35,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "constraint-bean")
+@BeanTag(name = "constraint")
 public class BaseConstraint extends DictionaryBeanBase implements Constraint {
     private static final long serialVersionUID = -2891712660500311114L;
 

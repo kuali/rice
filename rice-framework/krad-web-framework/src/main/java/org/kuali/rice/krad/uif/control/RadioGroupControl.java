@@ -29,8 +29,8 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "verticalRadioControl-bean", parent = "Uif-VerticalRadioControl"),
-        @BeanTag(name = "horizontalRadioControl-bean", parent = "Uif-HorizontalRadioControl")})
+@BeanTags({@BeanTag(name = "verticalRadioControl", parent = "Uif-VerticalRadioControl"),
+        @BeanTag(name = "horizontalRadioControl", parent = "Uif-HorizontalRadioControl")})
 public class RadioGroupControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8800478332086081970L;
     private List<String> fieldsetClasses;
@@ -48,7 +48,7 @@ public class RadioGroupControl extends MultiValueControlBase {
      *
      * @return delimiter string
      */
-    @BeanTagAttribute(name = "delimiter")
+    @BeanTagAttribute
     public String getDelimiter() {
         return this.delimiter;
     }
@@ -67,7 +67,7 @@ public class RadioGroupControl extends MultiValueControlBase {
      *
      * @return css classes for the fieldset
      */
-    @BeanTagAttribute(name = "fieldsetClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getFieldsetClasses() {
         return fieldsetClasses;
     }

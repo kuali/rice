@@ -31,7 +31,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataObjectEntry-bean")
+@BeanTag(name = "dataObjectEntry")
 public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccurConstrainable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DataObjectEntry.class);
     private static final long serialVersionUID = 1L;
@@ -102,7 +102,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return the dataObjectClass
      */
-    @BeanTagAttribute(name = "dataObjectClass")
+    @BeanTagAttribute
     public Class<?> getDataObjectClass() {
         return this.dataObjectClass;
     }
@@ -118,7 +118,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      * @return the name
      */
     @Override
-    @BeanTagAttribute(name = "name")
+    @BeanTagAttribute
     public String getName() {
         return this.name;
     }
@@ -133,7 +133,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return Returns the objectLabel.
      */
-    @BeanTagAttribute(name = "objectLabel")
+    @BeanTagAttribute
     public String getObjectLabel() {
         // If the object label was set in the DD, use that
         if ( objectLabel != null ) {
@@ -159,7 +159,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return Returns the description.
      */
-    @BeanTagAttribute(name = "objectDescription")
+    @BeanTagAttribute
     public String getObjectDescription() {
         if ( objectDescription != null ) {
             return objectDescription;
@@ -185,7 +185,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      *
      * @return Returns the helpDefinition.
      */
-    @BeanTagAttribute(name = "helpDefintion", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public HelpDefinition getHelpDefinition() {
         return helpDefinition;
     }
@@ -210,7 +210,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      * @return the mustOccurConstraints
      */
     @Override
-    @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -225,7 +225,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return the titleAttribute
      */
-    @BeanTagAttribute(name = "titleAttribute")
+    @BeanTagAttribute
     public String getTitleAttribute() {
         if ( titleAttribute != null ) {
             return titleAttribute;
@@ -252,7 +252,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
     /**
      * @return the primaryKeys
      */
-    @BeanTagAttribute(name = "primaryKeys", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getPrimaryKeys() {
         if ( primaryKeys != null ) {
             return primaryKeys;
@@ -270,7 +270,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
         this.primaryKeys = primaryKeys;
     }
 
-    @BeanTagAttribute(name = "exporterClass")
+    @BeanTagAttribute
     public Class<? extends Exporter> getExporterClass() {
         return this.exporterClass;
     }
@@ -285,7 +285,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      *
      * @return List<String> list of attributes to group by
      */
-    @BeanTagAttribute(name = "groupByAttributesForEffectiveDating", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getGroupByAttributesForEffectiveDating() {
         return this.groupByAttributesForEffectiveDating;
     }
@@ -311,7 +311,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      *
      * @return the boNotesEnabled flag
      */
-    @BeanTagAttribute(name = "boNotesEnabled")
+    @BeanTagAttribute
     public boolean isBoNotesEnabled() {
         return boNotesEnabled;
     }
@@ -328,7 +328,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      *
      * @return the list of <code>InactivationBlockingDefinition</code>
      */
-    @BeanTagAttribute(name = "inactivationBlockingDefinitions", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<InactivationBlockingDefinition> getInactivationBlockingDefinitions() {
         return this.inactivationBlockingDefinitions;
     }

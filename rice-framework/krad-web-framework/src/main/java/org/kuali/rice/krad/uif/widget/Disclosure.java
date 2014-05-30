@@ -26,7 +26,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "disclosure-bean", parent = "Uif-Disclosure")
+@BeanTag(name = "disclosure", parent = "Uif-Disclosure")
 public class Disclosure extends WidgetBase {
     private static final long serialVersionUID = 1238789480161901850L;
 
@@ -69,6 +69,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return class for collapsed icon
      */
+    @BeanTagAttribute
     public String getCollapsedIconClass() {
         return collapsedIconClass;
     }
@@ -89,6 +90,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return class for expanded icon
      */
+    @BeanTagAttribute
     public String getExpandedIconClass() {
         return expandedIconClass;
     }
@@ -107,6 +109,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return boolean true if icons should be rendered, false if not
      */
+    @BeanTagAttribute
     public boolean isRenderIcon() {
         return renderIcon;
     }
@@ -117,7 +120,6 @@ public class Disclosure extends WidgetBase {
      * @param renderIcon property value
      */
     public void setRenderIcon(boolean renderIcon) {
-        
         this.renderIcon = renderIcon;
     }
 
@@ -127,7 +129,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return animation speed
      */
-    @BeanTagAttribute(name = "animationSpeed")
+    @BeanTagAttribute
     public int getAnimationSpeed() {
         return this.animationSpeed;
     }
@@ -147,7 +149,7 @@ public class Disclosure extends WidgetBase {
      * @return true if group should be initially open, false if it
      *         should be closed
      */
-    @BeanTagAttribute(name = "defaultOpen")
+    @BeanTagAttribute
     public boolean isDefaultOpen() {
         return this.defaultOpen;
     }
@@ -168,6 +170,7 @@ public class Disclosure extends WidgetBase {
      *
      * @return true if use ajax retrieval when disclosure opens, false otherwise
      */
+    @BeanTagAttribute
     public boolean isAjaxRetrievalWhenOpened() {
         return ajaxRetrievalWhenOpened;
     }

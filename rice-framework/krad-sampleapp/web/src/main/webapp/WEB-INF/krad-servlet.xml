@@ -35,7 +35,5 @@
 
   <context:component-scan base-package="edu.sampleu.travel"/>
   <context:component-scan base-package="org.kuali.rice.krad"/>
-  <context:component-scan base-package="org.kuali.rice.krad.demo.uif.controller"/>
-  <context:component-scan base-package="org.kuali.rice.krad.labs"/>
 
 </beans>

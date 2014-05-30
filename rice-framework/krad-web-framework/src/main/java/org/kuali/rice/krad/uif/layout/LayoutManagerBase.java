@@ -230,7 +230,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "id")
+    @BeanTagAttribute
     public String getId() {
         return this.id;
     }
@@ -281,7 +281,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "template")
+    @BeanTagAttribute
     public String getTemplate() {
         return this.template;
     }
@@ -298,7 +298,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "tempateName")
+    @BeanTagAttribute
     public String getTemplateName() {
         return templateName;
     }
@@ -315,7 +315,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "Style")
+    @BeanTagAttribute
     public String getStyle() {
         return this.style;
     }
@@ -365,7 +365,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getCssClasses()
      */
-    @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getCssClasses() {
         if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             cssClasses = new LifecycleAwareList<String>(this);
@@ -389,7 +389,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     /**
      * @see org.kuali.rice.krad.uif.layout.LayoutManager#getAdditionalCssClasses()
      */
-    @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getAdditionalCssClasses() {
         if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             additionalCssClasses = new LifecycleAwareList<String>(this);
@@ -469,7 +469,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
+    @BeanTagAttribute
     public Map<String, Object> getContext() {
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
             context = new LifecycleAwareMap<String, Object>(this);
@@ -526,7 +526,7 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "propertyReplacers", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<PropertyReplacer> getPropertyReplacers() {
         return this.propertyReplacers;
     }

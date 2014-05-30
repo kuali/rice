@@ -43,10 +43,10 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "gridLayout-bean", parent = "Uif-GridLayoutBase"),
-        @BeanTag(name = "twoColumnGridLayout-bean", parent = "Uif-TwoColumnGridLayout"),
-        @BeanTag(name = "fourColumnGridLayout-bean", parent = "Uif-FourColumnGridLayout"),
-        @BeanTag(name = "sixColumnGridLayout-bean", parent = "Uif-SixColumnGridLayout")})
+@BeanTags({@BeanTag(name = "gridLayout", parent = "Uif-GridLayoutBase"),
+        @BeanTag(name = "twoColumnGridLayout", parent = "Uif-TwoColumnGridLayout"),
+        @BeanTag(name = "fourColumnGridLayout", parent = "Uif-FourColumnGridLayout"),
+        @BeanTag(name = "sixColumnGridLayout", parent = "Uif-SixColumnGridLayout")})
 public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayoutManager {
     private static final long serialVersionUID = 1890011900375071128L;
 
@@ -151,7 +151,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "numberOfColumns")
+    @BeanTagAttribute
     public int getNumberOfColumns() {
         return this.numberOfColumns;
     }
@@ -168,7 +168,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "suppressLineWrapping")
+    @BeanTagAttribute
     public boolean isSuppressLineWrapping() {
         return this.suppressLineWrapping;
     }
@@ -185,7 +185,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "applyAlternatingRowStyles")
+    @BeanTagAttribute
     public boolean isApplyAlternatingRowStyles() {
         return this.applyAlternatingRowStyles;
     }
@@ -202,7 +202,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "applyDefaultCellWidths")
+    @BeanTagAttribute
     public boolean isApplyDefaultCellWidths() {
         return this.applyDefaultCellWidths;
     }
@@ -219,7 +219,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "renderRowFirstCellHeader")
+    @BeanTagAttribute
     public boolean isRenderRowFirstCellHeader() {
         return renderRowFirstCellHeader;
     }
@@ -236,7 +236,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "renderFirstRowHeader")
+    @BeanTagAttribute
     public boolean isRenderFirstRowHeader() {
         return renderFirstRowHeader;
     }
@@ -253,7 +253,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "renderAlternatingHeaderColumns")
+    @BeanTagAttribute
     public boolean isRenderAlternatingHeaderColumns() {
         return this.renderAlternatingHeaderColumns;
     }
@@ -270,7 +270,7 @@ public class GridLayoutManagerBase extends LayoutManagerBase implements GridLayo
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "rowCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getRowCssClasses() {
         return rowCssClasses;
     }

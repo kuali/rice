@@ -213,14 +213,14 @@ public interface DataField extends DataBinding, Helpable, Field {
      *
      * @return default value
      */
-    Object[] getDefaultValues();
+    List<Object> getDefaultValues();
 
     /**
      * Setter for the fields default values
      *
      * @param defaultValues
      */
-    void setDefaultValues(Object[] defaultValues);
+    void setDefaultValues(List<Object> defaultValues);
 
     /**
      * For read only DataFields, if forcedValue has a value, the value of it will be used instead of the value

@@ -147,7 +147,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     /**
      * @see MultiValueControl#getOptions()
      */
-    @BeanTagAttribute(name = "options", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<KeyValue> getOptions() {
         return this.options;
     }
@@ -165,7 +165,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
      *
      * @return the components that can be used in rich values of options
      */
-    @BeanTagAttribute(name = "inlineComponents", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

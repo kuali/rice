@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "fieldSecurity-bean")
+@BeanTag(name = "fieldSecurity")
 public class FieldSecurity extends ComponentSecurity {
 
     private Boolean editInLineAuthz;
@@ -44,7 +44,7 @@ public class FieldSecurity extends ComponentSecurity {
      *
      * @return true if the field has edit in line authorization, false if not
      */
-    @BeanTagAttribute(name="editInLineAuthz")
+    @BeanTagAttribute
     public Boolean isEditInLineAuthz() {
         return editInLineAuthz;
     }
@@ -63,7 +63,7 @@ public class FieldSecurity extends ComponentSecurity {
      *
      * @return true if the field has view in line unmask authorization, false if not
      */
-    @BeanTagAttribute(name="viewInLineAuthz")
+    @BeanTagAttribute
     public Boolean isViewInLineAuthz() {
         return viewInLineAuthz;
     }

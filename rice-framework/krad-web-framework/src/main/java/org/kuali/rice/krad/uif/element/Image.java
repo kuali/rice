@@ -30,10 +30,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "image-bean", parent = "Uif-Image"),
-        @BeanTag(name = "helpImage-bean", parent = "Uif-HelpImage"),
-        @BeanTag(name = "quickLookupImage-bean", parent = "Uif-QuickLookupImage"),
-        @BeanTag(name = "directInquiryImage-bean", parent = "Uif-DirectInquiryImage")})
+@BeanTag(name = "image", parent = "Uif-Image")
 public class Image extends ContentElementBase {
     private static final long serialVersionUID = -3911849875276940507L;
 
@@ -108,7 +105,7 @@ public class Image extends ContentElementBase {
      *
      * @return the URL of this image.
      */
-    @BeanTagAttribute(name="source")
+    @BeanTagAttribute
     public String getSource() {
         return this.source;
     }
@@ -140,7 +137,7 @@ public class Image extends ContentElementBase {
      *
      * @return alternative information about this image
      */
-    @BeanTagAttribute(name="altText")
+    @BeanTagAttribute
     public String getAltText() {
         return this.altText;
     }
@@ -167,7 +164,7 @@ public class Image extends ContentElementBase {
      *
      * @return the height style attribute of this image
      */
-    @BeanTagAttribute(name="height")
+    @BeanTagAttribute
     public String getHeight() {
         return this.height;
     }
@@ -194,7 +191,7 @@ public class Image extends ContentElementBase {
      *
      * @return the width of this image
      */
-    @BeanTagAttribute(name="width")
+    @BeanTagAttribute
     public String getWidth() {
         return width;
     }
@@ -217,7 +214,7 @@ public class Image extends ContentElementBase {
      *
      * @return the caption
      */
-    @BeanTagAttribute(name="captionHeaderText")
+    @BeanTagAttribute
     public String getCaptionHeaderText() {
         return captionHeaderText;
     }
@@ -236,7 +233,7 @@ public class Image extends ContentElementBase {
      *
      * @return Header component which wraps the caption text.
      */
-    @BeanTagAttribute(name="captionHeader",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Header getCaptionHeader() {
         return captionHeader;
     }
@@ -260,7 +257,7 @@ public class Image extends ContentElementBase {
      *
      * @return the cutline text.
      */
-    @BeanTagAttribute(name="cutlineText")
+    @BeanTagAttribute
     public String getCutlineText() {
         return cutlineText;
     }
@@ -283,7 +280,7 @@ public class Image extends ContentElementBase {
      *
      * @return Message component wrapping the cutline
      */
-    @BeanTagAttribute(name="cutlineMessage",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getCutlineMessage() {
         return cutlineMessage;
     }
@@ -302,7 +299,7 @@ public class Image extends ContentElementBase {
      *
      * @return true if the caption is to be displayed above the image. false if displayed below the image.
      */
-    @BeanTagAttribute(name="captionHeaderPlacmentAboveImage")
+    @BeanTagAttribute
     public boolean isCaptionHeaderPlacementAboveImage() {
         return captionHeaderPlacementAboveImage;
     }

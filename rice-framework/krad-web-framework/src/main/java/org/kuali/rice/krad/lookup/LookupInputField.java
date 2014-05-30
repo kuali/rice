@@ -49,7 +49,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "lookupCriteriaInputField-bean", parent = "Uif-LookupCriteriaInputField")
+@BeanTag(name = "lookupCriteria", parent = "Uif-LookupCriteriaInputField")
 public class LookupInputField extends InputFieldBase {
     private static final long serialVersionUID = -8294275596836322699L;
 

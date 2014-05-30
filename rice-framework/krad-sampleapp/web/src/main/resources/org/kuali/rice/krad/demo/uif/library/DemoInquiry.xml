@@ -39,7 +39,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Inquiry-Example1 start-->
-        <bean parent="GenericTextField" p:readOnly="true" p:propertyName="inputField1" p:defaultValue="a2">
+        <bean parent="Uif-InputField" p:readOnly="true" p:propertyName="inputField1" p:defaultValue="a2">
           <property name="instructionalText" value="Click the link to perform an inquiry on this TravelAccount number" />
           <property name="inquiry">
             <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
@@ -55,7 +55,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-Inquiry-Example2 start-->
-        <bean parent="GenericTextField" p:propertyName="inputField2" p:defaultValue="a1">
+        <bean parent="Uif-InputField" p:propertyName="inputField2" p:defaultValue="a1">
           <property name="instructionalText" value="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')" />
           <property name="inquiry">
             <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"

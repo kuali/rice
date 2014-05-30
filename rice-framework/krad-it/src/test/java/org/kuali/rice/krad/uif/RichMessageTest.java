@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.KeyMessage;
+import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -56,7 +57,7 @@ public class RichMessageTest extends KRADTestCase {
         public boolean renderField;
     }
 
-    View view = new View();
+    View view = new FormView();
     Message message;
     SampleForm model;
 

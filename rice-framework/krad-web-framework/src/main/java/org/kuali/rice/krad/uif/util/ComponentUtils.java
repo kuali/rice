@@ -128,7 +128,7 @@ public class ComponentUtils {
         return copiedComponentList;
     }
 
-    public static <T extends Component> List<T> getComponentsOfType(List<? extends Component> items,
+    public static <T extends Object> List<T> getComponentsOfType(List<? extends Component> items,
             Class<T> componentType) {
         if (items == null || items.isEmpty()) {
             return Collections.emptyList();

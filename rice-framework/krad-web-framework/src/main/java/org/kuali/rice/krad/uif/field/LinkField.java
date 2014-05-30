@@ -26,11 +26,11 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.LightBox;
 
 /**
- * Field that encloses a link element
+ * Field that encloses a link element.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "linkField-bean", parent = "Uif-LinkField")
+@BeanTag(name = "linkField", parent = "Uif-LinkField")
 public class LinkField extends FieldBase {
     private static final long serialVersionUID = -1908504471910271148L;
 
@@ -64,7 +64,6 @@ public class LinkField extends FieldBase {
      * PerformFinalize override - calls super, corrects the field's Label for attribute to point to this field's
      * content
      *
-     * @param view the view
      * @param model the model
      * @param parent the parent component
      */
@@ -83,7 +82,7 @@ public class LinkField extends FieldBase {
      *
      * @return The Link field
      */
-    @BeanTagAttribute(name = "link", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Link getLink() {
         return link;
     }
@@ -102,7 +101,7 @@ public class LinkField extends FieldBase {
      *
      * @return The link label
      */
-    @BeanTagAttribute(name = "linkText")
+    @BeanTagAttribute
     public String getLinkText() {
         return link.getLinkText();
     }
@@ -121,7 +120,7 @@ public class LinkField extends FieldBase {
      *
      * @return The target
      */
-    @BeanTagAttribute(name = "target")
+    @BeanTagAttribute
     public String getTarget() {
         return link.getTarget();
     }
@@ -140,7 +139,7 @@ public class LinkField extends FieldBase {
      *
      * @return The href text
      */
-    @BeanTagAttribute(name = "href")
+    @BeanTagAttribute
     public String getHref() {
         return link.getHref();
     }
@@ -155,6 +154,20 @@ public class LinkField extends FieldBase {
     }
 
     /**
+     * Returns the <code>LightBox</code> used to open the link in
+     *
+     * @return The <code>LightBox</code>
+     */
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+    public LightBox getLightBox() {
+        if (link != null) {
+            return link.getLightBox();
+        }
+
+        return null;
+    }
+
+    /**
      * Setter for the lightBox
      *
      * @param lightBox
@@ -163,20 +176,6 @@ public class LinkField extends FieldBase {
         if (link != null) {
             link.setLightBox(lightBox);
         }
-    }
-
-    /**
-     * Returns the <code>LightBox</code> used to open the link in
-     *
-     * @return The <code>LightBox</code>
-     */
-    @BeanTagAttribute(name = "lightBox", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public LightBox getLightBox() {
-        if (link != null) {
-            return link.getLightBox();
-        }
-
-        return null;
     }
 
     @BeanTagAttribute(name = "sortAs")

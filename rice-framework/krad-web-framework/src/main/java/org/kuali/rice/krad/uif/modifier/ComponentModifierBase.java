@@ -70,7 +70,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     /**
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunPhase()
      */
-    @BeanTagAttribute(name = "runPhase")
+    @BeanTagAttribute
     public String getRunPhase() {
         return this.runPhase;
     }
@@ -87,7 +87,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     /**
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#getRunCondition()
      */
-    @BeanTagAttribute(name = "runCondition")
+    @BeanTagAttribute
     public String getRunCondition() {
         return this.runCondition;
     }
@@ -104,7 +104,7 @@ public abstract class ComponentModifierBase extends UifDictionaryBeanBase implem
     /**
      * @see org.springframework.core.Ordered#getOrder()
      */
-    @BeanTagAttribute(name = "order")
+    @BeanTagAttribute
     public int getOrder() {
         return this.order;
     }

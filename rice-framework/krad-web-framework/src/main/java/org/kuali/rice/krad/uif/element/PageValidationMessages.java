@@ -35,7 +35,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "pageValidationMessages-bean", parent = "Uif-PageValidationMessages")
+@BeanTag(name = "pageValidationMessages", parent = "Uif-PageValidationMessages")
 public class PageValidationMessages extends GroupValidationMessages implements LifecycleEventListener {
     private static final long serialVersionUID = 6387432156428507958L;
 
@@ -117,7 +117,7 @@ public class PageValidationMessages extends GroupValidationMessages implements L
      *
      * @return true if the header will show, false otherwise
      */
-    @BeanTagAttribute(name = "showPageSummaryHeader")
+    @BeanTagAttribute
     public boolean isShowPageSummaryHeader() {
         return showPageSummaryHeader;
     }

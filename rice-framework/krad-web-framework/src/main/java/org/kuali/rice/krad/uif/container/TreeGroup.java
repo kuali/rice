@@ -44,9 +44,9 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "treeGroup-bean", parent = "Uif-TreeGroup"),
-        @BeanTag(name = "treeSection-bean", parent = "Uif-TreeSection"),
-        @BeanTag(name = "treeSubSection-bean", parent = "Uif-TreeSubSection")})
+@BeanTags({@BeanTag(name = "treeGroup", parent = "Uif-TreeGroup"),
+        @BeanTag(name = "treeSection", parent = "Uif-TreeSection"),
+        @BeanTag(name = "treeSubSection", parent = "Uif-TreeSubSection")})
 public class TreeGroup extends GroupBase implements DataBinding {
     private static final long serialVersionUID = 5841343037089286740L;
 
@@ -253,7 +253,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         }
     }
 
-    @BeanTagAttribute(name = "propertyName")
+    @BeanTagAttribute
     public String getPropertyName() {
         return propertyName;
     }
@@ -262,7 +262,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         this.propertyName = propertyName;
     }
 
-    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public BindingInfo getBindingInfo() {
         return bindingInfo;
     }
@@ -274,7 +274,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     /**
      * @return the defaultNodePrototype
      */
-    @BeanTagAttribute(name = "defaultNodePrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public NodePrototype getDefaultNodePrototype() {
         return this.defaultNodePrototype;
     }
@@ -289,7 +289,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
     /**
      * @return the nodePrototypeMap
      */
-    @BeanTagAttribute(name = "NodePrototypeMap", type = BeanTagAttribute.AttributeType.MAPBEAN)
+    @BeanTagAttribute
     public Map<Class<?>, NodePrototype> getNodePrototypeMap() {
         return this.nodePrototypeMap;
     }
@@ -301,7 +301,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         this.nodePrototypeMap = nodePrototypeMap;
     }
 
-    @BeanTagAttribute(name = "treeGroups", type = BeanTagAttribute.AttributeType.MAP2BEAN)
+    @BeanTagAttribute
     public Tree<Group, Message> getTreeGroups() {
         return treeGroups;
     }
@@ -310,7 +310,7 @@ public class TreeGroup extends GroupBase implements DataBinding {
         this.treeGroups = treeGroups;
     }
 
-    @BeanTagAttribute(name = "tree", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public org.kuali.rice.krad.uif.widget.Tree getTree() {
         return tree;
     }

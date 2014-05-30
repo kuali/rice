@@ -193,7 +193,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-ProgressiveDisclosure-Example7 start-->
-        <bean parent="GenericHorizontalFieldGroup" p:group.InstructionalText="Choose an option from the first select control which will change the options available in the second select control">
+        <bean parent="Uif-HorizontalFieldGroup" p:group.InstructionalText="Choose an option from the first select control which will change the options available in the second select control">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="inputField4" p:label="Field 1">
@@ -218,7 +218,7 @@
             </list>
           </property>
         </bean>
-        <bean parent="GenericHorizontalFieldGroup">
+        <bean parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
               <bean parent="Uif-PrimaryActionButton" p:methodToCall="refreshProgGroup" p:actionLabel="Refresh Group"
@@ -277,7 +277,27 @@
           </property>
           <property name="subCollections">
             <list>
-              <bean parent="Uif-SubCollectionRefresh" p:refreshWhenChangedPropertyNames="#lp.field2"/>
+              <bean parent="Uif-StackedCollectionSection" p:refreshWhenChangedPropertyNames="#lp.field2">
+                <property name="disclosure.render" value="false"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                <property name="propertyName" value="subList"/>
+                <property name="layoutManager.summaryFields" value="field1"/>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="field1" p:required="true"/>
+                    <bean parent="Uif-InputField" p:propertyName="field2" p:required="true"
+                          p:progressiveRender="@{#lp.field1 eq 'show2'}"/>
+                    <bean id="Uif-SubCollectionRefresh-FieldGroup" parent="Uif-VerticalFieldGroup" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-InputField" p:propertyName="field3" p:required="true"/>
+                          <bean parent="Uif-InputField" p:propertyName="field4" p:required="true"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

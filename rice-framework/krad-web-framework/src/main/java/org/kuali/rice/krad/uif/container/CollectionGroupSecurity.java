@@ -31,7 +31,7 @@ import org.kuali.rice.krad.uif.component.ComponentSecurity;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "collectionGroupSecurity-bean")
+@BeanTag(name = "collectionGroupSecurity")
 public class CollectionGroupSecurity extends ComponentSecurity {
     private static final long serialVersionUID = 1134455196763917062L;
 
@@ -50,7 +50,7 @@ public class CollectionGroupSecurity extends ComponentSecurity {
      *
      * @return true if the line has edit authorization, false if not
      */
-    @BeanTagAttribute(name="editLineAuthz")
+    @BeanTagAttribute
     public boolean isEditLineAuthz() {
         return editLineAuthz;
     }
@@ -69,7 +69,7 @@ public class CollectionGroupSecurity extends ComponentSecurity {
      *
      * @return true if the line has view authorization, false if not
      */
-    @BeanTagAttribute(name="viewLineAuthz")
+    @BeanTagAttribute
     public boolean isViewLineAuthz() {
         return viewLineAuthz;
     }

@@ -96,6 +96,8 @@ public class DataDictionary {
 
     public static LegacyDataAdapter legacyDataAdapter;
 
+    protected transient StopWatch timer;
+
     /**
      * Populates and processes the dictionary bean factory based on the configured files and
      * performs indexing
@@ -135,8 +137,6 @@ public class DataDictionary {
                     e1);
         }
     }
-
-    transient StopWatch timer;
 
     /**
      * Populates and processes the dictionary bean factory based on the configured files

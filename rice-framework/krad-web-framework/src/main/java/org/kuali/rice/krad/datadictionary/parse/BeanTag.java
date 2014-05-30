@@ -28,5 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface BeanTag {
     String name();
 
-    String parent() default "none";
+    String parent() default "";
 }

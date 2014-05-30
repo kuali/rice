@@ -26,7 +26,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "optionListControl-bean", parent = "Uif-OptionListControl")
+@BeanTag(name = "optionListControl", parent = "Uif-OptionListControl")
 public class OptionListControl extends MultiValueControlBase {
     private static final long serialVersionUID = 8249529888721507155L;
 
@@ -39,7 +39,7 @@ public class OptionListControl extends MultiValueControlBase {
      *
      * @return the item css class
      */
-    @BeanTagAttribute(name = "itemCssClass")
+    @BeanTagAttribute
     public String getItemCssClass() {
         return itemCssClass;
     }
@@ -59,7 +59,7 @@ public class OptionListControl extends MultiValueControlBase {
      *
      * @return true if only showing selected options, otherwise show all
      */
-    @BeanTagAttribute(name = "showOnlySelected")
+    @BeanTagAttribute
     public boolean isShowOnlySelected() {
         return showOnlySelected;
     }
@@ -78,7 +78,7 @@ public class OptionListControl extends MultiValueControlBase {
      *
      * @return the selected item css class
      */
-    @BeanTagAttribute(name = "selectedItemCssClass")
+    @BeanTagAttribute
     public String getSelectedItemCssClass() {
         return selectedItemCssClass;
     }

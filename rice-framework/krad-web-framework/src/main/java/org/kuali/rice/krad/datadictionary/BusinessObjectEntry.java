@@ -29,7 +29,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "businessObjectEntry-bean")
+@BeanTag(name = "businessObjectEntry")
 public class BusinessObjectEntry extends DataObjectEntry {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectEntry.class);
 

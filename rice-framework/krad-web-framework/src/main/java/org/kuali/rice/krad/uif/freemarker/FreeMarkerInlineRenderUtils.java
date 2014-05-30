@@ -169,7 +169,7 @@ public class FreeMarkerInlineRenderUtils {
                 .isProgressiveRenderViaAJAX() && !component.isProgressiveRenderAndRefresh())) {
 
             if (StringUtils.hasText(s = component.getPreRenderContent())) {
-                out.write(StringEscapeUtils.escapeHtml(s));
+                out.write(s);
             }
 
             if (component.isSelfRendered()) {
@@ -217,7 +217,7 @@ public class FreeMarkerInlineRenderUtils {
             }
 
             if (StringUtils.hasText(s = component.getPostRenderContent())) {
-                out.append(StringEscapeUtils.escapeHtml(s));
+                out.append(s);
             }
 
         }

@@ -48,7 +48,7 @@ public abstract class CollectionLayoutManagerBase extends LayoutManagerBase impl
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addLineGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getAddLineGroup() {
         return addLineGroup;
     }
@@ -88,7 +88,7 @@ public abstract class CollectionLayoutManagerBase extends LayoutManagerBase impl
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "selectFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Field getSelectFieldPrototype() {
         return selectFieldPrototype;
     }
@@ -106,7 +106,7 @@ public abstract class CollectionLayoutManagerBase extends LayoutManagerBase impl
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "subCollectionFieldGroupPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public FieldGroup getSubCollectionFieldGroupPrototype() {
         return this.subCollectionFieldGroupPrototype;
     }
@@ -123,7 +123,7 @@ public abstract class CollectionLayoutManagerBase extends LayoutManagerBase impl
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "pagerWidget", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Pager getPagerWidget() {
         return pagerWidget;
     }

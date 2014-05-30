@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.element.Header;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "syntaxHighlighter-bean", parent = "Uif-SyntaxHighlighter")
+@BeanTag(name = "syntaxHighlighter", parent = "Uif-SyntaxHighlighter")
 public class SyntaxHighlighter extends WidgetBase {
 
     private Header header;
@@ -44,7 +44,7 @@ public class SyntaxHighlighter extends WidgetBase {
         showCopyConfirmation = false;
     }
 
-    @BeanTagAttribute(name="header")
+    @BeanTagAttribute
     public Header getHeader() {
         return header;
     }
@@ -58,7 +58,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return String
      */
-    @BeanTagAttribute(name="sourceCode")
+    @BeanTagAttribute
     public String getSourceCode() {
         return sourceCode;
     }
@@ -81,7 +81,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return String
      */
-    @BeanTagAttribute(name="pluginCssClass")
+    @BeanTagAttribute
     public String getPluginCssClass() {
         return pluginCssClass;
     }
@@ -105,6 +105,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return  boolean
      */
+    @BeanTagAttribute
     public boolean isAllowCopy() {
         return allowCopy;
     }
@@ -123,6 +124,7 @@ public class SyntaxHighlighter extends WidgetBase {
      *
      * @return boolean
      */
+    @BeanTagAttribute
     public boolean isShowCopyConfirmation() {
         return showCopyConfirmation;
     }

@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "contentElement-bean", parent = "Uif-ContentElementBase")
+@BeanTag(name = "contentElement", parent = "Uif-ContentElementBase")
 public abstract class ContentElementBase extends ComponentBase implements ContentElement {
     private static final long serialVersionUID = 5816584444025193540L;
 

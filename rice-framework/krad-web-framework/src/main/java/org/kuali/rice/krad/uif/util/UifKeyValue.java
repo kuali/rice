@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "keyValuePair-bean", parent = "Uif-KeyLabelPair")
+@BeanTag(name = "keyValuePair", parent = "Uif-KeyLabelPair")
 public class UifKeyValue extends AbstractKeyValue {
     private static final long serialVersionUID = 1176799455504861488L;
 

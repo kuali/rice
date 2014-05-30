@@ -52,7 +52,7 @@ import org.kuali.rice.krad.util.KRADUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "attributeDefinition-bean")
+@BeanTag(name = "attributeDefinition")
 public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, ValidCharactersConstrainable {
     private static final long serialVersionUID = -2490613377818442742L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AttributeDefinition.class);
@@ -120,7 +120,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return boolean true if force upper case is set
      */
-    @BeanTagAttribute(name = "forceUppercase")
+    @BeanTagAttribute
     public Boolean getForceUppercase() {
         if ( forceUppercase != null ) {
             return forceUppercase;
@@ -137,7 +137,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *z
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMaxLength()
      */
-    @BeanTagAttribute(name = "maxLength")
+    @BeanTagAttribute
     public Integer getMaxLength() {
         if ( getSimpleConstraint().getMaxLength() != null ) {
             return getSimpleConstraint().getMaxLength();
@@ -162,7 +162,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getExclusiveMin()
      */
-    @BeanTagAttribute(name = "exclusiveMin")
+    @BeanTagAttribute
     public String getExclusiveMin() {
         return this.getSimpleConstraint().getExclusiveMin();
     }
@@ -179,7 +179,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.RangeConstraint#getInclusiveMax()
      */
-    @BeanTagAttribute(name = "inclusiveMax")
+    @BeanTagAttribute
     public String getInclusiveMax() {
         return this.getSimpleConstraint().getInclusiveMax();
     }
@@ -351,7 +351,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     }
 
     @Override
-    @BeanTagAttribute(name = "formatterClass")
+    @BeanTagAttribute
     @Deprecated
     public String getFormatterClass() {
         return formatterClass;
@@ -386,7 +386,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return PropertyEditor property editor instance to use for this field
      */
-    @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public PropertyEditor getPropertyEditor() {
         if ( propertyEditor != null ) {
             return propertyEditor;
@@ -546,7 +546,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return Control instance
      */
-    @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.BYTYPE)
     public Control getControlField() {
         if ( controlField != null ) {
             return controlField;
@@ -571,7 +571,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.constraint.LengthConstraint#getMinLength()
      */
-    @BeanTagAttribute(name = "minLength")
+    @BeanTagAttribute
     public Integer getMinLength() {
         if ( getSimpleConstraint().getMinLength() != null ) {
             return getSimpleConstraint().getMinLength();
@@ -600,7 +600,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * If not defined by either, will return {@link DataType#STRING}.
      */
-    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public DataType getDataType() {
         if ( simpleConstraint.getDataType() != null ) {
             return simpleConstraint.getDataType();
@@ -625,7 +625,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
     /**
      * @return the customValidatorClass
      */
-    @BeanTagAttribute(name = "customValidatorClass")
+    @BeanTagAttribute
     public String getCustomValidatorClass() {
         return this.customValidatorClass;
     }
@@ -641,7 +641,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the validChars
      */
     @Override
-    @BeanTagAttribute(name = "validChractersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public ValidCharactersConstraint getValidCharactersConstraint() {
         if ( validCharactersConstraint == null ) {
             // If there is no constraint set, attempt to derive one
@@ -666,7 +666,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the caseConstraint
      */
     @Override
-    @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -682,7 +682,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the requireConstraint
      */
     @Override
-    @BeanTagAttribute(name = "prerequisteConstraint", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<PrerequisiteConstraint> getPrerequisiteConstraints() {
         return this.dependencyConstraints;
     }
@@ -698,7 +698,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the occursConstraint
      */
     @Override
-    @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -714,7 +714,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      * @return the childEntryName
      */
     @Override
-    @BeanTagAttribute(name = "childEntryName")
+    @BeanTagAttribute
     public String getChildEntryName() {
         return this.childEntryName;
     }
@@ -734,7 +734,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
      *
      * @return KeyValuesFinder instance
      */
-    @BeanTagAttribute(name = "optionFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public KeyValuesFinder getOptionsFinder() {
         if ( optionsFinder == null ) {
             if ( getDataObjectAttribute() != null && getDataObjectAttribute().getValidValues() != null ) {
@@ -767,7 +767,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.additionalDisplayAttributeName = additionalDisplayAttributeName;
     }
 
-    @BeanTagAttribute(name = "additionalDisplayAttributeName")
+    @BeanTagAttribute
     public String getAdditionalDisplayAttributeName() {
         return this.additionalDisplayAttributeName;
     }
@@ -776,7 +776,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         this.alternateDisplayAttributeName = alternateDisplayAttributeName;
     }
 
-    @BeanTagAttribute(name = "alternateDisplayAttributeName")
+    @BeanTagAttribute
     public String getAlternateDisplayAttributeName() {
         return this.alternateDisplayAttributeName;
     }

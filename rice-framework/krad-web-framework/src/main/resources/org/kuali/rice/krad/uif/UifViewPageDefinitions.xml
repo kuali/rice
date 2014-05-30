@@ -126,6 +126,11 @@
     </property>
   </bean>
 
+  <bean id="Uif-MockView" parent="Uif-MockView-parentBean"/>
+  <bean id="Uif-MockView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.mock.MockView" parent="Uif-FormView"
+        p:formClass="org.kuali.rice.krad.uif.mock.DynaForm"/>
+
   <!-- Common Views -->
 
   <bean id="Uif-MessageView" parent="Uif-MessageView-parentBean"/>

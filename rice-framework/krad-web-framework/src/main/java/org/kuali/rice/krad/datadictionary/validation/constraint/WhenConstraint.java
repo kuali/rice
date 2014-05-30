@@ -40,7 +40,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 1.1
  */
-@BeanTag(name = "whenConstraint-bean", parent = "WhenConstraint")
+@BeanTag(name = "whenConstraint", parent = "WhenConstraint")
 public class WhenConstraint implements Constraint {
     protected List<Object> values;
     protected String valuePath;
@@ -51,7 +51,7 @@ public class WhenConstraint implements Constraint {
      *
      * @return a list of values for which to activate the associated constraint
      */
-    @BeanTagAttribute(name = "values", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Object> getValues() {
         return values;
     }

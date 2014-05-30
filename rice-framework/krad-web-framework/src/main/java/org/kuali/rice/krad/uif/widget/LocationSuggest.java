@@ -30,7 +30,7 @@ import org.kuali.rice.krad.util.KRADUtils;
  * LocationSuggest widget for providing suggestions that represent locations.  When the suggestion is clicked, the
  * navigation occurs immediately.
  */
-@BeanTag(name = "locationSuggest-bean", parent = "Uif-LocationSuggest")
+@BeanTag(name = "locationSuggest", parent = "Uif-LocationSuggest")
 public class LocationSuggest extends Suggest {
     private static final long serialVersionUID = 5940714417896326889L;
 
@@ -73,7 +73,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return the baseUrl
      */
-    @BeanTagAttribute(name = "baseUrl")
+    @BeanTagAttribute
     public String getBaseUrl() {
         return baseUrl;
     }
@@ -97,7 +97,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return the additionalUrlPathPropertyName
      */
-    @BeanTagAttribute(name = "additionalUrlPropertyName")
+    @BeanTagAttribute
     public String getAdditionalUrlPathPropertyName() {
         return additionalUrlPathPropertyName;
     }
@@ -122,7 +122,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return the hrefPropertyName
      */
-    @BeanTagAttribute(name = "hrefPropertyName")
+    @BeanTagAttribute
     public String getHrefPropertyName() {
         return hrefPropertyName;
     }
@@ -147,6 +147,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return the objectIdPropertyName which represents which property is the "key" of the object
      */
+    @BeanTagAttribute
     public String getObjectIdPropertyName() {
         return objectIdPropertyName;
     }
@@ -169,7 +170,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return the RequestParameterPropertyNames map with key and property names
      */
-    @BeanTagAttribute(name = "requestParameterPropertyNames", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getRequestParameterPropertyNames() {
         return requestParameterPropertyNames;
     }
@@ -193,7 +194,7 @@ public class LocationSuggest extends Suggest {
      *
      * @return mapping of additional request parameters
      */
-    @BeanTagAttribute(name = "additionalRequestParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getAdditionalRequestParameters() {
         return additionalRequestParameters;
     }

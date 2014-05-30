@@ -1,0 +1,2292 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+  <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+  <xsd:include schemaLocation="krad-elements.xsd"/>
+  <xsd:element name="property" type="spring:propertyType"/>
+  <xsd:element name="value">
+    <xsd:complexType mixed="true">
+      <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="bean">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="spring:identifiedType">
+          <xsd:group ref="spring:beanElements"/>
+          <xsd:attributeGroup ref="spring:beanAttributes"/>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="inc">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:attribute name="compId" type="xsd:string"/>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ref">
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="xsd:anyType">
+          <xsd:attribute name="bean" type="xsd:string"/>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="content">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:any minOccurs="0" processContents="skip"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="entry" type="spring:entryType"/>
+  <xsd:complexType name="map-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="spring:entry"/>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="entry"/>
+    </xsd:sequence>
+    <xsd:attribute name="merge" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="list-type">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="spring:value"/>
+      <xsd:element maxOccurs="unbounded" minOccurs="0" ref="value"/>
+    </xsd:sequence>
+    <xsd:attribute name="merge" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="componentAttributes-type">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
+    <xsd:attribute name="onChangeScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onChange event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onKeyPressScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="scriptDataAttributes">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The DataAttributes that will be written to the html as a script call to data for this component (these cannot be
+ used for jQuery selection directly)
+
+ They can be accessed through .data() call in jQuery.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refreshTimer">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Time in seconds that the component will be automatically refreshed
+
+ 
+ This will invoke the refresh process just like the conditionalRefresh and
+ refreshWhenChangedPropertyNames. When using this property methodToCallOnRefresh and id should
+ also be specified
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="disableSessionPersistence">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Disables the storage of the component in session (when the framework determines it needs to be due to a
+ refresh condition)
+
+ 
+ When the framework determines there is a condition on the component that requires it to keep around between
+ posts, it will store the component instance in session. This flag can be set to disable this behavior (which
+ would require custom application logic to support behavior such as refresh)
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onDblClickScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onDblClick event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="additionalComponentsToRefresh">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Returns a list of componentIds which will be also be refreshed when this component is refreshed
+
+ 
+ This will be a comma separated list of componentIds that need to be refreshed when a refresh
+ condition has been set on this component.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onBlurScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onBlur event is fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="cellWidth">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Width setting for the cell containing the component (only applies within table based
+ layouts)]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="selfRendered">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component contains its own render output (through
+ the renderOutput property)
+
+ 
+ If self rendered is true, the corresponding template for the component
+ will not be invoked and the renderOutput String will be written to the
+ response as is.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="colSpan">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Number of places the component should take up horizontally in the
+ container; when using a CssGridLayoutManager this is converted to the appropriate medium size.
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how many places
+ horizontally the component should take up within the container. This is
+ only applicable for table based layout managers. Default is 1
+ 
+
+ TODO: this should not be on component interface since it only applies if
+ the layout manager supports it, need some sort of layoutOptions map for
+ field level options that depend on the manager]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="additionalCssClasses">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Convenience property for adding css class names to the end of the list of cssClasses that may already exist on
+ this Component (this is to avoid explicitly having to set list merge in the bean definition)]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="role">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The role attribute of this component, use to define aria roles]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="required">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component is required
+
+ 
+ At the general component level required means there is some action the
+ user needs to take within the component. For example, within a section it
+ might mean the fields within the section should be completed. At a field
+ level, it means the field should be completed. This provides the ability
+ for the renderers to indicate the required action.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="finalizeMethodToCall">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The name of the method that should be invoked for finalizing the component
+ configuration (full method name, without parameters or return type)
+
+ 
+ Note the method can also be set with the finalizeMethodInvoker
+ targetMethod property. If the method is on the configured
+ ViewHelperService, only this property needs to be configured
+ 
+
+ 
+ The model backing the view will be passed as the first argument method and then
+ the Component instance as the second argument. If any additional method
+ arguments are declared with the finalizeMethodAdditionalArguments, they will then
+ be passed in the order declared in the list
+ 
+
+ 
+ If the component is selfRendered, the finalize method can return a string which
+ will be set as the component's renderOutput. The selfRendered indicator will also
+ be set to true on the component.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="resetDataOnRefresh">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether data contained within the component should be reset (set to default) when the
+ component is refreshed]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onKeyDownScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyDown event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="template">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The path to the JSP file that should be called to render the component
+
+ 
+ The path should be relative to the web root. An attribute will be available to the component to use under the
+ name given by the method getComponentTypeName. Based on the component type, additional attributes could
+ be available for use. See the component documentation for more information on such attributes.
+ 
+
+ 
+ e.g. '/krad/WEB-INF/jsp/tiles/component.jsp'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="wrapperStyle">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style string to be applied to the cell containing the component (only applies within
+ table based layouts)
+
+ 
+ e.g. 'align: right;'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="align">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how the component
+ should be aligned horizontally within the container. During the finalize
+ phase the CSS text-align style will be created for the align setting.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="width">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Width the component should take up in the container
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies a width the component
+ should take up in the Container. This is not applicable for all layout
+ managers. During the finalize phase the CSS width style will be created
+ for the width setting.
+ 
+
+ 
+ e.g. '30%', '55px'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onMouseDownScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ariaAttributes">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The aria attributes of this component and their values
+ (without "aria-", this is automatically appended during rendering)]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="postContent">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onClickScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onClick event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="render">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component should be rendered in the UI
+
+ 
+ If set to false, the corresponding component template will not be invoked
+ (therefore nothing will be rendered to the UI).
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onLoadScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="wrapperCssClasses">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The cellCssClasses property defines the classes that will be placed on the corresponding td (or th) elements
+ relating to this component when used in a table backed layout.  This property has no effect on other layouts.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="methodToCallOnRefresh">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Name of a method on the controller that should be invoked as part of the component refresh
+ and disclosure process
+
+ 
+ During the component refresh or disclosure process it might be necessary to perform other
+ operations, such as preparing data or executing a business process. This allows the
+ configuration of a method on the underlying controller that should be called for the
+ component refresh action. In this method, the necessary logic can be performed and then the
+ base component update method invoked to carry out the component refresh.
+ 
+
+ 
+ Controller method to invoke must accept the form, binding result, request, and response
+ arguments
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="viewAuthz">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"/>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="componentCode">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onDocumentReadyScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onInputScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onInput event is
+ fired
+
+ This differs from key press/up or change in that it will catch autocomplete, cut, and paste mouse actions
+ on an input.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refreshWhenChangedPropertyNames">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Specifies a property by name that when its value changes will automatically perform
+ a refresh on this component
+
+ 
+ This can be a comma
+ separated list of multiple properties that require this component to be
+ refreshed when any of them change. DO NOT use with progressiveRender
+ unless it is know that progressiveRender condition will always be
+ satisfied before one of these fields can be changed.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onMouseUpScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseUp event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="renderedHtmlOutput">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
+ response (can contain static text and HTML)]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onKeyUpScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onCloseScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onClose event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="id">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The unique id (within a given tree) for the element.
+
+ The id is used to identify an element instance within the tree, and
+ will be used by renderers to set the HTML element id. This gives a way to find various elements
+ for scripting. If the id is not given, a default will be generated by the framework.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="title">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The component title
+
+ 
+ Depending on the component can be used in various ways. For example with a Container component the title is
+ used to set the header text. For components like controls other other components that render an HTML element it
+ is used to set the HTML title attribute.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="order">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Order of a component within a List of other components
+
+ Lower numbers are placed higher up in the list, while higher numbers are placed
+ lower in the list]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="style">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style string to be applied to the component
+
+ 
+ Any style override or additions can be specified with this attribute.
+ This is used by the renderer to set the style attribute on the
+ corresponding element.
+ 
+
+ 
+ e.g. 'color: #000000;text-decoration: underline;'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="finalizeMethodAdditionalArguments">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The List of Object instances that should be passed as arguments to the finalize method
+
+ 
+ These arguments are passed to the finalize method after the standard model and component
+ arguments. They are passed in the order declared in the list
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onSubmitScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="conditionalRefresh">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
+
+ 
+ The component MUST BE a container or field type. conditionalRefresh is defined in a limited
+ Spring EL syntax. Only valid form property names, and, or, logical comparison operators
+ (non-arithmetic), #listContains, #emptyList, and the matches clause are allowed. String and
+ regex values must use single quotes ('), booleans must be either true or false, numbers must
+ be a valid double either negative or positive.
+
+ 
+ DO NOT use progressiveRender and conditionalRefresh on the same component unless it is known
+ that the component will always be visible in all cases when a conditionalRefresh happens (ie
+ conditionalRefresh has progressiveRender's condition anded with its own condition). If a
+ component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
+ option with this property instead.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="rowSpan">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Number of places the component should take up vertically in the container
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how many places
+ vertically the component should take up within the container. This is
+ only applicable for table based layout managers. Default is 1
+ 
+
+ TODO: this should not be on component interface since it only applies if
+ the layout manager supports it, need some sort of layoutOptions map for
+ field level options that depend on the manager]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="retrieveViaAjax">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When true, this component will render as a placeholder component instead of rendering normally because the
+ content will be later retrieved through manually ajax retrieval calls in the js
+
+ This flag does not imply any automation, there must be a js call invoked for the content to be retrieved
+ by the server, but this does mark it with a placeholder component which KRAD js uses during these calls.
+ This placeholder component is used for ajax retrievals.  In particular, this flag is useful for use in
+ combination with the showLightboxComponent js function which will automatically retrieve the
+ real content of a component through ajax if a placeholder component is detected.  This allows for the full
+ content to only be retrieved when the lightbox is first opened.
+ When this flag is set to true, the forceSessionPersistence
+ flag is set to true AUTOMATICALLY because it is implied that this component will be retrieved by an ajax call
+ in the future.  This may also be useful for direct custom calls to retrieveComponent function,
+ as well, which also relies on the placeholder being present.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="namespaceCode">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="progressiveRender">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be displayed. The component MUST
+ BE a container or field type. progressiveRender is defined in a limited Spring EL syntax.
+ Only valid form property names, and, or, logical comparison operators (non-arithmetic),
+ #listContains, #emptyList, matches clause are allowed. String and regex values must use
+ single quotes ('), booleans must be either true or false, numbers must be a valid double,
+ either negative or positive.
+
+ 
+ DO NOT use progressiveRender and a conditional refresh statement on the same component unless
+ it is known that the component will always be visible in all cases when a conditional refresh
+ happens (ie conditional refresh has progressiveRender's condition anded with its own
+ condition).
+ 
+
+ 
+ If a component should be refreshed every time it is shown, use the
+ progressiveRenderAndRefresh option with this property instead.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="templateOptionsJSString">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Builds a string from the underlying Map of template options that will export that options as a
+ JavaScript Map for use in js and jQuery plugins
+
+ 
+ See documentation on the particular component render for available options.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onMouseOutScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOut event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="templateOptions">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The options that are passed through to the Component renderer
+
+ 
+ The Map key is the option name, with the Map value as the option value. See
+ documentation on the particular widget render for available options.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="toolTip">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The Tooltip widget that renders a tooltip with additional information about the element on
+ specified trigger event]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="preContent">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onMouseOverScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="editAuthz">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"/>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="dataAttributes">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The DataAttributes that will be written to the html element for this component as data-
+
+ They can be access through .data() call in jQuery.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="componentSecurity">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Security object that indicates what authorization (permissions) exist for the component]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="readOnly">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component can be edited
+
+ 
+ When readOnly the controls and widgets of Field components
+ will not be rendered. If the Field has an underlying value it will be
+ displayed readOnly to the user.
+ 
+
+ 
+ For a Container component, the readOnly setting will apply
+ to all contained components (making a section readOnly makes all fields
+ within the section readOnly).
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onMouseMoveScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseMove event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="progressiveRenderAndRefresh">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[If true, when the progressiveRender condition is satisfied, the component will always be
+ retrieved from the server and shown(as opposed to being stored on the client, but hidden,
+ after the first retrieval as is the case with the progressiveRenderViaAJAX option).
+
+ 
+ By default, this is false, so components with progressive render capabilities will always
+ be already within the client html and toggled to be hidden or visible.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="hidden">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component should be hidden in the UI
+
+ 
+ How the hidden data is maintained depends on the views persistence mode.
+ If the mode is request, the corresponding data will be rendered to the UI
+ but not visible. If the mode is session, the data will not be rendered to
+ the UI but maintained server side.
+ 
+
+ 
+ For a Container component, the hidden setting will apply to
+ all contained components (making a section hidden makes all fields within
+ the section hidden)
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="skipInTabOrder">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Flag indicating that this component and its nested components must be skipped when keyboard
+ tabbing.]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="context">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Context map for the component
+
+ 
+ Any el statements configured for the components properties (e.g.
+ title="@{foo.property}") are evaluated using the el context map. This map
+ will get populated with default objects like the model, view, and request
+ from the ViewHelperService. Other components can push
+ further objects into the context so that they are available for use with
+ that component. For example, Field instances that are part
+ of a collection line as receive the current line instance
+ 
+
+ 
+ Context map also provides objects to methods that are invoked for
+ GeneratedField instances
+ 
+
+ 
+ The Map key gives the name of the variable that can be used within
+ expressions, and the Map value gives the object instance for which
+ expressions containing the variable should evaluate against
+ 
+
+ 
+ NOTE: Calling getContext().putAll() will skip updating any configured property replacers for the
+ component. Instead you should call #pushAllToContextDeep
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onUnloadScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onUnload event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="forceSessionPersistence">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Indicates whether the component should be stored with the session view regardless of configuration
+
+ 
+ By default the framework nulls out any components that do not have a refresh condition or are needed for
+ collection processing. This can be a problem if custom application code is written to refresh a component
+ without setting the corresponding component flag. In this case this property can be set to true to force the
+ framework to keep the component in session. Defaults to false
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="valign">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Vertical alignment of the component within its container
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how the component
+ should be aligned vertically within the container. During the finalize
+ phase the CSS vertical-align style will be created for the valign
+ setting.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="progressiveRenderViaAJAX">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved from the server when
+ it first satisfies its progressive render condition.
+
+ 
+ After the first retrieval, it is hidden/shown in the html by the js when its progressive
+ condition result changes. By default, this is false, so components with progressive render
+ capabilities will always be already within the client html and toggled to be hidden or
+ visible.
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onFocusScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+ fired]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="cssClasses">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="templateName">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The name for which the template can be invoked by
+
+ 
+ Whether the template name is needed depends on the underlying rendering engine being used. In the example of
+ Freemarker, the template points to the actual source file, which then loads a macro. From then on the macro is
+ simply invoked to execute the template
+ 
+
+ 
+ e.g. 'uif_text'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="parent" type="xsd:string"/>
+    <xsd:anyAttribute processContents="skip"/>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Tree">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tree"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Breadcrumbs">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="breadcrumbs"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Disclosure">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="disclosure"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewAuthorizer">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="viewAuthorizer"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.CollectionDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="collectionDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Help">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="help"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.ParentLocation">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="parentLocation"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.layout.LayoutManager">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tableCollectionLayout-bean"/>
+      <xsd:element ref="listLayout"/>
+      <xsd:element ref="orderedListLayout"/>
+      <xsd:element ref="cssGridLayout"/>
+      <xsd:element ref="stackedCollectionLayout-bean"/>
+      <xsd:element ref="stackedCollectionLayout-withGridItems-bean"/>
+      <xsd:element ref="stackedCollectionLayout-list-bean"/>
+      <xsd:element ref="stackedCollectionLayout-withBoxItems-bean"/>
+      <xsd:element ref="cssGridLabelColumnLayout"/>
+      <xsd:element ref="cssGridLayoutBase"/>
+      <xsd:element ref="fourColumnGridLayout"/>
+      <xsd:element ref="gridLayout"/>
+      <xsd:element ref="sixColumnGridLayout"/>
+      <xsd:element ref="twoColumnGridLayout"/>
+      <xsd:element ref="boxLayout"/>
+      <xsd:element ref="horizontalBoxLayout"/>
+      <xsd:element ref="verticalBoxLayout"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewPresentationController">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="viewPresentationController"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.control.Control">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="kimPersonControl"/>
+      <xsd:element ref="hiddenControl"/>
+      <xsd:element ref="kimGroupControl"/>
+      <xsd:element ref="verticalCheckboxesControl"/>
+      <xsd:element ref="horizontalCheckboxesControl"/>
+      <xsd:element ref="smallTextAreaControl"/>
+      <xsd:element ref="largeTextAreaControl"/>
+      <xsd:element ref="textAreaControl"/>
+      <xsd:element ref="mediumTextAreaControl"/>
+      <xsd:element ref="spinnerControl"/>
+      <xsd:element ref="checkboxControl"/>
+      <xsd:element ref="fileControl"/>
+      <xsd:element ref="controlBase"/>
+      <xsd:element ref="verticalRadioControl"/>
+      <xsd:element ref="horizontalRadioControl"/>
+      <xsd:element ref="largeTextControl"/>
+      <xsd:element ref="textControl"/>
+      <xsd:element ref="smallTextControl"/>
+      <xsd:element ref="currencyTextControl"/>
+      <xsd:element ref="dateControl"/>
+      <xsd:element ref="mediumTextControl"/>
+      <xsd:element ref="optionListControl"/>
+      <xsd:element ref="multiSelectControl"/>
+      <xsd:element ref="dropdownControl"/>
+      <xsd:element ref="passwordControl"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.Field">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="spaceField"/>
+      <xsd:element ref="messageField"/>
+      <xsd:element ref="input"/>
+      <xsd:element ref="checkboxInput"/>
+      <xsd:element ref="inputLabelRight"/>
+      <xsd:element ref="inputLabelTop"/>
+      <xsd:element ref="lookupCriteria"/>
+      <xsd:element ref="fieldBase"/>
+      <xsd:element ref="horizontalFieldGroup"/>
+      <xsd:element ref="fieldGroup"/>
+      <xsd:element ref="verticalFieldGroup"/>
+      <xsd:element ref="dataNoLabel"/>
+      <xsd:element ref="data"/>
+      <xsd:element ref="dataLabelRight"/>
+      <xsd:element ref="dataLabelTop"/>
+      <xsd:element ref="progressBarField-bean"/>
+      <xsd:element ref="stepProgressBarField-bean"/>
+      <xsd:element ref="imageField"/>
+      <xsd:element ref="actionLinkField"/>
+      <xsd:element ref="actionField"/>
+      <xsd:element ref="linkField"/>
+      <xsd:element ref="customTemplateField"/>
+      <xsd:element ref="genericField"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.NodePrototype">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="nodePrototype"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.QuickFinder">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="quickFinder"/>
+      <xsd:element ref="collectionQuickFinder"/>
+      <xsd:element ref="quickFinderByScript"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.HelpDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="helpDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.MessageField">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="messageField"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.InputField">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="input"/>
+      <xsd:element ref="checkboxInput"/>
+      <xsd:element ref="inputLabelRight"/>
+      <xsd:element ref="inputLabelTop"/>
+      <xsd:element ref="lookupCriteria"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Header">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="pageHeader"/>
+      <xsd:element ref="header"/>
+      <xsd:element ref="headerSix"/>
+      <xsd:element ref="headerTwo"/>
+      <xsd:element ref="sectionHeader"/>
+      <xsd:element ref="headerOne"/>
+      <xsd:element ref="headerFive"/>
+      <xsd:element ref="subCollectionHeader"/>
+      <xsd:element ref="headerThree"/>
+      <xsd:element ref="subSectionHeader"/>
+      <xsd:element ref="headerFour"/>
+      <xsd:element ref="viewHeader"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.component.Component">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="breadcrumbs"/>
+      <xsd:element ref="disclosure"/>
+      <xsd:element ref="tabSubSection"/>
+      <xsd:element ref="tabGroup"/>
+      <xsd:element ref="tabSection"/>
+      <xsd:element ref="help"/>
+      <xsd:element ref="kimPersonControl"/>
+      <xsd:element ref="treeGroup"/>
+      <xsd:element ref="treeSection"/>
+      <xsd:element ref="treeSubSection"/>
+      <xsd:element ref="spaceField"/>
+      <xsd:element ref="messageField"/>
+      <xsd:element ref="maintenanceView"/>
+      <xsd:element ref="pageHeader"/>
+      <xsd:element ref="header"/>
+      <xsd:element ref="headerSix"/>
+      <xsd:element ref="headerTwo"/>
+      <xsd:element ref="sectionHeader"/>
+      <xsd:element ref="headerOne"/>
+      <xsd:element ref="headerFive"/>
+      <xsd:element ref="subCollectionHeader"/>
+      <xsd:element ref="headerThree"/>
+      <xsd:element ref="subSectionHeader"/>
+      <xsd:element ref="headerFour"/>
+      <xsd:element ref="syntaxHighlighter"/>
+      <xsd:element ref="tooltip"/>
+      <xsd:element ref="tooltipFocus"/>
+      <xsd:element ref="tooltipHelp"/>
+      <xsd:element ref="input"/>
+      <xsd:element ref="checkboxInput"/>
+      <xsd:element ref="inputLabelRight"/>
+      <xsd:element ref="inputLabelTop"/>
+      <xsd:element ref="icon"/>
+      <xsd:element ref="hiddenControl"/>
+      <xsd:element ref="label"/>
+      <xsd:element ref="message"/>
+      <xsd:element ref="link"/>
+      <xsd:element ref="messageView"/>
+      <xsd:element ref="kimGroupControl"/>
+      <xsd:element ref="sidebarNavigation"/>
+      <xsd:element ref="menuNavigation"/>
+      <xsd:element ref="blockUI"/>
+      <xsd:element ref="tabNavigationGroup-bean"/>
+      <xsd:element ref="lightTable"/>
+      <xsd:element ref="lightTableSection"/>
+      <xsd:element ref="lightTableSubSection"/>
+      <xsd:element ref="dataTable"/>
+      <xsd:element ref="lookupCriteria"/>
+      <xsd:element ref="progressBarVertical-bean"/>
+      <xsd:element ref="progressBar-bean"/>
+      <xsd:element ref="linkGroup"/>
+      <xsd:element ref="linkSubGroup"/>
+      <xsd:element ref="fieldBase"/>
+      <xsd:element ref="disclosureStackedSubSection"/>
+      <xsd:element ref="maintenanceStackedSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSection"/>
+      <xsd:element ref="maintenanceStackedSection"/>
+      <xsd:element ref="stackedSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubSection"/>
+      <xsd:element ref="stacked"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSubSection"/>
+      <xsd:element ref="maintenanceTableSubCollection-withinSection"/>
+      <xsd:element ref="table"/>
+      <xsd:element ref="disclosureStackedSection"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollectionSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSubSection"/>
+      <xsd:element ref="stackedSection"/>
+      <xsd:element ref="collectionGroup"/>
+      <xsd:element ref="maintenanceTableSection"/>
+      <xsd:element ref="listCollectionSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSection"/>
+      <xsd:element ref="stackedSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSubSection"/>
+      <xsd:element ref="stackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollection"/>
+      <xsd:element ref="disclosureTableSection"/>
+      <xsd:element ref="widget"/>
+      <xsd:element ref="documentPage"/>
+      <xsd:element ref="page"/>
+      <xsd:element ref="maintenancePage"/>
+      <xsd:element ref="inquiryPage"/>
+      <xsd:element ref="pager"/>
+      <xsd:element ref="image"/>
+      <xsd:element ref="verticalCheckboxesControl"/>
+      <xsd:element ref="horizontalCheckboxesControl"/>
+      <xsd:element ref="iFrame"/>
+      <xsd:element ref="accordionSubSection"/>
+      <xsd:element ref="accordionGroup"/>
+      <xsd:element ref="accordionSection"/>
+      <xsd:element ref="disclosureAccordionSection"/>
+      <xsd:element ref="disclosureAccordionSubSection"/>
+      <xsd:element ref="tabs"/>
+      <xsd:element ref="space"/>
+      <xsd:element ref="buttonLarge"/>
+      <xsd:element ref="navigationButton"/>
+      <xsd:element ref="secondaryNavigationActionButton"/>
+      <xsd:element ref="navigationActionLink"/>
+      <xsd:element ref="secondaryButtonSmall"/>
+      <xsd:element ref="secondaryButton"/>
+      <xsd:element ref="actionLink"/>
+      <xsd:element ref="action"/>
+      <xsd:element ref="buttonSmall"/>
+      <xsd:element ref="button"/>
+      <xsd:element ref="buttonMini"/>
+      <xsd:element ref="secondaryButtonMini"/>
+      <xsd:element ref="actionImage"/>
+      <xsd:element ref="secondaryButtonLarge"/>
+      <xsd:element ref="datePicker"/>
+      <xsd:element ref="accordion"/>
+      <xsd:element ref="lightBox"/>
+      <xsd:element ref="lightBoxPost"/>
+      <xsd:element ref="stepProgressBar-bean"/>
+      <xsd:element ref="smallTextAreaControl"/>
+      <xsd:element ref="largeTextAreaControl"/>
+      <xsd:element ref="textAreaControl"/>
+      <xsd:element ref="mediumTextAreaControl"/>
+      <xsd:element ref="horizontalFieldGroup"/>
+      <xsd:element ref="fieldGroup"/>
+      <xsd:element ref="verticalFieldGroup"/>
+      <xsd:element ref="tree"/>
+      <xsd:element ref="documentView"/>
+      <xsd:element ref="quickFinder"/>
+      <xsd:element ref="collectionQuickFinder"/>
+      <xsd:element ref="quickFinderByScript"/>
+      <xsd:element ref="dataNoLabel"/>
+      <xsd:element ref="data"/>
+      <xsd:element ref="dataLabelRight"/>
+      <xsd:element ref="dataLabelTop"/>
+      <xsd:element ref="formFooter"/>
+      <xsd:element ref="collectionVerticalBoxItem"/>
+      <xsd:element ref="horizontalSection"/>
+      <xsd:element ref="horizontalGroup"/>
+      <xsd:element ref="maintenanceVerticalSubSection"/>
+      <xsd:element ref="subSection"/>
+      <xsd:element ref="subSection2Col"/>
+      <xsd:element ref="headerUpperGroup"/>
+      <xsd:element ref="cssGrid"/>
+      <xsd:element ref="listSection"/>
+      <xsd:element ref="subSection1Col"/>
+      <xsd:element ref="disclosureVerticalSection"/>
+      <xsd:element ref="headerLowerGroup"/>
+      <xsd:element ref="headerRightGroup"/>
+      <xsd:element ref="disclosureHorizontalSection"/>
+      <xsd:element ref="grid"/>
+      <xsd:element ref="maintenanceHorizontalSection"/>
+      <xsd:element ref="maintenanceGridSubSection"/>
+      <xsd:element ref="subSection3Col"/>
+      <xsd:element ref="gridSection"/>
+      <xsd:element ref="maintenanceVerticalSection"/>
+      <xsd:element ref="section3Col"/>
+      <xsd:element ref="section"/>
+      <xsd:element ref="list"/>
+      <xsd:element ref="collectionGridItem"/>
+      <xsd:element ref="boxGroup"/>
+      <xsd:element ref="listSubSection"/>
+      <xsd:element ref="collectionHorizontalBoxItem"/>
+      <xsd:element ref="maintenanceVerticalGroup"/>
+      <xsd:element ref="verticalSubSection"/>
+      <xsd:element ref="maintenanceHorizontalGroup"/>
+      <xsd:element ref="disclosureGridSection"/>
+      <xsd:element ref="disclosureListSection"/>
+      <xsd:element ref="verticalSection"/>
+      <xsd:element ref="section1Col"/>
+      <xsd:element ref="section2Col"/>
+      <xsd:element ref="maintenanceGrid"/>
+      <xsd:element ref="maintenanceGridSection"/>
+      <xsd:element ref="group"/>
+      <xsd:element ref="horizontalSubSection"/>
+      <xsd:element ref="footer"/>
+      <xsd:element ref="disclosureListSubSection"/>
+      <xsd:element ref="verticalGroup"/>
+      <xsd:element ref="gridSubSection"/>
+      <xsd:element ref="maintenanceHorizontalSubSection"/>
+      <xsd:element ref="disclosureHorizontalSubSection"/>
+      <xsd:element ref="disclosureVerticalSubSection"/>
+      <xsd:element ref="componentBase"/>
+      <xsd:element ref="content"/>
+      <xsd:element ref="spinnerControl"/>
+      <xsd:element ref="mockView"/>
+      <xsd:element ref="checkboxControl"/>
+      <xsd:element ref="fileControl"/>
+      <xsd:element ref="growls"/>
+      <xsd:element ref="breadcrumbItem"/>
+      <xsd:element ref="progressBarField-bean"/>
+      <xsd:element ref="stepProgressBarField-bean"/>
+      <xsd:element ref="controlBase"/>
+      <xsd:element ref="transactionalDocumentView"/>
+      <xsd:element ref="navbar"/>
+      <xsd:element ref="metaTag"/>
+      <xsd:element ref="imageField"/>
+      <xsd:element ref="locationSuggest"/>
+      <xsd:element ref="spinner"/>
+      <xsd:element ref="actionLinkField"/>
+      <xsd:element ref="actionField"/>
+      <xsd:element ref="view"/>
+      <xsd:element ref="verticalRadioControl"/>
+      <xsd:element ref="horizontalRadioControl"/>
+      <xsd:element ref="linkField"/>
+      <xsd:element ref="richTable"/>
+      <xsd:element ref="pagedRichTable"/>
+      <xsd:element ref="scrollableRichTable"/>
+      <xsd:element ref="dropdownMenu"/>
+      <xsd:element ref="sidebarMenu"/>
+      <xsd:element ref="iframeView"/>
+      <xsd:element ref="remotableFieldsPlaceholder"/>
+      <xsd:element ref="largeTextControl"/>
+      <xsd:element ref="textControl"/>
+      <xsd:element ref="smallTextControl"/>
+      <xsd:element ref="currencyTextControl"/>
+      <xsd:element ref="dateControl"/>
+      <xsd:element ref="mediumTextControl"/>
+      <xsd:element ref="contentElement"/>
+      <xsd:element ref="dialogOkCancelExpl"/>
+      <xsd:element ref="actionConfirmation"/>
+      <xsd:element ref="dialog"/>
+      <xsd:element ref="dialogYesNo"/>
+      <xsd:element ref="dialogOkCancel"/>
+      <xsd:element ref="actionConfirmationExpl"/>
+      <xsd:element ref="inquiryView"/>
+      <xsd:element ref="scrollpane"/>
+      <xsd:element ref="customTemplateField"/>
+      <xsd:element ref="genericField"/>
+      <xsd:element ref="suggest"/>
+      <xsd:element ref="lookupView"/>
+      <xsd:element ref="inquiry"/>
+      <xsd:element ref="optionListControl"/>
+      <xsd:element ref="multiSelectControl"/>
+      <xsd:element ref="dropdownControl"/>
+      <xsd:element ref="headLink"/>
+      <xsd:element ref="viewHeader"/>
+      <xsd:element ref="passwordControl"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.Constraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="anyCharacterPatternConstraint"/>
+      <xsd:element ref="floatingPointPatternConstraint"/>
+      <xsd:element ref="validDataPatternConstraint"/>
+      <xsd:element ref="constraint"/>
+      <xsd:element ref="alphaNumericPatternConstraint"/>
+      <xsd:element ref="alphaNumericWithBasicPunc"/>
+      <xsd:element ref="utf8AnyCharacterPatternConstraint"/>
+      <xsd:element ref="attributeDefinition"/>
+      <xsd:element ref="requiredConstraint"/>
+      <xsd:element ref="simpleContraint"/>
+      <xsd:element ref="externalizableAttributeDefinitionProxy"/>
+      <xsd:element ref="fixedPointPatternConstraint"/>
+      <xsd:element ref="integerPatternConstraint"/>
+      <xsd:element ref="collectionDefinition"/>
+      <xsd:element ref="alphaPatternConstraint"/>
+      <xsd:element ref="alphaWithBasicPunc"/>
+      <xsd:element ref="charsetPatternConstraint"/>
+      <xsd:element ref="numericPatternConstraint"/>
+      <xsd:element ref="numericWithOperators"/>
+      <xsd:element ref="caseConstriant"/>
+      <xsd:element ref="mustOccurConstraint"/>
+      <xsd:element ref="validCharactersPatternContraint"/>
+      <xsd:element ref="prerequisiteConstraint"/>
+      <xsd:element ref="datePatternConstraint"/>
+      <xsd:element ref="basicDatePatternConstraint"/>
+      <xsd:element ref="configurationBasedRegexPatternConstraint"/>
+      <xsd:element ref="emailAddressPatternConstraint"/>
+      <xsd:element ref="monthPatternConstraint"/>
+      <xsd:element ref="urlPatternConstraint"/>
+      <xsd:element ref="timestampPatternConstraint"/>
+      <xsd:element ref="yearPatternConstraint"/>
+      <xsd:element ref="phoneNumberPatternConstraint"/>
+      <xsd:element ref="timePatternConstraint"/>
+      <xsd:element ref="javaClassPatternConstraint"/>
+      <xsd:element ref="zipcodePatternConstraint"/>
+      <xsd:element ref="noWhitespacePatternConstraint"/>
+      <xsd:element ref="time24HPatternConstraint"/>
+      <xsd:element ref="validCharactersConstraint"/>
+      <xsd:element ref="whenConstraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.RoutingAttribute">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="routingAttribute"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="java.lang.Class">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.GroupBase">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tabSubSection"/>
+      <xsd:element ref="tabGroup"/>
+      <xsd:element ref="tabSection"/>
+      <xsd:element ref="treeGroup"/>
+      <xsd:element ref="treeSection"/>
+      <xsd:element ref="treeSubSection"/>
+      <xsd:element ref="sidebarNavigation"/>
+      <xsd:element ref="menuNavigation"/>
+      <xsd:element ref="tabNavigationGroup-bean"/>
+      <xsd:element ref="lightTable"/>
+      <xsd:element ref="lightTableSection"/>
+      <xsd:element ref="lightTableSubSection"/>
+      <xsd:element ref="linkGroup"/>
+      <xsd:element ref="linkSubGroup"/>
+      <xsd:element ref="disclosureStackedSubSection"/>
+      <xsd:element ref="maintenanceStackedSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSection"/>
+      <xsd:element ref="maintenanceStackedSection"/>
+      <xsd:element ref="stackedSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubSection"/>
+      <xsd:element ref="stacked"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSubSection"/>
+      <xsd:element ref="maintenanceTableSubCollection-withinSection"/>
+      <xsd:element ref="table"/>
+      <xsd:element ref="disclosureStackedSection"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollectionSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSubSection"/>
+      <xsd:element ref="stackedSection"/>
+      <xsd:element ref="collectionGroup"/>
+      <xsd:element ref="maintenanceTableSection"/>
+      <xsd:element ref="listCollectionSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSection"/>
+      <xsd:element ref="stackedSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSubSection"/>
+      <xsd:element ref="stackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollection"/>
+      <xsd:element ref="disclosureTableSection"/>
+      <xsd:element ref="documentPage"/>
+      <xsd:element ref="page"/>
+      <xsd:element ref="maintenancePage"/>
+      <xsd:element ref="inquiryPage"/>
+      <xsd:element ref="accordionSubSection"/>
+      <xsd:element ref="accordionGroup"/>
+      <xsd:element ref="accordionSection"/>
+      <xsd:element ref="disclosureAccordionSection"/>
+      <xsd:element ref="disclosureAccordionSubSection"/>
+      <xsd:element ref="formFooter"/>
+      <xsd:element ref="collectionVerticalBoxItem"/>
+      <xsd:element ref="horizontalSection"/>
+      <xsd:element ref="horizontalGroup"/>
+      <xsd:element ref="maintenanceVerticalSubSection"/>
+      <xsd:element ref="subSection"/>
+      <xsd:element ref="subSection2Col"/>
+      <xsd:element ref="headerUpperGroup"/>
+      <xsd:element ref="cssGrid"/>
+      <xsd:element ref="listSection"/>
+      <xsd:element ref="subSection1Col"/>
+      <xsd:element ref="disclosureVerticalSection"/>
+      <xsd:element ref="headerLowerGroup"/>
+      <xsd:element ref="headerRightGroup"/>
+      <xsd:element ref="disclosureHorizontalSection"/>
+      <xsd:element ref="grid"/>
+      <xsd:element ref="maintenanceHorizontalSection"/>
+      <xsd:element ref="maintenanceGridSubSection"/>
+      <xsd:element ref="subSection3Col"/>
+      <xsd:element ref="gridSection"/>
+      <xsd:element ref="maintenanceVerticalSection"/>
+      <xsd:element ref="section3Col"/>
+      <xsd:element ref="section"/>
+      <xsd:element ref="list"/>
+      <xsd:element ref="collectionGridItem"/>
+      <xsd:element ref="boxGroup"/>
+      <xsd:element ref="listSubSection"/>
+      <xsd:element ref="collectionHorizontalBoxItem"/>
+      <xsd:element ref="maintenanceVerticalGroup"/>
+      <xsd:element ref="verticalSubSection"/>
+      <xsd:element ref="maintenanceHorizontalGroup"/>
+      <xsd:element ref="disclosureGridSection"/>
+      <xsd:element ref="disclosureListSection"/>
+      <xsd:element ref="verticalSection"/>
+      <xsd:element ref="section1Col"/>
+      <xsd:element ref="section2Col"/>
+      <xsd:element ref="maintenanceGrid"/>
+      <xsd:element ref="maintenanceGridSection"/>
+      <xsd:element ref="group"/>
+      <xsd:element ref="horizontalSubSection"/>
+      <xsd:element ref="footer"/>
+      <xsd:element ref="disclosureListSubSection"/>
+      <xsd:element ref="verticalGroup"/>
+      <xsd:element ref="gridSubSection"/>
+      <xsd:element ref="maintenanceHorizontalSubSection"/>
+      <xsd:element ref="disclosureHorizontalSubSection"/>
+      <xsd:element ref="disclosureVerticalSubSection"/>
+      <xsd:element ref="dialogOkCancelExpl"/>
+      <xsd:element ref="actionConfirmation"/>
+      <xsd:element ref="dialog"/>
+      <xsd:element ref="dialogYesNo"/>
+      <xsd:element ref="dialogOkCancel"/>
+      <xsd:element ref="actionConfirmationExpl"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewSessionPolicy">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="sessionPolicy"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Tooltip">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tooltip"/>
+      <xsd:element ref="tooltipFocus"/>
+      <xsd:element ref="tooltipHelp"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.modifier.ComparableInfo">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="compareConfig"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.state.StateMapping">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="stateMapping"/>
+      <xsd:element ref="workflowStateMapping"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Growls">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="growls"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="java.lang.Object">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="breadcrumbs"/>
+      <xsd:element ref="fieldSecurity"/>
+      <xsd:element ref="tableCollectionLayout-bean"/>
+      <xsd:element ref="disclosure"/>
+      <xsd:element ref="tabSubSection"/>
+      <xsd:element ref="tabGroup"/>
+      <xsd:element ref="tabSection"/>
+      <xsd:element ref="help"/>
+      <xsd:element ref="parentLocation"/>
+      <xsd:element ref="kimPersonControl"/>
+      <xsd:element ref="treeGroup"/>
+      <xsd:element ref="treeSection"/>
+      <xsd:element ref="treeSubSection"/>
+      <xsd:element ref="helpDefinition"/>
+      <xsd:element ref="spaceField"/>
+      <xsd:element ref="messageField"/>
+      <xsd:element ref="maintenanceView"/>
+      <xsd:element ref="pageHeader"/>
+      <xsd:element ref="header"/>
+      <xsd:element ref="headerSix"/>
+      <xsd:element ref="headerTwo"/>
+      <xsd:element ref="sectionHeader"/>
+      <xsd:element ref="headerOne"/>
+      <xsd:element ref="headerFive"/>
+      <xsd:element ref="subCollectionHeader"/>
+      <xsd:element ref="headerThree"/>
+      <xsd:element ref="subSectionHeader"/>
+      <xsd:element ref="headerFour"/>
+      <xsd:element ref="syntaxHighlighter"/>
+      <xsd:element ref="sessionPolicy"/>
+      <xsd:element ref="tooltip"/>
+      <xsd:element ref="tooltipFocus"/>
+      <xsd:element ref="tooltipHelp"/>
+      <xsd:element ref="input"/>
+      <xsd:element ref="checkboxInput"/>
+      <xsd:element ref="inputLabelRight"/>
+      <xsd:element ref="inputLabelTop"/>
+      <xsd:element ref="dataObjectEntry"/>
+      <xsd:element ref="compareConfig"/>
+      <xsd:element ref="icon"/>
+      <xsd:element ref="businessObjectEntry"/>
+      <xsd:element ref="hiddenControl"/>
+      <xsd:element ref="listLayout"/>
+      <xsd:element ref="orderedListLayout"/>
+      <xsd:element ref="cssGridLayout"/>
+      <xsd:element ref="anyCharacterPatternConstraint"/>
+      <xsd:element ref="floatingPointPatternConstraint"/>
+      <xsd:element ref="keyValueLocation"/>
+      <xsd:element ref="propertyReplacer"/>
+      <xsd:element ref="validDataPatternConstraint"/>
+      <xsd:element ref="constraint"/>
+      <xsd:element ref="searchingAttribute"/>
+      <xsd:element ref="maskFormatterLiteral"/>
+      <xsd:element ref="activeCollectionFilter"/>
+      <xsd:element ref="dataFieldSecurity"/>
+      <xsd:element ref="label"/>
+      <xsd:element ref="message"/>
+      <xsd:element ref="alphaNumericPatternConstraint"/>
+      <xsd:element ref="alphaNumericWithBasicPunc"/>
+      <xsd:element ref="link"/>
+      <xsd:element ref="messageView"/>
+      <xsd:element ref="kimGroupControl"/>
+      <xsd:element ref="actionSecurity"/>
+      <xsd:element ref="sidebarNavigation"/>
+      <xsd:element ref="menuNavigation"/>
+      <xsd:element ref="blockUI"/>
+      <xsd:element ref="viewPresentationController"/>
+      <xsd:element ref="utf8AnyCharacterPatternConstraint"/>
+      <xsd:element ref="stackedCollectionLayout-bean"/>
+      <xsd:element ref="stackedCollectionLayout-withGridItems-bean"/>
+      <xsd:element ref="stackedCollectionLayout-list-bean"/>
+      <xsd:element ref="stackedCollectionLayout-withBoxItems-bean"/>
+      <xsd:element ref="workflowPropertyGroup"/>
+      <xsd:element ref="tabNavigationGroup-bean"/>
+      <xsd:element ref="lightTable"/>
+      <xsd:element ref="lightTableSection"/>
+      <xsd:element ref="lightTableSubSection"/>
+      <xsd:element ref="dataTable"/>
+      <xsd:element ref="pageValidationMessages"/>
+      <xsd:element ref="url"/>
+      <xsd:element ref="lookupCriteria"/>
+      <xsd:element ref="fieldValidationMessages"/>
+      <xsd:element ref="inactivationBlockingDefinition"/>
+      <xsd:element ref="attributeDefinition"/>
+      <xsd:element ref="requiredConstraint"/>
+      <xsd:element ref="simpleContraint"/>
+      <xsd:element ref="progressBarVertical-bean"/>
+      <xsd:element ref="progressBar-bean"/>
+      <xsd:element ref="linkGroup"/>
+      <xsd:element ref="linkSubGroup"/>
+      <xsd:element ref="relationshipDefinition"/>
+      <xsd:element ref="maintenaceActiveFilter"/>
+      <xsd:element ref="externalizableAttributeDefinitionProxy"/>
+      <xsd:element ref="fieldBase"/>
+      <xsd:element ref="disclosureStackedSubSection"/>
+      <xsd:element ref="maintenanceStackedSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSection"/>
+      <xsd:element ref="maintenanceStackedSection"/>
+      <xsd:element ref="stackedSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubSection"/>
+      <xsd:element ref="stacked"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSubSection"/>
+      <xsd:element ref="maintenanceTableSubCollection-withinSection"/>
+      <xsd:element ref="table"/>
+      <xsd:element ref="disclosureStackedSection"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollectionSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSubSection"/>
+      <xsd:element ref="stackedSection"/>
+      <xsd:element ref="collectionGroup"/>
+      <xsd:element ref="maintenanceTableSection"/>
+      <xsd:element ref="listCollectionSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSection"/>
+      <xsd:element ref="stackedSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSubSection"/>
+      <xsd:element ref="stackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollection"/>
+      <xsd:element ref="disclosureTableSection"/>
+      <xsd:element ref="collectionGroupSecurity"/>
+      <xsd:element ref="widget"/>
+      <xsd:element ref="pageBreadcrumbOptions"/>
+      <xsd:element ref="documentPage"/>
+      <xsd:element ref="page"/>
+      <xsd:element ref="maintenancePage"/>
+      <xsd:element ref="inquiryPage"/>
+      <xsd:element ref="attributeQuery"/>
+      <xsd:element ref="pager"/>
+      <xsd:element ref="image"/>
+      <xsd:element ref="verticalCheckboxesControl"/>
+      <xsd:element ref="horizontalCheckboxesControl"/>
+      <xsd:element ref="iFrame"/>
+      <xsd:element ref="accordionSubSection"/>
+      <xsd:element ref="accordionGroup"/>
+      <xsd:element ref="accordionSection"/>
+      <xsd:element ref="disclosureAccordionSection"/>
+      <xsd:element ref="disclosureAccordionSubSection"/>
+      <xsd:element ref="cssGridLabelColumnLayout"/>
+      <xsd:element ref="conditionalFilter"/>
+      <xsd:element ref="tabs"/>
+      <xsd:element ref="space"/>
+      <xsd:element ref="buttonLarge"/>
+      <xsd:element ref="navigationButton"/>
+      <xsd:element ref="secondaryNavigationActionButton"/>
+      <xsd:element ref="navigationActionLink"/>
+      <xsd:element ref="secondaryButtonSmall"/>
+      <xsd:element ref="secondaryButton"/>
+      <xsd:element ref="actionLink"/>
+      <xsd:element ref="action"/>
+      <xsd:element ref="buttonSmall"/>
+      <xsd:element ref="button"/>
+      <xsd:element ref="buttonMini"/>
+      <xsd:element ref="secondaryButtonMini"/>
+      <xsd:element ref="actionImage"/>
+      <xsd:element ref="secondaryButtonLarge"/>
+      <xsd:element ref="datePicker"/>
+      <xsd:element ref="accordion"/>
+      <xsd:element ref="workflowProperty"/>
+      <xsd:element ref="maskFormatteSubString"/>
+      <xsd:element ref="lightBox"/>
+      <xsd:element ref="lightBoxPost"/>
+      <xsd:element ref="fixedPointPatternConstraint"/>
+      <xsd:element ref="cssGridSizes-bean"/>
+      <xsd:element ref="stepProgressBar-bean"/>
+      <xsd:element ref="documentValuePathGroup"/>
+      <xsd:element ref="integerPatternConstraint"/>
+      <xsd:element ref="keyValuesFinder"/>
+      <xsd:element ref="smallTextAreaControl"/>
+      <xsd:element ref="largeTextAreaControl"/>
+      <xsd:element ref="textAreaControl"/>
+      <xsd:element ref="mediumTextAreaControl"/>
+      <xsd:element ref="horizontalFieldGroup"/>
+      <xsd:element ref="fieldGroup"/>
+      <xsd:element ref="verticalFieldGroup"/>
+      <xsd:element ref="tree"/>
+      <xsd:element ref="labelSeparatorModifier"/>
+      <xsd:element ref="optionGroupLabel-bean"/>
+      <xsd:element ref="collectionDefinition"/>
+      <xsd:element ref="stateMapping"/>
+      <xsd:element ref="workflowStateMapping"/>
+      <xsd:element ref="componentConverterModifier"/>
+      <xsd:element ref="checkboxToRadioConverterModifier"/>
+      <xsd:element ref="alphaPatternConstraint"/>
+      <xsd:element ref="alphaWithBasicPunc"/>
+      <xsd:element ref="nodePrototype"/>
+      <xsd:element ref="charsetPatternConstraint"/>
+      <xsd:element ref="documentView"/>
+      <xsd:element ref="quickFinder"/>
+      <xsd:element ref="collectionQuickFinder"/>
+      <xsd:element ref="quickFinderByScript"/>
+      <xsd:element ref="dataNoLabel"/>
+      <xsd:element ref="data"/>
+      <xsd:element ref="dataLabelRight"/>
+      <xsd:element ref="dataLabelTop"/>
+      <xsd:element ref="routingAttribute"/>
+      <xsd:element ref="formFooter"/>
+      <xsd:element ref="collectionVerticalBoxItem"/>
+      <xsd:element ref="horizontalSection"/>
+      <xsd:element ref="horizontalGroup"/>
+      <xsd:element ref="maintenanceVerticalSubSection"/>
+      <xsd:element ref="subSection"/>
+      <xsd:element ref="subSection2Col"/>
+      <xsd:element ref="headerUpperGroup"/>
+      <xsd:element ref="cssGrid"/>
+      <xsd:element ref="listSection"/>
+      <xsd:element ref="subSection1Col"/>
+      <xsd:element ref="disclosureVerticalSection"/>
+      <xsd:element ref="headerLowerGroup"/>
+      <xsd:element ref="headerRightGroup"/>
+      <xsd:element ref="disclosureHorizontalSection"/>
+      <xsd:element ref="grid"/>
+      <xsd:element ref="maintenanceHorizontalSection"/>
+      <xsd:element ref="maintenanceGridSubSection"/>
+      <xsd:element ref="subSection3Col"/>
+      <xsd:element ref="gridSection"/>
+      <xsd:element ref="maintenanceVerticalSection"/>
+      <xsd:element ref="section3Col"/>
+      <xsd:element ref="section"/>
+      <xsd:element ref="list"/>
+      <xsd:element ref="collectionGridItem"/>
+      <xsd:element ref="boxGroup"/>
+      <xsd:element ref="listSubSection"/>
+      <xsd:element ref="collectionHorizontalBoxItem"/>
+      <xsd:element ref="maintenanceVerticalGroup"/>
+      <xsd:element ref="verticalSubSection"/>
+      <xsd:element ref="maintenanceHorizontalGroup"/>
+      <xsd:element ref="disclosureGridSection"/>
+      <xsd:element ref="disclosureListSection"/>
+      <xsd:element ref="verticalSection"/>
+      <xsd:element ref="section1Col"/>
+      <xsd:element ref="section2Col"/>
+      <xsd:element ref="maintenanceGrid"/>
+      <xsd:element ref="maintenanceGridSection"/>
+      <xsd:element ref="group"/>
+      <xsd:element ref="horizontalSubSection"/>
+      <xsd:element ref="footer"/>
+      <xsd:element ref="disclosureListSubSection"/>
+      <xsd:element ref="verticalGroup"/>
+      <xsd:element ref="gridSubSection"/>
+      <xsd:element ref="maintenanceHorizontalSubSection"/>
+      <xsd:element ref="disclosureHorizontalSubSection"/>
+      <xsd:element ref="disclosureVerticalSubSection"/>
+      <xsd:element ref="componentBase"/>
+      <xsd:element ref="content"/>
+      <xsd:element ref="spinnerControl"/>
+      <xsd:element ref="mockView"/>
+      <xsd:element ref="checkboxControl"/>
+      <xsd:element ref="fileControl"/>
+      <xsd:element ref="growls"/>
+      <xsd:element ref="numericPatternConstraint"/>
+      <xsd:element ref="numericWithOperators"/>
+      <xsd:element ref="breadcrumbItem"/>
+      <xsd:element ref="progressBarField-bean"/>
+      <xsd:element ref="stepProgressBarField-bean"/>
+      <xsd:element ref="groupValidationMessages"/>
+      <xsd:element ref="controlBase"/>
+      <xsd:element ref="transactionalDocumentView"/>
+      <xsd:element ref="breadcrumbOptions"/>
+      <xsd:element ref="cssGridLayoutBase"/>
+      <xsd:element ref="workflowProperties"/>
+      <xsd:element ref="navbar"/>
+      <xsd:element ref="componentSecurity"/>
+      <xsd:element ref="metaTag"/>
+      <xsd:element ref="caseConstriant"/>
+      <xsd:element ref="compareFieldCreateModifier"/>
+      <xsd:element ref="maintenanceCompareModifier"/>
+      <xsd:element ref="imageField"/>
+      <xsd:element ref="locationSuggest"/>
+      <xsd:element ref="spinner"/>
+      <xsd:element ref="supportAttributeDefinition"/>
+      <xsd:element ref="attributeSecurity"/>
+      <xsd:element ref="bindingInfo"/>
+      <xsd:element ref="actionLinkField"/>
+      <xsd:element ref="actionField"/>
+      <xsd:element ref="view"/>
+      <xsd:element ref="verticalRadioControl"/>
+      <xsd:element ref="horizontalRadioControl"/>
+      <xsd:element ref="linkField"/>
+      <xsd:element ref="richTable"/>
+      <xsd:element ref="pagedRichTable"/>
+      <xsd:element ref="scrollableRichTable"/>
+      <xsd:element ref="searchingTypeDefinition"/>
+      <xsd:element ref="fourColumnGridLayout"/>
+      <xsd:element ref="gridLayout"/>
+      <xsd:element ref="sixColumnGridLayout"/>
+      <xsd:element ref="twoColumnGridLayout"/>
+      <xsd:element ref="primitiveAttributeDefinition"/>
+      <xsd:element ref="mustOccurConstraint"/>
+      <xsd:element ref="dropdownMenu"/>
+      <xsd:element ref="sidebarMenu"/>
+      <xsd:element ref="iframeView"/>
+      <xsd:element ref="validCharactersPatternContraint"/>
+      <xsd:element ref="remotableFieldsPlaceholder"/>
+      <xsd:element ref="largeTextControl"/>
+      <xsd:element ref="textControl"/>
+      <xsd:element ref="smallTextControl"/>
+      <xsd:element ref="currencyTextControl"/>
+      <xsd:element ref="dateControl"/>
+      <xsd:element ref="mediumTextControl"/>
+      <xsd:element ref="contentElement"/>
+      <xsd:element ref="mask"/>
+      <xsd:element ref="dialogOkCancelExpl"/>
+      <xsd:element ref="actionConfirmation"/>
+      <xsd:element ref="dialog"/>
+      <xsd:element ref="dialogYesNo"/>
+      <xsd:element ref="dialogOkCancel"/>
+      <xsd:element ref="actionConfirmationExpl"/>
+      <xsd:element ref="kbootTheme"/>
+      <xsd:element ref="theme"/>
+      <xsd:element ref="boxLayout"/>
+      <xsd:element ref="horizontalBoxLayout"/>
+      <xsd:element ref="verticalBoxLayout"/>
+      <xsd:element ref="historyEntry"/>
+      <xsd:element ref="prerequisiteConstraint"/>
+      <xsd:element ref="inquiryView"/>
+      <xsd:element ref="validationMessages"/>
+      <xsd:element ref="viewAuthorizer"/>
+      <xsd:element ref="referenceDefinition"/>
+      <xsd:element ref="routingTypeDefinition"/>
+      <xsd:element ref="transactionalDocumentEntry"/>
+      <xsd:element ref="datePatternConstraint"/>
+      <xsd:element ref="basicDatePatternConstraint"/>
+      <xsd:element ref="scrollpane"/>
+      <xsd:element ref="configurationBasedRegexPatternConstraint"/>
+      <xsd:element ref="emailAddressPatternConstraint"/>
+      <xsd:element ref="monthPatternConstraint"/>
+      <xsd:element ref="urlPatternConstraint"/>
+      <xsd:element ref="timestampPatternConstraint"/>
+      <xsd:element ref="yearPatternConstraint"/>
+      <xsd:element ref="phoneNumberPatternConstraint"/>
+      <xsd:element ref="timePatternConstraint"/>
+      <xsd:element ref="javaClassPatternConstraint"/>
+      <xsd:element ref="zipcodePatternConstraint"/>
+      <xsd:element ref="noWhitespacePatternConstraint"/>
+      <xsd:element ref="time24HPatternConstraint"/>
+      <xsd:element ref="customTemplateField"/>
+      <xsd:element ref="genericField"/>
+      <xsd:element ref="suggest"/>
+      <xsd:element ref="lookupView"/>
+      <xsd:element ref="inquiry"/>
+      <xsd:element ref="methodConfig"/>
+      <xsd:element ref="optionListControl"/>
+      <xsd:element ref="workflowAttributeMetadata"/>
+      <xsd:element ref="multiSelectControl"/>
+      <xsd:element ref="dropdownControl"/>
+      <xsd:element ref="maintenanceDocumentEntry"/>
+      <xsd:element ref="headLink"/>
+      <xsd:element ref="keyValuePair"/>
+      <xsd:element ref="viewHeader"/>
+      <xsd:element ref="validCharactersConstraint"/>
+      <xsd:element ref="columnCalculationSum"/>
+      <xsd:element ref="columnCalculation"/>
+      <xsd:element ref="columnCalculationMax"/>
+      <xsd:element ref="columnCalculationAverage"/>
+      <xsd:element ref="columnCalculationMin"/>
+      <xsd:element ref="passwordControl"/>
+      <xsd:element ref="whenConstraint"/>
+      <xsd:element ref="workflowAttributes"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.BreadcrumbItem">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="breadcrumbItem"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.CollectionFilter">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="activeCollectionFilter"/>
+      <xsd:element ref="maintenaceActiveFilter"/>
+      <xsd:element ref="conditionalFilter"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.service.ViewHelperService">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.CollectionGroup">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="disclosureStackedSubSection"/>
+      <xsd:element ref="maintenanceStackedSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSection"/>
+      <xsd:element ref="maintenanceStackedSection"/>
+      <xsd:element ref="stackedSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubSection"/>
+      <xsd:element ref="stacked"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSubSection"/>
+      <xsd:element ref="maintenanceTableSubCollection-withinSection"/>
+      <xsd:element ref="table"/>
+      <xsd:element ref="disclosureStackedSection"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollectionSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSubSection"/>
+      <xsd:element ref="stackedSection"/>
+      <xsd:element ref="collectionGroup"/>
+      <xsd:element ref="maintenanceTableSection"/>
+      <xsd:element ref="listCollectionSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSection"/>
+      <xsd:element ref="stackedSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSubSection"/>
+      <xsd:element ref="stackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollection"/>
+      <xsd:element ref="disclosureTableSection"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.DocumentCollectionPath">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.component.PropertyReplacer">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="propertyReplacer"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.SearchingAttribute">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="searchingAttribute"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="java.beans.PropertyEditor">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.keyvalues.KeyValuesFinder">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="keyValuesFinder"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.BreadcrumbOptions">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="pageBreadcrumbOptions"/>
+      <xsd:element ref="breadcrumbOptions"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Label">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="label"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Message">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="message"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Link">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="link"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.WorkflowProperties">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="workflowProperties"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.BlockUI">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="blockUI"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.component.ComponentSecurity">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="fieldSecurity"/>
+      <xsd:element ref="dataFieldSecurity"/>
+      <xsd:element ref="actionSecurity"/>
+      <xsd:element ref="collectionGroupSecurity"/>
+      <xsd:element ref="componentSecurity"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.MetaTag">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="metaTag"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.WorkflowPropertyGroup">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="workflowPropertyGroup"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.CaseConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="caseConstriant"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.mask.MaskFormatter">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="maskFormatterLiteral"/>
+      <xsd:element ref="maskFormatteSubString"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Spinner">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="spinner"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.SupportAttributeDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="supportAttributeDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.core.api.util.KeyValue">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="keyValueLocation"/>
+      <xsd:element ref="optionGroupLabel-bean"/>
+      <xsd:element ref="keyValuePair"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.AttributeSecurity">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="attributeSecurity"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.UrlInfo">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="url"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.component.BindingInfo">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="bindingInfo"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.RichTable">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="richTable"/>
+      <xsd:element ref="pagedRichTable"/>
+      <xsd:element ref="scrollableRichTable"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.SearchingTypeDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="searchingTypeDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="inactivationBlockingDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.AttributeDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="attributeDefinition"/>
+      <xsd:element ref="externalizableAttributeDefinitionProxy"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.Group">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tabSubSection"/>
+      <xsd:element ref="tabGroup"/>
+      <xsd:element ref="tabSection"/>
+      <xsd:element ref="treeGroup"/>
+      <xsd:element ref="treeSection"/>
+      <xsd:element ref="treeSubSection"/>
+      <xsd:element ref="sidebarNavigation"/>
+      <xsd:element ref="menuNavigation"/>
+      <xsd:element ref="tabNavigationGroup-bean"/>
+      <xsd:element ref="lightTable"/>
+      <xsd:element ref="lightTableSection"/>
+      <xsd:element ref="lightTableSubSection"/>
+      <xsd:element ref="linkGroup"/>
+      <xsd:element ref="linkSubGroup"/>
+      <xsd:element ref="disclosureStackedSubSection"/>
+      <xsd:element ref="maintenanceStackedSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSection"/>
+      <xsd:element ref="maintenanceStackedSection"/>
+      <xsd:element ref="stackedSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSection"/>
+      <xsd:element ref="disclosureTableSubSection"/>
+      <xsd:element ref="stacked"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSubSection"/>
+      <xsd:element ref="maintenanceTableSubCollection-withinSection"/>
+      <xsd:element ref="table"/>
+      <xsd:element ref="disclosureStackedSection"/>
+      <xsd:element ref="disclosureStackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollectionSection"/>
+      <xsd:element ref="disclosureTableSubCollection-withinSubSection"/>
+      <xsd:element ref="stackedSection"/>
+      <xsd:element ref="collectionGroup"/>
+      <xsd:element ref="maintenanceTableSection"/>
+      <xsd:element ref="listCollectionSubSection"/>
+      <xsd:element ref="tableSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSection"/>
+      <xsd:element ref="stackedSubCollection-withinSubSection"/>
+      <xsd:element ref="tableSubSection"/>
+      <xsd:element ref="stackedSubCollection-withinSection"/>
+      <xsd:element ref="listCollection"/>
+      <xsd:element ref="disclosureTableSection"/>
+      <xsd:element ref="documentPage"/>
+      <xsd:element ref="page"/>
+      <xsd:element ref="maintenancePage"/>
+      <xsd:element ref="inquiryPage"/>
+      <xsd:element ref="accordionSubSection"/>
+      <xsd:element ref="accordionGroup"/>
+      <xsd:element ref="accordionSection"/>
+      <xsd:element ref="disclosureAccordionSection"/>
+      <xsd:element ref="disclosureAccordionSubSection"/>
+      <xsd:element ref="formFooter"/>
+      <xsd:element ref="collectionVerticalBoxItem"/>
+      <xsd:element ref="horizontalSection"/>
+      <xsd:element ref="horizontalGroup"/>
+      <xsd:element ref="maintenanceVerticalSubSection"/>
+      <xsd:element ref="subSection"/>
+      <xsd:element ref="subSection2Col"/>
+      <xsd:element ref="headerUpperGroup"/>
+      <xsd:element ref="cssGrid"/>
+      <xsd:element ref="listSection"/>
+      <xsd:element ref="subSection1Col"/>
+      <xsd:element ref="disclosureVerticalSection"/>
+      <xsd:element ref="headerLowerGroup"/>
+      <xsd:element ref="headerRightGroup"/>
+      <xsd:element ref="disclosureHorizontalSection"/>
+      <xsd:element ref="grid"/>
+      <xsd:element ref="maintenanceHorizontalSection"/>
+      <xsd:element ref="maintenanceGridSubSection"/>
+      <xsd:element ref="subSection3Col"/>
+      <xsd:element ref="gridSection"/>
+      <xsd:element ref="maintenanceVerticalSection"/>
+      <xsd:element ref="section3Col"/>
+      <xsd:element ref="section"/>
+      <xsd:element ref="list"/>
+      <xsd:element ref="collectionGridItem"/>
+      <xsd:element ref="boxGroup"/>
+      <xsd:element ref="listSubSection"/>
+      <xsd:element ref="collectionHorizontalBoxItem"/>
+      <xsd:element ref="maintenanceVerticalGroup"/>
+      <xsd:element ref="verticalSubSection"/>
+      <xsd:element ref="maintenanceHorizontalGroup"/>
+      <xsd:element ref="disclosureGridSection"/>
+      <xsd:element ref="disclosureListSection"/>
+      <xsd:element ref="verticalSection"/>
+      <xsd:element ref="section1Col"/>
+      <xsd:element ref="section2Col"/>
+      <xsd:element ref="maintenanceGrid"/>
+      <xsd:element ref="maintenanceGridSection"/>
+      <xsd:element ref="group"/>
+      <xsd:element ref="horizontalSubSection"/>
+      <xsd:element ref="footer"/>
+      <xsd:element ref="disclosureListSubSection"/>
+      <xsd:element ref="verticalGroup"/>
+      <xsd:element ref="gridSubSection"/>
+      <xsd:element ref="maintenanceHorizontalSubSection"/>
+      <xsd:element ref="disclosureHorizontalSubSection"/>
+      <xsd:element ref="disclosureVerticalSubSection"/>
+      <xsd:element ref="dialogOkCancelExpl"/>
+      <xsd:element ref="actionConfirmation"/>
+      <xsd:element ref="dialog"/>
+      <xsd:element ref="dialogYesNo"/>
+      <xsd:element ref="dialogOkCancel"/>
+      <xsd:element ref="actionConfirmationExpl"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.SimpleConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="requiredConstraint"/>
+      <xsd:element ref="simpleContraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="supportAttributeDefinition"/>
+      <xsd:element ref="primitiveAttributeDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.MustOccurConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="mustOccurConstraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.core.api.util.tree.Tree">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.ProgressBar">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="progressBarVertical-bean"/>
+      <xsd:element ref="progressBar-bean"/>
+      <xsd:element ref="stepProgressBar-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.modifier.ComponentModifier">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="labelSeparatorModifier"/>
+      <xsd:element ref="componentConverterModifier"/>
+      <xsd:element ref="checkboxToRadioConverterModifier"/>
+      <xsd:element ref="compareFieldCreateModifier"/>
+      <xsd:element ref="maintenanceCompareModifier"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.RelationshipDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="relationshipDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.DialogGroup">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="dialogOkCancelExpl"/>
+      <xsd:element ref="actionConfirmation"/>
+      <xsd:element ref="dialog"/>
+      <xsd:element ref="dialogYesNo"/>
+      <xsd:element ref="dialogOkCancel"/>
+      <xsd:element ref="actionConfirmationExpl"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.view.ViewTheme">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="kbootTheme"/>
+      <xsd:element ref="theme"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.control.ControlDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.PageBreadcrumbOptions">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="pageBreadcrumbOptions"/>
+    </xsd:choice>
+  </xsd:complexType>
+</xsd:schema>

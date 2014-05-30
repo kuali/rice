@@ -31,10 +31,12 @@
     </property>
   </bean>
 
+  <bean id="Demo-ValidationMessages-AddErrors" parent="Uif-PrimaryActionButton" p:actionLabel="Get Error Messages"/>
+
   <bean id ="Demo-ValidationMessages-Buttons" parent="Uif-HorizontalBoxGroup">
     <property name="items">
       <list>
-        <bean id="Demo-ValidationMessages-AddErrors" parent="Uif-PrimaryActionButton" p:actionLabel="Get Error Messages"/>
+        <bean parent="Demo-ValidationMessages-AddErrors"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Warning Messages" p:methodToCall="addWarnings"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Info Messages" p:methodToCall="addInfo"/>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Error+Warning+Info Messages"

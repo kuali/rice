@@ -32,7 +32,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "workflowAttributes-bean")
+@BeanTag(name = "workflowAttributes")
 public class WorkflowAttributes extends UifDictionaryBeanBase {
     private static final long serialVersionUID = 6435015497886060280L;
 

@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="RunSchemaGenerator" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+    <module name="rice-krad-development-tools" />
+    <setting name="path" value="file://$PROJECT_DIR$/rice-framework/krad-development-tools/src/main/groovy/org/kuali/rice/krad/schema/RunSchemaGenerator.groovy" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="-p org.kuali.rice.krad.uif,org.kuali.rice.krad.datadictionary,org.kuali.rice.krad.lookup -o ." />
+    <setting name="workDir" value="file://$PROJECT_DIR$/rice-framework/krad-development-tools/src/main/groovy/org/kuali/rice/krad/schema" />
+    <setting name="debug" value="false" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>

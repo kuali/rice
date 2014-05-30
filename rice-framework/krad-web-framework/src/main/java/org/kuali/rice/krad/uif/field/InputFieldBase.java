@@ -88,26 +88,14 @@ import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "inputField-bean", parent = "Uif-InputField"),
-        @BeanTag(name = "inputField-labelTop-bean", parent = "Uif-InputField-LabelTop"),
-        @BeanTag(name = "inputField-labelRight-bean", parent = "Uif-InputField-LabelRight"),
-        @BeanTag(name = "checkboxInputField-bean", parent = "Uif-CheckboxInputField"),
-        @BeanTag(name = "dialogResponse-bean", parent = "Uif-DialogResponse"),
-        @BeanTag(name = "dialogExplanation-bean", parent = "Uif-DialogExplanation"),
-        @BeanTag(name = "documentNumber-bean", parent = "Uif-DocumentNumber"),
-        @BeanTag(name = "documentStatus-bean", parent = "Uif-DocumentStatus"),
-        @BeanTag(name = "documentInitiatorNetworkId-bean", parent = "Uif-DocumentInitiatorNetworkId"),
-        @BeanTag(name = "documentCreateDate-bean", parent = "Uif-DocumentCreateDate"),
-        @BeanTag(name = "documentTemplateNumber-bean", parent = "Uif-DocumentTemplateNumber"),
-        @BeanTag(name = "documentDescription-bean", parent = "Uif-DocumentDescription"),
-        @BeanTag(name = "documentExplaination-bean", parent = "Uif-DocumentExplaination"),
-        @BeanTag(name = "organizationDocumentNumber-bean", parent = "Uif-OrganizationDocumentNumber"),
-        @BeanTag(name = "selectCollectionItemField-bean", parent = "Uif-SelectCollectionItemField")})
+@BeanTags({@BeanTag(name = "input", parent = "Uif-InputField"),
+        @BeanTag(name = "inputLabelTop", parent = "Uif-InputField-LabelTop"),
+        @BeanTag(name = "inputLabelRight", parent = "Uif-InputField-LabelRight"),
+        @BeanTag(name = "checkboxInput", parent = "Uif-CheckboxInputField")})
 public class InputFieldBase extends DataFieldBase implements InputField {
     private static final long serialVersionUID = -3703656713706343840L;
 
     // constraint variables
-    private String customValidatorClass;
     private ValidCharactersConstraint validCharactersConstraint;
     private CaseConstraint caseConstraint;
     private List<PrerequisiteConstraint> dependencyConstraints;
@@ -706,7 +694,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "control", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.BYTYPE)
     public Control getControl() {
         return this.control;
     }
@@ -722,9 +710,9 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     /**
      * {@inheritDoc}
      */
-    @ViewLifecycleRestriction
     @Override
-    @BeanTagAttribute(name = "validationMessages", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @ViewLifecycleRestriction
+    @BeanTagAttribute
     public ValidationMessages getValidationMessages() {
         return this.validationMessages;
     }
@@ -741,7 +729,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "optionsFinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public KeyValuesFinder getOptionsFinder() {
         return this.optionsFinder;
     }
@@ -758,7 +746,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "optionsFinderClass")
+    @BeanTagAttribute
     public Class<? extends KeyValuesFinder> getOptionsFinderClass() {
         if (this.optionsFinder != null) {
             return this.optionsFinder.getClass();
@@ -779,6 +767,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isEnableAutoDirectInquiry() {
         return enableAutoDirectInquiry;
     }
@@ -795,7 +784,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "quickfinder", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public QuickFinder getQuickfinder() {
         return this.quickfinder;
     }
@@ -812,6 +801,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isEnableAutoQuickfinder() {
         return enableAutoQuickfinder;
     }
@@ -828,7 +818,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "suggest", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Suggest getSuggest() {
         return suggest;
     }
@@ -845,7 +835,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "widgetInputOnly")
+    @BeanTagAttribute
     public boolean isWidgetInputOnly() {
         return this.widgetInputOnly;
     }
@@ -862,6 +852,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isRenderInputAddonGroup() {
         return renderInputAddonGroup;
     }
@@ -878,6 +869,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public List<String> getPostInputCssClasses() {
         return postInputCssClasses;
     }
@@ -906,6 +898,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public List<Component> getPostInputAddons() {
         return postInputAddons;
     }
@@ -934,7 +927,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "instructionalText")
+    @BeanTagAttribute
     public String getInstructionalText() {
         return this.instructionalText;
     }
@@ -951,7 +944,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "instructionalMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getInstructionalMessage() {
         return this.instructionalMessage;
     }
@@ -968,6 +961,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public String getHelperText() {
         return helperText;
     }
@@ -984,7 +978,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "constraintText")
+    @BeanTagAttribute
     public String getConstraintText() {
         return this.constraintText;
     }
@@ -1001,7 +995,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "constraintMessage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Message getConstraintMessage() {
         return this.constraintMessage;
     }
@@ -1018,7 +1012,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "validCharactersConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public ValidCharactersConstraint getValidCharactersConstraint() {
         return this.validCharactersConstraint;
     }
@@ -1035,7 +1029,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "caseConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public CaseConstraint getCaseConstraint() {
         return this.caseConstraint;
     }
@@ -1052,7 +1046,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "dependencyConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<PrerequisiteConstraint> getDependencyConstraints() {
         return this.dependencyConstraints;
     }
@@ -1077,7 +1071,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "mustOccurConstraints", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<MustOccurConstraint> getMustOccurConstraints() {
         return this.mustOccurConstraints;
     }
@@ -1094,7 +1088,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "simpleConstraint", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public SimpleConstraint getSimpleConstraint() {
         return this.simpleConstraint;
     }
@@ -1105,6 +1099,15 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     @Override
     public void setSimpleConstraint(SimpleConstraint simpleConstraint) {
         this.simpleConstraint = simpleConstraint;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    public DataType getDataType() {
+        return this.simpleConstraint.getDataType();
     }
 
     /**
@@ -1127,16 +1130,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "dataType", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public DataType getDataType() {
-        return this.simpleConstraint.getDataType();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "maxLength")
+    @BeanTagAttribute
     public Integer getMaxLength() {
         return simpleConstraint.getMaxLength();
     }
@@ -1153,7 +1147,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "minLength")
+    @BeanTagAttribute
     public Integer getMinLength() {
         return simpleConstraint.getMinLength();
     }
@@ -1170,7 +1164,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "required")
+    @BeanTagAttribute
     public Boolean getRequired() {
         return this.simpleConstraint.getRequired();
     }
@@ -1187,7 +1181,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "exclusiveMin")
+    @BeanTagAttribute
     public String getExclusiveMin() {
         return simpleConstraint.getExclusiveMin();
     }
@@ -1204,7 +1198,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "inclusiveMax")
+    @BeanTagAttribute
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
@@ -1221,7 +1215,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "attributeQuery", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public AttributeQuery getAttributeQuery() {
         return attributeQuery;
     }
@@ -1238,7 +1232,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "uppercaseValue")
+    @BeanTagAttribute
     public boolean isUppercaseValue() {
         return uppercaseValue;
     }
@@ -1255,6 +1249,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isDisableNativeAutocomplete() {
         return disableNativeAutocomplete;
     }
@@ -1296,11 +1291,4 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         super.completeValidation(tracer.getCopy());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCustomValidatorClass(String customValidatorClass) {
-        this.customValidatorClass = customValidatorClass;
-    }
 }

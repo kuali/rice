@@ -712,5 +712,6 @@ public final class KRADConstants {
         public static final String KRAD_USE_CLONE = "rice.krad.copyable.useClone";
         public static final String KRAD_COPY_DELAY = "rice.krad.copyable.delay";
         public static final String KRAD_INCLUDE_LESS = "rice.krad.include.less";
+        public static final String SCHEMA_PACKAGES = "rice.krad.schema.packages";
     }
 }

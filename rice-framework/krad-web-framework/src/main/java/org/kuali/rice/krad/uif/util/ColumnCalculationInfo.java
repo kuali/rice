@@ -30,11 +30,11 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "columnCalculationInfo-bean", parent = "Uif-ColumnCalculationInfo"),
-        @BeanTag(name = "columnCalculationInfo-sum-bean", parent = "Uif-ColumnCalculationInfo-Sum"),
-        @BeanTag(name = "columnCalculationInfo-average-bean", parent = "Uif-ColumnCalculationInfo-Average"),
-        @BeanTag(name = "columnCalculationInfo-max-bean", parent = "Uif-ColumnCalculationInfo-Max"),
-        @BeanTag(name = "columnCalculationInfo-min-bean", parent = "Uif-ColumnCalculationInfo-Min")})
+@BeanTags({@BeanTag(name = "columnCalculation", parent = "Uif-ColumnCalculationInfo"),
+        @BeanTag(name = "columnCalculationSum", parent = "Uif-ColumnCalculationInfo-Sum"),
+        @BeanTag(name = "columnCalculationAverage", parent = "Uif-ColumnCalculationInfo-Average"),
+        @BeanTag(name = "columnCalculationMax", parent = "Uif-ColumnCalculationInfo-Max"),
+        @BeanTag(name = "columnCalculationMin", parent = "Uif-ColumnCalculationInfo-Min")})
 public class ColumnCalculationInfo extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 148856717025808296L;
     private Integer columnNumber;

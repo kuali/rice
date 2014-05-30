@@ -22,17 +22,13 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 
-
-
-
 /**
- * Element that presents an Icon
+ * Element that presents an Icon.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "icon-bean", parent = "Uif-Icon")})
+@BeanTags({@BeanTag(name = "icon", parent = "Uif-Icon")})
 public class Icon extends ContentElementBase {
-
     private static final long serialVersionUID = 6771810101056598912L;
 
     private String iconClass;
@@ -50,7 +46,7 @@ public class Icon extends ContentElementBase {
      *
      * @return label for action
      */
-    @BeanTagAttribute(name = "iconClass")
+    @BeanTagAttribute
     public String getIconClass() {
         return iconClass;
     }

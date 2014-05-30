@@ -19,6 +19,9 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataFieldTest {
     @Test
     /**
@@ -39,11 +42,10 @@ public class DataFieldTest {
      * Tests setting and retrieving default values
      */
     public void testSetDefaultValuesSucceeds() {
-
         // create mock objects for view, model, and component
-        Object[] defaultValues = new Object[2];
-        defaultValues[0] = new String("A");
-        defaultValues[1] = new String("B");
+        List<Object> defaultValues = new ArrayList<Object>();
+        defaultValues.add("A");
+        defaultValues.add("B");
 
         DataField dataField = new DataFieldBase();
         dataField.setDefaultValues(defaultValues);

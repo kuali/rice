@@ -62,7 +62,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inquiry-bean", parent = "Uif-Inquiry")
+@BeanTag(name = "inquiry", parent = "Uif-Inquiry")
 public class Inquiry extends WidgetBase {
     private static final long serialVersionUID = -2154388007867302901L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Inquiry.class);
@@ -224,8 +224,11 @@ public class Inquiry extends WidgetBase {
         else {
             // get parent object for inquiry metadata
             ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
+
             Object parentObject = ViewModelUtils.getParentObjectForMetadata(viewLifecycle.getView(), model, field);
-            viewLifecycle.getHelper().buildInquiryLink(parentObject, propertyName, this);
+            if (parentObject != null) {
+                viewLifecycle.getHelper().buildInquiryLink(parentObject, propertyName, this);
+            }
         }
     }
 
@@ -449,7 +452,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return inquiry base URL
      */
-    @BeanTagAttribute(name = "baseInquiryUrl")
+    @BeanTagAttribute
     public String getBaseInquiryUrl() {
         return this.baseInquiryUrl;
     }
@@ -474,7 +477,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return inquiry class name
      */
-    @BeanTagAttribute(name = "dataObjectClassName")
+    @BeanTagAttribute
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -500,7 +503,7 @@ public class Inquiry extends WidgetBase {
      * </p>
      * @return view name
      */
-    @BeanTagAttribute(name = "viewName")
+    @BeanTagAttribute
     public String getViewName() {
         return this.viewName;
     }
@@ -526,7 +529,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return mapping of calling view properties to inquiry data object properties
      */
-    @BeanTagAttribute(name = "inquiryParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getInquiryParameters() {
         return this.inquiryParameters;
     }
@@ -546,7 +549,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the inquiry link
      */
-    @BeanTagAttribute(name = "inquiryLink", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Link getInquiryLink() {
         return this.inquiryLink;
     }
@@ -565,7 +568,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return the directInquiryAction
      */
-    @BeanTagAttribute(name = "directInquiryAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Action getDirectInquiryAction() {
         return this.directInquiryAction;
     }
@@ -584,7 +587,7 @@ public class Inquiry extends WidgetBase {
      *
      * @return true if the direct inquiry should be rendered, false if not
      */
-    @BeanTagAttribute(name = "enableDirectInquiry")
+    @BeanTagAttribute
     public boolean isEnableDirectInquiry() {
         return enableDirectInquiry;
     }

@@ -50,7 +50,7 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADUtils;
 
 /**
- * Base implementation of <code>Component</code> which other component implementations should extend
+ * Base implementation of Component which other component implementations should extend.
  *
  * <p>
  * Provides base component properties such as id and template. Also provides default implementation
@@ -60,7 +60,7 @@ import org.kuali.rice.krad.util.KRADUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "componentBase-bean", parent = "Uif-ComponentBase")
+@BeanTag(name = "componentBase", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
     private static final long serialVersionUID = -4449335748129894350L;
 
@@ -578,7 +578,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "id")
+    @BeanTagAttribute
     @Override
     public String getId() {
         return this.id;
@@ -629,7 +629,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "template")
+    @BeanTagAttribute
     @Override
     public String getTemplate() {
         return this.template;
@@ -655,7 +655,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "templateName")
+    @BeanTagAttribute
     @Override
     public String getTemplateName() {
         return templateName;
@@ -673,7 +673,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "title")
+    @BeanTagAttribute
     @Override
     public String getTitle() {
         return this.title;
@@ -691,7 +691,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "hidden")
+    @BeanTagAttribute
     @Override
     public boolean isHidden() {
         return this.hidden;
@@ -709,7 +709,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "readOnly")
+    @BeanTagAttribute
     @Override
     public Boolean getReadOnly() {
         return this.readOnly;
@@ -727,7 +727,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "required")
+    @BeanTagAttribute
     @Override
     public Boolean getRequired() {
         return this.required;
@@ -745,7 +745,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "render")
+    @BeanTagAttribute
     @Override
     public boolean isRender() {
         return this.render;
@@ -763,7 +763,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "retrieveViaAjax")
+    @BeanTagAttribute
     @Override
     public boolean isRetrieveViaAjax() {
         return retrieveViaAjax;
@@ -781,7 +781,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "ColSpan")
+    @BeanTagAttribute
     @Override
     public int getColSpan() {
         return this.colSpan;
@@ -799,7 +799,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "rowSpan")
+    @BeanTagAttribute
     @Override
     public int getRowSpan() {
         return this.rowSpan;
@@ -817,6 +817,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @BeanTagAttribute
     @Override
     public List<String> getWrapperCssClasses() {
         return wrapperCssClasses;
@@ -863,6 +864,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @BeanTagAttribute
     @Override
     public String getWrapperStyle() {
         return wrapperStyle;
@@ -880,6 +882,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @BeanTagAttribute
     @Override
     public String getCellWidth() {
         return cellWidth;
@@ -897,7 +900,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "cssGridSizes", type=BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @Override
+    @BeanTagAttribute
     public CssGridSizes getCssGridSizes() {
         return cssGridSizes;
     }
@@ -905,6 +909,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCssGridSizes(CssGridSizes cssGridSizes) {
         this.cssGridSizes = cssGridSizes;
     }
@@ -912,8 +917,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "align")
     @Override
+    @BeanTagAttribute
     public String getAlign() {
         return this.align;
     }
@@ -930,8 +935,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "valign")
     @Override
+    @BeanTagAttribute
     public String getValign() {
         return this.valign;
     }
@@ -948,8 +953,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "width")
     @Override
+    @BeanTagAttribute
     public String getWidth() {
         return this.width;
     }
@@ -966,8 +971,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "style")
     @Override
+    @BeanTagAttribute
     public String getStyle() {
         return this.style;
     }
@@ -1017,8 +1022,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "cssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     @Override
+    @BeanTagAttribute
     public List<String> getCssClasses() {
         if (cssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             cssClasses = new ArrayList<String>();
@@ -1043,8 +1048,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "additionalCssClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
     @Override
+    @BeanTagAttribute
     public List<String> getAdditionalCssClasses() {
         if (additionalCssClasses == Collections.EMPTY_LIST && isMutable(true)) {
             additionalCssClasses = new ArrayList<String>();
@@ -1114,8 +1119,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "finalizeMethodToCall")
     @Override
+    @BeanTagAttribute
     public String getFinalizeMethodToCall() {
         return this.finalizeMethodToCall;
     }
@@ -1133,8 +1138,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "finalizeMethodAdditionalArguments", type = BeanTagAttribute.AttributeType.LISTBEAN)
     @Override
+    @BeanTagAttribute
     public List<Object> getFinalizeMethodAdditionalArguments() {
         return finalizeMethodAdditionalArguments;
     }
@@ -1152,8 +1157,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "finalizeMethodInvoker", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     @Override
+    @BeanTagAttribute
     public MethodInvokerConfig getFinalizeMethodInvoker() {
         return this.finalizeMethodInvoker;
     }
@@ -1171,8 +1176,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "selfRendered")
     @Override
+    @BeanTagAttribute
     public boolean isSelfRendered() {
         return this.selfRendered;
     }
@@ -1188,8 +1193,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "renderedHtmlOutput")
     @Override
+    @BeanTagAttribute
     public String getRenderedHtmlOutput() {
         return this.renderedHtmlOutput;
     }
@@ -1205,8 +1210,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "disableSessionPersistence")
     @Override
+    @BeanTagAttribute
     public boolean isDisableSessionPersistence() {
         return disableSessionPersistence;
     }
@@ -1223,8 +1228,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "forceSessionPersistence")
     @Override
+    @BeanTagAttribute
     public boolean isForceSessionPersistence() {
         return forceSessionPersistence;
     }
@@ -1241,8 +1246,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "componentSecurity", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     @Override
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public ComponentSecurity getComponentSecurity() {
         return componentSecurity;
     }
@@ -1268,6 +1273,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isEditAuthz()
      */
+    @BeanTagAttribute
     public Boolean isEditAuthz() {
         initializeComponentSecurity();
 
@@ -1289,6 +1295,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see org.kuali.rice.krad.uif.component.ComponentSecurity#isViewAuthz()
      */
+    @BeanTagAttribute
     public Boolean isViewAuthz() {
         initializeComponentSecurity();
 
@@ -1310,8 +1317,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "componentModifiers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     @Override
+    @BeanTagAttribute
     public List<ComponentModifier> getComponentModifiers() {
         return this.componentModifiers;
     }
@@ -1329,8 +1336,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "context", type = BeanTagAttribute.AttributeType.MAPBEAN)
     @Override
+    @BeanTagAttribute
     public Map<String, Object> getContext() {
         if (context == Collections.EMPTY_MAP && isMutable(true)) {
             context = new HashMap<String, Object>();
@@ -1408,8 +1415,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "propertyReplacers", type = BeanTagAttribute.AttributeType.LISTBEAN)
     @Override
+    @BeanTagAttribute
     public List<PropertyReplacer> getPropertyReplacers() {
         return this.propertyReplacers;
     }
@@ -1425,9 +1432,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.springframework.core.Ordered#getOrder()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "order")
+    @Override
+    @BeanTagAttribute
     public int getOrder() {
         return this.order;
     }
@@ -1445,8 +1453,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "toolTip", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     @Override
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Tooltip getToolTip() {
         return toolTip;
     }
@@ -1498,8 +1506,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onLoadScript")
     @Override
+    @BeanTagAttribute
     public String getOnLoadScript() {
         return onLoadScript;
     }
@@ -1515,8 +1523,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onDocumentReadyScript")
     @Override
+    @BeanTagAttribute
     public String getOnDocumentReadyScript() {
         return this.onDocumentReadyScript;
     }
@@ -1530,9 +1538,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnUnloadScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onUnloadScript")
+    @Override
+    @BeanTagAttribute
     public String getOnUnloadScript() {
         return onUnloadScript;
     }
@@ -1540,15 +1549,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnUnloadScript(java.lang.String)
      */
+    @Override
     public void setOnUnloadScript(String onUnloadScript) {
         checkMutable(true);
         this.onUnloadScript = onUnloadScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnCloseScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onCloseScript")
+    @Override
+    @BeanTagAttribute
     public String getOnCloseScript() {
         return onCloseScript;
     }
@@ -1556,15 +1567,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnCloseScript(java.lang.String)
      */
+    @Override
     public void setOnCloseScript(String onCloseScript) {
         checkMutable(true);
         this.onCloseScript = onCloseScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnBlurScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onBlurScript")
+    @Override
+    @BeanTagAttribute
     public String getOnBlurScript() {
         return onBlurScript;
     }
@@ -1572,15 +1585,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnBlurScript(java.lang.String)
      */
+    @Override
     public void setOnBlurScript(String onBlurScript) {
         checkMutable(true);
         this.onBlurScript = onBlurScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnChangeScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onChangeScript")
+    @Override
+    @BeanTagAttribute
     public String getOnChangeScript() {
         return onChangeScript;
     }
@@ -1588,15 +1603,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnChangeScript(java.lang.String)
      */
+    @Override
     public void setOnChangeScript(String onChangeScript) {
         checkMutable(true);
         this.onChangeScript = onChangeScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnClickScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onClickScript")
+    @Override
+    @BeanTagAttribute
     public String getOnClickScript() {
         return onClickScript;
     }
@@ -1604,15 +1621,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnClickScript(java.lang.String)
      */
+    @Override
     public void setOnClickScript(String onClickScript) {
         checkMutable(true);
         this.onClickScript = onClickScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnDblClickScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onDblClickScript")
+    @Override
+    @BeanTagAttribute
     public String getOnDblClickScript() {
         return onDblClickScript;
     }
@@ -1620,15 +1639,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnDblClickScript(java.lang.String)
      */
+    @Override
     public void setOnDblClickScript(String onDblClickScript) {
         checkMutable(true);
         this.onDblClickScript = onDblClickScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnFocusScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onFocusScript")
+    @Override
+    @BeanTagAttribute
     public String getOnFocusScript() {
         return onFocusScript;
     }
@@ -1636,15 +1657,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnFocusScript(java.lang.String)
      */
+    @Override
     public void setOnFocusScript(String onFocusScript) {
         checkMutable(true);
         this.onFocusScript = onFocusScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnSubmitScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onSubmitScript")
+    @Override
+    @BeanTagAttribute
     public String getOnSubmitScript() {
         return onSubmitScript;
     }
@@ -1652,15 +1675,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnSubmitScript(java.lang.String)
      */
+    @Override
     public void setOnSubmitScript(String onSubmitScript) {
         checkMutable(true);
         this.onSubmitScript = onSubmitScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnInputScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onInputScript")
+    @Override
+    @BeanTagAttribute
     public String getOnInputScript() {
         return onInputScript;
     }
@@ -1668,15 +1693,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnInputScript(java.lang.String)
      */
+    @Override
     public void setOnInputScript(String onInputScript) {
         checkMutable(true);
         this.onInputScript = onInputScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyPressScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onKeyPressScript")
+    @Override
+    @BeanTagAttribute
     public String getOnKeyPressScript() {
         return onKeyPressScript;
     }
@@ -1684,15 +1711,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnKeyPressScript(java.lang.String)
      */
+    @Override
     public void setOnKeyPressScript(String onKeyPressScript) {
         checkMutable(true);
         this.onKeyPressScript = onKeyPressScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyUpScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onKeyUpScript")
+    @Override
+    @BeanTagAttribute
     public String getOnKeyUpScript() {
         return onKeyUpScript;
     }
@@ -1700,15 +1729,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnKeyUpScript(java.lang.String)
      */
+    @Override
     public void setOnKeyUpScript(String onKeyUpScript) {
         checkMutable(true);
         this.onKeyUpScript = onKeyUpScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnKeyDownScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onKeyDownScript")
+    @Override
+    @BeanTagAttribute
     public String getOnKeyDownScript() {
         return onKeyDownScript;
     }
@@ -1716,15 +1747,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnKeyDownScript(java.lang.String)
      */
+    @Override
     public void setOnKeyDownScript(String onKeyDownScript) {
         checkMutable(true);
         this.onKeyDownScript = onKeyDownScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOverScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onMouseOverScript")
+    @Override
+    @BeanTagAttribute
     public String getOnMouseOverScript() {
         return onMouseOverScript;
     }
@@ -1732,15 +1765,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnMouseOverScript(java.lang.String)
      */
+    @Override
     public void setOnMouseOverScript(String onMouseOverScript) {
         checkMutable(true);
         this.onMouseOverScript = onMouseOverScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseOutScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onMouseOutScript")
+    @Override
+    @BeanTagAttribute
     public String getOnMouseOutScript() {
         return onMouseOutScript;
     }
@@ -1748,15 +1783,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnMouseOutScript(java.lang.String)
      */
+    @Override
     public void setOnMouseOutScript(String onMouseOutScript) {
         checkMutable(true);
         this.onMouseOutScript = onMouseOutScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseUpScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onMouseUpScript")
+    @Override
+    @BeanTagAttribute
     public String getOnMouseUpScript() {
         return onMouseUpScript;
     }
@@ -1764,15 +1801,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnMouseUpScript(java.lang.String)
      */
+    @Override
     public void setOnMouseUpScript(String onMouseUpScript) {
         checkMutable(true);
         this.onMouseUpScript = onMouseUpScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseDownScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onMouseDownScript")
+    @Override
+    @BeanTagAttribute
     public String getOnMouseDownScript() {
         return onMouseDownScript;
     }
@@ -1780,15 +1819,17 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnMouseDownScript(java.lang.String)
      */
+    @Override
     public void setOnMouseDownScript(String onMouseDownScript) {
         checkMutable(true);
         this.onMouseDownScript = onMouseDownScript;
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ScriptEventSupport#getOnMouseMoveScript()
+     * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "onMouseMoveScript")
+    @Override
+    @BeanTagAttribute
     public String getOnMouseMoveScript() {
         return onMouseMoveScript;
     }
@@ -1796,6 +1837,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * @see ScriptEventSupport#setOnMouseMoveScript(java.lang.String)
      */
+    @Override
     public void setOnMouseMoveScript(String onMouseMoveScript) {
         checkMutable(true);
         this.onMouseMoveScript = onMouseMoveScript;
@@ -1804,8 +1846,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "templateOptions", type = BeanTagAttribute.AttributeType.MAPVALUE)
     @Override
+    @BeanTagAttribute
     public Map<String, String> getTemplateOptions() {
         if (templateOptions == Collections.EMPTY_MAP && isMutable(true)) {
             templateOptions = new HashMap<String, String>();
@@ -1828,13 +1870,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Builds a string from the underlying <code>Map</code> of template options that will export
-     * that options as a JavaScript Map for use in js and jQuery plugins
-     *
-     * @return String of widget options formatted as JS Map.
+     * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "templateOptionsJSString")
+    @BeanTagAttribute
     public String getTemplateOptionsJSString() {
         if (templateOptionsJSString != null) {
             return templateOptionsJSString;
@@ -1864,6 +1903,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setTemplateOptionsJSString(String templateOptionsJSString) {
         checkMutable(true);
@@ -1892,7 +1934,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return progressiveRender expression
      */
-    @BeanTagAttribute(name = "progressiveRender")
+    @BeanTagAttribute
     public String getProgressiveRender() {
         return this.progressiveRender;
     }
@@ -1925,7 +1967,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the conditionalRefresh
      */
-    @BeanTagAttribute(name = "conditionalRefresh")
+    @BeanTagAttribute
     public String getConditionalRefresh() {
         return this.conditionalRefresh;
     }
@@ -1991,7 +2033,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the progressiveRenderViaAJAX
      */
-    @BeanTagAttribute(name = "progressiveRenderViaAJAX")
+    @BeanTagAttribute
     public boolean isProgressiveRenderViaAJAX() {
         return this.progressiveRenderViaAJAX;
     }
@@ -2016,7 +2058,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return the progressiveRenderAndRefresh
      */
-    @BeanTagAttribute(name = "progressiveRenderAndRefresh")
+    @BeanTagAttribute
     public boolean isProgressiveRenderAndRefresh() {
         return this.progressiveRenderAndRefresh;
     }
@@ -2034,8 +2076,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "refreshWhenChangedPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
     @Override
+    @BeanTagAttribute
     public List<String> getRefreshWhenChangedPropertyNames() {
         return this.refreshWhenChangedPropertyNames;
     }
@@ -2131,7 +2173,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return refreshTimer
      */
-    @BeanTagAttribute(name = "refreshTimer")
+    @BeanTagAttribute
     public int getRefreshTimer() {
         return refreshTimer;
     }
@@ -2149,8 +2191,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "resetDataOnRefresh")
     @Override
+    @BeanTagAttribute
     public boolean isResetDataOnRefresh() {
         return resetDataOnRefresh;
     }
@@ -2183,7 +2225,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      *
      * @return valid controller method name
      */
-    @BeanTagAttribute(name = "methodToCallOnRefresh")
+    @BeanTagAttribute
     public String getMethodToCallOnRefresh() {
         return methodToCallOnRefresh;
     }
@@ -2199,7 +2241,18 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * @param skipInTabOrder flag
+     * Flag indicating that this component and its nested components must be skipped when keyboard
+     * tabbing.
+     *
+     * @return the skipInTabOrder flag
+     */
+    @BeanTagAttribute
+    public boolean isSkipInTabOrder() {
+        return skipInTabOrder;
+    }
+
+    /**
+     * @see ComponentBase#isSkipInTabOrder()
      */
     public void setSkipInTabOrder(boolean skipInTabOrder) {
         checkMutable(true);
@@ -2207,21 +2260,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * Flag indicating that this component and its nested components must be skipped when keyboard
-     * tabbing.
-     *
-     * @return the skipInTabOrder flag
-     */
-    @BeanTagAttribute(name = "skipInTabOrder")
-    public boolean isSkipInTabOrder() {
-        return skipInTabOrder;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "dataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getDataAttributes() {
         if (dataAttributes == Collections.EMPTY_MAP) {
             dataAttributes = new HashMap<String, String>();
@@ -2247,7 +2289,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "scriptDataAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getScriptDataAttributes() {
         if (scriptDataAttributes == Collections.EMPTY_MAP) {
             scriptDataAttributes = new HashMap<String, String>();
@@ -2340,6 +2382,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
+    @Override
+    @BeanTagAttribute
     public String getRole() {
         return role;
     }
@@ -2355,7 +2399,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "ariaAttributes", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getAriaAttributes() {
         if (ariaAttributes == Collections.EMPTY_MAP) {
             ariaAttributes = new LifecycleAwareMap<String, String>(this);
@@ -2415,8 +2459,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "preRenderContent")
-    @Override
+    @BeanTagAttribute(name = "preContent", type = BeanTagAttribute.AttributeType.ANY)
     public String getPreRenderContent() {
         return preRenderContent;
     }
@@ -2433,8 +2476,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     /**
      * {@inheritDoc}
      */
-    @BeanTagAttribute(name = "postRenderContent")
     @Override
+    @BeanTagAttribute(name = "postContent", type = BeanTagAttribute.AttributeType.ANY)
     public String getPostRenderContent() {
         return postRenderContent;
     }

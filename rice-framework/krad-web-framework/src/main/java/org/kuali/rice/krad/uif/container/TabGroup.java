@@ -33,9 +33,9 @@ import org.kuali.rice.krad.uif.widget.Tabs;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see Group
  */
-@BeanTags(
-        {@BeanTag(name = "tabGroup-bean", parent = "Uif-TabGroup"), @BeanTag(name = "tabSection-bean", parent = "Uif-TabSection"),
-                @BeanTag(name = "tabSubSection-bean", parent = "Uif-TabSubSection")})
+@BeanTags({@BeanTag(name = "tabGroup", parent = "Uif-TabGroup"),
+        @BeanTag(name = "tabSection", parent = "Uif-TabSection"),
+        @BeanTag(name = "tabSubSection", parent = "Uif-TabSubSection")})
 public class TabGroup extends GroupBase {
     private static final long serialVersionUID = 3L;
 
@@ -73,7 +73,7 @@ public class TabGroup extends GroupBase {
      *
      * @return the tabsWidget
      */
-    @BeanTagAttribute(name = "tabsWidget", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Tabs getTabsWidget() {
         return this.tabsWidget;
     }

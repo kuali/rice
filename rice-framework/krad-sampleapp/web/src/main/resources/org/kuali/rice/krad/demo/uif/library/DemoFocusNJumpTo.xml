@@ -54,7 +54,7 @@
         <bean id="input6" parent="Uif-InputField" p:label="Field 6"
               p:propertyName="inputField6"/>
 
-        <bean id="fieldGroup7-8" parent="GenericHorizontalFieldGroup"
+        <bean id="fieldGroup7-8" parent="Uif-HorizontalFieldGroup"
               p:group.InstructionalText="Hover on the action button for tool tip">
           <property name="items">
             <list>
@@ -66,7 +66,7 @@
           </property>
         </bean>
 
-        <bean parent="GenericHorizontalFieldGroup">
+        <bean parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
               <bean parent="Uif-PrimaryActionButton" p:methodToCall="refreshProgGroup" p:actionLabel="Refresh Group"

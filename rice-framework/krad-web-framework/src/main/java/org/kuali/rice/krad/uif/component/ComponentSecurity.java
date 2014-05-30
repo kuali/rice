@@ -37,7 +37,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "componentSecurity-bean")
+@BeanTag(name = "componentSecurity")
 public class ComponentSecurity extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 726347449984853891L;
 

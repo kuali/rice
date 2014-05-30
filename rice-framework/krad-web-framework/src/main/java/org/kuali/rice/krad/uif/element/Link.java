@@ -37,7 +37,7 @@ import org.kuali.rice.krad.uif.widget.LightBox;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "link-bean", parent="Uif-Link"), @BeanTag(name = "createNewLink-bean", parent = "Uif-CreateNewLink")})
+@BeanTag(name = "link", parent="Uif-Link")
 public class Link extends ContentElementBase {
     private static final long serialVersionUID = 8989868231938336068L;
 
@@ -116,7 +116,7 @@ public class Link extends ContentElementBase {
      *
      * @return The link label
      */
-    @BeanTagAttribute(name="linkText")
+    @BeanTagAttribute
     public String getLinkText() {
         return linkText;
     }
@@ -135,7 +135,7 @@ public class Link extends ContentElementBase {
      *
      * @return The target
      */
-    @BeanTagAttribute(name="target")
+    @BeanTagAttribute
     public String getTarget() {
         return target;
     }
@@ -154,7 +154,7 @@ public class Link extends ContentElementBase {
      *
      * @return The href text
      */
-    @BeanTagAttribute(name="href")
+    @BeanTagAttribute
     public String getHref() {
         return href;
     }
@@ -195,7 +195,7 @@ public class Link extends ContentElementBase {
      *
      * @return The <code>LightBox</code>
      */
-    @BeanTagAttribute(name="lightBox",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public LightBox getLightBox() {
         return lightBox;
     }
@@ -218,7 +218,7 @@ public class Link extends ContentElementBase {
      *
      * @return label for action
      */
-    @BeanTagAttribute(name = "iconClass")
+    @BeanTagAttribute
     public String getIconClass() {
         return iconClass;
     }
@@ -239,7 +239,7 @@ public class Link extends ContentElementBase {
      *
      * @return Action Icon Placement
      */
-    @BeanTagAttribute(name = "linkIconPlacement")
+    @BeanTagAttribute
     public String getLinkIconPlacement() {
         return linkIconPlacement;
     }

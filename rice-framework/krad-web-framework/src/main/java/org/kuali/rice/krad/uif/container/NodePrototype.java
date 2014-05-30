@@ -15,19 +15,18 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import com.google.common.collect.Maps;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
-import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.element.Message;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-@BeanTag(name = "nodePrototype-bean")
+/**
+ * Configures nodes for a {@link org.kuali.rice.krad.uif.container.TreeGroup}
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+@BeanTag(name = "nodePrototype")
 public class NodePrototype extends UifDictionaryBeanBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +34,15 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
     private Group dataGroupPrototype;
 
     public NodePrototype() {
+        super();
+    }
 
+    /**
+     * @return the labelPrototype
+     */
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+    public Message getLabelPrototype() {
+        return this.labelPrototype;
     }
 
     /**
@@ -46,11 +53,11 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
     }
 
     /**
-     * @return the labelPrototype
+     * @return the dataGroupPrototype
      */
-    @BeanTagAttribute(name="labelPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Message getLabelPrototype() {
-        return this.labelPrototype;
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
+    public Group getDataGroupPrototype() {
+        return this.dataGroupPrototype;
     }
 
     /**
@@ -60,11 +67,4 @@ public class NodePrototype extends UifDictionaryBeanBase implements Serializable
         this.dataGroupPrototype = dataGroupPrototype;
     }
 
-    /**
-     * @return the dataGroupPrototype
-     */
-    @BeanTagAttribute(name="dataGroupPrototype",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
-    public Group getDataGroupPrototype() {
-        return this.dataGroupPrototype;
-    }
 }

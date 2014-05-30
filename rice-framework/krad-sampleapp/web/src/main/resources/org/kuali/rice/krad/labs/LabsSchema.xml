@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright 2006-2012 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
+              xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+              xmlns:kc="http://www.kuali.org/kc/schema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                                  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                                  http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
+
+  <mockView id="LabsSchema" headerText="Labs Schema" singlePageView="true">
+    <help externalHelpUrl="http://www.kuali.org/"/>
+    <page headerText="Page Header">
+      <items>
+        <verticalSection headerText="Section Header">
+          <templateOptions merge="true">
+            <entry key="foo" value="soo"/>
+            <entry key="to" value="no"/>
+          </templateOptions>
+        </verticalSection>
+        <inc compId="LabsSchema-Section2"/>
+        <content>
+          <div>foo is your time!</div>
+        </content>
+        <inc compId="LabsSchema-Content"/>
+        <inc compId="LabsSchema-Section3"/>
+      </items>
+
+      <footer>
+        <items>
+          <button parent="Uif-SaveAction"/>
+        </items>
+      </footer>
+    </page>
+    <property name="header.rightGroup">
+      <horizontalGroup style="background-color: lightBlue; padding: 5px;">
+        <items>
+          <message messageText="RightGroup Content"/>
+        </items>
+      </horizontalGroup>
+    </property>
+  </mockView>
+
+  <verticalSection id="LabsSchema-Section2"  headerText="Section Header 2">
+    <preContent>
+      <div>Pre Wrapper</div>
+    </preContent>
+    <postContent>
+      <div>Post Wrapper</div>
+    </postContent>
+    <items>
+      <input propertyName="field1" label="Field 1"/>
+      <input propertyName="field2" label="Field 2" conditionalRefresh="@{#fp.field1 eq 'refresh'}">
+        <mediumTextAreaControl/>
+      </input>
+      <input propertyName="field3" label="Field 3">
+        <control>
+          <inc compId="LabsSchema-Text"/>
+        </control>
+      </input>
+      <data propertyName="field4" label="Field 4"/>
+      <data propertyName="field5" label="Field 5"/>
+      <input propertyName="field6" label="Field 6">
+        <checkboxControl/>
+      </input>
+      <input propertyName="field7" label="Field 7">
+        <verticalCheckboxesControl>
+          <options>
+            <keyValuePair key="Opt 1" value="Opt 1"/>
+            <keyValuePair key="Opt 2" value="Opt 2"/>
+            <keyValuePair key="Opt 3" value="Opt 3"/>
+            <keyValuePair key="Opt 4" value="Opt 4"/>
+          </options>
+        </verticalCheckboxesControl>
+      </input>
+      <input propertyName="field8" label="Field 8">
+        <dateControl/>
+      </input>
+      <input propertyName="field9" label="Field 9">
+        <verticalCheckboxesControl/>
+        <optionsFinder>
+          <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+        </optionsFinder>
+      </input>
+    </items>
+    <footer>
+      <items>
+        <secondaryButton actionLabel="calculate"/>
+      </items>
+    </footer>
+  </verticalSection>
+
+  <content id="LabsSchema-Content">
+    <div>Another foo!</div>
+  </content>
+
+  <tableSection id="LabsSchema-Section3"  headerText="Section Header 3" propertyName="collection1">
+    <items>
+      <input propertyName="field1" label="Field 1"/>
+      <input propertyName="field2" label="Field 2"/>
+      <input propertyName="field3" label="Field 3"/>
+      <input propertyName="field4" label="Field 4"/>
+    </items>
+    <!--<subCollections>-->
+    <!--<ref compId="LabsSchema-SubCollection"/>-->
+    <!--</subCollections>-->
+  </tableSection>
+
+  <stackedSubCollection-withinSection id="LabsSchema-SubCollection" headerText="Sub-collection"
+                                      propertyName="subcollection">
+    <items>
+      <input propertyName="field1" label="Sub 1"/>
+      <input propertyName="field2" label="Sub 2"/>
+      <input propertyName="field3" label="Sub 3"/>
+      <input propertyName="field4" label="Sub 4"/>
+      <input propertyName="field5" label="Sub 5"/>
+    </items>
+  </stackedSubCollection-withinSection>
+
+  <textControl id="LabsSchema-Text" size="23"/>
+
+</spring:beans>

@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "workflowPropertyGroup-bean")
+@BeanTag(name = "workflowPropertyGroup")
 public class WorkflowPropertyGroup implements Serializable {
     private static final long serialVersionUID = 1L;
 

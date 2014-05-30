@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
@@ -27,6 +29,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager
  */
+@BeanTag(name = "pager", parent = "Uif-Pager")
 public class Pager extends WidgetBase {
     private String linkScript;
     private int maxNumberedLinksShown;
@@ -98,6 +101,7 @@ public class Pager extends WidgetBase {
      *
      * @return the script to execute when a link is clicked
      */
+    @BeanTagAttribute
     public String getLinkScript() {
         return linkScript;
     }
@@ -118,6 +122,7 @@ public class Pager extends WidgetBase {
      *
      * @return the maximum number of NUMBERED links to show
      */
+    @BeanTagAttribute
     public int getMaxNumberedLinksShown() {
         return maxNumberedLinksShown;
     }
@@ -173,6 +178,7 @@ public class Pager extends WidgetBase {
      *
      * @return true if rendering "First" and "Last" links
      */
+    @BeanTagAttribute
     public boolean isRenderFirstLast() {
         return renderFirstLast;
     }
@@ -191,6 +197,7 @@ public class Pager extends WidgetBase {
      *
      * @return true if rendering "First" and "Last" links
      */
+    @BeanTagAttribute
     public boolean isRenderPrevNext() {
         return renderPrevNext;
     }

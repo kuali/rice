@@ -37,7 +37,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "cssGridLabelColumnLayout-bean", parent = "Uif-CssGridLabelColumnLayout")
+@BeanTag(name = "cssGridLabelColumnLayout", parent = "Uif-CssGridLabelColumnLayout")
 public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
     private static final long serialVersionUID = 3100360397450755904L;
 
@@ -224,7 +224,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      *
      * @return the css class to use on label column div "cells"
      */
-    @BeanTagAttribute(name = "labelColumnCssClass")
+    @BeanTagAttribute
     public String getLabelColumnCssClass() {
         return labelColumnCssClass;
     }
@@ -248,7 +248,7 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      *
      * @return the total number of label columns
      */
-    @BeanTagAttribute(name = "numberOfLabelColumns")
+    @BeanTagAttribute
     public int getNumberOfLabelColumns() {
         return numberOfLabelColumns;
     }

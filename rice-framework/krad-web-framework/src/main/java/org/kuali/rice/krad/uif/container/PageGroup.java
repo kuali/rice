@@ -29,34 +29,6 @@ import org.kuali.rice.krad.uif.element.PageBreadcrumbOptions;
 public interface PageGroup extends Group {
 
     /**
-     * Gets the breadcrumb items indicating a homeward path.
-     * 
-     * @return breadcrumb items
-     */
-    List<BreadcrumbItem> getHomewardPathBreadcrumbs();
-
-    /**
-     * Gets the breadcrumb items leading to the current view.
-     * 
-     * @return breadcrumb items
-     */
-    List<BreadcrumbItem> getPreViewBreadcrumbs();
-
-    /**
-     * Gets the breadcrumb items leading to the current page.
-     * 
-     * @return breadcrumb items
-     */
-    List<BreadcrumbItem> getPrePageBreadcrumbs();
-
-    /**
-     * Gets the breadcrumb items overrides.
-     * 
-     * @return breadcrumb items
-     */
-    List<BreadcrumbItem> getBreadcrumbOverrides();
-
-    /**
      * When this is true, the first field of the kualiForm will be focused by
      * default, unless the parameter focusId is set on the form (by an
      * actionField), then that field will be focused instead. When this setting
@@ -93,6 +65,34 @@ public interface PageGroup extends Group {
      * @param breadcrumbOptions
      */
     void setBreadcrumbOptions(PageBreadcrumbOptions breadcrumbOptions);
+
+    /**
+     * Gets the breadcrumb items indicating a homeward path.
+     *
+     * @return breadcrumb items
+     */
+    List<BreadcrumbItem> getHomewardPathBreadcrumbs();
+
+    /**
+     * Gets the breadcrumb items leading to the current view.
+     *
+     * @return breadcrumb items
+     */
+    List<BreadcrumbItem> getPreViewBreadcrumbs();
+
+    /**
+     * Gets the breadcrumb items leading to the current page.
+     *
+     * @return breadcrumb items
+     */
+    List<BreadcrumbItem> getPrePageBreadcrumbs();
+
+    /**
+     * Gets the breadcrumb items overrides.
+     *
+     * @return breadcrumb items
+     */
+    List<BreadcrumbItem> getBreadcrumbOverrides();
 
     /**
      * The breadcrumbItem for this page.  This is the item that (generally) appears last in the breadcrumb list.

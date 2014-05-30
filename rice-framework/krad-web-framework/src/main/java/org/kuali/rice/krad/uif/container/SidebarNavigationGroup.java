@@ -25,7 +25,8 @@ import org.kuali.rice.krad.uif.element.ToggleMenu;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
- * A navigation group which renders a menu with items, that is shown at the side of the page with collapse functionality
+ * A navigation group which renders a menu with items, that is shown at the side of the page with collapse.
+ * functionality
  *
  * <p>Items of this menu should only be of {@link org.kuali.rice.krad.uif.element.Header}, {@link Action}, and
  * {@link ToggleMenu} types.  Actions and ToggleMenus must have icons to render correctly when using the collapse
@@ -33,11 +34,11 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "sidebarNavigationGroup-bean", parent = "Uif-SidebarNavigationGroup"),
-        @BeanTag(name = "menuNavigationGroup-bean", parent = "Uif-MenuNavigationGroup")})
+@BeanTags({@BeanTag(name = "sidebarNavigation", parent = "Uif-SidebarNavigationGroup"),
+        @BeanTag(name = "menuNavigation", parent = "Uif-MenuNavigationGroup")})
 public class SidebarNavigationGroup extends GroupBase {
+    private static final long serialVersionUID = -8388015161780120970L;
 
-    private static final long serialVersionUID = 5914880937439989439L;
     private boolean renderCollapse;
     private String openedToggleIconClass;
     private String closedToggleIconClass;
@@ -55,19 +56,18 @@ public class SidebarNavigationGroup extends GroupBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        for (Component item: this.getItems()){
-            if (item instanceof ToggleMenu){
+        for (Component item : this.getItems()) {
+            if (item instanceof ToggleMenu) {
                 ((ToggleMenu) item).setRenderedInList(true);
                 ((ToggleMenu) item).setToggleCaretClass(ARROW_CSS + " " + closedToggleIconClass);
 
-                if (StringUtils.isBlank(((ToggleMenu) item).getIconClass())){
+                if (StringUtils.isBlank(((ToggleMenu) item).getIconClass())) {
                     ((ToggleMenu) item).setIconClass(defaultItemIconClass);
                 }
-            }
-            else if (item instanceof Action) {
+            } else if (item instanceof Action) {
                 ((Action) item).setRenderInnerTextSpan(true);
 
-                if (StringUtils.isBlank(((Action) item).getIconClass())){
+                if (StringUtils.isBlank(((Action) item).getIconClass())) {
                     ((Action) item).setIconClass(defaultItemIconClass);
                 }
             }
@@ -79,7 +79,7 @@ public class SidebarNavigationGroup extends GroupBase {
      *
      * @return true if the collapse icon should be rendered, false otherwise
      */
-    @BeanTagAttribute(name = "renderCollapse")
+    @BeanTagAttribute
     public boolean isRenderCollapse() {
         return renderCollapse;
     }
@@ -97,7 +97,7 @@ public class SidebarNavigationGroup extends GroupBase {
      *
      * @return the opened ToggleMenu icon
      */
-    @BeanTagAttribute(name = "openedToggleIconClass")
+    @BeanTagAttribute
     public String getOpenedToggleIconClass() {
         return openedToggleIconClass;
     }
@@ -115,7 +115,7 @@ public class SidebarNavigationGroup extends GroupBase {
      *
      * @return the closed ToggleMenu icon
      */
-    @BeanTagAttribute(name = "closedToggleIconClass")
+    @BeanTagAttribute
     public String getClosedToggleIconClass() {
         return closedToggleIconClass;
     }
@@ -133,7 +133,7 @@ public class SidebarNavigationGroup extends GroupBase {
      *
      * @return the default icon class
      */
-    @BeanTagAttribute(name = "defaultItemIconClass")
+    @BeanTagAttribute
     public String getDefaultItemIconClass() {
         return defaultItemIconClass;
     }

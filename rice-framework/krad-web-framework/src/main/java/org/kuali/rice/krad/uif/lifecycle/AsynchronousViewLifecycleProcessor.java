@@ -91,8 +91,12 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
      */
     public static int getMinThreads() {
         if (minThreads == null) {
-            String propStr = ConfigContext.getCurrentContextConfig().getProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_MINTHREADS);
+            String propStr = null;
+            if (ConfigContext.getCurrentContextConfig() != null) {
+                propStr = ConfigContext.getCurrentContextConfig().getProperty(
+                        KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_MINTHREADS);
+            }
+
             minThreads = propStr == null ? 4 : Integer.parseInt(propStr);
         }
 
@@ -111,8 +115,12 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
      */
     public static int getMaxThreads() {
         if (maxThreads == null) {
-            String propStr = ConfigContext.getCurrentContextConfig().getProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_MAXTHREADS);
+            String propStr = null;
+            if (ConfigContext.getCurrentContextConfig() != null) {
+                propStr = ConfigContext.getCurrentContextConfig().getProperty(
+                        KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_MAXTHREADS);
+            }
+
             maxThreads = propStr == null ? 48 : Integer.parseInt(propStr);
         }
 
@@ -131,8 +139,12 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
      */
     public static long getTimeout() {
         if (timeout == null) {
-            String propStr = ConfigContext.getCurrentContextConfig().getProperty(
-                    KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TIMEOUT);
+            String propStr = null;
+            if (ConfigContext.getCurrentContextConfig() != null) {
+                propStr = ConfigContext.getCurrentContextConfig().getProperty(
+                        KRADConstants.ConfigParameters.KRAD_VIEW_LIFECYCLE_TIMEOUT);
+            }
+
             timeout = propStr == null ? 30000 : Long.parseLong(propStr);
         }
 

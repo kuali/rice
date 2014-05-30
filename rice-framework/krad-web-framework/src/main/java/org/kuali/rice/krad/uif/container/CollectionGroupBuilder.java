@@ -188,11 +188,7 @@ public class CollectionGroupBuilder implements Serializable {
             Object currentLine = indexedElement.element;
 
             String bindingPathPrefix =
-                    collectionGroup.getBindingInfo().getBindingName() + "[" + indexedElement.index + "]";
-
-            if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
-            }
+                    collectionGroup.getBindingInfo().getBindingPrefixForNested() + "[" + indexedElement.index + "]";
 
             List<? extends Component> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
                     collectionGroup, currentLine, indexedElement.index);

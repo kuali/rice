@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -26,6 +28,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "messageView", parent="Uif-MessageView")
 public class MessageView extends FormView {
     private static final long serialVersionUID = 5578210247236389466L;
 
@@ -59,6 +62,7 @@ public class MessageView extends FormView {
      *
      * @return Message component instance
      */
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Message getMessage() {
         return message;
     }
@@ -73,9 +77,21 @@ public class MessageView extends FormView {
     }
 
     /**
-     * Helper method for setting the message text
+     * Message text to display in the message view.
      *
-     * @param messageText text to use for the message
+     * @return message text as string
+     */
+    @BeanTagAttribute
+    public String getMessageText() {
+        if (this.message != null) {
+            return this.message.getMessageText();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see MessageView#getMessageText()
      */
     public void setMessageText(String messageText) {
         if (this.message == null) {

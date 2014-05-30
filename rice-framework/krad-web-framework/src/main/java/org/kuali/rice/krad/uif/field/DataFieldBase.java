@@ -59,10 +59,10 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dataField-bean", parent = "Uif-DataField"),
-        @BeanTag(name = "dataField-labelTop-bean", parent = "Uif-DataField-LabelTop"),
-        @BeanTag(name = "dataField-labelRight-bean", parent = "Uif-DataField-LabelRight"),
-        @BeanTag(name = "dataField-withoutLabel-bean", parent = "Uif-DataField-withoutLabel")})
+@BeanTags({@BeanTag(name = "data", parent = "Uif-DataField"),
+        @BeanTag(name = "dataLabelTop", parent = "Uif-DataField-LabelTop"),
+        @BeanTag(name = "dataLabelRight", parent = "Uif-DataField-LabelRight"),
+        @BeanTag(name = "dataNoLabel", parent = "Uif-DataField-withoutLabel")})
 public class DataFieldBase extends FieldBase implements DataField {
     private static final long serialVersionUID = -4129678891948564724L;
 
@@ -76,7 +76,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     // value props
     private Object defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
-    private Object[] defaultValues;
+    private List<Object> defaultValues;
     private String forcedValue;
 
     private PropertyEditor propertyEditor;
@@ -466,7 +466,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "propertyName")
+    @BeanTagAttribute
     public String getPropertyName() {
         return this.propertyName;
     }
@@ -483,7 +483,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "propertyEditor", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public PropertyEditor getPropertyEditor() {
         return propertyEditor;
     }
@@ -508,7 +508,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "bindingInfo", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public BindingInfo getBindingInfo() {
         return this.bindingInfo;
     }
@@ -533,7 +533,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "dictionaryAttributeName")
+    @BeanTagAttribute
     public String getDictionaryAttributeName() {
         return this.dictionaryAttributeName;
     }
@@ -550,7 +550,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "dictionaryObjectEntry")
+    @BeanTagAttribute
     public String getDictionaryObjectEntry() {
         return this.dictionaryObjectEntry;
     }
@@ -567,7 +567,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "defaultValue")
+    @BeanTagAttribute
     public Object getDefaultValue() {
         return this.defaultValue;
     }
@@ -584,7 +584,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "defaultValueFinderClass")
+    @BeanTagAttribute
     public Class<? extends ValueFinder> getDefaultValueFinderClass() {
         return this.defaultValueFinderClass;
     }
@@ -601,16 +601,15 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "defaultValues", type = BeanTagAttribute.AttributeType.LISTBEAN)
-    public Object[] getDefaultValues() {
+    @BeanTagAttribute
+    public List<Object> getDefaultValues() {
         return this.defaultValues;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void setDefaultValues(Object[] defaultValues) {
+    public void setDefaultValues(List<Object> defaultValues) {
         this.defaultValues = defaultValues;
     }
 
@@ -634,7 +633,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "helpSummary")
+    @BeanTagAttribute
     public String getHelpSummary() {
         return this.help.getTooltipHelpContent();
     }
@@ -681,7 +680,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addHiddenWhenReadOnly")
+    @BeanTagAttribute
     public boolean isAddHiddenWhenReadOnly() {
         return addHiddenWhenReadOnly;
     }
@@ -698,7 +697,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "inquiry", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Inquiry getInquiry() {
         return this.inquiry;
     }
@@ -731,7 +730,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "help", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Help getHelp() {
         return this.help;
     }
@@ -748,6 +747,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isRenderInfoMessageSpan() {
         return renderInfoMessageSpan;
     }
@@ -764,6 +764,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isRenderMarkerIconSpan() {
         return renderMarkerIconSpan;
     }
@@ -780,7 +781,6 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "tooltipOfComponent", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
     public void setTooltipOfComponent(Tooltip tooltip) {
         getFieldLabel().setToolTip(tooltip);
     }
@@ -797,6 +797,15 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
+    public String getReadOnlyDisplaySuffixPropertyName() {
+        return this.readOnlyDisplaySuffixPropertyName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setReadOnlyDisplaySuffixPropertyName(String readOnlyDisplaySuffixPropertyName) {
         this.readOnlyDisplaySuffixPropertyName = readOnlyDisplaySuffixPropertyName;
     }
@@ -805,9 +814,9 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "readOnlyDisplaceSuffixPropertyName")
-    public String getReadOnlyDisplaySuffixPropertyName() {
-        return this.readOnlyDisplaySuffixPropertyName;
+    @BeanTagAttribute
+    public String getReadOnlyDisplayReplacementPropertyName() {
+        return this.readOnlyDisplayReplacementPropertyName;
     }
 
     /**
@@ -822,16 +831,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "readOnlyDisplayReplacementPropertyName")
-    public String getReadOnlyDisplayReplacementPropertyName() {
-        return this.readOnlyDisplayReplacementPropertyName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeanTagAttribute(name = "readOnlyDisplayReplacement")
+    @BeanTagAttribute
     public String getReadOnlyDisplayReplacement() {
         return readOnlyDisplayReplacement;
     }
@@ -848,7 +848,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "readOnlyDispalySuffix")
+    @BeanTagAttribute
     public String getReadOnlyDisplaySuffix() {
         return readOnlyDisplaySuffix;
     }
@@ -865,6 +865,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public String getReadOnlyListDisplayType() {
         return readOnlyListDisplayType;
     }
@@ -881,6 +882,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public String getReadOnlyListDelimiter() {
         return readOnlyListDelimiter;
     }
@@ -897,7 +899,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "applyMask")
+    @BeanTagAttribute
     public boolean isApplyMask() {
         return applyMask;
     }
@@ -914,7 +916,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "maskFormatter", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public MaskFormatter getMaskFormatter() {
         return maskFormatter;
     }
@@ -931,7 +933,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "additionalHiddenPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getAdditionalHiddenPropertyNames() {
         if (additionalHiddenPropertyNames == Collections.EMPTY_LIST && isMutable(true)) {
             additionalHiddenPropertyNames = new LifecycleAwareList<String>(this);
@@ -957,7 +959,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "propertyNamesForAdditionalDisplay", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getPropertyNamesForAdditionalDisplay() {
         if (propertyNamesForAdditionalDisplay == Collections.EMPTY_LIST && isMutable(true)) {
             propertyNamesForAdditionalDisplay = new LifecycleAwareList<String>(this);
@@ -978,6 +980,15 @@ public class DataFieldBase extends FieldBase implements DataField {
                     new LifecycleAwareList<String>(this, propertyNamesForAdditionalDisplay);
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public boolean isEscapeHtmlInPropertyValue() {
+        return this.escapeHtmlInPropertyValue;
+    }
 
     /**
      * {@inheritDoc}
@@ -991,15 +1002,7 @@ public class DataFieldBase extends FieldBase implements DataField {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "escapeHtmlInPropertyValue")
-    public boolean isEscapeHtmlInPropertyValue() {
-        return this.escapeHtmlInPropertyValue;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+    @BeanTagAttribute
     public boolean isMultiLineReadOnlyDisplay() {
         return multiLineReadOnlyDisplay;
     }

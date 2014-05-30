@@ -29,7 +29,7 @@ import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
- * Field wrapper for a Message
+ * Field wrapper for a Message.
  *
  * <p>
  * The <code>Message</code> is used to display static text in the user
@@ -38,8 +38,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "messageField-bean", parent = "Uif-MessageField"),
-        @BeanTag(name = "colGroupingField-bean", parent = "Uif-ColGroupingField")})
+@BeanTag(name = "messageField", parent = "Uif-MessageField")
 public class MessageField extends FieldBase {
     private static final long serialVersionUID = -7045208136391722063L;
 
@@ -76,11 +75,20 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * Convenience method for setting the message text
-     *
-     * @param messageText text to display for the message
+     * @see org.kuali.rice.krad.uif.element.Message#getMessageText()
      */
-    @BeanTagAttribute(name="messageText")
+    @BeanTagAttribute
+    public String getMessageText() {
+        if (message != null) {
+            return message.getMessageText();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see MessageField#getMessageText()
+     */
     public void setMessageText(String messageText) {
         if (message != null) {
             message.setMessageText(messageText);
@@ -88,11 +96,21 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * Convenience method for setting the message inline components
-     *
-     * @param inlineComponents inline components for the message
+     * @see org.kuali.rice.krad.uif.element.Message#getInlineComponents()
+     * @return
      */
-    @BeanTagAttribute(name="inlineComponents")
+    @BeanTagAttribute
+    public List<Component> getInlineComponents() {
+        if (message != null) {
+            return message.getInlineComponents();
+        }
+
+        return null;
+    }
+
+    /**
+     * @see MessageField#getInlineComponents()
+     */
     public void setInlineComponents(List<Component> inlineComponents) {
         if (message != null) {
             message.setInlineComponents(inlineComponents);
@@ -100,31 +118,15 @@ public class MessageField extends FieldBase {
     }
 
     /**
-     * Convenience method for setting the message component structure
-     *
-     * @param messageComponentStructure message component structure for the message
+     * @see org.kuali.rice.krad.uif.element.Message#getMessageText()
      */
-    @BeanTagAttribute(name="messageComponentStructure")
-    public void setMessageComponentStructure(List<Component> messageComponentStructure) {
-        if (message != null) {
-            message.setMessageComponentStructure(messageComponentStructure);
-        }
-    }
-
-    /**
-     * Nested {@link org.kuali.rice.krad.uif.element.Message} component wrapped in the field
-     *
-     * @return Message instance
-     */
-    @BeanTagAttribute(name="message",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public Message getMessage() {
         return message;
     }
 
     /**
-     * Setter for the nested message instance
-     *
-     * @param message
+     * @see MessageField#getMessage()
      */
     public void setMessage(Message message) {
         this.message = message;

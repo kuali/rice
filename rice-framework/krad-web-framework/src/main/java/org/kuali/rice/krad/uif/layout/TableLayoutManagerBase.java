@@ -1170,7 +1170,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "numberOfColumns")
+    @BeanTagAttribute
     public int getNumberOfColumns() {
         return numberOfColumns;
     }
@@ -1187,7 +1187,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "suppressLineWrapping")
+    @BeanTagAttribute
     public boolean isSuppressLineWrapping() {
         return suppressLineWrapping;
     }
@@ -1204,7 +1204,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "applyAlternatingRowStyles")
+    @BeanTagAttribute
     public boolean isApplyAlternatingRowStyles() {
         return applyAlternatingRowStyles;
     }
@@ -1221,7 +1221,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "applyDefaultCellWidths")
+    @BeanTagAttribute
     public boolean isApplyDefaultCellWidths() {
         return applyDefaultCellWidths;
     }
@@ -1238,7 +1238,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "rowCssClasses")
+    @BeanTagAttribute
     public List<String> getRowCssClasses() {
         return rowCssClasses;
     }
@@ -1255,7 +1255,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "rowDataAttributes")
+    @BeanTagAttribute
     public List<String> getRowDataAttributes() {
         return rowDataAttributes;
     }
@@ -1272,7 +1272,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "useShortLabels")
+    @BeanTagAttribute
     public boolean isUseShortLabels() {
         return this.useShortLabels;
     }
@@ -1289,7 +1289,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "repeatHeader")
+    @BeanTagAttribute
     public boolean isRepeatHeader() {
         return this.repeatHeader;
     }
@@ -1307,7 +1307,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "headerLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Label getHeaderLabelPrototype() {
         return this.headerLabelPrototype;
     }
@@ -1332,7 +1332,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "renderSequenceField")
+    @BeanTagAttribute
     public boolean isRenderSequenceField() {
         return this.renderSequenceField;
     }
@@ -1349,7 +1349,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "sequencePropertyName")
+    @BeanTagAttribute
     public String getSequencePropertyName() {
         if ((getSequenceFieldPrototype() != null) && (getSequenceFieldPrototype() instanceof DataField)) {
             return ((DataField) getSequenceFieldPrototype()).getPropertyName();
@@ -1372,7 +1372,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "generateAutoSequence")
+    @BeanTagAttribute
     public boolean isGenerateAutoSequence() {
         return this.generateAutoSequence;
     }
@@ -1390,7 +1390,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "sequenceFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Field getSequenceFieldPrototype() {
         return this.sequenceFieldPrototype;
     }
@@ -1408,7 +1408,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
-    @BeanTagAttribute(name = "actionFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public FieldGroup getActionFieldPrototype() {
         return this.actionFieldPrototype;
     }
@@ -1425,7 +1425,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "separateAddLine")
+    @BeanTagAttribute
     public boolean isSeparateAddLine() {
         return separateAddLine;
     }
@@ -1459,7 +1459,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "richTable", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public RichTable getRichTable() {
         return this.richTable;
     }
@@ -1476,7 +1476,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "numberOfDataColumns")
+    @BeanTagAttribute
     public int getNumberOfDataColumns() {
         return this.numberOfDataColumns;
     }
@@ -1493,7 +1493,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         if (richTable != null) {
             return richTable.getHiddenColumns();
@@ -1516,7 +1516,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         if (richTable != null) {
             return richTable.getSortableColumns();
@@ -1539,7 +1539,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "actionColumnIndex")
     public int getActionColumnIndex() {
         return actionColumnIndex;
     }
@@ -1548,7 +1547,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "actionColumnPlacement")
+    @BeanTagAttribute
     public String getActionColumnPlacement() {
         return actionColumnPlacement;
     }
@@ -1574,7 +1573,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      */
     @Override
     @ViewLifecycleRestriction(UifConstants.ViewPhases.PRE_PROCESS)
-    @BeanTagAttribute(name = "rowDetailsGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getRowDetailsGroup() {
         return rowDetailsGroup;
     }
@@ -1654,7 +1653,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "showTotal")
+    @BeanTagAttribute
     public boolean isShowTotal() {
         return showTotal;
     }
@@ -1671,7 +1670,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "showPageTotal")
+    @BeanTagAttribute
     public boolean isShowPageTotal() {
         return showPageTotal;
     }
@@ -1688,7 +1687,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "showGroupTotal")
+    @BeanTagAttribute
     public boolean isShowGroupTotal() {
         return showGroupTotal;
     }
@@ -1705,7 +1704,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "totalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Label getTotalLabel() {
         return totalLabel;
     }
@@ -1722,7 +1721,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "pageTotalLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Label getPageTotalLabel() {
         return pageTotalLabel;
     }
@@ -1739,7 +1738,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "groupTotalLabelPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Label getGroupTotalLabelPrototype() {
         return groupTotalLabelPrototype;
     }
@@ -1756,7 +1755,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "columnCalculations", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<ColumnCalculationInfo> getColumnCalculations() {
         return columnCalculations;
     }
@@ -1773,7 +1772,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "renderOnlyLeftTotalLabels")
+    @BeanTagAttribute
     public boolean isRenderOnlyLeftTotalLabels() {
         return renderOnlyLeftTotalLabels;
     }
@@ -1798,7 +1797,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "groupingPropertyNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getGroupingPropertyNames() {
         return groupingPropertyNames;
     }
@@ -1815,7 +1814,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "groupingTitle")
+    @BeanTagAttribute
     public String getGroupingTitle() {
         return groupingTitle;
     }
@@ -1838,7 +1837,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "groupingPrefix")
+    @BeanTagAttribute
     public String getGroupingPrefix() {
         return groupingPrefix;
     }
@@ -1855,6 +1854,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isRowDetailsOpen() {
         return rowDetailsOpen;
     }
@@ -1871,6 +1871,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isShowToggleAllDetails() {
         return showToggleAllDetails;
     }
@@ -1887,6 +1888,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public Action getToggleAllDetailsAction() {
         return toggleAllDetailsAction;
     }
@@ -1903,6 +1905,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
      * {@inheritDoc}
      */
     @Override
+    @BeanTagAttribute
     public boolean isAjaxDetailsRetrieval() {
         return ajaxDetailsRetrieval;
     }
@@ -1918,8 +1921,9 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     /**
      * {@inheritDoc}
      */
-    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
     @Override
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    @BeanTagAttribute
     public Action getExpandDetailsActionPrototype() {
         return expandDetailsActionPrototype;
     }
@@ -2022,19 +2026,14 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     }
 
     /**
-     * This overridden method ...
-     * 
      * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#getConditionalRowCssClasses()
      */
-    @Override
-    @BeanTagAttribute(name = "conditionalRowCssClasses", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getConditionalRowCssClasses() {
         return conditionalRowCssClasses;
     }
 
     /**
-     * This overridden method ...
-     * 
      * @see org.kuali.rice.krad.uif.layout.TableLayoutManager#setConditionalRowCssClasses(java.util.Map)
      */
     @Override

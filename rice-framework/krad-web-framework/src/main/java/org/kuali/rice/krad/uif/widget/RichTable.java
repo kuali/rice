@@ -72,9 +72,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "richTable-bean", parent = "Uif-RichTable"),
-        @BeanTag(name = "pagedRichTable-bean", parent = "Uif-PagedRichTable"),
-        @BeanTag(name = "scrollableRichTable-bean", parent = "Uif-ScrollableRichTable")})
+@BeanTags({@BeanTag(name = "richTable", parent = "Uif-RichTable"),
+        @BeanTag(name = "pagedRichTable", parent = "Uif-PagedRichTable"),
+        @BeanTag(name = "scrollableRichTable", parent = "Uif-ScrollableRichTable")})
 public class RichTable extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 
@@ -722,7 +722,7 @@ public class RichTable extends WidgetBase {
      *
      * @return empty table message
      */
-    @BeanTagAttribute(name = "emptyTableMessage")
+    @BeanTagAttribute
     public String getEmptyTableMessage() {
         return emptyTableMessage;
     }
@@ -741,7 +741,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the disableTableSort
      */
-    @BeanTagAttribute(name = "disableTableSort")
+    @BeanTagAttribute
     public boolean isDisableTableSort() {
         return this.disableTableSort;
     }
@@ -760,7 +760,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the showExportOption
      */
-    @BeanTagAttribute(name = "showExportOption")
+    @BeanTagAttribute
     public boolean isShowExportOption() {
         return this.showExportOption;
     }
@@ -783,7 +783,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set with propertyNames of columns to be hidden
      */
-    @BeanTagAttribute(name = "hiddenColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getHiddenColumns() {
         return hiddenColumns;
     }
@@ -806,7 +806,7 @@ public class RichTable extends WidgetBase {
      *
      * @return a set of propertyNames with for columns that will be sorted
      */
-    @BeanTagAttribute(name = "sortableColumns", type = BeanTagAttribute.AttributeType.SETVALUE)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.SETVALUE)
     public Set<String> getSortableColumns() {
         return sortableColumns;
     }
@@ -832,7 +832,7 @@ public class RichTable extends WidgetBase {
      *
      * @return URL for ajax source
      */
-    @BeanTagAttribute(name = "ajaxSource")
+    @BeanTagAttribute
     public String getAjaxSource() {
         return ajaxSource;
     }
@@ -872,6 +872,7 @@ public class RichTable extends WidgetBase {
      * @return true if the aoColumnDefs set will completely override those that are generated
      *         automatically by RichTable
      */
+    @BeanTagAttribute
     public boolean isForceAoColumnDefsOverride() {
         return forceAoColumnDefsOverride;
     }
@@ -901,6 +902,7 @@ public class RichTable extends WidgetBase {
      * @return true if backed by the aaData option in JSON, that is generated during the ftl
      *         rendering process by this widget for this table
      */
+    @BeanTagAttribute
     public boolean isForceLocalJsonData() {
         return forceLocalJsonData;
     }
@@ -927,6 +929,7 @@ public class RichTable extends WidgetBase {
      *
      * @return the nestedLevel representing the
      */
+    @BeanTagAttribute
     public int getNestedLevel() {
         return nestedLevel;
     }

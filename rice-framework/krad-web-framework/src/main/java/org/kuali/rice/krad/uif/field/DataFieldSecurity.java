@@ -31,7 +31,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "dataFieldSecurity-bean")
+@BeanTag(name = "dataFieldSecurity")
 public class DataFieldSecurity extends FieldSecurity {
     private static final long serialVersionUID = 585138507596582667L;
 
@@ -46,7 +46,7 @@ public class DataFieldSecurity extends FieldSecurity {
      *
      * @return AttributeSecurity instance
      */
-    @BeanTagAttribute(name="attributeSecurity",type= BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
     public AttributeSecurity getAttributeSecurity() {
         return attributeSecurity;
     }

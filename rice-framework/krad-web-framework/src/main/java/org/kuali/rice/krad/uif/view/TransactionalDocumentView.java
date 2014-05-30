@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
@@ -22,6 +23,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "transactionalDocumentView", parent = "Uif-TransactionalDocumentView")
 public class TransactionalDocumentView extends DocumentView {
     private static final long serialVersionUID = 4375336878804984171L;
 

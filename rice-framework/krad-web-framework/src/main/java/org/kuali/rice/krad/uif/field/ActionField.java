@@ -35,8 +35,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "actionField-bean", parent = "Uif-ActionField"),
-        @BeanTag(name = "actionLinkField-bean", parent = "Uif-ActionLinkField")})
+@BeanTags({@BeanTag(name = "actionField", parent = "Uif-ActionField"),
+        @BeanTag(name = "actionLinkField", parent = "Uif-ActionLinkField")})
 public class ActionField extends FieldBase {
     private static final long serialVersionUID = -8495752159848603102L;
 
@@ -72,7 +72,7 @@ public class ActionField extends FieldBase {
      *
      * @return Action instance
      */
-    @BeanTagAttribute(name = "action", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Action getAction() {
         return action;
     }
@@ -92,7 +92,7 @@ public class ActionField extends FieldBase {
      * @return method to call
      * @see org.kuali.rice.krad.uif.element.Action#getMethodToCall()
      */
-    @BeanTagAttribute(name = "methodToCall")
+    @BeanTagAttribute
     public String getMethodToCall() {
         return action.getMethodToCall();
     }
@@ -113,7 +113,7 @@ public class ActionField extends FieldBase {
      * @return action label
      * @see org.kuali.rice.krad.uif.element.Action#getActionLabel()
      */
-    @BeanTagAttribute(name = "actionLabel")
+    @BeanTagAttribute
     public String getActionLabel() {
         return action.getActionLabel();
     }
@@ -135,7 +135,7 @@ public class ActionField extends FieldBase {
      * @see org.kuali.rice.krad.uif.element.Action#getActionImage()
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "actionImage", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Image getActionImage() {
         return action.getActionImage();
     }
@@ -155,7 +155,7 @@ public class ActionField extends FieldBase {
      *
      * @return page ID to navigate to
      */
-    @BeanTagAttribute(name = "navigateToPageId")
+    @BeanTagAttribute
     public String getNavigateToPageId() {
         return action.getNavigateToPageId();
     }
@@ -174,7 +174,7 @@ public class ActionField extends FieldBase {
      *
      * @return action event
      */
-    @BeanTagAttribute(name = "actionEvent")
+    @BeanTagAttribute
     public String getActionEvent() {
         return action.getActionEvent();
     }
@@ -191,7 +191,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getActionParameters()
      */
-    @BeanTagAttribute(name = "actionParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getActionParameters() {
         return action.getActionParameters();
     }
@@ -208,7 +208,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getAdditionalSubmitData()
      */
-    @BeanTagAttribute(name = "additionalSubmitData", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getAdditionalSubmitData() {
         return action.getAdditionalSubmitData();
     }
@@ -239,7 +239,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getJumpToIdAfterSubmit()
      */
-    @BeanTagAttribute(name = "jumpToIdAfterSubmit")
+    @BeanTagAttribute
     public String getJumpToIdAfterSubmit() {
         return action.getJumpToIdAfterSubmit();
     }
@@ -255,7 +255,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getJumpToNameAfterSubmit()
      */
-    @BeanTagAttribute(name = "jumpToNameAfterSubmit")
+    @BeanTagAttribute
     public String getJumpToNameAfterSubmit() {
         return action.getJumpToNameAfterSubmit();
     }
@@ -270,7 +270,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getFocusOnIdAfterSubmit()
      */
-    @BeanTagAttribute(name = "focusOnIdAfterSubmit")
+    @BeanTagAttribute
     public String getFocusOnIdAfterSubmit() {
         return action.getFocusOnIdAfterSubmit();
     }
@@ -285,7 +285,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#isPerformClientSideValidation()
      */
-    @BeanTagAttribute(name = "performClientSideValidation")
+    @BeanTagAttribute
     public boolean isPerformClientSideValidation() {
         return action.isPerformClientSideValidation();
     }
@@ -300,7 +300,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getActionScript()
      */
-    @BeanTagAttribute(name = "actionScript")
+    @BeanTagAttribute
     public String getActionScript() {
         return action.getActionScript();
     }
@@ -315,7 +315,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#isPerformDirtyValidation()
      */
-    @BeanTagAttribute(name = "performDirtyValidation")
+    @BeanTagAttribute
     public boolean isPerformDirtyValidation() {
         return action.isPerformDirtyValidation();
     }
@@ -330,7 +330,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#isDisabled()
      */
-    @BeanTagAttribute(name = "disabled")
+    @BeanTagAttribute
     public boolean isDisabled() {
         return action.isDisabled();
     }
@@ -345,7 +345,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getDisabledReason()
      */
-    @BeanTagAttribute(name = "disabledReason")
+    @BeanTagAttribute
     public String getDisabledReason() {
         return action.getDisabledReason();
     }
@@ -360,7 +360,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getActionImagePlacement()
      */
-    @BeanTagAttribute(name = "actionImagePlacement")
+    @BeanTagAttribute
     public String getActionImagePlacement() {
         return action.getActionImagePlacement();
     }
@@ -375,7 +375,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getPreSubmitCall()
      */
-    @BeanTagAttribute(name = "preSubmitCall")
+    @BeanTagAttribute
     public String getPreSubmitCall() {
         return action.getPreSubmitCall();
     }
@@ -390,7 +390,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#isAjaxSubmit()
      */
-    @BeanTagAttribute(name = "ajaxSubmit")
+    @BeanTagAttribute
     public boolean isAjaxSubmit() {
         return action.isAjaxSubmit();
     }
@@ -405,7 +405,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getSuccessCallback()
      */
-    @BeanTagAttribute(name = "successCallback")
+    @BeanTagAttribute
     public String getSuccessCallback() {
         return action.getSuccessCallback();
     }
@@ -421,7 +421,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getErrorCallback()
      */
-    @BeanTagAttribute(name = "errorCallback")
+    @BeanTagAttribute
     public String getErrorCallback() {
         return action.getErrorCallback();
     }
@@ -437,7 +437,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#getRefreshId()
      */
-    @BeanTagAttribute(name = "refreshId")
+    @BeanTagAttribute
     public String getRefreshId() {
         return action.getRefreshId();
     }
@@ -452,7 +452,7 @@ public class ActionField extends FieldBase {
     /**
      * @see org.kuali.rice.krad.uif.element.Action#isDisableBlocking()
      */
-    @BeanTagAttribute(name = "disableBlocking")
+    @BeanTagAttribute
     public boolean isDisableBlocking() {
         return action.isDisableBlocking();
     }

@@ -25,79 +25,81 @@ import org.kuali.rice.krad.uif.widget.DatePicker;
 public interface TextControl extends Control {
 
     /**
-     * Gets the date picker widget, if applicable.
-     * 
-     * @return date picker, null if not a date input field
-     */
-    DatePicker getDatePicker();
-
-    /**
-     * Gets the size of the text input.
-     * 
-     * @return text input size
+     * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
      */
     int getSize();
 
     /**
-     * Gets the min length of the text input.
-     * 
-     * @return min length
-     */
-    Integer getMinLength();
-
-    /**
-     * Gets the max length of the text input.
-     * 
-     * @return max length
-     */
-    Integer getMaxLength();
-
-    /**
-     * Indicates if the text expand popup should be used.
-     * 
-     * @return true if the text expand popup should be used
-     */
-    boolean isTextExpand();
-
-    /**
-     * Gets the watermark text.
-     * 
-     * @return watermark text
-     */
-    String getWatermarkText();
-
-    /**
-     * Setter for {@link #getMaxLength()}
-     * 
-     * @param maxLength property value
-     */
-    void setMaxLength(Integer maxLength);
-
-    /**
-     * Setter for {@link #getSize()}
-     * 
-     * @param size property value
+     * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
      */
     void setSize(int size);
 
     /**
-     * Setter for {@link #isTextExpand()}
-     * 
-     * @param b property value
+     * Maximum number of characters that can be inputted.
+     *
+     * <p>If not set on control, max length of field will be used</p>
+     *
+     * @return max number of characters
      */
-    void setTextExpand(boolean b);
+    Integer getMaxLength();
 
     /**
-     * Setter for {@link #getMinLength()}
-     * 
-     * @param minLength property value
+     * @see TextControl#getMaxLength()
+     */
+    void setMaxLength(Integer maxLength);
+
+    /**
+     * Minimum number of characters that can be inputted.
+     *
+     * <p>If not set on control, min length of field will be used</p>
+     *
+     * @return max number of characters
+     */
+    Integer getMinLength();
+
+    /**
+     * @see TextControl#getMinLength()
      */
     void setMinLength(Integer minLength);
 
     /**
-     * Setter for {@link #getWatermarkText()}
-     * 
-     * @param watermark property value
+     * Renders a calendar that can be used to select a date value for the text control.
+     *
+     * @return data picker instance
+     */
+    DatePicker getDatePicker();
+
+    /**
+     * @see TextControl#getDatePicker()
+     */
+    void setDatePicker(DatePicker datePicker);
+
+    /**
+     * If set to true, this control will have a button which can be clicked to expand the text area through
+     * a popup window so the user has more space to type and see the data they are entering in this text field.
+     *
+     * @return boolean if control has text expand enabled, false if not
+     */
+    boolean isTextExpand();
+
+    /**
+     * @see TextControl#isTextExpand()
+     */
+    void setTextExpand(boolean b);
+
+    /**
+     * Gets the watermark text for this TextControl.
+     *
+     * <p>A watermark typically appears as light gray text within the text input element whenever the
+     * element is empty and does not have focus. This provides a hint to the user as to what the input
+     * is used for, or the type of input that is required.</p>
+     *
+     * @return the watermarkText
+     */
+    String getWatermarkText();
+
+    /**
+     * @see TextControl#getWatermarkText()
      */
     void setWatermarkText(String watermark);
 

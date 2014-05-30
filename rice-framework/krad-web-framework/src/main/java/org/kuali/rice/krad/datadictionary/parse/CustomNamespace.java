@@ -30,14 +30,15 @@ public class CustomNamespace extends NamespaceHandlerSupport {
      * Registers the tag name with the custom parser in Spring.
      */
     public void init() {
-        // Retrieve list of Tags
         Map<String, BeanTagInfo> tags = CustomTagAnnotations.getBeanTags();
 
-        String keys[] = new String[tags.keySet().size()];
-        keys = tags.keySet().toArray(keys);
-
-        for (int i = 0; i < keys.length; i++) {
-            registerBeanDefinitionParser(keys[i], new CustomSchemaParser());
+        for (String customTag : tags.keySet()) {
+            registerBeanDefinitionParser(customTag, new CustomSchemaParser());
         }
+
+        registerBeanDefinitionParser("inc", new CustomSchemaParser());
+        registerBeanDefinitionParser("property", new CustomSchemaParser());
+        registerBeanDefinitionParser("bean", new CustomSchemaParser());
+        registerBeanDefinitionParser("value", new CustomSchemaParser());
     }
 }

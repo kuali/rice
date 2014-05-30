@@ -618,6 +618,4 @@ public interface InputField extends SimpleConstrainable, CaseConstrainable,
      */
     void completeValidation(ValidationTrace tracer);
 
-    void setCustomValidatorClass(String customValidatorClass);
-
 }

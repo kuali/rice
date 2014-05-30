@@ -25,7 +25,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "searchingTypeDefinition-bean")
+@BeanTag(name = "searchingTypeDefinition")
 public class SearchingTypeDefinition extends DataDictionaryDefinitionBase {
     private static final long serialVersionUID = -8779609937539520677L;
 

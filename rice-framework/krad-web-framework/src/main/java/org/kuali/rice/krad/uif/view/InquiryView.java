@@ -40,7 +40,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewType;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "inquiryView-bean", parent = "Uif-InquiryView")
+@BeanTag(name = "inquiryView", parent = "Uif-InquiryView")
 public class InquiryView extends FormView {
     private static final long serialVersionUID = 716926008488403616L;
 
@@ -82,7 +82,7 @@ public class InquiryView extends FormView {
      *
      * @return inquiry object class
      */
-    @BeanTagAttribute(name="dataObjectClassName")
+    @BeanTagAttribute
     public Class<?> getDataObjectClassName() {
         return this.dataObjectClassName;
     }

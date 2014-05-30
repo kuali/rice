@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+  <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+  <xsd:include schemaLocation="krad-elements.xsd"/>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.PrerequisiteConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="prerequisiteConstraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.ValidationMessages">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="pageValidationMessages"/>
+      <xsd:element ref="fieldValidationMessages"/>
+      <xsd:element ref="groupValidationMessages"/>
+      <xsd:element ref="validationMessages"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.PageGroupBase">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="documentPage"/>
+      <xsd:element ref="page"/>
+      <xsd:element ref="maintenancePage"/>
+      <xsd:element ref="inquiryPage"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.AttributeQuery">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="attributeQuery"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.ReferenceDefinition">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="referenceDefinition"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.container.CollectionGroupBuilder">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Pager">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="pager"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Image">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="image"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Iframe">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="iFrame"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Scrollpane">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="scrollpane"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Suggest">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="locationSuggest"/>
+      <xsd:element ref="suggest"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Tabs">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="tabs"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Inquiry">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="inquiry"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.Action">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="buttonLarge"/>
+      <xsd:element ref="navigationButton"/>
+      <xsd:element ref="secondaryNavigationActionButton"/>
+      <xsd:element ref="navigationActionLink"/>
+      <xsd:element ref="secondaryButtonSmall"/>
+      <xsd:element ref="secondaryButton"/>
+      <xsd:element ref="actionLink"/>
+      <xsd:element ref="action"/>
+      <xsd:element ref="buttonSmall"/>
+      <xsd:element ref="button"/>
+      <xsd:element ref="buttonMini"/>
+      <xsd:element ref="secondaryButtonMini"/>
+      <xsd:element ref="actionImage"/>
+      <xsd:element ref="secondaryButtonLarge"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="methodConfig"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.DatePicker">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="datePicker"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.Accordion">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="accordion"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.WorkflowProperty">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="workflowProperty"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.HeadLink">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="headLink"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.widget.LightBox">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="lightBox"/>
+      <xsd:element ref="lightBoxPost"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.layout.CssGridSizes">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="cssGridSizes-bean"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="anyCharacterPatternConstraint"/>
+      <xsd:element ref="floatingPointPatternConstraint"/>
+      <xsd:element ref="validDataPatternConstraint"/>
+      <xsd:element ref="alphaNumericPatternConstraint"/>
+      <xsd:element ref="alphaNumericWithBasicPunc"/>
+      <xsd:element ref="utf8AnyCharacterPatternConstraint"/>
+      <xsd:element ref="fixedPointPatternConstraint"/>
+      <xsd:element ref="integerPatternConstraint"/>
+      <xsd:element ref="alphaPatternConstraint"/>
+      <xsd:element ref="alphaWithBasicPunc"/>
+      <xsd:element ref="charsetPatternConstraint"/>
+      <xsd:element ref="numericPatternConstraint"/>
+      <xsd:element ref="numericWithOperators"/>
+      <xsd:element ref="validCharactersPatternContraint"/>
+      <xsd:element ref="datePatternConstraint"/>
+      <xsd:element ref="basicDatePatternConstraint"/>
+      <xsd:element ref="configurationBasedRegexPatternConstraint"/>
+      <xsd:element ref="emailAddressPatternConstraint"/>
+      <xsd:element ref="monthPatternConstraint"/>
+      <xsd:element ref="urlPatternConstraint"/>
+      <xsd:element ref="timestampPatternConstraint"/>
+      <xsd:element ref="yearPatternConstraint"/>
+      <xsd:element ref="phoneNumberPatternConstraint"/>
+      <xsd:element ref="timePatternConstraint"/>
+      <xsd:element ref="javaClassPatternConstraint"/>
+      <xsd:element ref="zipcodePatternConstraint"/>
+      <xsd:element ref="noWhitespacePatternConstraint"/>
+      <xsd:element ref="time24HPatternConstraint"/>
+      <xsd:element ref="validCharactersConstraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.util.ColumnCalculationInfo">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="columnCalculationSum"/>
+      <xsd:element ref="columnCalculation"/>
+      <xsd:element ref="columnCalculationMax"/>
+      <xsd:element ref="columnCalculationAverage"/>
+      <xsd:element ref="columnCalculationMin"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.DocumentValuePathGroup">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="documentValuePathGroup"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="whenConstraint"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.datadictionary.WorkflowAttributes">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="workflowAttributes"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.field.FieldGroup">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="horizontalFieldGroup"/>
+      <xsd:element ref="fieldGroup"/>
+      <xsd:element ref="verticalFieldGroup"/>
+    </xsd:choice>
+  </xsd:complexType>
+</xsd:schema>

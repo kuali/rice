@@ -59,8 +59,8 @@
     </property>
     <property name="resourceBundleNames">
       <list>
+        <value>org.kuali.rice.krad.ComponentJavaDocs</value>
         <value>org.kuali.rice.krad.demo.uif.components.resources.KradSampleAppDemoResources</value>
-        <value>org.kuali.rice.krad.devtools.documentation.PropertiesDescription</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoInputFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageFieldResources</value>

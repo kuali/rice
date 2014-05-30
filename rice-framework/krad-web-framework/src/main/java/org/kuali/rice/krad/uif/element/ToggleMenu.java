@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.element;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -37,8 +36,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "dropdownToggleMenu-bean", parent = "Uif-DropdownToggleMenu"),
-        @BeanTag(name = "sidebarToggleMenu-bean", parent = "Uif-SidebarToggleMenu")})
+@BeanTags({@BeanTag(name = "dropdownMenu", parent = "Uif-DropdownToggleMenu"),
+        @BeanTag(name = "sidebarMenu", parent = "Uif-SidebarToggleMenu")})
 public class ToggleMenu extends ContentElementBase implements ListAware {
     private static final long serialVersionUID = -1759659012620124641L;
 
@@ -93,7 +92,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      * 
      * @return text to display for the toggle menu toggle link
      */
-    @BeanTagAttribute(name = "toggleText")
+    @BeanTagAttribute
     public String getToggleText() {
         return toggleText;
     }
@@ -111,7 +110,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return Message instance for toggle text
      */
-    @BeanTagAttribute(name = "toggleMessage")
+    @BeanTagAttribute
     public Message getToggleMessage() {
         return toggleMessage;
     }
@@ -128,7 +127,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return the caret icon class
      */
-    @BeanTagAttribute(name = "toggleCaretClass")
+    @BeanTagAttribute
     public String getToggleCaretClass() {
         return toggleCaretClass;
     }
@@ -145,7 +144,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return the css class for an icon
      */
-    @BeanTagAttribute(name = "iconClass")
+    @BeanTagAttribute
     public String getIconClass() {
         return iconClass;
     }
@@ -162,7 +161,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return boolean true if caret button should be rendered, false if not
      */
-    @BeanTagAttribute(name = "renderToggleButton")
+    @BeanTagAttribute
     public boolean isRenderToggleButton() {
         return renderToggleButton;
     }
@@ -177,7 +176,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
     /**
      * @see org.kuali.rice.krad.uif.component.ListAware#setRenderedInList(boolean)
      */
-    @BeanTagAttribute(name = "renderedInList")
+    @BeanTagAttribute
     public boolean isRenderedInList() {
         return renderedInList;
     }
@@ -190,17 +189,15 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
     }
 
     /**
-     * List of components that should be rendered for the toggle menu
+     * List of components that should be rendered for the toggle menu.
      *
-     * <p>
-     * Items for the menu are configured through this list. The order of the items within the list is
-     * the order they will appear in the toggle menu
-     * </p>
+     * <p>Items for the menu are configured through this list. The order of the items within the list is
+     * the order they will appear in the toggle menu</p>
      *
      * @return List of menu items for the toggle menu
      */
     @ViewLifecycleRestriction
-    @BeanTagAttribute(name = "menuItems", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<Component> getMenuItems() {
         return menuItems;
     }
@@ -221,7 +218,7 @@ public class ToggleMenu extends ContentElementBase implements ListAware {
      *
      * @return Group instance
      */
-    @BeanTagAttribute(name = "menuGroup", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Group getMenuGroup() {
         return menuGroup;
     }

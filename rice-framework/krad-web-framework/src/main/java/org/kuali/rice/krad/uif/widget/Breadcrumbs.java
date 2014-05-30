@@ -24,7 +24,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "breadcrumbs-bean", parent = "Uif-Breadcrumbs")
+@BeanTag(name = "breadcrumbs", parent = "Uif-Breadcrumbs")
 public class Breadcrumbs extends WidgetBase {
     private static final long serialVersionUID = -2864287914665842251L;
 
@@ -41,7 +41,7 @@ public class Breadcrumbs extends WidgetBase {
      *
      * @return the displayBreadcrumbsWhenOne
      */
-    @BeanTagAttribute(name = "displayBreadcrumbsWhenOne")
+    @BeanTagAttribute
     public boolean isDisplayBreadcrumbsWhenOne() {
         return this.displayBreadcrumbsWhenOne;
     }
@@ -60,7 +60,7 @@ public class Breadcrumbs extends WidgetBase {
      *
      * @return true if using path based breadcrumbs, false otherwise
      */
-    @BeanTagAttribute(name = "usePathBasedBreadcrumbs")
+    @BeanTagAttribute
     public boolean isUsePathBasedBreadcrumbs() {
         return usePathBasedBreadcrumbs;
     }

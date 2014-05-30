@@ -44,8 +44,8 @@ import org.kuali.rice.krad.uif.util.RecycleUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "componentConverter-modifier-bean", parent = "Uif-ComponentConverter-Modifier"),
-        @BeanTag(name = "checkboxToRadioConverter-modifier-bean", parent = "Uif-CheckboxToRadioConverter-Modifier")})
+@BeanTags({@BeanTag(name = "componentConverterModifier", parent = "Uif-ComponentConverter-Modifier"),
+        @BeanTag(name = "checkboxToRadioConverterModifier", parent = "Uif-CheckboxToRadioConverter-Modifier")})
 public class ComponentConvertModifier extends ComponentModifierBase {
     private static final long serialVersionUID = -7566547737669924605L;
 
@@ -161,7 +161,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      *
      * @return component type to replace
      */
-    @BeanTagAttribute(name = "componentTypeToReplace")
+    @BeanTagAttribute
     public Class<? extends Component> getComponentTypeToReplace() {
         return this.componentTypeToReplace;
     }
@@ -185,7 +185,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
      *
      * @return Component
      */
-    @BeanTagAttribute(name = "componentReplacementPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Component getComponentReplacementPrototype() {
         return this.componentReplacementPrototype;
     }

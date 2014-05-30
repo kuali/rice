@@ -51,8 +51,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "fieldBase-bean", parent = "Uif-FieldBase"),
-        @BeanTag(name = "fieldBase-withLabel-bean", parent = "Uif-FieldBase-withLabel")})
+@BeanTag(name = "fieldBase", parent = "Uif-FieldBase")
 public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
     private static final Logger LOG = Logger.getLogger(FieldBase.class);
@@ -185,7 +184,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
-    @BeanTagAttribute(name = "label")
+    @BeanTagAttribute
     public String getLabel() {
         if (fieldLabel != null) {
             return fieldLabel.getLabelText();
@@ -210,7 +209,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelStyleClasses
      */
-    @BeanTagAttribute(name = "labelStyleClasses", type = BeanTagAttribute.AttributeType.LISTVALUE)
+    @BeanTagAttribute
     public List<String> getLabelStyleClasses() {
         if (fieldLabel != null) {
             return fieldLabel.getCssClasses();
@@ -235,7 +234,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabelColSpan
      */
-    @BeanTagAttribute(name = "labelColSpan")
+    @BeanTagAttribute
     public int getLabelColSpan() {
         if (fieldLabel != null) {
             return fieldLabel.getColSpan();
@@ -260,7 +259,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getShortLabel()
      */
-    @BeanTagAttribute(name = "shortLabel")
+    @BeanTagAttribute
     public String getShortLabel() {
         return this.shortLabel;
     }
@@ -293,7 +292,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#getLabel
      */
-    @BeanTagAttribute(name = "fieldLabel", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Label getFieldLabel() {
         return this.fieldLabel;
     }
@@ -308,7 +307,6 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()
      */
-    @BeanTagAttribute(name = "labelRendered")
     public boolean isLabelRendered() {
         return this.labelRendered;
     }
@@ -354,6 +352,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.FieldSecurity#isEditInLineAuthz()
      */
+    @BeanTagAttribute
     public Boolean isEditInLineAuthz() {
         initializeComponentSecurity();
 
@@ -372,6 +371,7 @@ public class FieldBase extends ComponentBase implements Field {
     /**
      * @see org.kuali.rice.krad.uif.field.FieldSecurity#isViewInLineAuthz()
      */
+    @BeanTagAttribute
     public Boolean isViewInLineAuthz() {
         initializeComponentSecurity();
 

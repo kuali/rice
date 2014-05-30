@@ -43,7 +43,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "groupValidationMessages-bean", parent = "Uif-GroupValidationMessages")
+@BeanTag(name = "groupValidationMessages", parent = "Uif-GroupValidationMessages")
 public class GroupValidationMessages extends ValidationMessages {
     private static final long serialVersionUID = -5389990220206079052L;
 
@@ -267,7 +267,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return the displayFieldLabelWithMessages
      */
-    @BeanTagAttribute(name = "displayFieldLabelWithMessages")
+    @BeanTagAttribute
     public boolean isDisplayFieldLabelWithMessages() {
         return this.displayFieldLabelWithMessages;
     }
@@ -293,7 +293,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return if field link messages are being collapsed
      */
-    @BeanTagAttribute(name = "collapseAdditionalFieldLinkMessages")
+    @BeanTagAttribute
     public boolean isCollapseAdditionalFieldLinkMessages() {
         return collapseAdditionalFieldLinkMessages;
     }
@@ -313,7 +313,7 @@ public class GroupValidationMessages extends ValidationMessages {
      *
      * @return true if the summary will display, false otherwise
      */
-    @BeanTagAttribute(name = "displayHeaderMessageSummary")
+    @BeanTagAttribute
     public boolean isDisplayHeaderMessageSummary() {
         return displayHeaderMessageSummary;
     }

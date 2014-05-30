@@ -40,8 +40,7 @@ import java.util.Map;
  * View.  Essentially, this class provides a way to determine a conceptual hierarchy of view/page locations.
  * This information is used internally to generate BreadcrumbItems that can appear before the View's breadcrumbs.
  */
-@BeanTags({@BeanTag(name = "parentLocation-bean", parent = "Uif-ParentLocation"),
-        @BeanTag(name = "ricePortalParentLocation", parent = "Uif-RicePortalParentLocation")})
+@BeanTag(name = "parentLocation", parent = "Uif-ParentLocation")
 public class ParentLocation extends UifDictionaryBeanBase implements Serializable {
 
     private static final long serialVersionUID = -6242148809697931126L;

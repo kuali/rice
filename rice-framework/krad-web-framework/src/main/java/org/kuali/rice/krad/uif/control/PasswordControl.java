@@ -28,7 +28,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "passwordControl-bean", parent = "Uif-PasswordControl")
+@BeanTag(name = "passwordControl", parent = "Uif-PasswordControl")
 public class PasswordControl extends ControlBase implements SizedControl {
     private static final long serialVersionUID = -8267606288443759880L;
 
@@ -70,7 +70,7 @@ public class PasswordControl extends ControlBase implements SizedControl {
     /**
      * @see SizedControl#getSize()
      */
-    @BeanTagAttribute(name = "size")
+    @BeanTagAttribute
     public int getSize() {
         return this.size;
     }
@@ -89,7 +89,7 @@ public class PasswordControl extends ControlBase implements SizedControl {
      *
      * @return max number of characters
      */
-    @BeanTagAttribute(name = "maxLength")
+    @BeanTagAttribute
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -110,7 +110,7 @@ public class PasswordControl extends ControlBase implements SizedControl {
      *
      * @return max number of characters
      */
-    @BeanTagAttribute(name = "minLength")
+    @BeanTagAttribute
     public Integer getMinLength() {
         return minLength;
     }
@@ -135,7 +135,7 @@ public class PasswordControl extends ControlBase implements SizedControl {
      *
      * @return the watermarkText
      */
-    @BeanTagAttribute(name = "watermarkText")
+    @BeanTagAttribute
     public String getWatermarkText() {
         return this.watermarkText;
     }

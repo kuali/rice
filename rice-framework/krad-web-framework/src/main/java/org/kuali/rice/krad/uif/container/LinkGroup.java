@@ -31,9 +31,8 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTags;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "linkGroup-bean", parent = "Uif-LinkGroup"),
-        @BeanTag(name = "linkSubGroup-bean", parent = "Uif-LinkSubGroup"),
-        @BeanTag(name = "lookupView-resultActions-bean", parent = "Uif-LookupView-ResultActions")})
+@BeanTags({@BeanTag(name = "linkGroup", parent = "Uif-LinkGroup"),
+        @BeanTag(name = "linkSubGroup", parent = "Uif-LinkSubGroup")})
 public class LinkGroup extends GroupBase {
     private static final long serialVersionUID = -4173031543626881250L;
 
@@ -58,7 +57,7 @@ public class LinkGroup extends GroupBase {
      *
      * @return group begin delimiter
      */
-    @BeanTagAttribute(name = "groupBeginDelimiter")
+    @BeanTagAttribute
     public String getGroupBeginDelimiter() {
         return groupBeginDelimiter;
     }
@@ -84,7 +83,7 @@ public class LinkGroup extends GroupBase {
      *
      * @return group end delimiter
      */
-    @BeanTagAttribute(name = "groupEndDelimiter")
+    @BeanTagAttribute
     public String getGroupEndDelimiter() {
         return groupEndDelimiter;
     }
@@ -105,7 +104,7 @@ public class LinkGroup extends GroupBase {
      *
      * @return link separator
      */
-    @BeanTagAttribute(name = "linkSeparator")
+    @BeanTagAttribute
     public String getLinkSeparator() {
         return linkSeparator;
     }
@@ -125,7 +124,7 @@ public class LinkGroup extends GroupBase {
      *
      * @return empty group string
      */
-    @BeanTagAttribute(name = "emptyLinkGroupString")
+    @BeanTagAttribute
     public String getEmptyLinkGroupString() {
         return emptyLinkGroupString;
     }

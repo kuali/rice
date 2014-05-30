@@ -47,9 +47,9 @@ import org.kuali.rice.krad.util.KRADUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "quickFinder-bean", parent = "Uif-QuickFinder"),
-        @BeanTag(name = "quickFinderByScript-bean", parent = "Uif-QuickFinderByScript"),
-        @BeanTag(name = "collectionQuickFinder-bean", parent = "Uif-CollectionQuickFinder")})
+@BeanTags({@BeanTag(name = "quickFinder", parent = "Uif-QuickFinder"),
+        @BeanTag(name = "quickFinderByScript", parent = "Uif-QuickFinderByScript"),
+        @BeanTag(name = "collectionQuickFinder", parent = "Uif-CollectionQuickFinder")})
 public class QuickFinder extends WidgetBase implements LifecycleEventListener {
     private static final long serialVersionUID = 3302390972815386785L;
 
@@ -227,8 +227,12 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         }
 
         // get relationship from metadata service
-        return KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
-                parentObjectClass, propertyName, "", true, true, false);
+        if (parentObjectClass != null) {
+            return KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
+                    parentObjectClass, propertyName, "", true, true, false);
+        }
+
+        return null;
     }
 
     /**
@@ -490,7 +494,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return lookup base URL
      */
-    @BeanTagAttribute(name = "baseLookupUrl")
+    @BeanTagAttribute
     public String getBaseLookupUrl() {
         return this.baseLookupUrl;
     }
@@ -512,7 +516,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return lookup class name
      */
-    @BeanTagAttribute(name = "dataOjbectClassName")
+    @BeanTagAttribute
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }
@@ -535,7 +539,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return String name of lookup view
      */
-    @BeanTagAttribute(name = "viewName")
+    @BeanTagAttribute
     public String getViewName() {
         return this.viewName;
     }
@@ -556,6 +560,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return boolean true if the return should occur through script, false if not (default)
      */
+    @BeanTagAttribute
     public boolean isReturnByScript() {
         return returnByScript;
     }
@@ -577,7 +582,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * @return property names (delimited by a comma) whose criteria fields should be read-only on the
      *         lookup view
      */
-    @BeanTagAttribute(name = "readOnlyLookupFields")
+    @BeanTagAttribute
     public String getReadOnlyLookupFields() {
         return this.readOnlyLookupFields;
     }
@@ -603,7 +608,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return list of property names to refresh
      */
-    @BeanTagAttribute(name = "referencesToRefresh")
+    @BeanTagAttribute
     public String getReferencesToRefresh() {
         return this.referencesToRefresh;
     }
@@ -633,7 +638,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return mapping of lookup data object property names to view property names
      */
-    @BeanTagAttribute(name = "fieldConversions", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getFieldConversions() {
         return this.fieldConversions;
     }
@@ -657,7 +662,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return mapping of calling view properties to lookup view search fields
      */
-    @BeanTagAttribute(name = "lookupParameters", type = BeanTagAttribute.AttributeType.MAPVALUE)
+    @BeanTagAttribute
     public Map<String, String> getLookupParameters() {
         return this.lookupParameters;
     }
@@ -678,7 +683,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if the return link should not be shown, false if it should be
      */
-    @BeanTagAttribute(name = "renderReturnLink")
+    @BeanTagAttribute
     public Boolean getRenderReturnLink() {
         return this.renderReturnLink;
     }
@@ -700,7 +705,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if actions should be rendered, false if not
      */
-    @BeanTagAttribute(name = "renderResultActions")
+    @BeanTagAttribute
     public Boolean getRenderResultActions() {
         return renderResultActions;
     }
@@ -721,7 +726,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if the search should be performed initially, false if not
      */
-    @BeanTagAttribute(name = "autoSearch")
+    @BeanTagAttribute
     public Boolean getAutoSearch() {
         return this.autoSearch;
     }
@@ -741,7 +746,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if lookup criteria should be displayed, false if not
      */
-    @BeanTagAttribute(name = "renderLookupCriteria")
+    @BeanTagAttribute
     public Boolean getRenderLookupCriteria() {
         return this.renderLookupCriteria;
     }
@@ -758,7 +763,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return boolean true if actions should be rendered (default), false if not
      */
-    @BeanTagAttribute(name = "renderCriteriaActions")
+    @BeanTagAttribute
     public Boolean getRenderCriteriaActions() {
         return this.renderCriteriaActions;
     }
@@ -770,10 +775,19 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         this.renderCriteriaActions = renderCriteriaActions;
     }
 
+    /**
+     * Indicates whether the lookup criteria should be hidden when a search is executed.
+     *
+     * @return boolean true if criteria should be hidden, false if not
+     */
+    @BeanTagAttribute
     public Boolean getHideCriteriaOnSearch() {
         return hideCriteriaOnSearch;
     }
 
+    /**
+     * @see QuickFinder#getHideCriteriaOnSearch()
+     */
     public void setHideCriteriaOnSearch(Boolean hideCriteriaOnSearch) {
         this.hideCriteriaOnSearch = hideCriteriaOnSearch;
     }
@@ -789,7 +803,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if maintenance links should be shown on the lookup view, false if not
      */
-    @BeanTagAttribute(name = "renderMaintenanceLinks")
+    @BeanTagAttribute
     public Boolean getRenderMaintenanceLinks() {
         return this.renderMaintenanceLinks;
     }
@@ -810,7 +824,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return Action instance rendered for quickfinder
      */
-    @BeanTagAttribute(name = "quickfinderAction", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute(type = BeanTagAttribute.AttributeType.BYTYPE)
     public Action getQuickfinderAction() {
         return this.quickfinderAction;
     }
@@ -830,7 +844,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return lightbox instance for viewing the lookup
      */
-    @BeanTagAttribute(name = "lightBox", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public LightBox getLightBox() {
         return lightBox;
     }
@@ -847,7 +861,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return true if multi-value lookup should be requested, false for normal lookup
      */
-    @BeanTagAttribute(name = "MultipleValuesSelect")
+    @BeanTagAttribute
     public Boolean getMultipleValuesSelect() {
         return multipleValuesSelect;
     }
@@ -868,7 +882,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return collection name (must be full binding path)
      */
-    @BeanTagAttribute(name = "lookupCollectionName")
+    @BeanTagAttribute
     public String getLookupCollectionName() {
         return lookupCollectionName;
     }
@@ -880,10 +894,23 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         this.lookupCollectionName = lookupCollectionName;
     }
 
+    /**
+     * For the case of multi-value lookup, indicates the collection id that should be populated with
+     * the return results.
+     *
+     * <p>Note when the quickfinder is associated with a {@link CollectionGroup}, this property is
+     * set automatically from the collection id associated with the group</p>
+     *
+     * @return collection id
+     */
+    @BeanTagAttribute
     public String getLookupCollectionId() {
         return lookupCollectionId;
     }
 
+    /**
+     * @see QuickFinder#getLookupCollectionId()
+     */
     public void setLookupCollectionId(String lookupCollectionId) {
         this.lookupCollectionId = lookupCollectionId;
     }
@@ -893,6 +920,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return additionalLookupParameters - map of additional lookup parameters
      */
+    @BeanTagAttribute
     public Map<String, String> getAdditionalLookupParameters() {
         return additionalLookupParameters;
     }

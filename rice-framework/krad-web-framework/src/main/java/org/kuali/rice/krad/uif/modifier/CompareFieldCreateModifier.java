@@ -59,10 +59,9 @@ import org.kuali.rice.krad.uif.view.View;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTags({@BeanTag(name = "compareFieldCreate-modifier-bean", parent = "Uif-CompareFieldCreate-Modifier"),
-        @BeanTag(name = "maintenanceCompare-modifier-bean", parent = "Uif-MaintenanceCompare-Modifier")})
+@BeanTags({@BeanTag(name = "compareFieldCreateModifier", parent = "Uif-CompareFieldCreate-Modifier"),
+        @BeanTag(name = "maintenanceCompareModifier", parent = "Uif-MaintenanceCompare-Modifier")})
 public class CompareFieldCreateModifier extends ComponentModifierBase {
-
     private static final long serialVersionUID = -6285531580512330188L;
 
     private int defaultOrderSequence;
@@ -339,7 +338,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return default sequence starting value
      */
-    @BeanTagAttribute(name = "defaultOrderSequence")
+    @BeanTagAttribute
     public int getDefaultOrderSequence() {
         return this.defaultOrderSequence;
     }
@@ -366,7 +365,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * @return true if the headers should be created, false if no
      *         headers should be created
      */
-    @BeanTagAttribute(name = "generateCompareHeaders")
+    @BeanTagAttribute
     public boolean isGenerateCompareHeaders() {
         return this.generateCompareHeaders;
     }
@@ -386,7 +385,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return header field prototype
      */
-    @BeanTagAttribute(name = "headerFieldPrototype", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public Header getHeaderFieldPrototype() {
         return this.headerFieldPrototype;
     }
@@ -411,7 +410,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      *
      * @return comparables to generate fields for
      */
-    @BeanTagAttribute(name = "comparables", type = BeanTagAttribute.AttributeType.LISTBEAN)
+    @BeanTagAttribute
     public List<ComparableInfo> getComparables() {
         return this.comparables;
     }

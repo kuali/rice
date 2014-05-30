@@ -34,7 +34,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BeanTag(name = "maintenanceDocumentEntry-bean", parent = "uifMaintenanceDocumentEntry")
+@BeanTag(name = "maintenanceDocumentEntry", parent = "uifMaintenanceDocumentEntry")
 public class MaintenanceDocumentEntry extends DocumentEntry {
     private static final long serialVersionUID = 4990040987835057251L;
 

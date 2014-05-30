@@ -14,6 +14,46 @@
     -webkit-box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.07);
     box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.07);
     li {
+      .badge {
+        -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+        -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+        box-shadow:inset 0px 1px 0px 0px #ffffff;
+        background-color:#ffffff;
+        -webkit-border-top-left-radius:10px;
+        -moz-border-radius-topleft:10px;
+        border-top-left-radius:10px;
+        -webkit-border-top-right-radius:10px;
+        -moz-border-radius-topright:10px;
+        border-top-right-radius:10px;
+        -webkit-border-bottom-right-radius:10px;
+        -moz-border-radius-bottomright:10px;
+        border-bottom-right-radius:10px;
+        -webkit-border-bottom-left-radius:10px;
+        -moz-border-radius-bottomleft:10px;
+        border-bottom-left-radius:10px;
+        border:1px solid #dcdcdc;
+        display:inline-block;
+        color:#666666;
+        font-family:Arial;
+        font-size:10px;
+        font-weight:normal;
+        font-style:normal;
+        text-decoration:none;
+        text-align:center;
+        text-shadow:1px 1px 0px #ffffff;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-bottom: 2px;
+        padding-top: 2px;
+        font-family: sans-serif;
+      }.badge:hover {
+         background-color:#e9e9e9;
+       }.badge:active {
+          position:relative;
+          top:1px;
+        }
+
+
       & > a {
         padding-top: 3px;
         padding-right: 6px;
@@ -24,6 +64,7 @@
         border-right: 1px solid #fff;
         -webkit-box-shadow: 1px 0px 0px 0px #cccccc;
         box-shadow: 1px 0px 0px 0px #cccccc;
+        font-family: sans-serif;
       }
     }
     .dropdown {
@@ -57,3 +98,30 @@
 }
 
 
+.toolbar .nav .open > a, .toolbar .nav .open > a:hover, .toolbar .nav .open > a:focus {
+
+  border-color: @gray-lighter;   }
+
+
+
+.toolbar {
+  .uif-backdoor-login {
+    .navbar-form.navbar-right {
+      margin:2px 5px 0;
+      padding:0;
+      .form-control {
+        height: 20px;
+        width: 110px;
+      }
+      .input-group {
+        .btn {
+          height: 20px;
+          line-height: 1px;
+          font-size: 12px;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+}

@@ -1754,7 +1754,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         if (driver instanceof TakesScreenshot) {
             File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
-                    System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
+                    System.getProperty("remote.driver.screenshot.filename", this.getClass().getSimpleName().toString()
                             + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
         }
     }

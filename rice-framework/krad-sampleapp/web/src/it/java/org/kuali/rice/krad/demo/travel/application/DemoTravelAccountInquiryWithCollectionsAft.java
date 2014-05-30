@@ -51,7 +51,8 @@ public class DemoTravelAccountInquiryWithCollectionsAft extends WebDriverLegacyI
 
     protected void testTravelPerDiemLookUp() throws Exception {
     	String travelAccountInfo []={"Travel Account Number:","a14","Travel Account Name:","Travel Account 14",
-    			"Account Type:","CAT - Clearing","Date Created:","Subsidized Percent:","Principal Name:","fran","Name:","fran, fran"};
+    			"Account Type:","CAT - Clearing","Date Created:","Subsidized Percent:","Fiscal Officer:","fran",
+                "Fiscal Officer Name:","fran, fran"};
     	assertTextPresent(travelAccountInfo);
     	assertSubAccount("A","Sub Account A");
     	assertSubAccount("B","Sub Account B");

@@ -42,9 +42,9 @@ public class LabsMaintenancePresentationControllerAft extends LabsMaintenanceBas
     	String [][] accountInformation = {{"Travel Account Number:","a14","a14"},
     			{"Account Name:","Travel Account 14","Travel Account 14"},
     			{"Travel Account Type Code:","Clearing","Clearing"},
-    			{"Principal Name:","fran","fran"}};
+    			{"Fiscal Officer:","fran","fran"}};
     	assertTextPresent(accountInformation);
-    	assertTextNotPresent("Sub Account Information");;
+    	assertTextNotPresent("Sub Account Information");
     }
 
     @Test

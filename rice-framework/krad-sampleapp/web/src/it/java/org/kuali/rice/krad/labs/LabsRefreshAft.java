@@ -40,7 +40,7 @@ public class LabsRefreshAft extends WebDriverLegacyITBase {
 
     protected void testDemoRefresh() throws InterruptedException {
     	selectByName("inputField4","Vegetables");
-    	waitForTextPresent("Loading...");
+//    	waitForTextPresent("Loading..."); // sometimes loads too fast
     	selectByName("inputField5","Beans");
     }
 

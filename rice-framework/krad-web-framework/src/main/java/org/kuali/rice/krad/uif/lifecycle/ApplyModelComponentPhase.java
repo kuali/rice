@@ -16,9 +16,11 @@
 package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
@@ -30,6 +32,7 @@ import org.kuali.rice.krad.uif.lifecycle.model.EvaluateExpressionsTask;
 import org.kuali.rice.krad.uif.lifecycle.model.HelperCustomApplyModelTask;
 import org.kuali.rice.krad.uif.lifecycle.model.PopulateComponentContextTask;
 import org.kuali.rice.krad.uif.lifecycle.model.RefreshStateModifyTask;
+import org.kuali.rice.krad.uif.lifecycle.model.SuffixIdFromContainerTask;
 import org.kuali.rice.krad.uif.lifecycle.model.SyncClientSideStateTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
@@ -158,6 +161,10 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
      */
     @Override
     protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        if ((getParent() != null) && StringUtils.isNotBlank(getParent().getContainerIdSuffix())) {
+            tasks.add(LifecycleTaskFactory.getTask(SuffixIdFromContainerTask.class, this));
+        }
+
         tasks.add(LifecycleTaskFactory.getTask(PopulateComponentContextTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(EvaluateExpressionsTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(AfterEvaluateExpressionTask.class, this));

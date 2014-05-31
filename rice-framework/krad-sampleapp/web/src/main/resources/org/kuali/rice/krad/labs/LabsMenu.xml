@@ -112,6 +112,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload3"/>
                           <bean parent="Uif-Link" p:linkText="Schema" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
+                          <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
                         </list>
                       </property>
                     </bean>

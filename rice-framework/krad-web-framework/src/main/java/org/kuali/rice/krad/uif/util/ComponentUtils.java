@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.util.ReflectionUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -590,6 +593,211 @@ public class ComponentUtils {
 
         return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() ||
                 component.isRetrieveViaAjax();
+    }
+
+    /**
+     * places a key, value pair in each context map of a list of components
+     *
+     * @param elements the list of elements
+     * @param contextName a value to be used as a key to retrieve the object
+     * @param contextValue the value to be placed in the context
+     */
+    public static void pushObjectToContext(Collection<? extends LifecycleElement> elements, String contextName,
+            Object contextValue) {
+        if (elements == null || elements.isEmpty()) {
+            return;
+        }
+
+        Queue<LifecycleElement> elementQueue = new LinkedList<LifecycleElement>();
+
+        try {
+            elementQueue.addAll(elements);
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+
+                if (currentElement == null) {
+                    continue;
+                }
+
+                if (currentElement instanceof Component) {
+                    ((Component) currentElement).pushObjectToContext(contextName, contextValue);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
+            }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
+        }
+    }
+
+    /**
+     * pushes object to a component's context so that it is available from {@link Component#getContext()}
+     *
+     * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
+     * are also updated recursively</p>
+     *
+     * @param component the component whose context is to be updated
+     * @param contextName a value to be used as a key to retrieve the object
+     * @param contextValue the value to be placed in the context
+     */
+    public static void pushObjectToContext(Component component, String contextName, Object contextValue) {
+        if (component == null) {
+            return;
+        }
+
+        pushObjectToContext(Collections.singletonList(component), contextName, contextValue);
+    }
+
+    /**
+     * places a all entries from a map into each context map of a list of components
+     *
+     * @param components The list components.
+     * @param sourceContext The source context map.
+     */
+    public static void pushAllToContext(List<? extends Component> components, Map<String, Object> sourceContext) {
+        if (components == null || components.isEmpty()) {
+            return;
+        }
+
+        @SuppressWarnings("unchecked") Queue<LifecycleElement> elementQueue = RecycleUtils.getInstance(
+                LinkedList.class);
+        try {
+            elementQueue.addAll(components);
+            while (!elementQueue.isEmpty()) {
+                LifecycleElement currentElement = elementQueue.poll();
+
+                if (currentElement == null) {
+                    continue;
+                }
+
+                if (currentElement instanceof Component) {
+                    ((Component) currentElement).pushAllToContext(sourceContext);
+                }
+
+                elementQueue.addAll(ViewLifecycleUtils.getElementsForLifecycle(currentElement).values());
+            }
+        } finally {
+            elementQueue.clear();
+            RecycleUtils.recycle(elementQueue);
+        }
+    }
+
+    /**
+     * pushes object to a component's context so that it is available from {@link Component#getContext()}
+     *
+     * <p>The component's nested components that are available via {@code Component#getComponentsForLifecycle}
+     * are also updated recursively</p>
+     *
+     * @param component the component whose context is to be updated
+     * @param sourceContext The source context map.
+     */
+    public static void pushAllToContext(Component component, Map<String, Object> sourceContext) {
+        if (component == null) {
+            return;
+        }
+
+        pushAllToContext(Collections.singletonList(component), sourceContext);
+    }
+
+    /**
+     * Update the contexts of the given components.
+     *
+     * <p>Calls {@link ComponentUtils#updateContextForLine} for each component</p>
+     *
+     * @param components the components whose components to update
+     * @param collectionGroup collection group the components are associated with
+     * @param collectionLine an instance of the data object for the line
+     * @param lineIndex the line index
+     * @param lineSuffix id suffix for components in the line to make them unique
+     */
+    public static void updateContextsForLine(List<? extends Component> components, CollectionGroup collectionGroup,
+            Object collectionLine, int lineIndex, String lineSuffix) {
+        for (Component component : components) {
+            updateContextForLine(component, collectionGroup, collectionLine, lineIndex, lineSuffix);
+        }
+    }
+
+    /**
+     * update the context map for the given component
+     *
+     * <p>The values of {@code UifConstants.ContextVariableNames.LINE} and {@code UifConstants.ContextVariableNames.INDEX}
+     * are set to {@code collectionLine} and {@code lineIndex} respectively.</p>
+     *
+     * @param component the component whose context is to be updated
+     * @param collectionGroup collection group the component is associated with
+     * @param collectionLine an instance of the data object for the line
+     * @param lineIndex the line index
+     * @param lineSuffix id suffix for components in the line, not if the collection group has a container id suffix
+     * it will be appended to the lineSuffix for the final exported context entry
+     */
+    public static void updateContextForLine(Component component, CollectionGroup collectionGroup, Object collectionLine,
+            int lineIndex, String lineSuffix) {
+        // line id suffix that we export as expression variable will contain the container suffix as well
+        // so correct references to ids for line components can be configured in the XML
+        if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
+            lineSuffix = lineSuffix + collectionGroup.getContainerIdSuffix();
+        }
+
+        Map<String, Object> toUpdate = new HashMap<String, Object>(5);
+        toUpdate.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
+        toUpdate.put(UifConstants.ContextVariableNames.LINE, collectionLine);
+        toUpdate.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
+        toUpdate.put(UifConstants.ContextVariableNames.LINE_SUFFIX, lineSuffix);
+
+        boolean isAddLine = (lineIndex == -1);
+        toUpdate.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine);
+        pushAllToContext(component, toUpdate);
+    }
+
+    /**
+     * Sets the context of the given lifecycle element to null, then using reflection recursively finds any
+     * lifecycle element children and sets their context to null.
+     *
+     * @param lifecycleElement lifecycle element instance to clean
+     */
+    public static void cleanContextDeap(LifecycleElement lifecycleElement) {
+        if (lifecycleElement == null) {
+            return;
+        }
+
+        lifecycleElement.setContext(null);
+
+        // find any children that are lifecycle elements and clean them as well
+        Class<?> elementClass = lifecycleElement.getClass();
+
+        List<java.lang.reflect.Field> fields = ReflectionUtils.getAllFields(elementClass);
+        for (java.lang.reflect.Field field : fields) {
+            // Check for lists that can contain lifecycle elements
+            if (Collection.class.isAssignableFrom(field.getType())) {
+                ReflectionUtils.makeAccessible(field);
+                Collection<Object> elements = (Collection<Object>) ReflectionUtils.getField(field, lifecycleElement);
+                if (elements != null) {
+                    for (Object element : elements) {
+                        if (element != null && LifecycleElement.class.isAssignableFrom(element.getClass())) {
+                            cleanContextDeap((LifecycleElement) element);
+                        }
+                    }
+                }
+            // Check for Maps that can contain lifecycle elements
+            } else if (Map.class.isAssignableFrom(field.getType())) {
+                ReflectionUtils.makeAccessible(field);
+                Map<Object, Object> elements = (Map<Object, Object>) ReflectionUtils.getField(field, lifecycleElement);
+                if (elements != null) {
+                    for (Object element : elements.entrySet()) {
+                        if (element != null && LifecycleElement.class.isAssignableFrom(element.getClass())) {
+                            cleanContextDeap((LifecycleElement) element);
+                        }
+                    }
+                }
+            // Check if field is a lifecycle element itself
+            } else if (LifecycleElement.class.isAssignableFrom(field.getType())) {
+                ReflectionUtils.makeAccessible(field);
+                LifecycleElement nestedElement = (LifecycleElement) ReflectionUtils.getField(field, lifecycleElement);
+
+                cleanContextDeap(nestedElement);
+            }
+        }
     }
 
     /**

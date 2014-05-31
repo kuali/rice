@@ -289,9 +289,6 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
-        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
-        }
         ContextUtils.updateContextsForLine(actionComponents, collectionGroup, collectionLine, lineIndex, lineSuffix);
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
@@ -384,9 +381,7 @@ public class CollectionGroupBuilder implements Serializable {
     protected List<? extends Component> getAddLineActionComponents(View view, Object model,
             CollectionGroup collectionGroup) {
         String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
-        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
-        }
+
 
         List<? extends Component> lineActionComponents = ComponentUtils.copyComponentList(
                 collectionGroup.getAddLineActions(), lineSuffix);

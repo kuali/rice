@@ -180,8 +180,22 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
             // add line enter key action
             addEnterKeyDataAttributeToGroup(lineGroup, lineContext, expressionEvaluator,
                     collectionGroup.getAddLineEnterKeyAction());
-        }
-        else {
+
+            if (collectionGroup.isAddWithDialog()) {
+                String addLineGroupId = lineGroup.getId();
+                if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
+                    addLineGroupId = addLineGroupId + collectionGroup.getContainerIdSuffix();
+                }
+
+                String actionScript = "showLightboxComponent('" + addLineGroupId + "');";
+                if (StringUtils.isNotBlank(collectionGroup.getAddWithDialogAction().getActionScript())) {
+                    actionScript = collectionGroup.getAddWithDialogAction().getActionScript() + actionScript;
+                }
+                collectionGroup.getAddWithDialogAction().setActionScript(actionScript);
+
+                lineGroup.setStyle("display: none");
+            }
+        } else {
             lineGroup = ComponentUtils.copy(lineGroupPrototype, idSuffix);
 
             // existing line enter key action

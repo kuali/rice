@@ -421,25 +421,6 @@ public interface CollectionGroup extends Group, DataBinding {
     void setSubCollections(List<CollectionGroup> subCollections);
 
     /**
-     * Suffix for IDs that identifies the collection line the sub-collection belongs to
-     *
-     * <p>
-     * Built by the framework as the collection lines are being generated
-     * </p>
-     *
-     * @return id suffix for sub-collection
-     */
-    String getSubCollectionSuffix();
-
-    /**
-     * Setter for the sub-collection suffix (used by framework, should not be
-     * set in configuration)
-     *
-     * @param subCollectionSuffix
-     */
-    void setSubCollectionSuffix(String subCollectionSuffix);
-
-    /**
      * Collection Security object that indicates what authorization (permissions) exist for the collection
      *
      * @return CollectionGroupSecurity instance

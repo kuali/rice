@@ -92,10 +92,6 @@ public class LineBuilderContext implements Serializable {
             idSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         }
 
-        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-            idSuffix = collectionGroup.getSubCollectionSuffix() + idSuffix;
-        }
-
         return idSuffix;
     }
 

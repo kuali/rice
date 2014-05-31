@@ -188,11 +188,11 @@ public class LifecycleRefreshPathBuilder {
         for (Map.Entry<String, String> phasePathEntry : phasePathMapping.entrySet()) {
             String refreshPath = phasePathEntry.getValue();
 
+            addElementRefreshPath(refreshPath, phasePathEntry.getKey(), initializePaths, applyModelPaths,
+                    finalizePaths);
+
+            // if the path is different from the element path we are processing, process its parents
             if (StringUtils.equals(elementPath, refreshPath)) {
-                addElementRefreshPath(refreshPath, phasePathEntry.getKey(), initializePaths, applyModelPaths,
-                        finalizePaths);
-            } else {
-                // process this as a new path (process its parents)
                 processElementPath(refreshPath, initializePaths, applyModelPaths, finalizePaths, visitedPaths);
             }
         }

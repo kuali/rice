@@ -849,9 +849,6 @@ function createTable(tableId, additionalOptions, groupingOptions) {
                 if (table.data("open")) {
                     openAllDetails(tableId);
                 }
-                else {
-                    closeAllDetails(tableId);
-                }
             });
 
             if (detailsOpen) {
@@ -868,7 +865,36 @@ function createTable(tableId, additionalOptions, groupingOptions) {
         if (groupingOptions) {
             oTable.rowGrouping(groupingOptions);
         }
+
+        restoreDetailState(tableId);
     });
+}
+
+/**
+ * Restores the open/close state of each details section within the table
+ *
+ * @param tableId the table displayed
+ */
+function restoreDetailState(tableId) {
+    var oTable = getDataTableHandle(tableId);
+
+    if (oTable != null) {
+        var rows = jQuery(oTable).find('tr').not(".detailsRow");
+        rows.each(function () {
+            var row = jQuery(this);
+            var detailsElement = jQuery(row.find("[data-open]"));
+            if (detailsElement.length === 0) return true;
+
+            var detailsId = jQuery(detailsElement[0]).attr("id");
+            var detailState = getComponentState(detailsId, 'open');
+
+            if (detailState != "" && detailState === true) {
+                var actionComponent = row.find("a[data-role='detailsLink']");
+
+                openDetails(oTable, row, actionComponent, false);
+            }
+        });
+    }
 }
 
 /**
@@ -946,6 +972,7 @@ function openDetails(oTable, row, actionComponent, animate) {
     detailsGroup = jQuery(newRow).find("[data-role='details'], span[data-role='placeholder']").filter(":first");
 
     detailsGroup.attr("data-open", "true");
+    setComponentState(detailsId, 'open', true);
 
     //make sure scripts are run on the now shown group
     runHiddenScripts(detailsGroup, true, true);
@@ -1101,6 +1128,7 @@ function closeDetails(oTable, row, actionComponent, animate) {
     }
 
     detailsContent.attr("data-open", "false");
+    setComponentState(jQuery(detailsContent).attr("id"), 'open', false);
 
     detailsContent.hide();
     fieldGroupWrapper.append(detailsContent.detach());

@@ -65,7 +65,7 @@ public class TermBo implements TermDefinitionContract, Serializable {
     private TermSpecificationBo specification = new TermSpecificationBo();
 
     @OneToMany(targetEntity = TermParameterBo.class, orphanRemoval = true,
-            cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST},
+            cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST},
             mappedBy = "term"
     )
     private List<TermParameterBo> parameters;

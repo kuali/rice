@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UrlInfo;
@@ -26,7 +28,10 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * <p>This is used to list objects that represent files.
  * The file will be uploaded to the methodToCall specified and the response is expected to be the refreshed collection.
  * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BeanTag(name = "multiFileUploadCollection", parent = "Uif-MultiFileUploadCollection")
 public class MultiFileUploadCollection extends ContentElementBase {
     private static final long serialVersionUID = 6324034860109503990L;
 
@@ -88,6 +93,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return the collection
      */
+    @BeanTagAttribute
     public CollectionGroup getCollection() {
         return collection;
     }
@@ -104,6 +110,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return the methodToCall for file uploads
      */
+    @BeanTagAttribute
     public String getMethodToCall() {
         return methodToCall;
     }
@@ -121,6 +128,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return the file upload url configuration override
      */
+    @BeanTagAttribute
     public UrlInfo getUrl() {
         return url;
     }
@@ -137,6 +145,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return the text of the add files button
      */
+    @BeanTagAttribute
     public String getAddFilesButtonText() {
         return addFilesButtonText;
     }
@@ -153,6 +162,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return the regex for file upload verification
      */
+    @BeanTagAttribute
     public String getAcceptFileTypes() {
         return acceptFileTypes;
     }
@@ -169,6 +179,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return maximum file size in bytes
      */
+    @BeanTagAttribute
     public Integer getMaxFileSize() {
         return maxFileSize;
     }
@@ -185,6 +196,7 @@ public class MultiFileUploadCollection extends ContentElementBase {
      *
      * @return minimum file size in bytes
      */
+    @BeanTagAttribute
     public Integer getMinFileSize() {
         return minFileSize;
     }

@@ -707,9 +707,13 @@ function collapseDisclosures() {
  */
 function createMultiFileUploadForCollection(id, collectionId, additionalOptions) {
     var options = {
-        dropZone: "#" + collectionId,
+        dropZone: jQuery("#" + id),
         add: function (e, data) {
-            //data.context = jQuery('<p/>').text('Uploading...').appendTo(".fileupload-buttonbar");
+            if (!jQuery("#" + id + "_upload").length) {
+                var $buttons = jQuery("#" + id + " > .fileupload-buttonbar > div");
+                jQuery("<span id='" + id + "_upload' style='display:inline;'/>").text(" Uploading...")
+                        .appendTo($buttons);
+            }
             data.collectionId = collectionId;
             data.submit();
         },
@@ -720,6 +724,7 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
             // create a response object to process the response contents
             var kradResponse = new KradResponse(responseContents);
             kradResponse.processResponse();
+            jQuery("#" + id + "_upload").remove();
         }
     };
     options = jQuery.extend(options, additionalOptions);

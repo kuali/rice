@@ -97,7 +97,7 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
     @Column(name="ACCT_FO_ID",length=40)
     @Size(max=40)
-    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.HIDDEN),
+    @UifDisplayHints({@UifDisplayHint(UifDisplayHintType.HIDDEN), @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA),
     	@UifDisplayHint(value=UifDisplayHintType.SECTION,id="fo",label="Fiscal Officer User ID")})
 	private String foId;
 

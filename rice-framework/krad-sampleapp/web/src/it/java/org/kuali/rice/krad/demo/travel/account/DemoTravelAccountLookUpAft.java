@@ -95,13 +95,6 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitForTextPresent("fran");
         waitAndClickButtonByText(CLEAR_VALUES);
         
-        //Search by Travel Account Fiscal Officer User ID
-        waitAndTypeByName("lookupCriteria[foId]","fred");
-        waitAndClickButtonByText(SEARCH);
-        waitForElementPresentByXpath("//a[contains(text(),'a1')]");
-        waitForTextPresent("fred");
-        waitAndClickButtonByText(CLEAR_VALUES);
-        
         //Search by Travel Account Fiscal Officer
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","fred");
         waitAndClickButtonByText(SEARCH);

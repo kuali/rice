@@ -42,7 +42,8 @@ public class DemoGeneralFeaturesReadOnlyAft extends WebDriverLegacyITBase {
     }
 
     protected void testGeneralFeaturesReadOnly() throws Exception {
-        waitAndClickByXpath("//a[@href='http://env14.rice.kuali.org/kr-krad/kradsampleapp?viewId=Demo-ReadOnly-View1&methodToCall=start']");
+        jGrowl("Click Read Only Example link");
+        waitAndClickByXpath("//header[@data-header_for=\"Demo-ReadOnly-Example1\"]/following-sibling::a");
         switchToWindow("Kuali :: ReadOnly Test");
         waitForElementPresentByXpath("//input[@name='inputField1']");
         waitForElementPresentByXpath("//textarea[@name='inputField2']");

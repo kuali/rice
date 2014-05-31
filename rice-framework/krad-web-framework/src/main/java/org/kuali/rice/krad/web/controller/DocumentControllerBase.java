@@ -130,8 +130,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
             if (form.getView() != null) {
 
-                //indicate that default values should be applied to this view
-                form.addViewThatNeedsDefaultValuesApplied(form.getViewId());
+                //populate the field default values
+                form.setApplyDefaultValues(true);
             }
             createDocument(form);
         } else {

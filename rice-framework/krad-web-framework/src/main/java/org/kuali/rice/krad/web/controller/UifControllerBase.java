@@ -205,8 +205,8 @@ public abstract class UifControllerBase {
         // TODO: this needs to be invoked for each request
         if (form.getView() != null) {
 
-            //indicate that default values need to be applied to this view
-            form.addViewThatNeedsDefaultValuesApplied(form.getViewId());
+            //populate the field default values
+            form.setApplyDefaultValues(true);
 
             String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
             checkViewAuthorization(form, methodToCall);

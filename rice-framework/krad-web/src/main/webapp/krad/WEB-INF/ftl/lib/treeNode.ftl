@@ -17,7 +17,7 @@
 -->
 <#macro treeNode node>
 
-    <li id="${node.data.id}" class="${node.nodeType!}">
+    <li id="${node.data.id}_item" class="${node.nodeType!}">
         <a href="#" class="${node.nodeType!}">
             <@krad.template component=node.nodeLabel/>
         </a>

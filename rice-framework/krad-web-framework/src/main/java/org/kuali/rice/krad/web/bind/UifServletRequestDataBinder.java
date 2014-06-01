@@ -52,7 +52,6 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifServletRequestDataBinder extends ServletRequestDataBinder {
-
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
             UifServletRequestDataBinder.class);
 
@@ -164,7 +163,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         _bind(request);
 
         executeAutomaticLinking(request, form);
-        
+
         if (!form.isUpdateNoneRequest()) {
             // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
             String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
@@ -219,17 +218,20 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
             LOG.info("Skip automatic linking because change tracking not enabled for this form.");
             return;
         }
+
         if (!autoLinking) {
             LOG.info("Skip automatic linking because it has been disabled for this form");
             return;
         }
+
         Set<String> autoLinkingPaths = determineRootAutoLinkingPaths(form.getClass(), null, new HashSet<Class<?>>());
         List<AutoLinkTarget> targets = extractAutoLinkTargets(autoLinkingPaths);
+
         // perform linking for each target
         for (AutoLinkTarget target : targets) {
             if (!dataObjectService.supports(target.getTarget().getClass())) {
-                LOG.warn("Encountered an auto linking target that is not a valid data object: "
-                        + target.getTarget().getClass());
+                LOG.warn("Encountered an auto linking target that is not a valid data object: " + target.getTarget()
+                        .getClass());
             } else {
                 DataObjectWrapper<?> wrapped = dataObjectService.wrap(target.getTarget());
                 wrapped.linkChanges(target.getModifiedPropertyPaths());
@@ -242,16 +244,16 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      * linking.
      *
      * <p>This will be determined based on the presence of {@link Link} annotations on the given root object type.
-     * This method is invoked recursively as it walks the class structure looking for Link annotations. It uses the path
+     * This method is invoked recursively as it walks the class structure looking for Link annotations. It uses the
+     * path
      * and scanned arguments to keep track of how deep into the structure the scanning is and to prevent infinite
      * recursion.</p>
      *
      * @param rootObjectType the root object type from which to perform the scan for auto-linking paths
      * @param path the current property path relative to the original root object type at which the scan began, if null
-     *             then we are scanning from the root-most object type. Each recursive call of this method will append
-     *             a new property to this path
+     * then we are scanning from the root-most object type. Each recursive call of this method will append
+     * a new property to this path
      * @param scanned used to track classes that have already been scanned and prevent infinite recursion
-     *
      * @return a set of property paths that should be auto linked
      */
     protected Set<String> determineRootAutoLinkingPaths(Class<?> rootObjectType, String path, Set<Class<?>> scanned) {
@@ -283,12 +285,13 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
 
     /**
-     * A helper method which simply assembles a set of property paths for the given {@link Link} annotation which should
+     * A helper method which simply assembles a set of property paths for the given {@link Link} annotation which
+     * should
      * be auto linked.
      *
-     * @param path the property path from the top-most root class to where the Link annotation was found during the scan
+     * @param path the property path from the top-most root class to where the Link annotation was found during the
+     * scan
      * @param autoLink the Link annotation which is being processed
-     *
      * @return a Set of auto linking paths based on the given path parameter, plus the path(s) defined on the
      * {@link Link} annotation
      */
@@ -305,32 +308,113 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
 
     /**
-     * Uses the binding result on this data binder to determine the targets on the form that automatic linking should be
-     * performed against.
+     * Uses the binding result on this data binder to determine the targets on the form that automatic linking should
+     * be performed against.
      *
      * <p>Only those property paths for which auto linking is enabled and which were actually modified during the
      * execution of this data binding will be returned from this method.</p>
      *
      * @param autoLinkingPaths a set of paths relative to the form class for which auto-linking has been enabled
-     *
      * @return a list of {@link AutoLinkTarget} objects which contain an object to be linked and which properties on
      * that object were modified during this data binding execution
      */
     protected List<AutoLinkTarget> extractAutoLinkTargets(Set<String> autoLinkingPaths) {
         List<AutoLinkTarget> targets = new ArrayList<AutoLinkTarget>();
+
         for (String autoLinkingPath : autoLinkingPaths) {
+            Object targetObject = getInternalBindingResult().getPropertyAccessor().getPropertyValue(autoLinkingPath);
+            if (targetObject == null) {
+                continue;
+            }
+
+            if (targetObject instanceof Map) {
+                targets.addAll(extractAutoLinkMapTargets(autoLinkingPath, (Map<?, ?>) targetObject));
+
+                continue;
+            }
+
+            if (targetObject instanceof List) {
+                targets.addAll(extractAutoLinkListTargets(autoLinkingPath, (List<?>) targetObject));
+
+                continue;
+            }
+
             Set<String> modifiedAutoLinkingPaths = new HashSet<String>();
-            Set<String> modifiedPaths = ((UifBeanPropertyBindingResult)getInternalBindingResult()).getModifiedPaths();
+
+            Set<String> modifiedPaths = ((UifBeanPropertyBindingResult) getInternalBindingResult()).getModifiedPaths();
             for (String modifiedPath : modifiedPaths) {
                 if (modifiedPath.startsWith(autoLinkingPath)) {
                     modifiedAutoLinkingPaths.add(modifiedPath.substring(autoLinkingPath.length() + 1));
                 }
             }
-            Object targetObject = getInternalBindingResult().getPropertyAccessor().getPropertyValue(autoLinkingPath);
-            if (targetObject != null) {
-                targets.add(new AutoLinkTarget(targetObject, modifiedAutoLinkingPaths));
+
+            targets.add(new AutoLinkTarget(targetObject, modifiedAutoLinkingPaths));
+        }
+
+        return targets;
+    }
+
+    /**
+     * For the map object indicated for linking, iterates through the modified paths and finds paths that match
+     * entries in the map, and if found adds an auto link target.
+     *
+     * @param autoLinkingPath path configured for auto linking
+     * @param targetMap map object for the linking path
+     * @return List of auto linking targets to process
+     */
+    protected List<AutoLinkTarget> extractAutoLinkMapTargets(String autoLinkingPath, Map<?, ?> targetMap) {
+        List<AutoLinkTarget> targets = new ArrayList<AutoLinkTarget>();
+
+        Set<String> modifiedPaths = ((UifBeanPropertyBindingResult) getInternalBindingResult()).getModifiedPaths();
+
+        for (Map.Entry<?, ?> targetMapEntry : targetMap.entrySet()) {
+            Set<String> modifiedAutoLinkingPaths = new HashSet<String>();
+
+            for (String modifiedPath : modifiedPaths) {
+                String targetPathMatch = autoLinkingPath + "['" + targetMapEntry.getKey() + "']";
+
+                if (modifiedPath.startsWith(targetPathMatch)) {
+                    modifiedAutoLinkingPaths.add(modifiedPath.substring(targetPathMatch.length() + 1));
+                }
+            }
+
+            if (!modifiedAutoLinkingPaths.isEmpty()) {
+                targets.add(new AutoLinkTarget(targetMapEntry.getValue(), modifiedAutoLinkingPaths));
             }
         }
+
+        return targets;
+    }
+
+    /**
+     * For the list object indicated for linking, iterates through the modified paths and finds paths that match
+     * entries in the list, and if found adds an auto link target.
+     *
+     * @param autoLinkingPath path configured for auto linking
+     * @param targetList list object for the linking path
+     * @return List of auto linking targets to process
+     */
+    protected List<AutoLinkTarget> extractAutoLinkListTargets(String autoLinkingPath, List<?> targetList) {
+        List<AutoLinkTarget> targets = new ArrayList<AutoLinkTarget>();
+
+        Set<String> modifiedPaths = ((UifBeanPropertyBindingResult) getInternalBindingResult()).getModifiedPaths();
+
+        for (int i = 0; i < targetList.size(); i++) {
+            Set<String> modifiedAutoLinkingPaths = new HashSet<String>();
+
+            for (String modifiedPath : modifiedPaths) {
+                String targetPathMatch = autoLinkingPath + "[" + i + "]";
+
+                if (modifiedPath.startsWith(targetPathMatch)) {
+                    modifiedAutoLinkingPaths.add(modifiedPath.substring(targetPathMatch.length() + 1));
+                }
+            }
+
+            if (!modifiedAutoLinkingPaths.isEmpty()) {
+                targets.add(new AutoLinkTarget(targetList.get(i), modifiedAutoLinkingPaths));
+            }
+        }
+
         return targets;
     }
 
@@ -343,8 +427,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      *
      * @param path the prefix of the property path
      * @param pathElement the suffix of the property path to append to the given path
-     *
-     * @return an appended path, appended with a "." between the given path and pathElement (unless one of these is null)
+     * @return an appended path, appended with a "." between the given path and pathElement (unless one of these is
+     * null)
      */
     private String appendToPath(String path, String pathElement) {
         if (StringUtils.isEmpty(path)) {
@@ -424,7 +508,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      * execution.</p>
      */
     private static final class AutoLinkTarget {
-
         private final Object target;
         private final Set<String> modifiedPropertyPaths;
 
@@ -440,7 +523,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         Set<String> getModifiedPropertyPaths() {
             return Collections.unmodifiableSet(modifiedPropertyPaths);
         }
-
     }
 
 }

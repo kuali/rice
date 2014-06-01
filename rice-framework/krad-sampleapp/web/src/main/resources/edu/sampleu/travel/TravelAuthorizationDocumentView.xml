@@ -177,12 +177,11 @@
   </bean>
 
   <!-- Daily Cost Estimates -->
-  <bean id="TravelAuthorization-DailyCostEstimates" parent="Uif-Disclosure-TableCollectionSection">
+  <bean id="TravelAuthorization-DailyCostEstimates" parent="Uif-Disclosure-StackedCollectionSection">
     <property name="headerText" value="Daily Cost Estimate"/>
     <property name="collectionObjectClass" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
     <property name="propertyName" value="dailyExpenseEstimates"/>
-    <property name="layoutManager.generateAutoSequence" value="true"/>
-    <property name="layoutManager.richTable.render" value="true"/>
+    <property name="layoutManager.summaryTitle" value="@{#line.travelDestination.travelDestinationName} - (@{#line.travelDestination.stateName}, @{#line.travelDestination.countryName})"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="perDiemDate"/>

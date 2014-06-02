@@ -125,12 +125,15 @@ public class FileMetaBlob implements Serializable, FileMeta {
     @Override
     public String getSizeFormatted() {
         DecimalFormat format = new DecimalFormat("0.#");
+
         if (size >= 1000000000) {
             return format.format((((double)size) / 1000000000)) + " GB";
         }
+
         if (size >= 1000000) {
             return format.format((((double)size) / 1000000)) + " MB";
         }
+
         return format.format((((double)size) / 1000)) + " KB";
     }
 

@@ -30,6 +30,7 @@
       <list>
         <ref bean="Demo-CollectionGroup-Example1"/>
         <ref bean="Demo-CollectionGroup-SortTypes"/>
+        <ref bean="Demo-CollectionGroup-CurrencySort"/>
         <ref bean="Demo-CollectionGroup-Readonly1"/>
         <ref bean="Demo-CollectionGroup-Readonly2"/>
         <ref bean="Demo-CollectionGroup-Readonly3"/>
@@ -57,7 +58,6 @@
             </list>
           </property>
         </bean>
-
         <!-- ex:Demo-CollectionGroup-Example1 end-->
       </list>
     </property>
@@ -89,6 +89,63 @@
           </property>
         </bean>
         <!-- ex:Demo-CollectionGroup-SortTypes end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-CollectionGroup-CurrencySort" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionGroup-CurrencySort start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="10">
+          <property name="headerText" value="Table Layout"/>
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Column 1" p:propertyName="dollar3" p:sortAs="kuali_currency"/>
+
+              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 2" p:sortAs="kuali_currency">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+                <property name="validCharactersConstraint">
+                  <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 3" p:sortAs="kuali_currency" p:readOnly="@{!#isAddLine}">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+                <property name="validCharactersConstraint">
+                  <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 4" >
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+                <property name="validCharactersConstraint">
+                  <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 5" p:sortAs="numeric" p:readOnly="@{!#isAddLine}">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+                <property name="validCharactersConstraint">
+                  <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionGroup-CurrencySort end-->
       </list>
     </property>
   </bean>

@@ -176,6 +176,15 @@ public class UITestObject implements Serializable {
     }
 
     /**
+     * @return the field3 as a 'dollar' value for testing
+     */
+    public String getDollar3() {
+        if (this.field3 != null && this.field3.length() > 0)
+            return "$" + this.field3 + ".00";
+        return this.field3;
+    }
+
+    /**
      * @param field3 the field3 to set
      */
     public void setField3(String field3) {

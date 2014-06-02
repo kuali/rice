@@ -1157,8 +1157,12 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-asc'] = function (a, b) {
     var x = a == "-" ? 0 : a.replace(/,/g, "");
     var y = b == "-" ? 0 : b.replace(/,/g, "");
     /* Remove the currency sign */
-    x = x.substring(1);
-    y = y.substring(1);
+    if (x.charAt(0) == '$') {
+        x = x.substring(1);
+    }
+    if (y.charAt(0) == '$') {
+        y = y.substring(1);
+    }
     /* Parse and return */
     x = parseFloat(x);
     y = parseFloat(y);
@@ -1185,8 +1189,12 @@ jQuery.fn.dataTableExt.oSort['kuali_currency-desc'] = function (a, b) {
     var x = a == "-" ? 0 : a.replace(/,/g, "");
     var y = b == "-" ? 0 : b.replace(/,/g, "");
     /* Remove the currency sign */
-    x = x.substring(1);
-    y = y.substring(1);
+    if (x.charAt(0) == '$') {
+        x = x.substring(1);
+    }
+    if (y.charAt(0) == '$') {
+        y = y.substring(1);
+    }
     /* Parse and return */
     x = parseFloat(x);
     y = parseFloat(y);
@@ -1224,7 +1232,11 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function (oSettings, iColumn, i
                     value = jQuery.trim(inputField.text());
                 } else {
                     // just use the text within the cell
-                    value = jQuery(td).text();
+                    value = jQuery(td).text().trim();
+                    // strip leading $ if present
+                    if (value.charAt(0) == '$') {
+                        value = value.substring(1);
+                    }
                 }
             }
         }

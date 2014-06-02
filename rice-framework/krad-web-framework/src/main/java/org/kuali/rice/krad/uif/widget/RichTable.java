@@ -608,7 +608,9 @@ public class RichTable extends WidgetBase {
                 field.getPropertyName());
         // check to see if field has custom sort type
         if (field.getSortAs() != null && field.getSortAs().length() > 0) {
-            if (field.getSortAs().equals(UifConstants.TableToolsValues.DATE)) {
+            if (field.getSortAs().equals(UifConstants.TableToolsValues.CURRENCY)) {
+                dataTypeClass = KualiDecimal.class;
+            } else if (field.getSortAs().equals(UifConstants.TableToolsValues.DATE)) {
                 dataTypeClass = java.sql.Date.class;
             } else if (field.getSortAs().equals(UifConstants.TableToolsValues.NUMERIC)) {
                 dataTypeClass = Number.class;

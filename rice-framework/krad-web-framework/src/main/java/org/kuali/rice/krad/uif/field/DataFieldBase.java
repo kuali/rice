@@ -1074,8 +1074,8 @@ public class DataFieldBase extends FieldBase implements DataField {
      */
     @Override
     public void setSortAs(String sortAs) {
-        if (!(sortAs.equals(UifConstants.TableToolsValues.DATE) || sortAs.equals(UifConstants.TableToolsValues.NUMERIC) || sortAs.equals(UifConstants.TableToolsValues.STRING))) {
-            throw new IllegalArgumentException("invalid sortAs value of " + sortAs + ", allowed: " + UifConstants.TableToolsValues.DATE + "|" + UifConstants.TableToolsValues.NUMERIC + "|" + UifConstants.TableToolsValues.STRING);
+        if (!(sortAs.equals(UifConstants.TableToolsValues.CURRENCY) || sortAs.equals(UifConstants.TableToolsValues.DATE) || sortAs.equals(UifConstants.TableToolsValues.NUMERIC) || sortAs.equals(UifConstants.TableToolsValues.STRING))) {
+            throw new IllegalArgumentException("invalid sortAs value of " + sortAs + ", allowed: " + UifConstants.TableToolsValues.CURRENCY + "|" + UifConstants.TableToolsValues.DATE + "|" + UifConstants.TableToolsValues.NUMERIC + "|" + UifConstants.TableToolsValues.STRING);
         }
         this.sortAs = sortAs;
     }

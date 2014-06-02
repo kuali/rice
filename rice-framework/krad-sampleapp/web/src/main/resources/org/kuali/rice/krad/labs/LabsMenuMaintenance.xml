@@ -343,6 +343,16 @@
           </list>
           </property>
         </bean>
+        <bean id="LabsMenuMaintenance-Row7-Col3" parent="KradSampleAppDemo-DemoGroup"
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Maintenance Edit Sample - Action Button"
+                    p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR7C3"/>
+              <bean parent="Uif-Message" p:messageText="Demonstrate adding an action button to the New column"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

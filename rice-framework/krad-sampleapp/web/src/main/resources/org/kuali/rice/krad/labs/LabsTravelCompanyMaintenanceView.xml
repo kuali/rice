@@ -29,6 +29,7 @@
 
   <bean id="LabsTravelCompany-MaintenanceView" parent="TravelCompany-MaintenanceView">
     <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsTravelCompany"/>
+    <property name="headerText" value="Travel Company Maintenance"/>
   </bean>
 
 </beans>

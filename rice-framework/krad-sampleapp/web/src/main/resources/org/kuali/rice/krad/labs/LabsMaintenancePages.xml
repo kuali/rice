@@ -352,4 +352,22 @@
       </list>
     </property>
   </bean>
+
+  <bean id="KradMaintenanceSample-PageR7C3" parent="KradSampleAppView">
+    <property name="page.headerText" value="Sample"/>
+    <property name="page.items">
+      <list>
+        <bean id="KradMaintenanceSampleItems-PageR7C3" parent="Uif-VerticalBoxSection"
+              p:headerText="Basic maintenance edit page Action Button"
+              p:instructionalText="A sample maintenance edit document with Action Button above New column">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Basic Edit with Action Button"
+                    p:href="maintenance?travelCompanyId=10000&amp;methodToCall=maintenanceEdit&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelCompany&amp;viewName=LabsTravelCompanyActionButtonMaintenanceView"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

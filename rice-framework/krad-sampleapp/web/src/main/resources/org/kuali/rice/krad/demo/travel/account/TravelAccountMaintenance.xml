@@ -41,17 +41,6 @@
           <property name="headerText" value="Account Information"/>
           <property name="items">
             <list>
-              <bean parent="Uif-ActionField" p:actionLabel="Save" p:render="@{#renderCompareSaveButton}" p:methodToCall="save">
-                <property name="action">
-                  <bean parent="Uif-ActionImage">
-                    <property name="cssClasses">
-                      <list>
-                        <value>btn-default</value>
-                      </list>
-                    </property>
-                  </bean>
-                </property>
-              </bean>
               <bean parent="Uif-InputField" p:propertyName="number"/>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true" />

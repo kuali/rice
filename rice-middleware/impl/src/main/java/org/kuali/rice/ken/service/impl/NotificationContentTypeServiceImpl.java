@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.ken.service.impl;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
+
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -22,17 +28,6 @@ import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationContentTypeBo;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.krad.data.DataObjectService;
-
-import java.util.Collection;
-import java.util.List;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
-
-//import org.apache.ojb.broker.query.QueryByCriteria;
-//import org.apache.ojb.broker.query.QueryFactory;
-//import org.kuali.rice.core.jpa.criteria.Criteria;
-
 
 /**
  * NotificationContentTypeService implementation - uses the dataObjectService to get at the underlying data in the stock DBMS.
@@ -106,7 +101,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
         int lastVersion = findHighestContentTypeVersion(contentType.getName());
         NotificationContentTypeBo next;
         if (contentType.getId() == null) {
-            next = contentType; 
+            next = contentType;
         } else {
             next = new NotificationContentTypeBo();
             next.setName(contentType.getName());
@@ -119,7 +114,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
         next.setVersion(lastVersion + 1);
         next.setCurrent(true);
         next = dataObjectService.save(next);
-        
+
         // update all the old references
         if (previous != null) {
             Collection<NotificationBo> ns = getNotificationsOfContentType(previous);
@@ -151,7 +146,7 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
 
         return dataObjectService.findMatching(NotificationContentTypeBo.class, criteria.build()).getResults();
     }
-    
+
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllContentTypes()
      */

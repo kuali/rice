@@ -18,7 +18,6 @@ package org.kuali.rice.kew.stats.service.impl;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.stats.service.StatsService;
@@ -27,31 +26,36 @@ import org.kuali.rice.kew.stats.service.StatsService;
 public class StatsServiceImpl implements StatsService {
 
     private StatsDAO statsDAO;
-        
-    public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
+
+    @Override
+    public void NumActiveItemsReport(Stats stats) throws SQLException {
         getStatsDAO().NumActiveItemsReport(stats);
     }
-    
-    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
+
+    @Override
+    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException {
         getStatsDAO().DocumentsRoutedReport(stats, begDate, endDate);
     }
-    
-    public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
+
+    @Override
+    public void NumberOfDocTypesReport(Stats stats) throws SQLException {
         getStatsDAO().NumberOfDocTypesReport(stats);
     }
-    
-    public void NumUsersReport(Stats stats) throws SQLException, LookupException {
+
+    @Override
+    public void NumUsersReport(Stats stats) throws SQLException {
         getStatsDAO().NumUsersReport(stats);
     }
 
-    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
+    @Override
+    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException {
         getStatsDAO().NumInitiatedDocsByDocTypeReport(stats);
     }
-    
+
     public StatsDAO getStatsDAO() {
         return statsDAO;
     }
-    
+
     public void setStatsDAO(StatsDAO statsDAO) {
         this.statsDAO = statsDAO;
     }

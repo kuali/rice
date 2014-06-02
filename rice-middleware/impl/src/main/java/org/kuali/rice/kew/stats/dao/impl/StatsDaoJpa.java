@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kew.stats.dao.impl;
 
-import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.core.api.util.ConcreteKeyValue;
-import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.stats.Stats;
-import org.kuali.rice.kew.stats.dao.StatsDAO;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -31,9 +22,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.stats.Stats;
+import org.kuali.rice.kew.stats.dao.StatsDAO;
+
 /**
- * This is a description of what this class does - ddean don't forget to fill this in. 
- * 
+ * This is a description of what this class does - ddean don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -51,16 +51,16 @@ public class StatsDaoJpa implements StatsDAO {
                     "select count(dt) from DocumentType dt where dt.currentInd = true";
 
     private EntityManager entityManager;
-    
+
     @Override
-	public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
+	public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException {
         Query query = getEntityManager().createQuery(STATS_DOCUMENTS_ROUTED_REPORT);
         query.setParameter("beginDate", new Timestamp(begDate.getTime()));
         query.setParameter("endDate", new Timestamp(endDate.getTime()));
-        
+
         @SuppressWarnings("unchecked")
         List<Object[]> resultList = query.getResultList();
-        
+
         for (Object[] result : resultList) {
             String actionType = result[1].toString();
             String number = result[0].toString();
@@ -85,40 +85,40 @@ public class StatsDaoJpa implements StatsDAO {
     }
 
     @Override
-	public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
+	public void NumActiveItemsReport(Stats stats) throws SQLException {
         stats.setNumActionItems(getEntityManager().createQuery(STATS_NUM_ACTIVE_ITEMS_REPORT)
                 .getSingleResult().toString());
     }
 
     @Override
-	public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
+	public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException {
         Query query = getEntityManager().createQuery(STATS_NUM_INITIATED_DOCS_BY_DOC_TYPE_REPORT);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -29);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);        
+        calendar.set(Calendar.MILLISECOND, 0);
         query.setParameter("createDate", new Timestamp(calendar.getTime().getTime()));
-        
+
         @SuppressWarnings("unchecked")
         List<Object[]> resultList = query.getResultList();
-        
+
         List<KeyValue> numDocs = new ArrayList<KeyValue>(resultList.size());
         for (Object[] result : resultList) {
             numDocs.add(new ConcreteKeyValue(result[1].toString(),result[0].toString()));
         }
-        
+
         stats.setNumInitiatedDocsByDocType(numDocs);
     }
 
     @Override
-	public void NumUsersReport(Stats stats) throws SQLException, LookupException {
+	public void NumUsersReport(Stats stats) throws SQLException {
         stats.setNumUsers(getEntityManager().createQuery(STATS_NUM_USERS_REPORT).getSingleResult().toString());
     }
 
     @Override
-	public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
+	public void NumberOfDocTypesReport(Stats stats) throws SQLException {
         stats.setNumDocTypes(getEntityManager().createQuery(
                 STATS_NUM_DOC_TYPES_REPORT).getSingleResult().toString());
     }

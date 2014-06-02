@@ -18,7 +18,6 @@ package org.kuali.rice.kew.stats.service;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.kew.stats.Stats;
 
 /**
@@ -29,10 +28,10 @@ import org.kuali.rice.kew.stats.Stats;
  */
 public interface StatsService {
 
-    public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException;
-    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException;
-    public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException;
-    public void NumUsersReport(Stats stats) throws SQLException, LookupException;    
-    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException;
-    
+    public void NumActiveItemsReport(Stats stats) throws SQLException;
+    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException;
+    public void NumberOfDocTypesReport(Stats stats) throws SQLException;
+    public void NumUsersReport(Stats stats) throws SQLException;
+    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException;
+
 }

@@ -345,9 +345,9 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             caseConstraint.setPropertyName(propertyName);
         }
 
-        setupFieldQuery();
-
         View view = ViewLifecycle.getView();
+
+        setupFieldQuery(view);
 
         // special requiredness indicator handling, if this was previously not required reset its required
         // message to be ** for indicating required in the next state
@@ -531,13 +531,16 @@ public class InputFieldBase extends DataFieldBase implements InputField {
     }
 
     /**
-     * Performs setup of the field attribute query and informational display properties. Paths
-     * are adjusted to match the binding for the this field, and the necessary onblur script for
-     * triggering the query client side is constructed
+     * Performs setup of the field attribute query and informational display properties.
+     *
+     * <p>Paths are adjusted to match the binding for the this field, and the necessary onblur script for
+     * triggering the query client side is constructed</p>
+     *
+     * @param view view instance the input field is associated with
      */
-    protected void setupFieldQuery() {
+    protected void setupFieldQuery(View view) {
         if (getAttributeQuery() != null) {
-            getAttributeQuery().defaultQueryTarget(ViewLifecycle.getHelper());
+            getAttributeQuery().defaultQueryTarget(view.getViewHelperService());
 
             // adjust paths on query mappings
             getAttributeQuery().updateQueryFieldMapping(getBindingInfo());

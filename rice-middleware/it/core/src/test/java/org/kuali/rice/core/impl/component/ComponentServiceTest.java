@@ -24,7 +24,10 @@ import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.impl.component.ComponentBo;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.List;
@@ -32,10 +35,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * An integration test which tests the reference implementation of the ComponentService
+ * An integration test which tests the reference implementation of the ComponentService.
  *
- * TODO - for now this test is part of KRAD even though it should be part of the core (pending
- * further modularity work)
+ * TODO - for now this test is part of KRAD even though it should be part of the core (pending further modularity work)
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -43,145 +45,148 @@ import static org.junit.Assert.*;
 public class ComponentServiceTest extends CORETestCase {
 
     private ComponentService componentService;
+    private DataObjectService dataObjectService;
 
     @Before
-    public void establishComponentService() {
+    public void establishServices() {
         componentService = CoreServiceApiServiceLocator.getComponentService();
         assertNotNull("Failed to locate ComponentService", componentService);
+
+        dataObjectService = KRADServiceLocator.getDataObjectService();
+        assertNotNull("Failed to locate DataObjectService", dataObjectService);
     }
 
-
+    /**
+     * Ensure that an existing {@link Component} can be fetched by the {link DataObjectService}.
+     */
     @Test
     public void testGetComponentByDataObjectService() {
-        QueryByCriteria.Builder qbc = QueryByCriteria.Builder.forAttribute("namespace.code", "KR-NS");
-        QueryResults<ComponentBo> results = KRADServiceLocator.getDataObjectService().findMatching(ComponentBo.class, qbc.build());
+        NamespaceBo namespace = NamespaceBo.from(Namespace.Builder.create("KR-TST").build());
+        dataObjectService.save(namespace);
+        ComponentBo component = ComponentBo.from(Component.Builder.create("KR-TST", "TST-DOS", "Test Data Object Service").build());
+        dataObjectService.save(component);
 
-        assertNotNull(results);
-        assertTrue(CollectionUtils.isNotEmpty(results.getResults()));
+        // get a component we know exists
+        QueryByCriteria.Builder query = QueryByCriteria.Builder.forAttribute("namespace.code", "KR-TST");
+        QueryResults<ComponentBo> results = dataObjectService.findMatching(ComponentBo.class, query.build());
+        assertNotNull("Results were null", results);
+        assertTrue("Results were empty", CollectionUtils.isNotEmpty(results.getResults()));
     }
 
-
-    @Test
     /**
-     * tests {@link ComponentService#getComponentByCode(String, String)} for a component that does not exist
-     * and for a component that exists
+     * Ensure that {@link ComponentService#getComponentByCode(String, String)} returns a null {@link Component} when no
+     * records exist by that namespace and code and a not-null {@link Component} when a record exists by that namespace
+     * and code.
      */
+    @Test
     public void testGetComponentByCode() {
-        // get a component we know does not exist
-        assertNull(componentService.getComponentByCode("blah", "blah"));
+        NamespaceBo namespace = NamespaceBo.from(Namespace.Builder.create("KR-TST").build());
+        dataObjectService.save(namespace);
+        ComponentBo component = ComponentBo.from(Component.Builder.create("KR-TST", "TST-CD", "Test Code").build());
+        dataObjectService.save(component);
 
-        // get a component which we know exists
-        Component component = componentService.getComponentByCode("KR-WKFLW", "DocumentSearch");
-        assertNotNull(component);
-        assertTrue(component.isActive());
+        // get a component we know does not exist
+        Component nonExistingComponent = componentService.getComponentByCode("blah", "blah");
+        assertNull("Component was not null", nonExistingComponent);
+
+        // get a component we know exists
+        Component existingComponent = componentService.getComponentByCode("KR-TST", "TST-CD");
+        assertNotNull("Component was null", existingComponent);
+        assertTrue("Component was not active", existingComponent.isActive());
     }
 
-    @Test
     /**
-     * tests {@link ComponentService#getAllComponentsByNamespaceCode(String)} by a component namespace that does not exist and
-     * by a component namespace that does exist
+     * Ensure that {@link ComponentService#getAllComponentsByNamespaceCode(String)} returns a null {@link Component}
+     * when no records exist by that namespace and a not-null {@link Component} when a record exists by that namespace.
      */
+    @Test
     public void testGetAllComponentsByNamespaceCode() {
-        // get by a component namespace we know does not exist
-        List<Component> components = componentService.getAllComponentsByNamespaceCode("blah");
-        assertNotNull(components);
-        assertEquals(0, components.size());
+        NamespaceBo namespace = NamespaceBo.from(Namespace.Builder.create("KR-TST").build());
+        dataObjectService.save(namespace);
+        ComponentBo component1 = ComponentBo.from(Component.Builder.create("KR-TST", "TST-NMSPC1", "Test Namespace 1").build());
+        dataObjectService.save(component1);
+        ComponentBo component2 = ComponentBo.from(Component.Builder.create("KR-TST", "TST-NMSPC2", "Test Namespace 2").build());
+        dataObjectService.save(component2);
 
-        // now fetch all components for a namespace which we know has more than 1,
-        // we should have 7 components under the "KR-NS" namespace code in our default test data set as follows:
-        // +----------+-----------------------------+
-        // | NMSPC_CD | CMPNT_CD                    |
-        // +----------+-----------------------------+
-        // | KR-NS    | All                         |
-        // | KR-NS    | Batch                       |
-        // | KR-NS    | Document                    |
-        // | KR-NS    | Lookup                      |
-        // | KR-NS    | PurgePendingAttachmentsStep |
-        // | KR-NS    | PurgeSessionDocumentsStep   |
-        // | KR-NS    | ScheduleStep                |
-        // +----------+-----------------------------+
+        // get components we know do not exist
+        List<Component> nonExistingComponents = componentService.getAllComponentsByNamespaceCode("blah");
+        assertNotNull("Components were null", nonExistingComponents);
+        assertEquals("Wrong number of components were found", 0, nonExistingComponents.size());
 
+        // get components we know exist
+        List<Component> existingComponents = componentService.getAllComponentsByNamespaceCode("KR-TST");
+        assertEquals("Wrong number of components were found", 2, existingComponents.size());
 
-        components = componentService.getAllComponentsByNamespaceCode("KR-NS");
-        assertEquals(7, components.size());
-
-        ComponentBo scheduleStepComponent = null;
-        // all should be active
-        for (Component component : components) {
-            assertTrue("Component should have been active: " + component, component.isActive());
-            if (component.getCode().equals("ScheduleStep")) {
-                scheduleStepComponent = ComponentBo.from(component);
-            }
+        // all components should be active
+        for (Component existingComponent : existingComponents) {
+            assertTrue("Component should have been active: " + existingComponent, existingComponent.isActive());
         }
-        assertNotNull("Failed to locate schedule step component", scheduleStepComponent);
 
-        // inactivate schedule step component
-        scheduleStepComponent.setActive(false);
-        KRADServiceLocator.getDataObjectService().save(scheduleStepComponent);
+        // inactivate last component
+        ComponentBo lastComponent = ComponentBo.from(existingComponents.get(existingComponents.size() - 1));
+        lastComponent.setActive(false);
+        dataObjectService.save(lastComponent);
 
-        components = componentService.getAllComponentsByNamespaceCode("KR-NS");
-        assertEquals(7, components.size());
+        // get components we know exist
+        List<Component> activeOrInactiveComponents = componentService.getAllComponentsByNamespaceCode("KR-TST");
+        assertEquals("Wrong number of components were found", 2, activeOrInactiveComponents.size());
+
+        // count active and inactive components
         int numActive = 0;
         int numInactive = 0;
-        for (Component component : components) {
-            if (component.isActive()) {
+        for (Component activeOrInactiveComponent : activeOrInactiveComponents) {
+            if (activeOrInactiveComponent.isActive()) {
                 numActive++;
             } else {
                 numInactive++;
             }
         }
 
-        // should be 6 active, 1 inactive
-        assertEquals(6, numActive);
-        assertEquals(1, numInactive);
+        // should be 1 active and 1 inactive component
+        assertEquals("Wrong number of components were active", 1, numActive);
+        assertEquals("Wrong number of components were inactive", 1, numInactive);
     }
 
-    @Test
     /**
-     * tests that {@link ComponentService#getActiveComponentsByNamespaceCode(String)} returns all active components
-     * for the given name space code
+     * Ensure that {@link ComponentService#getAllComponentsByNamespaceCode(String)} returns a null {@link Component}
+     * when no active records exist by that namespace and a not-null {@link Component} when an active record exists by
+     * that namespace.
      */
+    @Test
     public void testGetActiveComponentsByNamespaceCode() {
-        // get by a component namespace we know does not exist
-        List<Component> components = componentService.getActiveComponentsByNamespaceCode("blah");
-        assertNotNull(components);
-        assertEquals(0, components.size());
+        NamespaceBo namespace = NamespaceBo.from(Namespace.Builder.create("KR-TST").build());
+        dataObjectService.save(namespace);
+        ComponentBo component1 = ComponentBo.from(Component.Builder.create("KR-TST", "TST-ACTV1", "Test Active 1").build());
+        dataObjectService.save(component1);
+        ComponentBo component2 = ComponentBo.from(Component.Builder.create("KR-TST", "TST-ACTV2", "Test Active 2").build());
+        dataObjectService.save(component2);
 
-        // now fetch all components for a namespace which we know has more than 1,
-        // we should have 7 components under the "KR-NS" namespace code in our default test data set as follows:
-        // +----------+-----------------------------+
-        // | NMSPC_CD | CMPNT_CD                    |
-        // +----------+-----------------------------+
-        // | KR-NS    | All                         |
-        // | KR-NS    | Batch                       |
-        // | KR-NS    | Document                    |
-        // | KR-NS    | Lookup                      |
-        // | KR-NS    | PurgePendingAttachmentsStep |
-        // | KR-NS    | PurgeSessionDocumentsStep   |
-        // | KR-NS    | ScheduleStep                |
-        // +----------+-----------------------------+
+        // get components we know do not exist
+        List<Component> nonExistingComponents = componentService.getActiveComponentsByNamespaceCode("blah");
+        assertNotNull("Components were null", nonExistingComponents);
+        assertEquals("Wrong number of components were found", 0, nonExistingComponents.size());
 
-        components = componentService.getActiveComponentsByNamespaceCode("KR-NS");
-        assertEquals(7, components.size());
+        // get components we know exist
+        List<Component> existingComponents = componentService.getActiveComponentsByNamespaceCode("KR-TST");
+        assertEquals("Wrong number of components were found", 2, existingComponents.size());
 
-        ComponentBo scheduleStepComponent = null;
-        // all should be active
-        for (Component component : components) {
-            assertTrue("Component should have been active: " + component, component.isActive());
-            if (component.getCode().equals("ScheduleStep")) {
-                scheduleStepComponent = ComponentBo.from(component);
-            }
+        // all components should be active
+        for (Component existingComponent : existingComponents) {
+            assertTrue("Component should have been active: " + existingComponent, existingComponent.isActive());
         }
-        assertNotNull("Failed to locate schedule step component", scheduleStepComponent);
 
-        // inactivate schedule step component
-        scheduleStepComponent.setActive(false);
-        KRADServiceLocator.getDataObjectService().save(scheduleStepComponent);
+        // inactivate last component
+        ComponentBo lastComponent = ComponentBo.from(existingComponents.get(existingComponents.size() - 1));
+        lastComponent.setActive(false);
+        dataObjectService.save(lastComponent);
 
-        components = componentService.getActiveComponentsByNamespaceCode("KR-NS");
-        assertEquals(6, components.size());
-        for (Component component : components) {
-            assertTrue("Component should have been active: " + component, component.isActive());
+        // get components we know exist
+        List<Component> activeComponents = componentService.getActiveComponentsByNamespaceCode("KR-TST");
+        assertEquals("Wrong number of components were found", 1, activeComponents.size());
+
+        // all components should be active
+        for (Component activeComponent : activeComponents) {
+            assertTrue("Component should have been active: " + activeComponent, activeComponent.isActive());
         }
     }
 }

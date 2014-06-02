@@ -707,25 +707,7 @@ function collapseDisclosures() {
  */
 function createMultiFileUploadForCollection(id, collectionId, additionalOptions) {
     var options = {
-        dropZone: jQuery("#" + id),
-        add: function (e, data) {
-            if (!jQuery("#" + id + "_upload").length) {
-                var $buttons = jQuery("#" + id + " > .fileupload-buttonbar > div");
-                jQuery("<span id='" + id + "_upload' style='display:inline;'/>").text(" Uploading...")
-                        .appendTo($buttons);
-            }
-            data.collectionId = collectionId;
-            data.submit();
-        },
-        done: function (e, data) {
-            var responseContents = document.createElement('div');
-            responseContents.innerHTML = data.result;
-
-            // create a response object to process the response contents
-            var kradResponse = new KradResponse(responseContents);
-            kradResponse.processResponse();
-            jQuery("#" + id + "_upload").remove();
-        }
+        dropZone: jQuery("#" + id)
     };
     options = jQuery.extend(options, additionalOptions);
 
@@ -736,6 +718,26 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
     var $fileInput = jQuery("#" + id);
     if ($fileInput.length) {
         $fileInput.fileupload(options);
+
+        $fileInput.bind('fileuploadsend', function (e, data) {
+            if (!jQuery("#" + id + "_upload").length) {
+                var $buttons = jQuery("#" + id + " > .fileupload-buttonbar > div");
+                jQuery("<span id='" + id + "_upload' style='display:inline;'/>").text(" Uploading...")
+                        .appendTo($buttons);
+            }
+
+            data.collectionId = collectionId;
+        });
+
+        $fileInput.bind('fileuploaddone', function (e, data) {
+            var responseContents = document.createElement('div');
+            responseContents.innerHTML = data.result;
+
+            // create a response object to process the response contents
+            var kradResponse = new KradResponse(responseContents);
+            kradResponse.processResponse();
+            jQuery("#" + id + "_upload").remove();
+        });
     }
 }
 

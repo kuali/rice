@@ -72,7 +72,7 @@
     <orderEntry type="library" name="Maven: avalon-framework:avalon-framework:4.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" name="Maven: logkit:logkit:1.0.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: javax.resource:connector-api:1.5" level="project" />
     <orderEntry type="module" module-name="rice-krad-data" />

@@ -128,13 +128,11 @@ public class FileMetaBlob implements Serializable, FileMeta {
 
         if (size >= 1000000000) {
             return format.format((((double)size) / 1000000000)) + " GB";
-        }
-
-        if (size >= 1000000) {
+        } else if (size >= 1000000) {
             return format.format((((double)size) / 1000000)) + " MB";
+        } else {
+            return format.format((((double)size) / 1000)) + " KB";
         }
-
-        return format.format((((double)size) / 1000)) + " KB";
     }
 
     /**

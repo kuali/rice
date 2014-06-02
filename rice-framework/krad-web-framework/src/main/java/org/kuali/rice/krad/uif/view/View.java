@@ -1057,6 +1057,10 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute(name = "objectPathConcreteClassMapping", type = BeanTagAttribute.AttributeType.MAPVALUE)
     public Map<String, Class<?>> getObjectPathToConcreteClassMapping() {
+        if (objectPathToConcreteClassMapping == Collections.EMPTY_MAP && isMutable(true)) {
+            objectPathToConcreteClassMapping = new HashMap<String, Class<?>>();
+        }
+        
         return this.objectPathToConcreteClassMapping;
     }
 

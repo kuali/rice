@@ -1283,8 +1283,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public void setComponentModifiers(List<ComponentModifier> componentModifiers) {
         checkMutable(true);
-        this.componentModifiers = componentModifiers == null ? Collections.<ComponentModifier>emptyList() :
-                Collections.<ComponentModifier>unmodifiableList(componentModifiers);
+        this.componentModifiers = componentModifiers == null ? Collections.<ComponentModifier> emptyList() :
+                componentModifiers;
     }
 
     /**
@@ -1381,8 +1381,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public void setPropertyReplacers(List<PropertyReplacer> propertyReplacers) {
         checkMutable(true);
-        this.propertyReplacers = propertyReplacers == null ? Collections.<PropertyReplacer>emptyList() :
-                Collections.<PropertyReplacer>unmodifiableList(propertyReplacers);
+        this.propertyReplacers = propertyReplacers == null ? Collections.<PropertyReplacer> emptyList() :
+                propertyReplacers;
     }
 
     /**

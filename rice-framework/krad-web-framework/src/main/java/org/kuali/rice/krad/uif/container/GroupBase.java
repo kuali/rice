@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -30,7 +36,6 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
-import org.kuali.rice.krad.uif.util.LifecycleAwareList;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -39,12 +44,6 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Container that holds a list of <code>Field</code> or other <code>Group</code>
@@ -365,7 +364,7 @@ public class GroupBase extends ContainerBase implements Group {
     @BeanTagAttribute(name = "items", type = BeanTagAttribute.AttributeType.LISTBEAN)
     public List<? extends Component> getItems() {
         if (items == Collections.EMPTY_LIST && isMutable(true)) {
-            items = new LifecycleAwareList<Component>(this);
+            items = new ArrayList<Component>();
         }
 
         return this.items;
@@ -376,7 +375,6 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @param items
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void setItems(List<? extends Component> items) {
         if (items == null) {
@@ -384,7 +382,7 @@ public class GroupBase extends ContainerBase implements Group {
         } else if (items.contains(this)) {
             throw new IllegalArgumentException("Attempted to add group to itself");
         } else {
-            this.items = new LifecycleAwareList<Component>(this, (List<Component>) items);
+            this.items = items;
         }
     }
 

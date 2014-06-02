@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.UrlInfo;
@@ -62,24 +63,24 @@ public class MultiFileUploadCollection extends ContentElementBase {
 
         // Set plugin convenience setters into templateOptions to be consumed by the plugin
         if (url == null && methodToCall != null) {
-            templateOptions.put("url",
+            templateOptions.put(UifConstants.MultiFileUploadOptions.URL,
                     "?methodToCall=" + methodToCall + "&formKey=" + form.getFormKey() + "&viewId=" + form.getViewId()
                             + "&bindingPath=" + collection.getBindingInfo().getBindingPath()
                             + "&updateComponentId=" + collection.getId() );
         } else if (url != null) {
-            templateOptions.put("url", url.getHref());
+            templateOptions.put(UifConstants.MultiFileUploadOptions.URL, url.getHref());
         }
 
         if (acceptFileTypes != null) {
-            templateOptions.put("acceptFileTypes", acceptFileTypes);
+            templateOptions.put(UifConstants.MultiFileUploadOptions.ACCEPT_FILE_TYPES, acceptFileTypes);
         }
 
         if (maxFileSize != null) {
-            templateOptions.put("maxFileSize", maxFileSize.toString());
+            templateOptions.put(UifConstants.MultiFileUploadOptions.MAX_SIZE, maxFileSize.toString());
         }
 
         if (minFileSize != null) {
-            templateOptions.put("minFileSize", minFileSize.toString());
+            templateOptions.put(UifConstants.MultiFileUploadOptions.MIN_SIZE, minFileSize.toString());
         }
 
         this.propertyPath = collection.getBindingInfo().getBindingPath();

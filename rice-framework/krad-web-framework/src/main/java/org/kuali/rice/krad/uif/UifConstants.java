@@ -592,4 +592,11 @@ public class UifConstants {
         public static final String FOOTER = "footer";
         public static final String NAV = "nav";
     }
+
+    public static final class MultiFileUploadOptions {
+        public static final String URL = "url";
+        public static final String ACCEPT_FILE_TYPES = "acceptFileTypes";
+        public static final String MIN_SIZE = "minFileSize";
+        public static final String MAX_SIZE = "maxFileSize";
+    }
 }

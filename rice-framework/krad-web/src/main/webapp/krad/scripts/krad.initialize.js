@@ -126,44 +126,6 @@ jQuery(document).ready(function () {
         hideLoading();
     });
 
-    // Prevent drag and drop events on the document to support file drags into upload widget
-    jQuery(document).on('dragover', function (e) {
-        e.preventDefault();
-        var $fileCollections = jQuery(".uif-fileUploadCollection");
-        $fileCollections.each(function(){
-            var $fileCollection = jQuery(this);
-            var id = $fileCollection.attr("id");
-            var drop = $fileCollection.find(".uif-drop");
-            if (!drop.length) {
-                drop = jQuery("<div class='uif-drop uif-dropBlock'></div>");
-                drop = drop.add("<span class='uif-drop uif-dropText'><span class='icon-plus'/> Drop Files to Add...</span>");
-                drop.bind("drop", function (){
-                    e.preventDefault();
-                    jQuery("#" + id).trigger("drop");
-                    jQuery(this).hide();
-                });
-                $fileCollection.append(drop);
-            } else {
-                drop.show();
-            }
-        });
-    });
-
-    jQuery(document).on("drop dragleave", function (e) {
-        e.preventDefault();
-        var fileCollections = jQuery(".uif-drop");
-        fileCollections.each(function(){
-            jQuery(this).hide();
-        });
-    });
-
-/*    jQuery(".uif-fileUploadCollection-drop").on("drop", function() {
-        e.preventDefault();
-        var collectionId = jQuery(this).attr("id").replace("_drop", "");
-        jQuery("#" + collectionId).trigger("drop");
-        jQuery(this).hide();
-    });*/
-
     time(false, "viewSetup-phase-1");
 
     // show the page
@@ -181,6 +143,9 @@ jQuery(document).ready(function () {
     setupDisclosureHandler();
 
     setupHelperTextHandler();
+
+    // setup document level handling of drag and drop for files
+    setupFileDragHandlers();
 
     // setup the various event handlers for fields - THIS IS IMPORTANT
     initFieldHandlers();
@@ -736,6 +701,43 @@ function setupHelperTextHandler() {
             if (jQuery(this).parent().find('.uif-helperText')) {
                 jQuery(this).parent().find('.uif-helperText').slideUp();
             }
+        });
+    });
+}
+
+/**
+ * Setup document level dragover, drop, and dragleave events to handle file drops and indication when dropping a
+ * file into appropriate elements
+ */
+function setupFileDragHandlers(){
+    // Prevent drag and drop events on the document to support file drags into upload widget
+    jQuery(document).on("dragover", function (e) {
+        e.preventDefault();
+        var $fileCollections = jQuery(".uif-fileUploadCollection");
+        $fileCollections.each(function(){
+            var $fileCollection = jQuery(this);
+            var id = $fileCollection.attr("id");
+            var drop = $fileCollection.find(".uif-drop");
+            if (!drop.length) {
+                drop = jQuery("<div class='uif-drop uif-dropBlock'></div>");
+                drop = drop.add("<span class='uif-drop uif-dropText'><span class='icon-plus'/> Drop Files to Add...</span>");
+                drop.bind("drop", function (){
+                    e.preventDefault();
+                    jQuery("#" + id).trigger("drop");
+                    jQuery(this).hide();
+                });
+                $fileCollection.append(drop);
+            } else {
+                drop.show();
+            }
+        });
+    });
+
+    jQuery(document).on("drop dragleave", function (e) {
+        e.preventDefault();
+        var fileCollections = jQuery(".uif-drop");
+        fileCollections.each(function(){
+            jQuery(this).hide();
         });
     });
 }

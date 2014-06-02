@@ -26,7 +26,6 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kim.api.identity.Person;
@@ -96,8 +95,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         } else {
             try {
                 dataObject = getLegacyDataAdapter().findObjectBySearch(getDataObjectClass(), dataObjectKeys);
-            } catch (ClassNotPersistenceCapableException ex) {
-                if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
+            } catch (Exception ex) {
+                if ( ex.getClass().equals( LegacyDataAdapter.CLASS_NOT_PERSISTABLE_OJB_EXCEPTION_CLASS )
+                        && !document.getOldMaintainableObject().isExternalBusinessObject()) {
                     throw new RuntimeException("Data Object Class: "
                             + getDataObjectClass()
                             + " is not persistable and is not externalizable - configuration error");
@@ -767,6 +767,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         }
     }
 
+    @Override
     @Deprecated // KNS Service
     protected LegacyDataAdapter getLegacyDataAdapter() {
         if (legacyDataAdapter == null) {
@@ -775,6 +776,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         return this.legacyDataAdapter;
     }
 
+    @Override
     @Deprecated // KNS Service
     public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
         this.legacyDataAdapter = legacyDataAdapter;
@@ -813,6 +815,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         this.encryptionService = encryptionService;
     }
 
+    @Override
     protected DataObjectService getDataObjectService() {
         if (dataObjectService == null) {
             dataObjectService = KRADServiceLocator.getDataObjectService();

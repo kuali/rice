@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.KimConstants.PermissionNames;
@@ -40,6 +39,7 @@ import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.PessimisticLockService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -69,7 +69,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("An invalid blank id was passed to delete a Pessimistic Lock.");
         }
-        PessimisticLock lock = (PessimisticLock) dataObjectService.find(PessimisticLock.class, Long.valueOf(id));
+        PessimisticLock lock = dataObjectService.find(PessimisticLock.class, Long.valueOf(id));
         if ( lock == null ) {
             throw new IllegalArgumentException("Pessimistic Lock with id " + id + " cannot be found in the database.");
         }
@@ -159,12 +159,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     @Override
 	public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
-            PessimisticLock lock = (PessimisticLock) iterator.next();
+            PessimisticLock lock = iterator.next();
             if (lock.isOwnedByUser(user)) {
                 try {
                     delete(lock);
                 } catch ( RuntimeException ex ) {
-                    if ( ex.getCause() instanceof OptimisticLockException) {
+                	if ( ex.getCause() != null && ex.getCause().getClass().equals( LegacyDataAdapter.OPTIMISTIC_LOCK_OJB_EXCEPTION_CLASS ) ) {
                         LOG.warn( "Suppressing Optimistic Lock Exception. Document Num: " +  lock.getDocumentNumber());
                     } else {
                         throw ex;
@@ -180,12 +180,12 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     @Override
 	public void releaseAllLocksForUser(List<PessimisticLock> locks, Person user, String lockDescriptor) {
         for (Iterator<PessimisticLock> iterator = locks.iterator(); iterator.hasNext();) {
-            PessimisticLock lock = (PessimisticLock) iterator.next();
+            PessimisticLock lock = iterator.next();
             if ( (lock.isOwnedByUser(user)) && (lockDescriptor.equals(lock.getLockDescriptor())) ) {
                 try {
                     delete(lock);
                 } catch ( RuntimeException ex ) {
-                    if ( ex.getCause() instanceof OptimisticLockException ) {
+                	if ( ex.getCause() != null && ex.getCause().getClass().equals( LegacyDataAdapter.OPTIMISTIC_LOCK_OJB_EXCEPTION_CLASS ) ) {
                         LOG.warn( "Suppressing Optimistic Lock Exception. Document Num: " +  lock.getDocumentNumber());
                     } else {
                         throw ex;
@@ -327,7 +327,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
                 if (!lockDescriptorUsers.containsKey(lock.getLockDescriptor())) {
                     lockDescriptorUsers.put(lock.getLockDescriptor(), new HashSet<Person>());
                 }
-                ((Set<Person>) lockDescriptorUsers.get(lock.getLockDescriptor())).add(lock.getOwnedByUser());
+                lockDescriptorUsers.get(lock.getLockDescriptor()).add(lock.getOwnedByUser());
             }
         }
 

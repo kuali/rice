@@ -46,4 +46,6 @@ public interface LegacyDataAdapter extends LegacyDataAppAdapter {
      */
     <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids);
 
+    public static final String CLASS_NOT_PERSISTABLE_OJB_EXCEPTION_CLASS = "org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException";
+    public static final String OPTIMISTIC_LOCK_OJB_EXCEPTION_CLASS = "org.apache.ojb.broker.OptimisticLockException";
 }

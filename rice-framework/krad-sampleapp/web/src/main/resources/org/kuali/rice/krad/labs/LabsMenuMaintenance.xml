@@ -50,7 +50,6 @@
         <ref bean="LabsMenuMaintenance-Row4"/>
         <ref bean="LabsMenuMaintenance-Row5"/>
         <ref bean="LabsMenuMaintenance-Row6"/>
-        <ref bean="LabsMenuMaintenance-Row7"/>
       </list>
     </property>
   </bean>
@@ -260,12 +259,12 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row5-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Action Button"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR5C3"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrate adding an action button to the New column"/>
           </list>
           </property>
         </bean>
@@ -309,48 +308,6 @@
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR6C3"/>
             <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
           </list>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="LabsMenuMaintenance-Row7" parent="Uif-HorizontalBoxGroup">
-    <property name="cssClasses">
-      <list merge="true">
-        <value>demo-demoRow</value>
-      </list>
-    </property>
-    <property name="items">
-      <list>
-        <bean id="LabsMenuMaintenance-Row7-Col1" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
-          <property name="items">
-          <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
-                  p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR7C1"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
-          </list>
-          </property>
-        </bean>
-        <bean id="LabsMenuMaintenance-Row7-Col2" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
-          <property name="items">
-          <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
-                  p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR7C2"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
-          </list>
-          </property>
-        </bean>
-        <bean id="LabsMenuMaintenance-Row7-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="true">
-          <property name="items">
-            <list>
-              <bean parent="Uif-Link" p:linkText="Maintenance Edit Sample - Action Button"
-                    p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR7C3"/>
-              <bean parent="Uif-Message" p:messageText="Demonstrate adding an action button to the New column"/>
-            </list>
           </property>
         </bean>
       </list>

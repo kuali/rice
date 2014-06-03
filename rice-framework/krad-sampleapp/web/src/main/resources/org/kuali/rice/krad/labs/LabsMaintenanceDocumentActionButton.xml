@@ -31,7 +31,7 @@
           <property name="headerText" value="Company Information"/>
           <property name="items">
             <list>
-              <bean parent="Uif-ActionField" p:actionLabel="Save" p:render="@{#renderCompareSaveButton}" p:methodToCall="save">
+              <bean parent="Uif-ActionField" p:actionLabel="Save" p:render="@{#renderOnComparableModifier and not #parent.readOnly}" p:methodToCall="save">
                 <property name="action">
                   <bean parent="Uif-ActionImage">
                     <property name="cssClasses">

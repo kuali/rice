@@ -261,7 +261,7 @@
       <list>
         <bean parent="Uif-CompareConfig" p:readOnly="true" p:headerText="Old" p:compareToForValueChange="true"
               p:bindingObjectPath="document.oldMaintainableObject.dataObject"/>
-        <bean parent="Uif-CompareConfig" p:headerText="New"
+        <bean parent="Uif-CompareConfig" p:headerText="New" p:compareToForFieldRender="true"
               p:bindingObjectPath="document.newMaintainableObject.dataObject"/>
       </list>
     </property>

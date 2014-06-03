@@ -53,11 +53,14 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
     private boolean compareToForValueChange;
     private boolean highlightValueChange;
 
+    private boolean compareToForFieldRender;
+
     public ComparableInfo() {
         super();
 
         readOnly = false;
         compareToForValueChange = false;
+        compareToForFieldRender = false;
         highlightValueChange = true;
     }
 
@@ -209,6 +212,39 @@ public class ComparableInfo extends UifDictionaryBeanBase implements Serializabl
      */
     public void setCompareToForValueChange(boolean compareToForValueChange) {
         this.compareToForValueChange = compareToForValueChange;
+    }
+
+    /**
+     * Indicates whether this comparable group's field values should include the
+     * {@code renderOnComparableModifier} context variable when this comparable
+     * is used to modify an existing component
+     *
+     * <p>
+     * This is especially useful when defining a {@code Uif-ActionField} that needs
+     * to appear on the new side of a maintenance document.  Marking this as true
+     * on the ComparableInfo will make it push the {@code renderOnComparableModifier}
+     * context variable, holding the same value as this variable, making it easier
+     * to determine whether the field should be rendered based on whether this ComparableInfo
+     * is being applied.
+     * </p>
+     *
+     * @return true if this comparable group should be used for
+     *         the {@code renderOnComparableModifier} context
+     *         variable, false if not
+     */
+    @BeanTagAttribute
+    public boolean isCompareToForFieldRender() {
+        return this.compareToForFieldRender;
+    }
+
+    /**
+     * Setter for the use comparable group values for {@code renderOnComparableModifier}
+     * context variable
+     *
+     * @param compareToForFieldRender
+     */
+    public void setCompareToForFieldRender(boolean compareToForFieldRender) {
+        this.compareToForFieldRender = compareToForFieldRender;
     }
 
     /**

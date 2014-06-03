@@ -500,9 +500,21 @@
           </para>
         </listitem>
         <listitem>
+          <para>On the comparable objects themselves,
+            <emphasis role="keyword">compareToForValueChange</emphasis> is used to
+            indicate the binding object path for determining whether the component
+            modifier should be applied, and
+            <emphasis role="keyword">compareToForFieldRender</emphasis> is used to
+            indicate that the component should contain the additional context variable
+            <emphasis role="keyword">renderOnComparableModifier</emphasis> which can
+            be used to determine whether a component is rendered based on the condition
+            specified by the comparable.
+          </para>
+        </listitem>
+        <listitem>
           <para>Some examples of component modifiers in the UIF include the LabelSeparator
             (pull the label component for a field into a separate group item) and the
-            MaintenanceCompareModifer (creates a field for the 'old' data object)
+            MaintenanceCompareModifier (creates a field for the 'old' data object).
           </para>
         </listitem>
       </itemizedlist>

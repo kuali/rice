@@ -85,6 +85,27 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     @Override
     public void performInitialization(Object model, Component component) {
         super.performInitialization(model, component);
+
+        if ((component != null) && !(component instanceof Group)) {
+            throw new IllegalArgumentException(
+                    "Compare field initializer only support Group components, found type: " + component.getClass());
+        }
+
+        if (component == null) {
+            return;
+        }
+
+        Group group = (Group) component;
+
+        // sort comparables by their order property
+        List<ComparableInfo> groupComparables = ComponentUtils.sort(comparables, defaultOrderSequence);
+
+        // add the renderOnComparableModifier to allow for optional field rendering based on the comparable
+        for (Component item : group.getItems()) {
+            for (ComparableInfo comparable : groupComparables) {
+                item.pushObjectToContext("renderOnComparableModifier", comparable.isCompareToForFieldRender());
+            }
+        }
     }
 
     /**
@@ -120,8 +141,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         List<Component> comparisonItems = new ArrayList<Component>();
 
         // sort comparables by their order property
-        List<ComparableInfo> groupComparables = (List<ComparableInfo>) ComponentUtils.sort(comparables,
-                defaultOrderSequence);
+        List<ComparableInfo> groupComparables = ComponentUtils.sort(comparables, defaultOrderSequence);
 
         // evaluate expressions on comparables
         Map<String, Object> context = new HashMap<String, Object>();
@@ -159,8 +179,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             }
         }
 
-        // find the comparable to use for comparing value changes (if
-        // configured)
+        // find the comparable to use for comparing value changes (if configured)
         boolean performValueChangeComparison = false;
         String compareValueObjectBindingPath = null;
         for (ComparableInfo comparable : groupComparables) {
@@ -182,9 +201,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                     comparableId = UifConstants.IdSuffixes.COMPARE + defaultSuffix;
                 }
 
-                // create a context variable to use as a filter to determine if we show an action button in the right column
-                item.pushObjectToContext("renderCompareSaveButton", comparableId.equals(UifConstants.IdSuffixes.COMPARE + 1));
-
                 Component compareItem = ComponentUtils.copy(item, comparableId);
 
                 ComponentUtils.setComponentPropertyDeep(compareItem, UifPropertyPaths.BIND_OBJECT_PATH,
@@ -200,6 +216,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 if (suppressLabel && (compareItem instanceof Field)) {
                     ((Field) compareItem).getFieldLabel().setRender(false);
                 }
+
+                // add the renderOnComparableModifier to allow for optional field rendering based on the comparable
+                compareItem.pushObjectToContext("renderOnComparableModifier", comparable.isCompareToForFieldRender());
 
                 // do value comparison
                 if (performValueChangeComparison && comparable.isHighlightValueChange() && !comparable

@@ -629,6 +629,9 @@ public class BookCopyrightYearValueFinder implements ValueFinder {
         &quot;/true/yes/y/on/1/&quot; to the Boolean true, and any of the strings
         &quot;/false/no/n/off/0/&quot; to Boolean false. Conversely, the Boolean true is formatted
         as the string "yes" and the Boolean false is formatted as the string "no". </para>
+      <para><emphasis role="keyword">UifCalendarEditor</emphasis> – Used for converting between a
+        java.util.Calendar and a string. The Rice DateTimeService is used to perform the
+        string formatting and Calendar creation.</para>
       <para><emphasis role="keyword">UifCurrencyEditor</emphasis> – Used for converting between a
         KualiDecimal and a string. The string is formatted using commas and to two decimal
         places.</para>

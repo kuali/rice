@@ -41,6 +41,8 @@
 
   <bean id="dateEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifDateEditor" />
 
+  <bean id="calendarEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifCalendarEditor" />
+
   <bean id="timestampEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifTimestampEditor" />
 
   <bean id="booleanEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifBooleanEditor" />

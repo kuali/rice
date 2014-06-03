@@ -117,7 +117,7 @@ public class UifDateEditor extends PropertyEditorSupport implements Serializable
      * @param date
      * @return
      */
-    private String verbatimYear(String date) {
+    protected String verbatimYear(String date) {
         String result = "";
 
         int pos = date.lastIndexOf("/");

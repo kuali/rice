@@ -137,6 +137,7 @@
         <entry key="java.sql.Time" value="timeEditor" />
         <entry key="java.sql.Date" value="dateEditor" />
         <entry key="java.util.Date" value="dateEditor" />
+        <entry key="java.util.Calendar" value="calendarEditor" />
         <entry key="java.sql.Timestamp" value="timestampEditor" />
         <entry key="boolean" value="booleanEditor" />
         <entry key="java.lang.Boolean" value="booleanEditor" />

@@ -521,7 +521,14 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
             for (DataObjectAttributeRelationship attributeRelationship : attributeRelationships) {
                 // obtain the property value on the current parent object
                 String parentAttributeName = attributeRelationship.getParentAttributeName();
-                Object parentAttributeValue = getPropertyValue(parentAttributeName);
+                Object parentAttributeValue = null;
+
+                try {
+                    parentAttributeValue = getPropertyValue(parentAttributeName);
+                } catch (BeansException be) {
+                    // exception thrown may be a db property which may not be defined on class (JPA foreign keys)
+                    // use null value for parentAttributeValue
+                }
 
                 // not all of our relationships are populated, so we cannot obtain a valid foreign key
                 if (parentAttributeValue == null) {
@@ -733,8 +740,9 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     protected void fetchRelationshipUsingAttributes(MetadataChild relationship, boolean nullifyDanglingRelationship) {
         Class<?> relatedType = relationship.getRelatedType();
         if (relationship.getAttributeRelationships().isEmpty()) {
-            throw new IllegalArgumentException("Attempted to fetch a relationship using a foreign key attribute "
-                    + "when one does not exist: " + relationship.getName());
+            LOG.warn("Attempted to fetch a relationship using a foreign key attribute "
+                    + "when one does not exist: "
+                    + relationship.getName());
         } else {
             Object fetchedValue = null;
             if (relationship instanceof DataObjectRelationship) {

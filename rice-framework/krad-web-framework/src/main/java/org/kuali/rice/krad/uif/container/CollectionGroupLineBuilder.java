@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
@@ -253,6 +254,13 @@ public class CollectionGroupLineBuilder implements Serializable {
             boolean isInputField = (field instanceof InputField);
             if (field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || !isInputField) {
                 continue;
+            }
+
+            // if control null, assign default
+            InputField inputField = (InputField) field;
+            if (inputField.getControl() == null) {
+           //     inputField.setControl(ComponentFactory.getTextControl());
+
             }
 
             ControlBase control = (ControlBase) ((InputField) field).getControl();

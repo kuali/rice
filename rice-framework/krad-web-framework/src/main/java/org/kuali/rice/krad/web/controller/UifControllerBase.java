@@ -40,6 +40,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+import org.kuali.rice.krad.web.form.DialogResponse;
 import org.kuali.rice.krad.web.form.HistoryFlow;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -90,6 +91,7 @@ import java.util.UUID;
  */
 public abstract class UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifControllerBase.class);
+    protected static final String DELETE_FILE_UPLOAD_LINE_DIALOG = "DialogGroup-DeleteFileUploadLine";
 
     protected @Autowired HttpServletRequest request;
 
@@ -444,6 +446,13 @@ public abstract class UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteFileUploadLine")
     public ModelAndView deleteFileUploadLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        DialogResponse deleteFileUploadLineDialogResponse = uifForm.getDialogResponse(DELETE_FILE_UPLOAD_LINE_DIALOG);
+
+        if (deleteFileUploadLineDialogResponse == null) {
+            // no confirmation dialog found, so create one on the form and return it
+            return showDialog(DELETE_FILE_UPLOAD_LINE_DIALOG, true, uifForm);
+        }
+
         // Empty hook method for deleting a line in a collection representing a set of files
         return deleteLine(uifForm, result, request, response);
     }

@@ -503,6 +503,10 @@
     </property>
   </bean>
 
+  <bean id="DialogGroup-DeleteFileUploadLine" parent="Uif-DialogGroup-YesNo">
+    <property name="promptText" value="Are you sure you wish to delete the file?"/>
+  </bean>
+
   <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
   <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-Message" scope="prototype">
     <property name="cssClasses">

@@ -31,16 +31,6 @@ public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
     public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-ClientSideState&formKey=ff000d97-13e9-4130-81a3-bc0217e8e0eb&cacheKey=otutyty24mo0f76n59ebqxvtpg&pageId=Lab-ClientSideState-Page1";
 
     /**
-     * inactivatableCollection[0].active
-     */
-    private static final String ACTIVE_COMPONENT_NAME = "inactivatableCollection[0].active";
-
-    /**
-     * inactivatableCollection[0].active
-     */
-    private static final String ACTIVE_COMPONENT2_NAME = "inactivatableCollection2[0].active";
-    
-    /**
      * This overridden method ...
      * 
      * @see org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase#navigate()
@@ -62,16 +52,18 @@ public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
     }
 
     public void testClientSideStateView() throws Exception {
-        waitAndClickByName(ACTIVE_COMPONENT_NAME);
-        waitAndClickByName(ACTIVE_COMPONENT2_NAME);
+        waitAndClickButtonByText("show inactive"); // first
+        waitAndClickButtonByText("show inactive"); // second, first has changed
+//        waitAndClickByXpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]"); // first show inactive
+//        waitAndClickByXpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]"); // the second show inactive is now the only one
         waitAndClickButtonByText("Refresh - Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.name(ACTIVE_COMPONENT_NAME));
-        assertFalse(isElementPresentByName(ACTIVE_COMPONENT_NAME));
-        assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]")); // first inactive, still Hide inactive
+        waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
         waitAndClickButtonByText("Refresh - Non-Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.name(ACTIVE_COMPONENT_NAME));
-        assertFalse(isElementPresentByName(ACTIVE_COMPONENT2_NAME));
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]")); // first show inactive, still Hide inactive
+        waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
+        assertFalse(isElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][2]/header/div/button[contains(.,'show inactive')]"))); // second show inactive, still Hide inactive
     }
 }

@@ -179,6 +179,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
         waitAndClickBlanketApprove();
+        jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);

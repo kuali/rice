@@ -259,7 +259,7 @@ public class CollectionGroupLineBuilder implements Serializable {
             // if control null, assign default
             InputField inputField = (InputField) field;
             if (inputField.getControl() == null) {
-           //     inputField.setControl(ComponentFactory.getTextControl());
+                inputField.setControl(ComponentFactory.getTextControl());
 
             }
 

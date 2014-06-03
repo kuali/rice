@@ -21,8 +21,8 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
 
-  <bean id="Lab-MultiFileUpload5" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 5"/>
+  <bean id="Lab-MultiFileUpload1" parent="Uif-FormView">
+    <property name="headerText" value="MultiFile Upload Basic 1"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">
@@ -39,8 +39,8 @@
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
-  <bean id="Lab-MultiFileUpload6" parent="Uif-FormView">
-    <property name="headerText" value="Upload Test 5"/>
+  <bean id="Lab-MultiFileUpload2" parent="Uif-FormView">
+    <property name="headerText" value="MultiFile Upload - Multiple Uses on One Page"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">

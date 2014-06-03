@@ -39,6 +39,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -172,6 +173,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private String documentNumber;
 
     private List<TravelAccount> travelAccounts = new ArrayList<TravelAccount>();
+
+    private List<FileMetaBlob> files = new ArrayList<FileMetaBlob>();
+
+    private List<FileMetaBlob> files1 = new ArrayList<FileMetaBlob>();
+
+    private List<FileMetaBlob> files2 = new ArrayList<FileMetaBlob>();
+
+    private List<FileMetaBlob> files3 = new ArrayList<FileMetaBlob>();
 
     public KradSampleAppForm() {
         super();
@@ -1186,6 +1195,38 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setTravelAccounts(List<TravelAccount> travelAccounts) {
         this.travelAccounts = travelAccounts;
+    }
+
+    public List<FileMetaBlob> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileMetaBlob> files) {
+        this.files = files;
+    }
+
+    public List<FileMetaBlob> getFiles1() {
+        return files1;
+    }
+
+    public void setFiles1(List<FileMetaBlob> files1) {
+        this.files1 = files1;
+    }
+
+    public List<FileMetaBlob> getFiles2() {
+        return files2;
+    }
+
+    public void setFiles2(List<FileMetaBlob> files2) {
+        this.files2 = files2;
+    }
+
+    public List<FileMetaBlob> getFiles3() {
+        return files3;
+    }
+
+    public void setFiles3(List<FileMetaBlob> files3) {
+        this.files3 = files3;
     }
 
     public String getEncryptedValue(String value) {

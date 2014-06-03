@@ -106,10 +106,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
                           <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 1" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload1"/>
-                          <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 2" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
                           <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload3"/>
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
                           <bean parent="Uif-Link" p:linkText="Schema" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
                           <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"

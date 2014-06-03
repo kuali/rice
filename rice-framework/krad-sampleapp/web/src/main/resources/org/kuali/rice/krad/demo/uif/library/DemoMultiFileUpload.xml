@@ -1,0 +1,125 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- MultiFileUpload demo -->
+  <bean id="Demo-MultiFileUploadView" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoMultiFileUpload.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.element.MultiFileUploadCollection"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="XLARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-MultiFileUpload-Example1"/>
+        <ref bean="Demo-MultiFileUpload-Example2"/>
+        <ref bean="Demo-MultiFileUpload-Example3"/>
+        <ref bean="Demo-MultiFileUpload-Example4"/>
+        <ref bean="Demo-MultiFileUpload-Example5"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default -->
+  <bean id="Demo-MultiFileUpload-Example1" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MultiFileUpload-Example1 start-->
+        <bean parent="Uif-MultiFileUploadCollection">
+          <property name="collection.propertyName" value="files"/>
+          <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
+        </bean>
+        <!-- ex:Demo-MultiFileUpload-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- MaxFileSize -->
+  <bean id="Demo-MultiFileUpload-Example2" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MultiFileUpload-Example2 start-->
+        <bean parent="Uif-MultiFileUploadCollection">
+          <property name="collection.propertyName" value="files1"/>
+          <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
+          <property name="maxFileSize" value="10000000"/>
+        </bean>
+        <!-- ex:Demo-MultiFileUpload-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Details -->
+  <bean id="Demo-MultiFileUpload-Example3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MultiFileUpload-Example3 start-->
+        <bean parent="Uif-MultiFileUploadCollection">
+          <property name="collection.propertyName" value="files2"/>
+          <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.labs.fileUploads.FileWithDetails"/>
+          <property name="collection.items">
+            <list>
+              <bean parent="Uif-LinkField" p:readOnly="true" p:label="File" p:link.linkText="@{#line.name}"
+                    p:link.href="@{#line.url}&amp;selectedLineIndex=@{#index}"/>
+              <bean parent="Uif-InputField" p:readOnly="true" p:label="Size" p:propertyName="sizeFormatted"/>
+              <bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded" p:propertyName="dateUploadedFormatted"/>
+              <bean parent="Uif-InputField" p:label="Detail 1" p:propertyName="detail1"/>
+              <bean parent="Uif-InputField" p:label="Detail 2" p:propertyName="detail2">
+                <property name="control">
+                  <bean parent="Uif-TextAreaControl" p:rows="4" p:cols="50"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-MultiFileUpload-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- ReadOnly -->
+  <bean id="Demo-MultiFileUpload-Example4" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MultiFileUpload-Example4 start-->
+        <bean parent="Uif-MultiFileUploadCollection">
+          <property name="collection.propertyName" value="files2"/>
+          <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
+          <property name="readOnly" value="true"/>
+        </bean>
+        <!-- ex:Demo-MultiFileUpload-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- AcceptFileTypes -->
+  <bean id="Demo-MultiFileUpload-Example5" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-MultiFileUpload-Example5 start-->
+        <bean parent="Uif-MultiFileUploadCollection">
+          <property name="collection.propertyName" value="files3"/>
+          <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
+          <property name="acceptFileTypes" value="(\\.|\\/)(gif|jpe?g|png)$"/>
+        </bean>
+        <!-- ex:Demo-MultiFileUpload-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+</beans>

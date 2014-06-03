@@ -715,6 +715,10 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
         options.url = "?" + getUrlQueryString("methodToCall", "fileUpload");
     }
 
+    if(options.acceptFileTypes) {
+        options.acceptFileTypes = new RegExp(options.acceptFileTypes);
+    }
+
     var $fileInput = jQuery("#" + id);
     if ($fileInput.length) {
         $fileInput.fileupload(options);
@@ -737,6 +741,10 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
             var kradResponse = new KradResponse(responseContents);
             kradResponse.processResponse();
             jQuery("#" + id + "_upload").remove();
+        });
+
+        $fileInput.bind('fileuploadprocessfail', function (e, data) {
+           alert( 'Processing ' + data.files[data.index].name + ' of type ' + data.files[data.index].type + ' failed.\nError: ' + data.files[data.index].error );
         });
     }
 }

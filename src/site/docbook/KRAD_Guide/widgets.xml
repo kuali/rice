@@ -573,99 +573,142 @@
             </section>
         </section>
         <section>
-            <title>MultiFile Upload</title>
-            <para>The MultiFile Upload widget is used to allow the user to select multiple files to upload to the server and backend application. The backend application is then responsible for persisting the file. KRAD itself does not provide the persistence mechanism but JPA is one option as well as the attachment service that is part of Rice. This widget is based off of this jquery plugin: <link xlink:href="http://blueimp.github.io/jQuery-File-Upload/">http://blueimp.github.io/jQuery-File-Upload/</link></para>
-            <para>Below is an example of using this widget twice within a page. This is to show how different file sets can be
-                referenced.<programlisting>
-  &lt;bean id="Lab-MultiFileUpload3" parent="Uif-FormView">
-    &lt;property name="headerText" value="Upload Test 3"/>
-    &lt;property name="singlePageView" value="true"/>
-    &lt;property name="page">
-      &lt;bean parent="Uif-Page">
-        &lt;property name="items">
-          &lt;list>
-            &lt;bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files1">
-              &lt;property name="items">
-                &lt;list>
-                  &lt;bean parent="Uif-MultiFileUpload" p:propertyPath="files1"/>
-                &lt;/list>
-              &lt;/property>
-            &lt;/bean>
-            &lt;bean parent="Uif-CssGridSection" p:headerText="Multiple File Upload Test - files2">
-              &lt;property name="items">
-                &lt;list>
-                  &lt;bean parent="Uif-MultiFileUpload" p:propertyPath="files2"/>
-                &lt;/list>
-              &lt;/property>
-            &lt;/bean>
-          &lt;/list>
-        &lt;/property>
-      &lt;/bean>
-    &lt;/property>
-    &lt;property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+            <title>Multi-File Upload Collection</title>
+            <para>MultiFileUploadCollection allows the user to select multiple files to upload to
+                the server and the interface to view these files.  The MultiFileUploadCollection
+                content element contains a collection and the properties to configure the plugin
+                which backs the functionality.  The controller implementation is responsible for
+                persisting the file. KRAD itself does not provide the persistence mechanism, but JPA
+                is one option as well as the attachment service that is part of Rice.  Objects that
+                the collection contain MUST implement the FileMeta interface.  This widget uses the
+                jQuery File Upload plugin: <link
+                    xlink:href="http://blueimp.github.io/jQuery-File-Upload/"
+                    >http://blueimp.github.io/jQuery-File-Upload/</link></para>
+            <para>A basic implementation of this plugin (both a propertyName AND a
+                collectionObjectClass which implements FileMeta must be
+                supplied):<programlisting>
+  &lt;bean parent="Uif-MultiFileUploadCollection">
+      &lt;property name="collection.propertyName" value="files"/>
+      &lt;property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
   &lt;/bean>
             </programlisting></para>
-            <para>This would result in a view like this:<inlinemediaobject>
+            <para>However, FileMetaBlob SHOULD NOT be used outside of demo purposes as it only
+                stores the file temporarily in memory, an implementation that stores the file
+                through a service, in a db, or to file system is recommended.</para>
+            <para>The base implementation would look something like:<inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD_Guide/multifile1.png"/>
+                        <imagedata fileref="../images/KRAD_Guide/multiFile1.png"/>
                     </imageobject>
                 </inlinemediaobject></para>
-            <para>When the page is rendered the widget will callback to the controller passing along the propertyPath value. The controller will then callback into the form object passing this value. The form should then return a List of FileBase objects that will be rendered on the screen. Below shows an example of the form code:
-                <programlisting>
-    @Override
-    public List&lt;FileBase> getFiles(String propertyPath) {
-        System.out.println("KradLabsForm, get files => " + propertyPath);
-        List&lt;FileBase> returnObjects = new ArrayList&lt;FileBase>();
-
-        // fake data for testing
-        FileBase fakeFile = new FileBase();
-        fakeFile.setName(propertyPath + "_fakeName1.png");
-        fakeFile.setSize(5000000L);
-        fakeFile.setDateUploaded(new Date());
-        returnObjects.add(fakeFile);
-
-        fakeFile = new FileBase();
-        fakeFile.setName(propertyPath + "_fakeName2.png");
-        fakeFile.setSize(5000000L);
-        fakeFile.setDateUploaded(new Date());
-        returnObjects.add(fakeFile);
-
-        return returnObjects;
-    }            </programlisting></para>
-            <para>After the user adds files to be uploaded the screen would look like this:<inlinemediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRAD_Guide/multifile2.png"/>
-                    </imageobject>
-                </inlinemediaobject></para>
-            <para>When the user selects either the Upload All button or an individual Upload button an AJAX call will be posted back to the controller. The controller will gather information related to the uploaded file and put it into a FileBase object. This object will contain the MultipartFile that the controller processed. The controller will then callback into the form passing the propertyPath and FileBase object. It is then up to the form to actually persist the uploaded file. If there is an error persisting the uploaded file then the form should call the 'setError' method on FileBase. This error message will be displayed back to the user. Notice that in this case a dummy error was returned because the file name started with 'fail'.<programlisting>
-    @Override
-    public boolean saveFile(String propertyPath, FileBase fileBase) {
-        System.out.println("KradLabsForm, saving file => " + propertyPath + ":" + fileBase);
-
-        if (fileBase.getName().startsWith("fail")) {
-            fileBase.setError("This file failed to upload because it starts with fail!");
-        } else {
-            // persist the file
-            try {
-                InputStream is = fileBase.getMultipartFile().getInputStream();
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-
-        return true;
-    }            </programlisting><inlinemediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRAD_Guide/multifile3.png"/>
-                    </imageobject>
-                </inlinemediaobject></para>
-            <para>When the user selects the delete button on a file an AJAX post is made back to the controller passing the propertyPath string as well as the file name.
-            The controller will then callback into the form passing these values. It is then up to the form to actually delete the already uploaded file.<programlisting>
-    @Override
-    public boolean deleteFile(String propertyPath, String fileName) {
-        System.out.println("KradLabsForm, deleting file => " + propertyPath + ":" + fileName);
-        return true;
-    }            </programlisting></para>
+            <para>When the View is rendered, the collection on the form must be populated with the
+                appropriate FileMeta objects which describe the files.  How this collection is
+                populated is up the implementor.</para>
+            <para>There are 4 controller methods which are used by the MultiFileUploadCollection:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">addFileUploadLine</emphasis> - used to add an
+                            object to the collection of FileMeta objects which describe the files.
+                            The FileMeta object's init(MultipartFile file) method is invoked to
+                            create the object and can/should be customized by the implementor.
+                            Alternatively, this controller method can be overriden to provide a more
+                            custom implementation.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">deleteFileUploadLine</emphasis> - hook method
+                            which calls deleteLine on the collection.  This method should be
+                            overriden by implementors to delete the file from their db or
+                            filesystem, or alternatively this can be delayed until a save action is
+                            processed and handled by the implementation there.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">getFileFromLine</emphasis> - this method is used
+                            to retrieve the file from the server, by default, links generated by
+                            addFileUploadLine call this method.  This method calls the
+                            sendFileFromLineResponse method to send back the file data.  This method
+                            SHOULD NOT be overriden unless necessary.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">sendFileFromLineResponse</emphasis> - this
+                            method is used to set appropriate properties on the response object and
+                            send back the file data.  This method <emphasis role="bold">MUST
+                            </emphasis>be overriden by the implemention's controller to retrieve
+                            files.</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>When the user clicks the "Add Files..." button, or the user drags files onto the
+                component, the url configured on the MultiFileUploadCollection is invoked (by
+                default this is the addFileUploadLine method of the current controller).  The file
+                is processed by the controller implementation, a FileMeta object is added to the
+                collection, and the collection will be refreshed with the updated file information.
+                The user can then either click the link (rendered using FileMeta's url and name
+                properties) which will invoke the getFileFromLine method on the controller (by
+                default). Alternatively, they can delete the file by clicking the delete icon, which
+                will invoke the deleteFileUploadLine method on the controller by default.</para>
+            <section>
+                <title>Custom Fields</title>
+                <para>Because the FileMeta objects used by the collection are completely
+                    customizable, the collection also supports all the features of field inputs
+                    found in a normal collection.  A custom implementation that allows one to enter
+                    additional details about a file may be be configured like:</para>
+                <para>
+                    <programlisting>&lt;bean parent="Uif-MultiFileUploadCollection">
+  &lt;property name="collection.propertyName" value="files2"/>
+  &lt;property name="collection.collectionObjectClass" value="org.kuali.rice.krad.labs.fileUploads.FileWithDetails"/>
+  &lt;property name="collection.items">
+    &lt;list>
+      &lt;bean parent="Uif-LinkField" p:readOnly="true" p:label="File" p:link.linkText="@{#line.name}"
+            p:link.href="@{#line.url}&amp;amp;selectedLineIndex=@{#index}"/>
+      &lt;bean parent="Uif-InputField" p:readOnly="true" p:label="Size" p:propertyName="sizeFormatted"/>
+      &lt;bean parent="Uif-InputField" p:readOnly="true" p:label="Date Uploaded" p:propertyName="dateUploadedFormatted"/>
+      &lt;bean parent="Uif-InputField" p:label="Detail 1" p:propertyName="detail1"/>
+      &lt;bean parent="Uif-InputField" p:label="Detail 2" p:propertyName="detail2">
+        &lt;property name="control">
+          &lt;bean parent="Uif-TextAreaControl" p:rows="4" p:cols="50"/>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+                </para>
+                <para>Note the usage of default FileMeta properties and the new detail1 and detail2
+                    properties supplied by the custom object FileWithDetails.</para>
+                <para>This would result in a MultiFileUploadCollection which looks like:</para>
+                <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/KRAD_Guide/multiFile2.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+            </section>
+            <section>
+                <title>Plugin Options</title>
+                <para>The MultiFileUploadCollection is backed by the jQuery File Upload plugin:
+                        <link xlink:href="http://blueimp.github.io/jQuery-File-Upload/"
+                        >http://blueimp.github.io/jQuery-File-Upload/</link> so all options of this
+                    plugin are accessible by setting theme through the templateOptions property.
+                    However, some commonly used options are available through convenience setters:<itemizedlist>
+                        <listitem>
+                            <para>acceptFileTypes - regEx format</para>
+                        </listitem>
+                        <listitem>
+                            <para>maxFileSize - in bytes</para>
+                        </listitem>
+                        <listitem>
+                            <para>minFileSize - in bytes</para>
+                        </listitem>
+                        <listitem>
+                            <para>url/methodToCall - url will take precedence, if set.  Otherwise,
+                                the methodToCall specified is called on the current
+                                controller.</para>
+                        </listitem>
+                    </itemizedlist></para>
+                <para>A configuration which will only accept image file types and files up to 10MB
+                    in size would be configured like:</para>
+                <programlisting>        &lt;bean parent="Uif-MultiFileUploadCollection">
+          &lt;property name="collection.propertyName" value="files3"/>
+          &lt;property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
+          &lt;property name="acceptFileTypes" value="(\\.|\\/)(gif|jpe?g|png)$"/>
+          &lt;property name="maxFileSize" value="10485760"/>
+        &lt;/bean></programlisting>
+            </section>
             <section>
                 <title>Properties</title>
                 <para>
@@ -689,19 +732,17 @@
                                     <entry>The label for the add files button.</entry>
                                 </row>
                                 <row>
-                                    <entry>cancelAllButtonText</entry>
-                                    <entry>Cancel All Uploads</entry>
-                                    <entry>The label for the cancel all uploads button.</entry>
+                                    <entry>methodToCall</entry>
+                                    <entry>addFileUploadLine</entry>
+                                    <entry>The methodToCall when the "Add Files..." button is
+                                        clicked</entry>
                                 </row>
                                 <row>
-                                    <entry>uploadAllButtonText</entry>
-                                    <entry>Upload All</entry>
-                                    <entry>The label for the upload all button.</entry>
-                                </row>
-                                <row>
-                                    <entry>propertyPath</entry>
-                                    <entry/>
-                                    <entry>A string representing the property or file set of files working with. This value is used in methods the controller invokes to interact with the form/model object.</entry>
+                                    <entry>url</entry>
+                                    <entry>undefined</entry>
+                                    <entry>UrlInfo object describing the url to call to add a file
+                                        line to the collection, if set, methodToCall is
+                                        ignored.</entry>
                                 </row>
                             </tbody>
                         </tgroup>
@@ -739,11 +780,6 @@
                                     <entry> minFileSize </entry>
                                     <entry> undefined </entry>
                                     <entry> The minimum allowed file size in bytes. </entry>
-                                </row>
-                                <row>
-                                    <entry> maxNumberOfFiles </entry>
-                                    <entry> undefined </entry>
-                                    <entry> This option limits the number of files that are allowed to be uploaded using this widget. By default, unlimited file uploads are allowed. </entry>
                                 </row>
                             </tbody>
                         </tgroup>

@@ -57,7 +57,7 @@
         <bean parent="Uif-MultiFileUploadCollection">
           <property name="collection.propertyName" value="files1"/>
           <property name="collection.collectionObjectClass" value="org.kuali.rice.krad.file.FileMetaBlob"/>
-          <property name="maxFileSize" value="10000000"/>
+          <property name="maxFileSize" value="10485760"/>
         </bean>
         <!-- ex:Demo-MultiFileUpload-Example2 end-->
       </list>

@@ -260,7 +260,6 @@ public class CollectionGroupLineBuilder implements Serializable {
             InputField inputField = (InputField) field;
             if (inputField.getControl() == null) {
                 inputField.setControl(ComponentFactory.getTextControl());
-
             }
 
             ControlBase control = (ControlBase) ((InputField) field).getControl();

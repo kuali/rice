@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.impl.peopleflow;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -150,155 +149,10 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             peopleFlowDefinition = PeopleFlowBo.to(((PeopleFlowBo) getDataObject()));
         }
         if (StringUtils.isNotBlank(peopleFlowDefinition.getId())) {
-            updatePeopleFlow(peopleFlowDefinition);
+            KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
         } else {
-            createPeopleFlow(peopleFlowDefinition);
+            KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowDefinition);
         }
-    }
-
-    private void updatePeopleFlow(PeopleFlowDefinition peopleFlowDefinition){
-        PeopleFlowBo peopleFlowBo = (PeopleFlowBo) getDataObject();
-        List<PeopleFlowMemberBo> stubMembers = new ArrayList<PeopleFlowMemberBo>();
-
-        if (CollectionUtils.isNotEmpty(peopleFlowBo.getAttributeBos())) {
-            updateAttributeBosPeopleFlowIds(peopleFlowDefinition.getId(), peopleFlowBo);
-        }
-
-        if (CollectionUtils.isNotEmpty(peopleFlowBo.getMembers())) {
-            updatePeopleFlowMembersPeopleFlowIds(peopleFlowDefinition.getId(), peopleFlowBo);
-            updatePeopleFlowDelegatesPeopleFlowMemberIds(peopleFlowBo);
-
-            // save complete members for second update
-            for (PeopleFlowMemberBo member : peopleFlowBo.getMembers()) {
-                PeopleFlowMemberBo holdMember = new PeopleFlowMemberBo();
-                holdMember.setDelegates(member.getDelegates());
-                stubMembers.add(holdMember);
-            }
-
-            // remove delegates from new members for first update pass
-            for (PeopleFlowMemberBo memberBo : peopleFlowBo.getMembers()) {
-                if (memberBo.getId() == null) {
-                    memberBo.setDelegates( new ArrayList<PeopleFlowDelegateBo>());
-                }
-            }
-        } 
-
-        peopleFlowDefinition = PeopleFlowBo.to(peopleFlowBo);
-        peopleFlowDefinition = KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
-
-        if (CollectionUtils.isNotEmpty(stubMembers)) {
-            peopleFlowBo = getPeopleFlowBo(peopleFlowDefinition);
-            reattachNewDelegates(peopleFlowBo, stubMembers);
-            peopleFlowDefinition = PeopleFlowBo.to(peopleFlowBo);
-            KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
-        }
-    }
-
-    private void  createPeopleFlow(PeopleFlowDefinition peopleFlowDefinition){
-        PeopleFlowBo peopleFlowBo = (PeopleFlowBo) getDataObject();
-        // Save members and attributes for update after initial creation
-        List<PeopleFlowMemberBo> members = peopleFlowBo.getMembers();
-        List<PeopleFlowMemberBo> stubMembers = new ArrayList<PeopleFlowMemberBo>();
-        List<PeopleFlowAttributeBo> attributeBos = peopleFlowBo.getAttributeBos();
-        // Remove members and attributes for creation
-        peopleFlowBo.setMembers( new ArrayList<PeopleFlowMemberBo>());
-        peopleFlowBo.setAttributeBos( new ArrayList<PeopleFlowAttributeBo>());
-
-        peopleFlowDefinition = PeopleFlowBo.to(peopleFlowBo);
-        peopleFlowDefinition = KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowDefinition);
-        peopleFlowBo = getPeopleFlowBo(peopleFlowDefinition);
-
-        if (CollectionUtils.isNotEmpty(attributeBos)) {
-            updateAttributeBosPeopleFlowIds(peopleFlowDefinition.getId(),peopleFlowBo);
-        }
-
-        if (CollectionUtils.isNotEmpty(members)) {
-            updatePeopleFlowMembersPeopleFlowIds(peopleFlowDefinition.getId(), peopleFlowBo);
-            updatePeopleFlowDelegatesPeopleFlowMemberIds(peopleFlowBo);
-            // save delegates on stub member records
-            stubMembers = copyDelegates(members);
-            // remove delegates from members for update
-            for (PeopleFlowMemberBo memberBo : members) {
-                memberBo.setDelegates( new ArrayList<PeopleFlowDelegateBo>());
-            }
-            peopleFlowBo.setMembers(members);
-        }
-
-        peopleFlowBo.setAttributeBos(attributeBos);
-        updateAttributeBosPeopleFlowIds(peopleFlowDefinition.getId(), peopleFlowBo);
-
-        peopleFlowDefinition = PeopleFlowBo.to(peopleFlowBo);
-        peopleFlowDefinition = KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
-        peopleFlowBo = getPeopleFlowBo(peopleFlowDefinition);
-
-        if (CollectionUtils.isNotEmpty(peopleFlowBo.getMembers())) {
-            reattachNewDelegates(peopleFlowBo, stubMembers);
-            updatePeopleFlowDelegatesPeopleFlowMemberIds(peopleFlowBo);
-            peopleFlowDefinition = PeopleFlowBo.to(peopleFlowBo);
-            KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
-        }
-    }
-
-    private void updateAttributeBosPeopleFlowIds(String peopleFlowId, PeopleFlowBo peopleFlowBo){
-        for (PeopleFlowAttributeBo attributeBo : peopleFlowBo.getAttributeBos()) {
-            attributeBo.setPeopleFlowId(peopleFlowId);
-        }
-    }
-
-    private void updatePeopleFlowMembersPeopleFlowIds(String peopleFlowId, PeopleFlowBo peopleFlowBo){
-        for (PeopleFlowMemberBo memberBo : peopleFlowBo.getMembers()) {
-            memberBo.setPeopleFlowId(peopleFlowId);
-        }
-    }
-
-    private List<PeopleFlowMemberBo> copyDelegates(List<PeopleFlowMemberBo> members) {
-        List<PeopleFlowMemberBo> stubMembers = new ArrayList<PeopleFlowMemberBo>();
-        //    save delegates onto stub members with enough attributes to match for reattach
-        for (PeopleFlowMemberBo member : members) {
-            PeopleFlowMemberBo stubMember = new PeopleFlowMemberBo();
-            stubMember.setMemberId(member.getMemberId());
-            stubMember.setPriority(member.getPriority());
-            stubMember.setMemberTypeCode(member.getMemberTypeCode());
-            stubMember.setDelegates(member.getDelegates());
-            stubMembers.add(stubMember);
-        }
-
-        return stubMembers;
-    }
-
-    private void reattachNewDelegates(PeopleFlowBo peopleFlowBo, List<PeopleFlowMemberBo> stubMembers) {
-        List<PeopleFlowMemberBo> members = peopleFlowBo.getMembers();
-
-        for (PeopleFlowMemberBo member : peopleFlowBo.getMembers()) {
-            for (PeopleFlowMemberBo stubMember : stubMembers) {
-                if (member.getMemberId().equals(stubMember.getMemberId())
-                && member.getPriority() == stubMember.getPriority()
-                && member.getMemberTypeCode().equals(stubMember.getMemberTypeCode())) {
-                     member.setDelegates(stubMember.getDelegates());
-                    continue;
-                }
-            }
-        }
-    }
-
-    private void updatePeopleFlowDelegatesPeopleFlowMemberIds(PeopleFlowBo peopleFlowBo){
-        for (PeopleFlowMemberBo memberBo : peopleFlowBo.getMembers()) {
-            memberBo.setPeopleFlowId(peopleFlowBo.getId());
-            if (CollectionUtils.isNotEmpty(memberBo.getDelegates())) {
-                for (PeopleFlowDelegateBo delegateBo : memberBo.getDelegates()) {
-                    delegateBo.setPeopleFlowMemberId(memberBo.getId());
-                }
-            }
-        }
-    }
-
-    private PeopleFlowBo getPeopleFlowBo(PeopleFlowDefinition peopleFlowDefinition) {
-        KewTypeDefinition typeDefinition = null;
-        if (null != peopleFlowDefinition.getTypeId()) {
-            typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(peopleFlowDefinition.getTypeId());
-        }
-
-        return PeopleFlowBo.from(peopleFlowDefinition, typeDefinition);
     }
 
     /**

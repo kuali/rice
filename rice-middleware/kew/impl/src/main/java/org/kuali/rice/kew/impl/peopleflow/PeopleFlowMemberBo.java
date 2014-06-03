@@ -55,9 +55,6 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     @Column(name = "PPL_FLW_MBR_ID", nullable = false)
     private String id;
 
-    @Column(name = "PPL_FLW_ID", nullable = false)
-    private String peopleFlowId;
-
     @Column(name = "MBR_ID", nullable = false)
     private String memberId;
 
@@ -78,7 +75,7 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name = "PPL_FLW_ID",  referencedColumnName = "PPL_FLW_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "PPL_FLW_ID", nullable = false)
     private PeopleFlowBo peopleFlow;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "peopleFlowMember", orphanRemoval = true)
@@ -103,18 +100,6 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPeopleFlowId() {
-        if (StringUtils.isBlank(peopleFlowId)
-                && this.peopleFlow != null) {
-            return this.peopleFlow.getId();
-        }
-        return peopleFlowId;
-    }
-
-    public void setPeopleFlowId(String peopleFlowId) {
-        this.peopleFlowId = peopleFlowId;
     }
 
     public PeopleFlowBo getPeopleFlow() {
@@ -300,12 +285,9 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
             return null;
         }
         PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
-        memberBo.setPeopleFlowId(peopleFlow.getId());
         memberBo.setPeopleFlow(peopleFlow);
-        memberBo.setId(member.getId());
         memberBo.setMemberId(member.getMemberId());
         memberBo.setMemberType(member.getMemberType());
-        memberBo.setVersionNumber(member.getVersionNumber());
         if (member.getActionRequestPolicy() != null) {
             memberBo.setActionRequestPolicyCode(member.getActionRequestPolicy().getCode());
         }

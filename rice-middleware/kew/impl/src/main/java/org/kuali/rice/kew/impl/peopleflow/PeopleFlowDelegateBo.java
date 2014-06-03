@@ -51,9 +51,6 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
     @Column(name = "PPL_FLW_DLGT_ID", nullable = false)
     private String id;
 
-    @Column(name = "PPL_FLW_MBR_ID", nullable = false)
-    private String peopleFlowMemberId;
-
     @Column(name = "MBR_ID", nullable = false)
     private String memberId;
 
@@ -74,7 +71,7 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
     private Long versionNumber;
 
     @ManyToOne
-    @JoinColumn(name = "PPL_FLW_MBR_ID", referencedColumnName = "PPL_FLW_MBR_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "PPL_FLW_MBR_ID", nullable = false)
     private PeopleFlowMemberBo peopleFlowMember;
 
     // not-persisted
@@ -124,19 +121,6 @@ public class PeopleFlowDelegateBo implements Serializable, PeopleFlowDelegateCon
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPeopleFlowMemberId() {
-        if (StringUtils.isBlank(peopleFlowMemberId)
-                && this.peopleFlowMember != null) {
-            return this.peopleFlowMember.getId();
-        }
-
-        return peopleFlowMemberId;
-    }
-
-    public void setPeopleFlowMemberId(String peopleFlowMemberId) {
-        this.peopleFlowMemberId = peopleFlowMemberId;
     }
 
     public String getMemberId() {

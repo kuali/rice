@@ -28,12 +28,7 @@ import java.util.List;
 public interface PeopleFlowMemberContract {
 
     /**
-     * @return the id of the member.
-     */
-    String getId();
-
-    /**
-     * @return the memberId of the member.  This will key in to different types depending on the {@link MemberType} of the
+     * @return the id of the member.  This will key in to different types depending on the {@link MemberType} of the
      * instance.
      */
     String getMemberId();
@@ -73,14 +68,5 @@ public interface PeopleFlowMemberContract {
      * this member has no delegates
      */
     List<? extends PeopleFlowDelegateContract> getDelegates();
-
-    /**
-     * Returns the version number for this object.  In general, this value should only
-     * be null if the object has not yet been stored to a persistent data store.
-     * This version number is generally used for the purposes of optimistic locking.
-     *
-     * @return the version number, or null if one has not been assigned yet
-     */
-    Long getVersionNumber();
 
 }

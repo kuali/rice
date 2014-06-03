@@ -46,8 +46,6 @@ import java.util.List;
         PeopleFlowMember.Elements.RESPONSIBILITY_ID,
         PeopleFlowMember.Elements.PRIORITY,
         PeopleFlowMember.Elements.DELEGATES,
-        PeopleFlowMember.Elements.ID,
-        CoreConstants.CommonElements.VERSION_NUMBER,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PeopleFlowMember extends AbstractDataTransferObject implements PeopleFlowMemberContract {
@@ -73,12 +71,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     @XmlElement(name = Elements.DELEGATE, required = false)
     private final List<PeopleFlowDelegate> delegates;
 
-    @XmlElement(name = Elements.ID, required = false)
-    private final String id;
-
-    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
-    private final Long versionNumber;
-
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -93,8 +85,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.responsibilityId = null;
         this.priority = STARTING_PRIORITY;
         this.delegates = null;
-        this.id = null;
-        this.versionNumber = null;
     }
 
     private PeopleFlowMember(Builder builder) {
@@ -104,8 +94,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.responsibilityId = builder.getResponsibilityId();
         this.priority = builder.getPriority();
         this.delegates = ModelObjectUtils.buildImmutableCopy(builder.getDelegates());
-        this.id = builder.getId();
-        this.versionNumber = builder.getVersionNumber();
     }
 
     @Override
@@ -138,14 +126,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         return this.delegates;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
-    public Long getVersionNumber() {
-        return this.versionNumber;
-    }
-
     /**
      * A builder which can be used to construct {@link PeopleFlowMember} instances.  Enforces the constraints of the
      * {@link PeopleFlowMemberContract}.
@@ -158,8 +138,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         private String responsibilityId;
         private int priority;
         private List<PeopleFlowDelegate.Builder> delegates;
-        private String id;
-        private Long versionNumber;
 
         private Builder(String memberId, MemberType memberType) {
             setMemberId(memberId);
@@ -184,8 +162,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create(contract.getMemberId(), contract.getMemberType());
-            builder.setId(contract.getId());
-            builder.setVersionNumber(contract.getVersionNumber());
             builder.setActionRequestPolicy(contract.getActionRequestPolicy());
             builder.setPriority(contract.getPriority());
             if (CollectionUtils.isNotEmpty(contract.getDelegates())) {
@@ -230,14 +206,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
             return delegates;
         }
 
-        public String getId() {
-            return this.id;
-        }
-
-        public Long getVersionNumber() {
-            return this.versionNumber;
-        }
-
         public void setMemberId(String memberId) {
             if (StringUtils.isBlank(memberId)) {
                 throw new IllegalArgumentException("memberId was null or blank");
@@ -275,14 +243,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         public void setDelegates(List<PeopleFlowDelegate.Builder> delegates) {
             this.delegates = delegates;
         }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public void setVersionNumber(Long versionNumber) {
-            this.versionNumber = versionNumber;
-        }
     }
 
     /**
@@ -304,8 +264,6 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         final static String PRIORITY = "priority";
         final static String DELEGATES = "delegates";
         final static String DELEGATE = "delegate";
-        final static String ID = "id";
-        final static String VERSION_NUMBER = "versionNumber";
     }
 
 }

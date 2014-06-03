@@ -19,11 +19,9 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.Boolean01BigDecimalConverter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -42,7 +40,7 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
 @IdClass(DocumentTypePolicyId.class)
 @Table(name="KREW_DOC_TYP_PLCY_RELN_T")
 public class DocumentTypePolicy extends PersistableBusinessObjectBase {
-	private static final long serialVersionUID = -4612246888683336474L;
+    private static final long serialVersionUID = -4612246888683336474L;
 
     @Transient
     private String documentTypeId;
@@ -53,7 +51,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 
     @Column(name="PLCY_NM", nullable = false)
     @Convert(converter=Boolean01BigDecimalConverter.class)
-	private Boolean policyValue;
+    private Boolean policyValue;
 
     @Column(name="PLCY_VAL")
     private String policyStringValue;
@@ -73,9 +71,9 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
         this.policyValue = policyValue;
     }
 
-	public String getPolicyDisplayValue() {
-        if(policyValue != null){
-            if(policyValue.booleanValue()){
+    public String getPolicyDisplayValue() {
+        if (policyValue != null) {
+            if (policyValue.booleanValue()) {
                 return "Active";
             } else {
                 return "Inactive";
@@ -91,7 +89,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     public void setInheritedFlag(Boolean inheritedFlag) {
         this.inheritedFlag = inheritedFlag;
     }
-    
+
     public boolean isAllowUnrequestedAction() {
         return ALLOW_UNREQUESTED_ACTION.equals(this.getPolicyName());
     }
@@ -157,6 +155,7 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
         if (this.policyStringValue != null && this.policyStringValue.length() > 0) {
             return this.policyStringValue;
         }
+
         return this.policyValue.toString();
     }
 
@@ -166,10 +165,10 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
             //clone.setDocumentTypeId(getDocumentTypeId());
             clone.setPolicyName(getPolicyName());
         }
-        if(policyValue != null){
+        if (policyValue != null) {
             clone.setPolicyValue(new Boolean(policyValue.booleanValue()));
         }
-        if(policyStringValue != null){
+        if (policyStringValue != null) {
             clone.setPolicyStringValue(new String(policyStringValue));
         }
         return clone;

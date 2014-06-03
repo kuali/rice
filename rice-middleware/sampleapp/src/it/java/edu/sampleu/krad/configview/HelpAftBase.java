@@ -150,7 +150,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
 
         // test tooltip help when it overrides a tooltip
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
             assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));

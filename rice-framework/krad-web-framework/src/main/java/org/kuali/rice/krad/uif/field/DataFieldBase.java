@@ -165,13 +165,8 @@ public class DataFieldBase extends FieldBase implements DataField {
                 this.inquiry = ComponentFactory.getInquiry();
             }
         }
-        
-        if (help != null && StringUtils.isBlank(help.getExternalHelpUrl())
-                && (help.getHelpDefinition() == null || help.getHelpDefinition().getParameterName() == null)) {
-            help = null;
-        }
 
-       if (isAddHiddenWhenReadOnly()) {
+        if (isAddHiddenWhenReadOnly()) {
             setReadOnly(true);
             getAdditionalHiddenPropertyNames().add(getPropertyName());
         }

@@ -163,10 +163,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "goToAddRule")
     public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        setAgendaItemLine(form, null);
-        AgendaEditor agendaEditor = getAgendaEditor(form);
-        agendaEditor.setAddRuleInProgress(true);
-        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+        AgendaEditor agendaEditorForBusRuleChecks = getAgendaEditor(form);
+        AgendaEditorBusRule rule = new AgendaEditorBusRule();
+        if (rule.validContext(agendaEditorForBusRuleChecks) && rule.validAgendaName(agendaEditorForBusRuleChecks)) {
+            setAgendaItemLine(form, null);
+            AgendaEditor agendaEditor = getAgendaEditor(form);
+            agendaEditor.setAddRuleInProgress(true);
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+
+            return super.navigate(form, result, request, response);
+        }
+
         return super.navigate(form, result, request, response);
     }
 
@@ -253,17 +260,24 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
-        agendaEditor.setAddRuleInProgress(false);
-        // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
-        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
-        AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
+        AgendaEditorBusRule rule = new AgendaEditorBusRule();
 
-        preprocessCustomOperators(node.getRule().getProposition(), getCustomOperatorValueMap(form));
+        if (rule.validContext(agendaEditor) && rule.validAgendaName(agendaEditor)) {
+            agendaEditor.setAddRuleInProgress(false);
+            // this is the root of the tree:
+            AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
+            String selectedItemId = agendaEditor.getSelectedAgendaItemId();
+            AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
-        setAgendaItemLine(form, node);
+            preprocessCustomOperators(node.getRule().getProposition(), getCustomOperatorValueMap(form));
 
-        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+            setAgendaItemLine(form, node);
+
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+
+            return super.navigate(form, result, request, response);
+        }
+
         return super.navigate(form, result, request, response);
     }
 

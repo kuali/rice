@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-standalone:war exploded">
-    <output-path>$PROJECT_DIR$/rice-middleware/standalone/target/rice-standalone-2.5.0-M3-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/rice-middleware/standalone/target/rice-standalone-2.5.0-M4-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-standalone/web/Web" />
       <element id="directory" name="WEB-INF">

@@ -275,9 +275,7 @@ KradResponse.prototype = {
 
     // replaces the form action with the given content
     updateFormHandler: function (content, dataAttr) {
-
         var action = jQuery(content).html();
-        // update form action with content
 
         jQuery("form#" + kradVariables.KUALI_FORM).attr('action', jQuery.trim(action));
     }

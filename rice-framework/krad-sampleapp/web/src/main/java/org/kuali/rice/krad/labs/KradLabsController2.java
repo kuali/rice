@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-
 @RequestMapping(value = "/labs2")
 public class KradLabsController2 extends UifControllerBase {
 
@@ -35,7 +34,4 @@ public class KradLabsController2 extends UifControllerBase {
     protected KradLabsForm createInitialForm(HttpServletRequest request) {
         return new KradLabsForm();
     }
-
-
-
 }

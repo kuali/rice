@@ -170,6 +170,8 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        // when editing we do not want to apply default values and use the old dataObject values  instead
+        form.setApplyDefaultValues(false);
         setupMaintenance(form, request, KRADConstants.MAINTENANCE_EDIT_ACTION);
 
         return getUIFModelAndView(form);

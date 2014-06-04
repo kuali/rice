@@ -97,14 +97,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         Group group = (Group) component;
 
-        // sort comparables by their order property
-        List<ComparableInfo> groupComparables = ComponentUtils.sort(comparables, defaultOrderSequence);
-
         // add the renderOnComparableModifier to allow for optional field rendering based on the comparable
         for (Component item : group.getItems()) {
-            for (ComparableInfo comparable : groupComparables) {
-                item.pushObjectToContext("renderOnComparableModifier", comparable.isCompareToForFieldRender());
-            }
+            item.pushObjectToContext("renderOnComparableModifier", Boolean.TRUE);
         }
     }
 

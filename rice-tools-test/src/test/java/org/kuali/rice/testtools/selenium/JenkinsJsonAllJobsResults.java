@@ -15,13 +15,10 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 
 /**
@@ -48,45 +45,26 @@ public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {
 
     private void getResults(String job) throws Exception {
         String url = null;
-            String jobJson;
-            String json;
-            String outputFile;
+        String jobJson;
 
-            url = jenkinsBase + "/job/" + job + "/api/json";
+        url = jenkinsBase + "/job/" + job + "/api/json";
 
-            jobJson = retrieveJson(url);
+        jobJson = retrieveJson(url);
 
-            String jsonJobNumber;
-            while (jobJson.contains(("{\"number\":"))) {
-                jsonJobNumber = jobJson.substring(jobJson.indexOf("{\"number\":") + 10, jobJson.length());
-                jsonJobNumber = jsonJobNumber.substring(0, jsonJobNumber.indexOf(","));
+        String jsonJobNumber;
+        while (jobJson.contains(("{\"number\":"))) {
+            jsonJobNumber = jobJson.substring(jobJson.indexOf("{\"number\":") + 10, jobJson.length());
+            jsonJobNumber = jsonJobNumber.substring(0, jsonJobNumber.indexOf(","));
 
-                jobJson = jobJson.substring(jobJson.indexOf("{\"number\":") + 9, jobJson.length()); // strip off while condition
+            jobJson = jobJson.substring(jobJson.indexOf("{\"number\":") + 9, jobJson.length()); // strip off while condition
 
-                try {
-                    writeJobResults(job, jsonJobNumber);
-                } catch (Exception e) {
-                    passed = false;
-                    System.out.println("job: " + job + " url: " + url + " " + e.getMessage());
-                    e.printStackTrace();
-                }
+            try {
+                fetchAndWriteJobResults(job, jsonJobNumber);
+            } catch (Exception e) {
+                passed = false;
+                System.out.println("job: " + job + " url: " + url + " " + e.getMessage());
+                e.printStackTrace();
             }
-
-    }
-
-    private void writeJobResults(String job, String jobNumber) throws InterruptedException, IOException {
-        String url;
-        String json;
-        String outputFile;
-        url = jenkinsBase + "/job/" + job + "/" + jobNumber + "/testReport/api/json";
-        json = retrieveJson(url);
-
-        outputFile = job + "-" + jobNumber + ".json";
-        if (outputDirectory != null) {
-            outputFile = outputDirectory + File.separatorChar + outputFile;
         }
-
-        json = json.replaceAll("}],", "}],\n");
-        FileUtils.writeStringToFile(new File(outputFile), json);
     }
 }
